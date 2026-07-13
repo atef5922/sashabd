@@ -1,0 +1,26 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="kioskBody" x1="18" y1="6" x2="47" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A3744"/>
+      <stop offset="1" stop-color="#0F2530"/>
+    </linearGradient>
+    <linearGradient id="kioskGlow" x1="22" y1="12" x2="42" y2="28" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A7DFF5"/>
+      <stop offset="1" stop-color="#5FA8C8"/>
+    </linearGradient>
+  </defs>
+
+  <path d="M17 10C17 8.9 17.9 8 19 8H45C46.1 8 47 8.9 47 10V36C47 37.1 46.1 38 45 38H19C17.9 38 17 37.1 17 36V10Z" fill="url(#kioskBody)"/>
+  <path d="M22 13C22 12.4 22.4 12 23 12H41C41.6 12 42 12.4 42 13V28C42 28.6 41.6 29 41 29H23C22.4 29 22 28.6 22 28V13Z" fill="url(#kioskGlow)"/>
+
+  <rect x="24" y="15" width="16" height="3" rx="1.5" fill="#DDF4FF"/>
+  <rect x="24" y="20" width="7" height="7" rx="1.4" fill="#2D5A6F"/>
+  <rect x="33" y="20" width="7" height="7" rx="1.4" fill="#2D5A6F"/>
+  <rect x="24" y="29" width="7" height="7" rx="1.4" fill="#2D5A6F"/>
+  <rect x="33" y="29" width="7" height="7" rx="1.4" fill="#2D5A6F"/>
+
+  <rect x="29" y="38" width="6" height="16" rx="1.2" fill="url(#kioskBody)"/>
+  <path d="M17 54.5L29 51V56L17 58.5V54.5Z" fill="#18323E"/>
+  <path d="M47 54.5L35 51V56L47 58.5V54.5Z" fill="#18323E"/>
+  <rect x="16" y="54" width="32" height="4" rx="1.5" fill="#102733"/>
+</svg>

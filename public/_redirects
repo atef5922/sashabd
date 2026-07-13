@@ -1,0 +1,89 @@
+/led-display/indoor/p4-indoor-led-display          /led-display/indoor-led/          301
+/led-display/indoor/p4-indoor-led-display/         /led-display/indoor-led/          301
+/led-display/indoor/p4-indoor-led-display/*        /led-display/indoor-led/          301
+
+/?m=:value                                         /                                  301!
+
+/control-systems                                  /pa-system/                       301
+/control-systems/                                 /pa-system/                       301
+/control-systems/pa-system                        /pa-system/                       301
+/control-systems/pa-system/                       /pa-system/                       301
+/control-systems/pa-system/*                      /pa-system/:splat/                301
+/control-systems/digital-podium                  /digital-podium/                  301
+/control-systems/digital-podium/                 /digital-podium/                  301
+/control-systems/digital-podium/*                /digital-podium/:splat/           301
+/control-systems/interactive-flat-panel          /interactive-flat-panel/          301
+/control-systems/interactive-flat-panel/         /interactive-flat-panel/          301
+/control-systems/interactive-flat-panel/*        /interactive-flat-panel/:splat/   301
+/control-systems/turnstile-gate-system            /turnstile-gate/                  301
+/control-systems/turnstile-gate-system/           /turnstile-gate/                  301
+/control-systems/turnstile-gate-system/*          /turnstile-gate/:splat/           301
+/turnstile-gate-system                            /turnstile-gate/                  301
+/turnstile-gate-system/                           /turnstile-gate/                  301
+/turnstile-gate-system/*                          /turnstile-gate/:splat/           301
+
+/blog-and-case-study                               /blog/                             301
+/blog-and-case-study/                              /blog/                             301
+
+/led-display/indoor/p5-indoor-led-display          /led-display/indoor-led/          301
+/led-display/indoor/p5-indoor-led-display/         /led-display/indoor-led/          301
+/led-display/indoor/p5-indoor-led-display/*        /led-display/indoor-led/          301
+
+/led-display/indoor           /led-display/indoor-led/          301
+/led-display/indoor/          /led-display/indoor-led/          301
+/led-display/indoor/*         /led-display/indoor-led/:splat/   301
+
+/indoor-led           /led-display/indoor-led/          301
+/indoor-led/          /led-display/indoor-led/          301
+/indoor-led/*         /led-display/indoor-led/:splat/   301
+
+/led-display/rental           /led-display/rental-display/      301
+/led-display/rental/          /led-display/rental-display/      301
+/led-display/rental/*         /led-display/rental-display/:splat/ 301
+
+/rental-display           /led-display/rental-display/      301
+/rental-display/          /led-display/rental-display/      301
+/rental-display/*         /led-display/rental-display/:splat/ 301
+
+/led-display/led-screen-rent-in-bangladesh          /led-display/rent-guide/         301
+/led-display/led-screen-rent-in-bangladesh/         /led-display/rent-guide/         301
+/led-display/led-screen-rent-in-bangladesh/*        /led-display/rent-guide/:splat/  301
+
+/led-display/price-guide                           /led-display/                     301
+/led-display/price-guide/                          /led-display/                     301
+/led-display/price-guide/*                         /led-display/:splat/              301
+
+/led-display/price-guide-bangladesh                /led-display/                     301
+/led-display/price-guide-bangladesh/               /led-display/                     301
+/led-display/price-guide-bangladesh/*              /led-display/:splat/              301
+
+/led-display/led-display-screen-price-in-bangladesh          /led-display/            301
+/led-display/led-display-screen-price-in-bangladesh/         /led-display/            301
+/led-display/led-display-screen-price-in-bangladesh/*        /led-display/:splat/     301
+
+/led-display/digital-led-display          /led-display/digital-led-display-guide/         301
+/led-display/digital-led-display/         /led-display/digital-led-display-guide/         301
+/led-display/digital-led-display/*        /led-display/digital-led-display-guide/:splat/  301
+
+/led-display/indoor-led-video-wall-guide          /led-display/indoor-led-video-wall-bangladesh/         301
+/led-display/indoor-led-video-wall-guide/         /led-display/indoor-led-video-wall-bangladesh/         301
+/led-display/indoor-led-video-wall-guide/*        /led-display/indoor-led-video-wall-bangladesh/:splat/  301
+
+/led-display/indoor-led-video-wall          /led-display/indoor-led-video-wall-bangladesh/         301
+/led-display/indoor-led-video-wall/         /led-display/indoor-led-video-wall-bangladesh/         301
+/led-display/indoor-led-video-wall/*        /led-display/indoor-led-video-wall-bangladesh/:splat/  301
+
+/led-display/rent          /led-display/rent-guide/         301
+/led-display/rent/         /led-display/rent-guide/         301
+/led-display/rent/*        /led-display/rent-guide/:splat/  301
+
+/services          /services-support/         301
+/services/         /services-support/         301
+
+/blog/led-display-vs-lcd-video-wall          /blog/led-vs-lcd-video-wall/         301
+/blog/led-display-vs-lcd-video-wall/         /blog/led-vs-lcd-video-wall/         301
+/blog/led-display-vs-lcd-video-wall/*        /blog/led-vs-lcd-video-wall/:splat/  301
+
+/blog/best-led-video-wall-solutions-for-corporate-offices          /blog/best-corporate-office-led-video-wall/         301
+/blog/best-led-video-wall-solutions-for-corporate-offices/         /blog/best-corporate-office-led-video-wall/         301
+/blog/best-led-video-wall-solutions-for-corporate-offices/*        /blog/best-corporate-office-led-video-wall/:splat/  301

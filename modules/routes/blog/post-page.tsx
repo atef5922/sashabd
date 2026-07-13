@@ -1,0 +1,860 @@
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import Breadcrumbs from "@/components/common/Breadcrumbs";
+import { homeBreadcrumb } from "@/lib/breadcrumbs";
+import { blogPosts, commonSections, getBlogPostBySlug } from "@/lib/blogPosts";
+import { compactBlogTitle, socialImageUrl, withTrailingSlash } from "@/lib/seo";
+import { siteConfig } from "@/lib/site";
+import { BRAND_NAME } from "@/lib/brand";
+
+type Params = { slug: string };
+
+const formatDate = (value: string) =>
+  new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(value));
+
+const toSectionId = (heading: string, index: number) =>
+  `section-${index + 1}-${heading
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")}`;
+
+const tokenize = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, " ")
+    .split(/\s+/)
+    .filter((token) => token.length > 2);
+
+const hashString = (value: string) => {
+  let h = 0;
+  for (let i = 0; i < value.length; i += 1) {
+    h = (h * 31 + value.charCodeAt(i)) >>> 0;
+  }
+  return h;
+};
+
+const normalizeMetaDescription = (value: string) => value.replace(/\s+/g, " ").trim();
+
+const truncateMetaDescription = (value: string, max = 155) => {
+  const normalized = normalizeMetaDescription(value);
+  if (normalized.length <= max) return normalized;
+
+  const slice = normalized.slice(0, Math.max(0, max - 3));
+  const lastSpace = slice.lastIndexOf(" ");
+  const cut = lastSpace >= 60 ? slice.slice(0, lastSpace) : slice;
+  return `${cut.trim()}...`;
+};
+
+export async function generateStaticParams() {
+  return blogPosts.map((post) => ({ slug: post.slug }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
+  const { slug } = await params;
+  const post = getBlogPostBySlug(slug);
+  if (!post) {
+    return { title: "Blog" };
+  }
+
+  const canonical = withTrailingSlash(`/blog/${post.slug}`);
+  const seoTitle = compactBlogTitle(post.title);
+  const seoDescription = truncateMetaDescription(post.excerpt);
+  return {
+    title: { absolute: seoTitle },
+    description: seoDescription,
+    alternates: { canonical },
+    openGraph: {
+      title: seoTitle,
+      description: seoDescription,
+      url: canonical,
+      type: "article",
+      publishedTime: post.publishedAt,
+      modifiedTime: post.updatedAt,
+      images: [
+        {
+          url: socialImageUrl(post.coverImage),
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: seoTitle,
+      description: seoDescription,
+      images: [socialImageUrl(post.coverImage)],
+    },
+  };
+}
+
+export default async function BlogDetailsPage({ params }: { params: Promise<Params> }) {
+  const { slug } = await params;
+  const post = getBlogPostBySlug(slug);
+  if (!post) {
+    return notFound();
+  }
+
+  const allSections = post.hideCommonSections ? post.uniqueSections : [...post.uniqueSections, ...commonSections];
+  const h2SectionLinks = allSections.map((section, index) => ({
+    id: toSectionId(section.heading, index),
+    heading: section.heading,
+  }));
+  const sectionLinks = [
+    { id: "quick-summary", heading: "Quick Summary" },
+    { id: "introduction", heading: "Introduction" },
+    ...h2SectionLinks,
+    { id: "why-choose-us", heading: "Why Choose Us" },
+    { id: "conclusion", heading: "Conclusion" },
+    { id: "internal-links", heading: "Related Useful Links" },
+    { id: "faq", heading: "FAQ" },
+    { id: "cta", heading: "Looking for professional LED display solutions?" },
+  ];
+  const currentKeywordSet = new Set(post.keywords.flatMap((keyword) => tokenize(keyword)));
+  const currentTopicSet = new Set([
+    ...tokenize(post.title),
+    ...tokenize(post.excerpt),
+    ...post.keywords.flatMap((keyword) => tokenize(keyword)),
+  ]);
+
+  const relatedPosts = blogPosts
+    .filter((item) => item.slug !== post.slug)
+    .map((item) => {
+      const itemKeywordTokens = item.keywords.flatMap((keyword) => tokenize(keyword));
+      const itemTopicTokens = [...tokenize(item.title), ...tokenize(item.excerpt), ...itemKeywordTokens];
+
+      const keywordOverlap = itemKeywordTokens.filter((token) => currentKeywordSet.has(token)).length;
+      const topicOverlap = itemTopicTokens.filter((token) => currentTopicSet.has(token)).length;
+      const sameTagBonus = item.tag === post.tag ? 6 : 0;
+
+      return {
+        ...item,
+        relevanceScore: sameTagBonus + keywordOverlap * 3 + topicOverlap,
+      };
+    })
+    .sort((a, b) => {
+      if (b.relevanceScore !== a.relevanceScore) return b.relevanceScore - a.relevanceScore;
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    })
+    .slice(0, 3);
+  const summaryPoints = [
+    `Primary focus: ${post.title}.`,
+    `Key intent keywords: ${post.keywords.slice(0, 2).join(" | ")}.`,
+    "Includes practical decision logic, implementation guidance, and FAQ.",
+  ];
+  const seoIntro =
+    `This article on ${post.title.toLowerCase()} is designed to answer high-intent search queries and help buyers make a confident decision. ` +
+    `If you are researching ${post.keywords[0]}, this guide provides practical comparison, real usage context, and implementation-ready direction.`;
+  const conclusionText =
+    `In summary, the right decision for ${post.title.toLowerCase()} depends on real site condition, audience distance, content priority, and long-term operating plan. ` +
+    `When these inputs are validated early, you can avoid overspending, reduce technical risk, and achieve better uptime with predictable performance.`;
+  const conclusionExternalLink =
+    post.slug === "led-display-price-in-bangladesh-complete-buying-guide"
+      ? {
+          phrase: "led display price in bangladesh",
+          href: "https://www.arozex.com/led-display/",
+        }
+      : null;
+
+  const introSecondaryLink = (() => {
+    const has = (token: string) => currentTopicSet.has(token);
+
+    if (has("install") || has("installation") || has("maintenance") || has("calibration") || has("repair")) {
+      return { href: "/services-support/", label: "installation & maintenance services" } as const;
+    }
+    if (has("accessory") || has("accessories") || has("controller") || has("receiving") || has("powersupply") || has("power")) {
+      return { href: "/led-display/accessories/", label: "LED display accessories" } as const;
+    }
+    if (has("price") || has("pricing") || has("budget") || has("cost")) {
+      return { href: "/led-display/", label: "LED display solutions" } as const;
+    }
+
+    const slug = post.slug.toLowerCase();
+    const title = post.title.toLowerCase();
+    const isIndoorFocused = slug.includes("indoor") || (title.includes("indoor") && !title.includes("outdoor") && !title.includes("rental"));
+    const isOutdoorFocused = slug.includes("outdoor") || (title.includes("outdoor") && !title.includes("indoor") && !title.includes("rental"));
+    const isRentalFocused = slug.includes("rental") || (title.includes("rental") && !title.includes("indoor") && !title.includes("outdoor"));
+
+    if (isOutdoorFocused) return { href: "/led-display/outdoor/", label: "outdoor LED displays" } as const;
+    if (isRentalFocused) return { href: "/led-display/rental-display/", label: "rental LED displays" } as const;
+    if (isIndoorFocused) return { href: "/led-display/indoor-led/", label: "indoor LED displays" } as const;
+
+    return null;
+  })();
+
+  const blogInternalLinkBlock = (() => {
+    const tag = post.tag ?? "";
+    const keyword = post.keywords?.[0]?.trim();
+    const keywordShort =
+      keyword && keyword.length <= 38
+        ? keyword
+        : keyword
+          ? `${keyword.slice(0, 35).trim()}...`
+          : null;
+
+    const hubPrefixes = [
+      "LED display",
+      "LED screen",
+      "LED video wall",
+      "LED display panel",
+      "LED screen display",
+      "LED display solutions",
+      "LED signage display",
+      "LED screen wall",
+      "LED display setup",
+      "LED wall display",
+      "LED display models",
+      "LED display options",
+    ];
+    const hubSuffixes = [
+      "price & models",
+      "models and pricing",
+      "options in Bangladesh",
+      "products overview",
+      "catalog and planning",
+      "buying options",
+      "selection overview",
+      "product categories",
+      "price planning hub",
+      "pricing overview",
+      "product list",
+      "models overview",
+      "solutions overview",
+      "price overview",
+      "product overview",
+      "catalog (BD)",
+      "options (BD market)",
+      "product guide",
+      "planning overview",
+      "project overview",
+    ];
+    const hubQualifiers = ["", " (2026)", " (Bangladesh)", " (BD)", " (buyer guide)", " (price planning)"];
+
+    const tagHint = (() => {
+      if (tag === "Price Guide") return "price planning";
+      if (tag === "Comparison") return "comparison";
+      if (tag === "Execution") return "installation planning";
+      if (tag === "Accessories") return "accessories & compatibility";
+      if (tag === "Maintenance") return "maintenance planning";
+      return null;
+    })();
+
+    const prefixIndex = hashString(`${post.slug}:p`) % hubPrefixes.length;
+    const suffixIndex = hashString(`${post.slug}:s`) % hubSuffixes.length;
+    const qualifierIndex = hashString(`${post.slug}:q`) % hubQualifiers.length;
+
+    const tagShift = tagHint ? hashString(tagHint) : 0;
+    const pickedPrefix = hubPrefixes[(prefixIndex + tagShift) % hubPrefixes.length];
+    const pickedSuffix = hubSuffixes[(suffixIndex + tagShift) % hubSuffixes.length];
+    const pickedQualifier = hubQualifiers[(qualifierIndex + tagShift) % hubQualifiers.length];
+
+    const hubAnchorText = `${pickedPrefix} ${pickedSuffix}${pickedQualifier}`;
+
+    const pattern = hashString(`${post.slug}:pattern`) % 14;
+
+    const primary = (
+      <Link href="/led-display/" className="font-extrabold text-slate-900 hover:underline">
+        {hubAnchorText}
+      </Link>
+    );
+    const secondary = introSecondaryLink ? (
+      <Link href={introSecondaryLink.href} className="font-extrabold text-slate-900 hover:underline">
+        {introSecondaryLink.label}
+      </Link>
+    ) : null;
+
+    const wrap = (content: React.ReactNode) => (
+      <p className="mt-4 text-sm leading-8 text-slate-700 md:text-base">{content}</p>
+    );
+
+    switch (pattern) {
+      case 0:
+        return wrap(
+          <>
+            If you want a quick place to start, open {primary}.
+            {secondary ? <> For the next step, review {secondary}.</> : null}
+          </>,
+        );
+      case 1:
+        return wrap(
+          <>
+            Short on time? {primary}.
+            {secondary ? <> Also relevant: {secondary}.</> : null}
+          </>,
+        );
+      case 2:
+        return wrap(
+          <>
+            For a practical overview before you decide, see {primary}.
+            {secondary ? <> You can pair it with {secondary}.</> : null}
+          </>,
+        );
+      case 3:
+        return wrap(
+          <>
+            Related page: {primary}.
+            {secondary ? <> For this topic, {secondary} can help too.</> : null}
+          </>,
+        );
+      case 4:
+        return wrap(
+          <>
+            Planning an LED screen in Bangladesh? {primary} helps you compare categories and models without getting lost.
+            {secondary ? <> Then check {secondary} if it matches your scope.</> : null}
+          </>,
+        );
+      case 5:
+        return wrap(
+          <>
+            Keep this link handy: {primary}.
+            {secondary ? <> When needed, follow up with {secondary}.</> : null}
+          </>,
+        );
+      case 6:
+        return wrap(
+          <>
+            The fastest way to cross-check models is {primary}.
+            {secondary ? <> After that, {secondary} is a solid next step.</> : null}
+          </>,
+        );
+      case 7:
+        return wrap(
+          <>
+            If you are researching{" "}
+            {keywordShort ? <span className="font-semibold text-slate-900">{keywordShort}</span> : "LED display options"}, start with{" "}
+            {primary}.
+            {secondary ? <> You may also want {secondary}.</> : null}
+          </>,
+        );
+      case 8:
+        return wrap(
+          <>
+            Prefer one hub page before you go deeper? Start with {primary}.
+            {secondary ? <> Then review {secondary}.</> : null}
+          </>,
+        );
+      case 9:
+        return wrap(
+          <>
+            To turn this article into an actual purchase plan, use {primary} to confirm categories and options.
+            {secondary ? <> Next: {secondary}.</> : null}
+          </>,
+        );
+      case 10:
+        return wrap(
+          <>
+            Reference link for this article: {primary}.
+            {secondary ? <> Related: {secondary}.</> : null}
+          </>,
+        );
+      case 11:
+        return wrap(
+          <>
+            Next step: check {primary} for a complete overview.
+            {secondary ? <> For your scope, {secondary} can be helpful.</> : null}
+          </>,
+        );
+      case 12:
+        return wrap(
+          <>
+            If you want to see options in one place, open {primary}.
+            {secondary ? <> Then look at {secondary} when you are ready.</> : null}
+          </>,
+        );
+      default:
+        return wrap(
+          <>
+            Before you finalize anything, review {primary} for a quick overview.
+            {secondary ? <> Follow-up: {secondary}.</> : null}
+          </>,
+        );
+    }
+  })();
+  const whyChooseUsByTag: Record<string, { title: string; intro: string; points: string[] }> = {
+    "Price Guide": {
+      title: "Why Choose Us for LED Display Price Planning",
+      intro:
+        "For price-focused projects, our team helps you balance budget, specification, and long-term value so you avoid hidden cost and wrong model selection.",
+      points: [
+        "BOQ-based pricing with clear scope instead of vague package quotations.",
+        "Right pitch and brightness recommendation based on actual site and usage.",
+        "Transparent cost breakdown for display, control system, installation, and support.",
+        "Focus on lifecycle value, not only lowest initial quotation.",
+      ],
+    },
+    Comparison: {
+      title: "Why Choose Us for LED Display Comparison and Selection",
+      intro:
+        "When choosing between options, we provide practical technical comparison and field-based recommendation so your final decision matches real performance needs.",
+      points: [
+        "Environment-first recommendation for indoor, outdoor, and semi-open sites.",
+        "Decision support based on distance, content type, and operating hours.",
+        "Clarity on trade-offs between price, brightness, durability, and maintenance.",
+        "Final model suggestion aligned with business objective and timeline.",
+      ],
+    },
+    Execution: {
+      title: "Why Choose Us for LED Display Installation and Commissioning",
+      intro:
+        "Execution quality defines real outcome. Our process-driven installation and calibration workflow ensures stable output from day one.",
+      points: [
+        "Structured commissioning checklist from mounting to mapping and calibration.",
+        "Electrical safety and grounding verification before final handover.",
+        "Operator training with practical SOP for daily management.",
+        "Post-install support readiness for quick troubleshooting.",
+      ],
+    },
+    Accessories: {
+      title: "Why Choose Us for LED Accessories and Compatibility",
+      intro:
+        "Accessory mismatch creates most long-term issues. We design a compatible controller-power-module stack for reliable performance.",
+      points: [
+        "Compatibility validation across controller, receiving card, and PSU layers.",
+        "Ecosystem recommendation based on project complexity and operations style.",
+        "Stable component selection to reduce flicker and mapping errors.",
+        "Spare policy guidance for fast maintenance recovery.",
+      ],
+    },
+    Maintenance: {
+      title: "Why Choose Us for LED Display Maintenance Planning",
+      intro:
+        "Our maintenance-first approach helps protect uptime, visual quality, and operating consistency throughout the display lifecycle.",
+      points: [
+        "Routine maintenance calendar tailored to runtime and site conditions.",
+        "Preventive checks for power, signal path, and calibration stability.",
+        "Fault logging and root-cause workflow to reduce repeated incidents.",
+        "Service strategy focused on downtime prevention and faster recovery.",
+      ],
+    },
+    Strategy: {
+      title: "Why Choose Us for LED Display Strategy and ROI Decisions",
+      intro:
+        "For business decisions like rent vs buy, we provide strategy support that connects technical choices with financial outcomes.",
+      points: [
+        "Use-case based guidance for ownership, rental, and deployment model.",
+        "Budget and ROI framing aligned with campaign duration and frequency.",
+        "Operational readiness assessment before investment finalization.",
+        "Decision support focused on long-term communication impact.",
+      ],
+    },
+    Safety: {
+      title: "Why Choose Us for Outdoor LED Safety Planning",
+      intro:
+        "Outdoor projects require structure and electrical discipline. We plan safety controls from the beginning to protect people and equipment.",
+      points: [
+        "Structure and service-access considerations integrated into project scope.",
+        "Grounding and surge protection recommendations for local risk conditions.",
+        "Weather-aware cable routing and panel safety checks.",
+        "Safety audit mindset before go-live and handover.",
+      ],
+    },
+    Planning: {
+      title: "Why Choose Us for LED Project Planning",
+      intro:
+        "Strong outcomes come from strong planning. We convert project requirements into practical deployment plans with clear technical logic.",
+      points: [
+        "Requirement mapping and survey-driven recommendation workflow.",
+        "BOQ, risk controls, and integration checks before procurement.",
+        "Execution planning that reduces rework and launch delays.",
+        "Support from discovery stage to stable operational handover.",
+      ],
+    },
+    "Best Practices": {
+      title: "Why Choose Us for LED Best-Practice Implementation",
+      intro:
+        "We help teams avoid common mistakes by applying proven implementation standards at every project stage.",
+      points: [
+        "Checklist-driven process from planning to post-handover operations.",
+        "Technical review to prevent compatibility and commissioning errors.",
+        "Operator and maintenance guidance for consistent quality.",
+        "Quality-focused recommendations based on real project lessons.",
+      ],
+    },
+    Corporate: {
+      title: "Why Choose Us for Video Wall Solutions for Corporate Office",
+      intro:
+        "Corporate projects need reliable visual communication with minimal downtime. We align technical design and delivery with office-grade performance expectations.",
+      points: [
+        "End-to-end support from requirement mapping to installation and handover.",
+        "Recommendations grounded in real Bangladesh operating conditions.",
+        "Transparent planning with compatibility, safety, and uptime focus.",
+        "Long-term service mindset beyond first project delivery.",
+      ],
+    },
+  };
+  const whyChooseUsContent = whyChooseUsByTag[post.tag] ?? {
+    title: `Why Choose Us for ${post.title}`,
+    intro:
+      "We combine technical planning, execution discipline, and after-sales support to deliver reliable LED display outcomes aligned with your business goals.",
+    points: [
+      "End-to-end support from requirement mapping to installation and handover.",
+      "Recommendations grounded in real Bangladesh operating conditions.",
+      "Transparent planning with compatibility, safety, and uptime focus.",
+      "Long-term service mindset beyond first project delivery.",
+    ],
+  };
+  const whyChooseUsTitle = whyChooseUsContent.title;
+  const whyChooseUsIntro = whyChooseUsContent.intro;
+  const whyChooseUsPoints = whyChooseUsContent.points;
+  const internalLinks = [
+    { href: "/blog", label: "All Blog Articles" },
+    { href: "/led-display/", label: "LED Display Solutions" },
+    { href: "/services-support/", label: "Services & Support" },
+    { href: "/led-display/indoor-led/", label: "Indoor LED Display" },
+    { href: "/led-display/outdoor/", label: "Outdoor LED Display" },
+    { href: "/contact", label: "Talk to Our Team" },
+  ];
+
+  const canonical = withTrailingSlash(`/blog/${post.slug}`);
+  const siteUrl = `https://${siteConfig.domain}`;
+  const absoluteCanonical = `${siteUrl}${canonical}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.publishedAt,
+    dateModified: post.updatedAt,
+    inLanguage: "en",
+    mainEntityOfPage: absoluteCanonical,
+    author: {
+      "@type": "Organization",
+      name: BRAND_NAME,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: BRAND_NAME,
+    },
+    keywords: post.keywords.join(", "),
+  };
+
+  const faqLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: post.faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.a,
+      },
+    })),
+  };
+
+  return (
+    <main className="mx-auto w-full max-w-7xl px-4 py-8 md:px-6 md:py-10">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
+
+      <Breadcrumbs
+        items={[
+          homeBreadcrumb(),
+          { href: "/blog/", label: "Blog" },
+          { href: `/blog/${post.slug}/`, label: post.title, current: true },
+        ]}
+      />
+
+      <article>
+        <div className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-100">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={post.coverImage}
+            alt={post.title}
+            className="h-auto w-full object-contain"
+            style={{ objectPosition: post.coverImagePosition?.hero ?? "center" }}
+          />
+        </div>
+        <div className="mt-4 px-1 md:px-0">
+          <div className="inline-flex rounded-full border border-[#FF6A0030] bg-[#FF6A0018] px-3 py-1 text-xs font-bold text-[#C84B00]">
+            {post.tag}
+          </div>
+          <h1 className="mt-4 max-w-5xl text-2xl font-extrabold tracking-tight text-slate-900 md:text-4xl">{post.title}</h1>
+          <p className="mt-4 max-w-5xl text-sm leading-7 text-slate-700 md:text-base">{post.heroIntro}</p>
+          <div className="mt-5 flex flex-wrap items-center gap-3 text-xs text-slate-700 md:text-sm">
+            <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">{post.readTime}</span>
+            <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">
+              Published {formatDate(post.publishedAt)}
+            </span>
+            <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">
+              Updated {formatDate(post.updatedAt)}
+            </span>
+          </div>
+        </div>
+      </article>
+
+      <section className="mt-6 grid gap-[10px] lg:grid-cols-[1fr_320px] lg:items-start">
+        <div className="space-y-[10px]">
+          <article id="quick-summary" className="scroll-mt-24 rounded-3xl border border-orange-100 bg-orange-50/70 p-6 shadow-sm md:p-8">
+            <h2 className="text-xl font-bold text-slate-900 md:text-2xl">Quick Summary</h2>
+            <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-700 md:text-base">
+              {summaryPoints.map((point) => (
+                <li key={point} className="flex items-start gap-3">
+                  <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#FF6A00]" />
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+
+          <article id="introduction" className="scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
+            <h2 className="text-xl font-bold text-slate-900 md:text-2xl">Introduction</h2>
+            <p className="mt-4 text-sm leading-8 text-slate-700 md:text-base">{seoIntro}</p>
+            {blogInternalLinkBlock}
+          </article>
+
+          <article className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:hidden md:p-8">
+            <h2 className="text-xl font-bold text-slate-900 md:text-2xl">Table of Contents</h2>
+            <ul className="mt-4 space-y-2 text-sm text-slate-700">
+              {sectionLinks.map((item) => (
+                <li key={item.id}>
+                  <a href={`#${item.id}`} className="transition hover:text-[#FF6A00]">
+                    {item.heading}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </article>
+
+          {allSections.map((section, index) => {
+            const sectionId = toSectionId(section.heading, index);
+            return (
+              <article
+                key={section.heading}
+                id={sectionId}
+                className="scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8"
+              >
+                <div className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-bold text-slate-600">
+                  Section {index + 1}
+                </div>
+                <h2 className="mt-3 text-xl font-bold text-slate-900 md:text-2xl">{section.heading}</h2>
+                {section.paragraphs.map((text, paragraphIndex) => {
+                  const paragraphLink = section.paragraphLinks?.find((link) => link.paragraphIndex === paragraphIndex);
+
+                  return (
+                    <p key={text} className="mt-4 text-sm leading-8 text-slate-700 md:text-base">
+                      {text}
+                      {paragraphLink ? (
+                        <>
+                          {" "}
+                          <a
+                            href={paragraphLink.href}
+                            target="_blank"
+                            rel="noopener"
+                            className="font-bold text-[#FF6A00] underline decoration-[#FF6A00]/35 underline-offset-4 transition hover:text-[#E45700]"
+                          >
+                            {paragraphLink.label}
+                          </a>
+                        </>
+                      ) : null}
+                    </p>
+                  );
+                })}
+                {section.bullets?.length ? (
+                  <ul className="mt-5 space-y-2 text-sm leading-7 text-slate-700 md:text-base">
+                    {section.bullets.map((point) => (
+                      <li key={point} className="flex items-start gap-3">
+                        <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#FF6A00]" />
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+                {section.table ? (
+                  <div className="mt-5 overflow-x-auto rounded-2xl border border-slate-200">
+                    <table className="min-w-full border-collapse text-sm md:text-base">
+                      <thead className="bg-slate-100">
+                        <tr>
+                          {section.table.headers.map((header) => (
+                            <th key={header} className="border-b border-slate-200 px-4 py-3 text-left font-bold text-slate-900">
+                              {header}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {section.table.rows.map((row) => (
+                          <tr key={row.join("-")} className="bg-white">
+                            {row.map((cell) => (
+                              <td key={cell} className="border-b border-slate-100 px-4 py-3 align-top text-slate-700 last:border-b-0">
+                                {cell}
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : null}
+              </article>
+            );
+          })}
+
+          <section id="why-choose-us" className="scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
+            <h2 className="text-xl font-bold text-slate-900 md:text-2xl">{whyChooseUsTitle}</h2>
+            <p className="mt-3 text-sm leading-8 text-slate-700 md:text-base">{whyChooseUsIntro}</p>
+            <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-700 md:text-base">
+              {whyChooseUsPoints.map((point) => (
+                <li key={point} className="flex items-start gap-3">
+                  <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#FF6A00]" />
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section id="conclusion" className="scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
+            <h2 className="text-xl font-bold text-slate-900 md:text-2xl">Conclusion</h2>
+            <p className="mt-4 text-sm leading-8 text-slate-700 md:text-base">
+              {conclusionExternalLink && conclusionText.includes(conclusionExternalLink.phrase) ? (
+                <>
+                  {conclusionText.split(conclusionExternalLink.phrase)[0]}
+                  <a
+                    href={conclusionExternalLink.href}
+                    target="_blank"
+                    rel="noopener"
+                    className="text-inherit"
+                  >
+                    {conclusionExternalLink.phrase}
+                  </a>
+                  {conclusionText.split(conclusionExternalLink.phrase).slice(1).join(conclusionExternalLink.phrase)}
+                </>
+              ) : (
+                conclusionText
+              )}
+            </p>
+          </section>
+
+          <section id="internal-links" className="scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
+            <h2 className="text-xl font-bold text-slate-900 md:text-2xl">Related Useful Links</h2>
+            <div className="mt-4 grid gap-[10px] md:grid-cols-2">
+              {internalLinks.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-orange-200 hover:text-[#FF6A00]"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          <section id="faq" className="scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
+            <h2 className="text-xl font-bold text-slate-900 md:text-2xl">FAQ</h2>
+            <div className="mt-4 space-y-[10px]">
+              {post.faqs.map((faq) => (
+                <details key={faq.q} className="group rounded-xl border border-slate-200 bg-slate-50 p-4">
+                  <summary className="cursor-pointer text-sm font-semibold text-slate-900 md:text-base">{faq.q}</summary>
+                  <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base">{faq.a}</p>
+                </details>
+              ))}
+            </div>
+          </section>
+
+          <section id="cta" className="scroll-mt-24 rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-100 to-slate-50 p-6 shadow-sm md:p-8">
+            <h2 className="text-xl font-bold text-slate-900 md:text-2xl">Looking for professional LED display solutions?</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base">
+              Share your location, viewing distance, and target budget. We will suggest pixel pitch, cabinet format,
+              and power setup that fits your use case.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link
+                href="/contact"
+                className="rounded-xl bg-[#FF6A00] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#E45700]"
+              >
+                Talk to an Expert
+              </Link>
+              <Link
+                href="/led-display/"
+                className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 transition hover:-translate-y-0.5 hover:bg-slate-100"
+              >
+                Browse LED Displays
+              </Link>
+            </div>
+          </section>
+        </div>
+
+        <aside className="space-y-[10px] lg:sticky lg:top-24">
+          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 className="text-sm font-extrabold uppercase tracking-wide text-slate-900">Table of Contents</h2>
+            <ul className="mt-3 space-y-2 text-sm text-slate-700">
+              {sectionLinks.map((item) => (
+                <li key={item.id}>
+                  <a href={`#${item.id}`} className="transition hover:text-[#FF6A00]">
+                    {item.heading}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 className="text-sm font-extrabold uppercase tracking-wide text-slate-900">Quick Facts</h2>
+            <div className="mt-3 space-y-2 text-sm text-slate-700">
+              <p>
+                <span className="font-semibold text-slate-900">Category:</span> {post.tag}
+              </p>
+              <p>
+                <span className="font-semibold text-slate-900">Read Time:</span> {post.readTime}
+              </p>
+              <p>
+                <span className="font-semibold text-slate-900">Updated:</span> {formatDate(post.updatedAt)}
+              </p>
+            </div>
+          </section>
+
+          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 className="text-sm font-extrabold uppercase tracking-wide text-slate-900">Related Posts</h2>
+            <div className="mt-4 space-y-[10px]">
+              {relatedPosts.map((item) => (
+                <Link
+                  key={item.slug}
+                  href={`/blog/${item.slug}`}
+                  className="group block overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 transition hover:-translate-y-0.5 hover:border-orange-200 hover:bg-white hover:shadow-md"
+                >
+                  <div className="relative h-36 w-full overflow-hidden bg-slate-200">
+                    <Image
+                      src={item.coverImage}
+                      alt={item.title}
+                      fill
+                      sizes="320px"
+                      className="object-cover transition duration-300 group-hover:scale-[1.04]"
+                      style={{ objectPosition: item.coverImagePosition?.card ?? "center" }}
+                    />
+                  </div>
+                  <div className="p-4">
+                    <div className="inline-flex rounded-full border border-[#FF6A0030] bg-[#FF6A0014] px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-[#C84B00]">
+                      {item.tag}
+                    </div>
+                    <h3 className="mt-3 line-clamp-2 text-base font-extrabold leading-6 text-slate-900 transition group-hover:text-[#FF6A00]">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">{item.excerpt}</p>
+                    <div className="mt-3 flex items-center justify-between text-xs font-semibold text-slate-500">
+                      <span>{item.readTime}</span>
+                      <span className="text-[#FF6A00] transition group-hover:translate-x-0.5">Read article →</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <Link
+              href="/blog"
+              className="mt-5 inline-flex text-sm font-semibold text-[#FF6A00] hover:underline"
+            >
+              Back to all articles
+            </Link>
+          </section>
+        </aside>
+      </section>
+    </main>
+  );
+}
+

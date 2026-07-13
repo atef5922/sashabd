@@ -1,0 +1,24 @@
+AddDefaultCharset UTF-8
+
+<IfModule mod_mime.c>
+  AddCharset UTF-8 .html .htm
+  AddType "text/html; charset=UTF-8" .html .htm
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|htm)$">
+    Header always set Content-Type "text/html; charset=UTF-8"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.*/)?([^/]+)\.PAGE\.txt$ $1$2/__PAGE__.txt [L]
+  RewriteRule ^control-systems/digital-podium/?$ /digital-podium/ [R=301,L]
+  RewriteRule ^control-systems/digital-podium/(.+)/?$ /digital-podium/$1/ [R=301,L]
+  RewriteRule ^control-systems/interactive-flat-panel/?$ /interactive-flat-panel/ [R=301,L]
+  RewriteRule ^control-systems/interactive-flat-panel/(.+)/?$ /interactive-flat-panel/$1/ [R=301,L]
+  RewriteRule ^control-systems/turnstile-gate-system/?$ /turnstile-gate/ [R=301,L]
+  RewriteRule ^control-systems/turnstile-gate-system/(.+)/?$ /turnstile-gate/$1/ [R=301,L]
+</IfModule>

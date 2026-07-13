@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" role="img" aria-label="Digital Podium">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#FF6A00"/>
+      <stop offset="1" stop-color="#E45700"/>
+    </linearGradient>
+    <linearGradient id="s" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#0f172a" stop-opacity="0.06"/>
+      <stop offset="1" stop-color="#0f172a" stop-opacity="0.12"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="600" rx="48" fill="#ffffff"/>
+
+  <!-- Screen -->
+  <rect x="220" y="88" width="520" height="250" rx="26" fill="#0b1220"/>
+  <rect x="242" y="112" width="476" height="202" rx="18" fill="url(#g)" opacity="0.15"/>
+  <rect x="255" y="124" width="450" height="178" rx="14" fill="#0b1220" opacity="0.55"/>
+  <circle cx="480" cy="316" r="6" fill="#94a3b8"/>
+
+  <!-- Podium body -->
+  <path
+    d="M308 356c0-18 15-33 33-33h278c18 0 33 15 33 33v158c0 18-15 33-33 33H341c-18 0-33-15-33-33V356Z"
+    fill="url(#s)"
+    stroke="#FF6A00"
+    stroke-opacity="0.25"
+    stroke-width="6"
+  />
+  <path
+    d="M356 365h248c14 0 26 12 26 26v112c0 14-12 26-26 26H356c-14 0-26-12-26-26V391c0-14 12-26 26-26Z"
+    fill="#ffffff"
+    stroke="#0f172a"
+    stroke-opacity="0.08"
+    stroke-width="4"
+  />
+
+  <!-- Accent stripe -->
+  <rect x="330" y="515" width="300" height="14" rx="7" fill="url(#g)" opacity="0.9"/>
+
+  <!-- Stand -->
+  <rect x="450" y="546" width="60" height="18" rx="9" fill="#0b1220" opacity="0.2"/>
+  <rect x="360" y="564" width="240" height="18" rx="9" fill="#0b1220" opacity="0.12"/>
+</svg>
+

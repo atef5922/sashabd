@@ -1,0 +1,196 @@
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+AddDefaultCharset UTF-8
+
+<IfModule mod_mime.c>
+  AddCharset UTF-8 .html .htm
+  AddType "text/html; charset=UTF-8" .html .htm
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|htm)$">
+    Header always set Content-Type "text/html; charset=UTF-8"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_autoindex.c>
+  Options -Indexes
+</IfModule>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # ------------------------------
+  # Force non-www canonical
+  # ------------------------------
+  RewriteCond %{HTTP_HOST} ^www\.sashabd\.com$ [NC]
+  RewriteRule ^ https://sashabd.com%{REQUEST_URI} [R=301,L]
+
+  # ------------------------------
+  # Force HTTPS canonical (proxy-safe)
+  # ------------------------------
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+  # ------------------------------
+  # Handle clean URLs (remove .html)
+  # ------------------------------
+  # Redirect /path.html to /path/ (matches next.config trailingSlash: true)
+  RewriteCond %{THE_REQUEST} \s/+(.+)\.html[\s?] [NC]
+  RewriteRule ^ /%1/ [R=301,L]
+
+  # Serve /path/ as /path/index.html (handled by DirectoryIndex usually, but let's be explicit)
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteCond %{REQUEST_FILENAME}index.html -f
+  RewriteRule ^(.*)$ $1index.html [L]
+
+  # Next static export RSC payloads may be requested as `foo.PAGE.txt`
+  # while the exported file lives at `foo/__PAGE__.txt`.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.*/)?([^/]+)\.PAGE\.txt$ $1$2/__PAGE__.txt [L]
+
+  # ------------------------------
+  # Canonical short URL redirects
+  # ------------------------------
+
+  # Control Systems landing removed; PA Sound System moved to top-level URL
+  RewriteRule ^control-systems/?$ /pa-system/ [R=301,L]
+  RewriteRule ^control-systems/pa-system/?$ /pa-system/ [R=301,L]
+  RewriteRule ^control-systems/pa-system/(.+)/?$ /pa-system/$1/ [R=301,L]
+  RewriteRule ^control-systems/digital-podium/?$ /digital-podium/ [R=301,L]
+  RewriteRule ^control-systems/digital-podium/(.+)/?$ /digital-podium/$1/ [R=301,L]
+  RewriteRule ^control-systems/interactive-flat-panel/?$ /interactive-flat-panel/ [R=301,L]
+  RewriteRule ^control-systems/interactive-flat-panel/(.+)/?$ /interactive-flat-panel/$1/ [R=301,L]
+  RewriteRule ^control-systems/turnstile-gate-system/?$ /turnstile-gate/ [R=301,L]
+  RewriteRule ^control-systems/turnstile-gate-system/(.+)/?$ /turnstile-gate/$1/ [R=301,L]
+
+  # Indoor (legacy aliases first)
+  RewriteRule ^led-display/indoor/p4-indoor-led-display/?$ /led-display/indoor-led/p1-77-indoor-led-display/ [R=301,L]
+  RewriteRule ^led-display/indoor/p5-indoor-led-display/?$ /led-display/indoor-led/p1-35-indoor-led-display/ [R=301,L]
+
+  RewriteRule ^led-display/indoor/?$ /led-display/indoor-led/ [R=301,L]
+  RewriteRule ^led-display/indoor/(.+)/?$ /led-display/indoor-led/$1/ [R=301,L]
+
+  # Top-level indoor-led legacy
+  RewriteRule ^indoor-led/?$ /led-display/indoor-led/ [R=301,L]
+  RewriteRule ^indoor-led/(.+)/?$ /led-display/indoor-led/$1/ [R=301,L]
+
+  # Rental
+  RewriteRule ^led-display/rental/?$ /led-display/rental-display/ [R=301,L]
+  RewriteRule ^led-display/rental/(.+)/?$ /led-display/rental-display/$1/ [R=301,L]
+
+  # Top-level rental-display legacy
+  RewriteRule ^rental-display/?$ /led-display/rental-display/ [R=301,L]
+  RewriteRule ^rental-display/(.+)/?$ /led-display/rental-display/$1/ [R=301,L]
+
+  # Price guide
+  RewriteRule ^led-display/price-guide/?$ /led-display/ [R=301,L]
+  RewriteRule ^led-display/price-guide-bangladesh/?$ /led-display/ [R=301,L]
+  RewriteRule ^led-display/led-display-screen-price-in-bangladesh/?$ /led-display/ [R=301,L]
+
+  # Rent guide
+  RewriteRule ^led-display/led-screen-rent-in-bangladesh/?$ /led-display/rent-guide/ [R=301,L]
+
+  # Cluster page slug tweaks (minimum change)
+  RewriteRule ^led-display/digital-led-display/?$ /led-display/ [R=301,L]
+  RewriteRule ^led-display/digital-led-display-guide/?$ /led-display/ [R=301,L]
+  RewriteRule ^led-display/indoor-led-video-wall-guide/?$ /led-display/indoor-led-video-wall-bangladesh/ [R=301,L]
+  RewriteRule ^led-display/indoor-led-video-wall/?$ /led-display/indoor-led-video-wall-bangladesh/ [R=301,L]
+  RewriteRule ^led-display/rent/?$ /led-display/rent-guide/ [R=301,L]
+
+  # Blog slug changes
+  RewriteRule ^blog/led-display-vs-lcd-video-wall/?$ /blog/led-vs-lcd-video-wall/ [R=301,L]
+  RewriteRule ^blog/best-led-video-wall-solutions-for-corporate-offices/?$ /blog/best-corporate-office-led-video-wall/ [R=301,L]
+
+  # Services slug change
+  RewriteRule ^services/?$ /services-support/ [R=301,L]
+
+  # ------------------------------
+  # Legacy /products -> /led-display (keep old links working)
+  # ------------------------------
+  RewriteRule ^products/?$ /led-display/ [R=301,L]
+
+  RewriteRule ^products/indoor/?$ /led-display/indoor-led/ [R=301,L]
+  RewriteRule ^products/indoor/(.+)/?$ /led-display/indoor-led/$1/ [R=301,L]
+
+  RewriteRule ^products/outdoor/?$ /led-display/outdoor/ [R=301,L]
+  RewriteRule ^products/outdoor/(.+)/?$ /led-display/outdoor/$1/ [R=301,L]
+
+  RewriteRule ^products/rental/?$ /led-display/rental-display/ [R=301,L]
+  RewriteRule ^products/rental/(.+)/?$ /led-display/rental-display/$1/ [R=301,L]
+
+  RewriteRule ^products/accessories/?$ /led-display/accessories/ [R=301,L]
+  RewriteRule ^products/accessories/(controller|power-supply|receiving-card|led-accessories)/?$ /led-display/accessories/$1/ [R=301,L]
+  RewriteRule ^products/accessories/(controller|power-supply|receiving-card|led-accessories)/(.+)/?$ /led-display/accessories/$1/$2/ [R=301,L]
+
+  # ------------------------------
+  # URL hygiene (static export)
+  # ------------------------------
+
+  # Strip useless `?m=...` query variants (GSC "Alternative page with proper canonical tag")
+  # Root URL is the main offender in GSC, so keep a direct canonical redirect for LiteSpeed/Apache.
+  RewriteCond %{REQUEST_URI} ^/$
+  RewriteCond %{QUERY_STRING} ^m=[^&]+$ [NC]
+  RewriteRule ^ https://sashabd.com/? [R=301,L]
+
+  # For other paths, remove `?m=` only when it is the only query param.
+  RewriteCond %{REQUEST_URI} !^/$
+  RewriteCond %{QUERY_STRING} ^m=[^&]+$ [NC]
+  RewriteRule ^ %{REQUEST_URI}? [R=301,L]
+
+  # Remove /index.html (single canonical)
+  RewriteCond %{THE_REQUEST} \s/+(.*/)?index\.html[\s?] [NC]
+  RewriteRule ^ %1 [R=301,L]
+
+  # Legacy blog hub slug -> canonical blog hub
+  RewriteRule ^blog-and-case-study/?$ /blog/ [R=301,L]
+
+  # Enforce trailing slash for non-file URLs (matches next.config.ts trailingSlash: true)
+  RewriteCond %{REQUEST_URI} !/$
+  RewriteCond %{REQUEST_URI} !\.[a-zA-Z0-9]{1,5}$
+  RewriteRule ^ %{REQUEST_URI}/ [R=301,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Long-cache for versioned/static assets
+  <FilesMatch "\.(?:css|js|mjs|json|map|woff2|png|jpe?g|gif|svg|webp|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # HTML should revalidate (Cloudflare can still cache at edge if configured)
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+
+  <FilesMatch "^(?:sitemap\.xml|robots\.txt)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-XSS-Protection "1; mode=block"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType application/json "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/plain text/html text/xml text/css application/javascript application/json image/svg+xml
+</IfModule>
