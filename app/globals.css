@@ -557,7 +557,7 @@ label {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
-  object-position: center !important;
+  object-position: center;
   transform: scale(1) !important;
   filter: saturate(1) contrast(1) brightness(1) !important;
   transition: transform 260ms ease, filter 260ms ease !important;
@@ -566,8 +566,8 @@ label {
 
 .group:hover .product-card-image-frame img,
 .product-card-image-frame:hover img {
-  transform: scale(1.07) !important;
-  filter: saturate(1.12) contrast(1.03) brightness(1.02) !important;
+  transform: scale(1.03) !important;
+  filter: saturate(1.10) contrast(1.03) brightness(1.02) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
