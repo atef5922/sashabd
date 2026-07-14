@@ -6,7 +6,6 @@ import { siteConfig } from "../lib/site";
 import { absoluteUrl, socialImageUrl } from "../lib/seo";
 import { BRAND_NAME } from "@/lib/brand";
 import HomeAllProductsGrid from "@/components/home/HomeAllProductsGrid";
-import FaqSection from "@/components/home/FaqSection";
 import LedSolutionsChipsSection from "@/components/home/LedSolutionsChipsSection";
 import ProjectProposalCtaSection from "@/components/home/ProjectProposalCtaSection";
 import ProjectWorkflowSection from "@/components/home/ProjectWorkflowSection";
@@ -576,7 +575,6 @@ export default function HomePage() {
         <TrustedTechnologyPartnersSection />
         <ProjectWorkflowSection />
         <WhyChooseSection />
-        <FaqSection />
         <ProjectProposalCtaSection />
 
         {/* 6) TRUST */}

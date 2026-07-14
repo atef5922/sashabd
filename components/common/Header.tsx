@@ -266,7 +266,7 @@ export default function Header() {
                     "rounded-lg px-3 py-2 text-sm font-medium transition",
                     activeHref(item.href)
                       ? isScrolled
-                        ? "bg-[#C84B00] text-white"
+                        ? "bg-[#FD6900] text-white"
                         : "bg-slate-900 text-white"
                       : isScrolled
                         ? "text-slate-100 hover:bg-white/10"
@@ -287,9 +287,9 @@ export default function Header() {
               isLedDropdown || isAccessoriesDropdown || isControlSystemsDropdown || isAboutDropdown;
             const isEnhancedDropdown =
               isLedDropdown || isAccessoriesDropdown || isControlSystemsDropdown || isAboutDropdown;
-            const dropdownActiveClass = isScrolled ? "bg-[#C84B00] text-white" : "bg-slate-900 text-white";
+            const dropdownActiveClass = isScrolled ? "bg-[#FD6900] text-white" : "bg-slate-900 text-white";
             const dropdownItemActiveClass = isAboutDropdown
-              ? "border-[#C84B00] bg-[#C84B00] text-white shadow-sm"
+              ? "border-[#FD6900] bg-[#FD6900] text-white shadow-sm"
               : "border-slate-900 bg-slate-900 text-white shadow-sm";
             return (
               <div key={item.href} className="relative group">
@@ -361,7 +361,7 @@ export default function Header() {
                                 isAboutDropdown && "px-2 py-1",
                                 isCompactDropdown
                                   ? activeDropdownItemHref(x.href, item.href)
-                                    ? "border-transparent bg-transparent text-[#C84B00]"
+                                    ? "border-transparent bg-transparent text-[#FD6900]"
                                     : isScrolled
                                     ? "border-transparent bg-transparent text-slate-100 hover:-translate-y-0.5 hover:bg-white/10"
                                     : "border-transparent bg-transparent text-slate-800 hover:-translate-y-0.5 hover:bg-slate-50"
