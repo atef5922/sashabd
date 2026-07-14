@@ -5,17 +5,17 @@ export default function ProjectProposalCtaSection() {
   const whatsappHref = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
 
   return (
-    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen border-t border-slate-200/80 bg-[linear-gradient(180deg,rgba(248,250,252,0.88)_0%,rgba(255,255,255,1)_100%)] py-9 md:py-11">
+    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen border-t border-slate-200/80 bg-[linear-gradient(180deg,rgba(248,250,252,0.88)_0%,rgba(255,255,255,1)_100%)] py-5 md:py-6">
       <div className="mx-auto w-full max-w-7xl px-4 md:px-6">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="pb-0 text-[24px] font-extrabold tracking-tight text-slate-900 after:hidden md:text-[34px]">
             Planning a new LED screen, audio or access project?
           </h2>
-          <p className="mt-3 text-[13px] leading-7 text-slate-600 md:text-[15px]">
+          <p className="mt-2 text-[13px] leading-7 text-slate-600 md:text-[15px]">
             Share your BOQ, screen size target or project concept and we will recommend a practical solution path covering display type, pixel pitch, controller, power and installation direction.
           </p>
 
-          <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <div className="mt-4 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="/contact/"
               prefetch={false}
@@ -34,7 +34,7 @@ export default function ProjectProposalCtaSection() {
             </a>
           </div>
 
-          <p className="mt-5 text-[12px] leading-6 text-slate-500 md:text-[13px]">
+          <p className="mt-3 text-[12px] leading-6 text-slate-500 md:text-[13px]">
             You can also send BOQ, tender scope or e-GP-related project details by email or WhatsApp for faster review.
           </p>
         </div>

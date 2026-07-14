@@ -90,7 +90,7 @@ export default function FaqSection() {
   };
 
   return (
-    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[linear-gradient(180deg,rgba(248,250,252,0.92)_0%,rgba(255,255,255,1)_22%,rgba(248,250,252,0.95)_100%)] py-8 md:py-10">
+    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[linear-gradient(180deg,rgba(248,250,252,0.92)_0%,rgba(255,255,255,1)_22%,rgba(248,250,252,0.95)_100%)] py-6 md:py-7">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
       <div className="mx-auto w-full max-w-7xl px-4 md:px-6">
@@ -106,7 +106,7 @@ export default function FaqSection() {
           </p>
         </div>
 
-        <div className="mt-6 grid gap-3 md:grid-cols-2">
+        <div className="mt-4 grid gap-3 md:grid-cols-2">
           {faqItems.map((item) => (
             <details
               key={item.id}

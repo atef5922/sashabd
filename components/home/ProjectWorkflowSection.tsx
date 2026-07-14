@@ -75,21 +75,21 @@ function ArrowRight({ className = "h-4 w-4" }: { className?: string }) {
 
 export default function ProjectWorkflowSection() {
   return (
-    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[linear-gradient(180deg,rgba(248,250,252,0.94)_0%,rgba(255,255,255,1)_20%,rgba(248,250,252,0.96)_100%)] py-10 md:py-12">
+    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[linear-gradient(180deg,rgba(248,250,252,0.94)_0%,rgba(255,255,255,1)_20%,rgba(248,250,252,0.96)_100%)] py-6 md:py-7">
       <div className="mx-auto w-full max-w-7xl px-4 md:px-6">
         <div className="mx-auto max-w-3xl text-center">
           <span className="inline-flex items-center rounded-full border border-sky-100 bg-white px-4 py-2 text-[12px] font-semibold text-sky-700 shadow-[0_8px_20px_rgba(15,23,42,0.05)]">
             Our Project Workflow
           </span>
-          <h2 className="mt-5 pb-0 text-[28px] font-extrabold tracking-tight text-slate-900 after:hidden md:text-[40px]">
+          <h2 className="mt-3 pb-0 text-[28px] font-extrabold tracking-tight text-slate-900 after:hidden md:text-[40px]">
             How Sasha Corporation handles project workflow in Bangladesh
           </h2>
-          <p className="mt-3 text-sm leading-7 text-slate-600 md:text-[15px]">
+          <p className="mt-2 text-sm leading-7 text-slate-600 md:text-[15px]">
             From consultation and engineering to installation, training and support, our workflow helps LED display, PA system, conference and access-control projects move forward with clear planning and reliable execution.
           </p>
         </div>
 
-        <div className="relative mt-8 hidden lg:block">
+        <div className="relative mt-5 hidden lg:block">
           <div className="absolute left-[5.5rem] right-[5.5rem] top-1/2 -translate-y-1/2 border-t border-dashed border-slate-300/90" />
           <div className="grid grid-cols-4 gap-5">
             {workflowSteps.map((item) => (
@@ -104,7 +104,7 @@ export default function ProjectWorkflowSection() {
           </div>
         </div>
 
-        <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {workflowSteps.map((item) => (
             <article
               key={item.title}

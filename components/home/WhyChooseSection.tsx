@@ -110,21 +110,21 @@ function ArrowRight({ className = "h-4 w-4" }: { className?: string }) {
 
 export default function WhyChooseSection() {
   return (
-    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(248,250,252,0.92)_48%,rgba(255,255,255,1)_100%)] py-10 md:py-12">
+    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(248,250,252,0.92)_48%,rgba(255,255,255,1)_100%)] py-6 md:py-7">
       <div className="mx-auto w-full max-w-7xl px-4 md:px-6">
         <div className="mx-auto max-w-3xl text-center">
           <span className="inline-flex items-center rounded-full border border-orange-100 bg-white px-4 py-2 text-[12px] font-semibold text-orange-700 shadow-[0_8px_20px_rgba(15,23,42,0.05)]">
             Why Choose Sasha Corporation
           </span>
-          <h2 className="mt-5 pb-0 text-[28px] font-extrabold tracking-tight text-slate-900 after:hidden md:text-[40px]">
+          <h2 className="mt-3 pb-0 text-[28px] font-extrabold tracking-tight text-slate-900 after:hidden md:text-[40px]">
             Why businesses in Bangladesh choose our technology solutions
           </h2>
-          <p className="mt-3 text-sm leading-7 text-slate-600 md:text-[15px]">
+          <p className="mt-2 text-sm leading-7 text-slate-600 md:text-[15px]">
             We combine planning clarity, dependable components, installation execution and long-term support to help LED display, PA system, conference and access-control projects move faster with better confidence.
           </p>
         </div>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {whyChooseItems.map((item) => (
             <article
               key={item.title}

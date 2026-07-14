@@ -35,7 +35,7 @@ export default function LedSolutionsChipsSection() {
   ];
 
   return (
-    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(248,250,252,0.82)_100%)] py-8 md:py-10">
+    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(248,250,252,0.82)_100%)] py-5 md:py-6">
       <div className="mx-auto w-full max-w-7xl px-4 py-1 md:px-6">
         <h2 className="pb-0 text-center text-[20px] font-extrabold tracking-tight text-slate-900 after:hidden md:text-[24px]">
           LED Display Solutions for Bangladesh Projects
@@ -52,7 +52,7 @@ export default function LedSolutionsChipsSection() {
           page - with category-wise guidance, price references and BOQ-ready quotation direction.
         </p>
 
-        <nav aria-label="Product category quick links" className="mt-4">
+        <nav aria-label="Product category quick links" className="mt-3">
           <HorizontalDragScroll
             ariaLabel="Category link chips"
             className="-mx-1 flex flex-nowrap gap-2 overflow-x-auto px-1 scroll-smooth [scrollbar-width:none] [overscroll-behavior-x:contain] [&::-webkit-scrollbar]:hidden"

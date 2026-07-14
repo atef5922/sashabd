@@ -14,7 +14,7 @@ const trustedTechPartnerLogos: Array<{ name: string; src: string; href?: string 
 
 export default function TrustedTechnologyPartnersSection() {
   return (
-    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-slate-50/80 py-8 md:py-10">
+    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-slate-50/80 py-5 md:py-6">
       <div className="mx-auto w-full max-w-7xl px-4 py-1 md:px-6">
         <h2 className="flex items-center justify-center gap-2 pb-0 text-center text-2xl font-bold text-slate-900 after:hidden">
           <span
@@ -43,7 +43,7 @@ export default function TrustedTechnologyPartnersSection() {
           to ensure stable performance, reliable power, and long-term support.
         </p>
 
-        <div className="mt-6 rounded-[28px] bg-white/95 p-4 shadow-[0_14px_40px_rgba(15,23,42,0.06)] ring-1 ring-slate-200/70 md:p-5">
+        <div className="mt-4 rounded-[28px] bg-white/95 p-4 shadow-[0_14px_40px_rgba(15,23,42,0.06)] ring-1 ring-slate-200/70 md:p-5">
           <div className="relative overflow-hidden">
             <div
               className="pointer-events-none absolute left-0 top-0 z-10 h-full w-14"
@@ -126,7 +126,7 @@ export default function TrustedTechnologyPartnersSection() {
             </div>
           </div>
 
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs font-semibold text-slate-700">
+          <div className="mt-3 flex flex-wrap items-center justify-center gap-2 text-xs font-semibold text-slate-700">
             {[
               "Quality-focused workflow",
               "Authorized brand ecosystem",

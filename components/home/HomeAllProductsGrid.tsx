@@ -489,7 +489,7 @@ export default function HomeAllProductsGrid() {
     <div>
       <div ref={gridTopRef} className="scroll-mt-24" />
 
-      <div className="mb-6 flex flex-wrap gap-2">
+      <div className="mb-4 flex flex-wrap gap-2">
         {filters.map((f) => {
           const active = filter === f.key;
           return (
@@ -589,7 +589,7 @@ export default function HomeAllProductsGrid() {
       </section>
 
       {filteredProducts.length > PAGE_SIZE ? (
-        <section className="mt-6">
+        <section className="mt-4">
           <div className="flex flex-col items-center gap-3">
             <nav aria-label="Products pagination" className="flex flex-wrap items-center justify-center gap-2">
               <button

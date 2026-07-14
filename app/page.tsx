@@ -198,7 +198,7 @@ function Section({
       className={cx("rounded-3xl border", tone === "soft" ? "bg-slate-50" : "bg-white")}
       style={{ borderColor: `${BRAND.maroon}18` }}
     >
-      <div className="mx-auto w-full max-w-7xl px-5 py-8 md:px-10 md:py-10">{children}</div>
+      <div className="mx-auto w-full max-w-7xl px-5 py-6 md:px-10 md:py-7">{children}</div>
     </section>
   );
 }
@@ -351,7 +351,7 @@ export default function HomePage() {
           100% { transform: translate(-10px, -55px) scale(0.8); opacity: 0; }
         }
       `}</style>
-      <div className="space-y-10 md:space-y-12">
+      <div className="space-y-6 md:space-y-8">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
         {/* 1) HERO */}
@@ -550,7 +550,7 @@ export default function HomePage() {
         </section>
 
         {/* 2.5) BROWSE PRODUCTS (PAGINATED) */}
-        <section className="w-full py-8 md:py-10">
+        <section className="w-full py-5 md:py-6">
           <SectionHeader
             icon={<TitleIcon kind="price" />}
             title="Browse Products"
@@ -567,7 +567,7 @@ export default function HomePage() {
             }
           />
 
-          <div className="mt-6">
+          <div className="mt-4">
             <HomeAllProductsGrid />
           </div>
         </section>
