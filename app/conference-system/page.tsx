@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
+import ProductGridCard from "@/components/products/ProductGridCard";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { normalizeDisplayedPriceText } from "@/lib/price";
 import { socialImageUrl } from "@/lib/seo";
@@ -1058,55 +1059,34 @@ export default function ConferenceSystemPage() {
           </p>
         </div>
 
-        <div className="grid items-stretch gap-[10px] md:grid-cols-2 xl:grid-cols-3">
+        <div className="product-grid-3 grid items-stretch gap-[10px] sm:grid-cols-2 lg:grid-cols-3">
           {conferenceSystemCatalog.map((product) => (
-            <article
+            <ProductGridCard
               key={product.slug}
-              className="group relative flex h-full flex-col overflow-hidden rounded-3xl border bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg"
-              style={{ borderColor: `${BRAND.maroon}12` }}
-            >
-              <Link
-                href={`/conference-system/${product.slug}/`}
-                prefetch={false}
-                className="absolute inset-0 z-10"
-                aria-label={`View details: ${product.title}`}
-              >
-                <span className="sr-only">View details for {product.title}</span>
-              </Link>
-
-              <div className="relative aspect-square w-full bg-white">
+              href={`/conference-system/${product.slug}/`}
+              title={product.title}
+              image={
                 <Image
                   src={product.image}
                   alt={product.title}
                   fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                  className="object-contain p-6 transition duration-200 group-hover:scale-[1.02]"
+                  sizes="(max-width: 1024px) 100vw, 33vw"
+                  className="object-cover object-center transition duration-300 group-hover:scale-[1.03]"
                 />
-              </div>
-
-              <div className="flex flex-1 flex-col p-5">
-                <h3 className="text-sm font-extrabold leading-snug text-slate-950">{product.title}</h3>
-                <p className="product-price">{normalizeDisplayedPriceText(product.priceLabel)}</p>
-
-                <ul className="mt-4 grid gap-2 text-sm leading-6 text-slate-700">
-                  {product.keyFeatures.slice(0, 3).map((spec) => (
-                    <li key={spec} className="flex gap-2">
-                      <span className="mt-2 h-1.5 w-1.5 flex-none rounded-full" style={{ background: BRAND.maroon }} />
-                      <span>{spec}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-auto pt-5">
-                  <span
-                    className="inline-flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-extrabold text-white shadow-sm transition group-hover:-translate-y-0.5 group-hover:shadow-md"
-                    style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-                  >
-                    View Product Details
-                  </span>
-                </div>
-              </div>
-            </article>
+              }
+              imageContainerClassName="bg-slate-100"
+              borderColor={`${BRAND.maroon}12`}
+              topLeftBadge={{ text: product.badge, tone: "light" }}
+              topRightBadge={{ text: "Conference", tone: "dark" }}
+              metaLines={[
+                { text: product.cardPriceLabel, className: "mt-1 text-sm font-semibold text-sky-700" },
+              ]}
+              bullets={product.keyFeatures}
+              chips={product.bestFor}
+              accentColor={BRAND.maroon}
+              contactHref="/contact/"
+              viewDetailsLabel="View details ->"
+            />
           ))}
         </div>
       </section>

@@ -346,6 +346,35 @@ export const conferenceSystemCatalog: ConferenceProduct[] = [
     description:
       "The SPON LCS-5301Z Wireless Digital Conference Access Point is used in wireless conference systems to support communication with compatible chairman and delegate units. It should be selected as part of a full wireless conference design, considering room size, seating layout, microphone quantity, and expected operating workflow.",
   },
+  {
+    slug: "huidu-hd-vp950-conference-video-processor",
+    title: "Huidu HD-VP950 Conference Video Processor",
+    subtitle: "Conference and event display processor for meeting-room LED walls, presentation switching, and cleaner scaling in professional AV environments.",
+    image: "/images/controller/Huidu-HD-VP620-LED-Video-Processor.webp",
+    gallery: ["/images/controller/Huidu-HD-VP620-LED-Video-Processor.webp"],
+    priceLabel: "42,000 BDT",
+    cardPriceLabel: "Tk 42,000",
+    badge: "Video Processor",
+    tags: ["Conference AV", "Presentation Switcher", "LED Processor"],
+    keyFeatures: [
+      "Stable video processing for conference-room LED walls and presentation screens",
+      "Multi-input workflow for laptop, media player, and live presentation source switching",
+      "Cleaner scaling support for sharper text, slides, and meeting-room content display",
+      "Practical fit for boardroom, seminar hall, and event-stage AV integration",
+    ],
+    bestFor: ["Conference Hall", "Boardroom AV", "Seminar Stage"],
+    specs: [
+      { k: "Model", v: "HD-VP950" },
+      { k: "Product Type", v: "Conference display video processor" },
+      { k: "Processing Role", v: "Video switching, scaling, and LED display output workflow" },
+      { k: "Input Support", v: "HDMI / DVI / VGA / USB media (workflow dependent)" },
+      { k: "Output Planning", v: "Gigabit Ethernet based LED screen loading support" },
+      { k: "Application", v: "Conference LED wall, seminar display, event presentation screen" },
+      { k: "Quotation", v: "Available based on screen size, controller need, and project scope" },
+    ],
+    description:
+      "The Huidu HD-VP950 Conference Video Processor is suitable for conference rooms, seminar halls, and event spaces where presentation content, live switching, and cleaner display scaling are important. It can be planned with LED walls, meeting-room AV systems, speakers, processors, and control equipment to create a more organized conference presentation workflow in Bangladesh.",
+  },
 ];
 
 export function getConferenceProductBySlug(slug: string): ConferenceProduct | undefined {
