@@ -115,7 +115,6 @@ export default function OutdoorProductsPage() {
   const stickyAccessorySlugs = [
     "structure-mounting-accessories",
     "led-display-power-connector-cable",
-    "magnet-led-module-fixing",
   ] as const;
   const stickyAccessories = stickyAccessorySlugs
     .map((slug) => ledAccessoriesCatalog.find((p) => p.slug === slug))
