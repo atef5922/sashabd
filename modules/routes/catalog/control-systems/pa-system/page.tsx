@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import type { Metadata } from "next";
 import { socialImageUrl } from "@/lib/seo";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
@@ -39,6 +39,10 @@ const PA_PRICE_ROWS = PA_PRICE_TABLE_SLUGS.map((slug) => {
     range: getPaSystemCardPriceLabel(item) ?? item.priceLabel ?? "On request",
   };
 }).filter((item): item is { slug: string; title: string; href: string; range: string } => Boolean(item));
+
+const PA_PAGE_ITEMS = paSystemCatalog.filter(
+  (item) => item.slug !== "bosch-lc9-uc06-6w-ceiling-speaker-metal-grill"
+);
 
 const FAQS: { q: string; a: string }[] = [
   {
@@ -823,7 +827,7 @@ export default function PaSystemPage() {
         </div>
       </section>
 
-      <PaSystemProducts items={paSystemCatalog} brand={BRAND} />
+      <PaSystemProducts items={PA_PAGE_ITEMS} brand={BRAND} />
 
       <section className="mt-[10px] rounded-2xl border border-slate-200 bg-white px-[15px] py-6 shadow-sm md:py-8">
         <h2 className="text-2xl font-extrabold tracking-tight text-slate-950">

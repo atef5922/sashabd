@@ -110,7 +110,6 @@ export default function IndoorProductsPage() {
   const all = getProductsByCategory("indoor");
   const stickyAccessories = ledAccessoriesCatalog.filter((p) =>
     p.slug === "16-pin-frc-ribbon-cable-idc" ||
-    p.slug === "16-pin-idc-female-connector" ||
     p.slug === "26-pin-idc-female-connector" ||
     p.slug === "26-pin-frc-ribbon-cable-idc"
   );
