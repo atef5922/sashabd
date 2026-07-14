@@ -54,6 +54,7 @@ export default function OutdoorFilterSection({
     "p4-outdoor-led-display": "50% 40%",
     "p5-outdoor-led-display": "50% 40%",
     "p6-outdoor-led-display": "50% 40%",
+    "premium-quality-outdoor-led-display": "50% 42%",
     "p6-67-outdoor-led-display-module-320x160mm": "50% 40%",
     "p8-outdoor-led-display-module": "50% 40%",
     "p10-outdoor-led-display-module": "50% 40%",
@@ -232,6 +233,5 @@ export default function OutdoorFilterSection({
     </>
   );
 }
-
 
 

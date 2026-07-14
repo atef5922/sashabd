@@ -318,6 +318,15 @@ function buildProducts(basePath: "/led-display"): UnifiedProduct[] {
     bestFor: p.bestFor,
   }));
 
+  let premiumOutdoorNearRental: UnifiedProduct | undefined;
+  {
+    const premiumId = "outdoor:premium-quality-outdoor-led-display";
+    const premiumIndex = outdoor.findIndex((p) => p.id === premiumId);
+    if (premiumIndex !== -1) {
+      [premiumOutdoorNearRental] = outdoor.splice(premiumIndex, 1);
+    }
+  }
+
   const interactiveFlat: UnifiedProduct[] = interactiveFlatPanelCatalog.map((p) => ({
     id: `interactive-flat-panel:${p.slug}`,
     kind: "interactive-flat-panel",
@@ -395,7 +404,7 @@ function buildProducts(basePath: "/led-display"): UnifiedProduct[] {
     tags: p.tags,
   }));
 
-  return [
+  const combined = [
     ...(featuredOutdoor ? [featuredOutdoor] : []),
     ...featuredIndoor,
     ...indoor,
@@ -408,6 +417,17 @@ function buildProducts(basePath: "/led-display"): UnifiedProduct[] {
     ...psu,
     ...ledAccessories,
   ];
+
+  if (premiumOutdoorNearRental) {
+    const rentalAnchorIndex = combined.findIndex((p) => p.id === "rental:p3-91-rental-led-display");
+    if (rentalAnchorIndex !== -1) {
+      combined.splice(rentalAnchorIndex + 1, 0, premiumOutdoorNearRental);
+    } else {
+      combined.push(premiumOutdoorNearRental);
+    }
+  }
+
+  return combined;
 }
 
 function formatPitchDisplay(pitch?: string): string {
@@ -535,7 +555,7 @@ function ProductsPageContent({
   const [filter, setFilter] = useState<FilterKey>("all");
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
-  const pageSize = 20;
+  const pageSize = ledOnly ? 21 : 20;
   const productImageSizes = "(max-width: 1024px) 100vw, 25vw";
 
   const filtered = useMemo(() => {
@@ -942,6 +962,17 @@ function ProductsPageContent({
     return `${normalized} mm`;
   };
 
+  const pitchLabelForOutdoorPriceRow = (product: (typeof outdoorCatalog)[number]): string => {
+    const fromTitle = pitchLabelFromTitle(product.title);
+    if (fromTitle !== "-") return fromTitle;
+
+    const specPitch = product.keySpecs.find((x) => x.k.toLowerCase().includes("pixel pitch"))?.v ?? "";
+    const match = specPitch.match(/p\s*([0-9]+(?:\.[0-9]+)?)/i) ?? specPitch.match(/(\d+(?:\.\d+)?)\s*mm/i);
+    if (match?.[1]) return `${match[1]} mm`;
+
+    return product.pitchLabel || "Outdoor";
+  };
+
   const hiddenOutdoorPriceSlugs = new Set<string>([
     "p3-076-outdoor-led-display-module",
     "p8-outdoor-led-display-module",
@@ -953,7 +984,7 @@ function ProductsPageContent({
     .sort((a, b) => pitchValueFromTitle(a.title) - pitchValueFromTitle(b.title))
     .map((p) => ({
       title: p.title,
-      pitch: pitchLabelFromTitle(p.title),
+      pitch: pitchLabelForOutdoorPriceRow(p),
       href: `${basePath}/outdoor/${p.slug}/`,
       price: getLedDisplayTablePrice(p.slug) ?? "Request updated quote",
     }));
@@ -1252,6 +1283,8 @@ function ProductsPageContent({
             const ledImageClassName =
               p.id === "indoor:p2-5-indoor-led-display"
                 ? "object-cover object-[58%_center] transition duration-300 group-hover:scale-[1.03]"
+                : p.id === "outdoor:premium-quality-outdoor-led-display"
+                  ? "object-cover object-[50%_42%] transition duration-300 group-hover:scale-[1.03]"
                 : "object-cover object-center transition duration-300 group-hover:scale-[1.03]";
 
             const bullets = getLedCardBullets(p);

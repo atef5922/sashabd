@@ -41,6 +41,7 @@ const ledDisplayPriceRangesBySlug: Readonly<Record<string, readonly [number, num
   "p4-outdoor-led-display": [8765, 9309],
   "p5-outdoor-led-display": [8220, 8764],
   "p6-outdoor-led-display": [7675, 8218],
+  "premium-quality-outdoor-led-display": [7500, 8500],
   "p6-67-outdoor-led-display-module-320x160mm": [7130, 7674],
   "p8-outdoor-led-display-module": [6585, 7129],
   "p10-outdoor-led-display-module": [4500, 5000],
@@ -299,6 +300,70 @@ export const outdoorCatalog: ProductItem[] = [
     supportNotes: ["Warranty-backed service", "Spare module & PSU planning", "On-call troubleshooting support"],
 
     faqs: [...outdoorCommonFAQs, { q: "Is P6 suitable for close viewing?", a: "P6 is mainly recommended for medium-to-long distance viewing. For closer viewing, P4 or P5 may be a better choice." }],
+  },
+
+  {
+    category: "outdoor",
+    slug: "premium-quality-outdoor-led-display",
+    title: "Premium Quality Outdoor LED Display in Bangladesh",
+    subtitle:
+      "Professional outdoor LED display solution for commercial branding, roadside visibility, showroom facades, and high-impact digital advertising across Bangladesh.",
+    cardShort:
+      "Professional outdoor LED display solution for commercial branding, roadside visibility, showroom facades, and high-impact digital advertising across Bangladesh.",
+    pitchLabel: "P6",
+    image: "/images/outdoor/Premium Quality Outdoor LED Display.webp",
+
+    cardPrice: getLedDisplayCardPrice("premium-quality-outdoor-led-display"),
+
+    quickFeatures: [
+      "High-brightness outdoor visuals for day and night visibility",
+      "Weather-ready cabinet planning for fixed outdoor installation",
+      "Stable playback workflow for video, branding, and promotional content",
+      "Service-friendly module and power maintenance access",
+    ],
+
+    bestFor: ["Outdoor billboard", "Commercial facade", "Shopfront branding", "Roadside display"],
+
+    keySpecs: [
+      { k: "Pixel Pitch", v: "P6 (6mm)" },
+      { k: "Brightness", v: "6500-7000 cd/m2" },
+      { k: "Cabinet Type", v: "Fixed outdoor cabinet (project dependent)" },
+      { k: "Protection", v: "Weather-ready front and rear protection planning" },
+      { k: "Viewing Distance", v: "6-60m (content and screen size dependent)" },
+      { k: "Use Case", v: "Advertising, branding, and outdoor information display" },
+    ],
+
+    buildQuality: [
+      "Weather-ready cabinet structure for long-term outdoor deployment",
+      "Commercial-grade module, PSU, and cabinet integration planning",
+      "Service-access-friendly layout for faster maintenance and part replacement",
+    ],
+
+    controlSystem: [
+      "Compatible with standard LED controller and receiving-card workflow",
+      "Video processor recommended for cleaner scaling and stable content playback",
+      "Brightness scheduling and calibration improve day-to-night visibility control",
+    ],
+
+    installationNotes: [
+      "Structure design, wind-load review, and safe mounting planning are required",
+      "Grounding, surge protection, and stable power distribution should be confirmed before handover",
+      "Final calibration, content testing, and on-site commissioning improve long-term performance",
+    ],
+
+    supportNotes: [
+      "Preventive maintenance planning helps reduce downtime in outdoor environments",
+      "Spare module and PSU planning supports faster field service",
+      "Technical guidance is available for configuration, operation, and long-term upkeep",
+    ],
+
+    faqs: [
+      ...outdoorCommonFAQs,
+      {
+        q: "Is this outdoor LED display suitable for commercial branding projects?",
+        a: "Yes. This model is suitable for commercial outdoor branding, roadside promotion, showroom facades, and high-visibility advertising where strong brightness and weather-ready installation are important.",
+      },
+    ],
   },
 
   {
