@@ -16,7 +16,7 @@ export default function TrustedTechnologyPartnersSection() {
   return (
     <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-slate-50/80 py-8 md:py-10">
       <div className="mx-auto w-full max-w-7xl px-4 py-1 md:px-6">
-        <h2 className="flex items-center justify-center gap-2 text-center text-2xl font-bold text-slate-900">
+        <h2 className="flex items-center justify-center gap-2 pb-0 text-center text-2xl font-bold text-slate-900 after:hidden">
           <span
             className="inline-flex h-8 w-8 items-center justify-center rounded-full border bg-slate-50 text-slate-700"
             style={{ borderColor: "rgba(255,106,0,0.2)" }}

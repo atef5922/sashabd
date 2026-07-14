@@ -37,7 +37,7 @@ export default function LedSolutionsChipsSection() {
   return (
     <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(248,250,252,0.82)_100%)] py-8 md:py-10">
       <div className="mx-auto w-full max-w-7xl px-4 py-1 md:px-6">
-        <h2 className="text-center text-[20px] font-extrabold tracking-tight text-slate-900 md:text-[24px]">
+        <h2 className="pb-0 text-center text-[20px] font-extrabold tracking-tight text-slate-900 after:hidden md:text-[24px]">
           LED Display Solutions for Bangladesh Projects
         </h2>
         <p className="mx-auto mt-1.5 max-w-4xl text-center text-[12.5px] font-medium leading-6 text-slate-600 md:text-[13.5px]">
