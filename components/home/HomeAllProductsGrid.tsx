@@ -250,7 +250,9 @@ export default function HomeAllProductsGrid() {
       bestFor: p.bestFor,
     }));
 
-    const ledOutdoor: HomeProduct[] = outdoorCatalog.map((p) => ({
+    const ledOutdoor: HomeProduct[] = outdoorCatalog
+      .filter((p) => p.slug !== "p10-outdoor-led-display-module")
+      .map((p) => ({
       id: `led:outdoor:${p.slug}`,
       kind: "led",
       title: p.title,
