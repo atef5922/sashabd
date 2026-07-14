@@ -38,18 +38,58 @@ export default function LedSolutionsChipsSection() {
     <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(248,250,252,0.82)_100%)] py-5 md:py-6">
       <div className="mx-auto w-full max-w-7xl px-4 py-1 md:px-6">
         <h2 className="pb-0 text-center text-[20px] font-extrabold tracking-tight text-slate-900 after:hidden md:text-[24px]">
-          LED Display Solutions for Bangladesh Projects
+          Commercial Display, Audio & Smart Technology Solutions in Bangladesh
         </h2>
-        <p className="mx-auto mt-1.5 max-w-4xl text-center text-[12.5px] font-medium leading-6 text-slate-600 md:text-[13.5px]">
-          For budget planning, vendor comparison and installation readiness, start from our{" "}
+        <p className="mx-auto mt-1.5 max-w-5xl text-center text-[12.5px] font-medium leading-6 text-slate-600 md:text-[13.5px]">
+          Explore our{" "}
           <Link
             href="/led-display/"
             prefetch={false}
             className="font-extrabold text-sky-700 underline decoration-sky-200 underline-offset-[3px] transition hover:text-sky-800"
           >
-            LED display price in Bangladesh
-          </Link>{" "}
-          page - with category-wise guidance, price references and BOQ-ready quotation direction.
+            LED Displays
+          </Link>
+          ,{" "}
+          <Link
+            href="/led-display/rental-display/"
+            prefetch={false}
+            className="font-extrabold text-sky-700 underline decoration-sky-200 underline-offset-[3px] transition hover:text-sky-800"
+          >
+            Rental LED Screens
+          </Link>
+          ,{" "}
+          <Link
+            href="/pa-system/"
+            prefetch={false}
+            className="font-extrabold text-sky-700 underline decoration-sky-200 underline-offset-[3px] transition hover:text-sky-800"
+          >
+            PA Systems
+          </Link>
+          ,{" "}
+          <Link
+            href="/interactive-flat-panel/"
+            prefetch={false}
+            className="font-extrabold text-sky-700 underline decoration-sky-200 underline-offset-[3px] transition hover:text-sky-800"
+          >
+            Interactive Flat Panels
+          </Link>
+          ,{" "}
+          <Link
+            href="/digital-podium/"
+            prefetch={false}
+            className="font-extrabold text-sky-700 underline decoration-sky-200 underline-offset-[3px] transition hover:text-sky-800"
+          >
+            Digital Podiums
+          </Link>
+          ,{" "}
+          <Link
+            href="/turnstile-gate/"
+            prefetch={false}
+            className="font-extrabold text-sky-700 underline decoration-sky-200 underline-offset-[3px] transition hover:text-sky-800"
+          >
+            Turnstile Gates
+          </Link>
+          , and more with expert guidance, detailed specifications, and BOQ-ready quotations for projects across Bangladesh.
         </p>
 
         <nav aria-label="Product category quick links" className="mt-3">
