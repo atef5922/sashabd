@@ -2667,6 +2667,130 @@ export const controllerCatalog: ControllerProduct[] = [
 
     faqs: [{ q: "Who is VP210H best for?", a: "It is ideal for users who need sender, scaler, and switcher in one device - especially for events and stage setups." }],
   },
+  {
+    slug: "huidu-hd-vp1220-led-video-processor",
+    title: "Huidu HD-VP1220 LED Video Processor",
+    subtitle:
+      "High-capacity LED video processor for large indoor video walls, outdoor branding screens, and stage productions where cleaner scaling, stable signal switching, and practical pixel loading matter.",
+    image: "/images/controller/Huidu-HD-VP620-LED-Video-Processor.webp",
+    cardPrice: "Tk 48,000.00 (per unit, configuration & project)",
+
+    badge: "Large Screen Video Processor",
+    quickFeatures: [
+      "Higher loading capacity for medium-to-large LED screen projects",
+      "Multiple input handling for camera, laptop, media player, and presentation workflows",
+      "Cleaner image scaling for indoor video walls and stage screen fitting",
+      "Stable Ethernet output planning for practical cabinet distribution",
+      "Useful for conference, event, retail, and commercial display applications",
+      "Professional switching workflow with easier setup for mixed AV sources",
+      "Better fit for projects needing more headroom than entry-level processors",
+    ],
+
+    bestFor: ["Large video walls", "Conference LED screens", "Stage events", "Commercial display projects"],
+
+    keySpecs: [
+      { k: "Controller Type", v: "LED Video Processor / Multi-input Scaler" },
+      { k: "Max Loading Capacity", v: "~ 3.9 million pixels" },
+      { k: "Max Width", v: "3840 px" },
+      { k: "Max Height", v: "2160 px" },
+      { k: "Input Ports", v: "HDMI / DVI / VGA / USB Media (model workflow dependent)" },
+      { k: "Output Ports", v: "6 x Gigabit Ethernet" },
+      { k: "Control Method", v: "Front panel + software control" },
+      { k: "Operating Voltage", v: "AC 100-240V, 50/60Hz" },
+      { k: "Use Case", v: "Large indoor walls, stage visuals, showroom and corporate LED displays" },
+    ],
+
+    ioPorts: [
+      "Inputs: HDMI / DVI / VGA / USB media playback",
+      "Outputs: 6x Gigabit Ethernet for cabinet loading",
+      "Control: Front panel buttons + software control workflow",
+    ],
+
+    operationNotes: [
+      "Confirm target resolution and cabinet loading plan before final processor selection.",
+      "Use quality signal cables and proper grounding to keep switching and playback stable.",
+      "Test scaling, fit mode, and source switching with real content before handover.",
+    ],
+
+    supportNotes: [
+      "Processor selection support based on real screen resolution and usage type.",
+      "Signal planning, scaling setup, and commissioning guidance available.",
+      "After-sales troubleshooting and spare planning support for uptime-critical projects.",
+    ],
+
+    faqs: [
+      {
+        q: "When should I choose VP1220 instead of a smaller processor?",
+        a: "Choose VP1220 when your LED project needs higher loading capacity, more source flexibility, and smoother fitting for larger indoor walls, stage visuals, or commercial LED screens.",
+      },
+      {
+        q: "Is VP1220 suitable for conference and event use?",
+        a: "Yes. It is well suited for conference, stage, and mixed-source event workflows where clean scaling and stable switching matter.",
+      },
+    ],
+  },
+  {
+    slug: "huidu-hd-vp1620-led-video-processor",
+    title: "Huidu HD-VP1620 LED Video Processor",
+    subtitle:
+      "Professional high-load LED video processor for concert walls, large stage setups, and premium commercial displays where stronger output capacity, flexible input handling, and cleaner visual control are required.",
+    image: "/images/controller/Huidu-HD-VP820-LED-Video-Processor.webp",
+    cardPrice: "Tk 62,000.00 (per unit, configuration & project)",
+
+    badge: "High Load Video Processor",
+    quickFeatures: [
+      "High pixel loading support for large-format LED screen deployments",
+      "Multiple source input workflow for live events, presentations, and mixed media playback",
+      "Professional scaling and screen fitting for wider LED walls and stage backdrops",
+      "More output headroom for large cabinet counts and higher-resolution projects",
+      "Suitable for concert, auditorium, outdoor campaign, and premium display use",
+      "Cleaner switching workflow for operators managing multiple live sources",
+      "Practical choice for projects that need stronger processor capacity and expansion room",
+    ],
+
+    bestFor: ["Concert LED walls", "Auditorium screens", "Large outdoor displays", "Premium rental projects"],
+
+    keySpecs: [
+      { k: "Controller Type", v: "High-load LED Video Processor / Scaler" },
+      { k: "Max Loading Capacity", v: "~ 5.2 million pixels" },
+      { k: "Max Width", v: "8000 px" },
+      { k: "Max Height", v: "4096 px" },
+      { k: "Input Ports", v: "HDMI / DVI / VGA / CVBS / USB Media" },
+      { k: "Output Ports", v: "8 x Gigabit Ethernet" },
+      { k: "PIP / POP", v: "Supported" },
+      { k: "Operating Voltage", v: "AC 100-240V, 50/60Hz" },
+      { k: "Use Case", v: "Large stage walls, auditorium visuals, outdoor campaigns, premium rental screens" },
+    ],
+
+    ioPorts: [
+      "Inputs: HDMI / DVI / VGA / CVBS / USB media",
+      "Outputs: 8x Gigabit Ethernet for large cabinet loading",
+      "Control: Front panel + software workflow for switching and scaling",
+    ],
+
+    operationNotes: [
+      "Finalize EDID, source resolution, and processor layout before event-day operation.",
+      "Keep backup signal cables and tested presets ready for large-screen live workflows.",
+      "Check cabinet loading balance and scaling presets before final commissioning.",
+    ],
+
+    supportNotes: [
+      "Large-screen processor selection support based on project resolution and content workflow.",
+      "On-site commissioning, scaling setup, and signal planning support available.",
+      "Spare and after-sales guidance for event, rental, and uptime-focused LED systems.",
+    ],
+
+    faqs: [
+      {
+        q: "Who should choose VP1620?",
+        a: "VP1620 is a strong fit for users running large stage walls, auditorium visuals, outdoor campaigns, or premium rental LED setups that need high output capacity and stable source handling.",
+      },
+      {
+        q: "Is VP1620 suitable for rental and live event use?",
+        a: "Yes. It is practical for rental and live event workflows where large LED walls, multiple sources, and reliable switching performance are important.",
+      },
+    ],
+  },
 ];
 
 export function getControllerBySlug(slug: string): ControllerProduct | null {
