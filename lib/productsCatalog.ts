@@ -1533,6 +1533,124 @@ export const receivingCardCatalog: readonly ReceivingCardProduct[] = [
       },
     ],
   },
+  {
+    slug: "novastar-mrv336-receiving-card",
+    title: "NovaStar MRV336 Receiving Card",
+    subtitle:
+      "Professional receiving card for indoor, outdoor, and rental LED cabinets with practical HUB mapping support, stable data distribution, and cleaner commissioning workflow.",
+    image: "/images/receiving-card/R-732-Receiving-Card.webp",
+    cardPrice: "Tk 3,200.00 (per card, offer & project size)",
+    badge: "NovaStar - Cabinet Mapping",
+    quickFeatures: [
+      "Stable data receiving workflow for indoor, outdoor, and rental LED cabinets",
+      "Practical HUB-based cabinet wiring support for cleaner installation planning",
+      "Useful for video wall, billboard, stage, and spare-card service workflows",
+      "Reliable mapping and cabinet-to-cabinet routing during commissioning",
+      "Works with common scan configurations and module ecosystems",
+      "Good choice for system expansion, maintenance stock, and replacement planning",
+    ],
+    keySpecs: [
+      { k: "Model", v: "NovaStar MRV336" },
+      { k: "Interface Ports", v: "HUB-based cabinet connectivity (project dependent pinout)" },
+      { k: "Load Capacity", v: "Standard cabinet loading for full-color LED screens (configuration dependent)" },
+      { k: "Scan Support", v: "Common static to high-scan LED module workflows (project dependent)" },
+      { k: "Control Ecosystem", v: "NovaStar sender / processor ecosystem" },
+      { k: "Mapping Support", v: "Cabinet routing, offset, and configuration support" },
+      { k: "Use Case", v: "Indoor fixed, rental stage, outdoor branding screens" },
+      { k: "Notes", v: "Final compatibility depends on module scan rate, HUB pinout, and controller version" },
+    ],
+    compatibility: [
+      "Confirm module scan rate, HUB type, and cabinet resolution before selection",
+      "Match the receiving card with the correct NovaStar sender / processor ecosystem",
+      "Check ribbon pinout and cabinet routing order to avoid shift or mirror issues",
+      "Power stability and clean grounding help reduce flicker and communication noise",
+    ],
+    installationNotes: [
+      "Label HUB ribbon order and cabinet signal routing before commissioning",
+      "Keep sender, cable path, and cabinet map documented for faster servicing later",
+      "Run test patterns after setup to confirm mapping, colors, and cabinet alignment",
+      "Keep at least one spare receiving card for large or uptime-critical LED walls",
+    ],
+    troubleshooting: [
+      "Shifted or mirrored image -> re-check cabinet routing, mapping, and HUB pinout",
+      "Section flicker -> inspect grounding, PSU stability, and signal cable quality",
+      "No output in one cabinet -> verify port assignment and ribbon cable orientation",
+      "Color mismatch -> review config file, scan setup, and driver IC compatibility",
+    ],
+    faqs: [
+      {
+        q: "Where is NovaStar MRV336 commonly used?",
+        a: "It is commonly selected for indoor fixed LED walls, outdoor signage projects, and rental cabinets where stable cabinet mapping and practical service support are important.",
+      },
+      {
+        q: "What should I share before ordering?",
+        a: "Share your module scan rate, HUB type, cabinet resolution, and existing NovaStar sender or processor model for accurate selection and setup guidance.",
+      },
+      {
+        q: "Can it be kept as a spare card?",
+        a: "Yes. Keeping compatible spare receiving cards is a practical way to reduce downtime in rental, outdoor, and high-uptime LED projects.",
+      },
+    ],
+  },
+  {
+    slug: "colorlight-5a-75e-receiving-card",
+    title: "Colorlight 5A-75E Receiving Card",
+    subtitle:
+      "Reliable full-color LED receiving card with HUB75E-focused cabinet connectivity, practical mapping support, and stable day-to-day performance for signage, video wall, and event screens.",
+    image: "/images/receiving-card/R-712-Receiving-Card.webp",
+    cardPrice: "Tk 2,950.00 (per card, offer & project size)",
+    badge: "Colorlight - HUB75E",
+    quickFeatures: [
+      "HUB75E-oriented cabinet connectivity for common full-color LED module workflows",
+      "Stable data reception for signage, video wall, and event-use LED screens",
+      "Practical mapping and routing support for cleaner cabinet commissioning",
+      "Good fit for maintenance stock, service backup, and system replacement planning",
+      "Works well where controller, receiving card, and module matching are done correctly",
+      "Supports smoother troubleshooting by keeping cabinet routing and mapping structured",
+    ],
+    keySpecs: [
+      { k: "Model", v: "Colorlight 5A-75E" },
+      { k: "Interface Ports", v: "HUB75E-based cabinet connectivity (project dependent layout)" },
+      { k: "Recommended Control Range", v: "Standard cabinet loading for full-color LED displays (configuration dependent)" },
+      { k: "Scan Support", v: "Common scan-based LED module workflows (project dependent)" },
+      { k: "Control Ecosystem", v: "Colorlight sender / controller ecosystem" },
+      { k: "Mapping Support", v: "Cabinet routing, offset, and configuration support" },
+      { k: "Use Case", v: "Indoor signage, LED video walls, event and rental support stock" },
+      { k: "Notes", v: "Final compatibility depends on module scan rate, HUB75E pinout, and controller software configuration" },
+    ],
+    compatibility: [
+      "Confirm HUB75E pinout, scan mode, and cabinet resolution before selection",
+      "Use it with the correct Colorlight sender or controller ecosystem for reliable setup",
+      "Validate module-to-card compatibility during configuration to avoid image shift or tearing",
+      "Keep power distribution stable and signal routing clean for long-term performance",
+    ],
+    installationNotes: [
+      "Document cabinet order, data routing path, and HUB cable positions during installation",
+      "Use quality CAT5e/CAT6 and proper grounding to reduce data noise during operation",
+      "Run cabinet test and mapping verification before final handover",
+      "Keep spare ribbon cables and one backup receiving card for faster field service",
+    ],
+    troubleshooting: [
+      "Partial image loss -> check cabinet routing sequence and connector seating",
+      "Flicker or instability -> inspect grounding, power quality, and network cable condition",
+      "Wrong image position -> re-check mapping, scan setup, and HUB75E wiring order",
+      "No communication -> verify sender-to-receiver ecosystem compatibility and port assignment",
+    ],
+    faqs: [
+      {
+        q: "Is Colorlight 5A-75E suitable for common LED cabinets?",
+        a: "Yes, it is suitable for many full-color LED cabinet workflows when the module scan rate, HUB75E wiring, and Colorlight control ecosystem are matched correctly.",
+      },
+      {
+        q: "Why is compatibility checking important?",
+        a: "Receiving card selection is not only about the card itself. HUB pinout, scan rate, controller software, and cabinet routing must all match for stable visual output.",
+      },
+      {
+        q: "What information helps with quick quotation and matching?",
+        a: "Share pixel pitch, scan rate, HUB75E connector details, cabinet resolution, and your current Colorlight sender/controller model for practical matching support.",
+      },
+    ],
+  },
 ] as const;
 
 export function getReceivingCardBySlug(slug: string): ReceivingCardProduct | null {

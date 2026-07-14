@@ -1,7 +1,7 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site";
-import { rentalCatalog, type ProductItem } from "@/lib/productsCatalog";
+import { ledAccessoriesCatalog, rentalCatalog, type LedAccessoryProduct, type ProductItem } from "@/lib/productsCatalog";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
 import ProductGridCard from "@/components/products/ProductGridCard";
@@ -169,6 +169,13 @@ export default function RentalProductsPage() {
     const pitchOk = activePitch === "All" ? true : getPitchLabel(p) === activePitch;
     return pitchOk;
   });
+  const stickyAccessorySlugs = ["heavy-duty-flight-case", "power-distribution-box-63a"] as const;
+  const stickyAccessories = stickyAccessorySlugs
+    .map((slug) => ledAccessoriesCatalog.find((p) => p.slug === slug))
+    .filter((x): x is NonNullable<typeof x> => Boolean(x));
+  const displayCards: Array<ProductItem | LedAccessoryProduct> = [...filtered, ...stickyAccessories].filter(
+    (p, idx, arr) => arr.findIndex((x) => x.slug === p.slug) === idx
+  );
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-0 md:px-6">
@@ -315,7 +322,39 @@ export default function RentalProductsPage() {
         </p>
 
         <div className="mt-6 grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((p: ProductItem) => {
+          {displayCards.map((p) => {
+            if ("badge" in p) {
+              const chips = (p.tags?.length ? p.tags : p.quickFeatures?.length ? p.quickFeatures : [p.badge]).slice(0, 3);
+              const bullets = (p.quickFeatures?.length ? p.quickFeatures : p.tags?.length ? p.tags : [p.subtitle]).slice(0, 4);
+
+              return (
+                <ProductGridCard
+                  key={p.slug}
+                  href={`/led-display/accessories/led-accessories/${p.slug}/`}
+                  title={p.title}
+                  image={
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={p.image}
+                      alt={p.title}
+                      className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+                      loading="lazy"
+                    />
+                  }
+                  imageContainerClassName="bg-slate-100"
+                  borderColor={`${BRAND.maroon}12`}
+                  topLeftBadge={{ text: p.badge, tone: "light" }}
+                  topRightBadge={{ text: "Accessories", tone: "dark" }}
+                  metaLines={p.cardPrice ? [{ text: p.cardPrice, className: "mt-1 text-sm font-semibold text-sky-700" }] : []}
+                  bullets={bullets}
+                  chips={chips}
+                  accentColor={BRAND.maroon}
+                  contactHref="/contact"
+                  viewDetailsLabel="View details →"
+                />
+              );
+            }
+
             const pitchDisplay = getPitchDisplay(p);
             const category = inferRentalCategory(p);
 
