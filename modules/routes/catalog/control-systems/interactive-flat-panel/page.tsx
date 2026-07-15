@@ -104,7 +104,9 @@ export default function InteractiveFlatPanelPage() {
           homeBreadcrumb(),
           { href: "/interactive-flat-panel/", label: "Interactive Flat Panel", current: true },
         ]}
-        className="mb-4 pt-3 text-sm text-slate-600"
+        className="relative left-1/2 right-1/2 -mx-[50vw] mb-0 w-screen pt-0 text-sm text-slate-600"
+        panelClassName="rounded-none border-x-0 border-t-0 px-4 py-3 shadow-none md:px-10"
+        backButtonClassName="rounded-md"
       />
       <section
         className="relative left-1/2 right-1/2 -mx-[50vw] w-screen overflow-hidden border-y bg-slate-950"
