@@ -18,14 +18,14 @@ export default function FaqAccordion({
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <div className={`grid gap-4 ${columns === 2 ? "md:grid-cols-2" : "md:grid-cols-1"} ${className}`.trim()}>
+    <div className={`grid items-start gap-4 ${columns === 2 ? "md:grid-cols-2" : "md:grid-cols-1"} ${className}`.trim()}>
       {items.map((item, i) => {
         const isOpen = openIndex === i;
 
         return (
           <div
             key={`${i}-${item.q}`}
-            className="rounded-2xl border bg-white transition"
+            className="self-start rounded-2xl border bg-white transition"
             style={{
               borderColor: isOpen ? `${accent}55` : "rgba(15,23,42,0.12)",
               boxShadow: isOpen ? "0 10px 30px rgba(2,6,23,0.06)" : "none",

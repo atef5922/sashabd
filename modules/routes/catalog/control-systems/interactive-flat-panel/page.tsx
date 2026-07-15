@@ -883,7 +883,11 @@ export default function InteractiveFlatPanelPage() {
         </div>
 
         <div className="mt-5">
-          <FaqAccordion accent={BRAND.maroon} items={faqs} />
+          <FaqAccordion
+            accent={BRAND.maroon}
+            items={faqs}
+            className="[&>div]:rounded-[18px] [&>div>button]:gap-3 [&>div>button]:p-4 [&>div>button>div:first-child]:gap-3 [&>div>button>div:first-child>div:first-child]:h-8 [&>div>button>div:first-child>div:first-child]:w-8 [&>div>button>div:first-child>div:first-child]:text-xs [&>div>button>div:nth-child(2)]:h-8 [&>div>button>div:nth-child(2)]:w-8 [&>div>button>div:nth-child(2)]:text-base [&>div>button>div:first-child>div:last-child]:text-[13px]"
+          />
         </div>
 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
