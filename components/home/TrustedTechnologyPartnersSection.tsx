@@ -32,17 +32,28 @@ export default function TrustedTechnologyPartnersSection() {
           <span>Trusted Technology Partners & Authorized Brands</span>
         </h2>
 
-        <p className="mx-auto mt-2 max-w-4xl text-center text-sm leading-7 text-slate-600">
-          We use globally trusted LED display components in Bangladesh projects with{" "}
-          {trustedTechPartnerLogos.map((brand, index) => (
-            <span key={brand.name}>
-              <span className="font-bold text-slate-900" title={brand.name} aria-label={brand.name}>
-                {brand.name}
-              </span>
-              {index < trustedTechPartnerLogos.length - 2 ? ", " : index === trustedTechPartnerLogos.length - 2 ? ", and " : ""}
-            </span>
-          ))}{" "}
-          to ensure stable performance, reliable power, and long-term support.
+        <p className="mx-auto mt-2 max-w-5xl text-center text-sm leading-6 text-slate-600">
+          We source trusted LED display components for Bangladesh projects with{" "}
+          <span className="font-bold text-slate-900" title="Absen" aria-label="Absen">
+            Absen
+          </span>
+          ,{" "}
+          <span className="font-bold text-slate-900" title="Unilumin" aria-label="Unilumin">
+            Unilumin
+          </span>
+          ,{" "}
+          <span className="font-bold text-slate-900" title="Leyard" aria-label="Leyard">
+            Leyard
+          </span>
+          ,{" "}
+          <span className="font-bold text-slate-900" title="LianTronics" aria-label="LianTronics">
+            LianTronics
+          </span>
+          , and{" "}
+          <span className="font-bold text-slate-900" title="AOTO Electronics" aria-label="AOTO Electronics">
+            AOTO Electronics
+          </span>{" "}
+          —plus NovaStar, Huidu, Colorlight, and Mean Well—for stable performance &amp; long-term support.
         </p>
 
         <div className="mt-4 rounded-[28px] bg-white/95 p-4 shadow-[0_14px_40px_rgba(15,23,42,0.06)] ring-1 ring-slate-200/70 md:p-5">
