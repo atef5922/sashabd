@@ -703,7 +703,8 @@ export default function HomeAllProductsGrid() {
                 <button
                   type="button"
                   onClick={() => scrollMobileCarousel(section.id, -1)}
-                  className="absolute -left-3 top-[28%] z-20 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-[#FDBA74] text-slate-900 shadow-md transition active:scale-95"
+                  className="absolute -left-3 top-[28%] z-20 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-white shadow-md transition active:scale-95"
+                  style={{ background: "#F56605" }}
                   aria-label={`Previous ${section.title} products`}
                 >
                   <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
@@ -729,7 +730,8 @@ export default function HomeAllProductsGrid() {
                 <button
                   type="button"
                   onClick={() => scrollMobileCarousel(section.id, 1)}
-                  className="absolute -right-3 top-[28%] z-20 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-[#FDBA74] text-slate-900 shadow-md transition active:scale-95"
+                  className="absolute -right-3 top-[28%] z-20 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-white shadow-md transition active:scale-95"
+                  style={{ background: "#F56605" }}
                   aria-label={`Next ${section.title} products`}
                 >
                   <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">

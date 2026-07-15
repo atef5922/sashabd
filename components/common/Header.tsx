@@ -226,6 +226,18 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    if (!open) {
+      document.body.style.overflow = "";
+      return;
+    }
+
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   return (
     <header
       className={cn(
@@ -491,7 +503,7 @@ export default function Header() {
       {/* MOBILE NAV */}
       {open && (
         <div className="border-t bg-white md:hidden">
-          <div className="mx-auto max-w-7xl px-4 py-3">
+          <div className="mx-auto max-h-[calc(100svh-72px)] max-w-7xl overflow-y-auto overscroll-contain px-4 py-3">
             <div className="flex flex-col gap-2">
               {/* Home */}
 	              <Link prefetch={false} href="/"
