@@ -19,13 +19,17 @@ export default function FaqAccordion({
 }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const compact = density === "compact";
-  const buttonPaddingClass = compact ? "p-4" : "p-5";
+  const buttonPaddingClass = compact ? "px-4 py-3" : "p-5";
+  const buttonGapClass = compact ? "gap-3" : "gap-4";
+  const contentGapClass = compact ? "gap-3" : "gap-4";
   const badgeClass = compact
-    ? "flex h-9 w-9 items-center justify-center rounded-full border text-[12px] font-extrabold"
+    ? "flex h-8 w-8 items-center justify-center rounded-full border text-[11px] font-extrabold"
     : "flex h-10 w-10 items-center justify-center rounded-full border text-sm font-extrabold";
-  const questionClass = compact ? "text-[13px] font-extrabold leading-snug text-slate-900" : "text-sm font-extrabold text-slate-900";
+  const questionClass = compact
+    ? "min-w-0 flex-1 text-[12px] font-extrabold leading-snug tracking-[-0.01em] text-slate-900 md:whitespace-nowrap"
+    : "min-w-0 flex-1 text-[13px] font-extrabold leading-snug text-slate-900";
   const toggleClass = compact
-    ? "flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-base font-bold text-slate-600"
+    ? "flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-sm font-bold text-slate-600"
     : "flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-lg font-bold text-slate-600";
   const answerWrapClass = compact ? "grid overflow-hidden px-4 transition-all duration-300" : "grid overflow-hidden px-5 transition-all duration-300";
   const answerTextClass = compact ? "text-[13px] leading-6 text-slate-600" : "text-sm text-slate-600 leading-7";
@@ -47,10 +51,10 @@ export default function FaqAccordion({
             <button
               type="button"
               onClick={() => setOpenIndex(isOpen ? null : i)}
-              className={`flex w-full items-center justify-between gap-4 ${buttonPaddingClass} text-left`}
+              className={`flex w-full items-center justify-between ${buttonGapClass} ${buttonPaddingClass} text-left`}
               aria-expanded={isOpen}
             >
-              <div className="flex items-center gap-4">
+              <div className={`flex min-w-0 items-center ${contentGapClass}`}>
                 <div
                   className={badgeClass}
                   style={{

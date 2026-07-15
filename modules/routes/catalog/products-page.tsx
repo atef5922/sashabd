@@ -783,7 +783,7 @@ function ProductsPageContent({
       a: "We propose brands based on availability, project budget, and compatibility with the selected control system. Final brand selection depends on performance target and after-sales support planning.",
     },
     {
-      q: "Do you provide BOQ and installation-ready documentation for LED display projects?",
+      q: "Do you provide BOQ-ready documentation for LED display projects?",
       a: "Yes. We can support BOQ-ready quotation, recommended component list (modules, controller, power, accessories), and installation planning notes based on your site, screen size, and operating requirement.",
     },
   ];
