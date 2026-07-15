@@ -10,6 +10,7 @@ import { siteConfig } from "@/lib/site";
 import { normalizeDisplayedPriceText } from "@/lib/price";
 import { buildLedProductCardHighlights } from "@/lib/productCardHighlights";
 import ProductGridCard from "@/components/products/ProductGridCard";
+import FaqAccordion from "@/components/common/FaqAccordion";
 import {
   indoorCatalog,
   outdoorCatalog,
@@ -780,6 +781,10 @@ function ProductsPageContent({
     {
       q: "Which brands do you use for LED modules and components?",
       a: "We propose brands based on availability, project budget, and compatibility with the selected control system. Final brand selection depends on performance target and after-sales support planning.",
+    },
+    {
+      q: "Do you provide BOQ and installation-ready documentation for LED display projects?",
+      a: "Yes. We can support BOQ-ready quotation, recommended component list (modules, controller, power, accessories), and installation planning notes based on your site, screen size, and operating requirement.",
     },
   ];
 
@@ -2518,23 +2523,8 @@ function ProductsPageContent({
               <UiIcon name="faq" className="h-6 w-6 text-slate-800" />
               <span>Frequently Asked Questions About LED Display</span>
             </h2>
-            <div className="mt-5 grid gap-4 md:grid-cols-2">
-              {ledFaqs.map((item, idx) => (
-                <details key={item.q} className="group rounded-2xl border border-slate-200 bg-white p-5">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
-                    <div className="flex min-w-0 items-center gap-4">
-                      <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-amber-300 text-sm font-bold text-amber-700">
-                        {idx + 1}
-                      </span>
-                      <span className="text-base font-semibold text-slate-900">{item.q}</span>
-                    </div>
-                    <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xl font-bold leading-none text-slate-700 transition group-open:rotate-45">
-                      +
-                    </span>
-                  </summary>
-                  <p className="mt-4 border-t border-slate-100 pt-4 text-sm leading-7 text-slate-600">{item.a}</p>
-                </details>
-              ))}
+            <div className="mt-5">
+              <FaqAccordion accent={BRAND.maroon} density="compact" items={ledFaqs} columns={2} />
             </div>
 
           </section>

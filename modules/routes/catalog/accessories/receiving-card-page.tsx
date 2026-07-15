@@ -6,6 +6,7 @@ import { socialImageUrl } from "@/lib/seo";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import ProductGridCard from "@/components/products/ProductGridCard";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
+import FaqAccordion from "@/components/common/FaqAccordion";
 
 export const metadata: Metadata = {
   title: "LED Display Receiving Card | Sasha Corporation",
@@ -35,6 +36,41 @@ export const metadata: Metadata = {
 };
 
 const BRAND = { maroon: "#FF6A00", maroonDark: "#E45700" };
+const faqs = [
+  {
+    q: "How do I choose the right receiving card for my LED cabinet?",
+    a: "Match the receiving card with your controller ecosystem (NovaStar/Huidu/Colorlight), HUB connector type, scan mode, cabinet resolution, and module wiring. Sharing cabinet photos and module details helps ensure correct compatibility.",
+  },
+  {
+    q: "What is HUB75 and why does it matter?",
+    a: "HUB75 is a common LED module interface standard. Your receiving card, HUB board, and ribbon cable must match the module interface to avoid mapping issues, missing rows, or unstable output.",
+  },
+  {
+    q: "Can a receiving card cause flicker or horizontal line issues?",
+    a: "Yes. Flicker or lines can come from wrong mapping, incompatible scan settings, unstable power, loose ribbon cables, or a receiving card that does not match the module drive requirement. Proper configuration and cabling checks are essential.",
+  },
+  {
+    q: "Do I need to change the receiving card when upgrading modules?",
+    a: "Sometimes. If the new module uses different scan mode, pinout, or loading capacity, you may need a compatible receiving card and matching HUB board to keep the cabinet stable and service-friendly.",
+  },
+  {
+    q: "Do you support remote mapping and commissioning guidance?",
+    a: "Yes. We can guide mapping, configuration, and troubleshooting based on controller model, cabinet layout, and photos/videos from the site to speed up commissioning.",
+  },
+  {
+    q: "What information should I send for a correct receiving card recommendation?",
+    a: "Send module front/back photos, HUB connector close-up, pixel pitch and scan rate, cabinet resolution (W×H), and your controller brand/model to confirm compatibility quickly.",
+  },
+] as const;
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
 
 export default function ReceivingCardListingPage() {
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
@@ -204,6 +240,23 @@ export default function ReceivingCardListingPage() {
             Request Quotation →
           </Link>
         </div>
+      </section>
+
+      <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
+        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">FAQ</h2>
+            <p className="mt-2 text-slate-600 leading-7">
+              Quick answers about receiving card compatibility, HUB interface planning and cabinet mapping support.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-5">
+          <FaqAccordion accent={BRAND.maroon} density="compact" items={faqs} columns={2} />
+        </div>
+
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       </section>
     </div>
   );

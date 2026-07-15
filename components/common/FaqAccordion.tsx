@@ -8,14 +8,27 @@ export default function FaqAccordion({
   items = [],
   accent = "#FF6A00",
   columns = 2,
+  density = "default",
   className = "",
 }: {
   items?: readonly FaqItem[];
   accent?: string;
   columns?: 1 | 2;
+  density?: "default" | "compact";
   className?: string;
 }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const compact = density === "compact";
+  const buttonPaddingClass = compact ? "p-4" : "p-5";
+  const badgeClass = compact
+    ? "flex h-9 w-9 items-center justify-center rounded-full border text-[12px] font-extrabold"
+    : "flex h-10 w-10 items-center justify-center rounded-full border text-sm font-extrabold";
+  const questionClass = compact ? "text-[13px] font-extrabold leading-snug text-slate-900" : "text-sm font-extrabold text-slate-900";
+  const toggleClass = compact
+    ? "flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-base font-bold text-slate-600"
+    : "flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-lg font-bold text-slate-600";
+  const answerWrapClass = compact ? "grid overflow-hidden px-4 transition-all duration-300" : "grid overflow-hidden px-5 transition-all duration-300";
+  const answerTextClass = compact ? "text-[13px] leading-6 text-slate-600" : "text-sm text-slate-600 leading-7";
 
   return (
     <div className={`grid items-start gap-4 ${columns === 2 ? "md:grid-cols-2" : "md:grid-cols-1"} ${className}`.trim()}>
@@ -34,12 +47,12 @@ export default function FaqAccordion({
             <button
               type="button"
               onClick={() => setOpenIndex(isOpen ? null : i)}
-              className="flex w-full items-center justify-between gap-4 p-5 text-left"
+              className={`flex w-full items-center justify-between gap-4 ${buttonPaddingClass} text-left`}
               aria-expanded={isOpen}
             >
               <div className="flex items-center gap-4">
                 <div
-                  className="flex h-10 w-10 items-center justify-center rounded-full border text-sm font-extrabold"
+                  className={badgeClass}
                   style={{
                     borderColor: `${accent}55`,
                     color: accent,
@@ -49,21 +62,21 @@ export default function FaqAccordion({
                   {i + 1}
                 </div>
 
-                <div className="text-sm font-extrabold text-slate-900">{item.q}</div>
+                <div className={questionClass}>{item.q}</div>
               </div>
 
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-lg font-bold text-slate-600">
+              <div className={toggleClass}>
                 {isOpen ? "\u2212" : "+"}
               </div>
             </button>
 
             <div
-              className={`grid overflow-hidden px-5 transition-all duration-300 ${
+              className={`${answerWrapClass} ${
                 isOpen ? "grid-rows-[1fr] pb-5" : "grid-rows-[0fr]"
               }`}
             >
               <div className="min-h-0">
-                <p className="text-sm text-slate-600 leading-7">{item.a}</p>
+                <p className={answerTextClass}>{item.a}</p>
               </div>
             </div>
           </div>

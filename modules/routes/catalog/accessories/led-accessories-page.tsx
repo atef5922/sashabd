@@ -6,6 +6,7 @@ import { socialImageUrl } from "@/lib/seo";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import ProductGridCard from "@/components/products/ProductGridCard";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
+import FaqAccordion from "@/components/common/FaqAccordion";
 
 export const metadata: Metadata = {
   title: "LED Accessories (Cables & Parts) | Sasha Corporation",
@@ -37,6 +38,41 @@ export const metadata: Metadata = {
 };
 
 const BRAND = { maroon: "#FF6A00", maroonDark: "#E45700" };
+const faqs = [
+  {
+    q: "Which LED accessories are most important for installation?",
+    a: "Common essentials include data/ribbon cables, compatible IDC/FRC connectors, power connectors, mounting hardware, and proper cable management items. The correct selection depends on your cabinet and module type.",
+  },
+  {
+    q: "How do I choose the correct ribbon cable and connector type?",
+    a: "Match the connector type (HUB/IDC/FRC), pin count, and orientation with your receiving card and HUB board. Using mismatched cables can cause missing lines, wrong mapping, or unstable output.",
+  },
+  {
+    q: "Do accessories affect LED screen reliability?",
+    a: "Yes. Quality connectors, proper power cables, and correct mounting hardware reduce loose connection risks, simplify maintenance, and support stable long-hour operation.",
+  },
+  {
+    q: "When do I need a flight case for LED equipment?",
+    a: "Flight cases are recommended for rental/event workflow and transport-heavy operations. They protect panels and accessories from impact, dust, and handling damage during logistics.",
+  },
+  {
+    q: "Why use a power distribution box for event LED setups?",
+    a: "Power distribution boxes help manage load safely across circuits, reduce wiring mess, and support faster setup. They are important for professional stage workflows with multiple LED panels and AV equipment.",
+  },
+  {
+    q: "What details help you confirm the right accessory quickly?",
+    a: "Share cabinet and module photos, HUB interface type, controller ecosystem, and your use case (fixed installation vs rental) to confirm compatibility and recommend the correct parts.",
+  },
+] as const;
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
 
 export default function LedAccessoriesListingPage() {
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
@@ -136,6 +172,23 @@ export default function LedAccessoriesListingPage() {
             />
           ))}
         </div>
+      </section>
+
+      <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
+        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">FAQ</h2>
+            <p className="mt-2 text-slate-600 leading-7">
+              Quick answers about LED accessories selection, compatibility checks and installation workflow planning.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-5">
+          <FaqAccordion accent={BRAND.maroon} density="compact" items={faqs} columns={2} />
+        </div>
+
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       </section>
     </div>
   );

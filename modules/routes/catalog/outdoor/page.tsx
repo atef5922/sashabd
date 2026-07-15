@@ -1019,6 +1019,7 @@ export default function OutdoorProductsPage() {
       >
         <FaqAccordion
           accent={BRAND.maroon}
+          density="compact"
           items={[
             {
               q: "Which pixel pitch is best for outdoor LED billboards?",
@@ -1039,6 +1040,10 @@ export default function OutdoorProductsPage() {
             {
               q: "Do you provide end-to-end outdoor installation and post-install support?",
               a: "Yes. We handle site survey, structure planning, wiring and grounding, full installation, commissioning (mapping and calibration), and continued maintenance support after handover.",
+            },
+            {
+              q: "What brightness level is ideal for outdoor LED display in Bangladesh?",
+              a: "Brightness depends on location and sunlight exposure. Roadside and highway sites need higher brightness for daylight visibility, while shaded or partial-sun areas can use balanced brightness with proper calibration to protect components.",
             },
           ]}
         />

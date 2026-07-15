@@ -6,6 +6,7 @@ import ProductGridCard from "@/components/products/ProductGridCard";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { powerSupplyCatalog } from "@/lib/productsCatalog";
 import { socialImageUrl } from "@/lib/seo";
+import FaqAccordion from "@/components/common/FaqAccordion";
 
 export const metadata: Metadata = {
   title: "LED Display Power Supply | Sasha Corporation",
@@ -35,6 +36,41 @@ export const metadata: Metadata = {
 };
 
 const BRAND = { maroon: "#FF6A00", maroonDark: "#E45700" };
+const faqs = [
+  {
+    q: "Which 5V power supply rating is suitable for my LED cabinet?",
+    a: "It depends on module type, cabinet resolution, scan mode, and brightness setting. Proper load calculation keeps the PSU within safe operating range and helps prevent voltage drop and flicker.",
+  },
+  {
+    q: "Why does power supply quality matter for LED display stability?",
+    a: "Stable output, protection circuits, and consistent performance under load help reduce flicker, random restart, and long-term stress on modules and control components.",
+  },
+  {
+    q: "How many power supplies are needed per cabinet?",
+    a: "Cabinets often use multiple PSUs based on total current demand and wiring layout. The exact quantity depends on module current draw and the cabinet’s power distribution design.",
+  },
+  {
+    q: "Do outdoor LED projects need different PSU considerations?",
+    a: "Yes. Outdoor projects need safe earthing, surge protection (SPD), correct cable glands, ventilation planning, and stable power distribution because environments are more exposed to heat, rain, and unstable power.",
+  },
+  {
+    q: "Can a weak PSU cause brightness imbalance across modules?",
+    a: "Yes. Voltage drop and uneven power distribution can cause brightness variation or unstable scanning. Proper wiring, PSU sizing, and distribution planning are important for uniform performance.",
+  },
+  {
+    q: "What information helps you recommend a PSU model quickly?",
+    a: "Share cabinet/module resolution, module type and scan rate, number of modules per cabinet, expected brightness use, and whether the project is indoor or outdoor for correct selection.",
+  },
+] as const;
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
 
 export default function PowerSupplyListingPage() {
   return (
@@ -95,6 +131,23 @@ export default function PowerSupplyListingPage() {
             />
           ))}
         </div>
+      </section>
+
+      <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
+        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">FAQ</h2>
+            <p className="mt-2 text-slate-600 leading-7">
+              Quick answers about LED power supply sizing, wiring safety and stability planning for Bangladesh projects.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-5">
+          <FaqAccordion accent={BRAND.maroon} density="compact" items={faqs} columns={2} />
+        </div>
+
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       </section>
     </div>
   );

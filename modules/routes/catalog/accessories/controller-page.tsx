@@ -8,6 +8,7 @@ import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { controllerCatalog } from "@/lib/productsCatalog";
 import { socialImageUrl } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
+import FaqAccordion from "@/components/common/FaqAccordion";
 
 export const metadata: Metadata = {
   title: "LED Controller / Video Processor | Sasha Corporation",
@@ -37,6 +38,41 @@ export const metadata: Metadata = {
 };
 
 const BRAND = { maroon: "#FF6A00", maroonDark: "#E45700" };
+const faqs = [
+  {
+    q: "What is the difference between an LED controller and a video processor?",
+    a: "A controller manages sending data to cabinets, while a video processor focuses on input handling, scaling, switching, and clean output. Many modern models combine controller + processor features depending on the project scope.",
+  },
+  {
+    q: "How do I choose a controller for my screen size?",
+    a: "Selection depends on total pixels (screen resolution), number of ports, input requirements (HDMI/DVI/SDI), and whether you need scaling, multi-window, or live switching for events and control rooms.",
+  },
+  {
+    q: "Do I need a processor for rental and stage LED setups?",
+    a: "Often yes. Events usually need clean scaling, fast switching, and stable output for cameras. A suitable processor helps maintain smooth visuals and simplifies on-site setup.",
+  },
+  {
+    q: "Can controllers support remote content management?",
+    a: "Yes. Depending on the ecosystem, controllers can support scheduled playback, LAN/WiFi connectivity, or integration with media players for remote content updates and campaign management.",
+  },
+  {
+    q: "Why does controller brand compatibility matter (NovaStar/Huidu/Colorlight)?",
+    a: "Receiving cards and configuration software are ecosystem-specific. Keeping controller and receiving cards within the same ecosystem ensures easier mapping, stable operation, and simpler maintenance support.",
+  },
+  {
+    q: "What details should I share for a BOQ-ready controller recommendation?",
+    a: "Share screen width × height (pixels), number of cabinets, input sources (PC, camera, media player), indoor/outdoor environment, and whether you need live switching, multi-screen, or remote control.",
+  },
+] as const;
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
 
 export default function ControllerProductsPage() {
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
@@ -135,6 +171,23 @@ export default function ControllerProductsPage() {
             />
           ))}
         </div>
+      </section>
+
+      <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
+        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">FAQ</h2>
+            <p className="mt-2 text-slate-600 leading-7">
+              Quick answers about LED controller selection, processor planning and compatibility for Bangladesh projects.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-5">
+          <FaqAccordion accent={BRAND.maroon} density="compact" items={faqs} columns={2} />
+        </div>
+
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       </section>
     </div>
   );

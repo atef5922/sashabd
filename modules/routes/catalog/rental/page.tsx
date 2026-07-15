@@ -772,6 +772,7 @@ export default function RentalProductsPage() {
       >
         <FaqAccordion
           accent={BRAND.maroon}
+          density="compact"
           items={[
             {
               q: "Which rental LED pixel pitch is best for my event?",
@@ -792,6 +793,10 @@ export default function RentalProductsPage() {
             {
               q: "What information do you need for a rental LED quotation?",
               a: "Event date/location, required screen size (W×H), viewing distance, stage setup type (hanging/stacking), content source (live HDMI or playback), and power availability are key inputs.",
+            },
+            {
+              q: "Do I need a flight case and power distribution box for rental LED?",
+              a: "For a professional rental workflow, a flight case protects panels and accessories during transport, and a proper power distribution box helps manage load, safety, and faster venue setup.",
             },
           ]}
         />
