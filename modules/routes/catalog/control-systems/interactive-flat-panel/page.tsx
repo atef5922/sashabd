@@ -114,26 +114,27 @@ export default function InteractiveFlatPanelPage() {
       />
       <section
         className="relative left-1/2 right-1/2 -mx-[50vw] w-screen overflow-hidden border-y bg-slate-950"
-        style={{ minHeight: "clamp(620px, calc(100svh - 64px), 880px)", borderColor: `${BRAND.maroon}12` }}
+        style={{ minHeight: "clamp(560px, calc(100svh - 64px), 780px)", borderColor: `${BRAND.maroon}12` }}
       >
         <div className="pointer-events-none absolute inset-0">
           <div
             className="absolute inset-0 bg-center bg-no-repeat"
             style={{
               backgroundImage: "url('/images/Interactive%20flat%20panel/Interactive-flat-panal.webp')",
-              backgroundSize: "100% 100%",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
             }}
           />
-          <div className="absolute inset-0 bg-black/30" />
+          <div className="absolute inset-0 bg-black/35" />
           <div
             className="absolute inset-0"
             style={{
-              background: "linear-gradient(180deg, rgba(0,0,0,0.22), rgba(0,0,0,0.12) 55%, rgba(0,0,0,0.28))",
+              background: "linear-gradient(180deg, rgba(0,0,0,0.24), rgba(0,0,0,0.10) 52%, rgba(0,0,0,0.30))",
             }}
           />
         </div>
 
-        <div className="relative mx-auto flex w-full max-w-7xl flex-col justify-center px-5 py-10 md:px-10 md:py-12">
+        <div className="relative mx-auto flex w-full max-w-7xl flex-col justify-center px-5 py-8 md:px-10 md:py-10">
           <div className="flex max-w-4xl flex-col gap-4">
             <div className="flex flex-wrap items-center gap-3">
               <span
