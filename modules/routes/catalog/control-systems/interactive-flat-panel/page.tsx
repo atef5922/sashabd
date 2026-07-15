@@ -224,31 +224,30 @@ export default function InteractiveFlatPanelPage() {
       </section>
 
       <section className="mt-10">
-        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-          <div>
+        <div className="grid gap-2.5">
+          <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
             <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Interactive Flat Panel Models</h2>
-            <p className="mt-2 text-slate-600 leading-7 text-justify">
-              Below are popular brand and size combinations. For procurement, focus on fit: room size, accessories, mounting
-              method and support scope.
-            </p>
+            <div className="mt-1 flex flex-nowrap items-center gap-2 md:mt-0 md:shrink-0">
+              <Link
+                href="/contact"
+                className="inline-flex min-h-[42px] items-center justify-center whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+              >
+                Request Quotation
+              </Link>
+              <a
+                href={wa}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex min-h-[42px] items-center justify-center whitespace-nowrap rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md"
+              >
+                WhatsApp
+              </a>
+            </div>
           </div>
-          <div className="mt-2 flex flex-wrap gap-2 md:mt-0">
-            <Link
-              href="/contact"
-              className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-              style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-            >
-              Request Quotation
-            </Link>
-            <a
-              href={wa}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-xl bg-emerald-600 px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md"
-            >
-              WhatsApp
-            </a>
-          </div>
+          <p className="text-slate-600 leading-7 md:text-[15px]">
+            Below are popular brand and size combinations. For procurement, focus on fit: room size, accessories, mounting method and support scope.
+          </p>
         </div>
 
         <div className="mt-6 grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
