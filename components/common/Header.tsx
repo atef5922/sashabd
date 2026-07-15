@@ -119,7 +119,7 @@ function cn(...classes: Array<string | false | undefined>) {
 const HeaderSearch = dynamic(() => import("./HeaderSearch"), {
   ssr: false,
   loading: () => (
-    <div className="hidden h-10 w-full max-w-[320px] rounded-full bg-slate-100 md:block lg:max-w-[440px] xl:max-w-[500px]" />
+    <div className="h-10 w-full max-w-[320px] rounded-full bg-slate-100 lg:max-w-[440px] xl:max-w-[500px]" />
   ),
 });
 export default function Header() {
@@ -233,9 +233,9 @@ export default function Header() {
         isScrolled ? "bg-[#091528] shadow-md" : "bg-white"
       )}
     >
-      <div className="mx-auto flex h-18 max-w-7xl items-center pl-3 pr-4 py-0">
+      <div className="mx-auto flex h-18 max-w-7xl items-center gap-2 px-3 py-0 md:gap-0 md:pl-3 md:pr-4">
         <Link prefetch={false} href="/" onClick={handleNavClick("/")} className="flex shrink-0 items-center gap-2">
-          <div className="relative h-20 w-32 shrink-0 overflow-visible rounded-md md:h-24 md:w-40">
+          <div className="relative h-14 w-24 shrink-0 overflow-visible rounded-md md:h-24 md:w-40">
             <Image
               src={isScrolled ? "/sasha-corporation-after-scroll.png" : "/sasha-corporation-final-l.webp"}
               alt={`${BRAND_NAME} logo`}
@@ -246,6 +246,10 @@ export default function Header() {
           </div>
         </Link>
 
+        <div className="min-w-0 flex-1 md:hidden">
+          <HeaderSearch isScrolled={isScrolled} className="max-w-none" />
+        </div>
+
         <div className="hidden md:flex flex-1 items-center px-4">
           <HeaderSearch isScrolled={isScrolled} />
         </div>
@@ -254,11 +258,21 @@ export default function Header() {
           href={`tel:${siteConfig.phone}`}
           aria-label="Call now"
           className={cn(
-            "mx-auto inline-flex flex-col items-center leading-tight md:hidden",
-            isScrolled ? "text-white" : "text-slate-900"
+            "inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border shadow-sm transition md:hidden",
+            isScrolled
+              ? "border-cyan-400/50 bg-white/10 text-white"
+              : "border-cyan-300/80 bg-white text-slate-900"
           )}
         >
-          {siteConfig.phone}
+          <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="none" aria-hidden="true">
+            <path
+              d="M5.5 6.5c0 6.1 5.9 12 12 12h1.5a1.5 1.5 0 0 0 1.5-1.5v-2.1a1.5 1.5 0 0 0-1.2-1.47l-2.29-.46a1.5 1.5 0 0 0-1.43.45l-.5.5a12.7 12.7 0 0 1-4.97-4.97l.5-.5a1.5 1.5 0 0 0 .45-1.43l-.46-2.29A1.5 1.5 0 0 0 9.1 4H7a1.5 1.5 0 0 0-1.5 1.5v1Z"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </a>
 
         {/* DESKTOP NAV */}
@@ -462,8 +476,10 @@ export default function Header() {
         {/* MOBILE MENU BUTTON */}
         <button
           className={cn(
-            "ml-2 rounded-lg border px-3 py-2 text-xl leading-none md:hidden",
-            isScrolled ? "border-slate-600 text-white" : "border-slate-300 text-slate-900"
+            "inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-xl leading-none shadow-sm md:hidden",
+            isScrolled
+              ? "border-cyan-400/50 bg-white/10 text-white"
+              : "border-cyan-300/80 bg-white text-slate-900"
           )}
           onClick={() => setOpen((v) => !v)}
           aria-label="Toggle menu"

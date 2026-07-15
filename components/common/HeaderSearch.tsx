@@ -206,8 +206,10 @@ function normalizeSearchText(value: string): string {
 
 export default function HeaderSearch({
   isScrolled,
+  className,
 }: {
   isScrolled: boolean;
+  className?: string;
 }) {
   const router = useRouter();
   const wrapRef = useRef<HTMLDivElement | null>(null);
@@ -257,11 +259,14 @@ export default function HeaderSearch({
   return (
     <div
       ref={wrapRef}
-      className="relative hidden w-full max-w-[320px] md:block lg:max-w-[440px] xl:max-w-[500px]"
+      className={cn(
+        "relative w-full max-w-[320px] lg:max-w-[440px] xl:max-w-[500px]",
+        className
+      )}
     >
       <div className="premium-search-shell rounded-full shadow-sm transition focus-within:ring-2 focus-within:ring-sky-200/90 focus-within:ring-offset-2 focus-within:ring-offset-white">
         <div className={cn("premium-search-inner rounded-full transition", inputShellClass)}>
-          <div className="flex items-center gap-2 px-4 py-2">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 md:gap-2 md:px-4 md:py-2">
             <button
               type="button"
               onClick={() => {
@@ -286,7 +291,7 @@ export default function HeaderSearch({
             >
                 <svg
                   viewBox="0 0 24 24"
-                  className="h-5 w-5 text-slate-900"
+                  className="h-4.5 w-4.5 text-slate-900 md:h-5 md:w-5"
                   aria-hidden="true"
                 >
                 <path
@@ -357,7 +362,7 @@ export default function HeaderSearch({
                 router.push(`/search?q=${encodeURIComponent(query)}`);
               }}
               placeholder="Search products"
-              className={cn("w-full bg-transparent text-sm font-semibold text-black placeholder:text-black outline-none")}
+              className={cn("w-full bg-transparent text-[13px] font-semibold text-black placeholder:text-black outline-none md:text-sm")}
               autoComplete="off"
               spellCheck={false}
               aria-autocomplete="list"
