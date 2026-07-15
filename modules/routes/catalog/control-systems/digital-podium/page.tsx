@@ -231,7 +231,7 @@ export default function DigitalPodiumPage() {
       />
       <section
         className="relative left-1/2 right-1/2 -mx-[50vw] w-screen overflow-hidden border-y bg-slate-950"
-        style={{ minHeight: "clamp(640px, calc(100svh - 64px), 900px)", borderColor: `${BRAND.maroon}12` }}
+        style={{ minHeight: "clamp(560px, calc(100svh - 64px), 780px)", borderColor: `${BRAND.maroon}12` }}
       >
         <div className="pointer-events-none absolute inset-0">
           <div
@@ -251,7 +251,7 @@ export default function DigitalPodiumPage() {
           />
         </div>
 
-        <div className="relative mx-auto flex w-full max-w-7xl flex-col justify-center px-5 py-10 md:px-10 md:py-12">
+        <div className="relative mx-auto flex w-full max-w-7xl flex-col justify-center px-5 py-8 md:px-10 md:py-10">
           <div className="flex w-full flex-col gap-4">
             <div className="flex flex-wrap items-center gap-3">
               <span
