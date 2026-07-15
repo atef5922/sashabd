@@ -68,6 +68,10 @@ const faqs: { q: string; a: string }[] = [
     q: "Can an interactive flat panel be used in meeting rooms?",
     a: "Yes. IFPs are commonly used for presentations, annotation on documents, brainstorming sessions and hybrid meeting workflows when paired with the right accessories.",
   },
+  {
+    q: "Which accessories are commonly needed with an interactive flat panel?",
+    a: "Common accessories include a wall mount or floor trolley, OPS PC (if Windows workflow is needed), HDMI/USB cabling, wireless screen sharing tools, camera, speakerphone, and basic audio integration depending on classroom or meeting-room use.",
+  },
 ];
 
 const sizeGuides = [
