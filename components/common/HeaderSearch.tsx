@@ -264,8 +264,8 @@ export default function HeaderSearch({
         className
       )}
     >
-      <div className="premium-search-shell rounded-full shadow-sm transition focus-within:ring-2 focus-within:ring-sky-200/90 focus-within:ring-offset-2 focus-within:ring-offset-white">
-        <div className={cn("premium-search-inner rounded-full transition", inputShellClass)}>
+      <div className="premium-search-shell rounded-2xl shadow-sm transition focus-within:ring-2 focus-within:ring-sky-200/90 focus-within:ring-offset-2 focus-within:ring-offset-white md:rounded-full">
+        <div className={cn("premium-search-inner rounded-2xl transition md:rounded-full", inputShellClass)}>
           <div className="flex items-center gap-1.5 px-3 py-1.5 md:gap-2 md:px-4 md:py-2">
             <button
               type="button"

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { buildLedProductCardHighlights } from "@/lib/productCardHighlights";
@@ -64,6 +65,7 @@ type HomeFilterKey =
   | "all"
   | "indoor"
   | "outdoor"
+  | "rental"
   | "receiving-card"
   | "controller"
   | "power-supply"
@@ -205,6 +207,7 @@ function subtitleToBullets(subtitle: string): string[] {
 export default function HomeAllProductsGrid() {
   const gridTopRef = useRef<HTMLDivElement | null>(null);
   const scrollToGridOnNextPageChangeRef = useRef(false);
+  const mobileCarouselRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const [filter, setFilter] = useState<HomeFilterKey>("all");
   const [page, setPage] = useState(1);
 
@@ -441,6 +444,8 @@ export default function HomeAllProductsGrid() {
         ? "led:indoor:"
         : filter === "outdoor"
           ? "led:outdoor:"
+          : filter === "rental"
+            ? "led:rental:"
           : filter === "receiving-card"
             ? "acc:receiving:"
             : filter === "controller"
@@ -477,6 +482,7 @@ export default function HomeAllProductsGrid() {
     { key: "all", label: "All" },
     { key: "indoor", label: "Indoor LED" },
     { key: "outdoor", label: "Outdoor LED" },
+    { key: "rental", label: "Rental LED" },
     { key: "interactive-flat-panel", label: "Interactive Panel" },
     { key: "digital-podium", label: "Digital Podium" },
     { key: "receiving-card", label: "Receiving Card" },
@@ -487,11 +493,267 @@ export default function HomeAllProductsGrid() {
     { key: "led-accessories", label: "LED Accessories" },
   ];
 
+  const filterLabelMap = useMemo(
+    () =>
+      Object.fromEntries(filters.map((item) => [item.key, item.label])) as Record<HomeFilterKey, string>,
+    [filters],
+  );
+
+  const mobileSections = useMemo(() => {
+    const mobileConfig = filter === "all"
+      ? [
+          { key: "indoor" as HomeFilterKey, title: "Indoor LED Screens", prefix: "led:indoor:" },
+          { key: "outdoor" as HomeFilterKey, title: "Outdoor LED Billboards", prefix: "led:outdoor:" },
+          { key: "rental" as HomeFilterKey, title: "Rental LED Screens", prefix: "led:rental:" },
+          { key: "pa-system" as HomeFilterKey, title: "PA Sound Systems", prefix: "pa:" },
+        ]
+      : [
+          {
+            key: filter,
+            title: filter === "all" ? "All Products" : filterLabelMap[filter],
+            prefix:
+              filter === "indoor"
+                ? "led:indoor:"
+                : filter === "outdoor"
+                  ? "led:outdoor:"
+                  : filter === "rental"
+                    ? "led:rental:"
+                  : filter === "receiving-card"
+                    ? "acc:receiving:"
+                    : filter === "controller"
+                      ? "acc:controller:"
+                      : filter === "power-supply"
+                        ? "acc:psu:"
+                        : filter === "led-accessories"
+                          ? "acc:led-accessories:"
+                          : filter === "pa-system"
+                            ? "pa:"
+                            : filter === "digital-podium"
+                              ? "podium:"
+                              : filter === "interactive-flat-panel"
+                                ? "ifp:"
+                                : "turnstile:",
+          },
+        ];
+
+    return mobileConfig
+      .map((section) => ({
+        id: section.key,
+        title: section.title,
+        products: products.filter((p) => p.id.startsWith(section.prefix)),
+      }))
+      .filter((section) => section.products.length);
+  }, [filter, filterLabelMap, products]);
+
+  const scrollMobileCarousel = (sectionId: string, direction: 1 | -1) => {
+    const track = mobileCarouselRefs.current[sectionId];
+    if (!track) return;
+    const amount = Math.max(track.clientWidth - 64, 220) * direction;
+    track.scrollBy({ left: amount, behavior: "smooth" });
+  };
+
+  const renderProductCard = (p: HomeProduct, compactMobile = false) => {
+    const imageClassName = compactMobile
+      ? "object-cover object-center transition duration-300 group-hover:scale-[1.03]"
+      : "object-cover object-center transition duration-300 group-hover:scale-[1.03]";
+
+    const bullets =
+      p.kind === "led"
+        ? getLedCardBullets(p)
+        : p.quickFeatures?.length
+          ? p.quickFeatures.slice(0, 4)
+          : p.tags?.length
+            ? p.tags.slice(0, 4)
+            : subtitleToBullets(p.subtitle);
+
+    const chips = p.bestFor?.length ? p.bestFor.slice(0, 3) : (p.tags ?? []).slice(0, 3);
+
+    const topRightBadge =
+      p.kind === "turnstile"
+        ? { text: getTurnstileKindLabel(p.turnstileKind ?? "tripod_turnstile"), tone: "dark" as const }
+        : p.kind === "podium"
+          ? { text: "Control", tone: "dark" as const }
+          : p.kind === "accessory"
+            ? { text: "Accessories", tone: "dark" as const }
+            : p.kind === "interactive-flat-panel" && p.ifpBrand && p.ifpSize
+              ? { text: `${getInteractiveFlatPanelBrandLabel(p.ifpBrand)} ... ${p.ifpSize}"`, tone: "dark" as const }
+              : p.kind === "led" && p.pitch
+                ? { text: p.pitch, tone: "dark" as const }
+                : undefined;
+
+    const metaLines: Array<{ text: string; className?: string }> = [];
+    if (p.kind === "led" && p.priceLine) metaLines.push({ text: p.priceLine, className: "mt-1 text-sm font-semibold text-sky-700" });
+    if (p.kind === "accessory" && p.priceLine) metaLines.push({ text: p.priceLine, className: "mt-1 text-sm font-semibold text-sky-700" });
+
+    if (p.kind === "interactive-flat-panel") {
+      if (p.priceLabel) {
+        metaLines.push({ text: p.priceLabel, className: "mt-1 text-sm font-semibold text-sky-700" });
+      }
+      metaLines.push({ text: p.subtitle, className: "mt-2 text-sm leading-7 text-slate-600 line-clamp-3" });
+    } else if (p.kind === "pa" && p.priceLabel) {
+      const cardPrice = getPaSystemCardPriceLabel({ priceLabel: p.priceLabel });
+      if (cardPrice) {
+        metaLines.push({ text: `Price: ${cardPrice}`, className: "mt-1 text-sm font-semibold text-sky-700" });
+      }
+    } else if ((p.kind === "turnstile" || p.kind === "podium") && p.priceLabel) {
+      metaLines.push({ text: `Price: ${p.priceLabel}`, className: "mt-1 text-sm font-semibold text-sky-700" });
+    }
+
+    return (
+      <ProductGridCard
+        key={p.id}
+        href={p.href}
+        title={p.title}
+        image={<Image src={p.image} alt={p.title} fill sizes={compactMobile ? "50vw" : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"} className={imageClassName} />}
+        imageContainerClassName="bg-white"
+        borderColor={`${BRAND.maroon}12`}
+        topLeftBadge={p.kind === "led" ? undefined : { text: p.badge, tone: "light" }}
+        topRightBadge={p.kind === "led" ? undefined : topRightBadge}
+        metaLines={metaLines}
+        bullets={bullets}
+        chips={chips}
+        accentColor={BRAND.maroon}
+        contactHref="/contact"
+        compactMobile={compactMobile}
+        viewDetailsLabel="View details ->"
+      />
+    );
+  };
+
+  const renderMobileProductCard = (p: HomeProduct) => {
+    const displayTitle = p.title.replace(/\s*&\s*/g, " and ");
+
+    return (
+      <article
+        className="flex h-full flex-col overflow-hidden rounded-md border bg-white shadow-sm"
+        style={{ borderColor: `${BRAND.maroon}12` }}
+      >
+        <Link prefetch={false} href={p.href} className="relative block aspect-[4/3] overflow-hidden bg-slate-50" aria-label={`View details: ${displayTitle}`}>
+          <Image
+            src={p.image}
+            alt={displayTitle}
+            fill
+            sizes="50vw"
+            className="object-cover object-center transition duration-300"
+          />
+        </Link>
+
+        <div className="flex flex-1 flex-col p-3">
+          <div className="min-h-[2.55rem] line-clamp-2 text-[13px] font-bold leading-snug text-slate-900">
+            {displayTitle}
+          </div>
+
+          <div className="mt-auto pt-3">
+            <Link
+              prefetch={false}
+              href={p.href}
+              className="inline-flex min-h-9 w-full items-center justify-center rounded-full border border-slate-200 bg-white px-3 py-2 text-[11px] font-bold leading-tight text-slate-800 shadow-sm transition hover:border-sky-300 hover:bg-sky-50 hover:text-sky-800"
+            >
+              View details
+            </Link>
+          </div>
+        </div>
+      </article>
+    );
+  };
+
   return (
     <div>
       <div ref={gridTopRef} className="scroll-mt-24" />
 
-      <div className="mb-4 flex flex-wrap gap-2">
+      <section className="md:hidden">
+        <div className="overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex w-max min-w-full flex-nowrap gap-2">
+            {filters.map((f) => {
+              const active = filter === f.key;
+              return (
+                <button
+                  key={f.key}
+                  type="button"
+                  onClick={() => {
+                    setFilter(f.key);
+                    setPage(1);
+                  }}
+                  className="rounded-full border px-4 py-2 text-[11px] font-bold whitespace-nowrap transition"
+                  style={{
+                    borderColor: active ? "rgba(255,106,0,0.65)" : "rgba(103,232,249,0.28)",
+                    background: active ? "linear-gradient(135deg, rgba(228,87,0,0.98), rgba(255,106,0,0.98))" : "rgba(103,232,249,0.10)",
+                    color: active ? "#fff" : "#0f172a",
+                    boxShadow: active ? "0 8px 18px rgba(255,106,0,0.22)" : "none",
+                  }}
+                >
+                  {f.key === "all" ? "All Products" : f.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="mt-4 space-y-4">
+          {mobileSections.map((section) => (
+            <div
+              key={section.id}
+              className="p-0"
+            >
+              <div className="mb-2 text-sm font-extrabold leading-tight text-slate-900">
+                {section.title}
+              </div>
+
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => scrollMobileCarousel(section.id, -1)}
+                  className="absolute -left-3 top-[28%] z-20 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-[#FDBA74] text-slate-900 shadow-md transition active:scale-95"
+                  aria-label={`Previous ${section.title} products`}
+                >
+                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
+                    <path d="m14 7-5 5 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+
+                <div className="overflow-hidden px-1">
+                  <div
+                    ref={(node) => {
+                      mobileCarouselRefs.current[section.id] = node;
+                    }}
+                    className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                  >
+                    {section.products.map((p) => (
+                      <div key={p.id} className="min-w-[calc((100%-0.75rem)/2)] shrink-0 basis-[calc((100%-0.75rem)/2)] snap-start">
+                        {renderMobileProductCard(p)}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => scrollMobileCarousel(section.id, 1)}
+                  className="absolute -right-3 top-[28%] z-20 inline-flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-[#FDBA74] text-slate-900 shadow-md transition active:scale-95"
+                  aria-label={`Next ${section.title} products`}
+                >
+                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
+                    <path d="m10 7 5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-4">
+          <Link
+            prefetch={false}
+            href="/led-display/"
+            className="inline-flex w-full items-center justify-center rounded-2xl px-4 py-2.5 text-[13px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+          >
+            View All Products
+          </Link>
+        </div>
+      </section>
+
+      <div className="mb-4 hidden flex-wrap gap-2 md:flex">
         {filters.map((f) => {
           const active = filter === f.key;
           return (
@@ -515,83 +777,12 @@ export default function HomeAllProductsGrid() {
         })}
       </div>
 
-	      <section className="product-grid-3 grid items-stretch gap-[10px] sm:grid-cols-2 lg:grid-cols-3">
-	        {paged.map((p) => {
-          const fixKey =
-            p.kind === "led" && p.href.includes("/indoor-led/")
-              ? `indoor:${p.id.split(":").pop() ?? ""}`
-              : p.kind === "led" && p.href.includes("/outdoor/")
-                ? `outdoor:${p.id.split(":").pop() ?? ""}`
-                : p.kind === "led" && p.href.includes("/rental-display/")
-                  ? `rental:${p.id.split(":").pop() ?? ""}`
-                  : "";
-          const imageClassName = "object-cover object-center transition duration-300 group-hover:scale-[1.03]";
-
-          const bullets =
-            p.kind === "led"
-              ? getLedCardBullets(p)
-              : p.quickFeatures?.length
-                ? p.quickFeatures.slice(0, 4)
-                : p.tags?.length
-                  ? p.tags.slice(0, 4)
-                  : subtitleToBullets(p.subtitle);
-
-          const chips = p.bestFor?.length ? p.bestFor.slice(0, 3) : (p.tags ?? []).slice(0, 3);
-
-          const topRightBadge =
-            p.kind === "turnstile"
-              ? { text: getTurnstileKindLabel(p.turnstileKind ?? "tripod_turnstile"), tone: "dark" as const }
-              : p.kind === "podium"
-                ? { text: "Control", tone: "dark" as const }
-              : p.kind === "accessory"
-                ? { text: "Accessories", tone: "dark" as const }
-              : p.kind === "interactive-flat-panel" && p.ifpBrand && p.ifpSize
-                ? { text: `${getInteractiveFlatPanelBrandLabel(p.ifpBrand)} ... ${p.ifpSize}"`, tone: "dark" as const }
-              : p.kind === "led" && p.pitch
-                ? { text: p.pitch, tone: "dark" as const }
-                : undefined;
-
-	          const metaLines: Array<{ text: string; className?: string }> = [];
-	          if (p.kind === "led" && p.priceLine) metaLines.push({ text: p.priceLine, className: "mt-1 text-sm font-semibold text-sky-700" });
-	          if (p.kind === "accessory" && p.priceLine) metaLines.push({ text: p.priceLine, className: "mt-1 text-sm font-semibold text-sky-700" });
-
-	          if (p.kind === "interactive-flat-panel") {
-	            if (p.priceLabel) {
-	              metaLines.push({ text: p.priceLabel, className: "mt-1 text-sm font-semibold text-sky-700" });
-	            }
-	            metaLines.push({ text: p.subtitle, className: "mt-2 text-sm leading-7 text-slate-600 line-clamp-3" });
-	          } else if (p.kind === "pa" && p.priceLabel) {
-	            const cardPrice = getPaSystemCardPriceLabel({ priceLabel: p.priceLabel });
-	            if (cardPrice) {
-	              metaLines.push({ text: `Price: ${cardPrice}`, className: "mt-1 text-sm font-semibold text-sky-700" });
-	            }
-	          } else if ((p.kind === "turnstile" || p.kind === "podium") && p.priceLabel) {
-	            metaLines.push({ text: `Price: ${p.priceLabel}`, className: "mt-1 text-sm font-semibold text-sky-700" });
-	          }
-
-          return (
-            <ProductGridCard
-              key={p.id}
-              href={p.href}
-              title={p.title}
-              image={<Image src={p.image} alt={p.title} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" className={imageClassName} />}
-              imageContainerClassName="bg-white"
-              borderColor={`${BRAND.maroon}12`}
-              topLeftBadge={p.kind === "led" ? undefined : { text: p.badge, tone: "light" }}
-              topRightBadge={p.kind === "led" ? undefined : topRightBadge}
-              metaLines={metaLines}
-              bullets={bullets}
-              chips={chips}
-              accentColor={BRAND.maroon}
-              contactHref="/contact"
-              viewDetailsLabel="View details ->"
-            />
-          );
-        })}
+      <section className="product-grid-3 hidden items-stretch gap-[10px] sm:grid-cols-2 lg:grid-cols-3 md:grid">
+        {paged.map((p) => renderProductCard(p))}
       </section>
 
       {filteredProducts.length > PAGE_SIZE ? (
-        <section className="mt-4">
+        <section className="mt-4 hidden md:block">
           <div className="flex flex-col items-center gap-3">
             <nav aria-label="Products pagination" className="flex flex-wrap items-center justify-center gap-2">
               <button

@@ -2,13 +2,31 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 
+function cn(...classes: Array<string | false | undefined>) {
+  return classes.filter(Boolean).join(" ");
+}
+
 const images = [
   "/images/interactive-flat-panal-hero.webp",
   "/images/digital -podium-hero.webp",
   "/images/turnstile-gate-hero.webp",
 ];
 
-export default function HeroBackground() {
+const mobileImagePositions = ["center 22%", "center 20%", "center 24%"];
+
+export default function HeroBackground({
+  className,
+  showArrows = false,
+  dotsClassName,
+  imageSize = "cover",
+  imagePositions,
+}: {
+  className?: string;
+  showArrows?: boolean;
+  dotsClassName?: string;
+  imageSize?: "cover" | "contain";
+  imagePositions?: string[];
+}) {
   const [index, setIndex] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -118,7 +136,10 @@ export default function HeroBackground() {
 
   return (
     <div
-      className="pointer-events-auto absolute inset-0 overflow-hidden cursor-grab active:cursor-grabbing select-none"
+      className={cn(
+        "pointer-events-auto absolute inset-0 overflow-hidden cursor-grab active:cursor-grabbing select-none",
+        className
+      )}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
@@ -141,9 +162,12 @@ export default function HeroBackground() {
         return (
           <div
             key={src}
-            className={`absolute inset-0 bg-cover bg-center transition-transform duration-1000 ease-in-out`}
+            className={`absolute inset-0 bg-center transition-transform duration-1000 ease-in-out`}
             style={{
               backgroundImage: `url('${src}')`,
+              backgroundSize: imageSize,
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: imagePositions?.[i] ?? "center",
               transform: `translateX(calc(${offset * 100}% + ${dragOffset}px))`,
               opacity: isVisible ? 1 : 0,
               zIndex: i === index ? 1 : 0,
@@ -153,8 +177,41 @@ export default function HeroBackground() {
         );
       })}
 
+      {showArrows ? (
+        <>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              prevSlide();
+              resetTimer();
+            }}
+            className="absolute left-3 top-1/2 z-30 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/28 text-white shadow-md backdrop-blur-sm transition hover:bg-black/40"
+            aria-label="Previous slide"
+          >
+            <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="none" aria-hidden="true">
+              <path d="m14 7-5 5 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              nextSlide();
+              resetTimer();
+            }}
+            className="absolute right-3 top-1/2 z-30 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/28 text-white shadow-md backdrop-blur-sm transition hover:bg-black/40"
+            aria-label="Next slide"
+          >
+            <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="none" aria-hidden="true">
+              <path d="m10 7 5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </>
+      ) : null}
+
       {/* Pagination Dots */}
-      <div className="absolute bottom-10 left-1/2 z-30 flex -translate-x-1/2 gap-2.5">
+      <div className={cn("absolute bottom-10 left-1/2 z-30 flex -translate-x-1/2 gap-2.5", dotsClassName)}>
         {images.map((_, i) => (
           <button
             key={i}
@@ -182,3 +239,5 @@ export default function HeroBackground() {
     </div>
   );
 }
+
+export { mobileImagePositions };

@@ -11,7 +11,7 @@ import ProjectProposalCtaSection from "@/components/home/ProjectProposalCtaSecti
 import ProjectWorkflowSection from "@/components/home/ProjectWorkflowSection";
 import TrustedTechnologyPartnersSection from "@/components/home/TrustedTechnologyPartnersSection";
 import WhyChooseSection from "@/components/home/WhyChooseSection";
-import HeroBackground from "@/components/home/HeroBackground";
+import HeroBackground, { mobileImagePositions } from "@/components/home/HeroBackground";
 
 export const metadata: Metadata = {
   title: { absolute: BRAND_NAME },
@@ -349,18 +349,72 @@ export default function HomePage() {
           65% { transform: translate(18px, -22px) scale(1); }
           100% { transform: translate(-10px, -55px) scale(0.8); opacity: 0; }
         }
+        @media (max-width: 767px) {
+          .mobile-browse-products h2::after {
+            display: none !important;
+          }
+        }
       `}</style>
       <div className="space-y-6 md:space-y-8">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
         {/* 1) HERO */}
-        <section
-          className="relative left-1/2 right-1/2 -mx-[50vw] w-screen overflow-hidden border-y bg-amber-900"
-          style={{ minHeight: "clamp(520px, calc(100svh - 64px), 720px)" }}
-        >
-          <HeroBackground />
+        <section className="relative left-1/2 right-1/2 -mx-[50vw] min-h-[276px] w-screen overflow-hidden border-b bg-white md:min-h-[clamp(520px,calc(100svh-64px),720px)] md:border-y md:bg-amber-900">
+          <div className="relative z-20 w-full px-0 py-0 md:hidden">
+            <div
+              className="relative overflow-hidden"
+              style={{
+                minHeight: "276px",
+                background: "transparent",
+              }}
+            >
+              <HeroBackground showArrows imageSize="cover" imagePositions={mobileImagePositions} dotsClassName="bottom-5 gap-2" />
 
-          <div className="pointer-events-none relative z-20 mx-auto flex w-full max-w-7xl flex-col justify-center px-5 py-10 md:px-10 md:py-12">
+              <div className="pointer-events-none absolute inset-x-0 top-0 z-20 p-4">
+                <div className="max-w-[280px]">
+                  <span
+                    className="inline-flex rounded-full border px-3 py-1 text-[10px] font-semibold text-white shadow-sm"
+                    style={{ background: "rgba(11,18,32,0.62)", borderColor: "rgba(255,255,255,0.16)" }}
+                  >
+                    Nationwide Support
+                  </span>
+                  <h1 className="sr-only">Sasha Corporation - Smart technology solutions in Bangladesh</h1>
+                  <h2 className="mt-3 text-[27px] font-extrabold leading-[1.02] tracking-tight text-white after:hidden">
+                    Smart Technology Solutions in Bangladesh.
+                  </h2>
+                </div>
+              </div>
+
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 px-4 pb-16">
+                <div className="pointer-events-auto flex flex-wrap gap-2.5">
+                  <Link
+                    prefetch={false}
+                    href="/led-display/"
+                    className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-1.5 text-[11px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-lg"
+                    style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+                  >
+                    Browse Products
+                  </Link>
+
+                  <a
+                    href={wa}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex min-h-9 items-center justify-center rounded-md border border-emerald-300/40 bg-emerald-600 px-3 py-1.5 text-[11px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-lg"
+                    aria-label="Request a quotation on WhatsApp"
+                  >
+                    WhatsApp Quote
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="hidden md:block">
+            <HeroBackground />
+          </div>
+
+          <div className="pointer-events-none relative z-20 mx-auto hidden w-full max-w-7xl flex-col justify-center px-5 py-10 md:flex md:px-10 md:py-12">
             <div className="flex flex-wrap items-center gap-3">
               <span
                 className="rounded-full px-3 py-1 text-xs font-semibold"
@@ -549,22 +603,47 @@ export default function HomePage() {
         </section>
 
         {/* 2.5) BROWSE PRODUCTS (PAGINATED) */}
-        <section className="w-full py-5 md:py-6">
-          <SectionHeader
-            icon={<TitleIcon kind="price" />}
-            title="Browse Products"
-            desc="Explore LED display modules, accessories, PA sound systems, and turnstile gate solutions - organized in one paginated grid."
-            right={
-              <Link
-                prefetch={false}
-                href="/led-display/"
-                className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-                style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-              >
-                LED display ?
-              </Link>
-            }
-          />
+        <section className="mobile-browse-products w-full py-5 md:py-6">
+          <div className="md:hidden">
+            <details className="group">
+              <summary className="flex list-none items-center justify-between gap-3 cursor-pointer">
+                <div className="flex items-center gap-2 text-2xl font-bold text-slate-900">
+                  <TitleIcon kind="price" />
+                  <span>Browse Products</span>
+                </div>
+                <span
+                  className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border bg-white text-slate-700 shadow-sm transition group-open:rotate-180"
+                  style={{ borderColor: `${BRAND.maroon}22` }}
+                  aria-hidden="true"
+                >
+                  <svg viewBox="0 0 24 24" className="h-4 w-4 fill-none">
+                    <path d="m6 9 6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
+              </summary>
+              <p className="mt-3 text-slate-600 leading-7">
+                Explore LED display modules, accessories, PA sound systems, and turnstile gate solutions - organized in one paginated grid.
+              </p>
+            </details>
+          </div>
+
+          <div className="hidden md:block">
+            <SectionHeader
+              icon={<TitleIcon kind="price" />}
+              title="Browse Products"
+              desc="Explore LED display modules, accessories, PA sound systems, and turnstile gate solutions - organized in one paginated grid."
+              right={
+                <Link
+                  prefetch={false}
+                  href="/led-display/"
+                  className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                  style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+                >
+                  LED display ?
+                </Link>
+              }
+            />
+          </div>
 
           <div className="mt-4">
             <HomeAllProductsGrid />
