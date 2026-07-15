@@ -829,6 +829,8 @@ function ProductsPageContent({
     { name: "Absen", src: "/images/logo/absen.webp", href: "https://www.absen.com/" },
     { name: "Unilumin", src: "/images/logo/unilumin.webp", href: "https://www.unilumin.com/" },
     { name: "Leyard", src: "/images/logo/leyard.webp", href: "https://www.leyardhk.com/" },
+    { name: "LianTronics", src: "/images/logo/liantronics.png", href: "https://www.liantronics.com/" },
+    { name: "AOTO Electronics", src: "/images/logo/aoto-electronics.webp", href: "https://en.aoto.com/" },
     { name: "G-Energy", src: "/images/logo/g-energy.webp" },
     { name: "Lampro", src: "/images/logo/lampro.webp", href: "https://www.lampro.net/" },
     { name: "NovaStar", src: "/images/logo/novastar.webp", href: "https://www.novastar.tech/" },
@@ -2362,7 +2364,7 @@ function ProductsPageContent({
                     {[...trustedTechPartnerLogos, ...trustedTechPartnerLogos].map((b, idx) => (
                       <div
                         key={`${b.name}-${idx}`}
-                        className="flex h-20 w-44 shrink-0 items-center justify-center rounded-2xl border bg-white px-5 shadow-sm"
+                        className="flex h-16 w-40 shrink-0 items-center justify-center rounded-[20px] border bg-white px-4 shadow-sm"
                         style={{ borderColor: "rgba(255,106,0,0.12)" }}
                         title={b.name}
                         aria-label={b.name}
@@ -2373,18 +2375,22 @@ function ProductsPageContent({
                           alt={b.name}
                           className={
                             b.name === "G-Energy"
-                              ? "h-20 w-auto max-w-[250px] object-contain"
-                              : b.name === "Lampro"
-                                ? "h-11 w-auto max-w-[160px] object-contain"
+                              ? "h-12 w-auto max-w-[152px] object-contain"
+                              : b.name === "LianTronics"
+                                ? "h-9 w-auto max-w-[148px] object-contain"
+                                : b.name === "AOTO Electronics"
+                                  ? "h-10 w-auto max-w-[132px] object-contain"
+                                  : b.name === "Lampro"
+                                ? "h-9 w-auto max-w-[136px] object-contain"
                                 : b.name === "Huidu"
-                                  ? "h-12 w-auto max-w-[165px] object-contain"
+                                  ? "h-10 w-auto max-w-[145px] object-contain"
                                   : b.name === "NovaStar"
-                                    ? "h-12 w-auto max-w-[170px] object-contain"
+                                    ? "h-10 w-auto max-w-[150px] object-contain"
                                     : b.name === "Mugnee Multiple Limited"
-                                      ? "h-12 w-auto max-w-[180px] object-contain"
+                                      ? "h-10 w-auto max-w-[156px] object-contain"
                                       : b.name === "Renex Digital"
-                                        ? "h-16 w-full max-w-none object-cover object-center"
-                                    : "h-14 w-auto max-w-[190px] object-contain"
+                                        ? "h-12 w-full max-w-none object-cover object-center"
+                                    : "h-10 w-auto max-w-[146px] object-contain"
                           }
                           loading="lazy"
                         />
