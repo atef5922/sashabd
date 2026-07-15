@@ -31,6 +31,11 @@ const nav: NavItem[] = [
         title: "LED Displays",
         items: [
           {
+            href: "/led-display/",
+            label: "LED Display",
+            desc: "Indoor, outdoor, rental and accessory overview",
+          },
+          {
             href: "/led-display/indoor-led/",
             label: "Indoor LED Display",
             desc: "Showroom \u2022 Office \u2022 Control room",
@@ -201,6 +206,10 @@ export default function Header() {
       };
       const currentPath = normalize(pathname);
       const targetHref = normalize(href);
+      const normalizedParentHref = normalize(parentHref);
+      if (targetHref === normalizedParentHref) {
+        return currentPath === targetHref;
+      }
       if (parentHref === "/about") {
         return currentPath === targetHref;
       }
@@ -372,15 +381,34 @@ export default function Header() {
                                   "group/item relative overflow-hidden transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.01] hover:border-sky-300/70 hover:shadow-[0_12px_28px_rgba(15,23,42,0.14)] before:pointer-events-none before:absolute before:inset-0 before:bg-gradient-to-r before:from-cyan-400/0 before:via-cyan-400/8 before:to-blue-500/0 before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100"
                               )}
                             >
-                              <div
-                                className={cn(
-                                  "font-semibold transition-all duration-300",
-                                  isEnhancedDropdown &&
-                                    !activeDropdownItemHref(x.href, item.href) &&
-                                    "bg-gradient-to-r from-cyan-600 via-sky-600 to-indigo-600 bg-clip-text group-hover/item:text-transparent"
-                                )}
-                              >
-                                {x.label}
+                              <div className="flex items-center justify-between gap-3">
+                                <div
+                                  className={cn(
+                                    "font-semibold transition-all duration-300",
+                                    isEnhancedDropdown &&
+                                      !activeDropdownItemHref(x.href, item.href) &&
+                                      "bg-gradient-to-r from-cyan-600 via-sky-600 to-indigo-600 bg-clip-text group-hover/item:text-transparent"
+                                  )}
+                                >
+                                  {x.label}
+                                </div>
+                                <span
+                                  aria-hidden="true"
+                                  className={cn(
+                                    "shrink-0 transition-transform duration-300 group-hover/item:translate-x-0.5",
+                                    activeDropdownItemHref(x.href, item.href)
+                                      ? isCompactDropdown
+                                        ? "text-[#FD6900]"
+                                        : "text-white/85"
+                                      : isScrolled && isCompactDropdown
+                                        ? "text-slate-400"
+                                        : "text-slate-400"
+                                  )}
+                                >
+                                  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-none">
+                                    <path d="m9 6 6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                  </svg>
+                                </span>
                               </div>
                               {!isCompactDropdown && x.desc ? (
                                 <div

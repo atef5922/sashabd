@@ -551,6 +551,43 @@ function ProductsPageContent({
       className: "border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100",
     },
   ];
+  const ledQuickActions = [
+    {
+      label: "WhatsApp for quotation",
+      href: wa,
+      icon: "support",
+      kind: "external" as const,
+      primary: true,
+    },
+    {
+      label: "Request BOQ-based proposal",
+      href: "/contact",
+      icon: "guide",
+      kind: "internal" as const,
+    },
+    {
+      label: "Jump to price table",
+      href: "#led-price-table",
+      icon: "cost",
+      kind: "anchor" as const,
+    },
+    {
+      label: "Jump to FAQ",
+      href: "#led-faq",
+      icon: "faq",
+      kind: "anchor" as const,
+    },
+  ];
+  const ledCategoryQuickLinks = [
+    { label: "Indoor LED Display", href: "/led-display/indoor-led/", icon: "display", tone: "text-amber-600 bg-amber-50 border-amber-100" },
+    { label: "Outdoor LED Display", href: "/led-display/outdoor/", icon: "display", tone: "text-sky-600 bg-sky-50 border-sky-100" },
+    { label: "Rental LED Display", href: "/led-display/rental-display/", icon: "display", tone: "text-rose-600 bg-rose-50 border-rose-100" },
+    { label: "Receiving Card", href: "/led-display/accessories/receiving-card/", icon: "receiving", tone: "text-emerald-600 bg-emerald-50 border-emerald-100" },
+    { label: "Controller", href: "/led-display/accessories/controller/", icon: "controller", tone: "text-orange-600 bg-orange-50 border-orange-100" },
+    { label: "Power Supply", href: "/led-display/accessories/power-supply/", icon: "power", tone: "text-cyan-600 bg-cyan-50 border-cyan-100" },
+    { label: "LED Accessories", href: "/led-display/accessories/led-accessories/", icon: "cable", tone: "text-indigo-600 bg-indigo-50 border-indigo-100" },
+    { label: "Projects", href: "/projects", icon: "display", tone: "text-slate-600 bg-slate-50 border-slate-200" },
+  ];
 
   const [filter, setFilter] = useState<FilterKey>("all");
   const [query, setQuery] = useState("");
@@ -1112,6 +1149,91 @@ function ProductsPageContent({
           )}
           </p>
         </div>
+        {ledOnly ? (
+          <div className="mt-3.5 rounded-[22px] border border-slate-200 bg-slate-50/90 p-2 shadow-sm md:p-2.5">
+            <div className="grid gap-2 lg:grid-cols-4">
+              {ledQuickActions.map((action) => {
+                const content = (
+                  <>
+                    <span
+                      className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
+                        action.primary
+                          ? "border-white/20 bg-white/12 text-white"
+                          : "border-slate-200 bg-slate-100 text-slate-600"
+                      }`}
+                    >
+                      <UiIcon name={action.icon} className="h-3 w-3" />
+                    </span>
+                    <span className="min-w-0 flex-1 truncate text-left">{action.label}</span>
+                    <span className={action.primary ? "text-white/80" : "text-slate-400"} aria-hidden="true">
+                      <svg viewBox="0 0 24 24" className="h-3 w-3 fill-none">
+                        <path d="m9 6 6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </span>
+                  </>
+                );
+
+                const className = `group inline-flex min-h-[36px] items-center gap-2 rounded-[16px] border px-3 py-2 text-[11.5px] font-semibold transition hover:-translate-y-0.5 ${
+                  action.primary
+                    ? "border-transparent bg-[linear-gradient(135deg,#11a7c9_0%,#169bd5_58%,#1f7ae0_100%)] text-white shadow-[0_10px_24px_rgba(14,165,233,0.28)]"
+                    : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50 hover:shadow-sm"
+                }`;
+
+                if (action.kind === "internal") {
+                  return (
+                    <Link key={action.label} prefetch={false} href={action.href} className={className}>
+                      {content}
+                    </Link>
+                  );
+                }
+
+                return (
+                  <a
+                    key={action.label}
+                    href={action.href}
+                    className={className}
+                    target={action.kind === "external" ? "_blank" : undefined}
+                    rel={action.kind === "external" ? "noreferrer" : undefined}
+                  >
+                    {content}
+                  </a>
+                );
+              })}
+            </div>
+
+            <div className="mt-3 rounded-[20px] border border-slate-200 bg-white p-3 md:p-3.5">
+              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <h2 className="text-[15px] font-extrabold text-slate-900 md:text-[16px]">
+                  Explore LED Display Categories & Related Services
+                </h2>
+                <span className="inline-flex w-fit items-center rounded-full border border-cyan-200 bg-cyan-50 px-2.5 py-1 text-[10px] font-semibold text-cyan-700">
+                  Quick Links
+                </span>
+              </div>
+
+              <div className="mt-3 grid gap-1.5 md:grid-cols-4 xl:grid-cols-8">
+                {ledCategoryQuickLinks.map((item) => (
+                  <Link
+                    key={item.href}
+                    prefetch={false}
+                    href={item.href}
+                    className="group inline-flex items-center gap-1.5 rounded-[16px] border border-slate-200 bg-white px-2.5 py-2 text-[10.5px] font-semibold text-slate-700 transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 hover:shadow-sm"
+                  >
+                    <span className={`inline-flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-full border ${item.tone}`}>
+                      <UiIcon name={item.icon} className="h-3 w-3" />
+                    </span>
+                    <span className="min-w-0 flex-1 truncate">{item.label}</span>
+                    <span className="text-slate-400 transition group-hover:translate-x-0.5 group-hover:text-slate-600" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" className="h-3 w-3 fill-none">
+                        <path d="m9 6 6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : null}
         {!ledOnly ? (
           <div className="mt-4">
             <Link
@@ -1506,7 +1628,7 @@ function ProductsPageContent({
 	            </div>
 	          </section>
 
-	          <section className="py-8">
+	          <section id="led-price-table" className="scroll-mt-24 py-8">
 	            <h2 className="text-2xl font-bold text-slate-900">
 	              LED Display Price List in Bangladesh
 	            </h2>
@@ -2391,7 +2513,7 @@ function ProductsPageContent({
             </div>
           </section>
 
-          <section className="pt-8 pb-[25px]">
+          <section id="led-faq" className="scroll-mt-24 pt-8 pb-[25px]">
             <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
               <UiIcon name="faq" className="h-6 w-6 text-slate-800" />
               <span>Frequently Asked Questions About LED Display</span>
