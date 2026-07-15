@@ -388,34 +388,34 @@ export default function InteractiveFlatPanelPage() {
       </section>
 
       <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
-        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-          <div>
+        <div className="grid gap-2.5">
+          <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
             <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">
               Interactive Flat Panel in Bangladesh: What to Compare
             </h2>
-            <p className="mt-2 text-slate-600 leading-7 text-justify">
-              If you are comparing interactive flat panel price in Bangladesh, focus on project fit - not just a single unit price.
-              Two panels with the same screen size can perform very differently in daily smart classroom or meeting-room use depending on
-              touch response, Android performance, glass quality, OPS PC readiness, accessories and after-sales support.
-            </p>
+            <div className="mt-1 flex flex-nowrap items-center gap-2 md:mt-0 md:shrink-0">
+              <Link
+                href="/contact"
+                className="inline-flex min-h-[42px] items-center justify-center whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+              >
+                Get a BOQ-ready quote
+              </Link>
+              <a
+                href={wa}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex min-h-[42px] items-center justify-center whitespace-nowrap rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md"
+              >
+                WhatsApp quick help
+              </a>
+            </div>
           </div>
-          <div className="mt-2 flex flex-wrap gap-2 md:mt-0">
-            <Link
-              href="/contact"
-              className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-              style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-            >
-              Get a BOQ-ready quote
-            </Link>
-            <a
-              href={wa}
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-xl bg-emerald-600 px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md"
-            >
-              WhatsApp quick help
-            </a>
-          </div>
+          <p className="text-[14px] leading-6 tracking-[-0.01em] text-slate-600 md:text-[14px]">
+            If you are comparing interactive flat panel price in Bangladesh, focus on project fit - not just a single unit price.
+            Two panels with the same screen size can perform very differently in daily smart classroom or meeting-room use depending on
+            touch response, Android performance, glass quality, OPS PC readiness, accessories and after-sales{"\u00A0"}support.
+          </p>
         </div>
 
         <div className="mt-6 grid gap-4 lg:grid-cols-2">
@@ -887,4 +887,3 @@ export default function InteractiveFlatPanelPage() {
     </div>
   );
 }
-
