@@ -58,7 +58,7 @@ function buildAccessoryDescription(product: (typeof ledAccessoriesCatalog)[numbe
   return [
     product.subtitle,
     "This is a practical accessory used in LED cabinet installation, servicing, or event workflow. Choosing the correct variant helps reduce downtime and prevents avoidable wiring or compatibility issues.",
-    highlight ? `Quick highlights ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ${highlight}.` : "",
+    highlight ? `Quick highlights - ${highlight}.` : "",
     "Share your cabinet/module details (scan/HUB ecosystem, connector type, quantity, and usage scenario) for accurate recommendation and quotation support in Bangladesh.",
   ]
     .filter(Boolean)

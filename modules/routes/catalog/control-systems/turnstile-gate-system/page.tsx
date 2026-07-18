@@ -308,7 +308,7 @@ const deliveryProcess = [
   {
     step: "02",
     title: "Model + access method selection",
-    desc: "Tripod, flap, swing or full-heightÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âplus RFID/face/fingerprint/QR based on flow and security needs.",
+ desc: "Tripod, flap, swing or full-height-plus RFID/face/fingerprint/QR based on flow and security needs.",
   },
   {
     step: "03",
@@ -343,7 +343,7 @@ const faqs = [
   },
   {
     q: "Can it integrate with attendance software?",
-    a: "YesÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âentry and exit logs can be used for attendance reporting and exports. Integration scope depends on your chosen access devices and reporting needs.",
+ a: "Yes-entry and exit logs can be used for attendance reporting and exports. Integration scope depends on your chosen access devices and reporting needs.",
   },
   {
     q: "What access methods can I use?",
@@ -434,39 +434,39 @@ const turnstileTypes = [
 const legacyTurnstilePriceRows = [
   {
     type: "Tripod Turnstile Gate",
-    price: "ÃƒÂ Ã‚Â§Ã‚Â³350,000 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ ÃƒÂ Ã‚Â§Ã‚Â³480,000",
+    price: "350,000 - Tk 480,000",
   },
   {
     type: "Waist-High Turnstile Gate",
-    price: "ÃƒÂ Ã‚Â§Ã‚Â³295,000 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ ÃƒÂ Ã‚Â§Ã‚Â³620,000",
+    price: "295,000 - Tk 620,000",
   },
   {
     type: "Swing Turnstile Gate",
-    price: "ÃƒÂ Ã‚Â§Ã‚Â³340,000 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ ÃƒÂ Ã‚Â§Ã‚Â³495,000",
+    price: "340,000 - Tk 495,000",
   },
   {
     type: "Flap Barrier Turnstile Gate",
-    price: "ÃƒÂ Ã‚Â§Ã‚Â³520,000 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ ÃƒÂ Ã‚Â§Ã‚Â³850,000",
+    price: "520,000 - Tk 850,000",
   },
   {
     type: "Speed Gate Turnstile",
-    price: "ÃƒÂ Ã‚Â§Ã‚Â³550,000 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ ÃƒÂ Ã‚Â§Ã‚Â³780,000",
+    price: "550,000 - Tk 780,000",
   },
   {
     type: "Full Height Turnstile Gate",
-    price: "ÃƒÂ Ã‚Â§Ã‚Â³750,000 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ ÃƒÂ Ã‚Â§Ã‚Â³1,100,000",
+    price: "750,000 - Tk 1,100,000",
   },
   {
     type: "AI Face Recognition Turnstile Gate",
-    price: "ÃƒÂ Ã‚Â§Ã‚Â³650,000 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ ÃƒÂ Ã‚Â§Ã‚Â³1,200,000",
+    price: "650,000 - Tk 1,200,000",
   },
   {
     type: "RFID Access Control Turnstile System",
-    price: "ÃƒÂ Ã‚Â§Ã‚Â³380,000 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ ÃƒÂ Ã‚Â§Ã‚Â³650,000",
+    price: "380,000 - Tk 650,000",
   },
   {
     type: "QR Code / Ticketing Turnstile System",
-    price: "ÃƒÂ Ã‚Â§Ã‚Â³480,000 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ ÃƒÂ Ã‚Â§Ã‚Â³900,000",
+    price: "480,000 - Tk 900,000",
   },
 ];
 
@@ -568,7 +568,7 @@ export default function TurnstileGateSystemPage() {
 
             <p className="w-full text-justify leading-7 text-white/85">
               Install a reliable turnstile gate solution for secure entry control and optional attendance reporting. We
-              provide lane planning, wiring, controller integration, software configuration and trainingÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âwith RFID,
+ provide lane planning, wiring, controller integration, software configuration and training-with RFID,
               fingerprint, face recognition and QR access options.
             </p>
 
@@ -1131,7 +1131,7 @@ export default function TurnstileGateSystemPage() {
                   className="flex h-5 w-5 items-center justify-center rounded-full text-xs font-extrabold text-white"
                   style={{ background: "#f97316" }}
                 >
-                  ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“
+                  ✓
                 </span>
                 <span>{item}</span>
               </li>
@@ -1192,7 +1192,7 @@ export default function TurnstileGateSystemPage() {
                 {p.items.map((x) => (
                   <li key={`${p.title}-${x}`} className="flex gap-2">
                     <span aria-hidden="true" style={{ color: BRAND.maroon }}>
-                      ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢
+                      &bull;
                     </span>
                     <span>{x}</span>
                   </li>

@@ -52,7 +52,7 @@ const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "Is 100V line best for multi-speaker buildings?",
-    a: "For offices, schools, factories and large sites with many speakers, a 100V line system is often the most practicalâ€”long cable runs stay stable and zoning is easier. For smaller rooms, low-impedance setups can also work.",
+ a: "For offices, schools, factories and large sites with many speakers, a 100V line system is often the most practical-long cable runs stay stable and zoning is easier. For smaller rooms, low-impedance setups can also work.",
   },
   {
     q: "Can I do paging + background music (BGM) together?",
@@ -68,11 +68,11 @@ const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "How do I get a BOQ and quotation quickly?",
-    a: "Send your site details (location, floor count, approximate area, number of rooms, and where announcements are needed). Weâ€™ll propose a practical BOQ with system type, key components and estimated installation scopeâ€”then finalize after confirmation.",
+ a: "Send your site details (location, floor count, approximate area, number of rooms, and where announcements are needed). We'll propose a practical BOQ with system type, key components and estimated installation scope-then finalize after confirmation.",
   },
   {
     q: "Do you provide installation and after-sales support?",
-    a: "Yes. We support cable routing guidance, rack wiring, testing, basic handover and service supportâ€”so the system stays stable for daily operation.",
+ a: "Yes. We support cable routing guidance, rack wiring, testing, basic handover and service support-so the system stays stable for daily operation.",
   },
   {
     q: "Can a PA system be integrated with fire alarm or emergency triggers?",
@@ -1459,7 +1459,7 @@ export default function PaSystemPage() {
             Benefits of a PA Sound System
           </h2>
           <p className="mt-3 leading-7 text-slate-600">
-            The right PA system improves communication, reduces confusion, and helps teams run daily operations smoothlyâ€”from
+ The right PA system improves communication, reduces confusion, and helps teams run daily operations smoothly-from
             announcements to emergency paging.
           </p>
         </div>
@@ -1468,7 +1468,7 @@ export default function PaSystemPage() {
           {[
             {
               t: "Clear communication at scale",
-              d: "Deliver announcements across rooms, floors, or a campus with consistent volume and clarityâ€”no more relaying messages person-to-person.",
+ d: "Deliver announcements across rooms, floors, or a campus with consistent volume and clarity-no more relaying messages person-to-person.",
             },
             {
               t: "Better safety and faster response",
@@ -1480,7 +1480,7 @@ export default function PaSystemPage() {
             },
             {
               t: "More efficient daily operations",
-              d: "Routine messagesâ€”shift calls, queue guidance, closing noticesâ€”become predictable and easy for staff to manage.",
+ d: "Routine messages-shift calls, queue guidance, closing notices-become predictable and easy for staff to manage.",
             },
             {
               t: "Professional customer experience",
@@ -1488,7 +1488,7 @@ export default function PaSystemPage() {
             },
             {
               t: "Scalable for future expansion",
-              d: "A planned design can add zones, speakers, or buildings later without rebuilding the entire systemâ€”saving time and cost.",
+ d: "A planned design can add zones, speakers, or buildings later without rebuilding the entire system-saving time and cost.",
             },
           ].map((x) => (
             <div

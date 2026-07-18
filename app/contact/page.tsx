@@ -99,7 +99,7 @@ export default function AboutPage() {
 
             {/* keep same content; make paragraph full width like receiving card */}
             <p className="mt-1 w-full text-base leading-7 text-slate-600 text-justify">
-              {BRAND_NAME} provides LED display sales, installation and support across Bangladeshâ€”indoor/outdoor
+ {BRAND_NAME} provides LED display sales, installation and support across Bangladesh-indoor/outdoor
               screens for signage, events, retail and corporate solutions. Based on your requirements, our skilled team will contact you as soon as possible.
             </p>
           </div>
@@ -108,9 +108,9 @@ export default function AboutPage() {
         {/* CONTACT DETAILS + MAP (same section/content) */}
         <section className="mt-8 rounded-3xl bg-slate-50 p-7 md:p-10">
           <SectionTitle
-            icon="ðŸ“"
+ icon=""
             title="Contact & Location"
-            desc="For quotation, site survey or supportâ€”reach us anytime. Share your location, indoor/outdoor and approximate size for faster guidance."
+ desc="For quotation, site survey or support-reach us anytime. Share your location, indoor/outdoor and approximate size for faster guidance."
           />
 
           <div className="mt-8 grid gap-8 lg:grid-cols-3">
@@ -216,9 +216,9 @@ export default function AboutPage() {
         <section className="mt-8 rounded-3xl bg-slate-50 p-7 md:p-10">
           <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
             <div className="min-w-0">
-              <h3 className="text-2xl font-bold text-slate-900">Letâ€™s build your LED display project</h3>
+ <h3 className="text-2xl font-bold text-slate-900">Let's build your LED display project</h3>
               <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
-                Share your location and screen sizeâ€”weâ€™ll suggest the best setup and send a quotation with clear scope and
+ Share your location and screen size-we'll suggest the best setup and send a quotation with clear scope and
                 timeline.
               </p>
             </div>

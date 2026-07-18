@@ -13,12 +13,12 @@ import { absoluteUrl, socialImageUrl } from "@/lib/seo";
 export const metadata: Metadata = {
   title: { absolute: "Outdoor LED Display Price in Bangladesh | Advertising Screen" },
   description:
-    "Outdoor LED display price in BangladeshÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âwaterproof P2.5ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“P10 setup for billboards, shop signage, roof, roadside screens, clear visibility and high brightness.",
+    "Outdoor LED display price in Bangladesh - waterproof P2.5-P10 setup for billboards, shop signage, roof, roadside screens, clear visibility, and high brightness.",
   alternates: { canonical: absoluteUrl("/led-display/outdoor/") },
   openGraph: {
     title: "Outdoor LED Display Price in Bangladesh | Advertising Screen",
     description:
-      "Outdoor LED display price in BangladeshÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âwaterproof P2.5ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“P10 setup for billboards, shop signage, roof, roadside screens, clear visibility and high brightness.",
+      "Outdoor LED display price in Bangladesh - waterproof P2.5-P10 setup for billboards, shop signage, roof, roadside screens, clear visibility, and high brightness.",
     url: absoluteUrl("/led-display/outdoor/"),
     type: "website",
     images: [
@@ -132,17 +132,17 @@ export default function OutdoorProductsPage() {
     { name: "Renex Digital", src: "/images/brands/renex-exact.webp", href: "https://renex.com.bd/" },
   ];
 
-  // ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Price table (photo theke neya)
+ // ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Price table (photo theke neya)
   const outdoorPriceByPitch: { pitch: number; range: string }[] = [
-    { pitch: 2.5, range: "6,600 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 16,500" },
-    { pitch: 3.0, range: "6,100 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 10,800" },
-    { pitch: 3.076, range: "4,200 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 4,950" },
-    { pitch: 4.0, range: "8,643 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 10,300" },
-    { pitch: 5.0, range: "6,102 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 7,700" },
-    { pitch: 6.0, range: "10,100 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 11,900" },
-    { pitch: 6.67, range: "6,002 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 7,300" },
-    { pitch: 8.0, range: "14,601 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 16,300" },
-    { pitch: 10.0, range: "2,544 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 5,900" },
+ { pitch: 2.5, range: "6,600 - 16,500" },
+ { pitch: 3.0, range: "6,100 - 10,800" },
+ { pitch: 3.076, range: "4,200 - 4,950" },
+ { pitch: 4.0, range: "8,643 - 10,300" },
+ { pitch: 5.0, range: "6,102 - 7,700" },
+ { pitch: 6.0, range: "10,100 - 11,900" },
+ { pitch: 6.67, range: "6,002 - 7,300" },
+ { pitch: 8.0, range: "14,601 - 16,300" },
+ { pitch: 10.0, range: "2,544 - 5,900" },
   ];
 
   function getApproxOutdoorPrice(pitch: number | null): string {
@@ -221,7 +221,7 @@ export default function OutdoorProductsPage() {
           </div>
 
           <div className="mt-4 hidden flex-wrap gap-2 text-xs font-semibold text-slate-700 md:flex">
-            {["ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Daylight visibility", "ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Weatherproof planning", "ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Surge protection (SPD)", "ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Installation & support"].map(
+            {["Daylight visibility", "Weatherproof planning", "Surge protection (SPD)", "Installation and support"].map(
               (t) => (
                 <span
                   key={t}
@@ -283,7 +283,7 @@ export default function OutdoorProductsPage() {
             className="inline-flex items-center gap-2 rounded-full border bg-slate-50 px-4 py-2 text-xs font-bold text-slate-700"
             style={{ borderColor: `${BRAND.maroon}14` }}
           >
-            ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Trusted Technology Partners
+            Trusted Technology Partners
           </span>
         </div>
 
@@ -402,22 +402,22 @@ export default function OutdoorProductsPage() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {[
             {
-              i: "ÃƒÂ¢Ã‹Å“Ã¢â€šÂ¬ÃƒÂ¯Ã‚Â¸Ã‚Â",
+ i: "",
               t: "High Brightness Visibility",
               d: "Clear and readable content under direct sunlight for roadside and open-air viewing.",
             },
             {
-              i: "ÃƒÂ°Ã…Â¸Ã…â€™Ã‚Â¦ÃƒÂ¯Ã‚Â¸Ã‚Â",
+ i: "",
               t: "Weather-Resistant Build",
               d: "Outdoor-ready cabinet design with better resistance to rain, dust, and humidity conditions.",
             },
             {
-              i: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â­",
+ i: "",
               t: "Long-Distance Readability",
               d: "Optimized pixel pitch and screen scaling for larger audience zones and far-view impact.",
             },
             {
-              i: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â",
+ i: "",
               t: "Stable Power & Protection",
               d: "Reliable operation with proper grounding, surge protection, and balanced power distribution.",
             },
@@ -668,15 +668,15 @@ export default function OutdoorProductsPage() {
 
       {/* Consultation */}
       <Section
-        title="ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â¾ Outdoor LED Display Project Consultation in Bangladesh"
-        subtitle="Share your location, viewing distance, and target screen sizeÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âthen we recommend pitch, controller, structure, and BOQ."
+ title="Outdoor LED Display Project Consultation in Bangladesh"
+ subtitle="Share your location, viewing distance, and target screen size-then we recommend pitch, controller, structure, and BOQ."
       >
         <div className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
           <ul className="grid gap-3 text-sm text-slate-700 md:grid-cols-2">
             {[
               "Location + environment: rooftop / roadside / market / highway",
               "Viewing distance (near & far) + audience angle",
-              "Target screen size (ft) or wall size (WÃƒÆ’Ã¢â‚¬â€H)",
+ "Target screen size (ft) or wall size (W x H)",
               "Content source: live HDMI / scheduled playback / remote control",
               "Power: single/three phase + backup (IPS/Generator)",
               "Weatherproof structure + service access (front/rear)",
@@ -711,14 +711,14 @@ export default function OutdoorProductsPage() {
 
       {/* Key outdoor checklist */}
       <Section
-        title="ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â Outdoor LED Installation Checklist (Weather + Safety)"
-        subtitle="Outdoor screens fail mostly due to power/surge, water ingress, and weak structureÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âuse this checklist to avoid common mistakes."
+ title="Outdoor LED Installation Checklist (Weather + Safety)"
+ subtitle="Outdoor screens fail mostly due to power/surge, water ingress, and weak structure-use this checklist to avoid common mistakes."
       >
         <div className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
           <div className="grid gap-4 md:grid-cols-2">
             {[
               {
-                t: "ÃƒÂ°Ã…Â¸Ã…â€™Ã‚Â§ÃƒÂ¯Ã‚Â¸Ã‚Â Weatherproof build",
+ t: "Weatherproof build",
                 items: [
                   "Proper cabinet sealing + drainage route",
                   "Outdoor-rated connectors & cable glands",
@@ -727,11 +727,11 @@ export default function OutdoorProductsPage() {
                 ],
               },
               {
-                t: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ…â€™ Power & protection",
+ t: "Power & protection",
                 items: ["Earthing/grounding", "Surge protection device (SPD)", "MCB/DB box", "Cable gauge by load"],
               },
               {
-                t: "ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¡ Signal & control",
+ t: "Signal & control",
                 items: [
                   "CAT6/fiber (distance dependent)",
                   "Proper sender/processor selection",
@@ -739,7 +739,7 @@ export default function OutdoorProductsPage() {
                   "Stable content playback system",
                 ],
               },
-              { t: "ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Commissioning", items: ["Module checking", "Mapping", "Brightness tuning", "Burn-in + final inspection"] },
+ { t: "Commissioning", items: ["Module checking", "Mapping", "Brightness tuning", "Burn-in + final inspection"] },
             ].map((b) => (
               <div key={b.t} className="rounded-2xl border bg-white p-5" style={{ borderColor: `${BRAND.maroon}12` }}>
                 <div className="text-sm font-extrabold text-slate-900">{b.t}</div>
@@ -758,32 +758,32 @@ export default function OutdoorProductsPage() {
       </Section>
 
       <Section
-        title="ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â Outdoor LED Pixel Pitch Guide for Bangladesh (P2.5 to P10)"
+ title="Outdoor LED Pixel Pitch Guide for Bangladesh (P2.5 to P10)"
         subtitle="If you are comparing outdoor LED display screen price in Bangladesh, pixel pitch and viewing distance should be selected together for better clarity, better budget control, and long-term performance."
       >
         <div className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
           <div className="grid gap-4 md:grid-cols-2">
             {[
               {
-                i: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â£ÃƒÂ¯Ã‚Â¸Ã‚Â",
+ i: "",
                 t: "Close roadside branding (P2.5-P4)",
                 d: "Best for shop frontage, market roads, and urban traffic where viewers stay relatively near the screen.",
                 bullets: ["Typical viewing: 3m to 10m", "Sharper text/logo visibility", "Good for detailed promotional content"],
               },
               {
-                i: "ÃƒÂ°Ã…Â¸Ã‚ÂÃ¢â€žÂ¢ÃƒÂ¯Ã‚Â¸Ã‚Â",
+ i: "",
                 t: "Mid-range city visibility (P5-P6.67)",
                 d: "Balanced option for commercial facades and medium-distance public communication in busy city zones.",
                 bullets: ["Typical viewing: 8m to 25m", "Balanced clarity vs cost", "Useful for mixed text + motion graphics"],
               },
               {
-                i: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â£ÃƒÂ¯Ã‚Â¸Ã‚Â",
+ i: "",
                 t: "Long-distance highways (P8-P10)",
                 d: "Suitable for highways, elevated roads, and large-format outdoor LED billboard communication.",
                 bullets: ["Typical viewing: 20m+", "Strong readability from distance", "Efficient for large ad surfaces"],
               },
               {
-                i: "ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦",
+ i: "",
                 t: "Selection checklist before purchase",
                 d: "For accurate outdoor LED display module price and model recommendation, confirm these key inputs first.",
                 bullets: ["Screen size (W x H)", "Installation height and traffic speed", "Ambient light and operating hours"],
@@ -810,25 +810,25 @@ export default function OutdoorProductsPage() {
       </Section>
 
       <Section
-        title="ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â§ Outdoor LED Display Maintenance and Performance Tips"
+ title="Outdoor LED Display Maintenance and Performance Tips"
         subtitle="A weatherproof outdoor LED display can deliver stable output for years when power quality, ventilation, and periodic service are managed correctly."
       >
         <CardGrid
           items={[
             {
-              i: "ÃƒÂ°Ã…Â¸Ã…â€™Ã¢â‚¬â€",
+ i: "",
               t: "Prevent brightness drop",
               d: "Use proper brightness scheduling (day/night) and avoid running at maximum brightness all the time.",
               bullets: ["Auto brightness sensor setup", "Daypart brightness profile", "Seasonal calibration checks"],
             },
             {
-              i: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â",
+ i: "",
               t: "Protect against rain, dust, and surge",
               d: "Most outdoor failures in Bangladesh come from water ingress and electrical surges, not from modules alone.",
               bullets: ["Seal check before monsoon", "Regular SPD/earthing inspection", "Connector and cable gland review"],
             },
             {
-              i: "ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â°",
+ i: "",
               t: "Plan preventive maintenance",
               d: "A fixed maintenance cycle keeps outdoor LED display boards stable and reduces emergency repair cost.",
               bullets: ["Monthly visual inspection", "Quarterly cabinet health check", "Spare module + PSU backup stock"],
@@ -886,9 +886,9 @@ export default function OutdoorProductsPage() {
         </div>
       </Section>
 
-      {/* ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ ONLY THIS SECTION CHANGED: Outdoor LED Display Price Per Square Feet in Bangladesh */}
+ {/* ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ ONLY THIS SECTION CHANGED: Outdoor LED Display Price Per Square Feet in Bangladesh */}
       <Section
-        title="ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â° Outdoor LED Display Price Per Square Feet in Bangladesh"
+ title="Outdoor LED Display Price Per Square Feet in Bangladesh"
         subtitle="Indicative pricing by pixel pitch for quick comparison. For BOQ-based pricing, please share your required screen size and installation location."
       >
         <div className="overflow-hidden rounded-3xl border" style={{ borderColor: `${BRAND.maroon}18` }}>
@@ -925,7 +925,7 @@ export default function OutdoorProductsPage() {
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-slate-700">
-          {["Tip: Smaller pitch = higher cost", "Outdoor: SPD + grounding recommended", "For exact BOQ: share WÃƒÆ’Ã¢â‚¬â€H + location"].map(
+ {["Tip: Smaller pitch = higher cost", "Outdoor: SPD + grounding recommended", "For exact BOQ: share W x H + location"].map(
             (t) => (
               <span
                 key={t}
@@ -941,8 +941,8 @@ export default function OutdoorProductsPage() {
 
       {/* Explore solutions */}
       <Section
-        title="ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â­ Explore LED Display Categories"
-        subtitle="Compare indoor, outdoor and rental optionsÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âthen choose the best category for your project."
+ title="Explore LED Display Categories"
+ subtitle="Compare indoor, outdoor and rental options-then choose the best category for your project."
       >
         <div className="grid gap-4 md:grid-cols-3">
           {[
@@ -1021,7 +1021,7 @@ export default function OutdoorProductsPage() {
 
       {/* FAQs */}
       <Section
-        title="ÃƒÂ¢Ã‚ÂÃ¢â‚¬Å“ FAQs About Outdoor LED Display in Bangladesh"
+ title="FAQs About Outdoor LED Display in Bangladesh"
         subtitle="Common questions before ordering an outdoor LED screen / billboard project."
       >
         <FaqAccordion
@@ -1038,7 +1038,7 @@ export default function OutdoorProductsPage() {
             },
             {
               q: "How do you make an outdoor LED screen weatherproof?",
-              a: "Weatherproofing includes cabinet sealing, drainage planning, outdoor-rated connectors, correct cable glands, and safe service accessÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âplus proper structure design and ventilation.",
+ a: "Weatherproofing includes cabinet sealing, drainage planning, outdoor-rated connectors, correct cable glands, and safe service access-plus proper structure design and ventilation.",
             },
             {
               q: "What affects outdoor LED display price per sq ft?",

@@ -151,7 +151,7 @@ function subtitleToBullets(subtitle: string): string[] {
   if (!normalized) return [];
 
   const primary = normalized
-    .split(/[ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢|ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â.;]/g)
+    .split(/[•|–—.;]/g)
     .map((x) => x.trim())
     .filter((x) => x.length >= 4);
 

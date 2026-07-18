@@ -117,16 +117,16 @@ export default function IndoorProductsPage() {
 
   // Price table (approx) mapping by pixel pitch (mm)
   const priceByPitch: { pitch: number; range: string }[] = [
-    { pitch: 1.25, range: "10,600 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 18,200" },
-    { pitch: 1.53, range: "9,600 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 20,300" },
-    { pitch: 1.667, range: "9,748 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 17,700" },
-    { pitch: 1.86, range: "8,600 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 17,000" },
-    { pitch: 2.0, range: "7,599 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 13,450" },
-    { pitch: 2.5, range: "6,600 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 12,250" },
-    { pitch: 3.0, range: "5,600 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 11,100" },
-    { pitch: 3.076, range: "4,600 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 11,650" },
-    { pitch: 4.0, range: "3,600 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 8,750" },
-    { pitch: 5.0, range: "6,205 ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ 7,950" },
+ { pitch: 1.25, range: "10,600 - 18,200" },
+ { pitch: 1.53, range: "9,600 - 20,300" },
+ { pitch: 1.667, range: "9,748 - 17,700" },
+ { pitch: 1.86, range: "8,600 - 17,000" },
+ { pitch: 2.0, range: "7,599 - 13,450" },
+ { pitch: 2.5, range: "6,600 - 12,250" },
+ { pitch: 3.0, range: "5,600 - 11,100" },
+ { pitch: 3.076, range: "4,600 - 11,650" },
+ { pitch: 4.0, range: "3,600 - 8,750" },
+ { pitch: 5.0, range: "6,205 - 7,950" },
   ];
 
   function getApproxPrice(pitch: number | null): string {
@@ -207,7 +207,7 @@ export default function IndoorProductsPage() {
           </div>
 
           <div className="mt-4 hidden flex-wrap gap-2 text-xs font-semibold text-slate-700 md:flex">
-            {["ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Pixel pitch guidance", "ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Professional installation", "ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Calibration & training", "ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ After-sales support"].map(
+            {["Pixel pitch guidance", "Professional installation", "Calibration and training", "After-sales support"].map(
               (t) => (
                 <span
                   key={t}
@@ -262,22 +262,22 @@ export default function IndoorProductsPage() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {[
             {
-              i: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ…Â½",
+ i: "",
               t: "Fine Pixel Pitch Clarity",
               d: "High-definition visuals for near viewing with clear text, charts, and product media.",
             },
             {
-              i: "ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¥",
+ i: "",
               t: "Camera-Friendly Refresh",
               d: "Stable refresh and processing reduce flicker in live camera, studio, and hybrid event use.",
             },
             {
-              i: "ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¨",
+ i: "",
               t: "Color & Brightness Control",
               d: "Balanced indoor brightness and calibrated color output improve comfort and brand consistency.",
             },
             {
-              i: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â",
+ i: "",
               t: "Efficient, Serviceable Design",
               d: "Reliable power architecture, cleaner heat handling, and easier maintenance for long-term uptime.",
             },
@@ -390,14 +390,14 @@ export default function IndoorProductsPage() {
 
       {/* Consultation */}
       <Section
-        title="ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â¾ Indoor LED Display Project Consultation in Bangladesh"
-        subtitle="Share your room size, viewing distance, and content typeÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âthen we recommend pixel pitch, screen size, processor, structure, and BOQ."
+ title="Indoor LED Display Project Consultation in Bangladesh"
+ subtitle="Share your room size, viewing distance, and content type-then we recommend pixel pitch, screen size, processor, structure, and BOQ."
       >
         <div className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
           <ul className="space-y-3 text-sm text-slate-700">
             {[
               "Room size + viewing distance (front row to far row)",
-              "Target screen size (ft) or wall size (WÃƒÆ’Ã¢â‚¬â€H)",
+ "Target screen size (ft) or wall size (W x H)",
               "Content type: text-heavy / video / live camera / dashboard",
               "Install method: wall mount / structure / hanging (if stage)",
               "Power source: single/three phase + backup (IPS/Generator)",
@@ -414,7 +414,7 @@ export default function IndoorProductsPage() {
 
       {/* Indoor vs Outdoor */}
       <Section
-        title="ÃƒÂ¢Ã…Â¡Ã¢â‚¬â€œÃƒÂ¯Ã‚Â¸Ã‚Â Indoor vs Outdoor LED Display Quick Comparison"
+ title="Indoor vs Outdoor LED Display Quick Comparison"
         subtitle="A simple comparison to avoid wrong selection and ensure the right build for your environment."
       >
         <div className="overflow-hidden rounded-3xl border" style={{ borderColor: `${BRAND.maroon}12` }}>
@@ -442,23 +442,23 @@ export default function IndoorProductsPage() {
 
       {/* Technical specs explained */}
       <Section
-        title="ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â  Indoor LED Display Technical Specifications Explained"
+ title="Indoor LED Display Technical Specifications Explained"
         subtitle="Understanding specs helps you compare models and choose the right ecosystem."
       >
         <CardGrid
           items={[
             {
-              t: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â Pixel Pitch",
+ t: "Pixel Pitch",
               d: "Smaller pitch = higher resolution and better close viewing. Choose by viewing distance and content detail.",
               bullets: ["Close viewing: smaller pitch", "Halls: bigger pitch", "Budget vs clarity balance"],
             },
             {
-              t: "ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¬ Refresh Rate",
-              d: "Higher refresh is better for camera/live videoÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âreduces flicker lines in recording.",
+ t: "Refresh Rate",
+ d: "Higher refresh is better for camera/live video-reduces flicker lines in recording.",
               bullets: ["Stage/studio: high refresh", "Clean signal cabling", "Processor quality matters"],
             },
             {
-              t: "ÃƒÂ°Ã…Â¸Ã…â€™Ã¢â‚¬â€ Brightness & Grayscale",
+ t: "Brightness & Grayscale",
               d: "Brightness must be comfortable indoors; grayscale affects smooth gradients and professional look.",
               bullets: ["Calibration improves uniformity", "Quality PSU helps stability", "Avoid over-bright setup"],
             },
@@ -542,8 +542,8 @@ export default function IndoorProductsPage() {
 
       {/* Xplore solutions */}
       <Section
-        title="ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â­ Explore High-Performance LED Display in Bangladesh"
-        subtitle="From indoor video walls to outdoor branding and rental event screensÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âexplore the right category for your project."
+ title="Explore High-Performance LED Display in Bangladesh"
+ subtitle="From indoor video walls to outdoor branding and rental event screens-explore the right category for your project."
       >
         <div className="grid gap-4 md:grid-cols-3">
           {[
@@ -626,7 +626,7 @@ export default function IndoorProductsPage() {
 
       {/* Price per sq ft */}
       <Section
-        title="ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â° Indoor LED Display Price Per Square Feet"
+ title="Indoor LED Display Price Per Square Feet"
         subtitle="Indicative pricing by pixel pitch for quick comparison. For BOQ-based pricing, please share your required screen size and installation location."
       >
         <div className="overflow-hidden rounded-3xl border" style={{ borderColor: `${BRAND.maroon}18` }}>
@@ -663,7 +663,7 @@ export default function IndoorProductsPage() {
         </div>
 
         <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-slate-700">
-          {["Tip: Smaller pitch = higher cost", "Camera use: choose higher refresh", "For exact BOQ: share WÃƒÆ’Ã¢â‚¬â€H + site"].map(
+ {["Tip: Smaller pitch = higher cost", "Camera use: choose higher refresh", "For exact BOQ: share W x H + site"].map(
             (t) => (
               <span
                 key={t}
@@ -679,7 +679,7 @@ export default function IndoorProductsPage() {
 
       {/* How to choose */}
       <Section
-        title="ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Âº How to Choose the Right Digital LED Display in Bangladesh"
+ title="How to Choose the Right Digital LED Display in Bangladesh"
         subtitle="Follow these simple steps to pick the right pitch, size, and control system for your space."
       >
         <CardGrid
@@ -687,7 +687,7 @@ export default function IndoorProductsPage() {
             {
               t: "Step 1: Confirm viewing distance",
               d: "Near viewing needs fine pitch; halls can use larger pitch without losing readability.",
-              bullets: ["Close: P1.25ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“P1.86", "Balanced: P2ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“P2.5", "Distance: P3ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“P5"],
+              bullets: ["Close: P1.25-P1.86", "Balanced: P2-P2.5", "Distance: P3-P5"],
             },
             {
               t: "Step 2: Decide content type",
@@ -705,7 +705,7 @@ export default function IndoorProductsPage() {
 
       {/* Process */}
       <Section
-        title="ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬Å¾ End-to-End LED Display Solution Process"
+ title="End-to-End LED Display Solution Process"
         subtitle="A clear delivery process from recommendation to installation to long-term service."
       >
         <div className="grid gap-4 md:grid-cols-4">
@@ -743,7 +743,7 @@ export default function IndoorProductsPage() {
 
       {/* FAQs */}
       <Section
-        title="ÃƒÂ¢Ã‚ÂÃ¢â‚¬Å“ FAQs About LED Display Solution"
+ title="FAQs About LED Display Solution"
         subtitle="Practical answers to common questions before ordering an LED display project in Bangladesh."
       >
         <FaqAccordion

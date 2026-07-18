@@ -1333,7 +1333,7 @@ function ProductsPageContent({
                   </>
                 );
 
-                const className = `group inline-flex min-h-[36px] items-center gap-2 rounded-[16px] border px-3 py-2 text-[11.5px] font-semibold transition hover:-translate-y-0.5 ${
+                const className = `group ${action.primary ? "inline-flex" : "hidden md:inline-flex"} min-h-[36px] items-center gap-2 rounded-[16px] border px-3 py-2 text-[11.5px] font-semibold transition hover:-translate-y-0.5 ${
                   action.primary
                     ? "border-transparent bg-[linear-gradient(135deg,#11a7c9_0%,#169bd5_58%,#1f7ae0_100%)] text-white shadow-[0_10px_24px_rgba(14,165,233,0.28)]"
                     : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50 hover:shadow-sm"
@@ -1371,20 +1371,20 @@ function ProductsPageContent({
                 </span>
               </div>
 
-              <div className="mt-3 grid gap-1.5 md:grid-cols-4 xl:grid-cols-8">
+              <div className="mt-3 flex flex-nowrap gap-1.5 overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-4 md:overflow-visible md:pb-0 xl:grid-cols-8">
                 {ledCategoryQuickLinks.map((item) => (
                   <Link
                     key={item.href}
                     prefetch={false}
                     href={item.href}
-                    className="group inline-flex items-center gap-1.5 rounded-[16px] border border-slate-200 bg-white px-2.5 py-2 text-[10.5px] font-semibold text-slate-700 transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 hover:shadow-sm"
+                    className="group inline-flex min-w-[110px] shrink-0 items-center gap-1.5 rounded-[14px] border border-slate-200 bg-white px-2 py-1.5 text-[10px] font-semibold leading-tight text-slate-700 transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 hover:shadow-sm md:min-w-0 md:rounded-[16px] md:px-2.5 md:py-2 md:text-[10.5px]"
                   >
-                    <span className={`inline-flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-full border ${item.tone}`}>
-                      <UiIcon name={item.icon} className="h-3 w-3" />
+                    <span className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${item.tone} md:h-5.5 md:w-5.5`}>
+                      <UiIcon name={item.icon} className="h-2.5 w-2.5 md:h-3 md:w-3" />
                     </span>
                     <span className="min-w-0 flex-1 truncate">{item.label}</span>
                     <span className="text-slate-400 transition group-hover:translate-x-0.5 group-hover:text-slate-600" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" className="h-3 w-3 fill-none">
+                      <svg viewBox="0 0 24 24" className="h-2.5 w-2.5 fill-none md:h-3 md:w-3">
                         <path d="m9 6 6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </span>

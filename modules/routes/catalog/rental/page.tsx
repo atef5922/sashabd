@@ -115,7 +115,7 @@ const CardGrid = ({ items }: { items: { t: string; d: string; bullets?: string[]
 
 export default function RentalProductsPage() {
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
-  // ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Add one more rental product card locally (no change to productsCatalog needed)
+ // ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Add one more rental product card locally (no change to productsCatalog needed)
   const extra: ProductItem = {
     category: "rental",
     slug: "p3-91-rental-led-display",
@@ -151,7 +151,7 @@ export default function RentalProductsPage() {
 
   const base = [...rentalCatalog];
 
-  // ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ only push extra if slug not already present
+ // ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ only push extra if slug not already present
   const list: ProductItem[] = base.some((p) => p.slug === extra.slug) ? base : [...base, extra];
 
   const uniquePitches = Array.from(new Set(list.map(getPitchLabel))).sort((a, b) =>
@@ -233,8 +233,8 @@ export default function RentalProductsPage() {
           </a>
         </div>
 
-        <div className="mt-4 hidden flex-wrap gap-2 text-xs font-semibold text-slate-700 md:flex">
-          {["ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Quick lock cabinets", "ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Fast setup & dismantle", "ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Hanging or stacking", "ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Operator guidance"].map(
+          <div className="mt-4 hidden flex-wrap gap-2 text-xs font-semibold text-slate-700 md:flex">
+            {["Quick lock cabinets", "Fast setup and dismantle", "Hanging or stacking", "Operator guidance"].map(
             (t) => (
               <span
                 key={t}
@@ -273,7 +273,7 @@ export default function RentalProductsPage() {
       <section className="mt-8 bg-transparent p-0">
         <h2 className="hidden text-xl font-bold text-slate-900 md:block">Filter Rental LED Display Options</h2>
         <p className="mt-2 hidden text-sm text-slate-600 leading-7 md:block">
-          Quick navigation by pixel pitch and event type. (Visual filtering links onlyÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âno price/stock shown.)
+ Quick navigation by pixel pitch and event type. (Visual filtering links only-no price/stock shown.)
         </p>
 
         <div className="mt-4">
@@ -569,23 +569,23 @@ export default function RentalProductsPage() {
 
       {/* Applications */}
       <Section
-        title="ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¬ Rental LED Display Applications in Bangladesh"
+ title="Rental LED Display Applications in Bangladesh"
         subtitle="Rental cabinets are built for fast event setup where speed, safety, and visual impact matter."
       >
         <CardGrid
           items={[
             {
-              t: "ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â­ Stage backdrops",
+ t: "Stage backdrops",
               d: "Large background video walls for live programs, conferences, and indoor stages.",
               bullets: ["Quick lock system", "Clean mapping", "Camera-friendly refresh (setup dependent)"],
             },
             {
-              t: "ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â Weddings & social events",
+ t: "Weddings & social events",
               d: "Holud, wedding reception, brand photo zones, and event highlights.",
               bullets: ["Vivid visuals", "Fast setup/dismantle", "Clean cabling & safe edges"],
             },
             {
-              t: "ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¤ Concerts & live shows",
+ t: "Concerts & live shows",
               d: "High-impact visuals, IMAG style screens, and dynamic content for performers.",
               bullets: ["Hanging/stacking options", "Processor + camera planning", "On-site operator support"],
             },
@@ -595,14 +595,14 @@ export default function RentalProductsPage() {
 
       {/* Setup checklist */}
       <Section
-        title="ÃƒÂ¢Ã…Â¡Ã‚Â¡ Fast Setup Checklist (Rental LED Screen)"
+ title="Fast Setup Checklist (Rental LED Screen)"
         subtitle="A simple checklist used by event teams to avoid common issues during live programs."
       >
         <div className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
           <div className="grid gap-4 md:grid-cols-2">
             {[
               {
-                t: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â Structure & safety",
+ t: "Structure & safety",
                 items: [
                   "Hanging points / truss load check",
                   "Ground stacking base leveling",
@@ -611,15 +611,15 @@ export default function RentalProductsPage() {
                 ],
               },
               {
-                t: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ…â€™ Power planning",
+ t: "Power planning",
                 items: ["Load estimate (W) & DB/MCB", "Proper earthing", "Backup power (IPS/Generator)", "Stable PSU"],
               },
               {
-                t: "ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¡ Signal & mapping",
+ t: "Signal & mapping",
                 items: ["Sender/controller setup", "Correct mapping order", "Spare data cable ready", "Test patterns"],
               },
               {
-                t: "ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Show readiness",
+ t: "Show readiness",
                 items: ["Brightness tuning", "Content playback test", "Burn-in before show", "Operator briefing"],
               },
             ].map((b) => (
@@ -659,23 +659,23 @@ export default function RentalProductsPage() {
 
       {/* Price drivers */}
       <Section
-        title="ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â° Rental LED Display Cost Drivers in Bangladesh"
-        subtitle="Even if you donÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢t show price on the site, these factors define quotation and event package scope."
+ title="Rental LED Display Cost Drivers in Bangladesh"
+ subtitle="Even if you don't show price on the site, these factors define quotation and event package scope."
       >
         <CardGrid
           items={[
             {
-              t: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ…Â½ Pixel pitch & clarity",
-              d: "Smaller pitch gives better close viewing and camera clarityÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âoften used for corporate and premium stages.",
+ t: "Pixel pitch & clarity",
+ d: "Smaller pitch gives better close viewing and camera clarity-often used for corporate and premium stages.",
               bullets: ["Close stage: smaller pitch", "Large venue: balanced pitch", "Budget vs clarity trade-off"],
             },
             {
-              t: "ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â± Cabinet system",
+ t: "Cabinet system",
               d: "Die-cast, quick locks, corner protection, and flatness affect build quality and speed.",
               bullets: ["Quick lock cabinet", "Touring durability", "Service-friendly modules"],
             },
             {
-              t: "ÃƒÂ°Ã…Â¸Ã‚Â¤Ã‚Â Support scope",
+ t: "Support scope",
               d: "Operator, processor, rigging, power DB/MCB, and on-site standby can be included in a package.",
               bullets: ["Operator + mapping", "Power & safety", "On-site standby option"],
             },
@@ -685,7 +685,7 @@ export default function RentalProductsPage() {
 
       {/* Booking planner */}
       <Section
-        title="ÃƒÂ°Ã…Â¸Ã¢â‚¬â€Ã¢â‚¬Å¡ÃƒÂ¯Ã‚Â¸Ã‚Â Rental LED Event Booking Planner"
+ title="Rental LED Event Booking Planner"
         subtitle="Use this quick planner before final booking to avoid last-minute delays, wrong sizing, or signal/power issues on show day."
       >
         <div className="grid gap-4 md:grid-cols-2">
@@ -694,7 +694,7 @@ export default function RentalProductsPage() {
               t: "Event & Screen Scope",
               items: [
                 "Event date, venue, and setup time window",
-                "Required screen size (W ÃƒÆ’Ã¢â‚¬â€ H) and placement",
+ "Required screen size (W-H) and placement",
                 "Viewing distance and expected audience area",
                 "Indoor, semi-outdoor, or outdoor exposure",
               ],
@@ -744,8 +744,8 @@ export default function RentalProductsPage() {
 
       {/* Explore */}
       <Section
-        title="ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â­ Explore LED Display Categories"
-        subtitle="Compare indoor, outdoor and rental optionsÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âthen choose the best category for your project."
+ title="Explore LED Display Categories"
+ subtitle="Compare indoor, outdoor and rental options-then choose the best category for your project."
       >
         <div className="grid gap-4 md:grid-cols-3">
           {[
@@ -771,7 +771,7 @@ export default function RentalProductsPage() {
 
       {/* FAQs */}
       <Section
-        title="ÃƒÂ¢Ã‚ÂÃ¢â‚¬Å“ FAQs About Rental LED Display"
+ title="FAQs About Rental LED Display"
         subtitle="Common questions before booking a rental LED screen for events and live programs."
       >
         <FaqAccordion
@@ -796,7 +796,7 @@ export default function RentalProductsPage() {
             },
             {
               q: "What information do you need for a rental LED quotation?",
-              a: "Event date/location, required screen size (WÃƒÆ’Ã¢â‚¬â€H), viewing distance, stage setup type (hanging/stacking), content source (live HDMI or playback), and power availability are key inputs.",
+ a: "Event date/location, required screen size (W x H), viewing distance, stage setup type (hanging/stacking), content source (live HDMI or playback), and power availability are key inputs.",
             },
             {
               q: "Do I need a flight case and power distribution box for rental LED?",

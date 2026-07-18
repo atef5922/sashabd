@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "LED Accessories (Cables & Parts)",
     description:
-      "LED accessories for installation, maintenance, and event workflowÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Âcables, connectors, fixing, mounting, and power distribution support.",
+ "LED accessories for installation, maintenance, and event workflow-cables, connectors, fixing, mounting, and power distribution support.",
     url: "/led-display/accessories/led-accessories/",
     type: "website",
     images: [
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "LED Accessories (Cables & Parts)",
     description:
-      "LED accessories for installation and maintenance in BangladeshÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Âcables, connectors, fixing, mounting and event distribution items.",
+ "LED accessories for installation and maintenance in Bangladesh-cables, connectors, fixing, mounting and event distribution items.",
     images: [socialImageUrl("/images/placeholders/led-accessory.svg")],
   },
 };
@@ -112,7 +112,7 @@ export default function LedAccessoriesListingPage() {
             desktopClassName="mt-1"
           >
             <p className="w-full text-slate-600 leading-7 text-justify">
-              These are practical LED accessories used during installation, servicing, and event operationsÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Âribbon/data
+ These are practical LED accessories used during installation, servicing, and event operations-ribbon/data
               cables, IDC connectors, module fixing hardware, mounting parts, transport protection, and temporary power
               distribution. The right accessory choice reduces downtime, makes maintenance easier, and helps keep your LED
               system stable in real-world conditions.

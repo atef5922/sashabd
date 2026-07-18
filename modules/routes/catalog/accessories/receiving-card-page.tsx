@@ -61,7 +61,7 @@ const faqs = [
   },
   {
     q: "What information should I send for a correct receiving card recommendation?",
-    a: "Send module front/back photos, HUB connector close-up, pixel pitch and scan rate, cabinet resolution (WÃƒÆ’Ã¢â‚¬â€H), and your controller brand/model to confirm compatibility quickly.",
+ a: "Send module front/back photos, HUB connector close-up, pixel pitch and scan rate, cabinet resolution (W x H), and your controller brand/model to confirm compatibility quickly.",
   },
 ] as const;
 const faqJsonLd = {
@@ -125,7 +125,7 @@ export default function ReceivingCardListingPage() {
           </MobileIntroText>
 
           <div className="mt-1 hidden flex-wrap gap-2 text-xs font-semibold text-slate-700 md:flex">
-            {["ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ HUB compatibility check", "ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Scan & mapping guidance", "ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Installation support", "ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ After-sales service"].map(
+            {["HUB compatibility check", "Scan and mapping guidance", "Installation support", "After-sales service"].map(
               (t) => (
                 <span
                   key={t}
@@ -170,7 +170,7 @@ export default function ReceivingCardListingPage() {
       <section className="mt-8">
         <h2 className="text-2xl font-bold text-slate-900">Receiving Card Models & Key Features</h2>
         <p className="mt-2 hidden text-slate-600 leading-7 md:block">
-          ItÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢s best to choose a model based on your cabinet/module. Open any model to check HUB/scan/mapping guidance,
+ It's best to choose a model based on your cabinet/module. Open any model to check HUB/scan/mapping guidance,
           then contact us for quotation or setup assistance.
         </p>
 
@@ -211,7 +211,7 @@ export default function ReceivingCardListingPage() {
         style={{ borderColor: `${BRAND.maroon}10` }}
       >
         <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
-  <span className="text-xl">ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â©</span>
+ <span className="text-xl"></span>
   Need help selecting the right receiving card?
 </h2>
 
@@ -223,7 +223,7 @@ export default function ReceivingCardListingPage() {
           {[
             "Module photo (front/back) + HUB connector close-up",
             "Pixel pitch (P2.5/P4/P5 etc) + scan rate (1/16, 1/32...)",
-            "Cabinet resolution (WÃƒÆ’Ã¢â‚¬â€H pixels) + controller brand/model",
+ "Cabinet resolution (W x H pixels) + controller brand/model",
           ].map((t, i) => (
             <li key={`${i}-${t}`} className="flex items-start gap-2">
               <span className="mt-2 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />

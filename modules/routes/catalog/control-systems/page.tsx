@@ -189,7 +189,7 @@ export default function ControlSystemsPage() {
             },
             {
               href: "/control-systems/pa-system/2-channel-power-amplifier-2x500w/",
-              title: "2-Channel Power Amplifier (2ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â500W)",
+ title: "2-Channel Power Amplifier (2 - 500W)",
               desc: "High power output for larger halls and multi-speaker zones.",
             },
             {

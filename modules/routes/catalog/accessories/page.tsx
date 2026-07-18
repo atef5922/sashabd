@@ -243,11 +243,11 @@ export default function AccessoriesPage() {
           <span>What Are LED Display Accessories?</span>
         </h2>
         <p className="mt-3 text-slate-600 leading-7 text-justify">
-          LED display accessories are the control and power parts that make a screen work reliablyÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Ânot just ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œextra items.ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â
+          LED display accessories are the control and power parts that make a screen work reliably, not just extra items.
           A typical LED wall has three essential building blocks: (1) a <b>controller / video processor</b> to accept and
           manage input signals, (2) a <b>receiving card</b> to distribute mapped data to each cabinet, and (3) a stable
           <b> power supply</b> to deliver clean DC power to modules and control hardware. When these accessories match the
-          screenÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢s resolution and cabinet wiring, you get stable brightness, smooth motion, accurate mapping, and fewer
+ screen's resolution and cabinet wiring, you get stable brightness, smooth motion, accurate mapping, and fewer
           downtime issues.
         </p>
         <div className="mt-5 grid gap-4 md:grid-cols-3">
@@ -286,7 +286,7 @@ export default function AccessoriesPage() {
           <span>Controller & Receiving Card: What They Do</span>
         </h2>
         <p className="mt-3 text-slate-600 leading-7 text-justify">
-          Think of the controller as the ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œbrainÃƒÂ¢Ã¢â€šÂ¬Ã‚Â at the front and the receiving card as the ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œdispatcherÃƒÂ¢Ã¢â€šÂ¬Ã‚Â inside each
+          Think of the controller as the brain at the front and the receiving card as the dispatcher inside each
           cabinet. The controller accepts signals (HDMI/DVI/DP, media player, laptop, camera switcher), scales the content
           to your target resolution, and sends the final data to the screen. The receiving card then ensures each cabinet
           shows the correct portion of the image with the correct scan type, color depth, and refresh behavior.
@@ -340,7 +340,7 @@ export default function AccessoriesPage() {
           <span>Power Supply (PSU): Why It Matters</span>
         </h2>
         <p className="mt-3 text-slate-600 leading-7 text-justify">
-          A power supply is not just a ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ5V box.ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â It affects brightness stability, long-term reliability, and safety. LED
+          A power supply is not just a "5V box." It affects brightness stability, long-term reliability, and safety. LED
           modules draw high current, and poor-quality PSUs can cause voltage drop, overheating, flicker under load, or
           premature failure. A correctly sized PSU with proper protections helps your screen run cooler, stay stable, and
           reduce maintenance cost over time.
@@ -373,7 +373,7 @@ export default function AccessoriesPage() {
           <span>How to Choose LED Display Accessories</span>
         </h2>
         <p className="mt-3 text-slate-600 leading-7 text-justify">
-          The ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œbestÃƒÂ¢Ã¢â€šÂ¬Ã‚Â accessories depend on your screen size, pixel pitch, cabinet type, and content workflow. Use this
+ The-best-accessories depend on your screen size, pixel pitch, cabinet type, and content workflow. Use this
           practical checklist to avoid common mismatches and to select accessories that support stable output and smooth
           operation in Bangladesh conditions.
         </p>
@@ -382,7 +382,7 @@ export default function AccessoriesPage() {
             <div className="text-lg font-bold text-slate-900">Planning checklist</div>
             <ul className="mt-3 space-y-2 text-sm text-slate-700">
               {[
-                "Confirm total resolution (WÃƒÆ’Ã¢â‚¬â€H) and cabinet layout before choosing a controller",
+ "Confirm total resolution (W x H) and cabinet layout before choosing a controller",
                 "Match receiving card model to your module scan type and HUB mapping requirements",
                 "Choose a controller with the right inputs (HDMI, DVI, DP) for your source devices",
                 "Plan redundancy and spare parts if the screen is mission-critical (control room, event, signage)",
@@ -401,7 +401,7 @@ export default function AccessoriesPage() {
                 "Calculate real load (module + receiving card + fans) and keep headroom for reliability",
                 "Use proper cable sizing, grounding, and distribution (MCB/DB) planning for the screen",
                 "Prefer PSUs with protections and stable output under continuous operation",
-                "Keep ventilation and service access in mindÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âheat management improves lifespan",
+ "Keep ventilation and service access in mind-heat management improves lifespan",
               ].map((b) => (
                 <li key={b} className="flex items-start gap-2">
                   <span className="mt-2 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
@@ -480,7 +480,7 @@ export default function AccessoriesPage() {
               },
               {
                 q: "Can you help with BOQ and selection in Bangladesh?",
-                a: "Yes. Share your screen size (WÃƒÆ’Ã¢â‚¬â€H), pixel pitch, cabinet type, and intended use case to get a practical recommendation and quotation support.",
+ a: "Yes. Share your screen size (W x H), pixel pitch, cabinet type, and intended use case to get a practical recommendation and quotation support.",
               },
             ]}
           />

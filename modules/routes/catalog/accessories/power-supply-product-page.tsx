@@ -75,7 +75,7 @@ function buildDescriptionParagraphs(product: (typeof powerSupplyCatalog)[number]
     product.subtitle,
     "Correct PSU sizing and wiring safety are critical for preventing flicker, overheating, voltage drop, and downtime in LED cabinets.",
     highlightBits.length ? `Quick highlights from specs: ${highlightBits.join(", ")}.` : "",
-    "Share your cabinet/module count and distribution planÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Âwe can guide quantity, wiring, and selection in Bangladesh.",
+ "Share your cabinet/module count and distribution plan-we can guide quantity, wiring, and selection in Bangladesh.",
   ].filter(Boolean);
 }
 
@@ -292,7 +292,7 @@ export default async function PowerSupplyDetailsPage(
               className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
-              Contact for BOQ ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢
+              Contact for BOQ -&gt;
             </Link>
           </div>
         </div>

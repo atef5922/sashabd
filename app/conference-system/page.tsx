@@ -551,7 +551,7 @@ const conferencePriceTableProducts = conferenceSystemCatalog.slice(0, 8);
 const conferenceFaqs = [
   {
     q: "What is the price of a conference system in Bangladesh?",
-    a: "Conference system price in Bangladesh depends on room size, number of microphones, wired or wireless setup, control unit, DSP processor, speaker system, and installation requirements. Basic systems may start from around ÃƒÂ Ã‚Â§Ã‚Â³80,000, while larger digital conference systems require custom quotation.",
+    a: "Conference system price in Bangladesh depends on room size, number of microphones, wired or wireless setup, control unit, DSP processor, speaker system, and installation requirements. Basic systems may start from around Tk 80,000, while larger digital conference systems require custom quotation.",
   },
   {
     q: "Which conference system is best for a boardroom?",

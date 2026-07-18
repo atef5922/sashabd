@@ -71,7 +71,7 @@ export default function LocationSection() {
           <div className="p-6">
             <div className="text-sm font-semibold text-slate-900">Need directions or a site visit?</div>
             <p className="mt-1 text-sm leading-7 text-slate-600">
-              Share your location, approximate screen size, indoor/outdoor type, and viewing distanceÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âour team will
+ Share your location, approximate screen size, indoor/outdoor type, and viewing distance-our team will
               suggest pixel pitch and a practical installation plan.
             </p>
 

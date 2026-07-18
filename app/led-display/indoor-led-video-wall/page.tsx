@@ -335,9 +335,9 @@ export function IndoorLedVideoWallBangladeshContent() {
           and charts remain readable.
         </p>
         <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
-          <li>- Close viewing (boardrooms): prioritize P1.2ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“P1.8.</li>
-          <li>- Medium viewing (lobbies/showrooms): P1.8ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“P2.5 performs well.</li>
-          <li>- Longer viewing (large halls): P2.5ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“P4 remains effective and cost-efficient.</li>
+                <li>- Close viewing (boardrooms): prioritize P1.2-P1.8.</li>
+                <li>- Medium viewing (lobbies/showrooms): P1.8-P2.5 performs well.</li>
+                <li>- Longer viewing (large halls): P2.5-P4 remains effective and cost-efficient.</li>
         </ul>
       </section>
 
