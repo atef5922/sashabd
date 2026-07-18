@@ -501,6 +501,7 @@ function ProductsPageContent({
 }) {
   const gridTopRef = useRef<HTMLDivElement | null>(null);
   const scrollToGridOnNextPageChangeRef = useRef(false);
+  const mobileCarouselRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const allProducts = useMemo(() => buildProducts(basePath), [basePath]);
   const fullListGroups = useMemo(() => {
     const kinds: Array<FilterKey> = [
@@ -653,6 +654,38 @@ function ProductsPageContent({
         { key: "power-supply", label: "Power Supply" },
         { key: "led-accessories", label: "LED Accessories" },
       ];
+
+  const mobileLedSections = useMemo(() => {
+    if (!ledOnly) return [];
+
+    const mobileConfig = [
+      { key: "indoor" as FilterKey, title: "Indoor LED Display", prefix: "indoor:", href: "/led-display/indoor-led/" },
+      { key: "outdoor" as FilterKey, title: "Outdoor LED Display", prefix: "outdoor:", href: "/led-display/outdoor/" },
+      { key: "rental" as FilterKey, title: "Rental LED Display", prefix: "rental:", href: "/led-display/rental-display/" },
+      { key: "receiving-card" as FilterKey, title: "Receiving Card", prefix: "receiving-card:", href: "/led-display/accessories/receiving-card/" },
+      { key: "controller" as FilterKey, title: "Controller", prefix: "controller:", href: "/led-display/accessories/controller/" },
+      { key: "power-supply" as FilterKey, title: "Power Supply", prefix: "power-supply:", href: "/led-display/accessories/power-supply/" },
+      { key: "led-accessories" as FilterKey, title: "LED Accessories", prefix: "led-accessories:", href: "/led-display/accessories/led-accessories/" },
+    ];
+
+    const visibleConfig = filter === "all" ? mobileConfig : mobileConfig.filter((section) => section.key === filter);
+
+    return visibleConfig
+      .map((section) => ({
+        id: section.key,
+        title: section.title,
+        href: section.href,
+        products: filtered.filter((p) => p.id.startsWith(section.prefix)),
+      }))
+      .filter((section) => section.products.length > 0);
+  }, [filtered, filter, ledOnly]);
+
+  const scrollMobileCarousel = (sectionId: string, direction: 1 | -1) => {
+    const track = mobileCarouselRefs.current[sectionId];
+    if (!track) return;
+    const amount = Math.max(track.clientWidth - 64, 220) * direction;
+    track.scrollBy({ left: amount, behavior: "smooth" });
+  };
 
   const ledWhyChoose = [
     "LED modules combine to form a scalable screen for text, video, and live visuals",
@@ -1405,6 +1438,37 @@ function ProductsPageContent({
             </Link>
           </div>
         ) : null}
+        {ledOnly ? (
+          <div className="mt-5 md:hidden">
+            <div className="overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+              <div className="flex w-max min-w-full flex-nowrap gap-2">
+                {filters.map((f) => {
+                  const active = filter === f.key;
+                  return (
+                    <button
+                      key={f.key}
+                      type="button"
+                      onClick={() => {
+                        setFilter(f.key);
+                        setPage(1);
+                        setMobilePage(1);
+                      }}
+                      className="rounded-full border px-4 py-2 text-[11px] font-bold whitespace-nowrap transition"
+                      style={{
+                        borderColor: active ? "rgba(255,106,0,0.65)" : "rgba(103,232,249,0.28)",
+                        background: active ? "linear-gradient(135deg, rgba(228,87,0,0.98), rgba(255,106,0,0.98))" : "rgba(103,232,249,0.10)",
+                        color: active ? "#fff" : "#0f172a",
+                        boxShadow: active ? "0 8px 18px rgba(255,106,0,0.22)" : "none",
+                      }}
+                    >
+                      {f.key === "all" ? "All Products" : f.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        ) : null}
         {!ledOnly ? (
         <div className="mt-6 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           {/* Tabs */}
@@ -1470,16 +1534,66 @@ function ProductsPageContent({
       <section className="mt-3 space-y-3 !bg-transparent !p-0 !shadow-none">
         {ledOnly ? (
           <>
-            <div className="md:hidden">
-              <ResponsiveProductCarousel
-                className="product-grid-3"
-                desktopClassName="md:grid-cols-2 lg:grid-cols-3"
-                mobileGapClassName="gap-[10px]"
-                mobileLayout="grid"
-                hideMobileArrows
-              >
-                {mobilePagedProducts.map(renderCatalogCard)}
-              </ResponsiveProductCarousel>
+            <div className="space-y-4 md:hidden">
+              {mobileLedSections.map((section) => (
+                <div key={section.id}>
+                  <div className="mb-2 flex items-center justify-between gap-3">
+                    <div className="text-sm font-extrabold leading-tight text-slate-900">{section.title}</div>
+                    <Link
+                      prefetch={false}
+                      href={section.href}
+                      className="inline-flex shrink-0 items-center gap-1 text-[11px] font-bold text-slate-800"
+                    >
+                      <span>View all</span>
+                      <span className="text-[#F56605]">
+                        <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" aria-hidden="true">
+                          <path d="M5 12h11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                          <path d="m12 7 5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </span>
+                    </Link>
+                  </div>
+
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => scrollMobileCarousel(section.id, -1)}
+                      className="absolute -left-2 top-[28%] z-20 inline-flex -translate-y-1/2 items-center justify-center p-0 text-[#F56605] transition active:scale-95"
+                      aria-label={`Previous ${section.title} products`}
+                    >
+                      <svg viewBox="0 0 24 24" className="h-7 w-7 drop-shadow-[0_2px_4px_rgba(255,255,255,0.55)]" fill="none" aria-hidden="true">
+                        <path d="m14 7-5 5 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+
+                    <div className="overflow-hidden px-1">
+                      <div
+                        ref={(node) => {
+                          mobileCarouselRefs.current[section.id] = node;
+                        }}
+                        className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                      >
+                        {section.products.map((product) => (
+                          <div key={product.id} className="min-w-[calc((100%-0.75rem)/2)] shrink-0 basis-[calc((100%-0.75rem)/2)] snap-start">
+                            {renderCatalogCard(product)}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => scrollMobileCarousel(section.id, 1)}
+                      className="absolute -right-2 top-[28%] z-20 inline-flex -translate-y-1/2 items-center justify-center p-0 text-[#F56605] transition active:scale-95"
+                      aria-label={`Next ${section.title} products`}
+                    >
+                      <svg viewBox="0 0 24 24" className="h-7 w-7 drop-shadow-[0_2px_4px_rgba(255,255,255,0.55)]" fill="none" aria-hidden="true">
+                        <path d="m10 7 5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
             <div className="hidden md:block">
               <ResponsiveProductCarousel className="product-grid-3" desktopClassName="md:grid-cols-2 lg:grid-cols-3" mobileGapClassName="gap-[10px]">
@@ -1493,7 +1607,7 @@ function ProductsPageContent({
           </ResponsiveProductCarousel>
         )}
 
-        {showMobilePagination ? (
+        {showMobilePagination && !ledOnly ? (
           <div className="flex flex-col items-center gap-2 md:hidden">
             <nav aria-label="Products pagination" className="flex flex-wrap items-center justify-center gap-2">
               <button
