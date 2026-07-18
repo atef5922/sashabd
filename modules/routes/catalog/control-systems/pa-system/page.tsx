@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { socialImageUrl } from "@/lib/seo";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
+import MobileIntroText from "@/components/common/MobileIntroText";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { getPaSystemBySlug, getPaSystemCardPriceLabel, paSystemCatalog } from "./catalog";
 import PaSystemProducts from "./PaSystemProducts";
@@ -812,19 +813,25 @@ export default function PaSystemPage() {
           { href: "/pa-system/", label: "PA System", current: true },
         ]}
       />
-      <section className="rounded-2xl border border-slate-200 bg-white px-[15px] py-6 shadow-sm md:py-8">
-        <h1 className="text-2xl font-extrabold tracking-tight text-slate-950 md:text-3xl">
+      <section className="mobile-page-intro-card rounded-none border-0 bg-transparent px-0 py-0 shadow-none md:rounded-2xl md:border md:border-slate-200 md:bg-white md:px-[15px] md:py-8 md:shadow-sm">
+        <h1 className="text-[1.75rem] font-extrabold leading-[1.08] tracking-tight text-slate-950 md:text-3xl">
           {PAGE_TITLE}
         </h1>
-        <div className="mt-4 space-y-4 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-          <p>
-            Sasha Corporation is a trusted PA system supplier and reliable solution provider in Bangladesh, offering
-            public address sound system solutions for mosques, schools, offices, factories, hospitals, shopping malls,
-            and commercial buildings. Our PA system includes PA speakers, amplifiers, microphones, horn speakers,
-            ceiling speakers, column speakers, and paging systems. PA system price in Bangladesh depends on brand,
-            speaker quantity, coverage area, amplifier power, installation work, and warranty support.
-          </p>
-        </div>
+        <MobileIntroText
+          teaser="Sasha Corporation supplies PA system solutions in Bangladesh for mosques, schools, offices and commercial buildings."
+          expandedClassName="mt-4"
+          desktopClassName="mt-4"
+        >
+          <div className="space-y-4 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
+            <p>
+              Sasha Corporation is a trusted PA system supplier and reliable solution provider in Bangladesh, offering
+              public address sound system solutions for mosques, schools, offices, factories, hospitals, shopping malls,
+              and commercial buildings. Our PA system includes PA speakers, amplifiers, microphones, horn speakers,
+              ceiling speakers, column speakers, and paging systems. PA system price in Bangladesh depends on brand,
+              speaker quantity, coverage area, amplifier power, installation work, and warranty support.
+            </p>
+          </div>
+        </MobileIntroText>
       </section>
 
       <PaSystemProducts items={PA_PAGE_ITEMS} brand={BRAND} />
@@ -1551,6 +1558,3 @@ export default function PaSystemPage() {
     </div>
   );
 }
-
-
-

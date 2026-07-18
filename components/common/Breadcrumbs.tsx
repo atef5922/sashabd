@@ -39,11 +39,11 @@ export default function Breadcrumbs({
       <nav aria-label="Breadcrumb" className={className}>
         <div
           className={[
-            "flex flex-col gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 shadow-sm md:flex-row md:items-center md:justify-between",
+            "flex flex-wrap items-center gap-x-2 gap-y-1 px-0 py-0 md:justify-between",
             panelClassName ?? "",
           ].join(" ").trim()}
         >
-          <ol className="flex flex-wrap items-center gap-y-1">
+          <ol className="flex flex-wrap items-center gap-y-1 text-[12px] md:text-sm">
             {items.map((item, index) => (
               <li key={`${item.href}-${item.label}`} className="flex items-center">
                 {item.current ? (
@@ -70,7 +70,7 @@ export default function Breadcrumbs({
               type="button"
               onClick={handleBackClick}
               className={[
-                "inline-flex w-fit cursor-pointer items-center justify-center self-start rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-900 transition hover:border-slate-300 hover:text-slate-950 md:self-auto",
+                "hidden w-fit cursor-pointer items-center justify-center rounded-md border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-900 transition hover:border-slate-300 hover:text-slate-950 md:inline-flex",
                 backButtonClassName ?? "",
               ].join(" ").trim()}
             >

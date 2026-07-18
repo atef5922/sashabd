@@ -3,6 +3,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
+import MobileIntroText from "@/components/common/MobileIntroText";
+import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
 import ProductGridCard from "@/components/products/ProductGridCard";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { normalizeDisplayedPriceText } from "@/lib/price";
@@ -1025,25 +1027,31 @@ export default function ConferenceSystemPage() {
         className="mb-4 pt-3 text-sm text-slate-600"
       />
 
-      <section className="rounded-3xl border bg-white p-6 shadow-sm md:p-8" style={{ borderColor: `${BRAND.maroon}12` }}>
-        <h1 className="text-2xl font-extrabold tracking-tight text-slate-950 md:text-4xl">
+      <section className="mobile-page-intro-card rounded-none border-0 bg-transparent p-0 shadow-none md:rounded-3xl md:border md:bg-white md:p-8 md:shadow-sm" style={{ borderColor: `${BRAND.maroon}12` }}>
+        <h1 className="text-[1.75rem] font-extrabold leading-[1.08] tracking-tight text-slate-950 md:text-4xl">
           {PAGE_TITLE}
         </h1>
-        <div className="mt-5 space-y-4 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-          <p className="text-justify">
-            <strong>Sasha Corporation</strong> supplies professional conference system solutions in Bangladesh for
-            boardrooms, meeting rooms, government offices, universities, hotels, training centers, and conference halls.
-            We provide conference microphone systems, chairman and delegate units, wireless conference systems, audio
-            processors, access points, chargers, and control units for organized discussion and clear meeting
-            communication.
-          </p>
-          <p className="text-justify">
-            A well-designed conference system helps every speaker stay audible, reduces table noise, and makes meeting
-            management smoother. Whether you need a compact setup for a small meeting room or a complete solution for a
-            large conference venue, we can help with product selection, BOQ preparation, installation planning, testing,
-            and after-sales support throughout Bangladesh.
-          </p>
-        </div>
+        <MobileIntroText
+          teaser="Professional conference system solutions for boardrooms, meeting rooms, training centers and conference halls in Bangladesh."
+          expandedClassName="mt-5"
+          desktopClassName="mt-5"
+        >
+          <div className="space-y-4 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
+            <p className="text-justify">
+              <strong>Sasha Corporation</strong> supplies professional conference system solutions in Bangladesh for
+              boardrooms, meeting rooms, government offices, universities, hotels, training centers, and conference halls.
+              We provide conference microphone systems, chairman and delegate units, wireless conference systems, audio
+              processors, access points, chargers, and control units for organized discussion and clear meeting
+              communication.
+            </p>
+            <p className="text-justify">
+              A well-designed conference system helps every speaker stay audible, reduces table noise, and makes meeting
+              management smoother. Whether you need a compact setup for a small meeting room or a complete solution for a
+              large conference venue, we can help with product selection, BOQ preparation, installation planning, testing,
+              and after-sales support throughout Bangladesh.
+            </p>
+          </div>
+        </MobileIntroText>
       </section>
 
       <section className="mt-4" aria-labelledby="conference-products-heading">
@@ -1052,14 +1060,14 @@ export default function ConferenceSystemPage() {
             <h2 id="conference-products-heading" className="text-xl font-extrabold text-slate-950">
               Conference System Products
             </h2>
-            <p className="text-sm text-slate-600">SPON conference microphones, control units, DSP, access point, and accessories.</p>
+            <p className="hidden text-sm text-slate-600 md:block">SPON conference microphones, control units, DSP, access point, and accessories.</p>
           </div>
           <p className="text-xs font-bold uppercase tracking-wide" style={{ color: BRAND.maroon }}>
             {conferenceSystemCatalog.length} products
           </p>
         </div>
 
-        <div className="product-grid-3 grid items-stretch gap-[10px] sm:grid-cols-2 lg:grid-cols-3">
+        <ResponsiveProductCarousel className="product-grid-3" desktopClassName="md:grid-cols-2 lg:grid-cols-3" mobileGapClassName="gap-[10px]">
           {conferenceSystemCatalog.map((product) => (
             <ProductGridCard
               key={product.slug}
@@ -1085,10 +1093,11 @@ export default function ConferenceSystemPage() {
               chips={product.bestFor}
               accentColor={BRAND.maroon}
               contactHref="/contact/"
+              compactMobile
               viewDetailsLabel="View details ->"
             />
           ))}
-        </div>
+        </ResponsiveProductCarousel>
       </section>
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="what-is-conference-system">

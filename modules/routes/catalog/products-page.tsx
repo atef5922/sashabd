@@ -10,7 +10,11 @@ import { siteConfig } from "@/lib/site";
 import { normalizeDisplayedPriceText } from "@/lib/price";
 import { buildLedProductCardHighlights } from "@/lib/productCardHighlights";
 import ProductGridCard from "@/components/products/ProductGridCard";
+import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
 import FaqAccordion from "@/components/common/FaqAccordion";
+import Breadcrumbs from "@/components/common/Breadcrumbs";
+import MobileIntroText from "@/components/common/MobileIntroText";
+import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import {
   indoorCatalog,
   outdoorCatalog,
@@ -593,7 +597,9 @@ function ProductsPageContent({
   const [filter, setFilter] = useState<FilterKey>("all");
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
-  const pageSize = ledOnly ? 21 : 20;
+  const [mobilePage, setMobilePage] = useState(1);
+  const desktopPageSize = ledOnly ? 21 : 20;
+  const mobilePageSize = ledOnly ? 8 : desktopPageSize;
   const productImageSizes = "(max-width: 1024px) 100vw, 25vw";
 
   const filtered = useMemo(() => {
@@ -1065,14 +1071,149 @@ function ProductsPageContent({
     "outdoor:p10-outdoor-led-display-module",
   ]);
 
+  const renderCatalogCard = (p: UnifiedProduct) => {
+    if (p.kind === "interactive-flat-panel" || p.kind === "podium") {
+      const bullets =
+        p.quickFeatures?.length
+          ? p.quickFeatures.slice(0, 4)
+          : p.tags?.length
+            ? p.tags.slice(0, 4)
+            : subtitleToBullets(p.subtitle);
+
+      const chips = p.bestFor?.length ? p.bestFor.slice(0, 3) : (p.tags ?? []).slice(0, 3);
+
+      const topRightBadge =
+        p.kind === "podium"
+          ? { text: "Control", tone: "dark" as const }
+          : p.kind === "interactive-flat-panel" && p.ifpBrand && p.ifpSize
+            ? { text: `${getInteractiveFlatPanelBrandLabel(p.ifpBrand)} - ${p.ifpSize}"`, tone: "dark" as const }
+            : undefined;
+
+      const metaLines: Array<{ text: string; className?: string }> = [];
+      if (p.kind === "interactive-flat-panel") {
+        if (p.priceLabel) {
+          metaLines.push({ text: p.priceLabel, className: "mt-1 text-sm font-semibold text-sky-700" });
+        }
+        metaLines.push({ text: p.subtitle, className: "mt-2 text-sm leading-7 text-slate-600 line-clamp-3" });
+      } else if (p.kind === "podium" && p.priceLabel) {
+        metaLines.push({ text: `Price: ${p.priceLabel}`, className: "mt-1 text-sm font-semibold text-sky-700" });
+      }
+
+      return (
+        <ProductGridCard
+          key={p.id}
+          href={p.href}
+          title={p.title}
+          image={<Image src={p.image} alt={p.title} fill sizes={productImageSizes} className="object-cover transition duration-300 group-hover:scale-[1.02]" />}
+          imageContainerClassName="bg-slate-50"
+          borderColor="rgba(15,23,42,0.08)"
+          topLeftBadge={{ text: p.badge, tone: "light" }}
+          topRightBadge={topRightBadge}
+          metaLines={metaLines}
+          bullets={bullets}
+          chips={chips}
+          accentColor={BRAND.maroon}
+          contactHref="/contact"
+          compactMobile
+          viewDetailsLabel="View details ->"
+        />
+      );
+    }
+
+    if (isAccessoryProduct(p)) {
+      const kind = getAccessoryKind(p);
+      const rightBadge = kind === "controller" ? "Controller" : "Accessories";
+
+      const bullets =
+        p.quickFeatures?.length
+          ? p.quickFeatures.slice(0, 4)
+          : kind === "led-accessories" && p.tags?.length
+            ? p.tags.slice(0, 4)
+            : subtitleToBullets(p.subtitle);
+
+      const chips = p.bestFor?.length ? p.bestFor.slice(0, 3) : (p.tags ?? []).slice(0, 3);
+
+      const metaLines: Array<{ text: string; className?: string }> = [];
+      if (p.priceLine) metaLines.push({ text: p.priceLine, className: "mt-1 text-sm font-semibold text-sky-700" });
+
+      return (
+        <ProductGridCard
+          key={p.id}
+          href={p.href}
+          title={p.title}
+          image={
+            <Image
+              src={p.image}
+              alt={p.title}
+              fill
+              sizes={productImageSizes}
+              className="object-cover object-center transition duration-300 group-hover:scale-[1.03]"
+            />
+          }
+          imageContainerClassName="bg-slate-100"
+          borderColor={`${BRAND.maroon}12`}
+          topLeftBadge={{ text: p.badge, tone: "light" }}
+          topRightBadge={{ text: rightBadge, tone: "dark" }}
+          metaLines={metaLines}
+          bullets={bullets}
+          chips={chips}
+          accentColor={BRAND.maroon}
+          contactHref="/contact"
+          compactMobile
+          viewDetailsLabel="View details ->"
+        />
+      );
+    }
+
+    const ledImageClassName =
+      p.id === "indoor:p2-5-indoor-led-display"
+        ? "object-cover object-[58%_center] transition duration-300 group-hover:scale-[1.03]"
+        : p.id === "outdoor:premium-quality-outdoor-led-display"
+          ? "object-cover object-[50%_42%] transition duration-300 group-hover:scale-[1.03]"
+          : "object-cover object-center transition duration-300 group-hover:scale-[1.03]";
+
+    const bullets = getLedCardBullets(p);
+    const chips = p.bestFor?.length ? p.bestFor.slice(0, 3) : [];
+
+    const metaLines: Array<{ text: string; className?: string }> = [];
+    if (p.priceLine) metaLines.push({ text: p.priceLine, className: "mt-1 text-sm font-semibold text-sky-700" });
+
+    return (
+      <ProductGridCard
+        key={p.id}
+        href={p.href}
+        title={p.title}
+        image={<Image src={p.image} alt={p.title} fill sizes={productImageSizes} className={ledImageClassName} />}
+        imageContainerClassName="bg-slate-50"
+        borderColor={`${BRAND.maroon}12`}
+        topLeftBadge={undefined}
+        topRightBadge={undefined}
+        metaLines={metaLines}
+        bullets={bullets}
+        chips={chips}
+        accentColor={BRAND.maroon}
+        contactHref="/contact"
+        compactMobile
+        viewDetailsLabel="View details ->"
+      />
+    );
+  };
+
   const shouldPaginate = ledOnly;
-  const totalPages = shouldPaginate ? Math.max(1, Math.ceil(filtered.length / pageSize)) : 1;
-  const currentPage = shouldPaginate ? Math.min(Math.max(1, page), totalPages) : 1;
-  const startIndex = shouldPaginate ? (currentPage - 1) * pageSize : 0;
-  const endIndex = shouldPaginate ? Math.min(startIndex + pageSize, filtered.length) : filtered.length;
-  const pagedProducts = shouldPaginate ? filtered.slice(startIndex, endIndex) : filtered;
-  const paginationItems = shouldPaginate ? getPaginationItems(currentPage, totalPages) : [];
-  const showPagination = shouldPaginate && filtered.length > 0 && totalPages > 1;
+  const desktopTotalPages = shouldPaginate ? Math.max(1, Math.ceil(filtered.length / desktopPageSize)) : 1;
+  const desktopCurrentPage = shouldPaginate ? Math.min(Math.max(1, page), desktopTotalPages) : 1;
+  const desktopStartIndex = shouldPaginate ? (desktopCurrentPage - 1) * desktopPageSize : 0;
+  const desktopEndIndex = shouldPaginate ? Math.min(desktopStartIndex + desktopPageSize, filtered.length) : filtered.length;
+  const desktopPagedProducts = shouldPaginate ? filtered.slice(desktopStartIndex, desktopEndIndex) : filtered;
+  const desktopPaginationItems = shouldPaginate ? getPaginationItems(desktopCurrentPage, desktopTotalPages) : [];
+  const showDesktopPagination = shouldPaginate && filtered.length > 0 && desktopTotalPages > 1;
+  const mobileTotalPages = ledOnly ? Math.max(1, Math.ceil(filtered.length / mobilePageSize)) : desktopTotalPages;
+  const mobileCurrentPage = ledOnly ? Math.min(Math.max(1, mobilePage), mobileTotalPages) : desktopCurrentPage;
+  const mobileStartIndex = ledOnly ? (mobileCurrentPage - 1) * mobilePageSize : desktopStartIndex;
+  const mobileEndIndex = ledOnly ? Math.min(mobileStartIndex + mobilePageSize, filtered.length) : desktopEndIndex;
+  const mobilePagedProducts = ledOnly ? filtered.slice(mobileStartIndex, mobileEndIndex) : desktopPagedProducts;
+  const mobilePaginationItems = ledOnly ? getPaginationItems(mobileCurrentPage, mobileTotalPages) : desktopPaginationItems;
+  const showMobilePagination = ledOnly && filtered.length > 0 && mobileTotalPages > 1;
   const showFullList = ledOnly && fullListGroups.length > 0;
 
   useEffect(() => {
@@ -1108,7 +1249,7 @@ function ProductsPageContent({
     });
 
     scrollToGridOnNextPageChangeRef.current = false;
-  }, [currentPage, shouldPaginate]);
+  }, [desktopCurrentPage, mobileCurrentPage, shouldPaginate]);
 
 
   return (
@@ -1136,25 +1277,37 @@ function ProductsPageContent({
         {ledOnly ? (
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(landingFaqSchema) }} />
         ) : null}
+        {ledOnly ? (
+          <Breadcrumbs
+            items={[homeBreadcrumb(), { href: "/led-display/", label: "LED Display", current: true }]}
+            className="mb-3 pt-3 text-sm text-slate-600"
+          />
+        ) : null}
         <div
           className={
             ledOnly
-              ? "rounded-[28px] border border-slate-200 bg-white px-[10px] py-6 text-center shadow-[0_10px_28px_rgba(15,23,42,0.08)] md:px-8 md:py-7"
+              ? "mobile-page-intro-card bg-transparent px-0 py-0 text-left shadow-none md:rounded-[28px] md:border md:border-slate-200 md:bg-white md:px-8 md:py-7 md:text-center md:shadow-[0_10px_28px_rgba(15,23,42,0.08)]"
               : ""
           }
         >
           <h1 className={`${ledOnly ? "text-center " : ""}text-3xl font-extrabold text-slate-900 md:text-4xl`}>
           {ledOnly ? "LED Display Price in Bangladesh 2026" : "All LED Products & Accessories"}
         </h1>
-          <p className={ledOnly ? "mx-auto mt-4 max-w-6xl text-justify text-[15px] leading-8 text-slate-700 md:text-[16px]" : "mt-3 max-w-3xl text-slate-600"}>
           {ledOnly ? (
-	            <>
-	              Looking for the best <strong>LED display price in Bangladesh</strong>? <strong>Sasha Corporation</strong> is a trusted <strong>LED display supplier in Bangladesh</strong>, offering <strong>indoor LED displays</strong> from <strong>P0.9-P3</strong> and <strong>outdoor LED screens</strong> from <strong>P2.5-P10</strong> for commercial advertising, corporate branding, events, shopping malls, mosques, universities, and government projects. We provide <strong>LED video walls</strong>, <strong>digital LED billboards</strong>, <strong>advertising LED displays</strong>, <strong>rental LED screen panels</strong>, and <strong>digital signage systems</strong> with professional installation, controller and CMS setup, maintenance support, and nationwide after-sales service across Bangladesh.
-	            </>
+            <MobileIntroText
+              teaser="Looking for the best LED display price in Bangladesh with indoor, outdoor and rental options in one place?"
+              expandedClassName="mx-auto mt-4 max-w-6xl"
+              desktopClassName="mx-auto mt-4 max-w-6xl"
+            >
+              <p className="text-justify text-[15px] leading-8 text-slate-700 md:text-[16px]">
+                Looking for the best <strong>LED display price in Bangladesh</strong>? <strong>Sasha Corporation</strong> is a trusted <strong>LED display supplier in Bangladesh</strong>, offering <strong>indoor LED displays</strong> from <strong>P0.9-P3</strong> and <strong>outdoor LED screens</strong> from <strong>P2.5-P10</strong> for commercial advertising, corporate branding, events, shopping malls, mosques, universities, and government projects. We provide <strong>LED video walls</strong>, <strong>digital LED billboards</strong>, <strong>advertising LED displays</strong>, <strong>rental LED screen panels</strong>, and <strong>digital signage systems</strong> with professional installation, controller and CMS setup, maintenance support, and nationwide after-sales service across Bangladesh.
+              </p>
+            </MobileIntroText>
           ) : (
-            "Indoor, Outdoor, Rental LED Displays, Receiving Cards, Controllers, and Power Supplies - all models in one place."
+            <p className="mt-3 max-w-3xl text-slate-600">
+              Indoor, Outdoor, Rental LED Displays, Receiving Cards, Controllers, and Power Supplies - all models in one place.
+            </p>
           )}
-          </p>
         </div>
         {ledOnly ? (
           <div className="mt-3.5 rounded-[22px] border border-slate-200 bg-slate-50/90 p-2 shadow-sm md:p-2.5">
@@ -1265,6 +1418,7 @@ function ProductsPageContent({
                   onClick={() => {
                     setFilter(f.key);
                     setPage(1);
+                    setMobilePage(1);
                   }}
                   className="rounded-2xl border px-4 py-2 text-xs font-semibold transition hover:-translate-y-0.5 hover:shadow-sm"
                   style={{
@@ -1286,6 +1440,7 @@ function ProductsPageContent({
               onChange={(e) => {
                 setQuery(e.target.value);
                 setPage(1);
+                setMobilePage(1);
               }}
               placeholder='Search (e.g. "P1.86", "R-712", "VP820", "5V 40A")'
               className="w-full rounded-2xl border bg-white px-4 py-2 text-sm font-semibold text-slate-900 outline-none transition focus:ring-2 sm:w-[380px]"
@@ -1297,6 +1452,7 @@ function ProductsPageContent({
                 onClick={() => {
                   setQuery("");
                   setPage(1);
+                  setMobilePage(1);
                 }}
                 className="rounded-2xl border bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
                 style={{ borderColor: "rgba(15,23,42,0.12)" }}
@@ -1312,139 +1468,92 @@ function ProductsPageContent({
       {/* PRODUCTS GRID */}
       <div ref={gridTopRef} className="scroll-mt-24" />
       <section className="mt-3 space-y-3 !bg-transparent !p-0 !shadow-none">
-        <div className="product-grid-3 grid gap-[10px] sm:grid-cols-2 lg:grid-cols-3">
-          {pagedProducts.map((p) => {
-        if (p.kind === "interactive-flat-panel" || p.kind === "podium") {
-          const bullets =
-            p.quickFeatures?.length
-              ? p.quickFeatures.slice(0, 4)
-              : p.tags?.length
-                ? p.tags.slice(0, 4)
-                : subtitleToBullets(p.subtitle);
+        {ledOnly ? (
+          <>
+            <div className="md:hidden">
+              <ResponsiveProductCarousel
+                className="product-grid-3"
+                desktopClassName="md:grid-cols-2 lg:grid-cols-3"
+                mobileGapClassName="gap-[10px]"
+                mobileLayout="grid"
+                hideMobileArrows
+              >
+                {mobilePagedProducts.map(renderCatalogCard)}
+              </ResponsiveProductCarousel>
+            </div>
+            <div className="hidden md:block">
+              <ResponsiveProductCarousel className="product-grid-3" desktopClassName="md:grid-cols-2 lg:grid-cols-3" mobileGapClassName="gap-[10px]">
+                {desktopPagedProducts.map(renderCatalogCard)}
+              </ResponsiveProductCarousel>
+            </div>
+          </>
+        ) : (
+          <ResponsiveProductCarousel className="product-grid-3" desktopClassName="md:grid-cols-2 lg:grid-cols-3" mobileGapClassName="gap-[10px]">
+            {desktopPagedProducts.map(renderCatalogCard)}
+          </ResponsiveProductCarousel>
+        )}
 
-          const chips = p.bestFor?.length ? p.bestFor.slice(0, 3) : (p.tags ?? []).slice(0, 3);
+        {showMobilePagination ? (
+          <div className="flex flex-col items-center gap-2 md:hidden">
+            <nav aria-label="Products pagination" className="flex flex-wrap items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  scrollToGridOnNextPageChangeRef.current = true;
+                  setMobilePage((p) => Math.max(1, p - 1));
+                }}
+                disabled={mobileCurrentPage === 1}
+                className="rounded-xl border bg-white px-3 py-2 text-xs font-semibold text-slate-900 transition enabled:hover:-translate-y-0.5 enabled:hover:bg-slate-50 enabled:hover:shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
+                style={{ borderColor: "rgba(15,23,42,0.12)" }}
+              >
+                Previous
+              </button>
 
-              const topRightBadge =
-                p.kind === "podium"
-                  ? { text: "Control", tone: "dark" as const }
-                  : p.kind === "interactive-flat-panel" && p.ifpBrand && p.ifpSize
-                    ? { text: `${getInteractiveFlatPanelBrandLabel(p.ifpBrand)} - ${p.ifpSize}"`, tone: "dark" as const }
-                    : undefined;
+              {mobilePaginationItems.map((item, idx) =>
+                item === "..." ? (
+                  <span key={`mobile-ellipsis-${idx}`} className="px-1 text-sm font-bold text-slate-500">
+                    ...
+                  </span>
+                ) : (
+                  <button
+                    key={`mobile-${item}`}
+                    type="button"
+                    onClick={() => {
+                      scrollToGridOnNextPageChangeRef.current = true;
+                      setMobilePage(item);
+                    }}
+                    className="min-w-9 rounded-xl border px-2.5 py-2 text-xs font-semibold transition hover:-translate-y-0.5 hover:shadow-sm"
+                    style={{
+                      borderColor: item === mobileCurrentPage ? "rgba(14,116,144,0.75)" : "rgba(15,23,42,0.12)",
+                      background: item === mobileCurrentPage ? "rgba(14,116,144,0.12)" : "white",
+                      color: "#0f172a",
+                      boxShadow: item === mobileCurrentPage ? "inset 0 0 0 2px rgba(14,116,144,0.65)" : undefined,
+                    }}
+                    aria-current={item === mobileCurrentPage ? "page" : undefined}
+                  >
+                    {item}
+                  </button>
+                ),
+              )}
 
-          const metaLines: Array<{ text: string; className?: string }> = [];
-          if (p.kind === "interactive-flat-panel") {
-            if (p.priceLabel) {
-              metaLines.push({ text: p.priceLabel, className: "mt-1 text-sm font-semibold text-sky-700" });
-            }
-            metaLines.push({ text: p.subtitle, className: "mt-2 text-sm leading-7 text-slate-600 line-clamp-3" });
-          } else if (p.kind === "podium") {
-            if (p.priceLabel) {
-              metaLines.push({ text: `Price: ${p.priceLabel}`, className: "mt-1 text-sm font-semibold text-sky-700" });
-            }
-          }
+              <button
+                type="button"
+                onClick={() => {
+                  scrollToGridOnNextPageChangeRef.current = true;
+                  setMobilePage((p) => Math.min(mobileTotalPages, p + 1));
+                }}
+                disabled={mobileCurrentPage === mobileTotalPages}
+                className="rounded-xl border bg-white px-3 py-2 text-xs font-semibold text-slate-900 transition enabled:hover:-translate-y-0.5 enabled:hover:bg-slate-50 enabled:hover:shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
+                style={{ borderColor: "rgba(15,23,42,0.12)" }}
+              >
+                Next
+              </button>
+            </nav>
+          </div>
+        ) : null}
 
-          return (
-            <ProductGridCard
-              key={p.id}
-              href={p.href}
-              title={p.title}
-              image={<Image src={p.image} alt={p.title} fill sizes={productImageSizes} className="object-cover transition duration-300 group-hover:scale-[1.02]" />}
-              imageContainerClassName="bg-slate-50"
-              borderColor="rgba(15,23,42,0.08)"
-              topLeftBadge={{ text: p.badge, tone: "light" }}
-              topRightBadge={topRightBadge}
-              metaLines={metaLines}
-              bullets={bullets}
-              chips={chips}
-              accentColor={BRAND.maroon}
-              contactHref="/contact"
-              viewDetailsLabel="View details ->"
-            />
-          );
-        }
-
-        if (isAccessoryProduct(p)) {
-              const kind = getAccessoryKind(p);
-              const useContainImage = false;
-              const rightBadge = kind === "controller" ? "Controller" : "Accessories";
-
-              const bullets =
-                p.quickFeatures?.length
-                  ? p.quickFeatures.slice(0, 4)
-                  : kind === "led-accessories" && p.tags?.length
-                    ? p.tags.slice(0, 4)
-                    : subtitleToBullets(p.subtitle);
-
-              const chips = p.bestFor?.length ? p.bestFor.slice(0, 3) : (p.tags ?? []).slice(0, 3);
-
-              const metaLines: Array<{ text: string; className?: string }> = [];
-              if (p.priceLine) metaLines.push({ text: p.priceLine, className: "mt-1 text-sm font-semibold text-sky-700" });
-
-              return (
-                <ProductGridCard
-                  key={p.id}
-                  href={p.href}
-                  title={p.title}
-                  image={
-                    <Image
-                      src={p.image}
-                      alt={p.title}
-                      fill
-                      sizes={productImageSizes}
-                      className="object-cover object-center transition duration-300 group-hover:scale-[1.03]"
-                    />
-                  }
-                  imageContainerClassName="bg-slate-100"
-                  borderColor={`${BRAND.maroon}12`}
-                  topLeftBadge={{ text: p.badge, tone: "light" }}
-                  topRightBadge={{ text: rightBadge, tone: "dark" }}
-                  metaLines={metaLines}
-                  bullets={bullets}
-                  chips={chips}
-                  accentColor={BRAND.maroon}
-                  contactHref="/contact"
-                  viewDetailsLabel="View details ->"
-                />
-              );
-            }
-
-            const fixFit = imageFitFixIds.has(p.id);
-            const ledImageClassName =
-              p.id === "indoor:p2-5-indoor-led-display"
-                ? "object-cover object-[58%_center] transition duration-300 group-hover:scale-[1.03]"
-                : p.id === "outdoor:premium-quality-outdoor-led-display"
-                  ? "object-cover object-[50%_42%] transition duration-300 group-hover:scale-[1.03]"
-                : "object-cover object-center transition duration-300 group-hover:scale-[1.03]";
-
-            const bullets = getLedCardBullets(p);
-            const chips = p.bestFor?.length ? p.bestFor.slice(0, 3) : [];
-
-            const metaLines: Array<{ text: string; className?: string }> = [];
-            if (p.priceLine) metaLines.push({ text: p.priceLine, className: "mt-1 text-sm font-semibold text-sky-700" });
-
-            return (
-              <ProductGridCard
-                key={p.id}
-                href={p.href}
-                title={p.title}
-                image={<Image src={p.image} alt={p.title} fill sizes={productImageSizes} className={ledImageClassName} />}
-                imageContainerClassName="bg-slate-50"
-                borderColor={`${BRAND.maroon}12`}
-                topLeftBadge={undefined}
-                topRightBadge={undefined}
-                metaLines={metaLines}
-                bullets={bullets}
-                chips={chips}
-                accentColor={BRAND.maroon}
-                contactHref="/contact"
-                viewDetailsLabel="View details ->"
-              />
-            );
-          })}
-        </div>
-
-        {showPagination ? (
-          <div className="flex flex-col items-center gap-2">
+        {showDesktopPagination ? (
+          <div className="hidden flex-col items-center gap-2 md:flex">
             <nav aria-label="Products pagination" className="flex flex-wrap items-center justify-center gap-2">
               <button
                 type="button"
@@ -1452,14 +1561,14 @@ function ProductsPageContent({
                   scrollToGridOnNextPageChangeRef.current = true;
                   setPage((p) => Math.max(1, p - 1));
                 }}
-                disabled={currentPage === 1}
+                disabled={desktopCurrentPage === 1}
                 className="rounded-xl border bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition enabled:hover:-translate-y-0.5 enabled:hover:bg-slate-50 enabled:hover:shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
                 style={{ borderColor: "rgba(15,23,42,0.12)" }}
               >
                 Previous
               </button>
 
-              {paginationItems.map((item, idx) =>
+              {desktopPaginationItems.map((item, idx) =>
                 item === "..." ? (
                   <span key={`ellipsis-${idx}`} className="px-1 text-sm font-bold text-slate-500">
                     ...
@@ -1474,12 +1583,12 @@ function ProductsPageContent({
                     }}
                     className="min-w-10 rounded-xl border px-3 py-2 text-sm font-semibold transition hover:-translate-y-0.5 hover:shadow-sm"
                     style={{
-                      borderColor: item === currentPage ? "rgba(14,116,144,0.75)" : "rgba(15,23,42,0.12)",
-                      background: item === currentPage ? "rgba(14,116,144,0.12)" : "white",
-                      color: item === currentPage ? "#0f172a" : "#0f172a",
-                      boxShadow: item === currentPage ? "inset 0 0 0 2px rgba(14,116,144,0.65)" : undefined,
+                      borderColor: item === desktopCurrentPage ? "rgba(14,116,144,0.75)" : "rgba(15,23,42,0.12)",
+                      background: item === desktopCurrentPage ? "rgba(14,116,144,0.12)" : "white",
+                      color: item === desktopCurrentPage ? "#0f172a" : "#0f172a",
+                      boxShadow: item === desktopCurrentPage ? "inset 0 0 0 2px rgba(14,116,144,0.65)" : undefined,
                     }}
-                    aria-current={item === currentPage ? "page" : undefined}
+                    aria-current={item === desktopCurrentPage ? "page" : undefined}
                   >
                     {item}
                   </button>
@@ -1490,9 +1599,9 @@ function ProductsPageContent({
                 type="button"
                 onClick={() => {
                   scrollToGridOnNextPageChangeRef.current = true;
-                  setPage((p) => Math.min(totalPages, p + 1));
+                  setPage((p) => Math.min(desktopTotalPages, p + 1));
                 }}
-                disabled={currentPage === totalPages}
+                disabled={desktopCurrentPage === desktopTotalPages}
                 className="rounded-xl border bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition enabled:hover:-translate-y-0.5 enabled:hover:bg-slate-50 enabled:hover:shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
                 style={{ borderColor: "rgba(15,23,42,0.12)" }}
               >

@@ -1,6 +1,7 @@
 "use client";
 
 import ProductGridCard from "@/components/products/ProductGridCard";
+import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
 import { getPaSystemCardPriceLabel, type PaSystemItem } from "./catalog";
 
 const BRAND = {
@@ -98,14 +99,14 @@ export default function PaSystemProducts({
       <div className="sr-only">
         <div>
           <div className="text-xl font-extrabold tracking-tight text-slate-900">Popular PA Items</div>
-          <p className="mt-2 text-slate-600 leading-7">
+          <p className="mt-2 hidden text-slate-600 leading-7 md:block">
             Browse common PA items and packages. For a full setup, request a BOQ based on your site layout and number of zones.
           </p>
         </div>
       </div>
 
       {items.length ? (
-        <div className="product-grid-3 grid items-stretch gap-[10px] sm:grid-cols-2 lg:grid-cols-3">
+        <ResponsiveProductCarousel className="product-grid-3" desktopClassName="md:grid-cols-2 lg:grid-cols-3" mobileGapClassName="gap-[10px]">
           {items.map((p) => {
             const detailHref = `/pa-system/${p.slug}/`;
             const features = getCardFeatures(p);
@@ -134,11 +135,12 @@ export default function PaSystemProducts({
                 chips={bestFor}
                 accentColor={BRAND.maroon}
                 contactHref="/contact/"
+                compactMobile
                 viewDetailsLabel="View details ->"
               />
             );
           })}
-        </div>
+        </ResponsiveProductCarousel>
       ) : (
         <div
           className="mt-6 rounded-3xl border bg-white p-6 text-sm font-semibold text-slate-700"

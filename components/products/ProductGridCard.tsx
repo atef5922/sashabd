@@ -322,27 +322,29 @@ export default function ProductGridCard({
   const badgeClass = (tone: BadgeTone | undefined) =>
     tone === "dark"
       ? compactMobile
-        ? "rounded-full bg-slate-900/90 px-2 py-0.5 text-[9px] font-semibold leading-tight text-white shadow sm:px-3 sm:py-1 sm:text-xs"
+        ? "hidden rounded-full bg-slate-900/90 px-2 py-0.5 text-[9px] font-semibold leading-tight text-white shadow md:inline-flex md:px-3 md:py-1 md:text-xs"
         : "rounded-full bg-slate-900/90 px-3 py-1 text-xs font-semibold text-white shadow"
       : compactMobile
-        ? "rounded-full bg-slate-900/90 px-2 py-0.5 text-[9px] font-semibold leading-tight text-white shadow sm:px-3 sm:py-1 sm:text-xs"
+        ? "hidden rounded-full bg-slate-900/90 px-2 py-0.5 text-[9px] font-semibold leading-tight text-white shadow md:inline-flex md:px-3 md:py-1 md:text-xs"
         : "rounded-full bg-slate-900/90 px-3 py-1 text-xs font-semibold text-white shadow";
-
   const baseCardClassName = compactMobile
-    ? "group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(2,132,199,0.18)] hover:ring-1 hover:ring-sky-200/70 focus-within:ring-2 focus-within:ring-sky-500/25"
+    ? "group relative flex h-full flex-col overflow-hidden rounded-none border-0 bg-transparent shadow-none md:rounded-2xl md:border md:bg-white md:shadow-sm md:transition-all md:duration-300 md:ease-out md:hover:-translate-y-1 md:hover:shadow-[0_18px_45px_rgba(2,132,199,0.18)] md:hover:ring-1 md:hover:ring-sky-200/70 md:focus-within:ring-2 md:focus-within:ring-sky-500/25"
     : "group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(2,132,199,0.18)] hover:ring-1 hover:ring-sky-200/70 focus-within:ring-2 focus-within:ring-sky-500/25";
-  const contentClassName = compactMobile ? "flex flex-1 flex-col p-4" : "flex flex-1 flex-col p-4";
+  const contentClassName = compactMobile ? "flex flex-1 flex-col px-0 pb-0 pt-2.5 md:p-4" : "flex flex-1 flex-col p-4";
   const titleClassName = compactMobile
-    ? "min-h-[2.25rem] line-clamp-2 text-[13px] font-bold leading-snug text-slate-900"
+    ? "min-h-[2.35rem] line-clamp-2 text-[13px] font-bold leading-snug text-slate-900 md:min-h-[2.25rem]"
     : "min-h-[2.25rem] line-clamp-2 text-[13px] font-bold leading-snug text-slate-900";
-  const footerClassName = compactMobile ? "mt-auto pt-4" : "mt-auto pt-4";
-  const actionRowClassName = "flex items-center gap-3";
+  const footerClassName = compactMobile ? "mt-auto pt-2.5 md:pt-4" : "mt-auto pt-4";
   const quoteClassName = compactMobile
     ? "relative z-20 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-700 to-sky-600 px-4 py-2 text-[12px] font-bold leading-tight text-white shadow-sm ring-1 ring-sky-700/20 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:from-sky-600 hover:to-sky-500 hover:shadow-md hover:ring-sky-500/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/70 active:translate-y-0"
     : "relative z-20 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-700 to-sky-600 px-4 py-2 text-[12px] font-bold leading-tight text-white shadow-sm ring-1 ring-sky-700/20 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:from-sky-600 hover:to-sky-500 hover:shadow-md hover:ring-sky-500/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/70 active:translate-y-0";
   const detailsClassName = compactMobile
     ? "relative z-20 inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-4 py-2 text-[12px] font-bold leading-tight text-slate-800 shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-800 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/50 active:translate-y-0"
     : "relative z-20 inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-4 py-2 text-[12px] font-bold leading-tight text-slate-800 shadow-sm transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-sky-300 hover:bg-sky-50 hover:text-sky-800 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/50 active:translate-y-0";
+  const actionRowClassName = "flex flex-wrap items-center gap-3";
+  const imageFrameClassName = compactMobile
+    ? `product-card-image-frame relative aspect-[4/3] w-full overflow-hidden rounded-md md:rounded-none md:aspect-[16/10] ${imageContainerClassName}`
+    : `product-card-image-frame relative aspect-[4/3] w-full overflow-hidden md:aspect-[16/10] ${imageContainerClassName}`;
 
   return (
     <div
@@ -353,11 +355,11 @@ export default function ProductGridCard({
         <span className="sr-only">View details for {displayTitle}</span>
       </Link>
 
-      <div className={`product-card-image-frame relative aspect-[16/10] w-full overflow-hidden ${imageContainerClassName}`}>
+      <div className={imageFrameClassName}>
         {image}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/0 via-white/0 to-white/15 transition-opacity duration-300 group-hover:opacity-0" />
-        <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" style={{ background: "linear-gradient(135deg, rgba(14,165,233,0.16), rgba(37,99,235,0.10) 40%, rgba(255,106,0,0.08))" }} />
-        <div className="pointer-events-none absolute -inset-y-6 -left-1/3 w-1/3 -skew-x-12 opacity-0 blur-sm transition-all duration-700 group-hover:left-[120%] group-hover:opacity-70" style={{ background: "linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.9), rgba(255,255,255,0))" }} />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/0 via-white/0 to-white/15 transition-opacity duration-300 md:group-hover:opacity-0" />
+        <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 md:group-hover:opacity-100" style={{ background: "linear-gradient(135deg, rgba(14,165,233,0.16), rgba(37,99,235,0.10) 40%, rgba(255,106,0,0.08))" }} />
+        <div className="pointer-events-none absolute -inset-y-6 -left-1/3 hidden w-1/3 -skew-x-12 opacity-0 blur-sm transition-all duration-700 md:block md:group-hover:left-[120%] md:group-hover:opacity-70" style={{ background: "linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.9), rgba(255,255,255,0))" }} />
 
         {topLeftBadge ? (
           <div className={`absolute left-3 top-3 ${badgeClass(topLeftBadge.tone)}`}>
@@ -375,13 +377,13 @@ export default function ProductGridCard({
         <div className={titleClassName}>{displayTitle}</div>
 
         {visibleMetaLines.map((m) => (
-          <p key={`${title}-${m.text}`} className={m.className ?? metaToneClass(m.text)}>
+          <p key={`${title}-${m.text}`} className={compactMobile ? `${m.className ?? metaToneClass(m.text)} hidden md:block` : m.className ?? metaToneClass(m.text)}>
             {normalizeMetaLineText(m.text)}
           </p>
         ))}
 
         {visibleBullets.length ? (
-          <ul className={compactMobile ? "mt-3 space-y-1.5 text-[11px] text-slate-600" : "mt-3 space-y-1.5 text-[11px] text-slate-600"}>
+          <ul className={compactMobile ? "mt-3 hidden space-y-1.5 text-[11px] text-slate-600 md:block" : "mt-3 space-y-1.5 text-[11px] text-slate-600"}>
             {visibleBullets.map((b) => {
               const label = b.trim().startsWith("-") ? b.trim() : `- ${b.trim()}`;
               return (
@@ -394,7 +396,7 @@ export default function ProductGridCard({
         ) : null}
 
         {visibleChips.length ? (
-          <div className="mt-3 grid grid-cols-3 gap-2">
+          <div className={compactMobile ? "mt-3 hidden grid-cols-3 gap-2 md:grid" : "mt-3 grid grid-cols-3 gap-2"}>
             {visibleChips.map((c) => (
               <span
                 key={c}
@@ -408,18 +410,47 @@ export default function ProductGridCard({
         ) : null}
 
         <div className={footerClassName}>
-          <div className={actionRowClassName}>
-            <Link
-              prefetch={false}
-              href={contactHref}
-              className={quoteClassName}
-            >
-              Request quotation<span className="sr-only"> for {displayTitle}</span>
-            </Link>
-            <Link prefetch={false} href={href} className={detailsClassName} style={{ color: "inherit" }}>
-              {safeViewDetailsLabel}
-            </Link>
-          </div>
+          {compactMobile ? (
+            <>
+              <Link
+                prefetch={false}
+                href={href}
+                className="inline-flex min-h-8 w-full items-center justify-between rounded-md border border-[#F56605]/20 bg-[#FFF7F1] py-1 pl-3 pr-1 text-[10px] font-bold leading-tight text-[#C84B00] shadow-sm transition hover:border-[#F56605]/35 hover:bg-[#FFF1E8] md:hidden"
+              >
+                <span>View details</span>
+                <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#F56605] text-white shadow-[0_5px_12px_rgba(245,102,5,0.22)]">
+                  <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" aria-hidden="true">
+                    <path d="m10 7 5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
+              </Link>
+              <div className="hidden items-center gap-3 md:flex">
+                <Link
+                  prefetch={false}
+                  href={contactHref}
+                  className={quoteClassName}
+                >
+                  Request quotation<span className="sr-only"> for {displayTitle}</span>
+                </Link>
+                <Link prefetch={false} href={href} className={detailsClassName} style={{ color: "inherit" }}>
+                  {safeViewDetailsLabel}
+                </Link>
+              </div>
+            </>
+          ) : (
+            <div className={actionRowClassName}>
+              <Link
+                prefetch={false}
+                href={contactHref}
+                className={quoteClassName}
+              >
+                Request quotation<span className="sr-only"> for {displayTitle}</span>
+              </Link>
+              <Link prefetch={false} href={href} className={detailsClassName} style={{ color: "inherit" }}>
+                {safeViewDetailsLabel}
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </div>

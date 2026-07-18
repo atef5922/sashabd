@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import type { LedAccessoryProduct, ProductItem } from "../../lib/productsCatalog";
 import { buildLedProductCardHighlights } from "@/lib/productCardHighlights";
 import ProductGridCard from "./ProductGridCard";
+import ResponsiveProductCarousel from "./ResponsiveProductCarousel";
 
 const BRAND = {
   maroon: "#FF6A00",
@@ -89,24 +90,24 @@ export default function IndoorFilterSection({
       {showFilter ? (
         <section className="mt-8 bg-transparent p-0">
           <h2 className="text-xl font-bold text-slate-900">Filter Indoor LED Display Options</h2>
-          <p className="mt-2 text-sm text-slate-600 leading-7">Quick navigation by pixel pitch. (Visual filtering links only-no price/stock shown.)</p>
+          <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">Quick navigation by pixel pitch. (Visual filtering links only-no price/stock shown.)</p>
 
           <div className="mt-4">
             <div>
               <div className="text-xs font-bold text-slate-700">Pixel Pitch</div>
-              <div className="mt-2 flex flex-wrap gap-2">
+              <div className="mt-2 flex flex-nowrap gap-1.5 overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
                 {pitches.map((p) => (
                   <Link
                     key={p}
                     href={buildHref(p)}
-                    className={`group relative isolate overflow-hidden rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-all duration-300 ${
+                    className={`group relative isolate overflow-hidden whitespace-nowrap rounded-full border px-3.5 py-1.5 text-[10px] font-bold transition-all duration-300 ${
                       activePitch === p
-                        ? "border-transparent text-white ring-1 ring-sky-300/60 shadow-[0_12px_28px_rgba(37,99,235,0.35)]"
-                        : "bg-white text-slate-700 shadow-sm hover:-translate-y-0.5 hover:scale-[1.04] hover:border-sky-300/80 hover:text-slate-900 hover:shadow-[0_14px_30px_rgba(14,165,233,0.22)]"
+                        ? "border-[rgba(255,106,0,0.65)] text-white shadow-[0_8px_18px_rgba(255,106,0,0.22)]"
+                        : "border-cyan-100/70 bg-[rgba(103,232,249,0.10)] text-slate-700 shadow-none hover:border-orange-200 hover:text-slate-900"
                     }`}
                     style={
                       activePitch === p
-                        ? { background: "linear-gradient(135deg, #0284c7, #2563eb 48%, #FF6A00)" }
+                        ? { background: "linear-gradient(135deg, rgba(228,87,0,0.98), rgba(255,106,0,0.98))" }
                         : undefined
                     }
                   >
@@ -122,12 +123,6 @@ export default function IndoorFilterSection({
                         style={{ background: "linear-gradient(120deg, rgba(14,165,233,0.15), rgba(37,99,235,0.20), rgba(255,106,0,0.14))" }}
                       />
                     ) : null}
-                    {activePitch !== p ? (
-                      <span
-                        className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 -skew-x-12 opacity-0 blur-sm transition-all duration-500 group-hover:left-[115%] group-hover:opacity-60"
-                        style={{ background: "linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.9), rgba(255,255,255,0))" }}
-                      />
-                    ) : null}
                     {p}
                   </Link>
                 ))}
@@ -139,11 +134,11 @@ export default function IndoorFilterSection({
 
       <section className="mt-8">
         <h2 className="text-2xl font-bold text-slate-900">Indoor LED Display Models and Features</h2>
-        <p className="mt-2 text-slate-600 leading-7">
+        <p className="mt-2 hidden text-slate-600 leading-7 md:block">
           Choose a model based on viewing distance, content type and environment. Open any model to see detailed specs.
         </p>
 
-        <div className="mt-6 grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
           {displayCards.map((p) => {
             if ("badge" in p) {
               const chips = (p.tags?.length ? p.tags : p.quickFeatures?.length ? p.quickFeatures : [p.badge]).slice(0, 3);
@@ -160,6 +155,7 @@ export default function IndoorFilterSection({
                   metaLines={p.cardPrice ? [{ text: p.cardPrice, className: "mt-2 text-sm font-semibold text-sky-700" }] : []}
                   bullets={bullets}
                   chips={chips}
+                  compactMobile
                   image={
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -200,6 +196,7 @@ export default function IndoorFilterSection({
                 ]}
                 bullets={bullets}
                 chips={chips}
+                compactMobile
                 image={
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -212,7 +209,7 @@ export default function IndoorFilterSection({
               />
             );
           })}
-        </div>
+        </ResponsiveProductCarousel>
 
         {filtered.length === 0 && stickyCards.length === 0 && (
           <div className="mt-6 rounded-2xl border bg-white p-6 text-sm text-slate-700">
@@ -223,6 +220,4 @@ export default function IndoorFilterSection({
     </>
   );
 }
-
-
 

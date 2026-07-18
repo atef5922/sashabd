@@ -1,10 +1,11 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site";
 import { socialImageUrl } from "@/lib/seo";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
 import ProductGridCard from "@/components/products/ProductGridCard";
+import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 
 export const metadata: Metadata = {
@@ -89,7 +90,7 @@ export default function AccessoriesPage() {
         className="mb-4 pt-3 text-sm text-slate-600"
       />
       {/* Header (Receiving-card style) */}
-      <section className="rounded-3xl bg-white p-7 md:p-10">
+      <section className="mobile-page-intro-card rounded-none bg-transparent p-0 md:rounded-3xl md:bg-white md:p-10">
         <div className="flex flex-col gap-4">
           {/* Title block constrained like receiving card */}
           <div className="max-w-3xl">
@@ -118,7 +119,7 @@ export default function AccessoriesPage() {
             to explore model details, practical guidance, and recommended setup information.
           </p>
 
-          <div className="mt-1 flex flex-wrap gap-2 text-xs font-semibold text-slate-700">
+          <div className="mt-1 hidden flex-wrap gap-2 text-xs font-semibold text-slate-700 md:flex">
             {["Selection help", "BOQ guidance", "Installation support", "After-sales"].map((t) => (
               <span
                 key={t}
@@ -154,11 +155,11 @@ export default function AccessoriesPage() {
       {/* Grid */}
       <section className="mt-8">
         <h2 className="text-2xl font-bold text-slate-900">Browse Accessories</h2>
-        <p className="mt-2 text-slate-600 leading-7">
+        <p className="mt-2 hidden text-slate-600 leading-7 md:block">
           Click any category to see details, selection notes and recommended setup.
         </p>
 
-        <div className="mt-6 grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
           {accessories.map((p) => (
             <ProductGridCard
               key={p.slug}
@@ -181,10 +182,11 @@ export default function AccessoriesPage() {
               chips={p.tags.slice(0, 3)}
               accentColor={BRAND.maroon}
               contactHref="/contact"
+              compactMobile
               viewDetailsLabel="View details →"
             />
           ))}
-        </div>
+        </ResponsiveProductCarousel>
       </section>
 
       <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
@@ -487,4 +489,3 @@ export default function AccessoriesPage() {
     </div>
   );
 }
-

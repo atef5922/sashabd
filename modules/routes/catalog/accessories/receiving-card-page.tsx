@@ -4,7 +4,9 @@ import { siteConfig } from "@/lib/site";
 import { receivingCardCatalog } from "@/lib/productsCatalog";
 import { socialImageUrl } from "@/lib/seo";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
+import MobileIntroText from "@/components/common/MobileIntroText";
 import ProductGridCard from "@/components/products/ProductGridCard";
+import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
 
@@ -87,7 +89,7 @@ export default function ReceivingCardListingPage() {
         className="mb-4 pt-3 text-sm text-slate-600"
       />
       {/* Header (Outdoor-style) */}
-      <section className="rounded-3xl bg-white p-7 md:p-10">
+      <section className="mobile-page-intro-card rounded-none bg-transparent p-0 md:rounded-3xl md:bg-white md:p-10">
         <div className="flex flex-col gap-4">
           {/* indoor-style: title block constrained, description full width */}
           <div className="max-w-3xl">
@@ -105,18 +107,24 @@ export default function ReceivingCardListingPage() {
           </div>
 
           {/* Full-width description (margin-to-margin) */}
-          <p className="mt-1 w-full text-slate-600 leading-7 text-justify">
-            A receiving card is one of the most important control components inside an LED display cabinet, because it
-            takes signal data from the sender or video processor and distributes that data accurately to the LED
-            modules, driver ICs, and scanning lines. In simple terms, it helps the screen show the right content in
-            the right position, with proper mapping, brightness behavior, and stable image output. Different receiving
-            card models can vary in HUB port type, loading capacity, supported scan modes, grayscale performance,
-            refresh-related capability, and compatibility with specific cabinet or module configurations. That is why
-            choosing the correct receiving card is essential for smooth display performance, clean visuals, easier
-            configuration, and long-term system reliability.
-          </p>
+          <MobileIntroText
+            teaser="A receiving card distributes signal data correctly to LED modules for stable mapping and clean screen output."
+            expandedClassName="mt-1"
+            desktopClassName="mt-1"
+          >
+            <p className="w-full text-slate-600 leading-7 text-justify">
+              A receiving card is one of the most important control components inside an LED display cabinet, because it
+              takes signal data from the sender or video processor and distributes that data accurately to the LED
+              modules, driver ICs, and scanning lines. In simple terms, it helps the screen show the right content in
+              the right position, with proper mapping, brightness behavior, and stable image output. Different receiving
+              card models can vary in HUB port type, loading capacity, supported scan modes, grayscale performance,
+              refresh-related capability, and compatibility with specific cabinet or module configurations. That is why
+              choosing the correct receiving card is essential for smooth display performance, clean visuals, easier
+              configuration, and long-term system reliability.
+            </p>
+          </MobileIntroText>
 
-          <div className="mt-1 flex flex-wrap gap-2 text-xs font-semibold text-slate-700">
+          <div className="mt-1 hidden flex-wrap gap-2 text-xs font-semibold text-slate-700 md:flex">
             {["✓ HUB compatibility check", "✓ Scan & mapping guidance", "✓ Installation support", "✓ After-sales service"].map(
               (t) => (
                 <span
@@ -131,10 +139,10 @@ export default function ReceivingCardListingPage() {
           </div>
 
           {/* CTA buttons under hero (horizontal line) */}
-          <div className="mt-4 flex flex-wrap gap-3">
+          <div className="mobile-intro-actions mt-4 grid grid-cols-3 gap-2 md:flex md:flex-wrap md:gap-3">
             <Link
               href="/contact"
-              className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+              className="inline-flex min-h-9 items-center justify-center rounded-md px-2 py-2 text-center text-[9.5px] font-extrabold leading-[1.1] text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
               Request a Quotation →
@@ -143,13 +151,13 @@ export default function ReceivingCardListingPage() {
               href={wa}
               target="_blank"
               rel="noreferrer"
-              className="rounded-xl bg-emerald-600 px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md"
+              className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-2 py-2 text-center text-[9.5px] font-extrabold leading-[1.1] text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
             >
               WhatsApp
             </a>
             <Link
               href="/led-display/accessories/"
-              className="rounded-xl border bg-white px-5 py-3 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50"
+              className="inline-flex min-h-9 items-center justify-center rounded-md border bg-white px-2 py-2 text-center text-[9.5px] font-extrabold leading-[1.1] text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 md:rounded-xl md:px-5 md:py-3 md:text-sm"
               style={{ borderColor: `${BRAND.maroon}22` }}
             >
               Back to Accessories
@@ -161,12 +169,12 @@ export default function ReceivingCardListingPage() {
       {/* Grid */}
       <section className="mt-8">
         <h2 className="text-2xl font-bold text-slate-900">Receiving Card Models & Key Features</h2>
-        <p className="mt-2 text-slate-600 leading-7">
+        <p className="mt-2 hidden text-slate-600 leading-7 md:block">
           It’s best to choose a model based on your cabinet/module. Open any model to check HUB/scan/mapping guidance,
           then contact us for quotation or setup assistance.
         </p>
 
-        <div className="mt-6 grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
           {receivingCardCatalog.map((p) => (
             <ProductGridCard
               key={p.slug}
@@ -190,10 +198,11 @@ export default function ReceivingCardListingPage() {
               chips={p.quickFeatures.slice(0, 3)}
               accentColor={BRAND.maroon}
               contactHref="/contact"
+              compactMobile
               viewDetailsLabel="View details →"
             />
           ))}
-        </div>
+        </ResponsiveProductCarousel>
       </section>
 
       {/* Quick helper block */}

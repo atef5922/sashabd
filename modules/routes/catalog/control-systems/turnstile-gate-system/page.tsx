@@ -5,8 +5,10 @@ import { formatBdtRange, normalizeDisplayedPriceText } from "@/lib/price";
 import { socialImageUrl } from "@/lib/seo";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
+import MobileIntroText from "@/components/common/MobileIntroText";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import ProductGridCard from "@/components/products/ProductGridCard";
+import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
 import { turnstileCatalog, type TurnstileItem, type TurnstileKind } from "./catalog";
 
 const BRAND = { maroon: "#FF6A00", maroonDark: "#E45700" };
@@ -503,24 +505,26 @@ export default function TurnstileGateSystemPage() {
         className="mb-4 text-sm text-slate-600"
       />
       <section
-        className="rounded-3xl border border-orange-100 bg-white p-[10px] shadow-[0_18px_55px_rgba(15,23,42,0.08)] ring-1 ring-orange-50 md:p-[15px]"
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,247,237,0.92) 48%, rgba(248,250,252,1) 100%)",
-        }}
+        className="mobile-page-intro-card rounded-none border-0 bg-transparent p-0 shadow-none ring-0 md:rounded-3xl md:border md:border-orange-100 md:p-[15px] md:shadow-[0_18px_55px_rgba(15,23,42,0.08)] md:ring-1 md:ring-orange-50 md:[background:linear-gradient(135deg,rgba(255,255,255,1)_0%,rgba(255,247,237,0.92)_48%,rgba(248,250,252,1)_100%)]"
       >
         <div className="w-full">
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-950 md:text-4xl">
+          <h1 className="text-[1.75rem] font-extrabold leading-[1.08] tracking-tight text-slate-950 md:text-4xl">
             {PAGE_TITLE}
           </h1>
-          <div className="mt-4 space-y-4 text-justify text-[15px] leading-[1.8] text-slate-700 md:text-base">
-            <p>
-              Mugnee Multiple Ltd. is a trusted <strong className="font-extrabold text-slate-950">turnstile gate supplier in Bangladesh</strong>, offering professional <strong className="font-extrabold text-slate-950">access control system</strong> solutions for offices, factories, garments, banks, hospitals, universities, government organizations, commercial buildings, and industrial facilities. We supply and install <strong className="font-extrabold text-slate-950">tripod turnstile gate</strong>, <strong className="font-extrabold text-slate-950">flap barrier gate</strong>, <strong className="font-extrabold text-slate-950">speed gate turnstile</strong>, <strong className="font-extrabold text-slate-950">swing barrier gate</strong>, and <strong className="font-extrabold text-slate-950">full height turnstile</strong> systems for secure and efficient entry control.
-            </p>
-            <p>
-              Our <strong className="font-extrabold text-slate-950">office turnstile gate</strong>, <strong className="font-extrabold text-slate-950">factory turnstile gate</strong>, and <strong className="font-extrabold text-slate-950">security entrance system</strong> solutions can integrate with <strong className="font-extrabold text-slate-950">RFID access control</strong>, <strong className="font-extrabold text-slate-950">face recognition access control</strong>, <strong className="font-extrabold text-slate-950">fingerprint attendance system</strong>, QR code verification, visitor management software, and attendance software. For the latest <strong className="font-extrabold text-slate-950">turnstile gate price in Bangladesh</strong>, we provide site survey, system design, installation, commissioning, user training, and nationwide after-sales support.
-            </p>
-          </div>
+          <MobileIntroText
+            teaser="Professional turnstile gate and access control solutions for offices, factories, campuses and secure entry points in Bangladesh."
+            expandedClassName="mt-4"
+            desktopClassName="mt-4"
+          >
+            <div className="space-y-4 text-justify text-[15px] leading-[1.8] text-slate-700 md:text-base">
+              <p>
+                Mugnee Multiple Ltd. is a trusted <strong className="font-extrabold text-slate-950">turnstile gate supplier in Bangladesh</strong>, offering professional <strong className="font-extrabold text-slate-950">access control system</strong> solutions for offices, factories, garments, banks, hospitals, universities, government organizations, commercial buildings, and industrial facilities. We supply and install <strong className="font-extrabold text-slate-950">tripod turnstile gate</strong>, <strong className="font-extrabold text-slate-950">flap barrier gate</strong>, <strong className="font-extrabold text-slate-950">speed gate turnstile</strong>, <strong className="font-extrabold text-slate-950">swing barrier gate</strong>, and <strong className="font-extrabold text-slate-950">full height turnstile</strong> systems for secure and efficient entry control.
+              </p>
+              <p>
+                Our <strong className="font-extrabold text-slate-950">office turnstile gate</strong>, <strong className="font-extrabold text-slate-950">factory turnstile gate</strong>, and <strong className="font-extrabold text-slate-950">security entrance system</strong> solutions can integrate with <strong className="font-extrabold text-slate-950">RFID access control</strong>, <strong className="font-extrabold text-slate-950">face recognition access control</strong>, <strong className="font-extrabold text-slate-950">fingerprint attendance system</strong>, QR code verification, visitor management software, and attendance software. For the latest <strong className="font-extrabold text-slate-950">turnstile gate price in Bangladesh</strong>, we provide site survey, system design, installation, commissioning, user training, and nationwide after-sales support.
+              </p>
+            </div>
+          </MobileIntroText>
         </div>
       </section>
 
@@ -625,7 +629,7 @@ export default function TurnstileGateSystemPage() {
           <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">
             Turnstile Gate Models & Access Control Options
           </h2>
-          <p className="text-slate-600 leading-7 text-justify">
+          <p className="hidden text-slate-600 leading-7 text-justify md:block">
             Choose the right gate type based on security level, entrance space and people flow. Share lane width, lane
             count and preferred access method (RFID/fingerprint/face/QR) and we will propose a practical solution and
             BOQ.
@@ -649,7 +653,7 @@ export default function TurnstileGateSystemPage() {
       )}
 
       <section id="popular-models" className="mt-[10px]">
-        <div className="grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ResponsiveProductCarousel desktopClassName="md:grid-cols-2 lg:grid-cols-3">
           {turnstileCatalog.map((m) => {
             const detailHref = `/turnstile-gate/${m.slug}/`;
             const kindLabel = getKindLabel(m.kind);
@@ -671,7 +675,7 @@ export default function TurnstileGateSystemPage() {
                 }
                 imageContainerClassName="bg-orange-50"
                 borderColor={`${BRAND.maroon}42`}
-                cardClassName="ring-1 ring-orange-100 shadow-[0_16px_42px_rgba(15,23,42,0.12)] hover:ring-orange-300 hover:shadow-[0_24px_60px_rgba(255,106,0,0.18)]"
+                cardClassName="md:ring-1 md:ring-orange-100 md:shadow-[0_16px_42px_rgba(15,23,42,0.12)] md:hover:ring-orange-300 md:hover:shadow-[0_24px_60px_rgba(255,106,0,0.18)]"
                 topLeftBadge={{ text: "Turnstile", tone: "light" }}
                 topRightBadge={{ text: kindLabel, tone: "dark" }}
                 metaLines={[{ text: `Price: ${m.priceLabel}`, className: "mt-1 text-sm font-semibold text-sky-700" }]}
@@ -679,11 +683,12 @@ export default function TurnstileGateSystemPage() {
                 chips={bestFor}
                 accentColor={BRAND.maroon}
                 contactHref="/contact"
+                compactMobile
                 viewDetailsLabel="View details →"
               />
             );
           })}
-        </div>
+        </ResponsiveProductCarousel>
       </section>
 
       <section className="mt-[10px] rounded-2xl border border-slate-200 bg-white p-[10px] shadow-sm md:p-[15px]">
@@ -1305,4 +1310,3 @@ export default function TurnstileGateSystemPage() {
     </div>
   );
 }
-

@@ -5,8 +5,10 @@ import { siteConfig } from "@/lib/site";
 import { socialImageUrl } from "@/lib/seo";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
+import MobileIntroText from "@/components/common/MobileIntroText";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import ProductGridCard from "@/components/products/ProductGridCard";
+import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
 import {
   getInteractiveFlatPanelBrandLabel,
   getInteractiveFlatPanelBullets,
@@ -155,35 +157,43 @@ export default function InteractiveFlatPanelPage() {
             </div>
 
             <div className="max-w-3xl">
-              <h1 className="text-2xl font-extrabold tracking-tight text-white md:text-4xl">
+              <h1 className="text-[1.75rem] font-extrabold leading-[1.08] tracking-tight text-white md:text-4xl">
                 Interactive Flat Panel (IFP) Price in Bangladesh
               </h1>
-              <p className="mt-3 text-sm leading-7 text-justify text-white/85 md:text-base">
-                Interactive flat panels upgrade classrooms and meeting rooms with a bright 4K display and touch writing.
-                Share your room size and usage goal to receive a practical model recommendation, BOQ support and an
-                installation-ready quotation.
-              </p>
+              <MobileIntroText
+                teaser="Interactive flat panels upgrade classrooms and meeting rooms with a bright 4K display and touch writing."
+                expandedClassName="mt-3"
+                desktopClassName="mt-3"
+                teaserClassName="text-white/85"
+                buttonClassName="text-[#67E8F9]"
+              >
+                <p className="text-sm leading-7 text-justify text-white/85 md:text-base">
+                  Interactive flat panels upgrade classrooms and meeting rooms with a bright 4K display and touch writing.
+                  Share your room size and usage goal to receive a practical model recommendation, BOQ support and an
+                  installation-ready quotation.
+                </p>
+              </MobileIntroText>
             </div>
 
-            <div className="mt-2 flex flex-wrap gap-3">
+            <div className="mt-3 grid grid-cols-3 gap-2 md:mt-2 md:flex md:flex-wrap md:gap-3">
               <a
                 href={wa}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-xl bg-emerald-600 px-6 py-3.5 text-[15px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-lg"
+                className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-2 py-2 text-[10px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-lg md:rounded-xl md:px-6 md:py-3.5 md:text-[15px]"
               >
                 Get Quotation on WhatsApp
               </a>
               <Link
                 href="/contact"
-                className="rounded-xl px-6 py-3.5 text-[15px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-lg"
+                className="inline-flex min-h-9 items-center justify-center rounded-md px-2 py-2 text-[10px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-lg md:rounded-xl md:px-6 md:py-3.5 md:text-[15px]"
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
                 Request BOQ / Quotation
               </Link>
               <a
                 href={`tel:${siteConfig.phone}`}
-                className="rounded-xl border border-white/30 bg-slate-950/30 px-6 py-3.5 text-[15px] font-extrabold text-white shadow-md backdrop-blur transition hover:bg-slate-950/40 hover:shadow-lg"
+                className="inline-flex min-h-9 items-center justify-center rounded-md border border-white/30 bg-slate-950/30 px-2 py-2 text-[10px] font-extrabold text-white shadow-md backdrop-blur transition hover:bg-slate-950/40 hover:shadow-lg md:rounded-xl md:px-6 md:py-3.5 md:text-[15px]"
               >
                 Hotline: {siteConfig.phone}
               </a>
@@ -250,12 +260,12 @@ export default function InteractiveFlatPanelPage() {
               </a>
             </div>
           </div>
-          <p className="text-slate-600 leading-7 md:text-[15px]">
+          <p className="hidden text-slate-600 leading-7 md:block md:text-[15px]">
             Below are popular brand and size combinations. For procurement, focus on fit: room size, accessories, mounting method and support scope.
           </p>
         </div>
 
-        <div className="mt-6 grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
           {interactiveFlatPanelCatalog.map((p) => (
             <ProductGridCard
               key={p.slug}
@@ -272,6 +282,7 @@ export default function InteractiveFlatPanelPage() {
               ]}
               bullets={getInteractiveFlatPanelBullets(p)}
               chips={getInteractiveFlatPanelChips(p)}
+              compactMobile
               image={
                 <Image
                   src={p.image}
@@ -284,7 +295,7 @@ export default function InteractiveFlatPanelPage() {
               viewDetailsLabel="View details →"
             />
           ))}
-        </div>
+        </ResponsiveProductCarousel>
 
         <div className="mt-8 rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}12` }}>
           <div className="text-base font-extrabold text-slate-900">Interactive Flat Panel Price List in Bangladesh</div>

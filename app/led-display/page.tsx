@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import ProductsPage from "@/modules/routes/catalog/products-page";
-import Breadcrumbs from "@/components/common/Breadcrumbs";
-import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { socialImageUrl } from "@/lib/seo";
 import { BRAND_NAME } from "@/lib/brand";
 
@@ -57,15 +55,6 @@ const collectionPageSchema = {
 export default function LedDisplayPage() {
   return (
     <>
-      <div className="mx-auto w-full max-w-7xl px-4 pt-3 md:px-6">
-        <Breadcrumbs
-          items={[
-            homeBreadcrumb(),
-            { href: "/led-display/", label: "LED Display", current: true },
-          ]}
-          className="mb-3 text-sm text-slate-600"
-        />
-      </div>
       <ProductsPage />
 
       <script
@@ -75,4 +64,3 @@ export default function LedDisplayPage() {
     </>
   );
 }
-

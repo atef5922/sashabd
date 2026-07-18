@@ -1,8 +1,10 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
+import MobileIntroText from "@/components/common/MobileIntroText";
 
 import ProductGridCard from "@/components/products/ProductGridCard";
+import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { powerSupplyCatalog } from "@/lib/productsCatalog";
 import { socialImageUrl } from "@/lib/seo";
@@ -85,7 +87,7 @@ export default function PowerSupplyListingPage() {
         className="mb-4 pt-3 text-sm text-slate-600"
       />
       {/* Header */}
-      <section className="rounded-3xl bg-white p-7 md:p-10">
+      <section className="mobile-page-intro-card rounded-none bg-transparent p-0 md:rounded-3xl md:bg-white md:p-10">
         <div className="max-w-3xl">
           <div
             className="inline-flex w-fit items-center gap-2 rounded-full border bg-slate-50 px-4 py-2 text-xs font-semibold"
@@ -98,20 +100,26 @@ export default function PowerSupplyListingPage() {
           <h1 className="mt-4 text-xl font-extrabold tracking-tight text-slate-900 md:text-3xl">LED Display Power Supply</h1>
         </div>
 
-        <p className="mt-1 w-full text-justify leading-7 text-slate-600">
-          An LED display power supply is the component that delivers stable DC power to LED modules, receiving cards, and other cabinet
-          electronics, so the screen can run smoothly without flicker, voltage drop, or unexpected shutdown. In practical use, the right power
-          supply is important not only for turning the screen on, but also for maintaining brightness consistency, protecting components during
-          long operating hours, and supporting reliable performance in both indoor and outdoor environments. Different models can vary by
-          voltage, current capacity, build quality, cooling behavior, efficiency, and cabinet compatibility, which is why proper load planning
-          matters before purchase. Choosing the correct LED power supply helps improve safety, reduce stress on the system, and ensure stable
-          long-term operation for advertising displays, video walls, stage screens, and other LED installations.
-        </p>
+        <MobileIntroText
+          teaser="An LED display power supply delivers stable DC power for smooth performance, safety and long-term reliability."
+          expandedClassName="mt-1"
+          desktopClassName="mt-1"
+        >
+          <p className="w-full text-justify leading-7 text-slate-600">
+            An LED display power supply is the component that delivers stable DC power to LED modules, receiving cards, and other cabinet
+            electronics, so the screen can run smoothly without flicker, voltage drop, or unexpected shutdown. In practical use, the right power
+            supply is important not only for turning the screen on, but also for maintaining brightness consistency, protecting components during
+            long operating hours, and supporting reliable performance in both indoor and outdoor environments. Different models can vary by
+            voltage, current capacity, build quality, cooling behavior, efficiency, and cabinet compatibility, which is why proper load planning
+            matters before purchase. Choosing the correct LED power supply helps improve safety, reduce stress on the system, and ensure stable
+            long-term operation for advertising displays, video walls, stage screens, and other LED installations.
+          </p>
+        </MobileIntroText>
       </section>
 
       {/* GRID */}
       <section className="mt-8">
-        <div className="grid items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <ResponsiveProductCarousel desktopClassName="md:grid-cols-2 lg:grid-cols-3" mobileGapClassName="gap-6">
           {powerSupplyCatalog.map((p) => (
             <ProductGridCard
               key={p.slug}
@@ -127,10 +135,11 @@ export default function PowerSupplyListingPage() {
               chips={p.bestFor.slice(0, 3)}
               accentColor={BRAND.maroon}
               contactHref="/contact"
+              compactMobile
               viewDetailsLabel="View details →"
             />
           ))}
-        </div>
+        </ResponsiveProductCarousel>
       </section>
 
       <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>

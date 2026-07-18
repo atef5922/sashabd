@@ -2,8 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
+import MobileIntroText from "@/components/common/MobileIntroText";
 
 import ProductGridCard from "@/components/products/ProductGridCard";
+import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { controllerCatalog } from "@/lib/productsCatalog";
 import { socialImageUrl } from "@/lib/seo";
@@ -89,7 +91,7 @@ export default function ControllerProductsPage() {
         className="mb-4 pt-3 text-sm text-slate-600"
       />
       {/* Header */}
-      <section className="rounded-3xl bg-white p-7 md:p-10">
+      <section className="mobile-page-intro-card rounded-none bg-transparent p-0 md:rounded-3xl md:bg-white md:p-10">
         <div className="mt-5 flex flex-col gap-4">
           <div className="max-w-3xl">
             <div
@@ -105,18 +107,24 @@ export default function ControllerProductsPage() {
             </h1>
           </div>
 
-          <p className="mt-1 w-full text-slate-600 leading-7 text-justify">
-            A controller or video processor is one of the most important core components in an LED display system, because it manages how video,
-            image, and presentation content is received, processed, and shown on the screen. It takes input signals from devices such as laptops,
-            media players, cameras, PCs, or other AV sources, then converts and distributes that signal in a format the LED display can read
-            correctly. This process includes tasks such as signal handling, resolution adjustment, scaling, mapping, screen loading, and stable
-            content output so that the final image appears clear, synchronized, and visually smooth. The right controller or processor also affects
-            ease of setup, input flexibility, display performance, and long-term reliability, especially in projects like digital signage, stage
-            screens, advertising boards, and video walls. Different models may offer different input ports, processing capacity, control functions,
-            and system compatibility, so selecting the correct one is essential for stable operation and better overall LED display performance.
-          </p>
+          <MobileIntroText
+            teaser="An LED controller or video processor manages signal input, scaling and stable screen output for display projects."
+            expandedClassName="mt-1"
+            desktopClassName="mt-1"
+          >
+            <p className="w-full text-slate-600 leading-7 text-justify">
+              A controller or video processor is one of the most important core components in an LED display system, because it manages how video,
+              image, and presentation content is received, processed, and shown on the screen. It takes input signals from devices such as laptops,
+              media players, cameras, PCs, or other AV sources, then converts and distributes that signal in a format the LED display can read
+              correctly. This process includes tasks such as signal handling, resolution adjustment, scaling, mapping, screen loading, and stable
+              content output so that the final image appears clear, synchronized, and visually smooth. The right controller or processor also affects
+              ease of setup, input flexibility, display performance, and long-term reliability, especially in projects like digital signage, stage
+              screens, advertising boards, and video walls. Different models may offer different input ports, processing capacity, control functions,
+              and system compatibility, so selecting the correct one is essential for stable operation and better overall LED display performance.
+            </p>
+          </MobileIntroText>
 
-          <div className="mt-1 flex flex-wrap gap-2 text-xs font-semibold text-slate-700">
+          <div className="mt-1 hidden flex-wrap gap-2 text-xs font-semibold text-slate-700 md:flex">
             {["✓ Input handling & scaling", "✓ Stable output", "✓ Mapping friendly", "✓ Setup & after-sales support"].map((t) => (
               <span key={t} className="rounded-full border bg-slate-50 px-4 py-2" style={{ borderColor: `${BRAND.maroon}14` }}>
                 {t}
@@ -124,10 +132,10 @@ export default function ControllerProductsPage() {
             ))}
           </div>
 
-          <div className="mt-4 flex flex-wrap gap-3">
+          <div className="mobile-intro-actions mt-4 flex flex-nowrap gap-2.5 md:flex-wrap md:gap-3">
             <Link
               href="/contact"
-              className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+              className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
               Request a Quotation →
@@ -136,7 +144,7 @@ export default function ControllerProductsPage() {
               href={wa}
               target="_blank"
               rel="noreferrer"
-              className="rounded-xl bg-emerald-600 px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md"
+              className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
             >
               WhatsApp
             </a>
@@ -147,11 +155,11 @@ export default function ControllerProductsPage() {
       {/* Grid */}
       <section className="mt-8">
         <h2 className="text-2xl font-bold text-slate-900">Controller / Processor Models</h2>
-        <p className="mt-2 text-slate-600 leading-7">
+        <p className="mt-2 hidden text-slate-600 leading-7 md:block">
           Choose a model based on your project type (signage, event, or video wall) and total pixel requirement.
         </p>
 
-        <div className="mt-6 grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
           {controllerCatalog.map((p) => (
             <ProductGridCard
               key={p.slug}
@@ -167,10 +175,11 @@ export default function ControllerProductsPage() {
               chips={p.bestFor.slice(0, 3)}
               accentColor={BRAND.maroon}
               contactHref="/contact"
+              compactMobile
               viewDetailsLabel="View details →"
             />
           ))}
-        </div>
+        </ResponsiveProductCarousel>
       </section>
 
       <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
@@ -192,4 +201,3 @@ export default function ControllerProductsPage() {
     </div>
   );
 }
-

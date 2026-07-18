@@ -4,7 +4,9 @@ import { siteConfig } from "@/lib/site";
 import { ledAccessoriesCatalog, rentalCatalog, type LedAccessoryProduct, type ProductItem } from "@/lib/productsCatalog";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
+import MobileIntroText from "@/components/common/MobileIntroText";
 import ProductGridCard from "@/components/products/ProductGridCard";
+import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { absoluteUrl, socialImageUrl } from "@/lib/seo";
 
@@ -188,7 +190,7 @@ export default function RentalProductsPage() {
         className="mb-4 pt-3 text-sm text-slate-600"
       />
       <section
-        className="rounded-3xl border bg-white p-5 shadow-sm md:p-6"
+        className="mobile-page-intro-card rounded-none border-0 bg-transparent p-0 shadow-none md:rounded-3xl md:border md:bg-white md:p-6 md:shadow-sm"
         style={{ borderColor: `${BRAND.maroon}12` }}
       >
         {/* HERO (boxed like /led-display/) */}
@@ -197,20 +199,26 @@ export default function RentalProductsPage() {
             Rental LED Display in Bangladesh
           </h1>
 
-        <p className="mt-3 w-full text-justify text-slate-600 leading-7">
-          <strong>Rental LED displays</strong> are built for quick setup, repeat use, and reliable live-event performance across Bangladesh.
-          If you are searching for <strong>rental LED display</strong> in Bangladesh, <strong>stage LED screen rental</strong>, <strong>wedding LED wall</strong>, <strong>concert backdrop LED panel</strong>{" "}
-          or <strong>corporate event LED display</strong> service, choosing the right cabinet system makes the biggest difference in show quality
-          and setup speed. A proper rental workflow includes quick-lock cabinets, stable controller and processor configuration, clean
-          power planning, safe rigging, and on-site technical support so your visuals stay smooth from opening to closing. From indoor
-          stage programs to semi-outdoor event venues, a well-planned <strong>rental LED screen</strong> setup helps reduce downtime, supports fast
-          install/dismantle, and keeps your event communication clear, bright, and professional.
-        </p>
+        <MobileIntroText
+          teaser="Rental LED displays are designed for quick setup, repeat use and reliable event performance across Bangladesh."
+          expandedClassName="mt-3"
+          desktopClassName="mt-3"
+        >
+          <p className="w-full text-justify text-slate-600 leading-7">
+            <strong>Rental LED displays</strong> are built for quick setup, repeat use, and reliable live-event performance across Bangladesh.
+            If you are searching for <strong>rental LED display</strong> in Bangladesh, <strong>stage LED screen rental</strong>, <strong>wedding LED wall</strong>, <strong>concert backdrop LED panel</strong>{" "}
+            or <strong>corporate event LED display</strong> service, choosing the right cabinet system makes the biggest difference in show quality
+            and setup speed. A proper rental workflow includes quick-lock cabinets, stable controller and processor configuration, clean
+            power planning, safe rigging, and on-site technical support so your visuals stay smooth from opening to closing. From indoor
+            stage programs to semi-outdoor event venues, a well-planned <strong>rental LED screen</strong> setup helps reduce downtime, supports fast
+            install/dismantle, and keeps your event communication clear, bright, and professional.
+          </p>
+        </MobileIntroText>
 
-        <div className="mt-5 flex flex-wrap gap-3">
+        <div className="mobile-intro-actions mt-4 flex flex-nowrap gap-2.5 md:mt-5 md:flex-wrap md:gap-3">
           <Link
             href="/contact"
-            className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >
             Request a Quotation →
@@ -219,13 +227,13 @@ export default function RentalProductsPage() {
             href={wa}
             target="_blank"
             rel="noreferrer"
-            className="rounded-xl bg-emerald-600 px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md"
+            className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
           >
             WhatsApp
           </a>
         </div>
 
-        <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-slate-700">
+        <div className="mt-4 hidden flex-wrap gap-2 text-xs font-semibold text-slate-700 md:flex">
           {["✓ Quick lock cabinets", "✓ Fast setup & dismantle", "✓ Hanging or stacking", "✓ Operator guidance"].map(
             (t) => (
               <span
@@ -239,7 +247,7 @@ export default function RentalProductsPage() {
           )}
         </div>
 
-        <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-xs font-semibold text-slate-600">
+        <div className="mt-3 hidden flex-wrap gap-x-4 gap-y-2 text-xs font-semibold text-slate-600 md:flex">
           <span className="text-slate-500">Related:</span>
           <Link href="/led-display/rent-guide/" className="underline underline-offset-4 hover:text-slate-900">
             Rental price guide
@@ -264,19 +272,19 @@ export default function RentalProductsPage() {
       {/* Filters (Indoor-style) */}
       <section className="mt-8 bg-transparent p-0">
         <h2 className="text-xl font-bold text-slate-900">Filter Rental LED Display Options</h2>
-        <p className="mt-2 text-sm text-slate-600 leading-7">
+        <p className="mt-2 hidden text-sm text-slate-600 leading-7 md:block">
           Quick navigation by pixel pitch and event type. (Visual filtering links only—no price/stock shown.)
         </p>
 
         <div className="mt-4">
           <div>
             <div className="text-xs font-bold text-slate-700">Pixel Pitch</div>
-            <div className="mt-2 flex flex-wrap gap-2">
+            <div className="mt-2 flex flex-nowrap gap-1.5 overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
               {pitches.map((p) => (
                 <Link
                   key={p}
                   href={buildHref(p)}
-                  className={`group relative isolate overflow-hidden rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-all duration-300 ${
+                  className={`group relative isolate overflow-hidden whitespace-nowrap rounded-full border px-3.5 py-1.5 text-[10px] font-semibold transition-all duration-300 ${
                     activePitch === p
                       ? "border-transparent text-white ring-1 ring-sky-300/60 shadow-[0_12px_28px_rgba(37,99,235,0.35)]"
                       : "bg-white text-slate-700 shadow-sm hover:-translate-y-0.5 hover:scale-[1.04] hover:border-sky-300/80 hover:text-slate-900 hover:shadow-[0_14px_30px_rgba(14,165,233,0.22)]"
@@ -316,12 +324,12 @@ export default function RentalProductsPage() {
       {/* Product Grid (same products, same cards) */}
       <section className="mt-8">
         <h2 className="text-2xl font-bold text-slate-900">Rental LED Display Models and Features</h2>
-        <p className="mt-2 text-slate-600 leading-7">
+        <p className="mt-2 hidden text-slate-600 leading-7 md:block">
           Choose a model based on viewing distance, camera needs, and event setup method. Open any model to see detailed
           specs and setup notes.
         </p>
 
-        <div className="mt-6 grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
           {displayCards.map((p) => {
             if ("badge" in p) {
               const chips = (p.tags?.length ? p.tags : p.quickFeatures?.length ? p.quickFeatures : [p.badge]).slice(0, 3);
@@ -350,6 +358,7 @@ export default function RentalProductsPage() {
                   chips={chips}
                   accentColor={BRAND.maroon}
                   contactHref="/contact"
+                  compactMobile
                   viewDetailsLabel="View details →"
                 />
               );
@@ -384,11 +393,12 @@ export default function RentalProductsPage() {
                 chips={p.bestFor.slice(0, 3)}
                 accentColor={BRAND.maroon}
                 contactHref="/contact"
+                compactMobile
                 viewDetailsLabel="View details →"
               />
             );
           })}
-        </div>
+        </ResponsiveProductCarousel>
 
         {filtered.length === 0 && (
           <div className="mt-6 rounded-2xl border bg-white p-6 text-sm text-slate-700">

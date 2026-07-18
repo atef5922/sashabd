@@ -5,6 +5,7 @@ import { siteConfig } from "@/lib/site";
 import { getProductsByCategory, ledAccessoriesCatalog, type ProductItem } from "@/lib/productsCatalog";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
+import MobileIntroText from "@/components/common/MobileIntroText";
 import IndoorFilterSection from "@/components/products/IndoorFilterSection";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { absoluteUrl, socialImageUrl } from "@/lib/seo";
@@ -162,7 +163,7 @@ export default function IndoorProductsPage() {
         className="mb-4 pt-3 text-sm text-slate-600"
       />
       <section
-        className="rounded-3xl border bg-white p-5 shadow-sm md:p-6"
+        className="mobile-page-intro-card rounded-none border-0 bg-transparent p-0 shadow-none md:rounded-3xl md:border md:bg-white md:p-6 md:shadow-sm"
         style={{ borderColor: `${BRAND.maroon}12` }}
       >
         {/* HERO (boxed like /led-display/) */}
@@ -171,20 +172,26 @@ export default function IndoorProductsPage() {
             Indoor LED Display Price in Bangladesh 2026
           </h1>
 
-          <p className="mt-3 w-full text-justify text-slate-600 leading-7">
-            Compare the best <strong>indoor LED display</strong> options in Bangladesh by viewing distance, pixel pitch, refresh rate,
-            brightness level, and daily content type. If you are searching for <strong>indoor LED display price in Bangladesh</strong>,
-            <strong>conference room LED screen</strong>, <strong>showroom LED video wall</strong>, <strong>indoor stadium LED screen</strong>, <strong>indoor home theater LED display</strong> or <strong>control room monitoring display</strong>, the right combination of fine-pitch
-            modules, dependable controller, clean power design, and expert calibration delivers clear text visibility, accurate color,
-            smoother motion, and stable long-hour performance. From corporate offices to retail showrooms and operation centers, a
-            properly engineered indoor setup improves communication quality, branding impact, and long-term service reliability in real
-            Bangladesh conditions.
-          </p>
+          <MobileIntroText
+            teaser="Compare the best indoor LED display options in Bangladesh for viewing distance, pixel pitch and daily content."
+            expandedClassName="mt-3"
+            desktopClassName="mt-3"
+          >
+            <p className="w-full text-justify text-slate-600 leading-7">
+              Compare the best <strong>indoor LED display</strong> options in Bangladesh by viewing distance, pixel pitch, refresh rate,
+              brightness level, and daily content type. If you are searching for <strong>indoor LED display price in Bangladesh</strong>,
+              <strong>conference room LED screen</strong>, <strong>showroom LED video wall</strong>, <strong>indoor stadium LED screen</strong>, <strong>indoor home theater LED display</strong> or <strong>control room monitoring display</strong>, the right combination of fine-pitch
+              modules, dependable controller, clean power design, and expert calibration delivers clear text visibility, accurate color,
+              smoother motion, and stable long-hour performance. From corporate offices to retail showrooms and operation centers, a
+              properly engineered indoor setup improves communication quality, branding impact, and long-term service reliability in real
+              Bangladesh conditions.
+            </p>
+          </MobileIntroText>
 
-          <div className="mt-5 flex flex-wrap gap-3">
+          <div className="mobile-intro-actions mt-4 flex flex-nowrap gap-2.5 md:mt-5 md:flex-wrap md:gap-3">
             <Link
               href="/contact"
-              className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+              className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
               Request a Quotation →
@@ -193,13 +200,13 @@ export default function IndoorProductsPage() {
               href={wa}
               target="_blank"
               rel="noreferrer"
-              className="rounded-xl bg-emerald-600 px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md"
+              className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
             >
               WhatsApp
             </a>
           </div>
 
-          <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-slate-700">
+          <div className="mt-4 hidden flex-wrap gap-2 text-xs font-semibold text-slate-700 md:flex">
             {["✓ Pixel pitch guidance", "✓ Professional installation", "✓ Calibration & training", "✓ After-sales support"].map(
               (t) => (
                 <span
@@ -213,7 +220,7 @@ export default function IndoorProductsPage() {
             )}
           </div>
 
-          <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-xs font-semibold text-slate-600">
+          <div className="mt-3 hidden flex-wrap gap-x-4 gap-y-2 text-xs font-semibold text-slate-600 md:flex">
             <span className="text-slate-500">Related:</span>
             <Link href="/contact" className="underline underline-offset-4 hover:text-slate-900">
               BOQ quotation

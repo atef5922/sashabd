@@ -4,7 +4,9 @@ import { siteConfig } from "@/lib/site";
 import { ledAccessoriesCatalog } from "@/lib/productsCatalog";
 import { socialImageUrl } from "@/lib/seo";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
+import MobileIntroText from "@/components/common/MobileIntroText";
 import ProductGridCard from "@/components/products/ProductGridCard";
+import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
 
@@ -88,7 +90,7 @@ export default function LedAccessoriesListingPage() {
         ]}
         className="mb-4 pt-3 text-sm text-slate-600"
       />
-      <section className="rounded-3xl bg-white p-7 md:p-10">
+      <section className="mobile-page-intro-card rounded-none bg-transparent p-0 md:rounded-3xl md:bg-white md:p-10">
         <div className="flex flex-col gap-4">
           <div className="max-w-3xl">
             <div
@@ -104,17 +106,23 @@ export default function LedAccessoriesListingPage() {
             </h1>
           </div>
 
-          <p className="mt-1 w-full text-slate-600 leading-7 text-justify">
-            These are practical LED accessories used during installation, servicing, and event operations—ribbon/data
-            cables, IDC connectors, module fixing hardware, mounting parts, transport protection, and temporary power
-            distribution. The right accessory choice reduces downtime, makes maintenance easier, and helps keep your LED
-            system stable in real-world conditions.
-          </p>
+          <MobileIntroText
+            teaser="Practical LED accessories support installation, servicing, transport protection and stable day-to-day operation."
+            expandedClassName="mt-1"
+            desktopClassName="mt-1"
+          >
+            <p className="w-full text-slate-600 leading-7 text-justify">
+              These are practical LED accessories used during installation, servicing, and event operations—ribbon/data
+              cables, IDC connectors, module fixing hardware, mounting parts, transport protection, and temporary power
+              distribution. The right accessory choice reduces downtime, makes maintenance easier, and helps keep your LED
+              system stable in real-world conditions.
+            </p>
+          </MobileIntroText>
 
-          <div className="mt-4 flex flex-wrap gap-3">
+          <div className="mobile-intro-actions mt-4 grid grid-cols-3 gap-2 md:flex md:flex-wrap md:gap-3">
             <Link
               href="/contact"
-              className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+              className="inline-flex min-h-9 items-center justify-center rounded-md px-2 py-2 text-center text-[9.5px] font-extrabold leading-[1.1] text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
               Request a Quotation &rarr;
@@ -123,13 +131,13 @@ export default function LedAccessoriesListingPage() {
               href={wa}
               target="_blank"
               rel="noreferrer"
-              className="rounded-xl bg-emerald-600 px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md"
+              className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-2 py-2 text-center text-[9.5px] font-extrabold leading-[1.1] text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
             >
               WhatsApp Now
             </a>
             <Link
               href="/led-display/accessories/"
-              className="rounded-xl border bg-white px-5 py-3 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50"
+              className="inline-flex min-h-9 items-center justify-center rounded-md border bg-white px-2 py-2 text-center text-[9.5px] font-extrabold leading-[1.1] text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 md:rounded-xl md:px-5 md:py-3 md:text-sm"
               style={{ borderColor: `${BRAND.maroon}22` }}
             >
               Back to Accessories
@@ -140,11 +148,11 @@ export default function LedAccessoriesListingPage() {
 
       <section className="mt-8">
         <h2 className="text-2xl font-bold text-slate-900">LED Accessories List</h2>
-        <p className="mt-2 text-slate-600 leading-7">
+        <p className="mt-2 hidden text-slate-600 leading-7 md:block">
           Click any item to view specs, selection notes, and usage guidance.
         </p>
 
-        <div className="mt-6 grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
           {ledAccessoriesCatalog.map((p) => (
             <ProductGridCard
               key={p.slug}
@@ -168,10 +176,11 @@ export default function LedAccessoriesListingPage() {
               chips={p.tags.slice(0, 3)}
               accentColor={BRAND.maroon}
               contactHref="/contact"
+              compactMobile
               viewDetailsLabel="View details →"
             />
           ))}
-        </div>
+        </ResponsiveProductCarousel>
       </section>
 
       <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
@@ -193,4 +202,3 @@ export default function LedAccessoriesListingPage() {
     </div>
   );
 }
-

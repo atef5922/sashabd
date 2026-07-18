@@ -109,6 +109,43 @@ label {
     padding-left: 10px !important;
     padding-right: 10px !important;
   }
+
+  .mobile-page-intro-card {
+    border: 1px solid rgba(103, 232, 249, 0.55) !important;
+    background: linear-gradient(180deg, rgba(240, 249, 251, 0.98) 0%, rgba(247, 252, 253, 0.98) 100%) !important;
+    border-radius: 18px !important;
+    padding: 14px 14px 15px !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.86), 0 8px 20px rgba(15, 23, 42, 0.05) !important;
+  }
+
+  .mobile-page-intro-card h1 {
+    margin: 0 !important;
+    font-size: 28px !important;
+    line-height: 1.14 !important;
+    letter-spacing: -0.02em !important;
+    text-align: left !important;
+  }
+
+  .mobile-page-intro-card .mobile-intro-copy,
+  .mobile-page-intro-card .mobile-intro-copy p,
+  .mobile-page-intro-card .mobile-intro-copy div {
+    text-align: left !important;
+  }
+
+  .mobile-page-intro-card .mobile-intro-copy > .md\:hidden,
+  .mobile-page-intro-card .mobile-intro-copy > .hidden.md\:block {
+    margin-top: 10px !important;
+  }
+
+  .mobile-page-intro-card .mobile-intro-actions {
+    margin-top: 12px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .mobile-page-intro-card h1 {
+    text-align: inherit;
+  }
 }
 
 @media (min-width: 1024px) {

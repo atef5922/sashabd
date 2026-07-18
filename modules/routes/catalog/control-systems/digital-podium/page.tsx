@@ -4,8 +4,10 @@ import { siteConfig } from "@/lib/site";
 import { socialImageUrl } from "@/lib/seo";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
+import MobileIntroText from "@/components/common/MobileIntroText";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import ProductGridCard from "@/components/products/ProductGridCard";
+import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
 import { digitalPodiumCatalog } from "./catalog";
 
 const BRAND = { maroon: "#FF6A00", maroonDark: "#E45700" };
@@ -272,31 +274,39 @@ export default function DigitalPodiumPage() {
             </div>
 
             <div className="max-w-3xl">
-              <h1 className="text-2xl font-extrabold tracking-tight text-white md:text-4xl">
+              <h1 className="text-[1.75rem] font-extrabold leading-[1.08] tracking-tight text-white md:text-4xl">
                 Digital Podium Price in Bangladesh
               </h1>
-              <p className="mt-3 text-sm leading-7 text-justify text-white/85 md:text-base">
-                A digital podium helps presenters run sessions smoothly: control slides, annotate content, connect to a
-                room display and keep cables organized from one professional lectern. We supply and support digital
-                podium setups in Bangladesh for smart classrooms, universities, training rooms and conference venues.
-                Share your room details to get a practical BOQ and quotation with installation guidance and after-sales
-                support.
-              </p>
+              <MobileIntroText
+                teaser="A digital podium helps presenters control slides, annotate content and run sessions from one lectern."
+                expandedClassName="mt-3"
+                desktopClassName="mt-3"
+                teaserClassName="text-white/85"
+                buttonClassName="text-[#67E8F9]"
+              >
+                <p className="text-sm leading-7 text-justify text-white/85 md:text-base">
+                  A digital podium helps presenters run sessions smoothly: control slides, annotate content, connect to a
+                  room display and keep cables organized from one professional lectern. We supply and support digital
+                  podium setups in Bangladesh for smart classrooms, universities, training rooms and conference venues.
+                  Share your room details to get a practical BOQ and quotation with installation guidance and after-sales
+                  support.
+                </p>
+              </MobileIntroText>
             </div>
 
-            <div className="mt-2 flex flex-wrap gap-3">
+            <div className="mt-3 grid grid-cols-2 gap-2 md:mt-2 md:flex md:flex-wrap md:gap-3">
               <a
                 href={wa}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-xl bg-emerald-600 px-6 py-3.5 text-[15px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-lg"
+                className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-2.5 py-2 text-[10px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-lg md:rounded-xl md:px-6 md:py-3.5 md:text-[15px]"
                 aria-label="Get Digital Podium quotation on WhatsApp"
               >
                 Get Quotation on WhatsApp
               </a>
               <Link
                 href="/contact"
-                className="rounded-xl px-6 py-3.5 text-[15px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-lg"
+                className="inline-flex min-h-9 items-center justify-center rounded-md px-2.5 py-2 text-[10px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-lg md:rounded-xl md:px-6 md:py-3.5 md:text-[15px]"
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
                 Request a Quotation
@@ -333,7 +343,7 @@ export default function DigitalPodiumPage() {
             <h2 className="mt-4 text-xl font-extrabold tracking-tight text-slate-900 md:text-3xl">
               Digital Podium Models &amp; Price Range in Bangladesh
             </h2>
-            <p className="mt-2 text-slate-600 leading-7 text-justify">
+            <p className="mt-2 hidden text-slate-600 leading-7 text-justify md:block">
               Choose a model below to see specifications, buyer guidance and integration notes—written in our own words
               and aligned with real procurement needs.
             </p>
@@ -349,7 +359,7 @@ export default function DigitalPodiumPage() {
           </div>
         </div>
 
-        <div className="mt-6 grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
           {digitalPodiumCatalog.map((p) => {
             const isStandard = p.slug === "standard-digital-podium-built-in-pc-sound";
             const isPremium = p.slug === "premium-digital-podium-interactive-touch-display";
@@ -379,11 +389,12 @@ export default function DigitalPodiumPage() {
                 chips={(p.recommendedFor?.length ? p.recommendedFor : p.tags).slice(0, 3)}
                 accentColor={BRAND.maroon}
                 contactHref="/contact"
+                compactMobile
                 viewDetailsLabel="View details →"
               />
             );
           })}
-        </div>
+        </ResponsiveProductCarousel>
       </section>
 
       <section className="mt-8 rounded-3xl bg-white p-7 md:p-10">
@@ -850,4 +861,3 @@ export default function DigitalPodiumPage() {
     </div>
   );
 }
-

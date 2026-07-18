@@ -5,6 +5,7 @@ import { siteConfig } from "@/lib/site";
 import { ledAccessoriesCatalog, outdoorCatalog } from "@/lib/productsCatalog";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
+import MobileIntroText from "@/components/common/MobileIntroText";
 import OutdoorFilterSection from "@/components/products/OutdoorFilterSection";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { absoluteUrl, socialImageUrl } from "@/lib/seo";
@@ -174,7 +175,7 @@ export default function OutdoorProductsPage() {
         className="mb-4 pt-3 text-sm text-slate-600"
       />
       <section
-        className="rounded-3xl border bg-white p-5 shadow-sm md:p-6"
+        className="mobile-page-intro-card rounded-none border-0 bg-transparent p-0 shadow-none md:rounded-3xl md:border md:bg-white md:p-6 md:shadow-sm"
         style={{ borderColor: `${BRAND.maroon}12` }}
       >
         {/* HERO (boxed like /led-display/) */}
@@ -183,22 +184,28 @@ export default function OutdoorProductsPage() {
             Outdoor LED Display Price in Bangladesh
           </h1>
 
-          <p className="mt-3 w-full text-justify text-slate-600 leading-7">
-            <strong>Outdoor LED Displays</strong> are engineered for strong daylight visibility, weather resistance, and long-distance readability
-            across highways, city roads, markets, <strong>rooftop</strong> installations, and <strong>shopfront</strong> commercial facades in Bangladesh.
-            Professional outdoor LED display solutions for advertising, branding, public communication, and digital signage in Bangladesh.
-            If you are comparing <strong> outdoor LED display screen price in Bangladesh</strong>, <strong>waterproof LED billboard panel</strong> options,
-            <strong>digital signage board</strong> quality, <strong>outdoor LED display</strong> for stadium or <strong>roadside advertising screen</strong> performance,
-            the right setup should match pixel pitch, <strong>High brightness</strong> output, refresh stability, control system quality, and site-specific
-            structure design. With proper power distribution, earthing, surge protection (SPD), sealed <strong>waterproof</strong> assembly, and expert
-            commissioning, your <strong>outdoor LED billboard</strong> stays clear, stable, and service-ready for long-hour operation in real Bangladesh
-            outdoor conditions.
-          </p>
+          <MobileIntroText
+            teaser="Outdoor LED displays are built for daylight visibility, weather resistance and long-distance readability in Bangladesh."
+            expandedClassName="mt-3"
+            desktopClassName="mt-3"
+          >
+            <p className="w-full text-justify text-slate-600 leading-7">
+              <strong>Outdoor LED Displays</strong> are engineered for strong daylight visibility, weather resistance, and long-distance readability
+              across highways, city roads, markets, <strong>rooftop</strong> installations, and <strong>shopfront</strong> commercial facades in Bangladesh.
+              Professional outdoor LED display solutions for advertising, branding, public communication, and digital signage in Bangladesh.
+              If you are comparing <strong> outdoor LED display screen price in Bangladesh</strong>, <strong>waterproof LED billboard panel</strong> options,
+              <strong>digital signage board</strong> quality, <strong>outdoor LED display</strong> for stadium or <strong>roadside advertising screen</strong> performance,
+              the right setup should match pixel pitch, <strong>High brightness</strong> output, refresh stability, control system quality, and site-specific
+              structure design. With proper power distribution, earthing, surge protection (SPD), sealed <strong>waterproof</strong> assembly, and expert
+              commissioning, your <strong>outdoor LED billboard</strong> stays clear, stable, and service-ready for long-hour operation in real Bangladesh
+              outdoor conditions.
+            </p>
+          </MobileIntroText>
 
-          <div className="mt-5 flex flex-wrap gap-3">
+          <div className="mobile-intro-actions mt-4 flex flex-nowrap gap-2.5 md:mt-5 md:flex-wrap md:gap-3">
             <Link
               href="/contact"
-              className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+              className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
               Request a Quotation →
@@ -207,13 +214,13 @@ export default function OutdoorProductsPage() {
               href={wa}
               target="_blank"
               rel="nofollow noreferrer"
-              className="rounded-xl bg-emerald-600 px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md"
+              className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
             >
               WhatsApp
             </a>
           </div>
 
-          <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-slate-700">
+          <div className="mt-4 hidden flex-wrap gap-2 text-xs font-semibold text-slate-700 md:flex">
             {["✓ Daylight visibility", "✓ Weatherproof planning", "✓ Surge protection (SPD)", "✓ Installation & support"].map(
               (t) => (
                 <span
@@ -227,7 +234,7 @@ export default function OutdoorProductsPage() {
             )}
           </div>
 
-          <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-xs font-semibold text-slate-600">
+          <div className="mt-3 hidden flex-wrap gap-x-4 gap-y-2 text-xs font-semibold text-slate-600 md:flex">
             <span className="text-slate-500">Related:</span>
             <Link href="/led-display/waterproof-outdoor-led-display/" className="underline underline-offset-4 hover:text-slate-900">
               Waterproof guide
