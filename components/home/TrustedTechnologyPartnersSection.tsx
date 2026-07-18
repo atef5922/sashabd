@@ -118,7 +118,7 @@ export default function TrustedTechnologyPartnersSection() {
             />
 
             <div className="group">
-              <div className="flex w-max gap-2 md:gap-3 animate-[renexMarquee_42s_linear_infinite] group-hover:[animation-play-state:paused] motion-reduce:animate-none">
+              <div className="flex w-max gap-2 md:gap-3 animate-[renexMarquee_42s_linear_infinite] md:group-hover:[animation-play-state:paused] motion-reduce:animate-none">
                 {[...trustedTechPartnerLogos, ...trustedTechPartnerLogos].map((brand, index) =>
                   brand.href ? (
                     <a
