@@ -536,10 +536,8 @@ export default function Header() {
 
               {mobileProductsOpen && (
                 <div className="rounded-lg border bg-white p-2">
-                  <div className="px-2 py-1 text-xs font-bold text-slate-900">
-                    LED Displays
-                  </div>
                   {[
+                    { href: "/led-display/", label: "LED Display" },
                     { href: "/led-display/indoor-led/", label: "Indoor LED Display" },
                     { href: "/led-display/outdoor/", label: "Outdoor LED Display" },
                     { href: "/led-display/rental-display/", label: "Rental LED Display" },
@@ -557,8 +555,19 @@ export default function Header() {
                         handleNavClick(x.href, { closeMobile: true })(e);
                         setOpen(false);
                       }}
-                      className="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                      className={cn(
+                        "relative block rounded-lg px-3 py-2 text-sm transition",
+                        activeDropdownItemHref(x.href, "/led-display/")
+                          ? "bg-[#FFF3EB] pl-5 font-semibold text-[#C84B00]"
+                          : "text-slate-700 hover:bg-slate-50"
+                      )}
                     >
+                      {activeDropdownItemHref(x.href, "/led-display/") ? (
+                        <span
+                          className="absolute left-2 top-1/2 h-4 w-1 -translate-y-1/2 rounded-full bg-[#F56605]"
+                          aria-hidden="true"
+                        />
+                      ) : null}
                       {x.label}
                     </Link>
                   ))}
