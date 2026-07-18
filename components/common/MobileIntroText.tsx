@@ -14,6 +14,7 @@ export default function MobileIntroText({
   expandedClassName,
   desktopClassName,
   buttonClassName,
+  teaserLines = 1,
 }: {
   teaser: string;
   children: React.ReactNode;
@@ -22,20 +23,31 @@ export default function MobileIntroText({
   expandedClassName?: string;
   desktopClassName?: string;
   buttonClassName?: string;
+  teaserLines?: 1 | 2;
 }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
     <div className={cn("mobile-intro-copy", className)}>
-      <div className={cn("md:hidden", expandedClassName)}>
+      <div className="md:hidden">
         {expanded ? (
           <div className={cn("text-sm leading-6 text-slate-600", expandedClassName)}>{children}</div>
         ) : (
           <p
             className={cn(
-              "overflow-hidden text-ellipsis whitespace-nowrap text-sm text-slate-600",
+              "overflow-hidden text-sm text-slate-600",
+              teaserLines === 1 ? "text-ellipsis whitespace-nowrap" : "whitespace-normal",
               teaserClassName
             )}
+            style={
+              teaserLines === 2
+                ? {
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
+                  }
+                : undefined
+            }
           >
             {teaser}
           </p>

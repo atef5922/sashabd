@@ -1742,28 +1742,37 @@ function ProductsPageContent({
 	            <div className="space-y-10">
 	              <div>
 	                <h2 className="text-2xl font-bold text-slate-900">What Is an LED Display?</h2>
-	                <div className="mt-4 space-y-4 text-sm leading-7 text-slate-600 md:text-[15px] md:leading-8">
-	                  <p>
-	                    An <strong>LED Display</strong> is a modular digital screen built from many light-emitting
-	                    diode pixels that create images, videos, text, and live visual content. In a professional{" "}
-	                    <strong>LED Display System</strong>, each <strong>LED Module</strong> contains red, green,
-	                    and blue LEDs. A controller or sending card receives the video source, the receiving card
-	                    distributes display data, and the power supply keeps every module running with stable DC power.
-	                    This coordinated hardware process allows an <strong>LED Screen</strong> to show bright,
-	                    seamless, high-impact content at almost any custom size.
-	                  </p>
-	                  <p>
-	                    Businesses choose <strong>LED Display in Bangladesh</strong> for retail branding, showroom
-	                    promotion, corporate reception areas, command centers, stage programs, public information
-	                    boards, <strong>Digital Signage</strong>, <strong>Digital Billboard</strong> advertising, and
-	                    large <strong>LED Video Wall</strong> installations. Indoor LED Display solutions are designed
-	                    for close viewing, smoother detail, and controlled lighting environments, while Outdoor LED
-	                    Display systems use higher brightness, stronger cabinets, weather-ready protection, and safer
-	                    mounting plans for daylight and outdoor exposure. Whether the project is a compact indoor
-	                    signage screen or a roadside outdoor display, the final performance depends on matching the LED
-	                    module, cabinet, controller, receiving card, cables, steel structure, and power supply correctly.
-	                  </p>
-	                </div>
+                <MobileIntroText
+                  teaser="An LED Display is a modular digital screen built from many light-emitting diode pixels that create images, videos, text, and live visual content."
+                  teaserLines={2}
+                  className="mt-4"
+                  teaserClassName="w-full leading-6"
+                  expandedClassName="space-y-4 text-sm leading-7 text-slate-600"
+                  desktopClassName="mt-4 space-y-4 text-sm leading-7 text-slate-600 md:text-[15px] md:leading-8"
+                >
+                  <>
+                    <p>
+                      An <strong>LED Display</strong> is a modular digital screen built from many light-emitting
+                      diode pixels that create images, videos, text, and live visual content. In a professional{" "}
+                      <strong>LED Display System</strong>, each <strong>LED Module</strong> contains red, green,
+                      and blue LEDs. A controller or sending card receives the video source, the receiving card
+                      distributes display data, and the power supply keeps every module running with stable DC power.
+                      This coordinated hardware process allows an <strong>LED Screen</strong> to show bright,
+                      seamless, high-impact content at almost any custom size.
+                    </p>
+                    <p>
+                      Businesses choose <strong>LED Display in Bangladesh</strong> for retail branding, showroom
+                      promotion, corporate reception areas, command centers, stage programs, public information
+                      boards, <strong>Digital Signage</strong>, <strong>Digital Billboard</strong> advertising, and
+                      large <strong>LED Video Wall</strong> installations. Indoor LED Display solutions are designed
+                      for close viewing, smoother detail, and controlled lighting environments, while Outdoor LED
+                      Display systems use higher brightness, stronger cabinets, weather-ready protection, and safer
+                      mounting plans for daylight and outdoor exposure. Whether the project is a compact indoor
+                      signage screen or a roadside outdoor display, the final performance depends on matching the LED
+                      module, cabinet, controller, receiving card, cables, steel structure, and power supply correctly.
+                    </p>
+                  </>
+                </MobileIntroText>
 
 	                <aside className="mt-6 rounded-2xl border border-[#FF6A00]/20 bg-orange-50/70 p-5 shadow-sm">
 	                  <h3 className="text-lg font-extrabold text-slate-900">
