@@ -1934,11 +1934,19 @@ function ProductsPageContent({
 
 	              <div>
 	                <h2 className="text-2xl font-bold text-slate-900">How an LED Display System Works</h2>
-	                <p className="mt-3 max-w-5xl text-sm leading-7 text-slate-600 md:text-[15px] md:leading-8">
-	                  A professional LED display operates through the seamless communication of multiple hardware
-	                  components. The diagram below illustrates how video signals and electrical power travel through the
-	                  complete LED display system.
-	                </p>
+	                <MobileIntroText
+                    teaser="A professional LED display operates through the seamless communication of multiple hardware components."
+                    className="mt-3 max-w-5xl"
+                    teaserClassName="w-full"
+                    expandedClassName="text-sm leading-7 text-slate-600"
+                    desktopClassName="text-sm leading-7 text-slate-600 md:text-[15px] md:leading-8"
+                  >
+                    <>
+                      A professional LED display operates through the seamless communication of multiple hardware
+                      components. The diagram below illustrates how video signals and electrical power travel through the
+                      complete LED display system.
+                    </>
+                  </MobileIntroText>
 
 	                <div className="mt-6 grid gap-4 lg:grid-cols-[1.4fr_.8fr]">
 	                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
@@ -1991,26 +1999,34 @@ function ProductsPageContent({
 	            <h2 className="text-2xl font-bold text-slate-900">
 	              LED Display Price List in Bangladesh
 	            </h2>
-            <div className="mt-3 space-y-4 text-sm leading-7 text-slate-600">
-              <p>
-                LED display price in Bangladesh varies based on pixel pitch, screen size, display type, brightness,
-                cabinet quality, controller system, and installation complexity. Generally, LED screen price starts from
-                around {normalizeDisplayedPriceText("4,000 - 23,000 BDT")} per square foot for indoor LED displays, outdoor LED billboards, advertising LED
-                screens, and high-resolution video wall solutions.
-              </p>
-              <p>
-                For outdoor advertising, P10, P8, P6, P5, P4, and P2.5 LED displays are popular choices for roadside
-                billboards, shopping malls, stadiums, building facades, public information displays, and large digital
-                signage projects. Outdoor LED screens need high brightness, waterproof cabinets, strong structure, proper
-                ventilation, and reliable power distribution for stable long-term performance.
-              </p>
-              <p>
-                For indoor applications, P3, P2.5, P2, P1.86, P1.53, and P1.25 LED displays are commonly used in conference
-                rooms, corporate offices, control rooms, retail shops, showrooms, mosques, universities, and event venues.
-                These fine-pitch LED displays provide sharper image quality, smooth video playback, and better viewing comfort
-                from a short distance.
-              </p>
-            </div>
+            <MobileIntroText
+              teaser="LED display price in Bangladesh varies based on pixel pitch, screen size, display type, brightness, cabinet quality, controller system, and installation complexity."
+              className="mt-3"
+              teaserClassName="w-full"
+              expandedClassName="space-y-4 text-sm leading-7 text-slate-600"
+              desktopClassName="space-y-4 text-sm leading-7 text-slate-600"
+            >
+              <>
+                <p>
+                  LED display price in Bangladesh varies based on pixel pitch, screen size, display type, brightness,
+                  cabinet quality, controller system, and installation complexity. Generally, LED screen price starts from
+                  around {normalizeDisplayedPriceText("4,000 - 23,000 BDT")} per square foot for indoor LED displays, outdoor LED billboards, advertising LED
+                  screens, and high-resolution video wall solutions.
+                </p>
+                <p>
+                  For outdoor advertising, P10, P8, P6, P5, P4, and P2.5 LED displays are popular choices for roadside
+                  billboards, shopping malls, stadiums, building facades, public information displays, and large digital
+                  signage projects. Outdoor LED screens need high brightness, waterproof cabinets, strong structure, proper
+                  ventilation, and reliable power distribution for stable long-term performance.
+                </p>
+                <p>
+                  For indoor applications, P3, P2.5, P2, P1.86, P1.53, and P1.25 LED displays are commonly used in conference
+                  rooms, corporate offices, control rooms, retail shops, showrooms, mosques, universities, and event venues.
+                  These fine-pitch LED displays provide sharper image quality, smooth video playback, and better viewing comfort
+                  from a short distance.
+                </p>
+              </>
+            </MobileIntroText>
 
             <div className="mt-6 space-y-6">
               <div className="rounded-2xl border border-slate-200 bg-white p-5">
@@ -2076,13 +2092,21 @@ function ProductsPageContent({
               <UiIcon name="solutions" className="h-6 w-6 text-slate-800" />
               <span>LED Display Solutions in Bangladesh</span>
             </h2>
-            <p className="mt-2 text-sm leading-7 text-slate-600">
-              Sasha corporation provides complete LED Screen solutions in Bangladesh covering planning, product selection, installation,
-              configuration, and ongoing support for indoor LED panel, outdoor LED Billboard, rental LED display,
-              and LED video wall projects. From commercial advertising and retail branding to corporate,
-              institutional, and event environments, our team focuses on practical specifications, stable
-              performance, and long-term service support for consistent visual impact.
-            </p>
+            <MobileIntroText
+              teaser="Sasha corporation provides complete LED Screen solutions in Bangladesh covering planning, product selection, installation, configuration, and ongoing support."
+              className="mt-2"
+              teaserClassName="w-full"
+              expandedClassName="text-sm leading-7 text-slate-600"
+              desktopClassName="text-sm leading-7 text-slate-600"
+            >
+              <>
+                Sasha corporation provides complete LED Screen solutions in Bangladesh covering planning, product selection, installation,
+                configuration, and ongoing support for indoor LED panel, outdoor LED Billboard, rental LED display,
+                and LED video wall projects. From commercial advertising and retail branding to corporate,
+                institutional, and event environments, our team focuses on practical specifications, stable
+                performance, and long-term service support for consistent visual impact.
+              </>
+            </MobileIntroText>
 
             <div className="mt-8 grid gap-6 md:grid-cols-2">
               <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
@@ -2130,13 +2154,21 @@ function ProductsPageContent({
               <UiIcon name="cost" className="h-6 w-6 text-slate-800" />
               <span>Benefits of Digital LED Display for Advertising</span>
             </h2>
-            <p className="mt-3 text-sm leading-7 text-slate-600">
-              Digital LED signage for outdoor advertising improves visibility, message control, and campaign performance
-              for brands in Bangladesh. It enables high-brightness display output for daylight readability, faster
-              content updates for time-sensitive promotions, and measurable communication impact across roadsides,
-              commercial zones, and public locations. With better audience attention and flexible scheduling, outdoor
-              LED signage helps businesses run more effective, scalable, and cost-efficient advertising campaigns.
-            </p>
+            <MobileIntroText
+              teaser="Digital LED signage for outdoor advertising improves visibility, message control, and campaign performance for brands in Bangladesh."
+              className="mt-3"
+              teaserClassName="w-full"
+              expandedClassName="text-sm leading-7 text-slate-600"
+              desktopClassName="text-sm leading-7 text-slate-600"
+            >
+              <>
+                Digital LED signage for outdoor advertising improves visibility, message control, and campaign performance
+                for brands in Bangladesh. It enables high-brightness display output for daylight readability, faster
+                content updates for time-sensitive promotions, and measurable communication impact across roadsides,
+                commercial zones, and public locations. With better audience attention and flexible scheduling, outdoor
+                LED signage helps businesses run more effective, scalable, and cost-efficient advertising campaigns.
+              </>
+            </MobileIntroText>
             <div className="mt-5 grid gap-4 md:grid-cols-2">
               {outdoorSignageBenefits.map((item, idx) => (
                 <div
@@ -2172,11 +2204,19 @@ function ProductsPageContent({
               <UiIcon name="display" className="h-6 w-6 text-slate-800" />
               <span>Types of LED Display Technology</span>
             </h2>
-            <p className="mt-3 text-sm leading-7 text-slate-600">
-              Choosing the right LED display technology helps improve visual quality, durability, and long-term value.
-              Below is a practical comparison of common technologies used in Bangladesh for indoor, outdoor, rental,
-              and commercial LED screen projects.
-            </p>
+            <MobileIntroText
+              teaser="Choosing the right LED display technology helps improve visual quality, durability, and long-term value."
+              className="mt-3"
+              teaserClassName="w-full"
+              expandedClassName="text-sm leading-7 text-slate-600"
+              desktopClassName="text-sm leading-7 text-slate-600"
+            >
+              <>
+                Choosing the right LED display technology helps improve visual quality, durability, and long-term value.
+                Below is a practical comparison of common technologies used in Bangladesh for indoor, outdoor, rental,
+                and commercial LED screen projects.
+              </>
+            </MobileIntroText>
 
             <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               <article className="rounded-2xl border border-slate-200 bg-white p-5">
@@ -2251,13 +2291,21 @@ function ProductsPageContent({
               <UiIcon name="check" className="h-6 w-6 text-slate-800" />
               <span>How to Choose the Right LED Display Screen in Bangladesh</span>
             </h2>
-            <p className="mt-3 text-center text-sm leading-7 text-slate-600 md:text-[15px]">
-              Choosing the right <strong>LED display screen</strong> depends on screen size, viewing distance,
-              installation area, brightness, controller setup, and long-term operating cost. Whether you need an
-              <strong> indoor LED display</strong> for a corporate office, a <strong>digital signage display</strong>{" "}
-              for a showroom, or an <strong>outdoor LED billboard</strong> for advertising, this guide helps you
-              shortlist the right <strong>LED display solution in Bangladesh</strong>.
-            </p>
+            <MobileIntroText
+              teaser="Choosing the right LED display screen depends on screen size, viewing distance, installation area, brightness, controller setup, and long-term operating cost."
+              className="mt-3"
+              teaserClassName="w-full text-center"
+              expandedClassName="text-sm leading-7 text-slate-600"
+              desktopClassName="text-center text-sm leading-7 text-slate-600 md:text-[15px]"
+            >
+              <>
+                Choosing the right <strong>LED display screen</strong> depends on screen size, viewing distance,
+                installation area, brightness, controller setup, and long-term operating cost. Whether you need an
+                <strong> indoor LED display</strong> for a corporate office, a <strong>digital signage display</strong>{" "}
+                for a showroom, or an <strong>outdoor LED billboard</strong> for advertising, this guide helps you
+                shortlist the right <strong>LED display solution in Bangladesh</strong>.
+              </>
+            </MobileIntroText>
 
             <div className="mt-6 grid gap-4 lg:grid-cols-2">
                 {[
@@ -2416,11 +2464,19 @@ function ProductsPageContent({
               <UiIcon name="compare" className="h-6 w-6 text-slate-800" />
               <span>Indoor vs Outdoor LED display in Bangladesh</span>
             </h2>
-            <p className="mt-2 text-sm leading-7 text-slate-600">
-              Indoor and outdoor LED displays solve different problems. Indoor setups focus on close-view clarity and comfortable brightness,
-              while outdoor setups prioritize daylight visibility, weather protection, and structural safety. Use this guide to shortlist the right
-              direction before requesting a site-specific quotation.
-            </p>
+            <MobileIntroText
+              teaser="Indoor and outdoor LED displays solve different problems based on viewing distance, brightness, and installation environment."
+              className="mt-2"
+              teaserClassName="w-full"
+              expandedClassName="text-sm leading-7 text-slate-600"
+              desktopClassName="text-sm leading-7 text-slate-600"
+            >
+              <>
+                Indoor and outdoor LED displays solve different problems. Indoor setups focus on close-view clarity and comfortable brightness,
+                while outdoor setups prioritize daylight visibility, weather protection, and structural safety. Use this guide to shortlist the right
+                direction before requesting a site-specific quotation.
+              </>
+            </MobileIntroText>
 
             <div className="mt-6 grid gap-4 md:grid-cols-2">
               <article className="rounded-2xl border border-slate-200 bg-white p-5">
@@ -2524,13 +2580,21 @@ function ProductsPageContent({
               <UiIcon name="compare" className="h-6 w-6 text-slate-800" />
               <span>LED Display vs Projector vs LCD Video Wall in Bangladesh</span>
             </h2>
-            <p className="mt-2 text-sm leading-7 text-slate-600">
-              Compare LED display vs projector vs LCD video wall in Bangladesh to choose the right display solution
-              for your business, showroom, office, conference room, control room, retail space, or event setup. This
-              quick comparison highlights brightness, image clarity, viewing distance, maintenance needs, and long-term
-              operating cost so you can choose the best option for digital signage, presentation, advertising, or video
-              wall use.
-            </p>
+            <MobileIntroText
+              teaser="Compare LED display vs projector vs LCD video wall in Bangladesh to choose the right display solution for your business or project."
+              className="mt-2"
+              teaserClassName="w-full"
+              expandedClassName="text-sm leading-7 text-slate-600"
+              desktopClassName="text-sm leading-7 text-slate-600"
+            >
+              <>
+                Compare LED display vs projector vs LCD video wall in Bangladesh to choose the right display solution
+                for your business, showroom, office, conference room, control room, retail space, or event setup. This
+                quick comparison highlights brightness, image clarity, viewing distance, maintenance needs, and long-term
+                operating cost so you can choose the best option for digital signage, presentation, advertising, or video
+                wall use.
+              </>
+            </MobileIntroText>
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               {ledCompare.map((item) => (
                 <div key={item.t} className="rounded-2xl border border-slate-200 bg-white p-5">
@@ -2555,9 +2619,17 @@ function ProductsPageContent({
                 <h2 className="sc-led-why-title text-2xl font-extrabold md:text-4xl">
                   Why Choose Sasha Corporation for LED Display Solutions?
                 </h2>
-                <p className="sc-led-why-intro mt-3 text-sm leading-7 md:text-base md:leading-8">
-                  Sasha Corporation supplies, installs, configures, and supports LED display solutions across Bangladesh. We provide indoor LED displays, outdoor LED billboards, rental LED screens, LED video walls, controllers, receiving cards, power supplies, maintenance services, and after-sales technical support for commercial, corporate, event, and government projects. Our solutions come with 1-3 year warranty, 24/7 customer support, and regular maintenance services to ensure long-term performance and reliability.
-                </p>
+                <MobileIntroText
+                  teaser="Sasha Corporation supplies, installs, configures, and supports LED display solutions across Bangladesh."
+                  className="sc-led-why-intro mt-3"
+                  teaserClassName="w-full"
+                  expandedClassName="text-sm leading-7 md:text-base md:leading-8"
+                  desktopClassName="text-sm leading-7 md:text-base md:leading-8"
+                >
+                  <>
+                    Sasha Corporation supplies, installs, configures, and supports LED display solutions across Bangladesh. We provide indoor LED displays, outdoor LED billboards, rental LED screens, LED video walls, controllers, receiving cards, power supplies, maintenance services, and after-sales technical support for commercial, corporate, event, and government projects. Our solutions come with 1-3 year warranty, 24/7 customer support, and regular maintenance services to ensure long-term performance and reliability.
+                  </>
+                </MobileIntroText>
               </div>
 
               <div className="sc-led-why-grid-wrap">
@@ -2583,11 +2655,19 @@ function ProductsPageContent({
               <UiIcon name="process" className="h-6 w-6 text-slate-800" />
               <span>LED Display Installation Process in Bangladesh</span>
             </h2>
-            <p className="mt-3 text-sm leading-7 text-slate-600">
-              A proper LED display installation process improves visual performance, operational safety, and long-term
-              reliability. The workflow below gives a simple and practical overview so buyers can understand how a
-              professional LED screen project is planned, installed, tested, and handed over in Bangladesh.
-            </p>
+            <MobileIntroText
+              teaser="A proper LED display installation process improves visual performance, operational safety, and long-term reliability."
+              className="mt-3"
+              teaserClassName="w-full"
+              expandedClassName="text-sm leading-7 text-slate-600"
+              desktopClassName="text-sm leading-7 text-slate-600"
+            >
+              <>
+                A proper LED display installation process improves visual performance, operational safety, and long-term
+                reliability. The workflow below gives a simple and practical overview so buyers can understand how a
+                professional LED screen project is planned, installed, tested, and handed over in Bangladesh.
+              </>
+            </MobileIntroText>
 
             <div className="mt-6 grid gap-4 md:grid-cols-2">
               {[
@@ -2667,7 +2747,7 @@ function ProductsPageContent({
                 Project duration varies by screen size, site readiness, and installation complexity. A common workflow
                 timeline is shown below for planning clarity.
               </p>
-              <div className="mt-4 grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
+              <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-6">
                 {[
                   { label: "Survey", icon: "guide" },
                   { label: "Design", icon: "compare" },
@@ -2676,12 +2756,12 @@ function ProductsPageContent({
                   { label: "Calibration", icon: "controller" },
                   { label: "Handover", icon: "support" },
                 ].map((step, i) => (
-                  <div key={step.label} className="rounded-xl border border-slate-200 bg-white p-3 text-center">
-                    <div className="mx-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-50 text-[#FF6A00] ring-1 ring-[#FF6A00]/10">
-                      <UiIcon name={step.icon} className="h-4.5 w-4.5" />
+                  <div key={step.label} className="rounded-xl border border-slate-200 bg-white px-2.5 py-2.5 text-center md:p-3">
+                    <div className="mx-auto inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-50 text-[#FF6A00] ring-1 ring-[#FF6A00]/10 md:h-10 md:w-10">
+                      <UiIcon name={step.icon} className="h-4 w-4 md:h-4.5 md:w-4.5" />
                     </div>
-                    <div className="mt-2 text-xs font-bold text-[#FF6A00]">Phase {i + 1}</div>
-                    <div className="mt-1 text-sm font-semibold text-slate-800">{step.label}</div>
+                    <div className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.08em] text-[#FF6A00] md:mt-2 md:text-xs md:normal-case md:tracking-normal">Phase {i + 1}</div>
+                    <div className="mt-1 text-[12px] font-semibold leading-4 text-slate-800 md:text-sm md:leading-5">{step.label}</div>
                   </div>
                 ))}
               </div>
@@ -2693,18 +2773,26 @@ function ProductsPageContent({
               <UiIcon name="solutions" className="h-6 w-6 text-slate-800" />
               <span>Trusted Technology Partners & Authorized Brands</span>
             </h2>
-            <p className="mt-2 text-sm leading-7 text-slate-600">
-              We use globally trusted LED display components in Bangladesh projects with{" "}
-              {trustedTechPartnerLogos.map((b, idx) => (
-                <span key={b.name}>
-                  <span className="font-bold text-slate-900" title={b.name} aria-label={b.name}>
-                    {b.name}
+            <MobileIntroText
+              teaser="We use globally trusted LED display components in Bangladesh projects to ensure stable performance, reliable power, and long-term support."
+              className="mt-2"
+              teaserClassName="w-full"
+              expandedClassName="text-sm leading-7 text-slate-600"
+              desktopClassName="text-sm leading-7 text-slate-600"
+            >
+              <>
+                We use globally trusted LED display components in Bangladesh projects with{" "}
+                {trustedTechPartnerLogos.map((b, idx) => (
+                  <span key={b.name}>
+                    <span className="font-bold text-slate-900" title={b.name} aria-label={b.name}>
+                      {b.name}
+                    </span>
+                    {idx < trustedTechPartnerLogos.length - 2 ? ", " : idx === trustedTechPartnerLogos.length - 2 ? ", and " : ""}
                   </span>
-                  {idx < trustedTechPartnerLogos.length - 2 ? ", " : idx === trustedTechPartnerLogos.length - 2 ? ", and " : ""}
-                </span>
-              ))}{" "}
-              to ensure stable performance, reliable power, and long-term support.
-            </p>
+                ))}{" "}
+                to ensure stable performance, reliable power, and long-term support.
+              </>
+            </MobileIntroText>
 
             <div className="mt-6 rounded-3xl border bg-white p-4 md:p-5" style={{ borderColor: "rgba(255,106,0,0.12)" }}>
               <div className="relative overflow-hidden">
@@ -2752,14 +2840,21 @@ function ProductsPageContent({
                 </div>
               </div>
 
-              <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs font-semibold text-slate-700">
+              <div className="mt-4 flex flex-nowrap items-center gap-2 overflow-x-auto pb-1 text-xs font-semibold text-slate-700 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:flex-wrap md:justify-center md:overflow-visible md:pb-0">
                 {[
                   "Quality-focused workflow",
                   "Dedicated LED engineering team",
                   "Industry-grade components",
                   "Project-based support & service",
                 ].map((t) => (
-                  <span key={t} className="rounded-full border bg-slate-50 px-4 py-2" style={{ borderColor: "rgba(255,106,0,0.14)" }}>
+                  <span
+                    key={t}
+                    className="shrink-0 rounded-full border px-3.5 py-2 text-[11px] font-semibold text-[#9A3412] shadow-sm md:text-xs"
+                    style={{
+                      borderColor: "rgba(255,106,0,0.14)",
+                      background: "linear-gradient(180deg, rgba(255,247,237,1) 0%, rgba(255,237,213,0.92) 100%)",
+                    }}
+                  >
                     {t}
                   </span>
                 ))}
@@ -2787,13 +2882,21 @@ function ProductsPageContent({
                   </span>
                   <span>Our Valuable Clients</span>
                 </h2>
-                <p className="mt-2 w-full text-justify text-slate-600 leading-7">
-                  We provide professional LED display and LED screen solutions designed for institutional requirements - clear visibility, stable performance, safe installation, and dependable after-sales support. We are honored to have worked with clients such as <span className="font-bold text-slate-900">Ministry of Health and Family Welfare</span>, <span className="font-bold text-slate-900">National Board of Revenue (Bangladesh)</span>, <span className="font-bold text-slate-900">Bangladesh Election Commission</span>, <span className="font-bold text-slate-900">Department of Immigration &amp; Passports</span>, <span className="font-bold text-slate-900">Bangladesh Public Service Commission</span>, <span className="font-bold text-slate-900">Anti-Corruption Commission (ACC)</span>, <span className="font-bold text-slate-900">Dhaka North City Corporation</span>, <span className="font-bold text-slate-900">Dhaka South City Corporation</span>, <span className="font-bold text-slate-900">Sonali Bank PLC</span>, and <span className="font-bold text-slate-900">Bangladesh Road Transport Authority (BRTA)</span>.
-                </p>
+                <MobileIntroText
+                  teaser="We provide professional LED display and LED screen solutions designed for institutional requirements with clear visibility, stable performance, and dependable after-sales support."
+                  className="mt-2 w-full"
+                  teaserClassName="w-full"
+                  expandedClassName="text-justify text-slate-600 leading-7"
+                  desktopClassName="w-full text-justify text-slate-600 leading-7"
+                >
+                  <>
+                    We provide professional LED display and LED screen solutions designed for institutional requirements - clear visibility, stable performance, safe installation, and dependable after-sales support. We are honored to have worked with clients such as <span className="font-bold text-slate-900">Ministry of Health and Family Welfare</span>, <span className="font-bold text-slate-900">National Board of Revenue (Bangladesh)</span>, <span className="font-bold text-slate-900">Bangladesh Election Commission</span>, <span className="font-bold text-slate-900">Department of Immigration &amp; Passports</span>, <span className="font-bold text-slate-900">Bangladesh Public Service Commission</span>, <span className="font-bold text-slate-900">Anti-Corruption Commission (ACC)</span>, <span className="font-bold text-slate-900">Dhaka North City Corporation</span>, <span className="font-bold text-slate-900">Dhaka South City Corporation</span>, <span className="font-bold text-slate-900">Sonali Bank PLC</span>, and <span className="font-bold text-slate-900">Bangladesh Road Transport Authority (BRTA)</span>.
+                  </>
+                </MobileIntroText>
               </div>
             </div>
 
-            <div className="mt-6 grid gap-3 md:grid-cols-4">
+            <div className="mt-6 hidden gap-3 md:grid md:grid-cols-4">
               {ledTrustedCards.map((x) => (
                 <div
                   key={x}
