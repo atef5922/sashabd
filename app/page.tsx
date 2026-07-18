@@ -359,16 +359,16 @@ export default function HomePage() {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
         {/* 1) HERO */}
-        <section className="relative left-1/2 right-1/2 -mx-[50vw] min-h-[276px] w-screen overflow-hidden border-b bg-white md:min-h-[clamp(520px,calc(100svh-64px),720px)] md:border-y md:bg-amber-900">
+        <section className="relative left-1/2 right-1/2 -mx-[50vw] min-h-[250px] w-screen overflow-hidden border-b bg-white md:min-h-[clamp(520px,calc(100svh-64px),720px)] md:border-y md:bg-amber-900">
           <div className="relative z-20 w-full px-0 py-0 md:hidden">
             <div
               className="relative overflow-hidden"
               style={{
-                minHeight: "276px",
+                minHeight: "250px",
                 background: "transparent",
               }}
             >
-              <HeroBackground showArrows imageSize="cover" imagePositions={mobileImagePositions} dotsClassName="bottom-5 gap-2" />
+              <HeroBackground showArrows imageSize="cover" imagePositions={mobileImagePositions} dotsClassName="bottom-1.5 gap-2" />
 
               <div className="pointer-events-none absolute inset-x-0 top-0 z-20 p-4">
                 <div className="max-w-[280px]">
@@ -385,8 +385,8 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 px-4 pb-16">
-                <div className="pointer-events-auto flex flex-wrap gap-2.5">
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 px-4 pb-11">
+                <div className="pointer-events-auto flex flex-nowrap gap-2">
                   <Link
                     prefetch={false}
                     href="/led-display/"
@@ -554,12 +554,12 @@ export default function HomePage() {
             ];
 
             return (
-              <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+              <div className="grid grid-cols-4 gap-1 sm:gap-4 lg:grid-cols-4">
                 {categories.map((c) => (
                   <Link key={c.title}
                     prefetch={false}
                     href={c.href}
-                    className="home-category-card group relative isolate block border bg-white p-2 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-md card-hover"
+                    className="home-category-card group relative isolate block h-[64px] border-[0.75px] bg-white px-0.5 py-0.5 sm:h-auto sm:p-2 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-md card-hover"
                     style={{ borderColor: c.borderColor, background: c.tone }}
                   >
                     <div className="card-butterfly">
@@ -577,9 +577,9 @@ export default function HomePage() {
                           <span style={{ top: "18%", left: "52%" }} />
                           <span style={{ top: "68%", left: "76%" }} />
                         </div>
-                        <div className="relative flex h-full flex-col items-center justify-center text-center">
+                        <div className="relative flex h-full min-h-0 flex-col items-center justify-center text-center sm:min-h-[128px]">
 	                          <div
-	                            className="flex h-9 w-9 items-center justify-center border text-base shadow-sm transition duration-300 group-hover:scale-105 sm:h-11 sm:w-11 sm:text-[18px]"
+	                            className="flex h-9 w-9 items-center justify-center border text-sm shadow-sm transition duration-300 group-hover:scale-105 sm:h-11 sm:w-11 sm:text-[18px]"
 	                            style={{ borderColor: c.iconBorderColor, background: c.iconBackground }}
 	                          >
 	                            {c.icon.startsWith("/") ? (
@@ -589,8 +589,8 @@ export default function HomePage() {
 	                            )}
 	                          </div>
 	
-	                          <div className="mt-3 min-w-0 sm:mt-4">
-	                            <div className="text-xs font-extrabold leading-tight text-slate-900 sm:text-sm">{c.title}</div>
+	                          <div className="mt-0.5 min-w-0 sm:mt-4">
+	                            <div className="text-[8.5px] font-extrabold leading-[1.05] text-slate-900 sm:text-sm">{c.title}</div>
 	                          </div>
                         </div>
                       </div>

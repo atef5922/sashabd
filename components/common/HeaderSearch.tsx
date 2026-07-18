@@ -266,7 +266,7 @@ export default function HeaderSearch({
     >
       <div className="premium-search-shell rounded-2xl shadow-sm transition focus-within:ring-2 focus-within:ring-sky-200/90 focus-within:ring-offset-2 focus-within:ring-offset-white md:rounded-full">
         <div className={cn("premium-search-inner rounded-2xl transition md:rounded-full", inputShellClass)}>
-          <div className="flex items-center gap-1.5 px-3 py-1.5 md:gap-2 md:px-4 md:py-2">
+          <div className="flex items-center gap-1 px-2.5 py-1 md:gap-2 md:px-4 md:py-2">
             <button
               type="button"
               onClick={() => {
@@ -280,7 +280,7 @@ export default function HeaderSearch({
                 router.push(`/search?q=${encodeURIComponent(query)}`);
               }}
               className={cn(
-                "grid h-7 w-7 shrink-0 place-items-center rounded-full transition",
+                "grid h-6.5 w-6.5 shrink-0 place-items-center rounded-full transition",
                 normalizeSearchText(query)
                   ? isScrolled
                     ? "bg-white/10 hover:bg-white/15"
@@ -291,7 +291,7 @@ export default function HeaderSearch({
             >
                 <svg
                   viewBox="0 0 24 24"
-                  className="h-4.5 w-4.5 text-slate-900 md:h-5 md:w-5"
+                  className="h-4 w-4 text-slate-900 md:h-5 md:w-5"
                   aria-hidden="true"
                 >
                 <path
@@ -362,7 +362,7 @@ export default function HeaderSearch({
                 router.push(`/search?q=${encodeURIComponent(query)}`);
               }}
               placeholder="Search products"
-              className={cn("w-full bg-transparent text-[13px] font-semibold text-black placeholder:text-black outline-none md:text-sm")}
+              className={cn("w-full bg-transparent text-[12px] font-semibold text-black placeholder:text-black outline-none md:text-sm")}
               autoComplete="off"
               spellCheck={false}
               aria-autocomplete="list"
@@ -374,7 +374,7 @@ export default function HeaderSearch({
                 type="button"
                 onClick={() => setQuery("")}
                 className={cn(
-                  "rounded-full border px-2.5 py-1 text-xs font-bold transition",
+                  "rounded-full border px-2 py-0.5 text-[11px] font-bold transition",
                   isScrolled
                     ? "border-white/20 bg-white/10 text-white hover:bg-white/15"
                     : "border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100"
@@ -434,5 +434,3 @@ export default function HeaderSearch({
     </div>
   );
 }
-
-

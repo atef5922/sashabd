@@ -4,6 +4,7 @@ import { Noto_Sans_Bengali, Roboto } from "next/font/google";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import FloatingActions from "../components/common/FloatingActions";
+import MobileBottomNav from "../components/common/MobileBottomNav";
 import { siteConfig } from "../lib/site";
 import { socialImageUrl, withTrailingSlash } from "../lib/seo";
 import Script from "next/script";
@@ -149,11 +150,12 @@ export default function RootLayout({
       <body suppressHydrationWarning className={`${roboto.variable} ${notoSansBengali.variable}`}>
         {GA_ID ? <GaPageview /> : null}
         <Header />
-        <main id="main-content" className="pt-2">
+        <main id="main-content" className="pb-20 pt-2 md:pb-0">
           {children}
         </main>
         <Footer />
         <FloatingActions />
+        <MobileBottomNav />
       </body>
     </html>
   );

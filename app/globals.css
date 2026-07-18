@@ -166,14 +166,15 @@ label {
 }
 
 .home-category-card {
-  min-height: 118px;
+  min-height: 0;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 @media (min-width: 640px) {
   .home-category-card {
     min-height: 150px;
+    border-radius: 10px;
   }
 }
 

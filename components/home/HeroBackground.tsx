@@ -211,7 +211,7 @@ export default function HeroBackground({
       ) : null}
 
       {/* Pagination Dots */}
-      <div className={cn("absolute bottom-10 left-1/2 z-30 flex -translate-x-1/2 gap-2.5", dotsClassName)}>
+      <div className={cn("absolute left-1/2 z-30 flex -translate-x-1/2", dotsClassName ?? "bottom-10 gap-2.5")}>
         {images.map((_, i) => (
           <button
             key={i}

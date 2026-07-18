@@ -119,7 +119,7 @@ function cn(...classes: Array<string | false | undefined>) {
 const HeaderSearch = dynamic(() => import("./HeaderSearch"), {
   ssr: false,
   loading: () => (
-    <div className="h-10 w-full max-w-[320px] rounded-full bg-slate-100 lg:max-w-[440px] xl:max-w-[500px]" />
+    <div className="h-[2.35rem] w-full max-w-[320px] rounded-2xl bg-slate-100 lg:max-w-[440px] xl:max-w-[500px]" />
   ),
 });
 export default function Header() {
@@ -245,14 +245,14 @@ export default function Header() {
         isScrolled ? "bg-[#091528] shadow-md" : "bg-white"
       )}
     >
-      <div className="mx-auto flex h-18 max-w-7xl items-center gap-2 px-3 py-0 md:gap-0 md:pl-3 md:pr-4">
+      <div className="mx-auto flex h-[4.15rem] max-w-7xl items-center gap-1.5 px-3 py-0 md:h-18 md:gap-0 md:pl-3 md:pr-4">
         <Link prefetch={false} href="/" onClick={handleNavClick("/")} className="flex shrink-0 items-center gap-2">
-          <div className="relative h-14 w-24 shrink-0 overflow-visible rounded-md md:h-24 md:w-40">
+          <div className="relative h-[3.2rem] w-[6.4rem] shrink-0 overflow-visible rounded-md md:h-24 md:w-40">
             <Image
               src={isScrolled ? "/sasha-corporation-after-scroll.png" : "/sasha-corporation-final-l.webp"}
               alt={`${BRAND_NAME} logo`}
               fill
-              className="object-contain"
+              className="object-contain object-left scale-[1.08] md:scale-100"
               sizes="160px"
             />
           </div>
@@ -270,13 +270,13 @@ export default function Header() {
           href={`tel:${siteConfig.phone}`}
           aria-label="Call now"
           className={cn(
-            "inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border shadow-sm transition md:hidden",
+            "inline-flex h-[2.35rem] w-[2.35rem] shrink-0 items-center justify-center rounded-full border shadow-sm transition md:hidden",
             isScrolled
               ? "border-cyan-400/50 bg-white/10 text-white"
               : "border-cyan-300/80 bg-white text-slate-900"
           )}
         >
-          <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="none" aria-hidden="true">
+          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
             <path
               d="M5.5 6.5c0 6.1 5.9 12 12 12h1.5a1.5 1.5 0 0 0 1.5-1.5v-2.1a1.5 1.5 0 0 0-1.2-1.47l-2.29-.46a1.5 1.5 0 0 0-1.43.45l-.5.5a12.7 12.7 0 0 1-4.97-4.97l.5-.5a1.5 1.5 0 0 0 .45-1.43l-.46-2.29A1.5 1.5 0 0 0 9.1 4H7a1.5 1.5 0 0 0-1.5 1.5v1Z"
               stroke="currentColor"
@@ -488,7 +488,7 @@ export default function Header() {
         {/* MOBILE MENU BUTTON */}
         <button
           className={cn(
-            "inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-xl leading-none shadow-sm md:hidden",
+            "inline-flex h-[2.35rem] w-[2.35rem] shrink-0 items-center justify-center rounded-full border text-[18px] leading-none shadow-sm md:hidden",
             isScrolled
               ? "border-cyan-400/50 bg-white/10 text-white"
               : "border-cyan-300/80 bg-white text-slate-900"
