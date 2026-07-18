@@ -502,6 +502,7 @@ function ProductsPageContent({
   const gridTopRef = useRef<HTMLDivElement | null>(null);
   const scrollToGridOnNextPageChangeRef = useRef(false);
   const mobileCarouselRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const componentCarouselRef = useRef<HTMLDivElement | null>(null);
   const allProducts = useMemo(() => buildProducts(basePath), [basePath]);
   const fullListGroups = useMemo(() => {
     const kinds: Array<FilterKey> = [
@@ -599,9 +600,17 @@ function ProductsPageContent({
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const [mobilePage, setMobilePage] = useState(1);
+  const [activeComponentSlide, setActiveComponentSlide] = useState(0);
   const desktopPageSize = ledOnly ? 21 : 20;
   const mobilePageSize = ledOnly ? 8 : desktopPageSize;
   const productImageSizes = "(max-width: 1024px) 100vw, 25vw";
+  const componentMobileCardStyles = [
+    "border-sky-200/70 bg-[linear-gradient(180deg,#eff6ff_0%,#ffffff_48%,#dbeafe_100%)] shadow-[0_14px_34px_rgba(59,130,246,0.10)]",
+    "border-emerald-200/70 bg-[linear-gradient(180deg,#ecfdf5_0%,#ffffff_48%,#d1fae5_100%)] shadow-[0_14px_34px_rgba(16,185,129,0.10)]",
+    "border-orange-200/80 bg-[linear-gradient(180deg,#fff7ed_0%,#ffffff_48%,#ffedd5_100%)] shadow-[0_14px_34px_rgba(249,115,22,0.11)]",
+    "border-violet-200/70 bg-[linear-gradient(180deg,#f5f3ff_0%,#ffffff_48%,#ede9fe_100%)] shadow-[0_14px_34px_rgba(139,92,246,0.10)]",
+    "border-cyan-200/70 bg-[linear-gradient(180deg,#ecfeff_0%,#ffffff_48%,#cffafe_100%)] shadow-[0_14px_34px_rgba(6,182,212,0.10)]",
+  ];
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -1284,6 +1293,52 @@ function ProductsPageContent({
     scrollToGridOnNextPageChangeRef.current = false;
   }, [desktopCurrentPage, mobileCurrentPage, shouldPaginate]);
 
+  useEffect(() => {
+    if (!ledOnly) return;
+    const container = componentCarouselRef.current;
+    if (!container) return;
+    if (ledDisplayComponentCards.length <= 1) return;
+
+    const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
+    if (prefersReducedMotion) return;
+
+    const timer = window.setInterval(() => {
+      setActiveComponentSlide((prev) => {
+        const nextIndex = (prev + 1) % ledDisplayComponentCards.length;
+        const cards = Array.from(container.children) as HTMLElement[];
+        const target = cards[nextIndex];
+        target?.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+        return nextIndex;
+      });
+    }, 3200);
+
+    return () => window.clearInterval(timer);
+  }, [ledOnly, ledDisplayComponentCards.length]);
+
+  const handleComponentCarouselScroll = () => {
+    const container = componentCarouselRef.current;
+    if (!container) return;
+
+    const cards = Array.from(container.children) as HTMLElement[];
+    if (!cards.length) return;
+
+    const containerLeft = container.scrollLeft;
+    let nearestIndex = 0;
+    let nearestDistance = Number.POSITIVE_INFINITY;
+
+    cards.forEach((card, index) => {
+      const distance = Math.abs(card.offsetLeft - containerLeft);
+      if (distance < nearestDistance) {
+        nearestDistance = distance;
+        nearestIndex = index;
+      }
+    });
+
+    if (nearestIndex !== activeComponentSlide) {
+      setActiveComponentSlide(nearestIndex);
+    }
+  };
+
 
   return (
       <div
@@ -1788,13 +1843,57 @@ function ProductsPageContent({
 
 	              <div>
 	                <h2 className="text-2xl font-bold text-slate-900">Main Components of an LED Display System</h2>
-	                <p className="mt-3 max-w-5xl text-sm leading-7 text-slate-600 md:text-[15px] md:leading-8">
-	                  Every professional LED display system is built using several essential hardware components. Each
-	                  component performs a specific function to ensure stable operation, high image quality, and reliable
-	                  long-term performance.
-	                </p>
+                  <MobileIntroText
+                    teaser="Every professional LED display system is built using several essential hardware components."
+                    className="mt-3 max-w-5xl"
+                    teaserClassName="w-full"
+                    expandedClassName="text-sm leading-7 text-slate-600"
+                    desktopClassName="text-sm leading-7 text-slate-600 md:text-[15px] md:leading-8"
+                  >
+                    <>Every professional LED display system is built using several essential hardware components. Each component performs a specific function to ensure stable operation, high image quality, and reliable long-term performance.</>
+                  </MobileIntroText>
 
-	                <div className="mt-6 grid items-stretch gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  <div
+                    ref={componentCarouselRef}
+                    onScroll={handleComponentCarouselScroll}
+                    className="mt-6 -mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden"
+                  >
+                    {ledDisplayComponentCards.map((component, index) => (
+                      <article
+                        key={component.name}
+                        className={`group flex min-h-[15.25rem] w-[88%] shrink-0 snap-start flex-col rounded-[22px] border p-4 transition duration-300 ${componentMobileCardStyles[index % componentMobileCardStyles.length]}`}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] border border-white/70 bg-white/80 text-[#F56605] shadow-sm">
+                            <UiIcon name={component.icon} className="h-5.5 w-5.5" />
+                          </div>
+                          <h3 className="text-[18px] font-extrabold leading-snug tracking-tight text-slate-900">
+                            {component.name}
+                          </h3>
+                        </div>
+                        <p className="mt-3 text-[13px] leading-6 text-slate-700">{component.description}</p>
+                      </article>
+                    ))}
+                  </div>
+
+                  <div className="mt-3 flex justify-center gap-1.5 md:hidden">
+                    {ledDisplayComponentCards.map((component, index) => (
+                      <button
+                        key={component.name}
+                        type="button"
+                        onClick={() => {
+                          const container = componentCarouselRef.current;
+                          const cards = container ? (Array.from(container.children) as HTMLElement[]) : [];
+                          cards[index]?.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+                          setActiveComponentSlide(index);
+                        }}
+                        className={`h-1.5 rounded-full transition-all ${activeComponentSlide === index ? "w-6 bg-[#F56605]" : "w-1.5 bg-slate-300"}`}
+                        aria-label={`Go to ${component.name}`}
+                      />
+                    ))}
+                  </div>
+
+	                <div className="mt-6 hidden items-stretch gap-4 md:grid md:grid-cols-2 lg:grid-cols-3">
 	                  {ledDisplayComponentCards.map((component) => (
 		                    <article
 		                      key={component.name}
