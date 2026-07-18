@@ -89,7 +89,7 @@ export default function IndoorFilterSection({
     <>
       {showFilter ? (
         <section className="mt-8 bg-transparent p-0">
-          <h2 className="text-xl font-bold text-slate-900">Filter Indoor LED Display Options</h2>
+          <h2 className="hidden text-xl font-bold text-slate-900 md:block">Filter Indoor LED Display Options</h2>
           <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">Quick navigation by pixel pitch. (Visual filtering links only-no price/stock shown.)</p>
 
           <div className="mt-4">

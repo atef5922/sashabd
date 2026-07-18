@@ -271,7 +271,7 @@ export default function RentalProductsPage() {
 
       {/* Filters (Indoor-style) */}
       <section className="mt-8 bg-transparent p-0">
-        <h2 className="text-xl font-bold text-slate-900">Filter Rental LED Display Options</h2>
+        <h2 className="hidden text-xl font-bold text-slate-900 md:block">Filter Rental LED Display Options</h2>
         <p className="mt-2 hidden text-sm text-slate-600 leading-7 md:block">
           Quick navigation by pixel pitch and event type. (Visual filtering links only—no price/stock shown.)
         </p>
