@@ -502,10 +502,10 @@ export default function HomeAllProductsGrid() {
   const mobileSections = useMemo(() => {
     const mobileConfig = filter === "all"
       ? [
-          { key: "indoor" as HomeFilterKey, title: "Indoor LED Screens", prefix: "led:indoor:" },
-          { key: "outdoor" as HomeFilterKey, title: "Outdoor LED Billboards", prefix: "led:outdoor:" },
-          { key: "rental" as HomeFilterKey, title: "Rental LED Screens", prefix: "led:rental:" },
-          { key: "pa-system" as HomeFilterKey, title: "PA Sound Systems", prefix: "pa:" },
+          { key: "indoor" as HomeFilterKey, title: "Indoor LED Screens", prefix: "led:indoor:", href: "/led-display/indoor-led/" },
+          { key: "outdoor" as HomeFilterKey, title: "Outdoor LED Billboards", prefix: "led:outdoor:", href: "/led-display/outdoor/" },
+          { key: "rental" as HomeFilterKey, title: "Rental LED Screens", prefix: "led:rental:", href: "/led-display/rental-display/" },
+          { key: "pa-system" as HomeFilterKey, title: "PA Sound Systems", prefix: "pa:", href: "/pa-system/" },
         ]
       : [
           {
@@ -533,6 +533,28 @@ export default function HomeAllProductsGrid() {
                               : filter === "interactive-flat-panel"
                                 ? "ifp:"
                                 : "turnstile:",
+            href:
+              filter === "indoor"
+                ? "/led-display/indoor-led/"
+                : filter === "outdoor"
+                  ? "/led-display/outdoor/"
+                  : filter === "rental"
+                    ? "/led-display/rental-display/"
+                    : filter === "receiving-card"
+                      ? "/led-display/accessories/receiving-card/"
+                      : filter === "controller"
+                        ? "/led-display/accessories/controller/"
+                        : filter === "power-supply"
+                          ? "/led-display/accessories/power-supply/"
+                          : filter === "led-accessories"
+                            ? "/led-display/accessories/led-accessories/"
+                            : filter === "pa-system"
+                              ? "/pa-system/"
+                              : filter === "digital-podium"
+                                ? "/digital-podium/"
+                                : filter === "interactive-flat-panel"
+                                  ? "/interactive-flat-panel/"
+                                  : "/turnstile-gate/",
           },
         ];
 
@@ -540,6 +562,7 @@ export default function HomeAllProductsGrid() {
       .map((section) => ({
         id: section.key,
         title: section.title,
+        href: section.href,
         products: products.filter((p) => p.id.startsWith(section.prefix)),
       }))
       .filter((section) => section.products.length);
@@ -647,9 +670,14 @@ export default function HomeAllProductsGrid() {
             <Link
               prefetch={false}
               href={p.href}
-              className="inline-flex min-h-9 w-full items-center justify-center rounded-full border border-slate-200 bg-white px-3 py-2 text-[11px] font-bold leading-tight text-slate-800 shadow-sm transition hover:border-sky-300 hover:bg-sky-50 hover:text-sky-800"
+              className="inline-flex min-h-8 w-full items-center justify-between rounded-md border border-[#F56605]/20 bg-[#FFF7F1] pl-3 pr-1 py-1 text-[10px] font-bold leading-tight text-[#C84B00] shadow-sm transition hover:border-[#F56605]/35 hover:bg-[#FFF1E8]"
             >
-              View details
+              <span>View details</span>
+              <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#F56605] text-white shadow-[0_5px_12px_rgba(245,102,5,0.22)]">
+                <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" aria-hidden="true">
+                  <path d="m10 7 5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
             </Link>
           </div>
         </div>
@@ -695,8 +723,23 @@ export default function HomeAllProductsGrid() {
               key={section.id}
               className="p-0"
             >
-              <div className="mb-2 text-sm font-extrabold leading-tight text-slate-900">
-                {section.title}
+              <div className="mb-2 flex items-center justify-between gap-3">
+                <div className="text-sm font-extrabold leading-tight text-slate-900">
+                  {section.title}
+                </div>
+                <Link
+                  prefetch={false}
+                  href={section.href}
+                  className="inline-flex shrink-0 items-center gap-1 text-[11px] font-bold text-slate-800"
+                >
+                  <span>View all</span>
+                  <span className="text-[#F56605]">
+                    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" aria-hidden="true">
+                      <path d="M5 12h11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      <path d="m12 7 5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                </Link>
               </div>
 
               <div className="relative">
