@@ -56,6 +56,19 @@ const workflowSteps: WorkflowStep[] = [
   },
 ];
 
+function getMobileWorkflowCardClassName(phaseClassName: string) {
+  if (phaseClassName.includes("sky")) {
+    return "border-sky-100 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(248,250,252,0.98)_100%)] shadow-[0_12px_28px_rgba(15,23,42,0.06)] ring-1 ring-sky-100/80";
+  }
+  if (phaseClassName.includes("emerald")) {
+    return "border-emerald-100 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(248,250,252,0.98)_100%)] shadow-[0_12px_28px_rgba(15,23,42,0.06)] ring-1 ring-emerald-100/80";
+  }
+  if (phaseClassName.includes("orange")) {
+    return "border-orange-100 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(248,250,252,0.98)_100%)] shadow-[0_12px_28px_rgba(15,23,42,0.06)] ring-1 ring-orange-100/80";
+  }
+  return "border-violet-100 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(248,250,252,0.98)_100%)] shadow-[0_12px_28px_rgba(15,23,42,0.06)] ring-1 ring-violet-100/80";
+}
+
 function ArrowRight({ className = "h-4 w-4" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
@@ -135,7 +148,7 @@ export default function ProjectWorkflowSection() {
           {workflowSteps.map((item) => (
             <article
               key={item.title}
-              className="group flex h-full flex-col rounded-[18px] border border-slate-200/80 bg-white/96 p-4 shadow-[0_12px_28px_rgba(15,23,42,0.055)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(15,23,42,0.08)] md:p-4 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+              className={`group flex h-full flex-col overflow-hidden rounded-[18px] border p-4 transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(15,23,42,0.08)] md:border-slate-200/80 md:bg-white/96 md:p-4 md:shadow-[0_12px_28px_rgba(15,23,42,0.055)] md:ring-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0 ${getMobileWorkflowCardClassName(item.phaseClassName)}`}
             >
               <div className="inline-flex w-fit items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.03em] text-slate-600">
                 {item.step}
