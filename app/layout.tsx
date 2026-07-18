@@ -150,7 +150,7 @@ export default function RootLayout({
       <body suppressHydrationWarning className={`${roboto.variable} ${notoSansBengali.variable}`}>
         {GA_ID ? <GaPageview /> : null}
         <Header />
-        <main id="main-content" className="pb-20 pt-2 md:pb-0">
+        <main id="main-content" className="pb-14 pt-2 md:pb-0">
           {children}
         </main>
         <Footer />

@@ -219,7 +219,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="home-underlined mx-auto w-full max-w-7xl px-4 pt-0 pb-8 md:px-6">
+    <div className="home-underlined mx-auto w-full max-w-7xl px-4 pt-0 pb-2 md:pb-8 md:px-6">
       <style>{`
         .card-butterfly {
           pointer-events: none;
@@ -355,7 +355,7 @@ export default function HomePage() {
           }
         }
       `}</style>
-      <div className="space-y-6 md:space-y-8">
+      <div className="space-y-3 md:space-y-8">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
         {/* 1) HERO */}
