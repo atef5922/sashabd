@@ -9,7 +9,7 @@ export default function ProjectProposalCtaSection() {
   const whatsappHref = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
 
   return (
-    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen border-t border-slate-200/80 bg-[linear-gradient(180deg,rgba(248,250,252,0.88)_0%,rgba(255,255,255,1)_100%)] py-5 md:py-6">
+    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen border-t border-slate-200/80 bg-[linear-gradient(180deg,rgba(248,250,252,0.88)_0%,rgba(255,255,255,1)_100%)] py-3.5 md:py-6">
       <div className="mx-auto w-full max-w-7xl px-4 md:px-6">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="pb-0 text-[22px] font-extrabold leading-tight tracking-tight text-slate-900 after:hidden md:text-[34px]">
@@ -41,7 +41,7 @@ export default function ProjectProposalCtaSection() {
             </div>
           </div>
 
-          <div className="mt-4 grid grid-cols-2 gap-2 sm:flex sm:flex-row sm:items-center sm:justify-center sm:gap-3">
+          <div className="mt-3 grid grid-cols-2 gap-2 sm:flex sm:flex-row sm:items-center sm:justify-center sm:gap-3">
             <Link
               href="/contact/"
               prefetch={false}
@@ -60,7 +60,7 @@ export default function ProjectProposalCtaSection() {
             </a>
           </div>
 
-          <p className="mt-3 text-[12px] leading-6 text-slate-500 md:text-[13px]">
+          <p className="mt-2 text-[12px] leading-6 text-slate-500 md:text-[13px]">
             You can also send BOQ, tender scope or e-GP-related project details by email or WhatsApp for faster review.
           </p>
         </div>

@@ -219,7 +219,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="home-underlined mx-auto w-full max-w-7xl px-4 pt-0 pb-2 md:pb-8 md:px-6">
+    <div className="home-underlined mx-auto w-full max-w-7xl px-4 pt-0 pb-0 md:pb-8 md:px-6">
       <style>{`
         .card-butterfly {
           pointer-events: none;
