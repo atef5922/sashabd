@@ -212,7 +212,7 @@ export default function WhyChooseSection() {
           <div
             ref={mobileCarouselRef}
             onScroll={handleCarouselScroll}
-            className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] touch-pan-x [&::-webkit-scrollbar]:hidden"
+            className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
           >
             {whyChooseItems.map((item) => (
               <article

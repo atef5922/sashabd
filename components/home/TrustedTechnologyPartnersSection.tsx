@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const trustedTechPartnerLogos: Array<{ name: string; src: string; href?: string }> = [
   { name: "Absen", src: "/images/logo/absen.webp", href: "https://www.absen.com/" },
@@ -39,6 +39,76 @@ function getLogoClassName(name: string) {
 
 export default function TrustedTechnologyPartnersSection() {
   const [mobileExpanded, setMobileExpanded] = useState(false);
+  const marqueeTrackRef = useRef<HTMLDivElement | null>(null);
+  const marqueeFrameRef = useRef<number | null>(null);
+  const marqueeOffsetRef = useRef(0);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+
+    const stopMarquee = () => {
+      if (marqueeFrameRef.current !== null) {
+        window.cancelAnimationFrame(marqueeFrameRef.current);
+        marqueeFrameRef.current = null;
+      }
+    };
+
+    const resetMarquee = () => {
+      marqueeOffsetRef.current = 0;
+      if (marqueeTrackRef.current) {
+        marqueeTrackRef.current.style.transform = "";
+      }
+    };
+
+    const startMarquee = () => {
+      const track = marqueeTrackRef.current;
+      if (!track || !mediaQuery.matches) return;
+
+      stopMarquee();
+      let lastTime: number | null = null;
+
+      const tick = (time: number) => {
+        const currentTrack = marqueeTrackRef.current;
+        if (!currentTrack || !mediaQuery.matches) return;
+
+        if (lastTime === null) lastTime = time;
+        const delta = time - lastTime;
+        lastTime = time;
+
+        const loopWidth = currentTrack.scrollWidth / 2;
+        if (loopWidth <= 0) {
+          marqueeFrameRef.current = window.requestAnimationFrame(tick);
+          return;
+        }
+
+        marqueeOffsetRef.current = (marqueeOffsetRef.current + delta * 0.03) % loopWidth;
+        currentTrack.style.transform = `translate3d(-${marqueeOffsetRef.current}px, 0, 0)`;
+        marqueeFrameRef.current = window.requestAnimationFrame(tick);
+      };
+
+      marqueeFrameRef.current = window.requestAnimationFrame(tick);
+    };
+
+    const syncMode = () => {
+      if (mediaQuery.matches) {
+        startMarquee();
+      } else {
+        stopMarquee();
+        resetMarquee();
+      }
+    };
+
+    syncMode();
+    mediaQuery.addEventListener("change", syncMode);
+
+    return () => {
+      mediaQuery.removeEventListener("change", syncMode);
+      stopMarquee();
+      resetMarquee();
+    };
+  }, []);
 
   return (
     <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-slate-50/80 py-5 md:py-6">
@@ -118,7 +188,10 @@ export default function TrustedTechnologyPartnersSection() {
             />
 
             <div className="group">
-              <div className="flex w-max gap-2 md:gap-3 animate-[renexMarquee_42s_linear_infinite] md:group-hover:[animation-play-state:paused] motion-reduce:animate-none">
+              <div
+                ref={marqueeTrackRef}
+                className="flex w-max gap-2 will-change-transform md:gap-3 md:animate-[renexMarquee_42s_linear_infinite] md:group-hover:[animation-play-state:paused] motion-reduce:animate-none"
+              >
                 {[...trustedTechPartnerLogos, ...trustedTechPartnerLogos].map((brand, index) =>
                   brand.href ? (
                     <a
