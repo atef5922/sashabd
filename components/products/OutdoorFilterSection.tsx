@@ -102,13 +102,13 @@ export default function OutdoorFilterSection({
 
         <div className="mt-4">
           <div>
-            <div className="text-xs font-bold text-slate-700">Pixel Pitch</div>
-            <div className="mt-2 flex flex-nowrap gap-1.5 overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-600">Pixel Pitch</div>
+            <div className="mt-2 flex flex-nowrap items-center gap-2 overflow-x-auto pb-1.5 pt-0.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
               {pitches.map((p) => (
                 <Link
                   key={p}
                   href={buildHref(p)}
-                  className={`group relative isolate overflow-hidden whitespace-nowrap rounded-full border px-3.5 py-1.5 text-[10px] font-bold transition-all duration-300 ${
+                  className={`group relative isolate inline-flex min-h-9 shrink-0 items-center justify-center overflow-hidden whitespace-nowrap rounded-full border px-3.5 text-[11px] font-bold leading-none tracking-tight transition-all duration-300 ${
                     activePitch === p
                       ? "border-[rgba(255,106,0,0.65)] text-white shadow-[0_8px_18px_rgba(255,106,0,0.22)]"
                       : "border-cyan-100/70 bg-[rgba(103,232,249,0.10)] text-slate-700 shadow-none hover:border-orange-200 hover:text-slate-900"
