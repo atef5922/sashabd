@@ -510,7 +510,7 @@ export default function HomeAllProductsGrid() {
       : [
           {
             key: filter,
-            title: filter === "all" ? "All Products" : filterLabelMap[filter],
+            title: filterLabelMap[filter],
             prefix:
               filter === "indoor"
                 ? "led:indoor:"
