@@ -23,12 +23,12 @@ const BRAND = { maroon: "#FF6A00", maroonDark: "#E45700" };
 export const metadata: Metadata = {
   title: "Interactive Flat Panel Price in Bangladesh",
   description:
-    "Interactive flat panel (IFP) in Bangladesh for smart classrooms and meeting rooms—BOQ support, model selection, and nationwide installation.",
+    "Interactive flat panel (IFP) in Bangladesh for smart classrooms and meeting roomsÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂBOQ support, model selection, and nationwide installation.",
   alternates: { canonical: "/interactive-flat-panel/" },
   openGraph: {
     title: "Interactive Flat Panel in Bangladesh | Smart Classroom and Meeting Room",
     description:
-      "Interactive flat panel price and selection guidance in Bangladesh—screen size planning, OPS PC options, installation and after-sales support.",
+      "Interactive flat panel price and selection guidance in BangladeshÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âscreen size planning, OPS PC options, installation and after-sales support.",
     url: "/interactive-flat-panel",
     type: "website",
     images: [
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Interactive Flat Panel Price in Bangladesh",
     description:
-      "Interactive flat panel (IFP) in Bangladesh—smart classroom and meeting room display with BOQ, installation and support.",
+      "Interactive flat panel (IFP) in BangladeshÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âsmart classroom and meeting room display with BOQ, installation and support.",
     images: [socialImageUrl("/images/Interactive%20flat%20panel/Interactive-flat-panal.webp")],
   },
 };
@@ -56,7 +56,7 @@ const faqs: { q: string; a: string }[] = [
   },
   {
     q: "Which size should I choose for a classroom?",
-    a: "A practical choice depends on room depth and seating distance. Many classrooms select 75–86 inch panels, while smaller rooms may use 65 inch and larger halls may require 96 inch or above.",
+    a: "A practical choice depends on room depth and seating distance. Many classrooms select 75ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“86 inch panels, while smaller rooms may use 65 inch and larger halls may require 96 inch or above.",
   },
   {
     q: "Is Android-only enough or do I need an OPS PC?",
@@ -78,15 +78,15 @@ const faqs: { q: string; a: string }[] = [
 
 const sizeGuides = [
   {
-    title: '65" — Compact rooms',
+    title: '65" ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Compact rooms',
     desc: "Great for principal rooms, small meetings and trainings where space is limited but touch interaction is required.",
   },
   {
-    title: '75"–86" — Standard classroom size',
+    title: '75"ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“86" ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Standard classroom size',
     desc: "A common pick for schools, colleges and coaching centers because it stays readable for typical classroom depth.",
   },
   {
-    title: '96"+ — Large venue impact',
+    title: '96"+ ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Large venue impact',
     desc: "Best for big training halls and premium boardrooms where the audience sits farther and screen presence matters.",
   },
 ];
@@ -222,7 +222,7 @@ export default function InteractiveFlatPanelPage() {
       <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
         <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Size Selection (Practical Guide)</h2>
         <p className="mt-2 text-slate-600 leading-7 text-justify">
-          The “best” interactive flat panel is the one that stays readable from the back row and fits your daily workflow.
+          The ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œbestÃƒÂ¢Ã¢â€šÂ¬Ã‚Â interactive flat panel is the one that stays readable from the back row and fits your daily workflow.
           Use the guide below, then share your room layout to validate sizing.
         </p>
 
@@ -248,7 +248,7 @@ export default function InteractiveFlatPanelPage() {
                 className="inline-flex min-h-[42px] items-center justify-center whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
-                Request Quotation
+                Request Quotation -&gt;
               </Link>
               <a
                 href={wa}
@@ -275,7 +275,7 @@ export default function InteractiveFlatPanelPage() {
               accentColor={BRAND.maroon}
               imageContainerClassName={undefined}
               topLeftBadge={{ text: "Interactive Panel", tone: "light" }}
-              topRightBadge={{ text: `${getInteractiveFlatPanelBrandLabel(p.brand)} • ${p.sizeInch}"`, tone: "dark" }}
+              topRightBadge={{ text: `${getInteractiveFlatPanelBrandLabel(p.brand)} ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ ${p.sizeInch}"`, tone: "dark" }}
               metaLines={[
                 { text: p.priceLabel, className: "mt-1 text-sm font-semibold text-sky-700" },
                 { text: p.subtitle, className: "mt-2 text-sm leading-7 text-slate-600 line-clamp-3" },
@@ -292,7 +292,7 @@ export default function InteractiveFlatPanelPage() {
                   className="object-cover"
                 />
               }
-              viewDetailsLabel="View details →"
+              viewDetailsLabel="View details ->"
             />
           ))}
         </ResponsiveProductCarousel>
@@ -719,7 +719,7 @@ export default function InteractiveFlatPanelPage() {
             </p>
             <ul className="mt-3 space-y-2 text-sm leading-7 text-slate-600">
               {[
-                "Room length × width and the farthest viewing distance",
+                "Room length ÃƒÆ’Ã¢â‚¬â€ width and the farthest viewing distance",
                 "Use-case: classroom, meeting room, training, auditorium or reception",
                 "Preferred size (if you have a shortlist) and mounting type (wall/trolley)",
                 "Android-only vs OPS PC requirement and any app/workflow needs",
@@ -860,7 +860,7 @@ export default function InteractiveFlatPanelPage() {
             },
             {
               t: "Mounting preference",
-              d: "Wall mount or trolley—mounting affects installation scope, cabling and user comfort height.",
+              d: "Wall mount or trolleyÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âmounting affects installation scope, cabling and user comfort height.",
             },
             {
               t: "Connectivity needs",

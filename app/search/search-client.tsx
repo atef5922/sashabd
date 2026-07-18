@@ -151,7 +151,7 @@ function subtitleToBullets(subtitle: string): string[] {
   if (!normalized) return [];
 
   const primary = normalized
-    .split(/[•|–—.;]/g)
+    .split(/[ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢|ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â.;]/g)
     .map((x) => x.trim())
     .filter((x) => x.length >= 4);
 
@@ -202,7 +202,7 @@ export default function SearchClient() {
             href={basePath}
             className="inline-flex rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-bold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
           >
-            Back to LED Display →
+            Back to LED Display -&gt;
           </Link>
         </div>
       </div>
@@ -257,7 +257,7 @@ export default function SearchClient() {
                 chips={chips}
                 accentColor="#FF6A00"
                 contactHref="/contact"
-                viewDetailsLabel="View details →"
+                viewDetailsLabel="View details ->"
               />
             );
           })}

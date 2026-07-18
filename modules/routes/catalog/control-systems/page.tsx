@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site";
 import { socialImageUrl } from "@/lib/seo";
@@ -99,7 +99,7 @@ export default function ControlSystemsPage() {
               className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
-              Request a Quotation
+              Request a Quotation -&gt;
             </Link>
             <a
               href={wa}
@@ -161,7 +161,7 @@ export default function ControlSystemsPage() {
                   style={{ background: `${BRAND.maroon}B3` }}
                 />
                 <div className="mt-3 text-sm font-bold" style={{ color: BRAND.maroon }}>
-                  View details
+                  View details -&gt;
                 </div>
               </div>
             </Link>
@@ -189,7 +189,7 @@ export default function ControlSystemsPage() {
             },
             {
               href: "/control-systems/pa-system/2-channel-power-amplifier-2x500w/",
-              title: "2-Channel Power Amplifier (2×500W)",
+              title: "2-Channel Power Amplifier (2ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â500W)",
               desc: "High power output for larger halls and multi-speaker zones.",
             },
             {
@@ -223,7 +223,7 @@ export default function ControlSystemsPage() {
               <div className="text-sm font-extrabold text-slate-900">{x.title}</div>
               <p className="mt-2 text-sm text-slate-600 leading-7">{x.desc}</p>
               <div className="mt-4 text-sm font-bold" style={{ color: BRAND.maroon }}>
-                View details →
+                View details -&gt;
               </div>
             </Link>
           ))}

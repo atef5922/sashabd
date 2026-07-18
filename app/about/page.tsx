@@ -68,25 +68,25 @@ export default function AboutPage() {
   const steps = [
     {
       n: "01",
-      icon: "📝",
+      icon: "ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â",
       t: "Requirement & information",
       d: "You share indoor/outdoor, location, approximate size and your purpose (signage, showroom, stage, events, etc.).",
     },
     {
       n: "02",
-      icon: "📐",
+      icon: "ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â",
       t: "Planning & guidance",
       d: "We recommend pixel pitch and brightness, and guide you on structure, power line and safety checklist.",
     },
     {
       n: "03",
-      icon: "🛠️",
+      icon: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â",
       t: "Install & configure",
-      d: "Installation, wiring, controller mapping, configuration and testing—done with clean finishing and safety priority.",
+      d: "Installation, wiring, controller mapping, configuration and testingÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âdone with clean finishing and safety priority.",
     },
     {
       n: "04",
-      icon: "✅",
+      icon: "ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦",
       t: "Calibration & handover",
       d: "We calibrate for uniform output, test stability, provide basic training and outline support/warranty process.",
     },
@@ -136,12 +136,12 @@ export default function AboutPage() {
             <p className="mt-1 w-full text-base leading-7 text-slate-600 text-justify">
               {BRAND_NAME} supplies, installs, and supports indoor & outdoor LED display solutions across Bangladesh. We
               help you choose the right pixel pitch, brightness, and cabinet setup based on viewing distance,
-              environment (indoor/outdoor), and budget—then deliver end-to-end execution: site planning, structure and
+              environment (indoor/outdoor), and budgetÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âthen deliver end-to-end execution: site planning, structure and
               power safety guidance, controller/receiving-card configuration, mapping, testing, calibration, and clean
               finishing. We import products from China and support a wide range of use cases including showroom
               signage, digital information boards, LED video walls, event/stage displays, and outdoor branding
               billboards. After handover, we stay available for warranty guidance, troubleshooting, and maintenance
-              support—so your screen remains stable, serviceable, and performance-focused for the long run.
+              supportÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âso your screen remains stable, serviceable, and performance-focused for the long run.
             </p>
 
             {/* CTA buttons under hero (horizontal line) */}
@@ -151,7 +151,7 @@ export default function AboutPage() {
                 className="rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:shadow-md"
                 style={{ background: MAROON }}
               >
-                Request a Quotation →
+                Request a Quotation -&gt;
               </Link>
               <a
                 href={wa}
@@ -171,16 +171,16 @@ export default function AboutPage() {
         {/* WHO WE ARE */}
         <section className="mt-8 rounded-3xl bg-white p-7 md:p-10">
           <SectionTitle
-            icon="👋"
+            icon="ÃƒÂ°Ã…Â¸Ã¢â‚¬ËœÃ¢â‚¬Â¹"
             title="Who we are"
             subtitleClassName="mt-4 w-full text-base leading-7 text-slate-600 text-justify"
-            subtitle={`${BRAND_NAME} is a Bangladesh-based LED display solutions team. We help businesses, showrooms, institutions, and event operators choose the right LED configuration—based on viewing distance, environment (indoor/outdoor), and budget—then deliver a complete setup with installation, calibration, and support. In Bangladesh’s LED display sector, we are recognized as one of the top providers, driven by reliable engineering decisions, clean delivery, and long-term after-sales support.`}
+            subtitle={`${BRAND_NAME} is a Bangladesh-based LED display solutions team. We help businesses, showrooms, institutions, and event operators choose the right LED configurationÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âbased on viewing distance, environment (indoor/outdoor), and budgetÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âthen deliver a complete setup with installation, calibration, and support. In BangladeshÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢s LED display sector, we are recognized as one of the top providers, driven by reliable engineering decisions, clean delivery, and long-term after-sales support.`}
           />
 
           <div className="mt-8 grid gap-8 lg:grid-cols-2">
             <div>
               <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-                <span>📦</span> What we deliver
+                <span>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦</span> What we deliver
               </h3>
               <div className="mt-3 space-y-2 text-slate-600">
                 {[
@@ -199,9 +199,9 @@ export default function AboutPage() {
         {/* HOW WE WORK */}
         <section className="mt-8 rounded-3xl bg-rose-50 p-7 md:p-10">
           <SectionTitle
-            icon="🧩"
+            icon="ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â©"
             title="How we work"
-            subtitle="We keep the process simple and clear so you know what you’re getting and when you’ll get it—without confusion or hidden scope."
+            subtitle="We keep the process simple and clear so you know what youÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢re getting and when youÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ll get itÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âwithout confusion or hidden scope."
           />
 
           <div className="mt-9 grid gap-8 lg:grid-cols-4">
@@ -225,14 +225,14 @@ export default function AboutPage() {
           <div className="grid gap-12 lg:grid-cols-2">
             <div>
               <SectionTitle
-                icon="🎯"
+                icon="ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¯"
                 title="Mission"
-                subtitle="Deliver reliable LED display solutions that create long-term value—selected correctly, installed safely, calibrated properly, and supported responsibly."
+                subtitle="Deliver reliable LED display solutions that create long-term valueÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âselected correctly, installed safely, calibrated properly, and supported responsibly."
               />
               <div className="mt-6 space-y-2 text-slate-600">
                 {missionBullets.map((x) => (
                   <div key={x} className="flex gap-2">
-                    <span className="mt-1 text-lg">✅</span>
+                    <span className="mt-1 text-lg">ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦</span>
                     <span className="leading-7">{x}</span>
                   </div>
                 ))}
@@ -241,14 +241,14 @@ export default function AboutPage() {
 
             <div>
               <SectionTitle
-                icon="🌟"
+                icon="ÃƒÂ°Ã…Â¸Ã…â€™Ã…Â¸"
                 title="Vision"
                 subtitle="Become one of the most trusted LED display partners in Bangladesh by setting standards for quality, transparency and technical responsibility."
               />
               <div className="mt-6 space-y-2 text-slate-600">
                 {visionBullets.map((x) => (
                   <div key={x} className="flex gap-2">
-                    <span className="mt-1 text-lg">✅</span>
+                    <span className="mt-1 text-lg">ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦</span>
                     <span className="leading-7">{x}</span>
                   </div>
                 ))}

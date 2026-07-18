@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { outdoorCatalog, type ProductItem } from "../../../lib/productsCatalog";
@@ -534,7 +534,7 @@ export default function BillboardLedDisplayPage() {
                 chips={p.bestFor.slice(0, 3)}
                 accentColor="#FF6A00"
                 contactHref="/contact"
-                viewDetailsLabel="View details →"
+                viewDetailsLabel="View details ->"
               />
             );
           })}
@@ -619,7 +619,7 @@ export default function BillboardLedDisplayPage() {
         </div>
         <div className="mt-5 flex flex-wrap gap-3">
           <Link href="/led-display/outdoor/" className="rounded-xl bg-[#FF6A00] px-5 py-3 text-sm font-extrabold text-white">
-            Explore Outdoor Models
+            Explore Outdoor Models -&gt;
           </Link>
           <Link href="/contact" className="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-900">
             Request Site Survey

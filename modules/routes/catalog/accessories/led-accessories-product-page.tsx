@@ -58,7 +58,7 @@ function buildAccessoryDescription(product: (typeof ledAccessoriesCatalog)[numbe
   return [
     product.subtitle,
     "This is a practical accessory used in LED cabinet installation, servicing, or event workflow. Choosing the correct variant helps reduce downtime and prevents avoidable wiring or compatibility issues.",
-    highlight ? `Quick highlights — ${highlight}.` : "",
+    highlight ? `Quick highlights ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â ${highlight}.` : "",
     "Share your cabinet/module details (scan/HUB ecosystem, connector type, quantity, and usage scenario) for accurate recommendation and quotation support in Bangladesh.",
   ]
     .filter(Boolean)
@@ -117,7 +117,7 @@ export default async function LedAccessoriesDetailsPage(
               className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
-              Get a Quotation &rarr;
+              Get a Quotation -&gt;
             </Link>
             <a
               href={wa}
@@ -165,7 +165,7 @@ export default async function LedAccessoriesDetailsPage(
               className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
-              Request proposal &rarr;
+              Request proposal -&gt;
             </Link>
           </div>
         </div>
@@ -223,7 +223,7 @@ export default async function LedAccessoriesDetailsPage(
                   chips={fp.tags.slice(0, 3)}
                   accentColor={BRAND.maroon}
                   contactHref="/contact"
-                  viewDetailsLabel="View details →"
+                  viewDetailsLabel="View details ->"
                 />
               </div>
             ))}

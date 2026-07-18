@@ -1861,7 +1861,7 @@ function ProductsPageContent({
 
                 <div className="mt-6 flex flex-wrap gap-3">
                   <Link prefetch={false} href="/contact" className="rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">
-                    Request a Free Quotation
+                    Request a Free Quotation -&gt;
                   </Link>
                 </div>
               </div>
@@ -2154,7 +2154,7 @@ function ProductsPageContent({
                   href="/contact"
                   className="inline-flex rounded-xl bg-[#FF6A00] px-6 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#E45700] hover:shadow-md"
                 >
-                  Get Buying Help &rarr;
+                  Get Buying Help -&gt;
                 </Link>
                 <a
                   href={wa}
@@ -2257,21 +2257,21 @@ function ProductsPageContent({
                 href={`${basePath}/indoor-led/`}
                 className="inline-flex rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
               >
-                Explore Indoor Models &rarr;
+                Explore Indoor Models -&gt;
               </Link>
               <Link
                 prefetch={false}
                 href={`${basePath}/outdoor/`}
                 className="inline-flex rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
               >
-                Explore Outdoor Models &rarr;
+                Explore Outdoor Models -&gt;
               </Link>
               <Link
                 prefetch={false}
                 href="/contact"
                 className="inline-flex rounded-xl bg-[#FF6A00] px-6 py-2 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#E45700] hover:shadow-md"
               >
-                Get a Recommendation &rarr;
+                Get a Recommendation -&gt;
               </Link>
             </div>
           </section>

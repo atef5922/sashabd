@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/led-display/accessories/controller/" },
   openGraph: {
     title: "LED Controller / Video Processor",
-    description: "Controllers & video processors for LED screens—view features, specs and request a recommendation.",
+    description: "Controllers & video processors for LED screensÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âview features, specs and request a recommendation.",
     url: "/led-display/accessories/controller",
     type: "website",
     images: [
@@ -63,7 +63,7 @@ const faqs = [
   },
   {
     q: "What details should I share for a BOQ-ready controller recommendation?",
-    a: "Share screen width × height (pixels), number of cabinets, input sources (PC, camera, media player), indoor/outdoor environment, and whether you need live switching, multi-screen, or remote control.",
+    a: "Share screen width ÃƒÆ’Ã¢â‚¬â€ height (pixels), number of cabinets, input sources (PC, camera, media player), indoor/outdoor environment, and whether you need live switching, multi-screen, or remote control.",
   },
 ] as const;
 const faqJsonLd = {
@@ -125,7 +125,7 @@ export default function ControllerProductsPage() {
           </MobileIntroText>
 
           <div className="mt-1 hidden flex-wrap gap-2 text-xs font-semibold text-slate-700 md:flex">
-            {["✓ Input handling & scaling", "✓ Stable output", "✓ Mapping friendly", "✓ Setup & after-sales support"].map((t) => (
+            {["ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Input handling & scaling", "ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Stable output", "ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Mapping friendly", "ÃƒÂ¢Ã…â€œÃ¢â‚¬Å“ Setup & after-sales support"].map((t) => (
               <span key={t} className="rounded-full border bg-slate-50 px-4 py-2" style={{ borderColor: `${BRAND.maroon}14` }}>
                 {t}
               </span>
@@ -138,7 +138,7 @@ export default function ControllerProductsPage() {
               className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
-              Request a Quotation →
+              Request a Quotation -&gt;
             </Link>
             <a
               href={wa}
@@ -176,7 +176,7 @@ export default function ControllerProductsPage() {
               accentColor={BRAND.maroon}
               contactHref="/contact"
               compactMobile
-              viewDetailsLabel="View details →"
+              viewDetailsLabel="View details ->"
             />
           ))}
         </ResponsiveProductCarousel>

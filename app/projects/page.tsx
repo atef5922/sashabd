@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
@@ -45,7 +45,7 @@ const templateProjects: Project[] = [
     organization: "Nusaifa Trading",
     location: "Dhaka, Bangladesh",
     year: "2026",
-    subtitle: "Nasirabad, Chattogram • 2026",
+    subtitle: "Nasirabad, Chattogram â€¢ 2026",
     scopeLabel: "Scope",
     scope: "Structure planning, supply and installation support.",
     highlights: [
@@ -71,7 +71,7 @@ const templateProjects: Project[] = [
     organization: "Office access control",
     location: "Dhaka, Bangladesh",
     year: "2024",
-    subtitle: "Mohammadpur • Dhaka, Bangladesh • 2024",
+    subtitle: "Mohammadpur â€¢ Dhaka, Bangladesh â€¢ 2024",
     scopeLabel: "Scope",
     scope: "Supply, installation, wiring and controller integration.",
     highlights: [
@@ -97,7 +97,7 @@ const templateProjects: Project[] = [
     organization: "Corporate office (confidential)",
     location: "Dhaka, Bangladesh",
     year: "2025",
-    subtitle: "Gulshan • Dhaka, Bangladesh • 2025",
+    subtitle: "Gulshan â€¢ Dhaka, Bangladesh â€¢ 2025",
     scopeLabel: "Scope",
     scope: "Supply, installation, calibration and commissioning.",
     highlights: [
@@ -123,7 +123,7 @@ const templateProjects: Project[] = [
     organization: "Event stage / conference",
     location: "Dhaka, Bangladesh",
     year: "2025",
-    subtitle: "Manik Mia Avenue • Dhaka, Bangladesh • 2025",
+    subtitle: "Manik Mia Avenue â€¢ Dhaka, Bangladesh â€¢ 2025",
     scopeLabel: "Scope",
     scope: "Event setup, alignment and on-site support.",
     highlights: [
@@ -149,7 +149,7 @@ const templateProjects: Project[] = [
     organization: "Office building",
     location: "Dhaka, Bangladesh",
     year: "2026",
-    subtitle: "Mirpur • Dhaka, Bangladesh • 2026",
+    subtitle: "Mirpur â€¢ Dhaka, Bangladesh â€¢ 2026",
     scopeLabel: "Scope",
     scope: "BOQ-based planning, wiring guidance, commissioning and handover.",
     highlights: [
@@ -159,7 +159,7 @@ const templateProjects: Project[] = [
       "Priority paging rules for important announcements",
     ],
     meta: [
-      { k: "System type", v: "Conference Discussion System – Chairman & Delegate Set" },
+      { k: "System type", v: "Conference Discussion System â€“ Chairman & Delegate Set" },
       { k: "Zones", v: "Office" },
       { k: "Solution stack", v: "Amplifier, paging mic, speakers, cabling" },
     ],
@@ -175,7 +175,7 @@ const templateProjects: Project[] = [
     organization: "Showroom / retail branding",
     location: "Chattogram, Bangladesh",
     year: "2026",
-    subtitle: "Progati sarani • Dhaka, Bangladesh • 2026",
+    subtitle: "Progati sarani â€¢ Dhaka, Bangladesh â€¢ 2026",
     scopeLabel: "Scope",
     scope: "Supply, installation and content testing support.",
     highlights: [
@@ -201,7 +201,7 @@ const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "What details should I share for a matching proposal?",
-    a: "Send location, indoor/outdoor, approximate size (W×H), viewing distance, content type, and timeline. For PA or access control projects, share layout, zone/lane count, and daily operation requirements.",
+    a: "Send location, indoor/outdoor, approximate size (WÃ—H), viewing distance, content type, and timeline. For PA or access control projects, share layout, zone/lane count, and daily operation requirements.",
   },
   {
     q: "Do you support installation, commissioning and after-sales?",
@@ -216,12 +216,12 @@ const FAQS: { q: string; a: string }[] = [
 export const metadata: Metadata = {
   title: { absolute: "Project Portfolio | LED, PA & Access Control in Bangladesh" },
   description:
-    `Explore ${BRAND_NAME} project deliveries across Bangladesh—LED displays, rental event screens, PA systems and access control with scope highlights and quality checks.`,
+    `Explore ${BRAND_NAME} project deliveries across Bangladeshâ€”LED displays, rental event screens, PA systems and access control with scope highlights and quality checks.`,
   alternates: { canonical: absoluteUrl("/projects/") },
   openGraph: {
     title: "Project Portfolio | Completed Deliveries in Bangladesh",
     description:
-      `Explore ${BRAND_NAME} project deliveries across Bangladesh—LED displays, rental event screens, PA systems and access control with scope highlights and quality checks.`,
+      `Explore ${BRAND_NAME} project deliveries across Bangladeshâ€”LED displays, rental event screens, PA systems and access control with scope highlights and quality checks.`,
     url: absoluteUrl("/projects/"),
     type: "website",
     images: [
@@ -237,7 +237,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Project Portfolio | Completed Deliveries in Bangladesh",
     description:
-      `Explore ${BRAND_NAME} project deliveries across Bangladesh—LED, rental, PA and access control with scope highlights and quality checks.`,
+      `Explore ${BRAND_NAME} project deliveries across Bangladeshâ€”LED, rental, PA and access control with scope highlights and quality checks.`,
     images: [socialImageUrl()],
   },
 };
@@ -301,7 +301,7 @@ export default function ProjectsPage() {
                 Project Portfolio by {BRAND_NAME}
               </h1>
               <p className="mt-3 text-sm leading-7 text-white/85 md:text-base">
-                Selected deliveries across Bangladesh—each entry highlights the site type, location, scope and delivery
+                Selected deliveries across Bangladeshâ€”each entry highlights the site type, location, scope and delivery
                 approach so you can judge execution quality and long-term reliability.
               </p>
 
@@ -333,7 +333,7 @@ export default function ProjectsPage() {
               {
                 n: "1",
                 t: "Scope you can trust",
-                d: "We outline supply, installation, configuration, calibration and commissioning clearly so BOQ and delivery stay aligned—without surprises.",
+                d: "We outline supply, installation, configuration, calibration and commissioning clearly so BOQ and delivery stay alignedâ€”without surprises.",
               },
               {
                 n: "2",
@@ -365,7 +365,7 @@ export default function ProjectsPage() {
         <section className="mt-8 rounded-3xl bg-white p-7 md:p-10">
           <div className="mx-auto max-w-5xl">
             <h2 className="text-xl font-extrabold tracking-tight text-slate-900 md:text-2xl">
-              How we execute projects (planning → installation → handover)
+              How we execute projects (planning -&gt; installation -&gt; handover)
             </h2>
             <p className="mt-2 text-sm leading-6 text-slate-600">
               A clear workflow makes the engineering process easy to understand before you commit.
@@ -554,7 +554,7 @@ export default function ProjectsPage() {
               Planning a similar project?
             </h2>
             <p className="mt-3 leading-7 text-slate-600">
-              Share screen size (W×H), indoor/outdoor, location, viewing distance and BOQ/space notes. We will propose a
+              Share screen size (WÃ—H), indoor/outdoor, location, viewing distance and BOQ/space notes. We will propose a
               practical solution with scope and a technical plan.
             </p>
 

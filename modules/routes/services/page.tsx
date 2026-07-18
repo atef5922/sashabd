@@ -105,7 +105,7 @@ const services = [
   {
     icon: "S4",
     title: "Repair and Maintenance Support",
-    desc: "Troubleshooting and maintenance support to reduce downtime—with remote guidance first and on-site support when needed.",
+    desc: "Troubleshooting and maintenance support to reduce downtimeÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âwith remote guidance first and on-site support when needed.",
     items: ["Module/PSU troubleshooting", "Mapping + signal diagnostics", "Preventive maintenance guidance"],
   },
 ];
@@ -214,7 +214,7 @@ export default function ServicesPage() {
                 className="rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:shadow-md"
                 style={{ background: MAROON }}
               >
-                Request Service →
+                Request Service -&gt;
               </Link>
               <Link
                 href="/led-display/"
@@ -336,7 +336,7 @@ export default function ServicesPage() {
         <section className="mt-8 rounded-3xl bg-slate-50 p-7 md:p-10">
           <div>
             <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight text-slate-900">
-              <span className="text-xl">🛡️</span>
+              <span className="text-xl">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â</span>
               Warranty, service & support
             </h2>
             <div className="mt-3 h-1 w-14 rounded-full" style={{ background: `${MAROON}B3` }} />
@@ -348,17 +348,17 @@ export default function ServicesPage() {
           <div className="mt-9 grid gap-8 lg:grid-cols-3">
             <div>
               <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-                <span>📄</span> Official warranty (clear scope)
+                <span>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¾</span> Official warranty (clear scope)
               </h3>
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                We keep warranty terms and service coverage clear—what’s included, what’s not, and how support is
+                We keep warranty terms and service coverage clearÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂwhatÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢s included, whatÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢s not, and how support is
                 provided. This helps clients avoid confusion during troubleshooting or replacement.
               </p>
             </div>
 
             <div>
               <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-                <span>🧪</span> Troubleshooting support
+                <span>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Âª</span> Troubleshooting support
               </h3>
               <p className="mt-3 text-sm leading-6 text-slate-600">
                 We support common issues like signal or power diagnostics, controller configuration, module or cabinet
@@ -369,7 +369,7 @@ export default function ServicesPage() {
 
             <div>
               <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-                <span>🔧</span> Maintenance & spare planning
+                <span>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â§</span> Maintenance & spare planning
               </h3>
               <p className="mt-3 text-sm leading-6 text-slate-600">
                 We help you plan practical spares (modules, PSU, receiving cards) and guide routine maintenance so the
@@ -469,7 +469,7 @@ export default function ServicesPage() {
               className="rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:shadow-md"
               style={{ background: MAROON }}
             >
-              Request Service →
+              Request Service -&gt;
             </Link>
             <Link
               href="/led-display/"

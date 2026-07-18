@@ -71,7 +71,7 @@ export default function LocationSection() {
           <div className="p-6">
             <div className="text-sm font-semibold text-slate-900">Need directions or a site visit?</div>
             <p className="mt-1 text-sm leading-7 text-slate-600">
-              Share your location, approximate screen size, indoor/outdoor type, and viewing distance—our team will
+              Share your location, approximate screen size, indoor/outdoor type, and viewing distanceÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âour team will
               suggest pixel pitch and a practical installation plan.
             </p>
 
@@ -90,7 +90,7 @@ export default function LocationSection() {
                 className="rounded-xl border bg-white px-5 py-3 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50"
                 style={{ borderColor: `${BRAND.maroon}22` }}
               >
-                Request Site Visit →
+                Request Site Visit -&gt;
               </Link>
             </div>
           </div>

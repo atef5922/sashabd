@@ -551,7 +551,7 @@ const conferencePriceTableProducts = conferenceSystemCatalog.slice(0, 8);
 const conferenceFaqs = [
   {
     q: "What is the price of a conference system in Bangladesh?",
-    a: "Conference system price in Bangladesh depends on room size, number of microphones, wired or wireless setup, control unit, DSP processor, speaker system, and installation requirements. Basic systems may start from around ৳80,000, while larger digital conference systems require custom quotation.",
+    a: "Conference system price in Bangladesh depends on room size, number of microphones, wired or wireless setup, control unit, DSP processor, speaker system, and installation requirements. Basic systems may start from around ÃƒÂ Ã‚Â§Ã‚Â³80,000, while larger digital conference systems require custom quotation.",
   },
   {
     q: "Which conference system is best for a boardroom?",
@@ -1295,7 +1295,7 @@ export default function ConferenceSystemPage() {
             className={ctaClass}
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >
-            Request Quotation
+            Request Quotation -&gt;
           </Link>
         </div>
 
@@ -1327,7 +1327,7 @@ export default function ConferenceSystemPage() {
                   className="inline-flex w-full items-center justify-center rounded-xl border px-4 py-3 text-sm font-extrabold transition hover:-translate-y-0.5 hover:bg-orange-50"
                   style={{ borderColor: `${BRAND.maroon}35`, color: BRAND.maroon }}
                 >
-                  Request Quotation
+                  Request Quotation -&gt;
                 </Link>
               </div>
             </article>
@@ -1721,7 +1721,7 @@ export default function ConferenceSystemPage() {
             className={ctaClass}
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >
-            Request Quotation
+            Request Quotation -&gt;
           </Link>
         </div>
 

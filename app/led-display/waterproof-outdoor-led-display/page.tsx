@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { outdoorCatalog, type ProductItem } from "../../../lib/productsCatalog";
@@ -528,7 +528,7 @@ export default function WaterproofOutdoorLedDisplayPage() {
                 chips={p.bestFor.slice(0, 3)}
                 accentColor="#FF6A00"
                 contactHref="/contact"
-                viewDetailsLabel="View details →"
+                viewDetailsLabel="View details ->"
               />
             );
           })}

@@ -246,7 +246,7 @@ export default async function ControllerDetailsPage(
               className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
-              Get a Quotation →
+              Get a Quotation -&gt;
             </Link>
             <a
               href={wa}
@@ -306,7 +306,7 @@ export default async function ControllerDetailsPage(
               className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
-              Request proposal &rarr;
+              Request proposal -&gt;
             </Link>
             <Link
               href="/led-display/accessories/controller/"
@@ -407,7 +407,7 @@ export default async function ControllerDetailsPage(
               chips={fp.bestFor.slice(0, 3)}
               accentColor={BRAND.maroon}
               contactHref="/contact"
-              viewDetailsLabel="View details →"
+              viewDetailsLabel="View details ->"
             />
           ))}
         </div>
@@ -453,7 +453,7 @@ export default async function ControllerDetailsPage(
             className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >
-            Contact for Setup Help →
+            Contact for Setup Help -&gt;
           </Link>
         </div>
       </section>

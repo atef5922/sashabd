@@ -461,7 +461,7 @@ export default function Header() {
                         onClick={handleNavClick(item.href)}
                         className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
                       >
-                         All Products ?
+                         All Products -&gt;
                       </Link>
                       <Link prefetch={false} href="/contact"
                         onClick={handleNavClick("/contact")}
@@ -579,7 +579,7 @@ export default function Header() {
                     }}
                     className="mt-2 block rounded-lg bg-slate-900 px-3 py-2 text-center text-sm font-semibold text-white"
                   >
-                     All Products ?
+                     All Products -&gt;
                   </Link>
                 </div>
               )}

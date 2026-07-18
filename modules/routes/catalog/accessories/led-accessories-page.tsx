@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "LED Accessories (Cables & Parts)",
     description:
-      "LED accessories for installation, maintenance, and event workflow—cables, connectors, fixing, mounting, and power distribution support.",
+      "LED accessories for installation, maintenance, and event workflowÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Âcables, connectors, fixing, mounting, and power distribution support.",
     url: "/led-display/accessories/led-accessories/",
     type: "website",
     images: [
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "LED Accessories (Cables & Parts)",
     description:
-      "LED accessories for installation and maintenance in Bangladesh—cables, connectors, fixing, mounting and event distribution items.",
+      "LED accessories for installation and maintenance in BangladeshÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Âcables, connectors, fixing, mounting and event distribution items.",
     images: [socialImageUrl("/images/placeholders/led-accessory.svg")],
   },
 };
@@ -112,7 +112,7 @@ export default function LedAccessoriesListingPage() {
             desktopClassName="mt-1"
           >
             <p className="w-full text-slate-600 leading-7 text-justify">
-              These are practical LED accessories used during installation, servicing, and event operations—ribbon/data
+              These are practical LED accessories used during installation, servicing, and event operationsÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Âribbon/data
               cables, IDC connectors, module fixing hardware, mounting parts, transport protection, and temporary power
               distribution. The right accessory choice reduces downtime, makes maintenance easier, and helps keep your LED
               system stable in real-world conditions.
@@ -125,7 +125,7 @@ export default function LedAccessoriesListingPage() {
               className="inline-flex min-h-9 items-center justify-center rounded-md px-2 py-2 text-center text-[9.5px] font-extrabold leading-[1.1] text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
-              Request a Quotation &rarr;
+              Request a Quotation -&gt;
             </Link>
             <a
               href={wa}
@@ -177,7 +177,7 @@ export default function LedAccessoriesListingPage() {
               accentColor={BRAND.maroon}
               contactHref="/contact"
               compactMobile
-              viewDetailsLabel="View details →"
+              viewDetailsLabel="View details ->"
             />
           ))}
         </ResponsiveProductCarousel>

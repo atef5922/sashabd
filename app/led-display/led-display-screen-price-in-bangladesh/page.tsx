@@ -516,7 +516,7 @@ export function PriceGuideBangladeshContent() {
                 chips={p.bestFor?.length ? p.bestFor.slice(0, 3) : [category]}
                 accentColor="#FF6A00"
                 contactHref="/contact"
-                viewDetailsLabel="View details →"
+                viewDetailsLabel="View details ->"
               />
             );
           })}
@@ -552,7 +552,7 @@ export function PriceGuideBangladeshContent() {
                 chips={p.bestFor?.length ? p.bestFor.slice(0, 3) : [category]}
                 accentColor="#FF6A00"
                 contactHref="/contact"
-                viewDetailsLabel="View details →"
+                viewDetailsLabel="View details ->"
               />
             );
           })}

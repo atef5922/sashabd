@@ -268,13 +268,13 @@ export function IndoorLedVideoWallBangladeshContent() {
             href="/contact"
             className="inline-flex items-center justify-center rounded-xl bg-[#FF6A00] px-6 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#E45700] hover:shadow-md"
           >
-            Request a Free Quotation →
+            Request a Free Quotation -&gt;
           </Link>
           <Link
             href="/led-display/"
             className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-bold text-slate-900 shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-md"
           >
-            Browse LED display categories →
+            Browse LED display categories -&gt;
           </Link>
         </div>
       </section>
@@ -335,9 +335,9 @@ export function IndoorLedVideoWallBangladeshContent() {
           and charts remain readable.
         </p>
         <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-600">
-          <li>- Close viewing (boardrooms): prioritize P1.2–P1.8.</li>
-          <li>- Medium viewing (lobbies/showrooms): P1.8–P2.5 performs well.</li>
-          <li>- Longer viewing (large halls): P2.5–P4 remains effective and cost-efficient.</li>
+          <li>- Close viewing (boardrooms): prioritize P1.2ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“P1.8.</li>
+          <li>- Medium viewing (lobbies/showrooms): P1.8ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“P2.5 performs well.</li>
+          <li>- Longer viewing (large halls): P2.5ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“P4 remains effective and cost-efficient.</li>
         </ul>
       </section>
 

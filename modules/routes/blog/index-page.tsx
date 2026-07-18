@@ -132,9 +132,9 @@ export default function BlogAndCaseStudyPage() {
                 <div className="mt-4 flex items-center justify-between">
                   <span className="text-xs font-semibold text-slate-500">Updated {formatDate(item.updatedAt)}</span>
                   <span className="inline-flex items-center gap-2 text-sm font-bold text-[#FF6A00]">
-                    Read article
+                    Read article -&gt;
                     <span aria-hidden className="transition group-hover:translate-x-1">
-                      →
+                      â†’
                     </span>
                   </span>
                 </div>

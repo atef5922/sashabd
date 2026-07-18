@@ -49,7 +49,7 @@ const faqs = [
   },
   {
     q: "How many power supplies are needed per cabinet?",
-    a: "Cabinets often use multiple PSUs based on total current demand and wiring layout. The exact quantity depends on module current draw and the cabinet’s power distribution design.",
+    a: "Cabinets often use multiple PSUs based on total current demand and wiring layout. The exact quantity depends on module current draw and the cabinetÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢s power distribution design.",
   },
   {
     q: "Do outdoor LED projects need different PSU considerations?",
@@ -136,7 +136,7 @@ export default function PowerSupplyListingPage() {
               accentColor={BRAND.maroon}
               contactHref="/contact"
               compactMobile
-              viewDetailsLabel="View details →"
+              viewDetailsLabel="View details ->"
             />
           ))}
         </ResponsiveProductCarousel>

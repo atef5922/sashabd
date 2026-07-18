@@ -347,7 +347,7 @@ export default function DisplayProductDetailPage({
               className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
-              Get a Quotation →
+              Get a Quotation -&gt;
             </Link>
             <a
               href={wa}
@@ -373,7 +373,7 @@ export default function DisplayProductDetailPage({
                 className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
-                Get a Quotation →
+                Get a Quotation -&gt;
               </Link>
               <a
                 href={wa}
@@ -550,7 +550,7 @@ export default function DisplayProductDetailPage({
                     className="text-sm font-bold whitespace-nowrap hover:underline group-hover:underline"
                     style={{ color: BRAND.maroon }}
                   >
-                    View details →
+                    View details -&gt;
                   </Link>
                 </div>
               </div>

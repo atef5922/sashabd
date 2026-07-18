@@ -839,7 +839,7 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
                     <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">{item.excerpt}</p>
                     <div className="mt-3 flex items-center justify-between text-xs font-semibold text-slate-500">
                       <span>{item.readTime}</span>
-                      <span className="text-[#FF6A00] transition group-hover:translate-x-0.5">Read article →</span>
+                      <span className="text-[#FF6A00] transition group-hover:translate-x-0.5">Read article -&gt;</span>
                     </div>
                   </div>
                 </Link>

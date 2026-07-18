@@ -50,12 +50,12 @@ const FAQS: { q: string; a: string }[] = [
 export const metadata: Metadata = {
   title: "Digital Podium Price in Bangladesh",
   description:
-    "Digital podium (smart podium) in Bangladesh for lecture halls, training rooms and conference venues—quotation, BOQ support and installation planning.",
+    "Digital podium (smart podium) in Bangladesh for lecture halls, training rooms and conference venuesÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âquotation, BOQ support and installation planning.",
   alternates: { canonical: "/digital-podium/" },
   openGraph: {
     title: "Digital Podium Price in Bangladesh | Smart Podium & Installation",
     description:
-      "Supply and installation of digital podiums in Bangladesh for smart classrooms, universities and corporate training—touch control, connectivity planning and after-sales support.",
+      "Supply and installation of digital podiums in Bangladesh for smart classrooms, universities and corporate trainingÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âtouch control, connectivity planning and after-sales support.",
     url: "/digital-podium",
     type: "website",
     images: [
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Digital Podium Price in Bangladesh | Smart Podium & Installation",
     description:
-      "Digital podium in Bangladesh for smart classrooms and conference venues—quotation, BOQ support and installation planning.",
+      "Digital podium in Bangladesh for smart classrooms and conference venuesÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âquotation, BOQ support and installation planning.",
     images: [socialImageUrl("/images/podium/podium-hero.webp")],
   },
 };
@@ -162,7 +162,7 @@ const specExplainers = [
   },
   {
     k: "Screen size & viewing comfort",
-    v: "Larger rooms benefit from bigger touch displays and better visibility so the presenter doesn’t struggle on stage.",
+    v: "Larger rooms benefit from bigger touch displays and better visibility so the presenter doesnÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢t struggle on stage.",
   },
   {
     k: "Connectivity (HDMI / USB / LAN)",
@@ -309,7 +309,7 @@ export default function DigitalPodiumPage() {
                 className="inline-flex min-h-9 items-center justify-center rounded-md px-2.5 py-2 text-[10px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-lg md:rounded-xl md:px-6 md:py-3.5 md:text-[15px]"
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
-                Request a Quotation
+                Request a Quotation -&gt;
               </Link>
             </div>
 
@@ -344,7 +344,7 @@ export default function DigitalPodiumPage() {
               Digital Podium Models &amp; Price Range in Bangladesh
             </h2>
             <p className="mt-2 hidden text-slate-600 leading-7 text-justify md:block">
-              Choose a model below to see specifications, buyer guidance and integration notes—written in our own words
+              Choose a model below to see specifications, buyer guidance and integration notesÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âwritten in our own words
               and aligned with real procurement needs.
             </p>
           </div>
@@ -390,7 +390,7 @@ export default function DigitalPodiumPage() {
                 accentColor={BRAND.maroon}
                 contactHref="/contact"
                 compactMobile
-                viewDetailsLabel="View details →"
+                viewDetailsLabel="View details ->"
               />
             );
           })}
@@ -406,7 +406,7 @@ export default function DigitalPodiumPage() {
             <p className="mt-3 text-slate-600 leading-7 text-justify">
               In most venues, presentation issues happen because devices, cables and audio controls are scattered. A
               digital podium simplifies that workflow. Instead of juggling a laptop, remote clicker and extra adapters,
-              you operate the session from one stable lectern—while routing video and audio to the room system in a
+              you operate the session from one stable lecternÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âwhile routing video and audio to the room system in a
               clean, repeatable way.
             </p>
 
@@ -463,7 +463,7 @@ export default function DigitalPodiumPage() {
                   className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                   style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
                 >
-                  Request a Quotation
+                  Request a Quotation -&gt;
                 </Link>
               </div>
             </div>
@@ -481,7 +481,7 @@ export default function DigitalPodiumPage() {
                 <div>
                   <div className="text-sm font-extrabold text-slate-900">BOQ & tender support</div>
                   <p className="mt-1 text-sm text-slate-600 leading-7">
-                    Practical specifications, compliance mapping and selection guidance—so procurement teams can compare
+                    Practical specifications, compliance mapping and selection guidanceÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âso procurement teams can compare
                     correctly and reduce mismatch risk.
                   </p>
                 </div>
@@ -544,7 +544,7 @@ export default function DigitalPodiumPage() {
             <div className="max-w-2xl">
               <div className="text-sm font-extrabold text-slate-900">Need the right setup recommendation?</div>
               <p className="mt-2 text-sm text-slate-600 leading-7">
-                Share your room type, audience size, and the display you want to connect. We’ll suggest a practical
+                Share your room type, audience size, and the display you want to connect. WeÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ll suggest a practical
                 digital podium configuration with BOQ clarity and installation planning.
               </p>
             </div>
@@ -554,7 +554,7 @@ export default function DigitalPodiumPage() {
                 className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
-                Request a Quotation
+                Request a Quotation -&gt;
               </Link>
               <a
                 href={wa}
@@ -580,8 +580,8 @@ export default function DigitalPodiumPage() {
               Digital podium buying guide (Bangladesh)
             </h2>
             <p className="mt-2 text-slate-600 leading-7">
-              If you’re comparing digital podium price in Bangladesh, these steps help you select the right setup for
-              your room—without over‑specifying or missing key integration details.
+              If youÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢re comparing digital podium price in Bangladesh, these steps help you select the right setup for
+              your roomÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âwithout overÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Ëœspecifying or missing key integration details.
             </p>
           </div>
           <div className="mt-2 flex flex-wrap gap-2 md:mt-0">
@@ -624,8 +624,8 @@ export default function DigitalPodiumPage() {
       >
         <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Key specifications explained</h2>
         <p className="mt-2 text-slate-600 leading-7">
-          A world-class smart podium setup is less about a long spec sheet—and more about choosing the specifications
-          that match daily use. Here’s what matters most for classrooms, lecture halls and conference venues.
+          A world-class smart podium setup is less about a long spec sheetÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âand more about choosing the specifications
+          that match daily use. HereÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢s what matters most for classrooms, lecture halls and conference venues.
         </p>
 
         <div className="mt-6 grid items-stretch gap-4 md:grid-cols-2">
@@ -651,7 +651,7 @@ export default function DigitalPodiumPage() {
           <div className="lg:col-span-7">
             <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Installation & integration workflow</h2>
             <p className="mt-2 text-slate-600 leading-7">
-              A digital podium is a room system—so reliable results come from planning the display, audio, cabling and
+              A digital podium is a room systemÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âso reliable results come from planning the display, audio, cabling and
               presenter workflow together.
             </p>
 
@@ -681,13 +681,13 @@ export default function DigitalPodiumPage() {
             <div className="rounded-3xl border bg-white p-6" style={{ borderColor: `${BRAND.maroon}12` }}>
               <div className="text-sm font-extrabold text-slate-900">Fast quotation checklist</div>
               <p className="mt-2 text-sm text-slate-600 leading-7">
-                Share these items and we’ll recommend a practical configuration with BOQ clarity and installation notes.
+                Share these items and weÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ll recommend a practical configuration with BOQ clarity and installation notes.
               </p>
               <ul className="mt-4 space-y-2 text-sm text-slate-700">
                 {buyerChecklist.map((t) => (
                   <li key={t} className="flex gap-2">
                     <span className="shrink-0 font-extrabold" style={{ color: BRAND.maroon }}>
-                      •
+                      ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢
                     </span>
                     <span className="leading-7">{t}</span>
                   </li>
@@ -699,7 +699,7 @@ export default function DigitalPodiumPage() {
                   className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                   style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
                 >
-                  Request a Quotation
+                  Request a Quotation -&gt;
                 </Link>
                 <a
                   href={wa}
@@ -713,16 +713,16 @@ export default function DigitalPodiumPage() {
             </div>
 
             <div className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}12` }}>
-              <div className="text-sm font-extrabold text-slate-900">What you’ll receive from us</div>
+              <div className="text-sm font-extrabold text-slate-900">What youÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ll receive from us</div>
               <p className="mt-2 text-sm text-slate-600 leading-7">
-                The goal is a clean, reliable podium setup that works daily—so we focus on integration details, not just
+                The goal is a clean, reliable podium setup that works dailyÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âso we focus on integration details, not just
                 the hardware.
               </p>
               <ul className="mt-4 space-y-2 text-sm text-slate-700">
                 {installDeliverables.map((t) => (
                   <li key={t} className="flex gap-2">
                     <span className="shrink-0 font-extrabold" style={{ color: BRAND.maroon }}>
-                      •
+                      ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢
                     </span>
                     <span className="leading-7">{t}</span>
                   </li>
@@ -741,7 +741,7 @@ export default function DigitalPodiumPage() {
                   className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                   style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
                 >
-                  Request a Quotation
+                  Request a Quotation -&gt;
                 </Link>
               </div>
             </div>
@@ -768,7 +768,7 @@ export default function DigitalPodiumPage() {
                 {procurementNotes.map((t) => (
                   <li key={t} className="flex gap-2">
                     <span className="shrink-0 font-extrabold" style={{ color: BRAND.maroon }}>
-                      •
+                      ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢
                     </span>
                     <span className="leading-7">{t}</span>
                   </li>
@@ -782,14 +782,14 @@ export default function DigitalPodiumPage() {
               <div className="text-sm font-extrabold text-slate-900">Common mistakes to avoid</div>
               <ul className="mt-4 space-y-2 text-sm text-slate-700">
                 {[
-                  "Only comparing display size—without confirming touch quality, connectivity and integration scope.",
+                  "Only comparing display sizeÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âwithout confirming touch quality, connectivity and integration scope.",
                   "Skipping cable distance and routing details (leading to messy and unsafe installations).",
                   "Not defining audio workflow (mic types, PA routing, and recording/streaming requirements).",
                   "Unclear PC/OS requirement, causing mismatch in software workflow for teachers/presenters.",
                 ].map((t) => (
                   <li key={t} className="flex gap-2">
                     <span className="shrink-0 font-extrabold" style={{ color: BRAND.maroon }}>
-                      •
+                      ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢
                     </span>
                     <span className="leading-7">{t}</span>
                   </li>
@@ -799,7 +799,7 @@ export default function DigitalPodiumPage() {
               <div className="mt-5 rounded-2xl bg-slate-50 p-5">
                 <div className="text-sm font-extrabold text-slate-900">Need BOQ clarity for a tender?</div>
                 <p className="mt-2 text-sm text-slate-600 leading-7">
-                  Share your BOQ/drawings and venue type. We’ll recommend a configuration and help define practical,
+                  Share your BOQ/drawings and venue type. WeÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ll recommend a configuration and help define practical,
                   comparable specifications.
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
@@ -839,7 +839,7 @@ export default function DigitalPodiumPage() {
               className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
-              Request a Quotation
+              Request a Quotation -&gt;
             </Link>
             <a
               href={wa}

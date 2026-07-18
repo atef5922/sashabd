@@ -119,7 +119,7 @@ export default function PaSystemProductDetailPage({
               className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
-              Get a Quotation →
+              Get a Quotation -&gt;
             </Link>
             <a
               href={wa}
@@ -148,7 +148,7 @@ export default function PaSystemProductDetailPage({
                 className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
-                Get a Quotation →
+                Get a Quotation -&gt;
               </Link>
               <a
                 href={wa}

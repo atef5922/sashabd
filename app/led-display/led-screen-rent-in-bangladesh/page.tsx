@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { permanentRedirect } from "next/navigation";
 import { rentalCatalog, type ProductItem } from "../../../lib/productsCatalog";
@@ -505,7 +505,7 @@ export function RentGuideContent() {
                 chips={p.bestFor.slice(0, 3)}
                 accentColor="#FF6A00"
                 contactHref="/contact"
-                viewDetailsLabel="View details →"
+                viewDetailsLabel="View details ->"
               />
             );
           })}
