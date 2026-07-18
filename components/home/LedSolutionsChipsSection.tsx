@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import HorizontalDragScroll from "@/components/common/HorizontalDragScroll";
 import Link from "next/link";
 
@@ -19,6 +22,7 @@ function ChevronRight({ className = "h-4 w-4" }: { className?: string }) {
 }
 
 export default function LedSolutionsChipsSection() {
+  const [mobileExpanded, setMobileExpanded] = useState(false);
   const chips: ChipLink[] = [
     { href: "/led-display/indoor-led/", label: "Indoor LED Display" },
     { href: "/led-display/outdoor/", label: "Outdoor LED Display" },
@@ -37,18 +41,45 @@ export default function LedSolutionsChipsSection() {
   return (
     <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(248,250,252,0.82)_100%)] py-5 md:py-6">
       <div className="mx-auto w-full max-w-7xl px-4 py-1 md:px-6">
-        <h2 className="pb-0 text-center text-[20px] font-extrabold tracking-tight text-slate-900 after:hidden md:text-[24px]">
+        <h2 className="mx-auto max-w-5xl pb-0 text-center text-[19px] font-extrabold leading-tight tracking-tight text-slate-900 after:hidden md:text-[24px]">
           Commercial Display, Audio & Smart Technology Solutions in Bangladesh
         </h2>
-        <p className="mx-auto mt-1.5 max-w-5xl text-center text-[12.5px] font-medium leading-6 text-slate-600 md:text-[13.5px]">
-          Explore our <strong className="font-extrabold text-slate-800">LED Displays</strong>,{" "}
-          <strong className="font-extrabold text-slate-800">Rental LED Screens</strong>,{" "}
-          <strong className="font-extrabold text-slate-800">PA Systems</strong>,{" "}
-          <strong className="font-extrabold text-slate-800">Interactive Flat Panels</strong>,{" "}
-          <strong className="font-extrabold text-slate-800">Digital Podiums</strong>,{" "}
-          <strong className="font-extrabold text-slate-800">Turnstile Gates</strong>
-          , and more with expert guidance, detailed specifications, and BOQ-ready quotations for projects across Bangladesh.
-        </p>
+        <div className="mx-auto mt-1.5 max-w-5xl text-center text-[12.5px] font-medium leading-6 text-slate-600 md:text-[13.5px]">
+          <p className="hidden md:block">
+            Explore our <strong className="font-extrabold text-slate-800">LED Displays</strong>,{" "}
+            <strong className="font-extrabold text-slate-800">Rental LED Screens</strong>,{" "}
+            <strong className="font-extrabold text-slate-800">PA Systems</strong>,{" "}
+            <strong className="font-extrabold text-slate-800">Interactive Flat Panels</strong>,{" "}
+            <strong className="font-extrabold text-slate-800">Digital Podiums</strong>,{" "}
+            <strong className="font-extrabold text-slate-800">Turnstile Gates</strong>
+            , and more with expert guidance, detailed specifications, and BOQ-ready quotations for projects across Bangladesh.
+          </p>
+
+          <div className="md:hidden">
+            {mobileExpanded ? (
+              <p className="mx-auto text-[12.5px] leading-5 text-slate-600">
+                Explore our <strong className="font-extrabold text-slate-800">LED Displays</strong>,{" "}
+                <strong className="font-extrabold text-slate-800">Rental LED Screens</strong>,{" "}
+                <strong className="font-extrabold text-slate-800">PA Systems</strong>,{" "}
+                <strong className="font-extrabold text-slate-800">Interactive Flat Panels</strong>,{" "}
+                <strong className="font-extrabold text-slate-800">Digital Podiums</strong>,{" "}
+                <strong className="font-extrabold text-slate-800">Turnstile Gates</strong>, and more with expert guidance,
+                detailed specifications, and BOQ-ready quotations for projects across Bangladesh.
+              </p>
+            ) : (
+              <p className="mx-auto max-w-full truncate text-[12.5px] leading-5">
+                Explore our LED Displays, Rental LED Screens, PA Systems, Interactive Flat Panels, Digital Podiums...
+              </p>
+            )}
+            <button
+              type="button"
+              onClick={() => setMobileExpanded((prev) => !prev)}
+              className="mt-1 inline-flex items-center justify-center text-[12px] font-semibold text-[#F56605]"
+            >
+              {mobileExpanded ? "Show less" : "Learn more"}
+            </button>
+          </div>
+        </div>
 
         <nav aria-label="Product category quick links" className="mt-3">
           <HorizontalDragScroll
