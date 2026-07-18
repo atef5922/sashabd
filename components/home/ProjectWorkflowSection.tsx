@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 
 type WorkflowStep = {
@@ -74,6 +77,8 @@ function ArrowRight({ className = "h-4 w-4" }: { className?: string }) {
 }
 
 export default function ProjectWorkflowSection() {
+  const [mobileExpanded, setMobileExpanded] = useState(false);
+
   return (
     <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[linear-gradient(180deg,rgba(248,250,252,0.94)_0%,rgba(255,255,255,1)_20%,rgba(248,250,252,0.96)_100%)] py-6 md:py-7">
       <div className="mx-auto w-full max-w-7xl px-4 md:px-6">
@@ -81,12 +86,34 @@ export default function ProjectWorkflowSection() {
           <span className="inline-flex items-center rounded-full border border-sky-100 bg-white px-4 py-2 text-[12px] font-semibold text-sky-700 shadow-[0_8px_20px_rgba(15,23,42,0.05)]">
             Our Project Workflow
           </span>
-          <h2 className="mt-3 pb-0 text-[28px] font-extrabold tracking-tight text-slate-900 after:hidden md:text-[40px]">
+          <h2 className="mt-3 pb-0 text-[25px] font-extrabold leading-tight tracking-tight text-slate-900 after:hidden md:text-[40px]">
             How Sasha Corporation handles project workflow in Bangladesh
           </h2>
-          <p className="mt-2 text-sm leading-7 text-slate-600 md:text-[15px]">
-            From consultation and engineering to installation, training and support, our workflow helps LED display, PA system, conference and access-control projects move forward with clear planning and reliable execution.
-          </p>
+          <div className="mt-2 text-sm leading-7 text-slate-600 md:text-[15px]">
+            <p className="hidden md:block">
+              From consultation and engineering to installation, training and support, our workflow helps LED display, PA system,
+              conference and access-control projects move forward with clear planning and reliable execution.
+            </p>
+            <div className="md:hidden">
+              {mobileExpanded ? (
+                <p className="text-[13px] leading-5 text-slate-600">
+                  From consultation and engineering to installation, training and support, our workflow helps LED display,
+                  PA system, conference and access-control projects move forward with clear planning and reliable execution.
+                </p>
+              ) : (
+                <p className="mx-auto max-w-full truncate text-[13px] leading-5">
+                  From consultation and engineering to installation, training and support, our workflow helps...
+                </p>
+              )}
+              <button
+                type="button"
+                onClick={() => setMobileExpanded((prev) => !prev)}
+                className="mt-1 inline-flex items-center justify-center text-[12px] font-semibold text-[#F56605]"
+              >
+                {mobileExpanded ? "Show less" : "Learn more"}
+              </button>
+            </div>
+          </div>
         </div>
 
         <div className="relative mt-5 hidden lg:block">

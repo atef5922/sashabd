@@ -1,19 +1,45 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site";
 
 export default function ProjectProposalCtaSection() {
+  const [mobileExpanded, setMobileExpanded] = useState(false);
   const whatsappHref = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
 
   return (
     <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen border-t border-slate-200/80 bg-[linear-gradient(180deg,rgba(248,250,252,0.88)_0%,rgba(255,255,255,1)_100%)] py-5 md:py-6">
       <div className="mx-auto w-full max-w-7xl px-4 md:px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="pb-0 text-[24px] font-extrabold tracking-tight text-slate-900 after:hidden md:text-[34px]">
+          <h2 className="pb-0 text-[22px] font-extrabold leading-tight tracking-tight text-slate-900 after:hidden md:text-[34px]">
             Planning a new LED screen, audio or access project?
           </h2>
-          <p className="mt-2 text-[13px] leading-7 text-slate-600 md:text-[15px]">
-            Share your BOQ, screen size target or project concept and we will recommend a practical solution path covering display type, pixel pitch, controller, power and installation direction.
-          </p>
+          <div className="mt-2 text-[13px] leading-7 text-slate-600 md:text-[15px]">
+            <p className="hidden md:block">
+              Share your BOQ, screen size target or project concept and we will recommend a practical solution path covering
+              display type, pixel pitch, controller, power and installation direction.
+            </p>
+            <div className="md:hidden">
+              {mobileExpanded ? (
+                <p className="text-[13px] leading-5 text-slate-600">
+                  Share your BOQ, screen size target or project concept and we will recommend a practical solution path
+                  covering display type, pixel pitch, controller, power and installation direction.
+                </p>
+              ) : (
+                <p className="mx-auto max-w-full truncate text-[13px] leading-5">
+                  Share your BOQ, screen size target or project concept and we will recommend a practical solution path...
+                </p>
+              )}
+              <button
+                type="button"
+                onClick={() => setMobileExpanded((prev) => !prev)}
+                className="mt-1 inline-flex items-center justify-center text-[12px] font-semibold text-[#F56605]"
+              >
+                {mobileExpanded ? "Show less" : "Learn more"}
+              </button>
+            </div>
+          </div>
 
           <div className="mt-4 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
