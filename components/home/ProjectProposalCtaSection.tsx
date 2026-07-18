@@ -41,11 +41,11 @@ export default function ProjectProposalCtaSection() {
             </div>
           </div>
 
-          <div className="mt-4 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <div className="mt-4 grid grid-cols-2 gap-2 sm:flex sm:flex-row sm:items-center sm:justify-center sm:gap-3">
             <Link
               href="/contact/"
               prefetch={false}
-              className="inline-flex min-w-[252px] items-center justify-center rounded-[16px] bg-[linear-gradient(135deg,#0f7d99,#0f6a90)] px-6 py-3.5 text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(14,116,144,0.22)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,116,144,0.26)] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+              className="inline-flex min-h-[2.85rem] w-full min-w-0 items-center justify-center rounded-[12px] bg-[linear-gradient(135deg,#0f7d99,#0f6a90)] px-2.5 py-2.5 text-center text-[11px] font-extrabold leading-[1.2] text-white shadow-[0_10px_24px_rgba(14,116,144,0.20)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,116,144,0.26)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:min-w-[252px] sm:rounded-[16px] sm:px-6 sm:py-3.5 sm:text-sm"
             >
               Get a custom project proposal
             </Link>
@@ -54,7 +54,7 @@ export default function ProjectProposalCtaSection() {
               href={whatsappHref}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex min-w-[252px] items-center justify-center rounded-[16px] border border-slate-300 bg-white px-6 py-3.5 text-sm font-extrabold text-slate-800 transition hover:-translate-y-0.5 hover:border-slate-400 hover:bg-slate-50 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+              className="inline-flex min-h-[2.85rem] w-full min-w-0 items-center justify-center rounded-[12px] border border-slate-300 bg-white px-2.5 py-2.5 text-center text-[11px] font-extrabold leading-[1.2] text-slate-800 transition hover:-translate-y-0.5 hover:border-slate-400 hover:bg-slate-50 motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:min-w-[252px] sm:rounded-[16px] sm:px-6 sm:py-3.5 sm:text-sm"
             >
               WhatsApp our engineering team
             </a>
