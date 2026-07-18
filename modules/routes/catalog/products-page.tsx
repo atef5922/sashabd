@@ -1951,10 +1951,10 @@ function ProductsPageContent({
 	                <div className="mt-6 grid gap-4 lg:grid-cols-[1.4fr_.8fr]">
 	                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
 	                    <h3 className="text-lg font-extrabold text-slate-900">Signal Flow</h3>
-	                    <div className="mt-5 grid grid-cols-2 gap-2.5 sm:gap-3 lg:grid-cols-4">
+	                    <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
 	                      {ledDisplaySignalFlow.map((step, index) => (
 	                        <div key={step} className="flex items-stretch gap-3">
-	                          <div className="flex min-h-[58px] flex-1 items-center justify-center rounded-xl border border-slate-200 bg-white px-2.5 py-3 text-center text-[12px] font-bold leading-5 text-slate-800 shadow-sm md:min-h-16 md:rounded-2xl md:px-3 md:py-4 md:text-sm md:leading-6">
+	                          <div className="flex min-h-16 flex-1 items-center justify-center rounded-2xl border border-slate-200 bg-white px-3 py-4 text-center text-sm font-bold leading-6 text-slate-800 shadow-sm">
 	                            {step}
 	                          </div>
 	                          {index < ledDisplaySignalFlow.length - 1 ? (
@@ -1972,7 +1972,7 @@ function ProductsPageContent({
 	                    <div className="mt-5 grid gap-3">
 	                      {ledDisplayPowerFlow.map((step, index) => (
 	                        <div key={step} className="flex items-center gap-3">
-	                          <div className="flex min-h-[52px] flex-1 items-center justify-center rounded-xl border border-slate-200 bg-white px-2.5 py-2.5 text-center text-[12px] font-bold leading-5 text-slate-800 shadow-sm md:min-h-14 md:rounded-2xl md:px-3 md:py-3 md:text-sm md:leading-6">
+	                          <div className="flex min-h-14 flex-1 items-center justify-center rounded-2xl border border-slate-200 bg-white px-3 py-3 text-center text-sm font-bold leading-6 text-slate-800 shadow-sm">
 	                            {step}
 	                          </div>
 	                          {index < ledDisplayPowerFlow.length - 1 ? (
@@ -1984,23 +1984,13 @@ function ProductsPageContent({
 	                  </div>
 	                </div>
 
-	                <div className="mt-5 rounded-2xl border border-slate-200 bg-white p-5">
-                    <MobileIntroText
-                      teaser="Every component inside an LED display system performs a dedicated function. The controller processes video signals, the receiving card distributes display data, the SMPS supplies stable power, while FRC and CAT6 cables ensure reliable communication between all components."
-                      teaserLines={2}
-                      teaserClassName="w-full"
-                      expandedClassName="text-sm leading-7 text-slate-600"
-                      desktopClassName="text-sm leading-7 text-slate-600"
-                    >
-                      <>
-                        Every component inside an LED display system performs a dedicated function. The controller processes
-                        video signals, the receiving card distributes display data, the SMPS supplies stable power, while FRC
-                        and CAT6 cables ensure reliable communication between all components. Together they deliver smooth
-                        video playback, vibrant colors, stable operation, and long-term performance for both indoor and
-                        outdoor LED display installations.
-                      </>
-                    </MobileIntroText>
-                  </div>
+	                <p className="mt-5 rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-7 text-slate-600">
+	                  Every component inside an LED display system performs a dedicated function. The controller processes
+	                  video signals, the receiving card distributes display data, the SMPS supplies stable power, while FRC
+	                  and CAT6 cables ensure reliable communication between all components. Together they deliver smooth
+	                  video playback, vibrant colors, stable operation, and long-term performance for both indoor and
+	                  outdoor LED display installations.
+	                </p>
 	              </div>
 	            </div>
 	          </section>
@@ -2121,19 +2111,11 @@ function ProductsPageContent({
             <div className="mt-8 grid gap-6 md:grid-cols-2">
               <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
                 <div className="text-lg font-semibold text-slate-900">End-to-End LED Screen Implementation</div>
-                <MobileIntroText
-                  teaser="We help clients select the correct LED configuration based on viewing distance, environment, content type, and operational requirements."
-                  className="mt-2"
-                  teaserClassName="w-full"
-                  expandedClassName="text-sm leading-7 text-slate-600"
-                  desktopClassName="text-sm leading-7 text-slate-600"
-                >
-                  <>
-                    We help clients select the correct LED configuration based on viewing distance, environment, content type, and operational
-                    requirements. Each project is planned with attention to power stability, structure safety, and long-term usability. Pricing is
-                    specification-driven and clearly explained-covering modules, cabinets, control systems, structure, installation and calibration.
-                  </>
-                </MobileIntroText>
+                <p className="mt-2 text-sm leading-7 text-slate-600">
+                  We help clients select the correct LED configuration based on viewing distance, environment, content type, and operational
+                  requirements. Each project is planned with attention to power stability, structure safety, and long-term usability. Pricing is
+                  specification-driven and clearly explained-covering modules, cabinets, control systems, structure, installation and calibration.
+                </p>
 
                 <ul className="mt-4 space-y-2 text-sm text-slate-700">
                   {ledEndToEndBullets.map((bullet) => (
@@ -2239,19 +2221,11 @@ function ProductsPageContent({
             <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               <article className="rounded-2xl border border-slate-200 bg-white p-5">
                 <h3 className="text-lg font-semibold text-slate-900">SMD LED</h3>
-                <MobileIntroText
-                  teaser="SMD (Surface-Mounted Device) is the most common LED display technology where red, green, and blue LEDs are integrated into a single package."
-                  className="mt-2"
-                  teaserClassName="w-full"
-                  expandedClassName="text-sm leading-7 text-slate-600"
-                  desktopClassName="text-sm leading-7 text-slate-600"
-                >
-                  <>
-                    SMD (Surface-Mounted Device) is the most common LED display technology where red, green, and blue
-                    LEDs are integrated into a single package. It offers vibrant colors, wide viewing angles, and excellent
-                    image quality for indoor and commercial LED displays.
-                  </>
-                </MobileIntroText>
+                <p className="mt-2 text-sm leading-7 text-slate-600">
+                  SMD (Surface-Mounted Device) is the most common LED display technology where red, green, and blue
+                  LEDs are integrated into a single package. It offers vibrant colors, wide viewing angles, and excellent
+                  image quality for indoor and commercial LED displays.
+                </p>
                 <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
                   <li>Good viewing angle and color uniformity for indoor and semi-outdoor usage.</li>
                   <li>Popular for retail branding, conference rooms, showrooms, and stage backdrops.</li>
@@ -2262,19 +2236,11 @@ function ProductsPageContent({
 
               <article className="rounded-2xl border border-slate-200 bg-white p-5">
                 <h3 className="text-lg font-semibold text-slate-900">GOB LED</h3>
-                <MobileIntroText
-                  teaser="GOB (Glue-on-Board) is an LED technology that adds a transparent protective layer over the LED surface."
-                  className="mt-2"
-                  teaserClassName="w-full"
-                  expandedClassName="text-sm leading-7 text-slate-600"
-                  desktopClassName="text-sm leading-7 text-slate-600"
-                >
-                  <>
-                    GOB (Glue-on-Board) is an LED technology that adds a transparent protective layer over the LED surface.
-                    This improves resistance to dust, moisture, and impact, making it ideal for durable indoor LED display
-                    applications.
-                  </>
-                </MobileIntroText>
+                <p className="mt-2 text-sm leading-7 text-slate-600">
+                  GOB (Glue-on-Board) is an LED technology that adds a transparent protective layer over the LED surface.
+                  This improves resistance to dust, moisture, and impact, making it ideal for durable indoor LED display
+                  applications.
+                </p>
                 <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
                   <li>Better physical protection compared with standard exposed LED module surfaces.</li>
                   <li>Useful for schools, shopping malls, transport hubs, and high-traffic indoor zones.</li>
@@ -2285,19 +2251,11 @@ function ProductsPageContent({
 
               <article className="rounded-2xl border border-slate-200 bg-white p-5">
                 <h3 className="text-lg font-semibold text-slate-900">COB LED</h3>
-                <MobileIntroText
-                  teaser="COB (Chip-on-Board) mounts LED chips directly onto the circuit board, enabling finer pixel pitch and better visual performance."
-                  className="mt-2"
-                  teaserClassName="w-full"
-                  expandedClassName="text-sm leading-7 text-slate-600"
-                  desktopClassName="text-sm leading-7 text-slate-600"
-                >
-                  <>
-                    COB (Chip-on-Board) mounts LED chips directly onto the circuit board, enabling finer pixel pitch and
-                    better visual performance. It is widely used in premium indoor LED video walls, control rooms, and
-                    corporate display solutions.
-                  </>
-                </MobileIntroText>
+                <p className="mt-2 text-sm leading-7 text-slate-600">
+                  COB (Chip-on-Board) mounts LED chips directly onto the circuit board, enabling finer pixel pitch and
+                  better visual performance. It is widely used in premium indoor LED video walls, control rooms, and
+                  corporate display solutions.
+                </p>
                 <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
                   <li>Suitable for fine-pitch indoor LED wall requirements and close-distance viewing.</li>
                   <li>Offers strong black level performance and improved perceived contrast in many setups.</li>
@@ -2308,18 +2266,10 @@ function ProductsPageContent({
 
               <article className="rounded-2xl border border-slate-200 bg-white p-5">
                 <h3 className="text-lg font-semibold text-slate-900">Micro LED</h3>
-                <MobileIntroText
-                  teaser="Micro LED uses ultra-small LED chips to deliver exceptional brightness, contrast, and image clarity."
-                  className="mt-2"
-                  teaserClassName="w-full"
-                  expandedClassName="text-sm leading-7 text-slate-600"
-                  desktopClassName="text-sm leading-7 text-slate-600"
-                >
-                  <>
-                    Micro LED uses ultra-small LED chips to deliver exceptional brightness, contrast, and image clarity. It is
-                    considered one of the most advanced display technologies for high-end indoor visual experiences.
-                  </>
-                </MobileIntroText>
+                <p className="mt-2 text-sm leading-7 text-slate-600">
+                  Micro LED uses ultra-small LED chips to deliver exceptional brightness, contrast, and image clarity. It is
+                  considered one of the most advanced display technologies for high-end indoor visual experiences.
+                </p>
                 <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
                   <li>Excellent brightness uniformity and contrast for flagship indoor installs.</li>
                   <li>Very fine pixel pitch options for close-view premium environments.</li>
@@ -2433,15 +2383,7 @@ function ProductsPageContent({
 	                      </div>
 	                      <h3 className="text-xl font-extrabold leading-snug text-slate-900">{item.title}</h3>
 	                    </div>
-	                    <MobileIntroText
-                        teaser={item.text}
-                        className="mt-3"
-                        teaserClassName="w-full"
-                        expandedClassName="text-sm leading-7 text-slate-600"
-                        desktopClassName="text-sm leading-7 text-slate-600"
-                      >
-                        <>{item.text}</>
-                      </MobileIntroText>
+	                    <p className="mt-3 text-sm leading-7 text-slate-600">{item.text}</p>
                     <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-700">
                       {item.bullets.map((bullet) => (
                         <li key={bullet} className="flex items-start gap-3">
@@ -2478,19 +2420,11 @@ function ProductsPageContent({
 
             <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-5">
               <h3 className="text-base font-extrabold text-slate-900">What to share for an accurate LED display quotation</h3>
-              <MobileIntroText
-                teaser="A quick site survey or clear project information helps avoid mismatched size, incorrect pixel pitch, power issues, and hidden installation cost."
-                className="mt-2"
-                teaserClassName="w-full"
-                expandedClassName="text-sm leading-7 text-slate-600"
-                desktopClassName="text-sm leading-7 text-slate-600"
-              >
-                <>
-                  A quick site survey or clear project information helps avoid mismatched size, incorrect pixel pitch,
-                  power issues, and hidden installation cost. Sharing the right details early helps us recommend the
-                  correct LED screen price in Bangladesh with better accuracy.
-                </>
-              </MobileIntroText>
+              <p className="mt-2 text-sm leading-7 text-slate-600">
+                A quick site survey or clear project information helps avoid mismatched size, incorrect pixel pitch,
+                power issues, and hidden installation cost. Sharing the right details early helps us recommend the
+                correct LED screen price in Bangladesh with better accuracy.
+              </p>
               <ul className="mt-4 grid gap-2 text-sm leading-7 text-slate-700 md:grid-cols-2">
                 {[
                   "Location type: indoor, outdoor, showroom, event, or roadside advertising",
@@ -2616,25 +2550,25 @@ function ProductsPageContent({
               </table>
             </div>
 
-            <div className="mt-6 flex flex-nowrap gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:flex-wrap md:gap-3 md:overflow-visible md:pb-0">
+            <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 prefetch={false}
                 href={`${basePath}/indoor-led/`}
-                className="inline-flex shrink-0 rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-[12px] font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm md:rounded-xl md:px-5 md:text-sm"
+                className="inline-flex rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
               >
                 Explore Indoor Models -&gt;
               </Link>
               <Link
                 prefetch={false}
                 href={`${basePath}/outdoor/`}
-                className="inline-flex shrink-0 rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-[12px] font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm md:rounded-xl md:px-5 md:text-sm"
+                className="inline-flex rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
               >
                 Explore Outdoor Models -&gt;
               </Link>
               <Link
                 prefetch={false}
                 href="/contact"
-                className="hidden rounded-xl bg-[#FF6A00] px-6 py-2 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#E45700] hover:shadow-md md:inline-flex"
+                className="inline-flex rounded-xl bg-[#FF6A00] px-6 py-2 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#E45700] hover:shadow-md"
               >
                 Get a Recommendation -&gt;
               </Link>
