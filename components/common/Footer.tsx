@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { siteConfig } from "../../lib/site";
@@ -102,9 +105,9 @@ function LocationIcon() {
   );
 }
 
-function ArrowIcon() {
+function ArrowIcon({ className = "h-4 w-4" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden="true">
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
       <path
         d="m9 6 6 6-6 6"
         fill="none"
@@ -242,6 +245,11 @@ function FooterBottomPattern({ side }: { side: "left" | "right" }) {
 }
 
 export default function Footer() {
+  const [mobileOpenSections, setMobileOpenSections] = useState({
+    company: false,
+    support: false,
+    contact: false,
+  });
   const whatsappUrl = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
   const mapQuery = "1st Floor, 36-37 Umesh Datta Road, Bakshibazar, Dhaka 1211, Bangladesh";
   const mapOpenUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
@@ -336,19 +344,104 @@ export default function Footer() {
             </section>
 
             <section className="relative flex h-full min-w-0 flex-col xl:pl-5 xl:before:absolute xl:before:bottom-2.5 xl:before:left-0 xl:before:top-2.5 xl:before:w-px xl:before:bg-white/10">
-              <FooterSectionHeading title="Company" icon={<BuildingIcon />} />
-              <FooterLinkList label="Footer company navigation" items={companyLinks} />
+              <button
+                type="button"
+                className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 text-left md:hidden"
+                aria-expanded={mobileOpenSections.company}
+                aria-controls="mobile-footer-company"
+                onClick={() =>
+                  setMobileOpenSections((prev) => ({
+                    ...prev,
+                    company: !prev.company,
+                  }))
+                }
+              >
+                <span className="flex min-h-[24px] items-center gap-1.5">
+                  <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center text-[#67E8F9]">
+                    <BuildingIcon />
+                  </span>
+                  <span className="whitespace-nowrap text-[15px] font-bold uppercase tracking-[0.03em] text-white">Company</span>
+                </span>
+                <span
+                  className={`text-[#67E8F9] transition duration-200 ${mobileOpenSections.company ? "rotate-90" : "rotate-0"}`}
+                >
+                  <ArrowIcon />
+                </span>
+              </button>
+              <div className="hidden md:block">
+                <FooterSectionHeading title="Company" icon={<BuildingIcon />} />
+              </div>
+              <div id="mobile-footer-company" className={mobileOpenSections.company ? "block md:block" : "hidden md:block"}>
+                <FooterLinkList label="Footer company navigation" items={companyLinks} />
+              </div>
             </section>
 
             <section className="relative flex h-full min-w-0 flex-col xl:pl-5 xl:before:absolute xl:before:bottom-2.5 xl:before:left-0 xl:before:top-2.5 xl:before:w-px xl:before:bg-white/10">
-              <FooterSectionHeading title="Support" icon={<SupportIcon />} />
-              <FooterLinkList label="Footer support navigation" items={supportLinks} />
+              <button
+                type="button"
+                className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 text-left md:hidden"
+                aria-expanded={mobileOpenSections.support}
+                aria-controls="mobile-footer-support"
+                onClick={() =>
+                  setMobileOpenSections((prev) => ({
+                    ...prev,
+                    support: !prev.support,
+                  }))
+                }
+              >
+                <span className="flex min-h-[24px] items-center gap-1.5">
+                  <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center text-[#67E8F9]">
+                    <SupportIcon />
+                  </span>
+                  <span className="whitespace-nowrap text-[15px] font-bold uppercase tracking-[0.03em] text-white">Support</span>
+                </span>
+                <span
+                  className={`text-[#67E8F9] transition duration-200 ${mobileOpenSections.support ? "rotate-90" : "rotate-0"}`}
+                >
+                  <ArrowIcon />
+                </span>
+              </button>
+              <div className="hidden md:block">
+                <FooterSectionHeading title="Support" icon={<SupportIcon />} />
+              </div>
+              <div id="mobile-footer-support" className={mobileOpenSections.support ? "block md:block" : "hidden md:block"}>
+                <FooterLinkList label="Footer support navigation" items={supportLinks} />
+              </div>
             </section>
 
             <section className="relative flex h-full min-w-0 flex-col xl:pl-5 xl:before:absolute xl:before:bottom-2.5 xl:before:left-0 xl:before:top-2.5 xl:before:w-px xl:before:bg-white/10">
-              <FooterSectionHeading title="Contact" icon={<LocationIcon />} />
+              <button
+                type="button"
+                className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 text-left md:hidden"
+                aria-expanded={mobileOpenSections.contact}
+                aria-controls="mobile-footer-contact"
+                onClick={() =>
+                  setMobileOpenSections((prev) => ({
+                    ...prev,
+                    contact: !prev.contact,
+                  }))
+                }
+              >
+                <span className="flex min-h-[24px] items-center gap-1.5">
+                  <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center text-[#67E8F9]">
+                    <LocationIcon />
+                  </span>
+                  <span className="whitespace-nowrap text-[15px] font-bold uppercase tracking-[0.03em] text-white">Contact</span>
+                </span>
+                <span
+                  className={`text-[#67E8F9] transition duration-200 ${mobileOpenSections.contact ? "rotate-90" : "rotate-0"}`}
+                >
+                  <ArrowIcon />
+                </span>
+              </button>
+              <div className="hidden md:block">
+                <FooterSectionHeading title="Contact" icon={<LocationIcon />} />
+              </div>
 
-              <div className="mt-3 flex flex-1 flex-col text-[12px] leading-5 text-slate-200">
+              <div
+                id="mobile-footer-contact"
+                className={`${mobileOpenSections.contact ? "mt-3 flex" : "hidden"} flex-1 flex-col text-[12px] leading-5 text-slate-200 md:mt-3 md:flex`}
+              >
                   <a
                     href={mapOpenUrl}
                     target="_blank"

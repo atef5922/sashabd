@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 
 type WhyChooseItem = {
@@ -111,8 +111,65 @@ function ArrowRight({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
+function getMobileCardClassName(accentClassName: string) {
+  if (accentClassName.includes("sky")) {
+    return "border-sky-200/70 bg-[linear-gradient(180deg,#f0f9ff_0%,#ffffff_46%,#e0f2fe_100%)] shadow-[0_14px_34px_rgba(14,165,233,0.10)]";
+  }
+  if (accentClassName.includes("emerald")) {
+    return "border-emerald-200/70 bg-[linear-gradient(180deg,#ecfdf5_0%,#ffffff_46%,#d1fae5_100%)] shadow-[0_14px_34px_rgba(16,185,129,0.10)]";
+  }
+  if (accentClassName.includes("orange")) {
+    return "border-orange-200/80 bg-[linear-gradient(180deg,#fff7ed_0%,#ffffff_46%,#ffedd5_100%)] shadow-[0_14px_34px_rgba(249,115,22,0.11)]";
+  }
+  if (accentClassName.includes("violet")) {
+    return "border-violet-200/75 bg-[linear-gradient(180deg,#f5f3ff_0%,#ffffff_46%,#ede9fe_100%)] shadow-[0_14px_34px_rgba(139,92,246,0.10)]";
+  }
+  if (accentClassName.includes("cyan")) {
+    return "border-cyan-200/75 bg-[linear-gradient(180deg,#ecfeff_0%,#ffffff_46%,#cffafe_100%)] shadow-[0_14px_34px_rgba(6,182,212,0.10)]";
+  }
+  return "border-rose-200/75 bg-[linear-gradient(180deg,#fff1f2_0%,#ffffff_46%,#ffe4e6_100%)] shadow-[0_14px_34px_rgba(244,63,94,0.10)]";
+}
+
 export default function WhyChooseSection() {
   const [mobileExpanded, setMobileExpanded] = useState(false);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const mobileCarouselRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollToSlide = (index: number) => {
+    const container = mobileCarouselRef.current;
+    if (!container) return;
+
+    const cards = Array.from(container.children) as HTMLElement[];
+    const target = cards[index];
+    if (!target) return;
+
+    target.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+    setActiveSlide(index);
+  };
+
+  const handleCarouselScroll = () => {
+    const container = mobileCarouselRef.current;
+    if (!container) return;
+
+    const cards = Array.from(container.children) as HTMLElement[];
+    if (!cards.length) return;
+
+    const containerLeft = container.scrollLeft;
+    let nearestIndex = 0;
+    let nearestDistance = Number.POSITIVE_INFINITY;
+
+    cards.forEach((card, index) => {
+      const distance = Math.abs(card.offsetLeft - containerLeft);
+      if (distance < nearestDistance) {
+        nearestDistance = distance;
+        nearestIndex = index;
+      }
+    });
+
+    if (nearestIndex !== activeSlide) {
+      setActiveSlide(nearestIndex);
+    }
+  };
 
   return (
     <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(248,250,252,0.92)_48%,rgba(255,255,255,1)_100%)] py-6 md:py-7">
@@ -151,7 +208,59 @@ export default function WhyChooseSection() {
           </div>
         </div>
 
-        <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-5 md:hidden">
+          <div
+            ref={mobileCarouselRef}
+            onScroll={handleCarouselScroll}
+            className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] touch-pan-x [&::-webkit-scrollbar]:hidden"
+          >
+            {whyChooseItems.map((item) => (
+              <article
+                key={item.title}
+                className={`group flex min-h-[16.25rem] w-[89%] shrink-0 snap-start flex-col rounded-[20px] border p-4 transition duration-300 motion-reduce:transition-none ${getMobileCardClassName(item.accentClassName)}`}
+              >
+                <div className="flex items-start gap-3">
+                  <span className={`inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] border border-white/70 bg-white/80 shadow-sm ${item.accentClassName}`}>
+                    {item.icon}
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="text-[18px] font-bold leading-snug tracking-tight text-slate-900">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 text-[13px] leading-6 text-slate-700">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+
+                <Link
+                  href={item.href}
+                  prefetch={false}
+                  className="mt-auto inline-flex items-center gap-2 pt-4 text-[13px] font-extrabold text-slate-900 transition group-hover:text-slate-950"
+                >
+                  <span>{item.linkLabel}</span>
+                  <span className={`transition group-hover:translate-x-0.5 motion-reduce:transition-none ${item.accentClassName}`}>
+                    <ArrowRight />
+                  </span>
+                </Link>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-3 flex items-center justify-center gap-1.5">
+            {whyChooseItems.map((item, index) => (
+              <button
+                key={item.title}
+                type="button"
+                onClick={() => scrollToSlide(index)}
+                aria-label={`Go to why choose card ${index + 1}`}
+                className={`h-1.5 rounded-full transition ${activeSlide === index ? "w-6 bg-[#F56605]" : "w-1.5 bg-slate-300"}`}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-5 hidden gap-4 md:grid md:grid-cols-2 xl:grid-cols-3">
           {whyChooseItems.map((item) => (
             <article
               key={item.title}
