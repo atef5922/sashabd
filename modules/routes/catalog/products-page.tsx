@@ -503,6 +503,7 @@ function ProductsPageContent({
   const scrollToGridOnNextPageChangeRef = useRef(false);
   const mobileCarouselRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const componentCarouselRef = useRef<HTMLDivElement | null>(null);
+  const componentSectionRef = useRef<HTMLDivElement | null>(null);
   const allProducts = useMemo(() => buildProducts(basePath), [basePath]);
   const fullListGroups = useMemo(() => {
     const kinds: Array<FilterKey> = [
@@ -1298,16 +1299,26 @@ function ProductsPageContent({
     const container = componentCarouselRef.current;
     if (!container) return;
     if (ledDisplayComponentCards.length <= 1) return;
-
-    const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
-    if (prefersReducedMotion) return;
+    if (window.innerWidth >= 768) return;
 
     const timer = window.setInterval(() => {
+      const section = componentSectionRef.current ?? container;
+      if (!section) return;
+      if (document.visibilityState !== "visible") return;
+
+      const rect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const isSectionVisible = rect.top < viewportHeight * 0.88 && rect.bottom > viewportHeight * 0.18;
+      if (!isSectionVisible) return;
+
       setActiveComponentSlide((prev) => {
         const nextIndex = (prev + 1) % ledDisplayComponentCards.length;
         const cards = Array.from(container.children) as HTMLElement[];
         const target = cards[nextIndex];
-        target?.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+        if (target) {
+          const left = target.offsetLeft - container.offsetLeft;
+          container.scrollTo({ left, behavior: "smooth" });
+        }
         return nextIndex;
       });
     }, 3200);
@@ -1337,6 +1348,18 @@ function ProductsPageContent({
     if (nearestIndex !== activeComponentSlide) {
       setActiveComponentSlide(nearestIndex);
     }
+  };
+
+  const scrollComponentCarouselToIndex = (index: number) => {
+    const container = componentCarouselRef.current;
+    if (!container) return;
+
+    const cards = Array.from(container.children) as HTMLElement[];
+    const target = cards[index];
+    if (!target) return;
+
+    const left = target.offsetLeft - container.offsetLeft;
+    container.scrollTo({ left, behavior: "smooth" });
   };
 
 
@@ -1841,7 +1864,7 @@ function ProductsPageContent({
 	                </aside>
 	              </div>
 
-	              <div>
+	              <div ref={componentSectionRef}>
 	                <h2 className="text-2xl font-bold text-slate-900">Main Components of an LED Display System</h2>
                   <MobileIntroText
                     teaser="Every professional LED display system is built using several essential hardware components."
@@ -1861,30 +1884,28 @@ function ProductsPageContent({
                     {ledDisplayComponentCards.map((component, index) => (
                       <article
                         key={component.name}
-                        className={`group flex min-h-[15.25rem] w-[88%] shrink-0 snap-start flex-col rounded-[22px] border p-4 transition duration-300 ${componentMobileCardStyles[index % componentMobileCardStyles.length]}`}
+                        className={`group flex w-[86%] shrink-0 snap-start flex-col rounded-[20px] border px-3.5 py-3 transition duration-300 ${componentMobileCardStyles[index % componentMobileCardStyles.length]}`}
                       >
-                        <div className="flex items-start gap-3">
-                          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] border border-white/70 bg-white/80 text-[#F56605] shadow-sm">
-                            <UiIcon name={component.icon} className="h-5.5 w-5.5" />
+                        <div className="flex items-center gap-2.5">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] border border-white/75 bg-white/85 text-[#F56605] shadow-sm">
+                            <UiIcon name={component.icon} className="h-5 w-5" />
                           </div>
-                          <h3 className="text-[18px] font-extrabold leading-snug tracking-tight text-slate-900">
+                          <h3 className="min-w-0 flex-1 text-[16px] font-extrabold leading-tight tracking-tight text-slate-900">
                             {component.name}
                           </h3>
                         </div>
-                        <p className="mt-3 text-[13px] leading-6 text-slate-700">{component.description}</p>
+                        <p className="mt-2.5 text-[12.5px] leading-[1.55] text-slate-700">{component.description}</p>
                       </article>
                     ))}
                   </div>
 
-                  <div className="mt-3 flex justify-center gap-1.5 md:hidden">
+                  <div className="mt-2.5 flex justify-center gap-1.5 md:hidden">
                     {ledDisplayComponentCards.map((component, index) => (
                       <button
                         key={component.name}
                         type="button"
                         onClick={() => {
-                          const container = componentCarouselRef.current;
-                          const cards = container ? (Array.from(container.children) as HTMLElement[]) : [];
-                          cards[index]?.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+                          scrollComponentCarouselToIndex(index);
                           setActiveComponentSlide(index);
                         }}
                         className={`h-1.5 rounded-full transition-all ${activeComponentSlide === index ? "w-6 bg-[#F56605]" : "w-1.5 bg-slate-300"}`}
