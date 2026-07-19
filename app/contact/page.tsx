@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
+import MobileIntroText from "@/components/common/MobileIntroText";
 import { siteConfig } from "../../lib/site";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { socialImageUrl } from "@/lib/seo";
@@ -52,12 +53,23 @@ function SectionTitle({
 }) {
   return (
     <div>
-      <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight text-slate-900">
+      <h2 className="flex items-center gap-2 text-[1.65rem] font-bold tracking-tight text-slate-900 md:text-2xl">
         {icon ? <span className="text-xl">{icon}</span> : null}
         {title}
       </h2>
       <div className="mt-3 h-1 w-14 rounded-full" style={{ background: `${MAROON}B3` }} />
-      {desc ? <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600">{desc}</p> : null}
+      {desc ? (
+        <MobileIntroText
+          teaser={desc}
+          className="mt-4"
+          teaserClassName="w-full text-[14px] leading-6 text-slate-600"
+          expandedClassName="text-sm leading-7 text-slate-600"
+          desktopClassName="max-w-3xl text-base leading-7 text-slate-600"
+          buttonClassName="text-[13px]"
+        >
+          <p className="max-w-3xl text-base leading-7 text-slate-600 text-justify">{desc}</p>
+        </MobileIntroText>
+      ) : null}
     </div>
   );
 }
@@ -78,7 +90,7 @@ export default function AboutPage() {
   return (
     <main className="w-full bg-transparent">
       {/* receiving-card style container */}
-      <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-0 md:px-6">
+      <div className="mx-auto w-full max-w-7xl px-3 pb-8 pt-0 md:px-6">
         <Breadcrumbs
           items={[
             homeBreadcrumb(),
@@ -87,34 +99,42 @@ export default function AboutPage() {
           className="mb-3 pt-3 text-sm text-slate-600"
         />
         {/* HERO (receiving-card style) */}
-        <section className="rounded-3xl bg-white p-7 md:p-10">
+        <section className="rounded-[24px] bg-white p-4 md:rounded-3xl md:p-10">
           <div className="flex flex-col gap-4">
             {/* title block constrained */}
             <div className="max-w-3xl">
               {/* smaller header like receiving card */}
-              <h1 className="mt-4 text-xl font-extrabold leading-tight tracking-tight text-slate-900 md:text-3xl">
+              <h1 className="mt-1 text-[1.7rem] font-extrabold leading-tight tracking-tight text-slate-900 md:mt-4 md:text-3xl">
                 Contact Us for Quotation
               </h1>
             </div>
 
-            {/* keep same content; make paragraph full width like receiving card */}
-            <p className="mt-1 w-full text-base leading-7 text-slate-600 text-justify">
- {BRAND_NAME} provides LED display sales, installation and support across Bangladesh-indoor/outdoor
-              screens for signage, events, retail and corporate solutions. Based on your requirements, our skilled team will contact you as soon as possible.
-            </p>
+            <MobileIntroText
+              teaser={`${BRAND_NAME} provides LED display sales, installation and support across Bangladesh for indoor and outdoor signage, events, retail and corporate solutions.`}
+              className="mt-1"
+              teaserClassName="w-full text-[14px] leading-6 text-slate-600"
+              expandedClassName="text-sm leading-7 text-slate-600"
+              desktopClassName="w-full text-base leading-7 text-slate-600"
+              buttonClassName="text-[13px]"
+            >
+              <p className="mt-1 w-full text-base leading-7 text-slate-600 text-justify">
+                {BRAND_NAME} provides LED display sales, installation and support across Bangladesh-indoor/outdoor
+                screens for signage, events, retail and corporate solutions. Based on your requirements, our skilled team will contact you as soon as possible.
+              </p>
+            </MobileIntroText>
           </div>
         </section>
 
         {/* CONTACT DETAILS + MAP (same section/content) */}
-        <section className="mt-8 rounded-3xl bg-slate-50 p-7 md:p-10">
+        <section className="mt-8 rounded-[24px] bg-slate-50 p-4 md:rounded-3xl md:p-10">
           <SectionTitle
  icon=""
             title="Contact & Location"
  desc="For quotation, site survey or support-reach us anytime. Share your location, indoor/outdoor and approximate size for faster guidance."
           />
 
-          <div className="mt-8 grid gap-8 lg:grid-cols-3">
-            <div>
+          <div className="mt-6 grid gap-3 lg:mt-8 lg:grid-cols-3 lg:gap-8">
+            <div className="rounded-[14px] border border-slate-200/80 bg-white px-4 py-4 md:rounded-none md:border-0 md:bg-transparent md:px-0 md:py-0">
               <div className="text-sm font-semibold text-slate-900">Phone</div>
               <div className="mt-2 text-slate-600">
                 <a className="font-semibold text-slate-900 hover:underline" href={`tel:${phoneDial}`}>
@@ -124,7 +144,7 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div>
+            <div className="rounded-[14px] border border-slate-200/80 bg-white px-4 py-4 md:rounded-none md:border-0 md:bg-transparent md:px-0 md:py-0">
               <div className="text-sm font-semibold text-slate-900">Email</div>
               <div className="mt-2 text-slate-600">
                 <EmailReveal user="info" domain="sashabd.com" className="font-semibold text-slate-900 hover:underline" title="Email us" />
@@ -132,7 +152,7 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div>
+            <div className="rounded-[14px] border border-slate-200/80 bg-white px-4 py-4 md:rounded-none md:border-0 md:bg-transparent md:px-0 md:py-0">
               <div className="text-sm font-semibold text-slate-900">Head Office</div>
               <div className="mt-2 text-slate-600">
                 <div className="font-semibold text-slate-900">{address}</div>
@@ -141,13 +161,13 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="mt-8 rounded-2xl border bg-white p-5 shadow-sm md:p-6" style={{ borderColor: `${MAROON}12` }}>
-            <div className="flex items-center justify-between gap-3">
+          <div className="mt-6 rounded-[18px] border bg-white p-4 shadow-sm md:mt-8 md:rounded-2xl md:p-6" style={{ borderColor: `${MAROON}12` }}>
+            <div className="flex items-start justify-between gap-3">
               <div>
                 <div className="text-lg font-bold text-slate-900">Quick Contact Form</div>
                 <div className="mt-1 text-sm text-slate-600">Share your requirement and we will get back to you promptly.</div>
               </div>
-              <span className="rounded-full px-3 py-1 text-xs font-semibold" style={{ background: `${MAROON}12`, color: MAROON }}>
+              <span className="hidden rounded-full px-3 py-1 text-xs font-semibold md:inline-flex" style={{ background: `${MAROON}12`, color: MAROON }}>
                 User Friendly
               </span>
             </div>
@@ -155,18 +175,18 @@ export default function AboutPage() {
             <ContactForm maroon={MAROON} maroonDark={MAROON_DARK} />
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-6 grid grid-cols-2 gap-2 md:mt-8 md:flex md:flex-wrap md:gap-3">
             <a
               href={wa}
               target="_blank"
               rel="noreferrer"
-              className="rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 hover:shadow-md"
+              className="inline-flex min-h-10 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:bg-emerald-700 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm md:font-semibold"
             >
               WhatsApp Now
             </a>
             <a
               href={`tel:${phoneDial}`}
-              className="rounded-xl border bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-sm transition hover:shadow-md"
+              className="inline-flex min-h-10 items-center justify-center rounded-md border bg-white px-3 py-2 text-[11px] font-extrabold text-slate-900 shadow-sm transition hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm md:font-semibold"
               style={{ borderColor: `${MAROON}22` }}
             >
               Call
@@ -174,26 +194,26 @@ export default function AboutPage() {
             <EmailReveal
               user="info"
               domain="sashabd.com"
-              className="rounded-xl border bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-sm transition hover:shadow-md"
+              className="inline-flex min-h-10 items-center justify-center rounded-md border bg-white px-3 py-2 text-[11px] font-extrabold text-slate-900 shadow-sm transition hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm md:font-semibold"
               title="Email us"
               label="Email"
             />
             <Link
               href="/contact/"
-              className="rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:shadow-md"
+              className="inline-flex min-h-10 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm md:font-semibold"
               style={{ background: MAROON_DARK }}
             >
               Request a Quotation -&gt;
             </Link>
           </div>
 
-          <div className="mt-10 overflow-hidden rounded-2xl border bg-white shadow-sm" style={{ borderColor: `${MAROON}12` }}>
+          <div className="mt-6 overflow-hidden rounded-[18px] border bg-white shadow-sm md:mt-10 md:rounded-2xl" style={{ borderColor: `${MAROON}12` }}>
             <div className="px-5 py-4">
               <div className="text-sm font-semibold text-slate-900">Google Map</div>
               <div className="mt-1 text-sm text-slate-600">Find our office location and navigate easily.</div>
             </div>
 
-            <div className="relative h-[340px] w-full">
+            <div className="relative h-[250px] w-full md:h-[340px]">
               <a
                 href={mapOpenUrl}
                 target="_blank"
@@ -213,20 +233,20 @@ export default function AboutPage() {
         </section>
 
         {/* FINAL CTA (same section/content) */}
-        <section className="mt-8 rounded-3xl bg-slate-50 p-7 md:p-10">
+        <section className="mt-8 rounded-[24px] bg-slate-50 p-4 md:rounded-3xl md:p-10">
           <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
             <div className="min-w-0">
  <h3 className="text-2xl font-bold text-slate-900">Let's build your LED display project</h3>
-              <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
+              <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600 text-justify">
  Share your location and screen size-we'll suggest the best setup and send a quotation with clear scope and
                 timeline.
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-3">
+            <div className="grid w-full grid-cols-2 gap-2 md:flex md:w-auto md:flex-wrap md:gap-3">
               <Link
                 href="/contact"
-                className="rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:shadow-md"
+                className="inline-flex min-h-10 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm md:font-semibold"
                 style={{ background: MAROON_DARK }}
               >
                 Get Quotation
@@ -235,7 +255,7 @@ export default function AboutPage() {
                 href={wa}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 hover:shadow-md"
+                className="inline-flex min-h-10 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:bg-emerald-700 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm md:font-semibold"
               >
                 WhatsApp
               </a>

@@ -24,7 +24,7 @@ export default function ContactForm({
   return (
     <form
       ref={formRef}
-      className="mt-5 grid gap-4 md:grid-cols-2"
+      className="mt-5 grid gap-3 md:grid-cols-2 md:gap-4"
       onSubmit={async (e) => {
         e.preventDefault();
         if (!formRef.current) return;
@@ -79,7 +79,7 @@ export default function ContactForm({
           type="text"
           required
           placeholder="Your name"
-          className="mt-2 w-full rounded-xl border px-4 py-3 text-sm text-slate-900 outline-none transition focus:ring-2"
+          className="mt-2 w-full rounded-[12px] border px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 md:rounded-xl md:py-3"
           style={{ borderColor: `${maroon}22` }}
         />
       </div>
@@ -94,7 +94,7 @@ export default function ContactForm({
           type="tel"
           required
           placeholder="+8801XXXXXXXXX"
-          className="mt-2 w-full rounded-xl border px-4 py-3 text-sm text-slate-900 outline-none transition focus:ring-2"
+          className="mt-2 w-full rounded-[12px] border px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 md:rounded-xl md:py-3"
           style={{ borderColor: `${maroon}22` }}
         />
       </div>
@@ -108,7 +108,7 @@ export default function ContactForm({
           name="email"
           type="email"
           placeholder="you@example.com"
-          className="mt-2 w-full rounded-xl border px-4 py-3 text-sm text-slate-900 outline-none transition focus:ring-2"
+          className="mt-2 w-full rounded-[12px] border px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 md:rounded-xl md:py-3"
           style={{ borderColor: `${maroon}22` }}
         />
       </div>
@@ -120,7 +120,7 @@ export default function ContactForm({
         <select
           id="contact-type"
           name="project_type"
-          className="mt-2 w-full rounded-xl border bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:ring-2"
+          className="mt-2 w-full rounded-[12px] border bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 md:rounded-xl md:py-3"
           style={{ borderColor: `${maroon}22` }}
           defaultValue="Indoor LED Display"
         >
@@ -144,7 +144,7 @@ export default function ContactForm({
           required
           rows={5}
           placeholder="Share location, screen size, indoor/outdoor, and timeline..."
-          className="mt-2 w-full rounded-xl border px-4 py-3 text-sm text-slate-900 outline-none transition focus:ring-2"
+          className="mt-2 w-full rounded-[12px] border px-4 py-3 text-sm text-slate-900 outline-none transition focus:ring-2 md:rounded-xl"
           style={{ borderColor: `${maroon}22` }}
         />
       </div>
@@ -170,11 +170,11 @@ export default function ContactForm({
         </div>
       ) : null}
 
-      <div className="md:col-span-2 flex flex-wrap items-center gap-3">
+      <div className="md:col-span-2 flex flex-col items-start gap-2 md:flex-row md:flex-wrap md:items-center md:gap-3">
         <button
           type="submit"
           disabled={state === "submitting"}
-          className="rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:shadow-md disabled:cursor-not-allowed disabled:opacity-70"
+          className="inline-flex min-h-10 items-center justify-center rounded-md px-4 py-2.5 text-[11px] font-extrabold text-white shadow-sm transition hover:shadow-md disabled:cursor-not-allowed disabled:opacity-70 md:rounded-xl md:px-5 md:py-3 md:text-sm md:font-semibold"
           style={{ background: maroonDark }}
         >
           {state === "submitting" ? "Submitting..." : "Send Inquiry"}
