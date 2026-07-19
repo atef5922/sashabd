@@ -78,6 +78,11 @@ const faqJsonLd = {
 
 export default function ControllerProductsPage() {
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
+  const mobileProductRows = Array.from({ length: Math.ceil(controllerCatalog.length / 4) }, (_, index) => controllerCatalog.slice(index * 4, index * 4 + 4));
+  if (mobileProductRows.length > 2 && mobileProductRows[mobileProductRows.length - 1]?.length === 1) {
+    const lastRow = mobileProductRows.pop();
+    if (lastRow) mobileProductRows[mobileProductRows.length - 1] = [...mobileProductRows[mobileProductRows.length - 1], ...lastRow];
+  }
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-0 md:px-6">
@@ -159,27 +164,55 @@ export default function ControllerProductsPage() {
           Choose a model based on your project type (signage, event, or video wall) and total pixel requirement.
         </p>
 
-        <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
-          {controllerCatalog.map((p) => (
-            <ProductGridCard
-              key={p.slug}
-              href={`/led-display/accessories/controller/${p.slug}/`}
-              title={p.title}
-              image={<Image src={p.image} alt={p.title} fill sizes="(max-width: 1024px) 100vw, 25vw" className="object-cover object-center transition duration-300 group-hover:scale-[1.03]" />}
-              imageContainerClassName="bg-slate-100"
-              borderColor={`${BRAND.maroon}12`}
-              topLeftBadge={{ text: p.badge, tone: "light" }}
-              topRightBadge={{ text: "Controller", tone: "dark" }}
-              metaLines={p.cardPrice ? [{ text: p.cardPrice, className: "mt-1 text-sm font-semibold text-sky-700" }] : []}
-              bullets={p.quickFeatures.slice(0, 4)}
-              chips={p.bestFor.slice(0, 3)}
-              accentColor={BRAND.maroon}
-              contactHref="/contact"
-              compactMobile
-              viewDetailsLabel="View details ->"
-            />
+        <div className="md:hidden">
+          {mobileProductRows.map((row, index) => (
+            <ResponsiveProductCarousel key={`mobile-row-${index}`} className={index === 0 ? "mt-6" : "mt-4"}>
+              {row.map((p) => (
+                <ProductGridCard
+                  key={p.slug}
+                  href={`/led-display/accessories/controller/${p.slug}/`}
+                  title={p.title}
+                  image={<Image src={p.image} alt={p.title} fill sizes="(max-width: 1024px) 100vw, 25vw" className="object-cover object-center transition duration-300 group-hover:scale-[1.03]" />}
+                  imageContainerClassName="bg-slate-100"
+                  borderColor={`${BRAND.maroon}12`}
+                  topLeftBadge={{ text: p.badge, tone: "light" }}
+                  topRightBadge={{ text: "Controller", tone: "dark" }}
+                  metaLines={p.cardPrice ? [{ text: p.cardPrice, className: "mt-1 text-sm font-semibold text-sky-700" }] : []}
+                  bullets={p.quickFeatures.slice(0, 4)}
+                  chips={p.bestFor.slice(0, 3)}
+                  accentColor={BRAND.maroon}
+                  contactHref="/contact"
+                  compactMobile
+                  viewDetailsLabel="View details ->"
+                />
+              ))}
+            </ResponsiveProductCarousel>
           ))}
-        </ResponsiveProductCarousel>
+        </div>
+
+        <div className="hidden md:block">
+          <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
+            {controllerCatalog.map((p) => (
+              <ProductGridCard
+                key={p.slug}
+                href={`/led-display/accessories/controller/${p.slug}/`}
+                title={p.title}
+                image={<Image src={p.image} alt={p.title} fill sizes="(max-width: 1024px) 100vw, 25vw" className="object-cover object-center transition duration-300 group-hover:scale-[1.03]" />}
+                imageContainerClassName="bg-slate-100"
+                borderColor={`${BRAND.maroon}12`}
+                topLeftBadge={{ text: p.badge, tone: "light" }}
+                topRightBadge={{ text: "Controller", tone: "dark" }}
+                metaLines={p.cardPrice ? [{ text: p.cardPrice, className: "mt-1 text-sm font-semibold text-sky-700" }] : []}
+                bullets={p.quickFeatures.slice(0, 4)}
+                chips={p.bestFor.slice(0, 3)}
+                accentColor={BRAND.maroon}
+                contactHref="/contact"
+                compactMobile
+                viewDetailsLabel="View details ->"
+              />
+            ))}
+          </ResponsiveProductCarousel>
+        </div>
       </section>
 
       <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>

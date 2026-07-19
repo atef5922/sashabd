@@ -75,6 +75,10 @@ const faqJsonLd = {
 };
 
 export default function PowerSupplyListingPage() {
+  const mobileProductRows = Array.from({ length: Math.ceil(powerSupplyCatalog.length / 4) }, (_, index) =>
+    powerSupplyCatalog.slice(index * 4, index * 4 + 4)
+  );
+
   return (
     <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-0 md:px-6">
       <Breadcrumbs
@@ -119,27 +123,55 @@ export default function PowerSupplyListingPage() {
 
       {/* GRID */}
       <section className="mt-8">
-        <ResponsiveProductCarousel desktopClassName="md:grid-cols-2 lg:grid-cols-3" mobileGapClassName="gap-6">
-          {powerSupplyCatalog.map((p) => (
-            <ProductGridCard
-              key={p.slug}
-              href={`/led-display/accessories/power-supply/${p.slug}/`}
-              title={p.title}
-              image={<Image src={p.image} alt={p.title} fill sizes="(max-width: 1024px) 100vw, 25vw" className="object-cover object-center transition duration-300 group-hover:scale-[1.03]" priority={false} />}
-              imageContainerClassName="bg-slate-100"
-              borderColor={`${BRAND.maroon}12`}
-              topLeftBadge={{ text: p.badge, tone: "light" }}
-              topRightBadge={{ text: "Accessories", tone: "dark" }}
-              metaLines={p.cardPrice ? [{ text: p.cardPrice, className: "mt-1 text-sm font-semibold text-sky-700" }] : []}
-              bullets={p.quickFeatures.slice(0, 4)}
-              chips={p.bestFor.slice(0, 3)}
-              accentColor={BRAND.maroon}
-              contactHref="/contact"
-              compactMobile
-              viewDetailsLabel="View details ->"
-            />
+        <div className="md:hidden">
+          {mobileProductRows.map((row, index) => (
+            <ResponsiveProductCarousel key={`mobile-row-${index}`} className={index === 0 ? "mt-6" : "mt-4"}>
+              {row.map((p) => (
+                <ProductGridCard
+                  key={p.slug}
+                  href={`/led-display/accessories/power-supply/${p.slug}/`}
+                  title={p.title}
+                  image={<Image src={p.image} alt={p.title} fill sizes="(max-width: 1024px) 100vw, 25vw" className="object-cover object-center transition duration-300 group-hover:scale-[1.03]" priority={false} />}
+                  imageContainerClassName="bg-slate-100"
+                  borderColor={`${BRAND.maroon}12`}
+                  topLeftBadge={{ text: p.badge, tone: "light" }}
+                  topRightBadge={{ text: "Accessories", tone: "dark" }}
+                  metaLines={p.cardPrice ? [{ text: p.cardPrice, className: "mt-1 text-sm font-semibold text-sky-700" }] : []}
+                  bullets={p.quickFeatures.slice(0, 4)}
+                  chips={p.bestFor.slice(0, 3)}
+                  accentColor={BRAND.maroon}
+                  contactHref="/contact"
+                  compactMobile
+                  viewDetailsLabel="View details ->"
+                />
+              ))}
+            </ResponsiveProductCarousel>
           ))}
-        </ResponsiveProductCarousel>
+        </div>
+
+        <div className="hidden md:block">
+          <ResponsiveProductCarousel desktopClassName="md:grid-cols-2 lg:grid-cols-3" mobileGapClassName="gap-6">
+            {powerSupplyCatalog.map((p) => (
+              <ProductGridCard
+                key={p.slug}
+                href={`/led-display/accessories/power-supply/${p.slug}/`}
+                title={p.title}
+                image={<Image src={p.image} alt={p.title} fill sizes="(max-width: 1024px) 100vw, 25vw" className="object-cover object-center transition duration-300 group-hover:scale-[1.03]" priority={false} />}
+                imageContainerClassName="bg-slate-100"
+                borderColor={`${BRAND.maroon}12`}
+                topLeftBadge={{ text: p.badge, tone: "light" }}
+                topRightBadge={{ text: "Accessories", tone: "dark" }}
+                metaLines={p.cardPrice ? [{ text: p.cardPrice, className: "mt-1 text-sm font-semibold text-sky-700" }] : []}
+                bullets={p.quickFeatures.slice(0, 4)}
+                chips={p.bestFor.slice(0, 3)}
+                accentColor={BRAND.maroon}
+                contactHref="/contact"
+                compactMobile
+                viewDetailsLabel="View details ->"
+              />
+            ))}
+          </ResponsiveProductCarousel>
+        </div>
       </section>
 
       <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>

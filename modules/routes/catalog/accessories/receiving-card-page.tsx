@@ -76,6 +76,9 @@ const faqJsonLd = {
 
 export default function ReceivingCardListingPage() {
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
+  const mobileProductRows = Array.from({ length: Math.ceil(receivingCardCatalog.length / 4) }, (_, index) =>
+    receivingCardCatalog.slice(index * 4, index * 4 + 4)
+  );
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-0 md:px-6">
@@ -174,46 +177,130 @@ export default function ReceivingCardListingPage() {
           then contact us for quotation or setup assistance.
         </p>
 
-        <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
-          {receivingCardCatalog.map((p) => (
-            <ProductGridCard
-              key={p.slug}
-              href={`/led-display/accessories/receiving-card/${p.slug}/`}
-              title={p.title}
-              image={
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={p.image}
-                  alt={p.title}
-                  className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
-                  loading="lazy"
+        <div className="md:hidden">
+          {mobileProductRows.map((row, index) => (
+            <ResponsiveProductCarousel key={`mobile-row-${index}`} className={index === 0 ? "mt-6" : "mt-4"}>
+              {row.map((p) => (
+                <ProductGridCard
+                  key={p.slug}
+                  href={`/led-display/accessories/receiving-card/${p.slug}/`}
+                  title={p.title}
+                  image={
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={p.image}
+                      alt={p.title}
+                      className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+                      loading="lazy"
+                    />
+                  }
+                  imageContainerClassName="bg-slate-100"
+                  borderColor={`${BRAND.maroon}12`}
+                  topLeftBadge={{ text: p.badge, tone: "light" }}
+                  topRightBadge={{ text: "Accessories", tone: "dark" }}
+                  metaLines={p.cardPrice ? [{ text: p.cardPrice, className: "mt-1 text-sm font-semibold text-sky-700" }] : []}
+                  bullets={p.quickFeatures.slice(0, 4)}
+                  chips={p.quickFeatures.slice(0, 3)}
+                  accentColor={BRAND.maroon}
+                  contactHref="/contact"
+                  compactMobile
+                  viewDetailsLabel="View details ->"
                 />
-              }
-              imageContainerClassName="bg-slate-100"
-              borderColor={`${BRAND.maroon}12`}
-              topLeftBadge={{ text: p.badge, tone: "light" }}
-              topRightBadge={{ text: "Accessories", tone: "dark" }}
-              metaLines={p.cardPrice ? [{ text: p.cardPrice, className: "mt-1 text-sm font-semibold text-sky-700" }] : []}
-              bullets={p.quickFeatures.slice(0, 4)}
-              chips={p.quickFeatures.slice(0, 3)}
-              accentColor={BRAND.maroon}
-              contactHref="/contact"
-              compactMobile
-              viewDetailsLabel="View details ->"
-            />
+              ))}
+            </ResponsiveProductCarousel>
           ))}
-        </ResponsiveProductCarousel>
+        </div>
+
+        <div className="hidden md:block">
+          <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
+            {receivingCardCatalog.map((p) => (
+              <ProductGridCard
+                key={p.slug}
+                href={`/led-display/accessories/receiving-card/${p.slug}/`}
+                title={p.title}
+                image={
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={p.image}
+                    alt={p.title}
+                    className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+                    loading="lazy"
+                  />
+                }
+                imageContainerClassName="bg-slate-100"
+                borderColor={`${BRAND.maroon}12`}
+                topLeftBadge={{ text: p.badge, tone: "light" }}
+                topRightBadge={{ text: "Accessories", tone: "dark" }}
+                metaLines={p.cardPrice ? [{ text: p.cardPrice, className: "mt-1 text-sm font-semibold text-sky-700" }] : []}
+                bullets={p.quickFeatures.slice(0, 4)}
+                chips={p.quickFeatures.slice(0, 3)}
+                accentColor={BRAND.maroon}
+                contactHref="/contact"
+                compactMobile
+                viewDetailsLabel="View details ->"
+              />
+            ))}
+          </ResponsiveProductCarousel>
+        </div>
       </section>
 
       {/* Quick helper block */}
+      <section className="mt-8 md:hidden">
+        <div
+          className="rounded-[20px] border p-4"
+          style={{
+            borderColor: "rgba(103,232,249,0.6)",
+            background: "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)",
+          }}
+        >
+          <h2 className="text-[22px] font-extrabold leading-tight text-slate-900">Need help selecting the right receiving card?</h2>
+          <p className="mt-2 text-[13px] leading-6 text-slate-700 text-justify">
+            For faster and more accurate matching, send these details on WhatsApp and we will suggest the correct compatible option.
+          </p>
+
+          <div className="mt-4 rounded-[16px] border border-white/80 bg-white/80 p-4">
+            <ul className="space-y-3 text-[12.5px] text-slate-700">
+              {[
+                "Module photo (front/back) + HUB connector close-up",
+                "Pixel pitch (P2.5/P4/P5 etc) + scan rate (1/16, 1/32...)",
+                "Cabinet resolution (W x H pixels) + controller brand/model",
+              ].map((t, i) => (
+                <li key={`${i}-${t}`} className="flex items-start gap-2.5">
+                  <span className="mt-1.5 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                  <span className="leading-6 text-justify">{t}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <a
+              href={wa}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex min-h-10 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700"
+            >
+              WhatsApp Now
+            </a>
+            <Link
+              href="/contact"
+              className="inline-flex min-h-10 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+              style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+            >
+              Request Quotation
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section
-        className="mt-8 rounded-3xl border bg-slate-50 p-6 md:p-10"
+        className="mt-8 hidden rounded-3xl border bg-slate-50 p-6 md:block md:p-10"
         style={{ borderColor: `${BRAND.maroon}10` }}
       >
         <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
- <span className="text-xl"></span>
-  Need help selecting the right receiving card?
-</h2>
+          <span className="text-xl"></span>
+          Need help selecting the right receiving card?
+        </h2>
 
         <p className="mt-2 text-slate-600 leading-7">
           For faster and more accurate matching, send the following information on WhatsApp:
@@ -223,7 +310,7 @@ export default function ReceivingCardListingPage() {
           {[
             "Module photo (front/back) + HUB connector close-up",
             "Pixel pitch (P2.5/P4/P5 etc) + scan rate (1/16, 1/32...)",
- "Cabinet resolution (W x H pixels) + controller brand/model",
+            "Cabinet resolution (W x H pixels) + controller brand/model",
           ].map((t, i) => (
             <li key={`${i}-${t}`} className="flex items-start gap-2">
               <span className="mt-2 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
