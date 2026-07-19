@@ -242,7 +242,7 @@ export default function Header() {
     <header
       className={cn(
         "sticky inset-x-0 top-0 z-[80] w-full transition-colors duration-300",
-        isScrolled ? "bg-[#091528] shadow-md" : "bg-white"
+        isScrolled ? "bg-[#091931] shadow-md" : "bg-white"
       )}
     >
       <div className="mx-auto flex h-[4.15rem] max-w-7xl items-center gap-1.5 px-3 py-0 md:h-18 md:gap-0 md:pl-3 md:pr-4">
