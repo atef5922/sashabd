@@ -14,8 +14,6 @@ import {
   getInteractiveFlatPanelBullets,
   getInteractiveFlatPanelChips,
   interactiveFlatPanelCatalog,
-  type InteractiveFlatPanelBrand,
-  type InteractiveFlatPanelItem,
 } from "./catalog";
 
 const BRAND = { maroon: "#FF6A00", maroonDark: "#E45700" };
@@ -91,6 +89,391 @@ const sizeGuides = [
   },
 ];
 
+const priceRows = [
+  { size: '65"', price: "\u09F3 2,30,000 - \u09F3 2,80,000", use: "Small classrooms, meeting rooms, reception and compact collaboration spaces" },
+  { size: '75"', price: "\u09F3 3,20,000 - \u09F3 3,80,000", use: "Standard classrooms and training rooms where back-row visibility matters" },
+  { size: '86"', price: "\u09F3 4,20,000 - \u09F3 5,00,000", use: "Large classrooms, coaching centers and boardrooms with deeper seating" },
+  { size: '98"', price: "\u09F3 6,80,000 - \u09F3 7,80,000", use: "Large training halls, lecture rooms and premium meeting spaces" },
+  { size: '110"', price: "\u09F3 8,50,000 - \u09F3 9,50,000", use: "Auditoriums and large venues where screen impact is a priority" },
+];
+
+const viewingDistanceRows = [
+  { distance: "Up to 2 m", size: '65"', room: "Small meeting rooms / compact classrooms" },
+  { distance: "2 - 3 m", size: '65" - 75"', room: "Standard classrooms / team rooms" },
+  { distance: "3 - 4 m", size: '75" - 86"', room: "Training rooms / larger classrooms" },
+  { distance: "4 - 5 m", size: '86" - 98"', room: "Large classrooms / seminar rooms" },
+  { distance: "5 m +", size: '98" - 110"', room: "Auditoriums / big halls" },
+];
+
+const boqChecklist = [
+  "Interactive flat panel model and size (Android platform, touch capability, speaker output and glass type).",
+  "Mounting option: wall mount or trolley stand, plus installation height planning.",
+  "Cabling and connectivity: HDMI/USB/LAN, power protection and clean cable management.",
+  "Optional OPS PC (Windows) when Office/Teams/Zoom workflow is required.",
+  "Delivery, professional installation, commissioning, user handover training and warranty terms.",
+];
+
+const compareCards = [
+  {
+    title: "Smart classroom use-case (school, college, university)",
+    desc: "Choose by seating depth, touch smoothness and classroom-friendly tools so lessons stay clear from the back row.",
+    bullets: [
+      'Choose size by seating depth: 65" for compact rooms, 75"-86" for typical classrooms, 96"+ for large halls.',
+      "Prioritize smooth writing: low touch latency, accurate palm rejection and durable anti-glare glass for bright rooms.",
+      "Confirm built-in tools: whiteboard, annotation, file playback (PDF/PPT/video), screen sharing and classroom-friendly shortcuts.",
+      "Plan the full package: wall mount/trolley, cabling, optional OPS PC, basic audio and installation + handover training.",
+    ],
+  },
+  {
+    title: "Meeting room & boardroom use-case (corporate)",
+    desc: "Focus on collaboration flow, switching speed and accessory compatibility for daily business use.",
+    bullets: [
+      "Decide Android-only vs Windows workflow: OPS PC matters if your team relies on Office, browser tools, Teams/Zoom and multiple windows.",
+      "Check collaboration features: wireless casting, multi-device screen share, annotation over live documents and presenter switching.",
+      "Look for professional visibility: 4K clarity, wide viewing angle, strong brightness and anti-reflection for office lighting.",
+      "Confirm integration: camera/speakerphone compatibility, HDMI/USB ports, LAN/Wi-Fi stability and a clean cable-management plan.",
+    ],
+  },
+  {
+    title: "What changes the final quotation",
+    desc: "Price changes with panel series, workflow setup and installation complexity, not only screen size.",
+    bullets: [
+      "Screen size and brand series (panel grade, glass, speaker output and chipset performance).",
+      "Android version/performance and whether OPS PC (Windows) is included, plus RAM/SSD configuration if applicable.",
+      "Mounting type (wall mount vs trolley), installation height, cable routing complexity and site floor level.",
+      "Support scope: delivery, installation, commissioning, user training, warranty terms and after-sales response commitment.",
+    ],
+  },
+  {
+    title: "Key features most buyers request",
+    desc: "Most buyers shortlist around visibility, writing feel, sharing speed and Windows readiness.",
+    bullets: [
+      "4K UHD panel with anti-glare glass for clear visibility under bright classroom/office lighting.",
+      "Multi-touch writing for teaching and collaboration (smooth pen feel + reliable palm rejection).",
+      "Wireless screen sharing from laptop/mobile, plus quick switching between presenters.",
+      "Android built-in for simple operation, with OPS PC option when a full Windows workflow is required.",
+    ],
+  },
+  {
+    title: "Accessories & setup (often included in BOQ)",
+    desc: "A practical quotation usually covers mounts, cabling and training so deployment stays smooth from day one.",
+    bullets: [
+      "Wall mount or floor trolley stand (based on room layout and mobility needs).",
+      "OPS PC (optional), HDMI/USB extensions, LAN cable planning and power protection.",
+      "Audio setup: use built-in speakers for small rooms, or integrate external audio for larger spaces.",
+      "On-site commissioning + user handover training so teachers/teams can start using it confidently.",
+    ],
+  },
+  {
+    title: "How we reduce purchase risk for procurement",
+    desc: "We align product, site and after-sales scope so procurement teams avoid model mismatch and missing items.",
+    bullets: [
+      "BOQ & tender support: specification mapping so your requirements match the model you receive.",
+      "Site-ready installation: clean cabling, correct mounting height and verification at handover.",
+      "Use-case based recommendation: sizing + workflow (Android/OPS) aligned with your daily usage, not just brochure specs.",
+      "After-sales continuity: guidance for app setup, accessories and operational stability post-installation.",
+    ],
+  },
+];
+
+const useCaseRows = [
+  { use: "Classrooms", size: '65" - 86"', focus: "4K clarity, smooth writing, whiteboard + annotation tools" },
+  { use: "Meeting rooms", size: '65" - 75"', focus: "Wireless sharing, quick presenter switching, clean cabling" },
+  { use: "Training centers", size: '75" - 98"', focus: "Wide visibility, multi-user touch, durable glass surface" },
+  { use: "Auditoriums & halls", size: '98" - 110"', focus: "Long-distance readability, high impact, stable installation" },
+  { use: "Hospitals & clinics", size: '65" - 86"', focus: "Clear visuals, quick annotation, easy daily operation" },
+  { use: "Reception/showrooms", size: '65" - 75"', focus: "Bright display, simple content playback, easy casting" },
+];
+
+const opsCards = [
+  {
+    badge: "Basic",
+    title: "OPS PC - Core i5 (Everyday)",
+    subtitle: "For standard classrooms and training rooms with common Office + browser usage.",
+    recommended: 'Recommended panel size: 65" - 75"',
+    image: "/images/Interactive%20flat%20panel/OPS-PC-basic.webp",
+    specs: ["Intel Core i5", "8GB RAM", "256GB SSD", "Windows 11 Pro"],
+  },
+  {
+    badge: "Standard",
+    title: "OPS PC - Core i5 (Smooth Multitask)",
+    subtitle: "For smart classrooms and training setups that multitask apps and content during sessions.",
+    recommended: 'Recommended panel size: 75" - 86"',
+    image: "/images/Interactive%20flat%20panel/OPS-PC-standard.webp",
+    specs: ["Intel Core i5", "16GB RAM", "512GB SSD", "Windows 11 Pro"],
+  },
+  {
+    badge: "Pro",
+    title: "OPS PC - Core i7 (Power User)",
+    subtitle: "For university labs, corporate boardrooms and heavier workloads with multiple windows and meetings.",
+    recommended: 'Recommended panel size: 86" - 110"',
+    image: "/images/Interactive%20flat%20panel/OPS-PC-pro.webp",
+    specs: ["Intel Core i7", "16GB - 32GB RAM", "512GB - 1TB SSD", "Windows 11 Pro"],
+  },
+];
+
+const benefitCards = [
+  {
+    title: "Clear 4K visibility",
+    desc: "Crisp text and sharp visuals help people follow content from the back row, improving readability in classrooms and meetings.",
+  },
+  {
+    title: "Natural writing and annotation",
+    desc: "Write, highlight and explain directly on-screen during lessons, trainings and presentations for diagrams and review sessions.",
+  },
+  {
+    title: "All-in-one daily workflow",
+    desc: "Built-in whiteboard tools, apps and speakers reduce dependency on extra devices and cut down switching time.",
+  },
+  {
+    title: "Faster sharing and switching",
+    desc: "Cast from laptop or mobile and switch presenters quickly, which is useful in multi-teacher or multi-speaker sessions.",
+  },
+  {
+    title: "Lower maintenance than projectors",
+    desc: "No lamp cycle and fewer calibration tasks compared with projector classrooms, so upkeep stays simpler.",
+  },
+  {
+    title: "Higher engagement and collaboration",
+    desc: "Multi-touch interaction supports group learning, brainstorming and team activities where people work together on one screen.",
+  },
+];
+
+const chooseCards = [
+  {
+    title: "Shortlisting checklist",
+    desc: "Use these points to narrow the right panel size, workflow and installation scope before asking for a quotation.",
+    bullets: [
+      "Confirm seating depth and content type (text-heavy teaching needs a larger size than video-only usage).",
+      'Pick a size: 65" for compact rooms, 75"-86" for most classrooms, 96"+ for larger halls.',
+      "Decide Android-only vs OPS PC (Windows) based on your apps (Office, browser tools, Teams/Zoom and multiple windows).",
+      "Check ports and connectivity: HDMI, USB, LAN/Wi-Fi, casting method and any camera/speakerphone integration.",
+      "Plan installation: wall mount vs trolley, cabling route, power protection and mounting height for comfortable use.",
+      "Evaluate service: commissioning, user training, warranty terms and after-sales response.",
+    ],
+  },
+  {
+    title: "What to share for an accurate quotation",
+    desc: "A quick room snapshot helps avoid under-sizing and makes our recommendation more practical from the first reply.",
+    bullets: [
+      "Room length-width and the farthest viewing distance",
+      "Use-case: classroom, meeting room, training, auditorium or reception",
+      "Preferred size (if you have a shortlist) and mounting type (wall/trolley)",
+      "Android-only vs OPS PC requirement and any app/workflow needs",
+      "Location and floor level for delivery and installation planning",
+    ],
+  },
+];
+
+const projectorAdvantageCards = [
+  {
+    title: "No lamp replacements and fewer consumables",
+    desc: "Projectors often need periodic lamp changes and ongoing cleaning. A flat panel reduces recurring consumable costs and downtime.",
+  },
+  {
+    title: "Clear visibility in bright rooms",
+    desc: "Panels keep text and color consistent even with ambient light, which helps classrooms with windows or bright offices.",
+  },
+  {
+    title: "No alignment and calibration hassle",
+    desc: "A fixed display removes keystone correction, focus drift and daily adjustment issues, so the screen stays ready.",
+  },
+  {
+    title: "Built-in touch and whiteboard workflow",
+    desc: "Write, annotate and save notes directly on the screen without extra boards, making collaboration simpler.",
+  },
+  {
+    title: "Simpler installation footprint",
+    desc: "Wall mounting or trolley deployment is often cleaner than projector throw planning and ceiling work.",
+  },
+  {
+    title: "More reliable sharing and switching",
+    desc: "Modern casting and HDMI/USB connections let presenters connect faster and switch devices with less friction.",
+  },
+];
+
+const whyChooseCards = [
+  {
+    title: "Use-case based recommendation",
+    desc: "We propose models based on room depth, audience distance and workflow (Android-only vs OPS PC) so the panel feels right in real use.",
+  },
+  {
+    title: "BOQ & specification support",
+    desc: "Share your requirement or tender spec and we map a suitable configuration to reduce mismatch risk.",
+  },
+  {
+    title: "Professional installation & commissioning",
+    desc: "Mounting height, clean cabling, connectivity checks and on-site commissioning are handled for stable performance from day one.",
+  },
+  {
+    title: "Training and handover",
+    desc: "We provide basic user guidance so whiteboard, annotation and screen sharing can be used confidently.",
+  },
+  {
+    title: "Warranty and after-sales continuity",
+    desc: "Clear warranty terms and practical support help troubleshooting, accessories and long-term operation stay manageable.",
+  },
+  {
+    title: "Nationwide delivery planning",
+    desc: "We support projects across Bangladesh with delivery coordination and installation planning based on site readiness.",
+  },
+];
+
+const buyerChecklistCards = [
+  {
+    title: "Room size and seating depth",
+    desc: "Room length/width and distance to the farthest viewer helps confirm 65/75/86/96/98/110 size.",
+  },
+  {
+    title: "Android-only vs Windows workflow",
+    desc: "Tell us whether you need OPS PC for Office/Teams/Zoom or Android-only is enough for daily use.",
+  },
+  {
+    title: "Mounting preference",
+    desc: "Wall mount or trolley-mounting affects installation scope, cabling and user comfort height.",
+  },
+  {
+    title: "Connectivity needs",
+    desc: "HDMI/USB count, LAN/WiFi readiness, casting expectations and any camera/speakerphone integration.",
+  },
+  {
+    title: "Installation location",
+    desc: "Floor level and site location helps plan cabling and manpower requirements.",
+  },
+  {
+    title: "Support expectations",
+    desc: "Training, handover, warranty and after-sales support preferences matter for long-term operational stability.",
+  },
+];
+
+function getParitySurface(index: number) {
+  return {
+    borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+    background:
+      index % 2 === 0
+        ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+        : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+  };
+}
+
+const SectionShell = ({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string;
+  subtitle?: string;
+  children: React.ReactNode;
+}) => (
+  <section className="mt-8 rounded-[24px] border bg-white p-4 md:mt-10 md:rounded-3xl md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
+    <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">{title}</h2>
+    {subtitle ? (
+      <MobileIntroText
+        teaser={subtitle}
+        className="mt-2"
+        teaserClassName="w-full leading-6"
+        expandedClassName="text-sm leading-7 text-slate-600"
+        desktopClassName="text-slate-600 leading-7"
+      >
+        <p className="text-slate-600 leading-7 text-justify">{subtitle}</p>
+      </MobileIntroText>
+    ) : null}
+    <div className="mt-5">{children}</div>
+  </section>
+);
+
+const MobileParityCardGrid = ({
+  items,
+}: {
+  items: Array<{ title: string; desc: string; bullets?: string[] }>;
+}) => (
+  <>
+    <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+      {items.map((item, index) => (
+        <article
+          key={item.title}
+          className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+          style={getParitySurface(index)}
+        >
+          <div className="text-[17px] font-extrabold leading-snug text-slate-900">{item.title}</div>
+          <p className="mt-2 text-[13px] leading-6 text-slate-700 text-justify">{item.desc}</p>
+          {item.bullets?.length ? (
+            <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
+              {item.bullets.map((line) => (
+                <li key={line} className="flex items-start gap-2">
+                  <span className="mt-1.5 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                  <span className="leading-6 text-justify">{line}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </article>
+      ))}
+    </div>
+
+    <div className="hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-3">
+      {items.map((item) => (
+        <article key={item.title} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}12` }}>
+          <div className="text-base font-extrabold text-slate-900">{item.title}</div>
+          <p className="mt-2 text-sm leading-7 text-slate-600 text-justify">{item.desc}</p>
+          {item.bullets?.length ? (
+            <ul className="mt-3 space-y-2 text-sm leading-7 text-slate-600">
+              {item.bullets.map((line) => (
+                <li key={line} className="flex gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 flex-none rounded-full" style={{ background: BRAND.maroon }} />
+                  <span className="text-justify">{line}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          <div className="mt-4 h-1 w-10 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
+        </article>
+      ))}
+    </div>
+  </>
+);
+
+const MobileExpandableCards = ({
+  summaryLabel,
+  items,
+}: {
+  summaryLabel: string;
+  items: Array<{ title: string; subtitle?: string; fields: Array<{ label: string; value: string }> }>;
+}) => (
+  <details className="group md:hidden">
+    <summary
+      className="list-none cursor-pointer rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900 [::-webkit-details-marker]:hidden"
+      style={{
+        borderColor: `${BRAND.maroon}14`,
+        background: "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)",
+      }}
+    >
+      {summaryLabel}
+    </summary>
+    <div className="mt-3 space-y-3">
+      {items.map((item, index) => (
+        <article key={item.title} className="overflow-hidden rounded-[14px] border" style={getParitySurface(index)}>
+          <div className="px-4 py-4">
+            <div className="text-[16px] font-extrabold leading-snug text-slate-900">{item.title}</div>
+            {item.subtitle ? <p className="mt-1 text-[12.5px] leading-6 text-slate-700 text-justify">{item.subtitle}</p> : null}
+            <div className="mt-3 overflow-hidden rounded-[12px] border border-white/70 bg-white/75">
+              {item.fields.map((field, fieldIndex) => (
+                <div
+                  key={`${item.title}-${field.label}`}
+                  className={`grid grid-cols-[96px_minmax(0,1fr)] gap-3 px-3 py-2.5 ${fieldIndex !== 0 ? "border-t border-slate-200/70" : ""}`}
+                >
+                  <div className="text-[11px] font-extrabold uppercase tracking-[0.04em] text-slate-500">{field.label}</div>
+                  <div className="text-[12.5px] leading-6 text-slate-700 text-justify">{field.value}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </details>
+);
+
 export default function InteractiveFlatPanelPage() {
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
   const faqJsonLd = {
@@ -102,21 +485,54 @@ export default function InteractiveFlatPanelPage() {
       acceptedAnswer: { "@type": "Answer", text: x.a },
     })),
   };
+  const mobileProductRows = Array.from({ length: Math.ceil(interactiveFlatPanelCatalog.length / 4) }, (_, index) =>
+    interactiveFlatPanelCatalog.slice(index * 4, index * 4 + 4)
+  );
+
+  const renderPanelCard = (panel: (typeof interactiveFlatPanelCatalog)[number]) => (
+    <ProductGridCard
+      key={panel.slug}
+      href={`/interactive-flat-panel/${panel.slug}/`}
+      title={panel.title}
+      borderColor={`${BRAND.maroon}12`}
+      accentColor={BRAND.maroon}
+      imageContainerClassName={undefined}
+      topLeftBadge={{ text: "Interactive Panel", tone: "light" }}
+      topRightBadge={{ text: `${getInteractiveFlatPanelBrandLabel(panel.brand)} - ${panel.sizeInch}"`, tone: "dark" }}
+      metaLines={[
+        { text: panel.priceLabel, className: "mt-1 text-sm font-semibold text-sky-700" },
+        { text: panel.subtitle, className: "mt-2 text-sm leading-7 text-slate-600 line-clamp-3" },
+      ]}
+      bullets={getInteractiveFlatPanelBullets(panel)}
+      chips={getInteractiveFlatPanelChips(panel)}
+      compactMobile
+      image={
+        <Image
+          src={panel.image}
+          alt={panel.title}
+          fill
+          sizes="(max-width: 1024px) 100vw, 25vw"
+          className="object-cover"
+        />
+      }
+      viewDetailsLabel="View details ->"
+    />
+  );
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-0 md:px-6">
+    <div className="interactive-flat-panel-page mx-auto w-full max-w-7xl px-3 pb-8 pt-0 md:px-6">
       <Breadcrumbs
         items={[
           homeBreadcrumb(),
           { href: "/interactive-flat-panel/", label: "Interactive Flat Panel", current: true },
         ]}
-        className="relative left-1/2 right-1/2 -mx-[50vw] mb-0 w-screen pt-0 text-sm text-slate-600"
+        className="relative left-1/2 right-1/2 -mx-[50vw] mb-0 hidden w-screen pt-0 text-sm text-slate-600 md:block"
         panelClassName="rounded-none border-x-0 border-t-0 px-4 py-3 shadow-none md:px-10"
         backButtonClassName="rounded-md"
       />
       <section
-        className="relative left-1/2 right-1/2 -mx-[50vw] w-screen overflow-hidden border-y bg-slate-950"
-        style={{ minHeight: "clamp(560px, calc(100svh - 64px), 780px)", borderColor: `${BRAND.maroon}12` }}
+        className="relative left-1/2 right-1/2 -mx-[50vw] min-h-[250px] w-screen overflow-hidden border-y bg-slate-950 md:min-h-[clamp(560px,calc(100svh-64px),780px)]"
+        style={{ borderColor: `${BRAND.maroon}12` }}
       >
         <div className="pointer-events-none absolute inset-0">
           <div
@@ -136,7 +552,7 @@ export default function InteractiveFlatPanelPage() {
           />
         </div>
 
-        <div className="relative mx-auto flex w-full max-w-7xl flex-col justify-center px-5 py-8 md:px-10 md:py-10">
+        <div className="relative mx-auto flex w-full max-w-7xl flex-col justify-center px-4 py-5 md:px-10 md:py-10">
           <div className="flex max-w-4xl flex-col gap-4">
             <div className="flex flex-wrap items-center gap-3">
               <span
@@ -147,7 +563,7 @@ export default function InteractiveFlatPanelPage() {
                 Control Systems - Bangladesh
               </span>
 
-              <nav className="flex flex-wrap items-center gap-2 text-xs font-semibold text-white/80">
+              <nav className="hidden flex-wrap items-center gap-2 text-xs font-semibold text-white/80 md:flex">
                 <Link href="/" className="hover:text-white">
                   Home
                 </Link>
@@ -199,7 +615,7 @@ export default function InteractiveFlatPanelPage() {
               </a>
             </div>
 
-            <div className="mt-8 grid gap-3 md:grid-cols-3">
+            <div className="mt-8 hidden gap-3 md:grid md:grid-cols-3">
               {[
                 { k: "Sizes", v: '65" / 75" / 86" / 96" / 98" / 110"' },
                 { k: "OS", v: "Android + OPS PC (optional)" },
@@ -219,117 +635,104 @@ export default function InteractiveFlatPanelPage() {
         </div>
       </section>
 
-      <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
-        <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Size Selection (Practical Guide)</h2>
-        <p className="mt-2 text-slate-600 leading-7 text-justify">
- The-best-interactive flat panel is the one that stays readable from the back row and fits your daily workflow.
-          Use the guide below, then share your room layout to validate sizing.
-        </p>
+      <SectionShell
+        title="Size Selection (Practical Guide)"
+        subtitle="The best interactive flat panel is the one that stays readable from the back row and fits your daily workflow. Use the guide below, then share your room layout to validate sizing."
+      >
+        <MobileParityCardGrid
+          items={sizeGuides.map((item) => ({
+            title: item.title,
+            desc: item.desc,
+          }))}
+        />
+      </SectionShell>
 
-        <div className="mt-6 grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {sizeGuides.map((x) => (
-            <div key={x.title} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}12` }}>
-              <div className="text-base font-extrabold text-slate-900">{x.title}</div>
-              <p className="mt-2 text-sm leading-7 text-slate-600 text-justify">{x.desc}</p>
-              <div className="mt-4 h-1 w-10 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
-            </div>
+      <section className="mt-8 rounded-[24px] border bg-white p-4 md:mt-10 md:rounded-3xl md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div className="min-w-0">
+            <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Interactive Flat Panel Models</h2>
+            <MobileIntroText
+              teaser="Popular brand and size combinations are listed below so you can shortlist by room fit, workflow and support scope."
+              className="mt-2"
+              teaserClassName="w-full leading-6"
+              expandedClassName="text-sm leading-7 text-slate-600"
+              desktopClassName="text-slate-600 leading-7"
+            >
+              <p className="text-slate-600 leading-7 text-justify">
+                Popular brand and size combinations are listed below so you can shortlist by room fit, workflow and support scope. For
+                procurement, focus on the full package: model, accessories, mounting method and installation support.
+              </p>
+            </MobileIntroText>
+          </div>
+          <div className="grid grid-cols-2 gap-2 md:mt-0 md:flex md:flex-nowrap">
+            <Link
+              href="/contact"
+              className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:min-h-[42px] md:rounded-xl md:px-4 md:py-2.5 md:text-sm"
+              style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+            >
+              Request Quotation -&gt;
+            </Link>
+            <a
+              href={wa}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md md:min-h-[42px] md:rounded-xl md:px-4 md:py-2.5 md:text-sm"
+            >
+              WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <div className="md:hidden">
+          {mobileProductRows.map((row, index) => (
+            <ResponsiveProductCarousel key={`mobile-ifp-row-${index}`} className={index === 0 ? "mt-6" : "mt-4"}>
+              {row.map((panel) => renderPanelCard(panel))}
+            </ResponsiveProductCarousel>
           ))}
         </div>
 
+        <div className="hidden md:block">
+          <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
+            {interactiveFlatPanelCatalog.map((panel) => renderPanelCard(panel))}
+          </ResponsiveProductCarousel>
+        </div>
       </section>
 
-      <section className="mt-10">
-        <div className="grid gap-2.5">
-          <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-            <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Interactive Flat Panel Models</h2>
-            <div className="mt-1 flex flex-nowrap items-center gap-2 md:mt-0 md:shrink-0">
-              <Link
-                href="/contact"
-                className="inline-flex min-h-[42px] items-center justify-center whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-                style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-              >
-                Request Quotation -&gt;
-              </Link>
-              <a
-                href={wa}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex min-h-[42px] items-center justify-center whitespace-nowrap rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md"
-              >
-                WhatsApp
-              </a>
-            </div>
-          </div>
-          <p className="hidden text-slate-600 leading-7 md:block md:text-[15px]">
-            Below are popular brand and size combinations. For procurement, focus on fit: room size, accessories, mounting method and support scope.
-          </p>
-        </div>
+      <SectionShell
+        title="Interactive Flat Panel Price List in Bangladesh"
+        subtitle="These are indicative price ranges by screen size to help you shortlist. Final quotation can vary by brand series, Android and OPS PC configuration, mounting type, installation scope and delivery location."
+      >
+        <MobileExpandableCards
+          summaryLabel="Tap To Expand Price List"
+          items={priceRows.map((row) => ({
+            title: `${row.size} Interactive Flat Panel`,
+            subtitle: row.use,
+            fields: [
+              { label: "Price", value: row.price },
+              { label: "Use", value: row.use },
+            ],
+          }))}
+        />
 
-        <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
-          {interactiveFlatPanelCatalog.map((p) => (
-            <ProductGridCard
-              key={p.slug}
-              href={`/interactive-flat-panel/${p.slug}/`}
-              title={p.title}
-              borderColor={`${BRAND.maroon}12`}
-              accentColor={BRAND.maroon}
-              imageContainerClassName={undefined}
-              topLeftBadge={{ text: "Interactive Panel", tone: "light" }}
-              topRightBadge={{ text: `${getInteractiveFlatPanelBrandLabel(p.brand)} - ${p.sizeInch}"`, tone: "dark" }}
-              metaLines={[
-                { text: p.priceLabel, className: "mt-1 text-sm font-semibold text-sky-700" },
-                { text: p.subtitle, className: "mt-2 text-sm leading-7 text-slate-600 line-clamp-3" },
-              ]}
-              bullets={getInteractiveFlatPanelBullets(p)}
-              chips={getInteractiveFlatPanelChips(p)}
-              compactMobile
-              image={
-                <Image
-                  src={p.image}
-                  alt={p.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 25vw"
-                  className="object-cover"
-                />
-              }
-              viewDetailsLabel="View details ->"
-            />
-          ))}
-        </ResponsiveProductCarousel>
-
-        <div className="mt-8 rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}12` }}>
-          <div className="text-base font-extrabold text-slate-900">Interactive Flat Panel Price List in Bangladesh</div>
-          <p className="mt-2 text-sm leading-7 text-slate-600 text-justify">
-            These are indicative price ranges by screen size to help you shortlist. Final quotation can vary by brand series, Android and OPS PC
-            configuration, mounting type, installation scope and delivery location.
-          </p>
-          <div className="mt-4">
-            <table className="w-full table-fixed text-left text-sm">
-              <thead>
-                <tr className="bg-white/60">
-                  <th className="w-[18%] px-4 py-3 align-top font-extrabold text-slate-900">Screen size</th>
-                  <th className="w-[30%] px-4 py-3 align-top font-extrabold text-slate-900">Indicative price (BDT)</th>
-                  <th className="w-[52%] px-4 py-3 align-top font-extrabold text-slate-900">Most common use</th>
+        <div className="hidden rounded-3xl border bg-slate-50 p-6 md:block" style={{ borderColor: `${BRAND.maroon}12` }}>
+          <table className="w-full table-fixed text-left text-sm">
+            <thead>
+              <tr className="bg-white/60">
+                <th className="w-[18%] px-4 py-3 align-top font-extrabold text-slate-900">Screen size</th>
+                <th className="w-[30%] px-4 py-3 align-top font-extrabold text-slate-900">Indicative price (BDT)</th>
+                <th className="w-[52%] px-4 py-3 align-top font-extrabold text-slate-900">Most common use</th>
+              </tr>
+            </thead>
+            <tbody>
+              {priceRows.map((row) => (
+                <tr key={row.size}>
+                  <td className="px-4 py-3 align-top font-semibold text-slate-900 break-words">{row.size}</td>
+                  <td className="px-4 py-3 align-top font-semibold text-slate-700 break-words">{row.price}</td>
+                  <td className="px-4 py-3 align-top text-slate-700 break-words">{row.use}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {[
-                  { s: '65"', p: "\u09F3 2,30,000 - \u09F3 2,80,000", u: "Small classrooms, meeting rooms, reception and compact collaboration spaces" },
-                  { s: '75"', p: "\u09F3 3,20,000 - \u09F3 3,80,000", u: "Standard classrooms and training rooms where back-row visibility matters" },
-                  { s: '86"', p: "\u09F3 4,20,000 - \u09F3 5,00,000", u: "Large classrooms, coaching centers and boardrooms with deeper seating" },
-                  { s: '98"', p: "\u09F3 6,80,000 - \u09F3 7,80,000", u: "Large training halls, lecture rooms and premium meeting spaces" },
-                  { s: '110"', p: "\u09F3 8,50,000 - \u09F3 9,50,000", u: "Auditoriums and large venues where screen impact is a priority" },
-                ].map((row) => (
-                  <tr key={row.s}>
-                    <td className="px-4 py-3 align-top font-semibold text-slate-900 break-words">{row.s}</td>
-                    <td className="px-4 py-3 align-top font-semibold text-slate-700 break-words">{row.p}</td>
-                    <td className="px-4 py-3 align-top text-slate-700 break-words">{row.u}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
+              ))}
+            </tbody>
+          </table>
           <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold text-slate-600">
             <span className="rounded-full border bg-white px-3 py-1" style={{ borderColor: `${BRAND.maroon}12` }}>
               Nationwide delivery available
@@ -343,12 +746,40 @@ export default function InteractiveFlatPanelPage() {
           </div>
         </div>
 
-        <div className="mt-8 grid gap-4 lg:grid-cols-2">
+        <div className="mt-5 space-y-4 md:hidden">
+          <MobileExpandableCards
+            summaryLabel="Tap To Expand Viewing Distance Guide"
+            items={viewingDistanceRows.map((row) => ({
+              title: row.distance,
+              subtitle: row.room,
+              fields: [
+                { label: "Size", value: row.size },
+                { label: "Room", value: row.room },
+              ],
+            }))}
+          />
+
+          <article className="rounded-[14px] border px-4 py-4" style={getParitySurface(0)}>
+            <div className="text-[16px] font-extrabold leading-snug text-slate-900">{"What's Included in a BOQ-Ready Quote"}</div>
+            <p className="mt-2 text-[12.5px] leading-6 text-slate-700 text-justify">
+              Most projects are quoted as a complete solution so comparisons stay fair across vendors.
+            </p>
+            <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
+              {boqChecklist.map((line) => (
+                <li key={line} className="flex items-start gap-2">
+                  <span className="mt-1.5 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                  <span className="leading-6 text-justify">{line}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        </div>
+
+        <div className="mt-6 hidden gap-4 lg:grid-cols-2 md:grid">
           <div className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}12` }}>
             <div className="text-base font-extrabold text-slate-900">Screen Size by Viewing Distance</div>
             <p className="mt-2 text-sm leading-7 text-slate-600 text-justify">
-              Use this quick guide when the farthest seat matters (classrooms, trainings and boardrooms). For precise sizing, share your
-              room layout and seating depth.
+              Use this quick guide when the farthest seat matters. For precise sizing, share your room layout and seating depth.
             </p>
             <div className="mt-4">
               <table className="w-full table-fixed text-left text-sm">
@@ -360,17 +791,11 @@ export default function InteractiveFlatPanelPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {[
-                    { d: "Up to 2 m", s: '65"', r: "Small meeting rooms / compact classrooms" },
-                    { d: "2 - 3 m", s: '65" - 75"', r: "Standard classrooms / team rooms" },
-                    { d: "3 - 4 m", s: '75" - 86"', r: "Training rooms / larger classrooms" },
-                    { d: "4 - 5 m", s: '86" - 98"', r: "Large classrooms / seminar rooms" },
-                    { d: "5 m +", s: '98" - 110"', r: "Auditoriums / big halls" },
-                  ].map((row) => (
-                    <tr key={row.d}>
-                      <td className="px-4 py-3 align-top font-semibold text-slate-900 break-words">{row.d}</td>
-                      <td className="px-4 py-3 align-top text-slate-700 break-words">{row.s}</td>
-                      <td className="px-4 py-3 align-top text-slate-700 break-words">{row.r}</td>
+                  {viewingDistanceRows.map((row) => (
+                    <tr key={row.distance}>
+                      <td className="px-4 py-3 align-top font-semibold text-slate-900 break-words">{row.distance}</td>
+                      <td className="px-4 py-3 align-top text-slate-700 break-words">{row.size}</td>
+                      <td className="px-4 py-3 align-top text-slate-700 break-words">{row.room}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -385,13 +810,7 @@ export default function InteractiveFlatPanelPage() {
               interactive flat panel price in Bangladesh across vendors.
             </p>
             <ul className="mt-3 space-y-2 text-sm leading-7 text-slate-600">
-              {[
-                "Interactive flat panel model and size (Android platform, touch capability, speaker output and glass type).",
-                "Mounting option: wall mount or trolley stand, plus installation height planning.",
-                "Cabling and connectivity: HDMI/USB/LAN, power protection and clean cable management.",
-                "Optional OPS PC (Windows) when Office/Teams/Zoom workflow is required.",
-                "Delivery, professional installation, commissioning, user handover training and warranty terms.",
-              ].map((line) => (
+              {boqChecklist.map((line) => (
                 <li key={line} className="flex gap-2">
                   <span className="mt-2 h-1.5 w-1.5 flex-none rounded-full" style={{ background: BRAND.maroon }} />
                   <span className="text-justify">{line}</span>
@@ -401,219 +820,143 @@ export default function InteractiveFlatPanelPage() {
             <div className="mt-5 h-1 w-10 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
           </div>
         </div>
-      </section>
+      </SectionShell>
 
-      <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
-        <div className="grid gap-2.5">
-          <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-            <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">
-              Interactive Flat Panel in Bangladesh: What to Compare
-            </h2>
-            <div className="mt-1 flex flex-nowrap items-center gap-2 md:mt-0 md:shrink-0">
-              <Link
-                href="/contact"
-                className="inline-flex min-h-[42px] items-center justify-center whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-                style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-              >
-                Get a BOQ-ready quote
-              </Link>
-              <a
-                href={wa}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex min-h-[42px] items-center justify-center whitespace-nowrap rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md"
-              >
-                WhatsApp quick help
-              </a>
-            </div>
-          </div>
-          <p className="text-[14px] leading-6 tracking-[-0.01em] text-slate-600 md:text-[14px]">
-            If you are comparing interactive flat panel price in Bangladesh, focus on project fit - not just a single unit price.
-            Two panels with the same screen size can perform very differently in daily smart classroom or meeting-room use depending on
-            touch response, Android performance, glass quality, OPS PC readiness, accessories and after-sales{"\u00A0"}support.
-          </p>
+      <SectionShell
+        title="Interactive Flat Panel in Bangladesh: What to Compare"
+        subtitle="If you are comparing interactive flat panel price in Bangladesh, focus on project fit, not only a single unit price. Two same-size panels can perform very differently based on touch response, Android performance, glass quality, OPS PC readiness, accessories and after-sales support."
+      >
+        <div className="grid grid-cols-2 gap-2 md:mb-6 md:flex md:flex-nowrap">
+          <Link
+            href="/contact"
+            className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:min-h-[42px] md:rounded-xl md:px-4 md:py-2.5 md:text-sm"
+            style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+          >
+            Get a BOQ-ready quote
+          </Link>
+          <a
+            href={wa}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md md:min-h-[42px] md:rounded-xl md:px-4 md:py-2.5 md:text-sm"
+          >
+            WhatsApp quick help
+          </a>
         </div>
+        <MobileParityCardGrid items={compareCards} />
+      </SectionShell>
 
-        <div className="mt-6 grid gap-4 lg:grid-cols-2">
-          {[
-            {
-              t: "Smart classroom use-case (school, college, university)",
-              d: [
-                'Choose size by seating depth: 65" for compact rooms, 75"-86" for typical classrooms, 96"+ for large halls.',
-                "Prioritize smooth writing: low touch latency, accurate palm rejection and durable anti-glare glass for bright rooms.",
-                "Confirm built-in tools: whiteboard, annotation, file playback (PDF/PPT/video), screen sharing and classroom-friendly shortcuts.",
-                "Plan the full package: wall mount/trolley, cabling, optional OPS PC, basic audio and installation + handover training.",
-              ],
-            },
-            {
-              t: "Meeting room & boardroom use-case (corporate)",
-              d: [
-                "Decide Android-only vs Windows workflow: OPS PC matters if your team relies on Office, browser tools, Teams/Zoom and multiple windows.",
-                "Check collaboration features: wireless casting, multi-device screen share, annotation over live documents and presenter switching.",
-                "Look for professional visibility: 4K clarity, wide viewing angle, strong brightness and anti-reflection for office lighting.",
-                "Confirm integration: camera/speakerphone compatibility, HDMI/USB ports, LAN/Wi-Fi stability and a clean cable-management plan.",
-              ],
-            },
-            {
-              t: "What changes the final quotation",
-              d: [
-                "Screen size and brand series (panel grade, glass, speaker output and chipset performance).",
-                "Android version/performance and whether OPS PC (Windows) is included, plus RAM/SSD configuration if applicable.",
-                "Mounting type (wall mount vs trolley), installation height, cable routing complexity and site floor level.",
-                "Support scope: delivery, installation, commissioning, user training, warranty terms and after-sales response commitment.",
-              ],
-            },
-            {
-              t: "Key features most buyers request",
-              d: [
-                "4K UHD panel with anti-glare glass for clear visibility under bright classroom/office lighting.",
-                "Multi-touch writing for teaching and collaboration (smooth pen feel + reliable palm rejection).",
-                "Wireless screen sharing from laptop/mobile, plus quick switching between presenters.",
-                "Android built-in for simple operation, with OPS PC option when a full Windows workflow is required.",
-              ],
-            },
-            {
-              t: "Accessories & setup (often included in BOQ)",
-              d: [
-                "Wall mount or floor trolley stand (based on room layout and mobility needs).",
-                "OPS PC (optional), HDMI/USB extensions, LAN cable planning and power protection.",
-                "Audio setup: use built-in speakers for small rooms, or integrate external audio for larger spaces.",
-                "On-site commissioning + user handover training so teachers/teams can start using it confidently.",
-              ],
-            },
-            {
-              t: "How we reduce purchase risk for procurement",
-              d: [
-                "BOQ & tender support: specification mapping so your requirements match the model you receive.",
-                "Site-ready installation: clean cabling, correct mounting height and verification at handover.",
-                "Use-case based recommendation: sizing + workflow (Android/OPS) aligned with your daily usage, not just brochure specs.",
-                "After-sales continuity: guidance for app setup, accessories and operational stability post-installation.",
-              ],
-            },
-          ].map((x) => (
-            <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}12` }}>
-              <div className="text-base font-extrabold text-slate-900">{x.t}</div>
-              <ul className="mt-3 space-y-2 text-sm leading-7 text-slate-600">
-                {x.d.map((line) => (
-                  <li key={line} className="flex gap-2">
-                    <span className="mt-2 h-1.5 w-1.5 flex-none rounded-full" style={{ background: BRAND.maroon }} />
-                    <span className="text-justify">{line}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-5 h-1 w-10 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
-            </div>
+      <SectionShell
+        title="Interactive Flat Panel Use-Case Selection Guide"
+        subtitle="Shortlist the right interactive flat panel size by environment so your BOQ stays cleaner and you avoid under-sizing or over-spending."
+      >
+        <MobileExpandableCards
+          summaryLabel="Tap To Expand Use-Case Guide"
+          items={useCaseRows.map((row) => ({
+            title: row.use,
+            subtitle: row.focus,
+            fields: [
+              { label: "Size", value: row.size },
+              { label: "Focus", value: row.focus },
+            ],
+          }))}
+        />
+
+        <div className="hidden rounded-3xl border bg-slate-50 p-6 md:block" style={{ borderColor: `${BRAND.maroon}12` }}>
+          <table className="w-full table-fixed text-left text-sm">
+            <thead>
+              <tr className="bg-white/60">
+                <th className="w-[28%] px-4 py-3 align-top font-extrabold text-slate-900">Use case</th>
+                <th className="w-[20%] px-4 py-3 align-top font-extrabold text-slate-900">Recommended size</th>
+                <th className="w-[52%] px-4 py-3 align-top font-extrabold text-slate-900">Key focus</th>
+              </tr>
+            </thead>
+            <tbody>
+              {useCaseRows.map((row) => (
+                <tr key={row.use}>
+                  <td className="px-4 py-3 align-top font-semibold text-slate-900 break-words">{row.use}</td>
+                  <td className="px-4 py-3 align-top text-slate-700 break-words">{row.size}</td>
+                  <td className="px-4 py-3 align-top text-slate-700 break-words">{row.focus}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </SectionShell>
+
+      <SectionShell
+        title="Optional OPS PC Module for Interactive Flat Panel"
+        subtitle="If your team needs a full Windows workflow with Office apps, browser tools, Teams or heavier software, add an OPS PC module inside the interactive flat panel and choose the configuration by workload and room type."
+      >
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {opsCards.map((card, index) => (
+            <article key={card.title} className="w-[89%] shrink-0 snap-start overflow-hidden rounded-[14px] border" style={getParitySurface(index)}>
+              <div className="relative aspect-[16/10] w-full bg-white">
+                <Image src={card.image} alt={card.title} fill sizes="(max-width: 768px) 90vw, 33vw" className="object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-white/0 to-slate-900/15" />
+                <div className="absolute left-3 top-3 rounded-full border border-white/60 bg-white/90 px-3 py-1 text-[11px] font-extrabold text-slate-900">
+                  {card.badge}
+                </div>
+              </div>
+              <div className="px-4 py-4">
+                <div className="text-[16px] font-extrabold leading-snug text-slate-900">{card.title}</div>
+                <p className="mt-1 text-[12.5px] leading-6 text-slate-700 text-justify">{card.subtitle}</p>
+                <div className="mt-3 text-[11px] font-extrabold uppercase tracking-[0.04em] text-slate-500">{card.recommended}</div>
+                <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
+                  {card.specs.map((spec) => (
+                    <li key={spec} className="flex items-start gap-2">
+                      <span className="mt-1.5 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                      <span className="leading-6">{spec}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-4 grid grid-cols-2 gap-2">
+                  <Link
+                    href="/contact"
+                    className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+                    style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+                  >
+                    Get quotation
+                  </Link>
+                  <a
+                    href={wa}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+                  >
+                    WhatsApp
+                  </a>
+                </div>
+              </div>
+            </article>
           ))}
         </div>
-      </section>
 
-      <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
-        <div className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}12` }}>
-          <div className="text-base font-extrabold text-slate-900">Interactive Flat Panel Use-Case Selection Guide</div>
-          <p className="mt-2 text-sm leading-7 text-slate-600 text-justify">
-            Shortlist the right interactive flat panel size by environment. This helps you build a cleaner BOQ and avoid under-sizing (visibility
-            issues) or over-sizing (unnecessary cost).
-          </p>
-          <div className="mt-4">
-            <table className="w-full table-fixed text-left text-sm">
-              <thead>
-                <tr className="bg-white/60">
-                  <th className="w-[28%] px-4 py-3 align-top font-extrabold text-slate-900">Use case</th>
-                  <th className="w-[20%] px-4 py-3 align-top font-extrabold text-slate-900">Recommended size</th>
-                  <th className="w-[52%] px-4 py-3 align-top font-extrabold text-slate-900">Key focus</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { use: "Classrooms", size: '65" - 86"', focus: "4K clarity, smooth writing, whiteboard + annotation tools" },
-                  { use: "Meeting rooms", size: '65" - 75"', focus: "Wireless sharing, quick presenter switching, clean cabling" },
-                  { use: "Training centers", size: '75" - 98"', focus: "Wide visibility, multi-user touch, durable glass surface" },
-                  { use: "Auditoriums & halls", size: '98" - 110"', focus: "Long-distance readability, high impact, stable installation" },
-                  { use: "Hospitals & clinics", size: '65" - 86"', focus: "Clear visuals, quick annotation, easy daily operation" },
-                  { use: "Reception/showrooms", size: '65" - 75"', focus: "Bright display, simple content playback, easy casting" },
-                ].map((row) => (
-                  <tr key={row.use}>
-                    <td className="px-4 py-3 align-top font-semibold text-slate-900 break-words">{row.use}</td>
-                    <td className="px-4 py-3 align-top text-slate-700 break-words">{row.size}</td>
-                    <td className="px-4 py-3 align-top text-slate-700 break-words">{row.focus}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
-        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-          <div>
-            <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">
-              Optional OPS PC Module for Interactive Flat Panel
-            </h2>
-            <p className="mt-2 text-slate-600 leading-7 text-justify [text-align-last:justify]">
-              If your team needs a full Windows workflow (Office apps, browser tools, Teams/Zoom and heavier software), add an OPS PC module
-              inside the interactive flat panel. Choose a configuration based on daily workload and room type, then request a quotation for the
-              latest availability and package pricing.
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {[
-            {
-              badge: "Basic",
-              title: "OPS PC - Core i5 (Everyday)",
-              subtitle: "For standard classrooms and training rooms with common Office + browser usage.",
-              recommended: 'Recommended panel size: 65" - 75"',
-              image: "/images/Interactive%20flat%20panel/OPS-PC-basic.webp",
-              specs: ["Intel Core i5", "8GB RAM", "256GB SSD", "Windows 11 Pro"],
-            },
-            {
-              badge: "Standard",
-              title: "OPS PC - Core i5 (Smooth Multitask)",
-              subtitle: "For smart classrooms and training setups that multitask apps and content during sessions.",
-              recommended: 'Recommended panel size: 75" - 86"',
-              image: "/images/Interactive%20flat%20panel/OPS-PC-standard.webp",
-              specs: ["Intel Core i5", "16GB RAM", "512GB SSD", "Windows 11 Pro"],
-            },
-            {
-              badge: "Pro",
-              title: "OPS PC - Core i7 (Power User)",
-              subtitle: "For university labs, corporate boardrooms and heavier workloads with multiple windows and meetings.",
-              recommended: 'Recommended panel size: 86" - 110"',
-              image: "/images/Interactive%20flat%20panel/OPS-PC-pro.webp",
-              specs: ["Intel Core i7", "16GB - 32GB RAM", "512GB - 1TB SSD", "Windows 11 Pro"],
-            },
-          ].map((x) => (
+        <div className="hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-3">
+          {opsCards.map((card) => (
             <div
-              key={x.title}
+              key={card.title}
               className="overflow-hidden rounded-3xl border bg-slate-50 shadow-sm"
               style={{ borderColor: `${BRAND.maroon}12` }}
             >
               <div className="relative aspect-[16/10] w-full bg-white">
-                <Image
-                  src={x.image ?? "/images/hero.webp"}
-                  alt={x.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 33vw"
-                  className="object-cover"
-                />
+                <Image src={card.image} alt={card.title} fill sizes="(max-width: 1024px) 100vw, 33vw" className="object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-white/0 to-slate-900/20" />
                 <div className="absolute left-4 top-4 rounded-full border bg-white/90 px-3 py-1 text-xs font-extrabold text-slate-900 backdrop-blur">
-                  {x.badge}
+                  {card.badge}
                 </div>
               </div>
 
               <div className="p-6">
-                <div className="text-base font-extrabold text-slate-900">{x.title}</div>
-                <div className="mt-1 text-sm font-semibold text-slate-600">{x.subtitle}</div>
-                <div className="mt-3 text-xs font-bold text-slate-700">{x.recommended}</div>
+                <div className="text-base font-extrabold text-slate-900">{card.title}</div>
+                <div className="mt-1 text-sm font-semibold text-slate-600">{card.subtitle}</div>
+                <div className="mt-3 text-xs font-bold text-slate-700">{card.recommended}</div>
 
                 <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-700">
-                  {x.specs.map((s) => (
-                    <li key={s} className="flex gap-2">
+                  {card.specs.map((spec) => (
+                    <li key={spec} className="flex gap-2">
                       <span className="mt-2 h-1.5 w-1.5 flex-none rounded-full" style={{ background: BRAND.maroon }} />
-                      <span>{s}</span>
+                      <span>{spec}</span>
                     </li>
                   ))}
                 </ul>
@@ -639,194 +982,35 @@ export default function InteractiveFlatPanelPage() {
             </div>
           ))}
         </div>
-      </section>
+      </SectionShell>
 
-      <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
-        <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Benefits of Interactive Smart Screen</h2>
-        <p className="mt-2 text-slate-600 leading-7 text-justify">
-          An interactive smart screen can replace a projector + whiteboard setup and make daily teaching and collaboration simpler. The biggest
-          advantage is consistency: clear visuals, smooth writing and quick sharing without lamp replacements or frequent alignment issues.
-        </p>
+      <SectionShell
+        title="Benefits of Interactive Smart Screen"
+        subtitle="An interactive smart screen can replace a projector plus whiteboard setup and make daily teaching and collaboration simpler with clearer visuals, smooth writing and quick sharing."
+      >
+        <MobileParityCardGrid items={benefitCards} />
+      </SectionShell>
 
-        <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {[
-            {
-              t: "Clear 4K visibility",
-              d: "Crisp text and sharp visuals help people follow content from the back row, improving readability in classrooms and meetings.",
-            },
-            {
-              t: "Natural writing and annotation",
-              d: "Write, highlight and explain directly on-screen during lessons, trainings and presentations - great for diagrams and review sessions.",
-            },
-            {
-              t: "All-in-one daily workflow",
-              d: "Built-in whiteboard tools, apps and speakers reduce dependency on extra devices and cut down switching time.",
-            },
-            {
-              t: "Faster sharing and switching",
-              d: "Cast from laptop or mobile and switch presenters quickly, which is useful in multi-teacher or multi-speaker sessions.",
-            },
-            {
-              t: "Lower maintenance than projectors",
-              d: "No lamp cycle and fewer calibration tasks compared with projector classrooms.",
-            },
-            {
-              t: "Higher engagement and collaboration",
-              d: "Multi-touch interaction supports group learning, brainstorming and team activities where people work together on one screen.",
-            },
-          ].map((x) => (
-            <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}12` }}>
-              <div className="text-base font-extrabold text-slate-900">{x.t}</div>
-              <p className="mt-2 text-sm leading-7 text-slate-600 text-justify">{x.d}</p>
-              <div className="mt-4 h-1 w-10 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
-            </div>
-          ))}
-        </div>
-      </section>
+      <SectionShell
+        title="How to Choose the Right Interactive Flat Panel Display"
+        subtitle="The best model depends on viewing distance, daily usage and connectivity needs. Use the checklist below to shortlist options, then share your room details for a BOQ-ready recommendation."
+      >
+        <MobileParityCardGrid items={chooseCards} />
+      </SectionShell>
 
-      <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
-        <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">How to Choose the Right Interactive Flat Panel Display</h2>
-        <p className="mt-2 text-slate-600 leading-7 text-justify">
-          The best model depends on viewing distance, daily usage and connectivity needs. Use the checklist below to shortlist options, then share
-          your room details for a BOQ-ready recommendation.
-        </p>
+      <SectionShell
+        title="Advantages of Interactive Flat Panel Over Projectors"
+        subtitle="Both setups can be used for teaching and presentations, but interactive flat panels usually deliver more consistent picture quality, faster day-to-day use and fewer maintenance tasks."
+      >
+        <MobileParityCardGrid items={projectorAdvantageCards} />
+      </SectionShell>
 
-        <div className="mt-6 grid gap-4 lg:grid-cols-2">
-          <div className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}12` }}>
-            <div className="text-base font-extrabold text-slate-900">Shortlisting checklist</div>
-            <ul className="mt-3 space-y-2 text-sm leading-7 text-slate-600">
-              {[
-                "Confirm seating depth and content type (text-heavy teaching needs a larger size than video-only usage).",
-                'Pick a size: 65" for compact rooms, 75"-86" for most classrooms, 96"+ for larger halls.',
-                "Decide Android-only vs OPS PC (Windows) based on your apps (Office, browser tools, Teams/Zoom and multiple windows).",
-                "Check ports and connectivity: HDMI, USB, LAN/Wi-Fi, casting method and any camera/speakerphone integration.",
-                "Plan installation: wall mount vs trolley, cabling route, power protection and mounting height for comfortable use.",
-                "Evaluate service: commissioning, user training, warranty terms and after-sales response.",
-              ].map((line) => (
-                <li key={line} className="flex gap-2">
-                  <span className="mt-2 h-1.5 w-1.5 flex-none rounded-full" style={{ background: BRAND.maroon }} />
-                  <span className="text-justify">{line}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-5 h-1 w-10 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
-          </div>
-
-          <div className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}12` }}>
-            <div className="text-base font-extrabold text-slate-900">What to share for an accurate quotation</div>
-            <p className="mt-2 text-sm leading-7 text-slate-600 text-justify">
-              A quick room snapshot makes recommendations more accurate and helps avoid under-sizing. If you message us, include:
-            </p>
-            <ul className="mt-3 space-y-2 text-sm leading-7 text-slate-600">
-              {[
- "Room length-width and the farthest viewing distance",
-                "Use-case: classroom, meeting room, training, auditorium or reception",
-                "Preferred size (if you have a shortlist) and mounting type (wall/trolley)",
-                "Android-only vs OPS PC requirement and any app/workflow needs",
-                "Location and floor level for delivery and installation planning",
-              ].map((line) => (
-                <li key={line} className="flex gap-2">
-                  <span className="mt-2 h-1.5 w-1.5 flex-none rounded-full" style={{ background: BRAND.maroon }} />
-                  <span className="text-justify">{line}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-5 h-1 w-10 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
-          </div>
-        </div>
-      </section>
-
-      <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
-        <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">
-          Advantages of Interactive Flat Panel Over Projectors
-        </h2>
-        <p className="mt-2 text-slate-600 leading-7 text-justify">
-          Both setups can be used for teaching and presentations, but interactive flat panels generally offer more consistent picture quality,
-          faster day-to-day use and fewer maintenance tasks. Here are the practical differences most schools and offices notice after switching.
-        </p>
-
-        <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {[
-            {
-              t: "No lamp replacements and fewer consumables",
-              d: "Projectors often need periodic lamp changes and ongoing cleaning. A flat panel reduces recurring consumable costs and the downtime that comes with it.",
-            },
-            {
-              t: "Clear visibility in bright rooms",
-              d: "Panels keep text and color consistent even with ambient light. This is useful for classrooms with windows or training rooms that cannot be fully darkened.",
-            },
-            {
-              t: "No alignment and calibration hassle",
-              d: "A fixed display removes keystone correction, focus drift and misalignment over time, so the screen stays ready without daily adjustments.",
-            },
-            {
-              t: "Built-in touch and whiteboard workflow",
-              d: "Write, annotate and save notes directly on the screen. It supports interactive lessons, quick reviews and collaborative brainstorming without extra boards.",
-            },
-            {
-              t: "Simpler installation footprint",
-              d: "No ceiling mounting and long throw-distance planning in many rooms. Wall mounting or a trolley keeps cabling cleaner and service access easier.",
-            },
-            {
-              t: "More reliable sharing and switching",
-              d: "With modern casting and HDMI/USB options, presenters can connect quickly and switch devices smoothly during meetings and multi-teacher sessions.",
-            },
-          ].map((x) => (
-            <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}12` }}>
-              <div className="text-base font-extrabold text-slate-900">{x.t}</div>
-              <p className="mt-2 text-sm leading-7 text-slate-600 text-justify">{x.d}</p>
-              <div className="mt-4 h-1 w-10 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
-        <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">
-          Why Choose Sasha Corporation for Interactive Flat Panel
-        </h2>
-        <p className="mt-2 text-slate-600 leading-7 text-justify">
-          {
-            "Buying an interactive flat panel is not only a product decision - it's an installation and daily-usage decision. We help schools, training centers and businesses choose the right size, plan accessories and deliver a BOQ-ready quotation with professional setup and after-sales support."
-          }
-        </p>
-
-        <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {[
-            {
-              t: "Use-case based recommendation",
-              d: "We propose models based on room depth, audience distance and workflow (Android-only vs OPS PC) so the panel feels right in real use.",
-            },
-            {
-              t: "BOQ & specification support",
-              d: "Share your requirement or tender spec and we map a suitable configuration (size, accessories and installation scope) to reduce mismatch risk.",
-            },
-            {
-              t: "Professional installation & commissioning",
-              d: "Mounting height, clean cabling, connectivity checks and on-site commissioning are handled for stable performance from day one.",
-            },
-            {
-              t: "Training and handover",
-              d: "We provide basic user guidance for teachers and teams so whiteboard, annotation and screen sharing can be used confidently.",
-            },
-            {
-              t: "Warranty and after-sales continuity",
-              d: "Clear warranty terms and practical support for troubleshooting, accessories and long-term operation.",
-            },
-            {
-              t: "Nationwide delivery planning",
-              d: "We support projects across Bangladesh with delivery coordination and installation planning based on site readiness.",
-            },
-          ].map((x) => (
-            <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}12` }}>
-              <div className="text-base font-extrabold text-slate-900">{x.t}</div>
-              <p className="mt-2 text-sm leading-7 text-slate-600 text-justify">{x.d}</p>
-              <div className="mt-4 h-1 w-10 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-6 flex flex-wrap gap-2">
+      <SectionShell
+        title="Why Choose Sasha Corporation for Interactive Flat Panel"
+        subtitle="Buying an interactive flat panel is not only a product decision. It is also an installation and daily-usage decision, so we help schools, training centers and businesses choose the right size, plan accessories and receive a BOQ-ready quotation with setup and after-sales support."
+      >
+        <MobileParityCardGrid items={whyChooseCards} />
+        <div className="mt-6 hidden flex-wrap gap-2 md:flex">
           <span
             className="rounded-full border bg-slate-50 px-4 py-2 text-xs font-semibold text-slate-700"
             style={{ borderColor: `${BRAND.maroon}12` }}
@@ -840,70 +1024,19 @@ export default function InteractiveFlatPanelPage() {
             Delivery + installation packages available
           </span>
         </div>
-      </section>
+      </SectionShell>
 
-      <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
-        <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Buyer Checklist for Faster Quotation</h2>
-        <p className="mt-2 text-slate-600 leading-7 text-justify">
-          Share the items below and we can respond with a clearer BOQ and a more accurate price range.
-        </p>
+      <SectionShell
+        title="Buyer Checklist for Faster Quotation"
+        subtitle="Share the items below and we can respond with a clearer BOQ and a more accurate price range."
+      >
+        <MobileParityCardGrid items={buyerChecklistCards} />
+      </SectionShell>
 
-        <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {[
-            {
-              t: "Room size and seating depth",
-              d: "Room length/width and distance to the farthest viewer helps confirm 65/75/86/96/98/110 size.",
-            },
-            {
-              t: "Android-only vs Windows workflow",
-              d: "Tell us whether you need OPS PC for Office/Teams/Zoom or Android-only is enough for daily use.",
-            },
-            {
-              t: "Mounting preference",
- d: "Wall mount or trolley-mounting affects installation scope, cabling and user comfort height.",
-            },
-            {
-              t: "Connectivity needs",
-              d: "HDMI/USB count, LAN/WiFi readiness, casting expectations and any camera/speakerphone integration.",
-            },
-            {
-              t: "Installation location",
-              d: "Floor level and site location helps plan cabling and manpower requirements.",
-            },
-            {
-              t: "Support expectations",
-              d: "Training, handover, warranty and after-sales support preferences for long-term operational stability.",
-            },
-          ].map((x) => (
-            <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}12` }}>
-              <div className="text-base font-extrabold text-slate-900">{x.t}</div>
-              <p className="mt-2 text-sm leading-7 text-slate-600 text-justify">{x.d}</p>
-              <div className="mt-4 h-1 w-10 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
-        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-          <div>
-            <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">FAQ</h2>
-            <p className="mt-2 text-slate-600 leading-7 text-justify">
-              Quick answers about interactive flat panel selection, OPS PC requirement and installation scope in Bangladesh.
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-5">
-          <FaqAccordion
-            accent={BRAND.maroon}
-            items={faqs}
-            density="compact"
-          />
-        </div>
-
+      <SectionShell title="FAQ" subtitle="Quick answers about interactive flat panel selection, OPS PC requirement and installation scope in Bangladesh.">
+        <FaqAccordion accent={BRAND.maroon} items={faqs} density="compact" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      </section>
+      </SectionShell>
     </div>
   );
 }
