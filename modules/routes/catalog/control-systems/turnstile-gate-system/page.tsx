@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { siteConfig } from "@/lib/site";
 import { formatBdtRange, normalizeDisplayedPriceText } from "@/lib/price";
 import { socialImageUrl } from "@/lib/seo";
@@ -492,8 +493,159 @@ const turnstilePriceRows = turnstilePriceSlugs.map((slug) => {
   };
 });
 
+function getParitySurface(index: number) {
+  return {
+    borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+    background:
+      index % 2 === 0
+        ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+        : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+  };
+}
+
+const MobileSection = ({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string;
+  subtitle?: string;
+  children: ReactNode;
+}) => (
+  <section className="mt-8 rounded-[24px] border bg-white p-4 md:hidden" style={{ borderColor: `${BRAND.maroon}12` }}>
+    <h2 className="text-2xl font-extrabold tracking-tight text-slate-950">{title}</h2>
+    {subtitle ? (
+      <MobileIntroText
+        teaser={subtitle}
+        className="mt-2"
+        teaserClassName="w-full leading-6"
+        expandedClassName="text-sm leading-7 text-slate-600"
+        desktopClassName="text-slate-600 leading-7"
+      >
+        <p className="text-slate-600 leading-7 text-justify">{subtitle}</p>
+      </MobileIntroText>
+    ) : null}
+    <div className="mt-5">{children}</div>
+  </section>
+);
+
+const MobileParityCardGrid = ({
+  items,
+}: {
+  items: Array<{ title: string; desc: string; bullets?: string[]; meta?: string; icon?: ReactNode }>;
+}) => (
+  <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+    {items.map((item, index) => (
+      <article key={item.title} className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4" style={getParitySurface(index)}>
+        <div className="flex items-start gap-3">
+          {item.icon ? (
+            <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] bg-white/80 text-orange-600">
+              {item.icon}
+            </span>
+          ) : null}
+          <div className="min-w-0">
+            <div className="text-[17px] font-extrabold leading-snug text-slate-900">{item.title}</div>
+            {item.meta ? <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.04em] text-slate-500">{item.meta}</p> : null}
+          </div>
+        </div>
+        <p className="mt-2 text-[13px] leading-6 text-slate-700 text-justify">{item.desc}</p>
+        {item.bullets?.length ? (
+          <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
+            {item.bullets.map((point) => (
+              <li key={point} className="flex items-start gap-2">
+                <span className="mt-1.5 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                <span className="leading-6 text-justify">{point}</span>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </article>
+    ))}
+  </div>
+);
+
+const MobileExpandableCards = ({
+  summaryLabel,
+  items,
+}: {
+  summaryLabel: string;
+  items: Array<{ title: string; subtitle?: string; fields: Array<{ label: string; value: string }> }>;
+}) => (
+  <details className="group md:hidden">
+    <summary
+      className="list-none cursor-pointer rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900 [::-webkit-details-marker]:hidden"
+      style={{
+        borderColor: `${BRAND.maroon}14`,
+        background: "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)",
+      }}
+    >
+      {summaryLabel}
+    </summary>
+    <div className="mt-3 space-y-3">
+      {items.map((item, index) => (
+        <article key={item.title} className="overflow-hidden rounded-[14px] border" style={getParitySurface(index)}>
+          <div className="px-4 py-4">
+            <div className="text-[16px] font-extrabold leading-snug text-slate-900">{item.title}</div>
+            {item.subtitle ? <p className="mt-1 text-[12.5px] leading-6 text-slate-700 text-justify">{item.subtitle}</p> : null}
+            <div className="mt-3 overflow-hidden rounded-[12px] border border-white/70 bg-white/75">
+              {item.fields.map((field, fieldIndex) => (
+                <div
+                  key={`${item.title}-${field.label}`}
+                  className={`grid grid-cols-[94px_minmax(0,1fr)] gap-3 px-3 py-2.5 ${fieldIndex !== 0 ? "border-t border-slate-200/70" : ""}`}
+                >
+                  <div className="text-[11px] font-extrabold uppercase tracking-[0.04em] text-slate-500">{field.label}</div>
+                  <div className="text-[12.5px] leading-6 text-slate-700 text-justify">{field.value}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </details>
+);
+
 export default function TurnstileGateSystemPage() {
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
+  const mobileProductRows = Array.from({ length: Math.ceil(turnstileCatalog.length / 4) }, (_, index) =>
+    turnstileCatalog.slice(index * 4, index * 4 + 4)
+  );
+
+  const renderTurnstileCard = (m: TurnstileItem) => {
+    const detailHref = `/turnstile-gate/${m.slug}/`;
+    const kindLabel = getKindLabel(m.kind);
+    const quickFeatures = getListingQuickFeatures(m);
+    const bestFor = getListingBestFor(m);
+
+    return (
+      <ProductGridCard
+        key={m.slug}
+        href={detailHref}
+        title={m.title}
+        image={
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={m.image}
+            alt={m.title}
+            className="h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
+            loading="lazy"
+          />
+        }
+        imageContainerClassName="bg-orange-50"
+        borderColor={`${BRAND.maroon}42`}
+        cardClassName="md:ring-1 md:ring-orange-100 md:shadow-[0_16px_42px_rgba(15,23,42,0.12)] md:hover:ring-orange-300 md:hover:shadow-[0_24px_60px_rgba(255,106,0,0.18)]"
+        topLeftBadge={{ text: "Turnstile", tone: "light" }}
+        topRightBadge={{ text: kindLabel, tone: "dark" }}
+        metaLines={[{ text: `Price: ${m.priceLabel}`, className: "mt-1 text-sm font-semibold text-sky-700" }]}
+        bullets={quickFeatures}
+        chips={bestFor}
+        accentColor={BRAND.maroon}
+        contactHref="/contact"
+        compactMobile
+        viewDetailsLabel="View details ->"
+      />
+    );
+  };
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 pb-10 pt-6 md:px-6">
@@ -653,45 +805,42 @@ export default function TurnstileGateSystemPage() {
       )}
 
       <section id="popular-models" className="mt-[10px]">
-        <ResponsiveProductCarousel desktopClassName="md:grid-cols-2 lg:grid-cols-3">
-          {turnstileCatalog.map((m) => {
-            const detailHref = `/turnstile-gate/${m.slug}/`;
-            const kindLabel = getKindLabel(m.kind);
-            const quickFeatures = getListingQuickFeatures(m);
-            const bestFor = getListingBestFor(m);
-            return (
-              <ProductGridCard
-                key={m.slug}
-                href={detailHref}
-                title={m.title}
-                image={
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={m.image}
-                    alt={m.title}
-                    className="h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
-                    loading="lazy"
-                  />
-                }
-                imageContainerClassName="bg-orange-50"
-                borderColor={`${BRAND.maroon}42`}
-                cardClassName="md:ring-1 md:ring-orange-100 md:shadow-[0_16px_42px_rgba(15,23,42,0.12)] md:hover:ring-orange-300 md:hover:shadow-[0_24px_60px_rgba(255,106,0,0.18)]"
-                topLeftBadge={{ text: "Turnstile", tone: "light" }}
-                topRightBadge={{ text: kindLabel, tone: "dark" }}
-                metaLines={[{ text: `Price: ${m.priceLabel}`, className: "mt-1 text-sm font-semibold text-sky-700" }]}
-                bullets={quickFeatures}
-                chips={bestFor}
-                accentColor={BRAND.maroon}
-                contactHref="/contact"
-                compactMobile
-                viewDetailsLabel="View details ->"
-              />
-            );
-          })}
-        </ResponsiveProductCarousel>
+        <div className="md:hidden">
+          {mobileProductRows.map((row, index) => (
+            <ResponsiveProductCarousel key={`mobile-row-${index}`} className={index === 0 ? "mt-0" : "mt-4"}>
+              {row.map((m) => renderTurnstileCard(m))}
+            </ResponsiveProductCarousel>
+          ))}
+        </div>
+        <div className="hidden md:block">
+          <ResponsiveProductCarousel desktopClassName="md:grid-cols-2 lg:grid-cols-3">
+            {turnstileCatalog.map((m) => renderTurnstileCard(m))}
+          </ResponsiveProductCarousel>
+        </div>
       </section>
 
-      <section className="mt-[10px] rounded-2xl border border-slate-200 bg-white p-[10px] shadow-sm md:p-[15px]">
+      <MobileSection
+        title="Turnstile Gate Price Breakdown in Bangladesh 2026"
+        subtitle="Turnstile gate cost depends on gate type, lane count, access method, controller, software scope and installation requirements."
+      >
+        <MobileExpandableCards
+          summaryLabel="Tap To Expand Price List"
+          items={turnstilePriceRows.map((item) => ({
+            title: item.type,
+            fields: [{ label: "Price", value: normalizeDisplayedPriceText(item.price) }],
+          }))}
+        />
+        <article className="mt-4 rounded-[14px] border px-4 py-4" style={getParitySurface(1)}>
+          <p className="text-[12.5px] leading-6 text-slate-700 text-justify">
+            Final turnstile gate price, tripod turnstile gate price, flap barrier gate price, speed gate turnstile
+            price, full height turnstile price, RFID turnstile gate cost, and face recognition turnstile gate package
+            depend on site conditions and integration scope. Contact a trusted turnstile gate supplier in Bangladesh for
+            an accurate access control turnstile system quotation.
+          </p>
+        </article>
+      </MobileSection>
+
+      <section className="mt-[10px] hidden rounded-2xl border border-slate-200 bg-white p-[10px] shadow-sm md:block md:p-[15px]">
         <div className="mx-auto text-center">
           <h2 className="text-2xl font-extrabold tracking-tight text-slate-950 md:text-3xl">
             Turnstile Gate Price Breakdown in Bangladesh 2026
@@ -754,7 +903,37 @@ export default function TurnstileGateSystemPage() {
         </div>
       </section>
 
-      <section className="mt-[10px] rounded-3xl bg-white p-[10px] shadow-sm ring-1 ring-slate-200/70 md:p-[15px]">
+      <MobileSection
+        title="Turnstile Gate Types"
+        subtitle="Different turnstile gate models suit different traffic volume, security level and entrance style requirements."
+      >
+        <MobileParityCardGrid
+          items={turnstileTypes.map((type) => ({
+            title: type.title,
+            desc: type.desc,
+            meta: type.bestFor,
+          }))}
+        />
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          <Link
+            href="/contact"
+            className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+            style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+          >
+            Free Consultation
+          </Link>
+          <a
+            href={wa}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+          >
+            WhatsApp
+          </a>
+        </div>
+      </MobileSection>
+
+      <section className="mt-[10px] hidden rounded-3xl bg-white p-[10px] shadow-sm ring-1 ring-slate-200/70 md:block md:p-[15px]">
         <div className="w-full">
           <h2 className="text-2xl font-extrabold tracking-tight text-slate-950 md:text-3xl">Turnstile Gate Types</h2>
           <p className="mt-3 text-justify text-[15px] leading-7 text-slate-600 md:text-base">
@@ -808,7 +987,19 @@ export default function TurnstileGateSystemPage() {
         </div>
       </section>
 
-      <section className="mt-[10px] rounded-3xl bg-white p-[15px]">
+      <MobileSection
+        title="How a Turnstile Gate System Works"
+        subtitle="A turnstile system uses access devices, controller rules and sensors so only authorized entry stays smooth and reliable."
+      >
+        <MobileParityCardGrid
+          items={howItWorks.map((x) => ({
+            title: x.title,
+            desc: x.desc,
+          }))}
+        />
+      </MobileSection>
+
+      <section className="mt-[10px] hidden rounded-3xl bg-white p-[15px] md:block">
         <div className="flex items-end justify-between gap-4">
           <div>
             <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">How a Turnstile Gate System Works</h2>
@@ -834,7 +1025,32 @@ export default function TurnstileGateSystemPage() {
         </div>
       </section>
 
-      <section className="mt-[10px] rounded-3xl bg-white p-[10px] md:p-[15px]">
+      <MobileSection
+        title="Where Turnstile Gate Systems Are Needed"
+        subtitle="Turnstile gates are useful when you need controlled entry, clear logs and better security at busy entrances."
+      >
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-2 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          {commonGoals.map((g, index) => (
+            <div
+              key={g}
+              className="min-w-[170px] shrink-0 snap-start rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900"
+              style={getParitySurface(index)}
+            >
+              {g}
+            </div>
+          ))}
+        </div>
+        <div className="mt-4">
+          <MobileParityCardGrid
+            items={useCases.map((x) => ({
+              title: x.title,
+              desc: x.desc,
+            }))}
+          />
+        </div>
+      </MobileSection>
+
+      <section className="mt-[10px] hidden rounded-3xl bg-white p-[10px] md:block md:p-[15px]">
         <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Where Turnstile Gate Systems Are Needed</h2>
         <p className="mt-2 text-slate-600 leading-7 text-justify">
           Turnstile gates are ideal when you need controlled entry, clear logs and better security at busy entrances.
@@ -868,7 +1084,19 @@ export default function TurnstileGateSystemPage() {
         </div>
       </section>
 
-      <section className="mt-[10px] rounded-3xl bg-white p-[10px] md:p-[15px]">
+      <MobileSection
+        title="Benefits of Installing Turnstile Gates"
+        subtitle="A properly planned gate improves entry security, access control and attendance accuracy for offices, factories and institutions."
+      >
+        <MobileParityCardGrid
+          items={benefits.map((x) => ({
+            title: x.title,
+            desc: x.desc,
+          }))}
+        />
+      </MobileSection>
+
+      <section className="mt-[10px] hidden rounded-3xl bg-white p-[10px] md:block md:p-[15px]">
         <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Benefits of Installing Turnstile Gates</h2>
         <p className="mt-2 text-slate-600 leading-7 text-justify">
           A properly planned and configured gate improves entry security, access control and attendance accuracy. These
@@ -890,7 +1118,34 @@ export default function TurnstileGateSystemPage() {
         </div>
       </section>
 
-      <section className="mt-[10px] rounded-3xl bg-white p-[10px] md:p-[15px]">
+      <MobileSection
+        title="Tripod vs Flap Barrier vs Speed Gate vs Full Height Turnstile"
+        subtitle="Different turnstile gate types are used for different security levels, traffic flow and access control requirements."
+      >
+        <MobileParityCardGrid
+          items={turnstileComparisonCards.map((card) => ({
+            title: card.title,
+            desc: card.desc,
+            bullets: card.points,
+          }))}
+        />
+        <div className="mt-5">
+          <MobileExpandableCards
+            summaryLabel="Tap To Expand Comparison"
+            items={turnstileComparisonRows.map((row) => ({
+              title: row.type,
+              fields: [
+                { label: "Security", value: row.security },
+                { label: "Speed", value: row.speed },
+                { label: "Best For", value: row.bestFor },
+                { label: "Price", value: row.price },
+              ],
+            }))}
+          />
+        </div>
+      </MobileSection>
+
+      <section className="mt-[10px] hidden rounded-3xl bg-white p-[10px] md:block md:p-[15px]">
         <div className="w-full text-center">
           <h2 className="text-2xl font-extrabold tracking-tight text-slate-950 md:text-3xl">
             Tripod vs Flap Barrier vs Speed Gate vs Full Height Turnstile
@@ -1020,7 +1275,27 @@ export default function TurnstileGateSystemPage() {
         </p>
       </section>
 
-      <section className="mt-[10px] rounded-3xl bg-white p-[10px] shadow-sm ring-1 ring-slate-200/70 md:p-[15px]">
+      <MobileSection
+        title="How to Choose the Right Turnstile Gate in Bangladesh"
+        subtitle="Selecting the right turnstile gate depends on traffic volume, security level, installation environment and access control integration."
+      >
+        <MobileParityCardGrid
+          items={turnstileSelectionCriteria.map((item, idx) => ({
+            title: item.title,
+            desc: item.desc,
+            meta: `Step ${String(idx + 1).padStart(2, "0")}`,
+          }))}
+        />
+        <article className="mt-4 rounded-[14px] border px-4 py-4" style={getParitySurface(0)}>
+          <p className="text-[12.5px] leading-6 text-slate-700 text-justify">
+            For the best turnstile gate in Bangladesh, contact a professional turnstile gate supplier Bangladesh team
+            for site survey, model selection and free consultation. Sasha Corporation can recommend the right access
+            control turnstile system for your entrance.
+          </p>
+        </article>
+      </MobileSection>
+
+      <section className="mt-[10px] hidden rounded-3xl bg-white p-[10px] shadow-sm ring-1 ring-slate-200/70 md:block md:p-[15px]">
         <div className="w-full">
           <h2 className="text-2xl font-extrabold tracking-tight text-slate-950 md:text-3xl">
             How to Choose the Right Turnstile Gate in Bangladesh
@@ -1073,7 +1348,31 @@ export default function TurnstileGateSystemPage() {
         </p>
       </section>
 
-      <section className="mt-[10px] rounded-3xl bg-white p-[15px]">
+      <MobileSection
+        title="Why Choose Sasha Corporation for Turnstile Gate Solutions"
+        subtitle="We provide complete turnstile gate solutions in Bangladesh with site survey, access control integration, installation, software setup and support."
+      >
+        <MobileParityCardGrid
+          items={whyChooseFeatures.map((feature, index) => ({
+            title: feature.title,
+            desc: feature.desc,
+            meta: `Feature ${String(index + 1).padStart(2, "0")}`,
+          }))}
+        />
+        <div className="-mx-0.5 mt-4 flex snap-x snap-mandatory gap-2 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          {turnstileTrustItems.map((item, index) => (
+            <div
+              key={item}
+              className="min-w-[170px] shrink-0 snap-start rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900"
+              style={getParitySurface(index)}
+            >
+              {item}
+            </div>
+          ))}
+        </div>
+      </MobileSection>
+
+      <section className="mt-[10px] hidden rounded-3xl bg-white p-[15px] md:block">
         <header className="rounded-3xl border bg-white px-5 py-6 shadow-sm md:px-7 md:py-7" style={{ borderColor: "rgba(249,115,22,0.14)" }}>
           <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">
             Why Choose Sasha Corporation for Turnstile Gate Solutions
@@ -1156,7 +1455,45 @@ export default function TurnstileGateSystemPage() {
         </p>
       </section>
 
-      <section className="mt-[10px] rounded-3xl bg-white p-[10px] md:p-[15px]">
+      <MobileSection
+        title="Recommended Packages"
+        subtitle="Packages vary by lane count, access mode and integration scope. Start with a practical package, then refine the BOQ after site review."
+      >
+        <MobileExpandableCards
+          summaryLabel="Tap To Expand Packages"
+          items={[
+            {
+              title: "Office Package",
+              subtitle: "Flap or swing barrier with RFID/face options, visitor control and reporting.",
+              fields: [
+                { label: "Includes", value: "Gate body + controller" },
+                { label: "Access", value: "RFID/face device" },
+                { label: "Setup", value: "Software setup, rules & training" },
+              ],
+            },
+            {
+              title: "Factory Package",
+              subtitle: "Tripod or full height with RFID/fingerprint for staff entry and attendance reporting.",
+              fields: [
+                { label: "Includes", value: "Gate + controller" },
+                { label: "Access", value: "RFID/fingerprint device" },
+                { label: "Setup", value: "Shift rules & exports (optional)" },
+              ],
+            },
+            {
+              title: "Secure Zone Package",
+              subtitle: "Full-height gate with stricter rules for restricted areas and perimeters.",
+              fields: [
+                { label: "Includes", value: "Full-height gate" },
+                { label: "Access", value: "Biometric/RFID device" },
+                { label: "Setup", value: "Anti-passback & audit logs (optional)" },
+              ],
+            },
+          ]}
+        />
+      </MobileSection>
+
+      <section className="mt-[10px] hidden rounded-3xl bg-white p-[10px] md:block md:p-[15px]">
         <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Recommended Packages</h2>
         <p className="mt-2 text-slate-600 leading-7 text-justify">
           Packages vary by lane count, access mode and integration scope. Choose a starting package and we will refine
@@ -1220,7 +1557,20 @@ export default function TurnstileGateSystemPage() {
         </div>
       </section>
 
-      <section className="mt-[10px] rounded-3xl bg-white p-[10px] md:p-[15px]">
+      <MobileSection
+        title="Planning & Delivery Process for Turnstile Gate Projects"
+        subtitle="Long-term reliability comes from correct lane planning, tidy wiring, stable controller integration and accurate software configuration."
+      >
+        <MobileParityCardGrid
+          items={deliveryProcess.map((x) => ({
+            title: x.title,
+            desc: x.desc,
+            meta: `Step ${x.step}`,
+          }))}
+        />
+      </MobileSection>
+
+      <section className="mt-[10px] hidden rounded-3xl bg-white p-[10px] md:block md:p-[15px]">
         <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">
           Planning & Delivery Process for Turnstile Gate Projects
         </h2>
@@ -1252,7 +1602,15 @@ export default function TurnstileGateSystemPage() {
         </div>
       </section>
 
-      <section className="mt-[10px] rounded-3xl border bg-white p-[10px] md:p-[15px]" style={{ borderColor: `${BRAND.maroon}12` }}>
+      <MobileSection
+        title="FAQ"
+        subtitle="Quick answers about tripod turnstile, flap barrier, swing gate, full-height gates and access methods like RFID and face recognition."
+      >
+        <FaqAccordion accent={BRAND.maroon} items={faqs} density="compact" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      </MobileSection>
+
+      <section className="mt-[10px] hidden rounded-3xl border bg-white p-[10px] md:block md:p-[15px]" style={{ borderColor: `${BRAND.maroon}12` }}>
         <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
           <div>
             <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">FAQ</h2>
@@ -1270,8 +1628,31 @@ export default function TurnstileGateSystemPage() {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       </section>
 
+      <MobileSection
+        title="Need a Turnstile Gate System for Your Building?"
+        subtitle="Share entrance width, lane count, access mode and whether you need attendance or HR integration for a practical package and implementation plan."
+      >
+        <div className="grid grid-cols-2 gap-2">
+          <Link
+            href="/contact"
+            className="inline-flex min-h-10 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+            style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+          >
+            Send Details
+          </Link>
+          <a
+            href={wa}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex min-h-10 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+          >
+            WhatsApp
+          </a>
+        </div>
+      </MobileSection>
+
       <section
-        className="mt-[10px] overflow-hidden rounded-3xl border bg-white p-[10px] md:p-[15px]"
+        className="mt-[10px] hidden overflow-hidden rounded-3xl border bg-white p-[10px] md:block md:p-[15px]"
         style={{ borderColor: `${BRAND.maroon}12` }}
       >
         <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">
