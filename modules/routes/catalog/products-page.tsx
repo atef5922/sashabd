@@ -784,6 +784,7 @@ function ProductsPageContent({
 
   const ledDisplaySignalFlow = [
     "Computer / Media Player",
+    "Video Processor / Scaler",
     "Sending Card / LED Controller",
     "CAT6 / Fiber Cable",
     "Receiving Card",
@@ -1954,7 +1955,17 @@ function ProductsPageContent({
 	                    <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
 	                      {ledDisplaySignalFlow.map((step, index) => (
 	                        <div key={step} className="flex items-stretch gap-2 md:gap-3">
-	                          <div className="flex min-h-[3.6rem] flex-1 items-center justify-center rounded-xl border border-slate-200 bg-white px-2.5 py-3 text-center text-[12px] font-bold leading-5 text-slate-800 shadow-sm md:min-h-16 md:rounded-2xl md:px-3 md:py-4 md:text-sm md:leading-6">
+	                          <div
+                              className={`flex min-h-[3.55rem] flex-1 items-center justify-center rounded-xl border px-2.5 py-3 text-center text-[12px] font-bold leading-5 text-slate-800 shadow-sm md:min-h-16 md:rounded-2xl md:px-3 md:py-4 md:text-sm md:leading-6 ${
+                                index % 4 === 0
+                                  ? "border-sky-200/80 bg-[linear-gradient(180deg,#f0f9ff_0%,#ffffff_52%,#e0f2fe_100%)]"
+                                  : index % 4 === 1
+                                    ? "border-violet-200/80 bg-[linear-gradient(180deg,#f5f3ff_0%,#ffffff_52%,#ede9fe_100%)]"
+                                    : index % 4 === 2
+                                      ? "border-emerald-200/80 bg-[linear-gradient(180deg,#ecfdf5_0%,#ffffff_52%,#d1fae5_100%)]"
+                                      : "border-orange-200/80 bg-[linear-gradient(180deg,#fff7ed_0%,#ffffff_52%,#ffedd5_100%)]"
+                              }`}
+                            >
 	                            {step}
 	                          </div>
 	                          {index < ledDisplaySignalFlow.length - 1 ? (
@@ -1967,24 +1978,29 @@ function ProductsPageContent({
 	                    </div>
 	                  </div>
 
-	                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+	                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 md:p-5">
 	                    <h3 className="text-lg font-extrabold text-slate-900">Power Flow</h3>
-	                    <div className="mt-5 grid gap-3">
+	                    <div className="mt-4 grid gap-2.5">
 	                      {ledDisplayPowerFlow.map((step, index) => (
-	                        <div key={step} className="flex items-center gap-3">
-	                          <div className="flex min-h-14 flex-1 items-center justify-center rounded-2xl border border-slate-200 bg-white px-3 py-3 text-center text-sm font-bold leading-6 text-slate-800 shadow-sm">
+	                        <div key={step} className="flex items-center gap-2">
+	                          <div className="mx-auto flex min-h-[2.9rem] w-full max-w-[17.5rem] items-center justify-center rounded-lg border border-cyan-200/75 bg-[linear-gradient(180deg,#ecfeff_0%,#ffffff_54%,#cffafe_100%)] px-2 py-2 text-center text-[11px] font-bold leading-4 text-slate-800 shadow-sm md:mx-0 md:min-h-14 md:max-w-none md:rounded-2xl md:border-slate-200 md:bg-white md:px-3 md:py-3 md:text-sm md:leading-6">
 	                            {step}
 	                          </div>
-	                          {index < ledDisplayPowerFlow.length - 1 ? (
-	                            <div className="text-sm font-extrabold text-[#FF6A00]">-&gt;</div>
-	                          ) : null}
+	                          <div
+                              className={`w-3 text-[11px] font-extrabold text-[#FF6A00] md:text-sm ${
+                                index < ledDisplayPowerFlow.length - 1 ? "opacity-100" : "opacity-0"
+                              }`}
+                              aria-hidden="true"
+                            >
+                              -&gt;
+                            </div>
 	                        </div>
 	                      ))}
 	                    </div>
 	                  </div>
 	                </div>
 
-	                <p className="mt-5 rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-7 text-slate-600">
+	                <p className="mt-5 hidden rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-7 text-slate-600 md:block">
 	                  Every component inside an LED display system performs a dedicated function. The controller processes
 	                  video signals, the receiving card distributes display data, the SMPS supplies stable power, while FRC
 	                  and CAT6 cables ensure reliable communication between all components. Together they deliver smooth
