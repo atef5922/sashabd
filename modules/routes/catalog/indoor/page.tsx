@@ -576,7 +576,43 @@ export default function IndoorProductsPage() {
  title="Indoor vs Outdoor LED Display Quick Comparison"
         subtitle="A simple comparison to avoid wrong selection and ensure the right build for your environment."
       >
-        <div className="overflow-x-auto rounded-3xl border" style={{ borderColor: `${BRAND.maroon}12` }}>
+        <div className="space-y-3 md:hidden">
+          {[
+            ["Brightness", "Comfort-focused, indoor lighting suitable", "High brightness, sunlight visible"],
+            ["Protection", "Dust control + ventilation planning", "IP-rated sealing + water drainage"],
+            ["Pixel Pitch", "Usually smaller (fine pitch)", "Often larger for distance viewing"],
+            ["Cabinet Service", "Front/rear service options", "Service doors + weatherproof access"],
+            ["Power/Surge", "Stable power + grounding", "Grounding + SPD strongly recommended"],
+          ].map(([k, a, b], index) => (
+            <article
+              key={k}
+              className="overflow-hidden rounded-[16px] border shadow-[0_12px_28px_rgba(15,23,42,0.05)]"
+              style={{
+                borderColor: `${BRAND.maroon}12`,
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(240,249,255,0.98) 0%, rgba(255,255,255,0.98) 52%, rgba(224,242,254,0.98) 100%)"
+                    : "linear-gradient(180deg, rgba(255,247,237,0.98) 0%, rgba(255,255,255,0.98) 52%, rgba(255,237,213,0.98) 100%)",
+              }}
+            >
+              <div className="border-b px-4 py-3" style={{ borderColor: `${BRAND.maroon}12` }}>
+                <div className="text-[15px] font-extrabold tracking-tight text-slate-900">{k}</div>
+              </div>
+              <div className="grid grid-cols-2 gap-0">
+                <div className="border-r px-4 py-3" style={{ borderColor: `${BRAND.maroon}10` }}>
+                  <div className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00]">Indoor LED</div>
+                  <p className="text-[13px] leading-6 text-slate-700">{a}</p>
+                </div>
+                <div className="px-4 py-3">
+                  <div className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-sky-700">Outdoor LED</div>
+                  <p className="text-[13px] leading-6 text-slate-700">{b}</p>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="hidden overflow-x-auto rounded-3xl border md:block" style={{ borderColor: `${BRAND.maroon}12` }}>
           <div className="grid min-w-[680px] md:min-w-0 md:grid-cols-3">
             <div className="bg-slate-50 p-5 text-sm font-bold text-slate-800">Topic</div>
             <div className="bg-white p-5 text-sm font-bold text-slate-800">Indoor LED</div>
