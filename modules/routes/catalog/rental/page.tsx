@@ -78,7 +78,7 @@ const Section = ({
   children: React.ReactNode;
   titleIcon?: React.ReactNode;
 }) => (
-  <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
+  <section className="mt-8 rounded-[24px] border bg-white p-4 md:mt-10 md:rounded-3xl md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
     <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
       {titleIcon ? (
         <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-orange-50 text-orange-600" aria-hidden="true">
@@ -87,30 +87,71 @@ const Section = ({
       ) : null}
       <span>{title}</span>
     </h2>
-    {subtitle ? <p className="mt-2 text-slate-600 leading-7">{subtitle}</p> : null}
+    {subtitle ? (
+      <MobileIntroText
+        teaser={subtitle}
+        className="mt-2"
+        teaserClassName="w-full leading-6"
+        expandedClassName="text-sm leading-7 text-slate-600"
+        desktopClassName="text-slate-600 leading-7"
+      >
+        <p className="text-slate-600 leading-7">{subtitle}</p>
+      </MobileIntroText>
+    ) : null}
     <div className="mt-5">{children}</div>
   </section>
 );
 
 const CardGrid = ({ items }: { items: { t: string; d: string; bullets?: string[] }[] }) => (
-  <div className="grid gap-4 md:grid-cols-3">
-    {items.map((x) => (
-      <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
-        <div className="text-lg font-bold text-slate-900">{x.t}</div>
-        <p className="mt-2 text-sm text-slate-600 leading-7">{x.d}</p>
-        {x.bullets?.length ? (
-          <ul className="mt-3 space-y-2 text-sm text-slate-700">
-            {x.bullets.map((b) => (
-              <li key={b} className="flex items-start gap-2">
-                <span className="mt-2 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
-                <span className="leading-7">{b}</span>
-              </li>
-            ))}
-          </ul>
-        ) : null}
-      </div>
-    ))}
-  </div>
+  <>
+    <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+      {items.map((x, index) => (
+        <div
+          key={x.t}
+          className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+          style={{
+            borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+            background:
+              index % 2 === 0
+                ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+          }}
+        >
+          <div className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</div>
+          <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
+          {x.bullets?.length ? (
+            <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
+              {x.bullets.map((b) => (
+                <li key={b} className="flex items-start gap-2">
+                  <span className="mt-1.5 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                  <span className="leading-6">{b}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
+      ))}
+    </div>
+
+    <div className="hidden gap-4 md:grid md:grid-cols-3">
+      {items.map((x) => (
+        <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
+          <div className="text-lg font-bold text-slate-900">{x.t}</div>
+          <p className="mt-2 text-sm text-slate-600 leading-7">{x.d}</p>
+          {x.bullets?.length ? (
+            <ul className="mt-3 space-y-2 text-sm text-slate-700">
+              {x.bullets.map((b) => (
+                <li key={b} className="flex items-start gap-2">
+                  <span className="mt-2 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                  <span className="leading-7">{b}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
+      ))}
+    </div>
+  </>
 );
 
 export default function RentalProductsPage() {
@@ -178,9 +219,81 @@ export default function RentalProductsPage() {
   const displayCards: Array<ProductItem | LedAccessoryProduct> = [...filtered, ...stickyAccessories].filter(
     (p, idx, arr) => arr.findIndex((x) => x.slug === p.slug) === idx
   );
+  const mobileDisplayRows = Array.from({ length: Math.ceil(displayCards.length / 4) }, (_, index) =>
+    displayCards.slice(index * 4, index * 4 + 4)
+  );
+
+  const renderDisplayCard = (p: ProductItem | LedAccessoryProduct) => {
+    if ("badge" in p) {
+      const chips = (p.tags?.length ? p.tags : p.quickFeatures?.length ? p.quickFeatures : [p.badge]).slice(0, 3);
+      const bullets = (p.quickFeatures?.length ? p.quickFeatures : p.tags?.length ? p.tags : [p.subtitle]).slice(0, 4);
+
+      return (
+        <ProductGridCard
+          key={p.slug}
+          href={`/led-display/accessories/led-accessories/${p.slug}/`}
+          title={p.title}
+          image={
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={p.image}
+              alt={p.title}
+              className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+              loading="lazy"
+            />
+          }
+          imageContainerClassName="bg-slate-100"
+          borderColor={`${BRAND.maroon}12`}
+          topLeftBadge={{ text: p.badge, tone: "light" }}
+          topRightBadge={{ text: "Accessories", tone: "dark" }}
+          metaLines={p.cardPrice ? [{ text: p.cardPrice, className: "mt-1 text-sm font-semibold text-sky-700" }] : []}
+          bullets={bullets}
+          chips={chips}
+          accentColor={BRAND.maroon}
+          contactHref="/contact"
+          compactMobile
+          viewDetailsLabel="View details ->"
+        />
+      );
+    }
+
+    const pitchDisplay = getPitchDisplay(p);
+    const category = inferRentalCategory(p);
+
+    return (
+      <ProductGridCard
+        key={p.slug}
+        href={`/led-display/rental-display/${p.slug}/`}
+        title={p.title}
+        image={
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={p.image}
+            alt={p.title}
+            className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+            loading="lazy"
+          />
+        }
+        imageContainerClassName="bg-slate-100"
+        borderColor={`${BRAND.maroon}12`}
+        topLeftBadge={{ text: "Rental", tone: "light" }}
+        topRightBadge={{ text: category, tone: "dark" }}
+        metaLines={[
+          { text: `Pixel pitch: ${pitchDisplay}` },
+          ...(p.cardPrice ? [{ text: p.cardPrice, className: "mt-1 text-sm font-semibold text-sky-700" }] : []),
+        ]}
+        bullets={p.quickFeatures.slice(0, 4)}
+        chips={p.bestFor.slice(0, 3)}
+        accentColor={BRAND.maroon}
+        contactHref="/contact"
+        compactMobile
+        viewDetailsLabel="View details ->"
+      />
+    );
+  };
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-0 md:px-6">
+    <div className="rental-led-page mx-auto w-full max-w-7xl px-3 pb-8 pt-0 md:px-6">
       <Breadcrumbs
         items={[
           homeBreadcrumb(),
@@ -263,7 +376,7 @@ export default function RentalProductsPage() {
       </section>
 
       <section
-        className="mt-6 rounded-3xl border bg-white p-5 shadow-sm md:p-6"
+        className="mt-5 rounded-[24px] border bg-white p-4 shadow-sm md:mt-6 md:rounded-3xl md:p-6"
         style={{ borderColor: `${BRAND.maroon}12` }}
       >
         {/* PRODUCT GRID (boxed like /led-display/) */}
@@ -323,76 +436,19 @@ export default function RentalProductsPage() {
           specs and setup notes.
         </p>
 
-        <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
-          {displayCards.map((p) => {
-            if ("badge" in p) {
-              const chips = (p.tags?.length ? p.tags : p.quickFeatures?.length ? p.quickFeatures : [p.badge]).slice(0, 3);
-              const bullets = (p.quickFeatures?.length ? p.quickFeatures : p.tags?.length ? p.tags : [p.subtitle]).slice(0, 4);
+        <div className="md:hidden">
+          {mobileDisplayRows.map((row, index) => (
+            <ResponsiveProductCarousel key={`mobile-row-${index}`} className={index === 0 ? "mt-6" : "mt-4"}>
+              {row.map((p) => renderDisplayCard(p))}
+            </ResponsiveProductCarousel>
+          ))}
+        </div>
 
-              return (
-                <ProductGridCard
-                  key={p.slug}
-                  href={`/led-display/accessories/led-accessories/${p.slug}/`}
-                  title={p.title}
-                  image={
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={p.image}
-                      alt={p.title}
-                      className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
-                      loading="lazy"
-                    />
-                  }
-                  imageContainerClassName="bg-slate-100"
-                  borderColor={`${BRAND.maroon}12`}
-                  topLeftBadge={{ text: p.badge, tone: "light" }}
-                  topRightBadge={{ text: "Accessories", tone: "dark" }}
-                  metaLines={p.cardPrice ? [{ text: p.cardPrice, className: "mt-1 text-sm font-semibold text-sky-700" }] : []}
-                  bullets={bullets}
-                  chips={chips}
-                  accentColor={BRAND.maroon}
-                  contactHref="/contact"
-                  compactMobile
-                  viewDetailsLabel="View details ->"
-                />
-              );
-            }
-
-            const pitchDisplay = getPitchDisplay(p);
-            const category = inferRentalCategory(p);
-
-            return (
-              <ProductGridCard
-                key={p.slug}
-                href={`/led-display/rental-display/${p.slug}/`}
-                title={p.title}
-                image={
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={p.image}
-                    alt={p.title}
-                    className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
-                    loading="lazy"
-                  />
-                }
-                imageContainerClassName="bg-slate-100"
-                borderColor={`${BRAND.maroon}12`}
-                topLeftBadge={{ text: "Rental", tone: "light" }}
-                topRightBadge={{ text: category, tone: "dark" }}
-                metaLines={[
-                  { text: `Pixel pitch: ${pitchDisplay}` },
-                  ...(p.cardPrice ? [{ text: p.cardPrice, className: "mt-1 text-sm font-semibold text-sky-700" }] : []),
-                ]}
-                bullets={p.quickFeatures.slice(0, 4)}
-                chips={p.bestFor.slice(0, 3)}
-                accentColor={BRAND.maroon}
-                contactHref="/contact"
-                compactMobile
-                viewDetailsLabel="View details ->"
-              />
-            );
-          })}
-        </ResponsiveProductCarousel>
+        <div className="hidden md:block">
+          <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
+            {displayCards.map((p) => renderDisplayCard(p))}
+          </ResponsiveProductCarousel>
+        </div>
 
         {filtered.length === 0 && (
           <div className="mt-6 rounded-2xl border bg-white p-6 text-sm text-slate-700">
@@ -414,7 +470,55 @@ export default function RentalProductsPage() {
         }
         subtitle="Choose the right rental LED setup by event type, venue condition, and visual requirement to ensure smooth setup and clear audience communication."
       >
-        <div className="grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            {
+              t: "Indoor Rental LED Display",
+              d: "Best for conference halls, indoor stages, and corporate venues where fine detail and close-view clarity are important.",
+            },
+            {
+              t: "Outdoor Rental LED Screen",
+              d: "Built for open-air events with higher brightness and weather-ready cabinet design for stable visibility in daylight.",
+            },
+            {
+              t: "Stage Background LED Screen",
+              d: "Creates a dynamic backdrop for live programs, product launches, and cultural events with high visual impact.",
+            },
+            {
+              t: "Concert LED Video Wall",
+              d: "Supports performance visuals, live feed integration, and high-energy motion content for concert environments.",
+            },
+            {
+              t: "Wedding LED Display",
+              d: "Used for ceremony visuals, couple highlights, and themed presentation content with fast event-day setup.",
+            },
+            {
+              t: "Corporate Event LED Screen",
+              d: "Ideal for brand presentations, keynote sessions, and hybrid business events requiring professional image delivery.",
+            },
+            {
+              t: "Exhibition LED Display",
+              d: "Helps booths and product zones attract visitors with rotating promotional media and high-visibility messaging.",
+            },
+          ].map((x, index) => (
+            <div
+              key={x.t}
+              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+              style={{
+                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+              }}
+            >
+              <h3 className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
+              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3 md:grid">
           {[
             {
               t: "Indoor Rental LED Display",
@@ -469,7 +573,51 @@ export default function RentalProductsPage() {
         }
         subtitle="A practical advantage overview to help event teams choose a rental LED setup that stays visually strong, operationally smooth, and technically reliable."
       >
-        <div className="grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            {
+              t: "High brightness LED panels",
+              d: "Ensures clear and vivid content visibility across indoor stages and semi-outdoor event environments.",
+            },
+            {
+              t: "Seamless video wall display",
+              d: "Creates a continuous visual canvas for presentations, performances, and brand storytelling without distracting gaps.",
+            },
+            {
+              t: "Professional installation",
+              d: "Structured setup workflow helps maintain alignment, safe cabling, and stable output from start to finish.",
+            },
+            {
+              t: "On-site technical support",
+              d: "Dedicated technical presence helps resolve live signal or playback issues quickly during event operation.",
+            },
+            {
+              t: "Flexible screen sizes",
+              d: "Screen dimensions can be adapted to venue layout, audience distance, and content format requirements.",
+            },
+            {
+              t: "Fast setup and dismantling",
+              d: "Rental-ready cabinet systems support quick deployment and teardown, reducing event turnaround time.",
+            },
+          ].map((x, index) => (
+            <div
+              key={x.t}
+              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+              style={{
+                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+              }}
+            >
+              <h3 className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
+              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3 md:grid">
           {[
             {
               t: "High brightness LED panels",
@@ -517,7 +665,35 @@ export default function RentalProductsPage() {
         }
         subtitle="Event-specific rental LED configurations to match audience size, content type, and production setup requirements."
       >
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            { t: "Concert", d: "High-energy stage visuals and live performance content display." },
+            { t: "Wedding", d: "Ceremony highlights, couple visuals, and reception-stage presentation." },
+            { t: "Political Event", d: "Campaign messaging, live speeches, and crowd-facing communication." },
+            { t: "Corporate Event", d: "Keynote decks, brand content, and professional event presentation." },
+            { t: "Trade Show", d: "Booth branding, rotating promotions, and attention-grabbing display zones." },
+            { t: "Product Launch", d: "Hero product reveal visuals with synchronized media playback." },
+            { t: "Live Streaming Event", d: "Broadcast-support display for live feed and audience engagement." },
+            { t: "Stage Backdrop", d: "Seamless background wall for shows, seminars, and live programs." },
+          ].map((x, index) => (
+            <div
+              key={x.t}
+              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+              style={{
+                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+              }}
+            >
+              <h3 className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
+              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden gap-4 sm:grid-cols-2 lg:grid-cols-4 md:grid">
           {[
             { t: "Concert", d: "High-energy stage visuals and live performance content display." },
             { t: "Wedding", d: "Ceremony highlights, couple visuals, and reception-stage presentation." },
@@ -548,7 +724,35 @@ export default function RentalProductsPage() {
         }
         subtitle="A simple step-by-step workflow to plan, install, and run your rental LED screen smoothly."
       >
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            { t: "Contact us", d: "Reach out with your event date, location, and basic LED screen requirement." },
+            { t: "Share event details", d: "Provide stage layout, audience distance, content type, and timing plan." },
+            { t: "Choose screen size", d: "Finalize suitable LED size and setup format based on venue and visibility needs." },
+            { t: "Installation by our engineers", d: "Our team handles safe setup, alignment, cabling, and system configuration." },
+            { t: "Event support & operation", d: "On-site technical support ensures stable playback and smooth show execution." },
+          ].map((x, idx) => (
+            <div
+              key={x.t}
+              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+              style={{
+                borderColor: idx % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  idx % 2 === 0
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+              }}
+            >
+              <div className="text-xs font-extrabold uppercase tracking-wide" style={{ color: BRAND.maroon }}>
+                Step {idx + 1}
+              </div>
+              <h3 className="mt-2 text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
+              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden gap-4 sm:grid-cols-2 lg:grid-cols-5 md:grid">
           {[
             { t: "Contact us", d: "Reach out with your event date, location, and basic LED screen requirement." },
             { t: "Share event details", d: "Provide stage layout, audience distance, content type, and timing plan." },
@@ -598,7 +802,55 @@ export default function RentalProductsPage() {
  title="Fast Setup Checklist (Rental LED Screen)"
         subtitle="A simple checklist used by event teams to avoid common issues during live programs."
       >
-        <div className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            {
+ t: "Structure & safety",
+              items: [
+                "Hanging points / truss load check",
+                "Ground stacking base leveling",
+                "Safety locks & corner protection",
+                "Cable routing to avoid trip hazards",
+              ],
+            },
+            {
+ t: "Power planning",
+              items: ["Load estimate (W) & DB/MCB", "Proper earthing", "Backup power (IPS/Generator)", "Stable PSU"],
+            },
+            {
+ t: "Signal & mapping",
+              items: ["Sender/controller setup", "Correct mapping order", "Spare data cable ready", "Test patterns"],
+            },
+            {
+ t: "Show readiness",
+              items: ["Brightness tuning", "Content playback test", "Burn-in before show", "Operator briefing"],
+            },
+          ].map((b, index) => (
+            <div
+              key={b.t}
+              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+              style={{
+                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+              }}
+            >
+              <div className="text-[16px] font-extrabold text-slate-900">{b.t}</div>
+              <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
+                {b.items.map((i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="mt-1.5 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                    <span className="leading-6">{i}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden rounded-3xl border bg-slate-50 p-6 md:block" style={{ borderColor: `${BRAND.maroon}10` }}>
           <div className="grid gap-4 md:grid-cols-2">
             {[
               {
@@ -637,10 +889,10 @@ export default function RentalProductsPage() {
             ))}
           </div>
 
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-6 grid grid-cols-2 gap-3 md:flex md:flex-wrap">
             <Link
               href="/contact"
-              className="rounded-xl px-5 py-3 text-sm font-extrabold text-white transition hover:-translate-y-0.5 hover:shadow-md"
+              className="inline-flex min-h-10 items-center justify-center rounded-[10px] px-3 py-2 text-center text-[12px] font-extrabold text-white transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
               Book Event Support -&gt;
@@ -649,7 +901,7 @@ export default function RentalProductsPage() {
               href={wa}
               target="_blank"
               rel="noreferrer"
-              className="rounded-xl bg-emerald-600 px-5 py-3 text-sm font-extrabold text-white transition hover:-translate-y-0.5 hover:bg-emerald-700"
+              className="inline-flex min-h-10 items-center justify-center rounded-[10px] bg-emerald-600 px-3 py-2 text-center text-[12px] font-extrabold text-white transition hover:-translate-y-0.5 hover:bg-emerald-700 md:rounded-xl md:px-5 md:py-3 md:text-sm"
             >
               WhatsApp Now
             </a>
@@ -688,13 +940,76 @@ export default function RentalProductsPage() {
  title="Rental LED Event Booking Planner"
         subtitle="Use this quick planner before final booking to avoid last-minute delays, wrong sizing, or signal/power issues on show day."
       >
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
           {[
             {
               t: "Event & Screen Scope",
               items: [
                 "Event date, venue, and setup time window",
  "Required screen size (W-H) and placement",
+                "Viewing distance and expected audience area",
+                "Indoor, semi-outdoor, or outdoor exposure",
+              ],
+            },
+            {
+              t: "Technical Inputs",
+              items: [
+                "Content source (laptop, media server, live camera)",
+                "Input ports required (HDMI/SDI/other)",
+                "Power line availability and backup plan",
+                "Need for on-site operator and standby support",
+              ],
+            },
+            {
+              t: "Rigging & Safety",
+              items: [
+                "Hanging or ground-stacking preference",
+                "Truss/load approval from venue authority",
+                "Cable route and audience safety barriers",
+                "Weather plan for semi-outdoor conditions",
+              ],
+            },
+            {
+              t: "Handover Checklist",
+              items: [
+                "Final content and resolution shared in advance",
+                "Test-run completed before audience entry",
+                "Point-of-contact available during live show",
+                "Dismantle timing and access confirmation",
+              ],
+            },
+          ].map((b, index) => (
+            <div
+              key={b.t}
+              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+              style={{
+                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+              }}
+            >
+              <div className="text-[17px] font-extrabold leading-snug text-slate-900">{b.t}</div>
+              <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
+                {b.items.map((i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="mt-1.5 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                    <span className="leading-6">{i}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden gap-4 md:grid md:grid-cols-2">
+          {[
+            {
+              t: "Event & Screen Scope",
+              items: [
+                "Event date, venue, and setup time window",
+                "Required screen size (W-H) and placement",
                 "Viewing distance and expected audience area",
                 "Indoor, semi-outdoor, or outdoor exposure",
               ],
@@ -747,7 +1062,34 @@ export default function RentalProductsPage() {
  title="Explore LED Display Categories"
  subtitle="Compare indoor, outdoor and rental options-then choose the best category for your project."
       >
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            { t: "Indoor LED Displays", d: "Showroom, conference, control room solutions.", href: "/led-display/indoor-led/" },
+            { t: "Outdoor LED Displays", d: "Billboards, rooftop signage, public screens.", href: "/led-display/outdoor/" },
+            { t: "Rental LED Displays", d: "Stage events, concerts, quick setup cabinets.", href: "/led-display/rental-display/" },
+          ].map((x, index) => (
+            <Link
+              key={x.t}
+              href={x.href}
+              className="group w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4 transition"
+              style={{
+                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+              }}
+            >
+              <div className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</div>
+              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
+              <div className="mt-4 text-[12px] font-bold" style={{ color: BRAND.maroon }}>
+                Explore -&gt;
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        <div className="hidden gap-4 md:grid md:grid-cols-3">
           {[
             { t: "Indoor LED Displays", d: "Showroom, conference, control room solutions.", href: "/led-display/indoor-led/" },
             { t: "Outdoor LED Displays", d: "Billboards, rooftop signage, public screens.", href: "/led-display/outdoor/" },
@@ -805,10 +1147,10 @@ export default function RentalProductsPage() {
           ]}
         />
 
-        <div className="mt-7 flex flex-wrap gap-3">
+        <div className="mt-7 grid grid-cols-2 gap-3 md:flex md:flex-wrap">
           <Link
             href="/contact"
-            className="rounded-xl px-6 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            className="inline-flex min-h-10 items-center justify-center rounded-[10px] px-3 py-2 text-center text-[12px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-6 md:py-3 md:text-sm"
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >
             Get Event Consultation -&gt;
@@ -817,7 +1159,7 @@ export default function RentalProductsPage() {
             href={wa}
             target="_blank"
             rel="noreferrer"
-            className="rounded-xl bg-emerald-600 px-6 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md"
+            className="inline-flex min-h-10 items-center justify-center rounded-[10px] bg-emerald-600 px-3 py-2 text-center text-[12px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md md:rounded-xl md:px-6 md:py-3 md:text-sm"
           >
             WhatsApp for Booking
           </a>
