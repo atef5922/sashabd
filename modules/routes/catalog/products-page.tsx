@@ -2158,10 +2158,19 @@ function ProductsPageContent({
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
-                {ledReliabilityCards.map((card) => (
-                  <div key={card.t} className="rounded-2xl border border-slate-200 bg-white p-5">
+                {ledReliabilityCards.map((card, index) => (
+                  <div
+                    key={card.t}
+                    className={`rounded-2xl border p-5 md:border-slate-200 md:bg-white ${
+                      index % 3 === 0
+                        ? "border-sky-200/80 bg-[linear-gradient(180deg,#f0f9ff_0%,#ffffff_52%,#e0f2fe_100%)]"
+                        : index % 3 === 1
+                          ? "border-emerald-200/80 bg-[linear-gradient(180deg,#ecfdf5_0%,#ffffff_52%,#d1fae5_100%)]"
+                          : "border-orange-200/80 bg-[linear-gradient(180deg,#fff7ed_0%,#ffffff_52%,#ffedd5_100%)]"
+                    }`}
+                  >
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white shadow-sm">
                         <UiIcon name={card.icon} className="h-5 w-5" />
                       </div>
                       <div className="text-base font-semibold text-slate-900">{card.t}</div>
@@ -2434,8 +2443,17 @@ function ProductsPageContent({
                     t: "Step 3: Match controller capacity",
                     d: "Match sending controller, receiving card, and processor capacity to target resolution and refresh requirement for smooth playback.",
                   },
-                ].map((x) => (
-                  <article key={x.t} className="rounded-2xl border border-slate-200 bg-white p-5">
+                ].map((x, index) => (
+                  <article
+                    key={x.t}
+                    className={`rounded-2xl border p-5 md:border-slate-200 md:bg-white ${
+                      index === 0
+                        ? "border-sky-200/80 bg-[linear-gradient(180deg,#f0f9ff_0%,#ffffff_52%,#e0f2fe_100%)]"
+                        : index === 1
+                          ? "border-violet-200/80 bg-[linear-gradient(180deg,#f5f3ff_0%,#ffffff_52%,#ede9fe_100%)]"
+                          : "border-cyan-200/80 bg-[linear-gradient(180deg,#ecfeff_0%,#ffffff_52%,#cffafe_100%)]"
+                    }`}
+                  >
                     <div className="text-base font-extrabold text-slate-900">{x.t}</div>
                     <p className="mt-2 text-sm leading-7 text-slate-600">{x.d}</p>
                   </article>
