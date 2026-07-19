@@ -2436,11 +2436,19 @@ function ProductsPageContent({
 
             <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-5">
               <h3 className="text-base font-extrabold text-slate-900">What to share for an accurate LED display quotation</h3>
-              <p className="mt-2 text-sm leading-7 text-slate-600">
-                A quick site survey or clear project information helps avoid mismatched size, incorrect pixel pitch,
-                power issues, and hidden installation cost. Sharing the right details early helps us recommend the
-                correct LED screen price in Bangladesh with better accuracy.
-              </p>
+              <MobileIntroText
+                teaser="A quick site survey or clear project information helps avoid mismatched size, incorrect pixel pitch, power issues, and hidden installation cost."
+                className="mt-2"
+                teaserClassName="w-full"
+                expandedClassName="text-sm leading-7 text-slate-600"
+                desktopClassName="text-sm leading-7 text-slate-600"
+              >
+                <>
+                  A quick site survey or clear project information helps avoid mismatched size, incorrect pixel pitch,
+                  power issues, and hidden installation cost. Sharing the right details early helps us recommend the
+                  correct LED screen price in Bangladesh with better accuracy.
+                </>
+              </MobileIntroText>
               <ul className="mt-4 grid gap-2 text-sm leading-7 text-slate-700 md:grid-cols-2">
                 {[
                   "Location type: indoor, outdoor, showroom, event, or roadside advertising",
@@ -2615,7 +2623,7 @@ function ProductsPageContent({
               {ledCompare.map((item) => (
                 <div key={item.t} className="rounded-2xl border border-slate-200 bg-white p-5">
                   <h3 className="text-lg font-semibold text-slate-900">{item.t}</h3>
-                  <p className="mt-2 text-sm leading-7 text-slate-600">{item.d}</p>
+                  <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">{item.d}</p>
                   <ul className="mt-4 space-y-2 text-sm text-slate-700">
                     {item.points.map((point) => (
                       <li key={point} className="flex items-start gap-2">
@@ -2744,7 +2752,7 @@ function ProductsPageContent({
               ].map((step) => (
                 <article key={step.t} className="rounded-2xl border border-slate-200 bg-white p-5">
                   <h3 className="text-base font-extrabold text-slate-900">{step.t}</h3>
-                  <p className="mt-2 text-sm leading-7 text-slate-600">{step.d}</p>
+                  <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">{step.d}</p>
                   <ul className="mt-4 space-y-2 text-sm text-slate-700">
                     {step.points.map((point) => (
                       <li key={point} className="flex items-start gap-2">
@@ -2759,7 +2767,7 @@ function ProductsPageContent({
 
             <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-5">
               <h3 className="text-base font-extrabold text-slate-900">Simple Timeline Overview</h3>
-              <p className="mt-2 text-sm leading-7 text-slate-600">
+              <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
                 Project duration varies by screen size, site readiness, and installation complexity. A common workflow
                 timeline is shown below for planning clarity.
               </p>
@@ -2772,8 +2780,17 @@ function ProductsPageContent({
                   { label: "Calibration", icon: "controller" },
                   { label: "Handover", icon: "support" },
                 ].map((step, i) => (
-                  <div key={step.label} className="rounded-xl border border-slate-200 bg-white px-2.5 py-2.5 text-center md:p-3">
-                    <div className="mx-auto inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-50 text-[#FF6A00] ring-1 ring-[#FF6A00]/10 md:h-10 md:w-10">
+                  <div
+                    key={step.label}
+                    className={`rounded-xl border px-2.5 py-2.5 text-center shadow-sm md:border-slate-200 md:bg-white md:p-3 md:shadow-none ${
+                      i % 3 === 0
+                        ? "border-sky-200/80 bg-[linear-gradient(180deg,#f0f9ff_0%,#ffffff_52%,#e0f2fe_100%)]"
+                        : i % 3 === 1
+                          ? "border-violet-200/80 bg-[linear-gradient(180deg,#f5f3ff_0%,#ffffff_52%,#ede9fe_100%)]"
+                          : "border-orange-200/80 bg-[linear-gradient(180deg,#fff7ed_0%,#ffffff_52%,#ffedd5_100%)]"
+                    }`}
+                  >
+                    <div className="mx-auto inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[#FF6A00] ring-1 ring-[#FF6A00]/10 md:h-10 md:w-10 md:bg-slate-50">
                       <UiIcon name={step.icon} className="h-4 w-4 md:h-4.5 md:w-4.5" />
                     </div>
                     <div className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.08em] text-[#FF6A00] md:mt-2 md:text-xs md:normal-case md:tracking-normal">Phase {i + 1}</div>
@@ -2981,13 +2998,7 @@ function ProductsPageContent({
                     }
                     loading="lazy"
                   />
-	                  <p
-	                    className={
-	                      ins.logo === "/images/logo/dscc.webp"
-	                        ? "mt-3 text-center !text-center text-sm font-medium leading-snug text-slate-800 whitespace-nowrap"
-	                        : "mt-3 text-center !text-center text-sm font-medium leading-snug text-slate-800"
-	                    }
-	                  >
+	                  <p className="mt-3 text-center !text-center text-sm font-medium leading-snug text-slate-800 break-words">
                     {ins.name}
                   </p>
                 </div>
