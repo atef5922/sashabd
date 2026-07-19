@@ -1012,37 +1012,42 @@ export default function IndoorProductsPage() {
           <summary className="list-none cursor-pointer rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900 [::-webkit-details-marker]:hidden" style={{ borderColor: `${BRAND.maroon}14`, background: "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)" }}>
             Tap To Expand Price List
           </summary>
-          <div className="mt-3 overflow-x-auto rounded-3xl border" style={{ borderColor: `${BRAND.maroon}18` }}>
-            {/* Header row (light cyan like screenshot) */}
-            <div className="grid min-w-[780px] grid-cols-12 gap-0 bg-sky-50 px-4 py-3 text-[11px] font-extrabold uppercase tracking-wide text-slate-700">
-              <div className="col-span-7">Indoor LED Model</div>
-              <div className="col-span-3 text-center">Pixel Pitch</div>
-              <div className="col-span-2 text-right">Approx. Price (Per Sq.Ft)</div>
-            </div>
-
-            <div>
-              {priceRows.map(({ p, pitchNum, price }) => (
-                <div key={p.slug} className="grid min-w-[780px] grid-cols-12 items-center gap-0 bg-white px-4 py-3 text-sm">
-                  <div className="col-span-7">
-                    <Link
-                      href={`/led-display/indoor-led/${p.slug}/`}
-                      className="font-semibold text-slate-900 hover:underline"
-                      style={{ textDecorationColor: `${BRAND.maroon}88` }}
-                      title="Click to view full specifications"
-                    >
-                      {p.title}
-                    </Link>
-                    <div className="mt-1 text-xs text-slate-500">{p.subtitle}</div>
-                  </div>
-
-                  <div className="col-span-3 text-center text-sm text-slate-700">
-                    {pitchNum != null ? `${pitchNum} mm` : getPitchLabel(p)}
-                  </div>
-
-                  <div className="col-span-2 text-right text-sm font-semibold text-slate-800">{price}</div>
+          <div className="mt-3 space-y-3">
+            {priceRows.map(({ p, pitchNum, price }, index) => (
+              <article
+                key={p.slug}
+                className="overflow-hidden rounded-[14px] border"
+                style={{
+                  borderColor: index % 2 === 0 ? "rgba(110,231,183,0.65)" : "rgba(125,211,252,0.65)",
+                  background:
+                    index % 2 === 0
+                      ? "linear-gradient(180deg, rgba(236,253,245,1) 0%, rgba(240,253,250,1) 100%)"
+                      : "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)",
+                }}
+              >
+                <div className="px-4 py-3">
+                  <Link
+                    href={`/led-display/indoor-led/${p.slug}/`}
+                    className="text-[15px] font-extrabold leading-snug text-slate-900"
+                    style={{ textDecorationColor: `${BRAND.maroon}88` }}
+                    title="Click to view full specifications"
+                  >
+                    {p.title}
+                  </Link>
+                  <p className="mt-1 text-[12.5px] leading-6 text-slate-600">{p.subtitle}</p>
                 </div>
-              ))}
-            </div>
+                <div className="grid grid-cols-2 border-t" style={{ borderColor: "rgba(148,163,184,0.18)" }}>
+                  <div className="border-r px-4 py-3" style={{ borderColor: "rgba(148,163,184,0.18)" }}>
+                    <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00]">Pixel Pitch</div>
+                    <div className="mt-1 text-[13px] font-bold text-slate-900">{pitchNum != null ? `${pitchNum} mm` : getPitchLabel(p)}</div>
+                  </div>
+                  <div className="px-4 py-3">
+                    <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-emerald-700">Approx. Price</div>
+                    <div className="mt-1 text-[13px] font-bold text-slate-900">{price}</div>
+                  </div>
+                </div>
+              </article>
+            ))}
           </div>
         </details>
 
