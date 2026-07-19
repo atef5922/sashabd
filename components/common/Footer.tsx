@@ -317,17 +317,17 @@ export default function Footer() {
 
               <p className="mt-2 max-w-sm text-[13px] leading-[1.35rem] text-slate-300">{companyDescription}</p>
 
-              <div className="mt-3 flex flex-wrap gap-2">
+              <div className="mt-3 grid grid-cols-2 gap-1.5 md:flex md:flex-wrap md:gap-2">
                 <a
                   href={`tel:${siteConfig.phone}`}
-                  className="glow-pill rounded-full border border-slate-700 bg-slate-800/50 px-3 py-1.5 text-xs font-semibold text-[#39FF14] transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#39FF14] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f]"
+                  className="glow-pill inline-flex min-w-0 items-center justify-center rounded-full border border-slate-700 bg-slate-800/50 px-2 py-1.5 text-[10px] font-semibold leading-none tracking-tight text-[#39FF14] transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#39FF14] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] md:px-3 md:text-xs"
                 >
-                  <span>{`Phone: ${siteConfig.phone}`}</span>
+                  <span className="whitespace-nowrap">{`Phone: ${siteConfig.phone}`}</span>
                 </a>
                 <EmailReveal
                   user={siteConfig.emailUser}
                   domain={siteConfig.emailDomain}
-                  className="glow-pill rounded-full border border-slate-700 bg-slate-800/50 px-3 py-1.5 text-xs font-semibold text-[#39FF14] transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#39FF14] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f]"
+                  className="glow-pill inline-flex min-w-0 items-center justify-center rounded-full border border-slate-700 bg-slate-800/50 px-2 py-1.5 text-[10px] font-semibold leading-none tracking-tight text-[#39FF14] transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#39FF14] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] md:px-3 md:text-xs"
                   title="Email us"
                   prefix="Email: "
                 />
