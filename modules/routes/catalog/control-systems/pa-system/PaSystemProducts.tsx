@@ -43,6 +43,26 @@ export default function PaSystemProducts({
   items: PaSystemItem[];
   brand: { maroon: string; maroonDark: string };
 }) {
+  const defaultMobileProductRows = Array.from({ length: Math.ceil(items.length / 4) }, (_, index) =>
+    items.slice(index * 4, index * 4 + 4)
+  );
+  const mobileProductRows =
+    defaultMobileProductRows.length <= 4
+      ? defaultMobileProductRows
+      : (() => {
+          const targetRows = 4;
+          const baseRowSize = Math.floor(items.length / targetRows);
+          const extraItems = items.length % targetRows;
+          let cursor = 0;
+
+          return Array.from({ length: targetRows }, (_, index) => {
+            const rowSize = baseRowSize + (index < extraItems ? 1 : 0);
+            const row = items.slice(cursor, cursor + rowSize);
+            cursor += rowSize;
+            return row;
+          });
+        })();
+
   return (
     <section className="mt-[10px]">
       <div className="sr-only">
@@ -106,41 +126,85 @@ export default function PaSystemProducts({
       </div>
 
       {items.length ? (
-        <ResponsiveProductCarousel className="product-grid-3" desktopClassName="md:grid-cols-2 lg:grid-cols-3" mobileGapClassName="gap-[10px]">
-          {items.map((p) => {
-            const detailHref = `/pa-system/${p.slug}/`;
-            const features = getCardFeatures(p);
-            const bestFor = inferBestFor(p);
-            const cardPrice = getPaSystemCardPriceLabel(p);
+        <>
+          <div className="md:hidden">
+            {mobileProductRows.map((row, index) => (
+              <ResponsiveProductCarousel key={`mobile-row-${index}`} className={index === 0 ? "mt-6" : "mt-4"} mobileGapClassName="gap-[10px]">
+                {row.map((p) => {
+                  const detailHref = `/pa-system/${p.slug}/`;
+                  const features = getCardFeatures(p);
+                  const bestFor = inferBestFor(p);
+                  const cardPrice = getPaSystemCardPriceLabel(p);
 
-            return (
-              <ProductGridCard
-                key={p.slug}
-                href={detailHref}
-                title={p.title}
-                image={
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={p.image}
-                    alt={p.title}
-                    className="h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
-                    loading="lazy"
-                    decoding="async"
+                  return (
+                    <ProductGridCard
+                      key={p.slug}
+                      href={detailHref}
+                      title={p.title}
+                      image={
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={p.image}
+                          alt={p.title}
+                          className="h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      }
+                      imageContainerClassName="bg-slate-50"
+                      borderColor={`${brand.maroon}12`}
+                      metaLines={cardPrice ? [{ text: `Price: ${cardPrice}`, className: "mt-1 text-sm font-semibold text-sky-700" }] : []}
+                      bullets={features}
+                      chips={bestFor}
+                      accentColor={BRAND.maroon}
+                      contactHref="/contact/"
+                      compactMobile
+                      viewDetailsLabel="View details ->"
+                    />
+                  );
+                })}
+              </ResponsiveProductCarousel>
+            ))}
+          </div>
+
+          <div className="hidden md:block">
+            <ResponsiveProductCarousel className="product-grid-3" desktopClassName="md:grid-cols-2 lg:grid-cols-3" mobileGapClassName="gap-[10px]">
+              {items.map((p) => {
+                const detailHref = `/pa-system/${p.slug}/`;
+                const features = getCardFeatures(p);
+                const bestFor = inferBestFor(p);
+                const cardPrice = getPaSystemCardPriceLabel(p);
+
+                return (
+                  <ProductGridCard
+                    key={p.slug}
+                    href={detailHref}
+                    title={p.title}
+                    image={
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={p.image}
+                        alt={p.title}
+                        className="h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    }
+                    imageContainerClassName="bg-slate-50"
+                    borderColor={`${brand.maroon}12`}
+                    metaLines={cardPrice ? [{ text: `Price: ${cardPrice}`, className: "mt-1 text-sm font-semibold text-sky-700" }] : []}
+                    bullets={features}
+                    chips={bestFor}
+                    accentColor={BRAND.maroon}
+                    contactHref="/contact/"
+                    compactMobile
+                    viewDetailsLabel="View details ->"
                   />
-                }
-                imageContainerClassName="bg-slate-50"
-                borderColor={`${brand.maroon}12`}
-                metaLines={cardPrice ? [{ text: `Price: ${cardPrice}`, className: "mt-1 text-sm font-semibold text-sky-700" }] : []}
-                bullets={features}
-                chips={bestFor}
-                accentColor={BRAND.maroon}
-                contactHref="/contact/"
-                compactMobile
-                viewDetailsLabel="View details ->"
-              />
-            );
-          })}
-        </ResponsiveProductCarousel>
+                );
+              })}
+            </ResponsiveProductCarousel>
+          </div>
+        </>
       ) : (
         <div
           className="mt-6 rounded-3xl border bg-white p-6 text-sm font-semibold text-slate-700"

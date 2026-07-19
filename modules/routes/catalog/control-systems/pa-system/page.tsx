@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { socialImageUrl } from "@/lib/seo";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
@@ -765,6 +766,160 @@ function PaSolutionIcon({ name }: { name: PaSolutionIconName }) {
   }
 }
 
+function getParitySurface(index: number) {
+  return {
+    borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+    background:
+      index % 2 === 0
+        ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+        : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+  };
+}
+
+const Section = ({
+  title,
+  subtitle,
+  icon,
+  children,
+}: {
+  title: string;
+  subtitle?: string;
+  icon?: ReactNode;
+  children: ReactNode;
+}) => (
+  <section className="mt-8 rounded-[24px] border bg-white p-4 md:mt-10 md:rounded-3xl md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
+    {icon ? (
+      <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
+        <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-orange-50 text-orange-600" aria-hidden="true">
+          {icon}
+        </span>
+        <span>{title}</span>
+      </h2>
+    ) : (
+      <h2 className="text-2xl font-bold text-slate-900">{title}</h2>
+    )}
+    {subtitle ? (
+      <MobileIntroText
+        teaser={subtitle}
+        className="mt-2"
+        teaserClassName="w-full leading-6"
+        expandedClassName="text-sm leading-7 text-slate-600"
+        desktopClassName="text-slate-600 leading-7"
+      >
+        <p className="text-slate-600 leading-7 text-justify">{subtitle}</p>
+      </MobileIntroText>
+    ) : null}
+    <div className="mt-5">{children}</div>
+  </section>
+);
+
+const CardGrid = ({
+  items,
+}: {
+  items: Array<{ title: string; desc: string; icon?: ReactNode; bullets?: string[]; meta?: string }>;
+}) => (
+  <>
+    <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+      {items.map((item, index) => (
+        <article key={item.title} className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4" style={getParitySurface(index)}>
+          <div className="flex items-start gap-3">
+            {item.icon ? (
+              <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] bg-white/80 text-orange-600">
+                {item.icon}
+              </span>
+            ) : null}
+            <div className="min-w-0">
+              <div className="text-[17px] font-extrabold leading-snug text-slate-900">{item.title}</div>
+              {item.meta ? <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.04em] text-slate-500">{item.meta}</p> : null}
+            </div>
+          </div>
+          <p className="mt-2 text-[13px] leading-6 text-slate-700 text-justify">{item.desc}</p>
+          {item.bullets?.length ? (
+            <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
+              {item.bullets.map((b) => (
+                <li key={b} className="flex items-start gap-2">
+                  <span className="mt-1.5 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                  <span className="leading-6 text-justify">{b}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </article>
+      ))}
+    </div>
+
+    <div className="hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-3">
+      {items.map((item) => (
+        <article key={item.title} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
+          <div className="flex items-start gap-3">
+            {item.icon ? (
+              <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-orange-600">
+                {item.icon}
+              </span>
+            ) : null}
+            <div className="min-w-0">
+              <div className="text-lg font-bold text-slate-900">{item.title}</div>
+              {item.meta ? <p className="mt-1 text-xs font-semibold uppercase tracking-[0.04em] text-slate-500">{item.meta}</p> : null}
+            </div>
+          </div>
+          <p className="mt-3 text-sm leading-7 text-slate-600 text-justify">{item.desc}</p>
+          {item.bullets?.length ? (
+            <ul className="mt-3 space-y-2 text-sm text-slate-700">
+              {item.bullets.map((b) => (
+                <li key={b} className="flex items-start gap-2">
+                  <span className="mt-2 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                  <span className="leading-7 text-justify">{b}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </article>
+      ))}
+    </div>
+  </>
+);
+
+const MobileExpandableCards = ({
+  summaryLabel,
+  items,
+}: {
+  summaryLabel: string;
+  items: Array<{ title: string; subtitle?: string; fields: Array<{ label: string; value: string }> }>;
+}) => (
+  <details className="group md:hidden">
+    <summary
+      className="list-none cursor-pointer rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900 [::-webkit-details-marker]:hidden"
+      style={{
+        borderColor: `${BRAND.maroon}14`,
+        background: "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)",
+      }}
+    >
+      {summaryLabel}
+    </summary>
+    <div className="mt-3 space-y-3">
+      {items.map((item, index) => (
+        <article key={item.title} className="overflow-hidden rounded-[14px] border" style={getParitySurface(index)}>
+          <div className="px-4 py-4">
+            <div className="text-[16px] font-extrabold leading-snug text-slate-900">{item.title}</div>
+            {item.subtitle ? <p className="mt-1 text-[12.5px] leading-6 text-slate-700 text-justify">{item.subtitle}</p> : null}
+            <div className="mt-3 overflow-hidden rounded-[12px] border border-white/70 bg-white/75">
+              {item.fields.map((field, fieldIndex) => (
+                <div
+                  key={`${item.title}-${field.label}`}
+                  className={`grid grid-cols-[94px_minmax(0,1fr)] gap-3 px-3 py-2.5 ${fieldIndex !== 0 ? "border-t border-slate-200/70" : ""}`}
+                >
+                  <div className="text-[11px] font-extrabold uppercase tracking-[0.04em] text-slate-500">{field.label}</div>
+                  <div className="text-[12.5px] leading-6 text-slate-700 text-justify">{field.value}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </details>
+);
+
 export const metadata: Metadata = {
   title: PAGE_TITLE,
   description:
@@ -836,7 +991,26 @@ export default function PaSystemPage() {
 
       <PaSystemProducts items={PA_PAGE_ITEMS} brand={BRAND} />
 
-      <section className="mt-[10px] rounded-2xl border border-slate-200 bg-white px-[15px] py-6 shadow-sm md:py-8">
+      <div className="md:hidden">
+        <Section
+          title="PA System Price List in Bangladesh"
+          subtitle="PA system cost depends on coverage area, speaker type, amplifier capacity, zoning, installation complexity and project scope."
+        >
+          <MobileExpandableCards
+            summaryLabel="Tap To Expand Price List"
+            items={PA_PRICE_ROWS.map((item) => ({
+              title: item.title,
+              subtitle: "Indicative current range",
+              fields: [
+                { label: "Price", value: item.range },
+                { label: "Link", value: item.href },
+              ],
+            }))}
+          />
+        </Section>
+      </div>
+
+      <section className="mt-[10px] hidden rounded-2xl border border-slate-200 bg-white px-[15px] py-6 shadow-sm md:block md:py-8">
         <h2 className="text-2xl font-extrabold tracking-tight text-slate-950">
           PA System Price List in Bangladesh
         </h2>
@@ -882,7 +1056,56 @@ export default function PaSystemPage() {
         </div>
       </section>
 
-      <section className="pa-system-solutions mt-[10px] rounded-2xl border border-slate-200 bg-white px-[15px] py-6 shadow-sm md:py-8 lg:py-10">
+      <div className="md:hidden">
+        <Section
+          title="PA System Solutions in Bangladesh"
+          subtitle="We plan, supply and support public address systems for mosques, schools, offices, factories, hospitals and commercial facilities across Bangladesh."
+          icon={<PaSolutionIcon name="speaker" />}
+        >
+          <CardGrid
+            items={[
+              {
+                title: "What is a PA System?",
+                desc: "A PA system amplifies and distributes announcements, paging alerts, emergency messages and background audio across selected indoor or outdoor areas with clear speech coverage.",
+                icon: <PaSolutionIcon name="speaker" />,
+              },
+              ...PA_SOLUTION_STEPS.map((step, index) => ({
+                title: `${index + 1}. ${step.title}`,
+                desc: step.description,
+                icon: <PaSolutionIcon name={step.icon} />,
+                meta: `Step ${index + 1}`,
+              })),
+            ]}
+          />
+          <div className="mt-5">
+            <CardGrid
+              items={PA_APPLICATIONS.map((application) => ({
+                title: application.title,
+                desc: application.description,
+                icon: <PaSolutionIcon name={application.icon} />,
+              }))}
+            />
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <Link
+              href="/contact/"
+              className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+              style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+            >
+              Request Quote
+            </Link>
+            <Link
+              href="/contact/"
+              className="inline-flex min-h-9 items-center justify-center rounded-md border bg-white px-3 py-2 text-[11px] font-extrabold text-slate-900 shadow-sm"
+              style={{ borderColor: `${BRAND.maroon}18` }}
+            >
+              Consultation
+            </Link>
+          </div>
+        </Section>
+      </div>
+
+      <section className="pa-system-solutions mt-[10px] hidden rounded-2xl border border-slate-200 bg-white px-[15px] py-6 shadow-sm md:block md:py-8 lg:py-10">
         <div className="pa-system-solutions__intro max-w-5xl">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-orange-600">
             Public address planning and installation
@@ -1004,7 +1227,39 @@ export default function PaSystemPage() {
         </div>
       </section>
 
-      <section className="pa-components mt-[10px] rounded-2xl border border-slate-200 bg-white px-[15px] py-6 shadow-sm md:py-8 lg:py-10">
+      <div className="md:hidden">
+        <Section
+          title="Main Components of a PA System"
+          subtitle="A practical PA setup combines the right speakers, amplifiers, microphones and control hardware based on coverage area, zoning and daily usage."
+          icon={<PaSolutionIcon name="audioEquipment" />}
+        >
+          <CardGrid
+            items={PA_COMPONENTS.map((component) => ({
+              title: component.title,
+              desc: component.description,
+              icon: <PaSolutionIcon name={component.icon} />,
+            }))}
+          />
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <Link
+              href="/contact/"
+              className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+              style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+            >
+              Get Advice
+            </Link>
+            <Link
+              href="/contact/"
+              className="inline-flex min-h-9 items-center justify-center rounded-md border bg-white px-3 py-2 text-[11px] font-extrabold text-slate-900 shadow-sm"
+              style={{ borderColor: `${BRAND.maroon}18` }}
+            >
+              Contact Us
+            </Link>
+          </div>
+        </Section>
+      </div>
+
+      <section className="pa-components mt-[10px] hidden rounded-2xl border border-slate-200 bg-white px-[15px] py-6 shadow-sm md:block md:py-8 lg:py-10">
         <div className="pa-components__header max-w-5xl">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-orange-600">
             PA system equipment guide
@@ -1056,7 +1311,25 @@ export default function PaSystemPage() {
         </div>
       </section>
 
-      <section className="pa-application-solutions mt-[10px] rounded-2xl border border-slate-200 bg-white px-[15px] py-6 shadow-sm md:py-8 lg:py-10">
+      <div className="md:hidden">
+        <Section
+          title="PA System Solutions by Application"
+          subtitle="Each environment needs a different mix of speaker type, amplifier logic, paging workflow and coverage planning."
+          icon={<PaSolutionIcon name="office" />}
+        >
+          <CardGrid
+            items={PA_APPLICATION_SOLUTIONS.map((solution) => ({
+              title: solution.title,
+              desc: solution.description,
+              icon: <PaSolutionIcon name={solution.icon} />,
+              meta: `Best for: ${solution.bestFor}`,
+              bullets: solution.components,
+            }))}
+          />
+        </Section>
+      </div>
+
+      <section className="pa-application-solutions mt-[10px] hidden rounded-2xl border border-slate-200 bg-white px-[15px] py-6 shadow-sm md:block md:py-8 lg:py-10">
         <div className="pa-application-solutions__header max-w-5xl">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-orange-600">
             Application-based PA planning
@@ -1108,7 +1381,58 @@ export default function PaSystemPage() {
 
       </section>
 
-      <section className="mt-[10px] rounded-2xl bg-white px-[15px] py-6 md:py-8">
+      <div className="md:hidden">
+        <Section
+          title="PA Sound System Types in Bangladesh"
+          subtitle="Different buildings need different PA planning based on room layout, coverage area, noise level, speaker distance and zoning requirements."
+          icon={<PaSolutionIcon name="distribution" />}
+        >
+          <CardGrid
+            items={[
+              {
+                title: "Analog PA System",
+                desc: "Analog PA systems use wired microphones, mixer amplifiers and speaker lines for dependable voice coverage in mosques, classrooms, offices and regular announcement work.",
+              },
+              {
+                title: "Digital PA System",
+                desc: "Digital PA systems provide cleaner control over inputs, tone, level and routing for corporate, conference and commercial announcement setups.",
+              },
+              {
+                title: "IP Based PA System",
+                desc: "IP based PA systems send paging and audio through network infrastructure, making them suitable for campuses, hospitals, factories and multi-building sites.",
+              },
+              {
+                title: "Portable Wireless PA System",
+                desc: "Portable wireless PA systems are easy to move and quick to install for events, training sessions, meetings and temporary programs.",
+              },
+              {
+                title: "Single Zone PA System",
+                desc: "Single zone systems play one source across one selected area and work well for smaller rooms, shops, classrooms and compact halls.",
+              },
+              {
+                title: "Multi Zone PA System",
+                desc: "Multi zone systems control paging and volume separately for floors, rooms or buildings, making them ideal for larger projects.",
+              },
+            ]}
+          />
+        </Section>
+
+        <Section
+          title="Types of PA Speakers"
+          subtitle="The right speaker type improves clarity, coverage and daily reliability. Selection depends on indoor or outdoor use, mounting location and audience area."
+          icon={<PaSolutionIcon name="speaker" />}
+        >
+          <CardGrid
+            items={PA_SPEAKER_TYPES.map((speaker) => ({
+              title: speaker.title,
+              desc: speaker.description,
+              icon: <PaSolutionIcon name={speaker.icon} />,
+            }))}
+          />
+        </Section>
+      </div>
+
+      <section className="mt-[10px] hidden rounded-2xl bg-white px-[15px] py-6 md:block md:py-8">
         <h2 className="text-2xl font-extrabold leading-tight tracking-tight text-slate-950 md:text-3xl">
           PA Sound System Types in Bangladesh
         </h2>
@@ -1197,8 +1521,41 @@ export default function PaSystemPage() {
         </section>
       </section>
 
+      <div className="md:hidden">
+        <Section
+          title="Our PA System Design and Installation Process"
+          subtitle="A reliable PA system needs more than product selection. We follow a structured process for planning, installation, testing and handover."
+          icon={<PaSolutionIcon name="installationTools" />}
+        >
+          <CardGrid
+            items={PA_INSTALLATION_PROCESS.map((processStep) => ({
+              title: processStep.title,
+              desc: processStep.description,
+              icon: <PaSolutionIcon name={processStep.icon} />,
+              meta: `Step ${processStep.step}`,
+            }))}
+          />
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <Link
+              href="/contact/"
+              className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+              style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+            >
+              Request Quote
+            </Link>
+            <Link
+              href="/contact/"
+              className="inline-flex min-h-9 items-center justify-center rounded-md border bg-white px-3 py-2 text-[11px] font-extrabold text-slate-900 shadow-sm"
+              style={{ borderColor: `${BRAND.maroon}18` }}
+            >
+              Free Consultation
+            </Link>
+          </div>
+        </Section>
+      </div>
+
       <section
-        className="pa-installation-process mt-[10px] rounded-3xl bg-white px-[15px] py-7 md:py-10"
+        className="pa-installation-process mt-[10px] hidden rounded-3xl bg-white px-[15px] py-7 md:block md:py-10"
         aria-labelledby="pa-installation-process-heading"
       >
         <div className="max-w-5xl">
@@ -1276,8 +1633,40 @@ export default function PaSystemPage() {
         </div>
       </section>
 
+      <div className="md:hidden">
+        <Section
+          title="Why Choose Sasha Corporation for PA System Solutions?"
+          subtitle="We focus on reliable, scalable and professionally planned PA systems with clear communication, practical support and long-term serviceability."
+          icon={<PaSolutionIcon name="verifiedShield" />}
+        >
+          <CardGrid
+            items={PA_WHY_CHOOSE_FEATURES.map((feature) => ({
+              title: feature.title,
+              desc: feature.description,
+              icon: <PaSolutionIcon name={feature.icon} />,
+            }))}
+          />
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <Link
+              href="/contact/"
+              className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+              style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+            >
+              Request Quote
+            </Link>
+            <Link
+              href="/contact/"
+              className="inline-flex min-h-9 items-center justify-center rounded-md border bg-white px-3 py-2 text-[11px] font-extrabold text-slate-900 shadow-sm"
+              style={{ borderColor: `${BRAND.maroon}18` }}
+            >
+              Consultation
+            </Link>
+          </div>
+        </Section>
+      </div>
+
       <section
-        className="pa-solution-choice mt-[10px] rounded-3xl bg-white px-[15px] py-7 md:py-10"
+        className="pa-solution-choice mt-[10px] hidden rounded-3xl bg-white px-[15px] py-7 md:block md:py-10"
         aria-labelledby="pa-solution-choice-heading"
       >
         <div className="mx-auto max-w-5xl text-center">
@@ -1341,8 +1730,46 @@ export default function PaSystemPage() {
         </div>
       </section>
 
+      <div className="md:hidden">
+        <Section
+          title="Brands We Work With"
+          subtitle="We work with trusted PA and professional audio brands so the final system remains dependable, service-friendly and appropriate for your project budget."
+          icon={<PaSolutionIcon name="verifiedShield" />}
+        >
+          <CardGrid
+            items={PA_BRANDS.map((brand) => ({
+              title: brand.title,
+              desc: brand.description,
+              meta: `${brand.badge} - ${brand.category}`,
+            }))}
+          />
+          <article className="mt-4 rounded-[14px] border px-4 py-4" style={getParitySurface(0)}>
+            <div className="text-[16px] font-extrabold leading-snug text-slate-900">Trusted Brands for Reliable Communication</div>
+            <p className="mt-2 text-[12.5px] leading-6 text-slate-700 text-justify">
+              The performance of a PA system depends not only on proper design and installation but also on the quality of the equipment used.
+            </p>
+          </article>
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <Link
+              href="/contact/"
+              className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+              style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+            >
+              Request Quote
+            </Link>
+            <Link
+              href="/contact/"
+              className="inline-flex min-h-9 items-center justify-center rounded-md border bg-white px-3 py-2 text-[11px] font-extrabold text-slate-900 shadow-sm"
+              style={{ borderColor: `${BRAND.maroon}18` }}
+            >
+              Talk to Expert
+            </Link>
+          </div>
+        </Section>
+      </div>
+
       <section
-        className="pa-brand-showcase mt-[10px] rounded-3xl bg-white px-[15px] py-7 md:py-10"
+        className="pa-brand-showcase mt-[10px] hidden rounded-3xl bg-white px-[15px] py-7 md:block md:py-10"
         aria-labelledby="pa-brand-showcase-heading"
       >
         <div className="text-center">
@@ -1453,7 +1880,59 @@ export default function PaSystemPage() {
         </div>
       </section>
 
-      <section className="mt-[10px] rounded-3xl bg-white px-[15px] py-7 md:py-10">
+      <div className="md:hidden">
+        <Section
+          title="Benefits of a PA Sound System"
+          subtitle="The right PA system improves communication, reduces confusion and helps teams run daily operations smoothly from routine announcements to emergency paging."
+          icon={<PaSolutionIcon name="supportTraining" />}
+        >
+          <CardGrid
+            items={[
+              {
+                title: "Clear communication at scale",
+                desc: "Deliver announcements across rooms, floors or a campus with consistent volume and clarity instead of relaying messages person-to-person.",
+              },
+              {
+                title: "Better safety and faster response",
+                desc: "Priority paging helps broadcast urgent instructions quickly during incidents, evacuations or operational alerts.",
+              },
+              {
+                title: "Zoning reduces disruption",
+                desc: "Call only the areas you need instead of disturbing everyone across the building.",
+              },
+              {
+                title: "More efficient daily operations",
+                desc: "Routine messages such as shift calls, queue guidance and notices become easier for staff to manage.",
+              },
+              {
+                title: "Professional customer experience",
+                desc: "Controlled paging and optional background music can improve visitor guidance and overall environment.",
+              },
+              {
+                title: "Scalable for future expansion",
+                desc: "A planned design can add zones, speakers or buildings later without rebuilding the full system.",
+              },
+            ]}
+          />
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <Link
+              href="/contact/"
+              className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+              style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+            >
+              Get Advice
+            </Link>
+            <Link
+              href="/contact/"
+              className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+            >
+              Contact Us
+            </Link>
+          </div>
+        </Section>
+      </div>
+
+      <section className="mt-[10px] hidden rounded-3xl bg-white px-[15px] py-7 md:block md:py-10">
         <div className="mx-auto max-w-5xl text-center">
           <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 md:text-3xl">
             Benefits of a PA Sound System
@@ -1520,7 +1999,35 @@ export default function PaSystemPage() {
         </div>
       </section>
 
-      <section className="mt-[10px] rounded-3xl border bg-white px-[15px] py-7 md:py-10" style={{ borderColor: `${BRAND.maroon}12` }}>
+      <div className="md:hidden">
+        <Section
+          title="FAQ"
+          subtitle="Quick answers about PA sound system price, 100V line, zoning, speakers and installation support in Bangladesh."
+        >
+          <FaqAccordion accent={BRAND.maroon} density="compact" items={FAQS} />
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <Link
+              href="/contact/"
+              className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+              style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+            >
+              Request Quote
+            </Link>
+            <Link
+              href="/contact/"
+              className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+            >
+              Contact Us
+            </Link>
+          </div>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+          />
+        </Section>
+      </div>
+
+      <section className="mt-[10px] hidden rounded-3xl border bg-white px-[15px] py-7 md:block md:py-10" style={{ borderColor: `${BRAND.maroon}12` }}>
         <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
           <div>
             <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">FAQ</h2>
