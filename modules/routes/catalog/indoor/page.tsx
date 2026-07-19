@@ -194,7 +194,7 @@ export default function IndoorProductsPage() {
     });
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-0 md:px-6">
+    <div className="indoor-led-page mx-auto w-full max-w-7xl px-4 pb-8 pt-0 md:px-6">
       <Breadcrumbs
         items={[
           homeBreadcrumb(),

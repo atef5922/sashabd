@@ -94,6 +94,11 @@ label {
 }
 
 @media (max-width: 767px) {
+  .indoor-led-page :is(p, li, td, dd, blockquote) {
+    text-align: justify;
+    text-justify: inter-word;
+  }
+
   .led-display-page .sc-led-why-head,
   .led-display-page .sc-led-why-grid-wrap,
   .led-display-page .mt-6.rounded-3xl.border.bg-white.p-4,
