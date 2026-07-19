@@ -71,7 +71,7 @@ const Section = ({
   children: React.ReactNode;
   titleIcon?: React.ReactNode;
 }) => (
-  <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
+  <section className="mt-8 rounded-[24px] border bg-white p-4 md:mt-10 md:rounded-3xl md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
     <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
       {titleIcon ? (
         <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-orange-50 text-orange-600" aria-hidden="true">
@@ -97,11 +97,11 @@ const Section = ({
 
 const CardGrid = ({ items }: { items: { t: string; d: string; bullets?: string[] }[] }) => (
   <>
-    <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+    <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
       {items.map((x, index) => (
         <div
           key={x.t}
-              className="w-[86%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+          className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
           style={{
             borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
             background:
@@ -194,7 +194,7 @@ export default function IndoorProductsPage() {
     });
 
   return (
-    <div className="indoor-led-page mx-auto w-full max-w-7xl px-4 pb-8 pt-0 md:px-6">
+    <div className="indoor-led-page mx-auto w-full max-w-7xl px-3 pb-8 pt-0 md:px-6">
       <Breadcrumbs
         items={[
           homeBreadcrumb(),
@@ -277,7 +277,7 @@ export default function IndoorProductsPage() {
       </section>
 
       <section
-        className="mt-6 rounded-3xl border bg-white p-5 shadow-sm md:p-6"
+        className="mt-5 rounded-[24px] border bg-white p-4 shadow-sm md:mt-6 md:rounded-3xl md:p-6"
         style={{ borderColor: `${BRAND.maroon}12` }}
       >
         {/* PRODUCT GRID (boxed like /led-display/) */}
@@ -300,7 +300,7 @@ export default function IndoorProductsPage() {
           </span>
           <span>Key Features of Indoor LED Display</span>
         </h2>
-        <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
           {[
             {
  i: "",
@@ -325,7 +325,7 @@ export default function IndoorProductsPage() {
           ].map((x, index) => (
             <div
               key={x.t}
-              className="w-[84%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
               style={{
                 borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
                 background:
@@ -410,7 +410,7 @@ export default function IndoorProductsPage() {
         }
         subtitle="Key hardware elements that work together to deliver stable visuals, accurate control, and long-term indoor performance."
       >
-        <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
           {[
             {
               t: "LED module",
@@ -439,7 +439,7 @@ export default function IndoorProductsPage() {
           ].map((x, index) => (
             <div
               key={x.t}
-              className="w-[84%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
               style={{
                 borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
                 background:
@@ -500,7 +500,7 @@ export default function IndoorProductsPage() {
         }
         subtitle="Common indoor use cases where high clarity, stable performance, and professional content delivery are important."
       >
-        <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
           {[
             { t: "Corporate Boardroom", d: "Supports executive presentations, dashboards, and clear meeting communication." },
             { t: "Control Room", d: "Enables continuous monitoring with sharp data visibility and stable long-hour output." },
@@ -679,7 +679,7 @@ export default function IndoorProductsPage() {
         }
         subtitle="Follow this indoor LED display maintenance checklist to protect image quality, reduce downtime, and extend panel lifespan in showroom, office, and control room environments."
       >
-        <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
           {[
             {
               t: "Cleaning",
@@ -700,7 +700,7 @@ export default function IndoorProductsPage() {
           ].map((x, index) => (
             <div
               key={x.t}
-              className="w-[84%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
               style={{
                 borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
                 background:
@@ -824,7 +824,7 @@ export default function IndoorProductsPage() {
  title="Explore High-Performance LED Display in Bangladesh"
  subtitle="From indoor video walls to outdoor branding and rental event screens-explore the right category for your project."
       >
-        <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
           {[
             { t: "Indoor LED Displays", d: "Showroom, conference, control room solutions.", href: "/led-display/indoor-led/" },
             { t: "Outdoor LED Displays", d: "Billboards, rooftop signage, public screens.", href: "/led-display/outdoor/" },
@@ -833,7 +833,7 @@ export default function IndoorProductsPage() {
             <Link
               key={x.t}
               href={x.href}
-              className="group w-[84%] shrink-0 snap-start rounded-[14px] border px-4 py-4 transition"
+              className="group w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4 transition"
               style={{
                 borderColor: `${BRAND.maroon}14`,
                 background: "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
@@ -948,7 +948,7 @@ export default function IndoorProductsPage() {
           </div>
         </div>
 
-        <div className="mt-5 -mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+        <div className="mt-5 -mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
           {[
             {
               t: "Step 1: Measure real viewing distance",
@@ -965,7 +965,7 @@ export default function IndoorProductsPage() {
           ].map((x, index) => (
             <div
               key={x.t}
-              className="w-[84%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
               style={{
                 borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
                 background:

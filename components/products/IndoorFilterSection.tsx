@@ -84,6 +84,80 @@ export default function IndoorFilterSection({
   const displayCards: Array<ProductItem | LedAccessoryProduct> = [...filtered, ...stickyCards].filter(
     (p, idx, arr) => arr.findIndex((x) => x.slug === p.slug) === idx
   );
+  const mobileDisplayRows = Array.from({ length: Math.ceil(displayCards.length / 4) }, (_, index) =>
+    displayCards.slice(index * 4, index * 4 + 4)
+  );
+
+  const renderDisplayCard = (p: ProductItem | LedAccessoryProduct) => {
+    if ("badge" in p) {
+      const chips = (p.tags?.length ? p.tags : p.quickFeatures?.length ? p.quickFeatures : [p.badge]).slice(0, 3);
+      const bullets = (p.quickFeatures?.length ? p.quickFeatures : p.tags?.length ? p.tags : [p.subtitle]).slice(0, 4);
+      return (
+        <ProductGridCard
+          key={p.slug}
+          href={`/led-display/accessories/led-accessories/${p.slug}/`}
+          title={p.title}
+          borderColor={`${BRAND.maroon}12`}
+          accentColor={BRAND.maroon}
+          topLeftBadge={{ text: p.badge, tone: "light" }}
+          topRightBadge={{ text: "Accessories", tone: "dark" }}
+          metaLines={p.cardPrice ? [{ text: p.cardPrice, className: "mt-2 text-sm font-semibold text-sky-700" }] : []}
+          bullets={bullets}
+          chips={chips}
+          compactMobile
+          image={
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={p.image}
+              alt={p.title}
+              className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+              loading="lazy"
+            />
+          }
+        />
+      );
+    }
+
+    const pitchDisplay = getPitchDisplay(p);
+    const category = inferIndoorCategory(p);
+    const chips = (p.bestFor?.length ? p.bestFor : p.quickFeatures?.length ? p.quickFeatures : [category]).slice(0, 3);
+    const bullets = buildLedProductCardHighlights({
+      keySpecs: p.keySpecs,
+      pitch: pitchDisplay,
+      quickFeatures: p.quickFeatures,
+      bestFor: p.bestFor,
+      subtitle: p.subtitle,
+      category: "indoor",
+    });
+
+    return (
+      <ProductGridCard
+        key={p.slug}
+        href={`/led-display/indoor-led/${p.slug}/`}
+        title={p.title}
+        borderColor={`${BRAND.maroon}12`}
+        accentColor={BRAND.maroon}
+        topLeftBadge={{ text: category, tone: "light" }}
+        topRightBadge={{ text: getPitchLabel(p), tone: "dark" }}
+        metaLines={[
+          { text: `Pixel pitch: ${pitchDisplay}`, className: "mt-1 text-sm font-semibold text-slate-700" },
+          ...(p.cardPrice ? [{ text: p.cardPrice, className: "mt-1 text-sm font-semibold text-sky-700" }] : []),
+        ]}
+        bullets={bullets}
+        chips={chips}
+        compactMobile
+        image={
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={p.image}
+            alt={p.title}
+            className="h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
+            loading="lazy"
+          />
+        }
+      />
+    );
+  };
 
   return (
     <>
@@ -138,78 +212,19 @@ export default function IndoorFilterSection({
           Choose a model based on viewing distance, content type and environment. Open any model to see detailed specs.
         </p>
 
-        <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
-          {displayCards.map((p) => {
-            if ("badge" in p) {
-              const chips = (p.tags?.length ? p.tags : p.quickFeatures?.length ? p.quickFeatures : [p.badge]).slice(0, 3);
-              const bullets = (p.quickFeatures?.length ? p.quickFeatures : p.tags?.length ? p.tags : [p.subtitle]).slice(0, 4);
-              return (
-                <ProductGridCard
-                  key={p.slug}
-                  href={`/led-display/accessories/led-accessories/${p.slug}/`}
-                  title={p.title}
-                  borderColor={`${BRAND.maroon}12`}
-                  accentColor={BRAND.maroon}
-                  topLeftBadge={{ text: p.badge, tone: "light" }}
-                  topRightBadge={{ text: "Accessories", tone: "dark" }}
-                  metaLines={p.cardPrice ? [{ text: p.cardPrice, className: "mt-2 text-sm font-semibold text-sky-700" }] : []}
-                  bullets={bullets}
-                  chips={chips}
-                  compactMobile
-                  image={
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={p.image}
-                      alt={p.title}
-                      className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
-                      loading="lazy"
-                    />
-                  }
-                />
-              );
-            }
+        <div className="md:hidden">
+          {mobileDisplayRows.map((row, index) => (
+            <ResponsiveProductCarousel key={`mobile-row-${index}`} className={index === 0 ? "mt-6" : "mt-4"}>
+              {row.map((p) => renderDisplayCard(p))}
+            </ResponsiveProductCarousel>
+          ))}
+        </div>
 
-            const pitchDisplay = getPitchDisplay(p);
-            const category = inferIndoorCategory(p);
-            const chips = (p.bestFor?.length ? p.bestFor : p.quickFeatures?.length ? p.quickFeatures : [category]).slice(0, 3);
-            const bullets = buildLedProductCardHighlights({
-              keySpecs: p.keySpecs,
-              pitch: pitchDisplay,
-              quickFeatures: p.quickFeatures,
-              bestFor: p.bestFor,
-              subtitle: p.subtitle,
-              category: "indoor",
-            });
-
-            return (
-              <ProductGridCard
-                key={p.slug}
-                href={`/led-display/indoor-led/${p.slug}/`}
-                title={p.title}
-                borderColor={`${BRAND.maroon}12`}
-                accentColor={BRAND.maroon}
-                topLeftBadge={{ text: category, tone: "light" }}
-                topRightBadge={{ text: getPitchLabel(p), tone: "dark" }}
-                metaLines={[
-                  { text: `Pixel pitch: ${pitchDisplay}`, className: "mt-1 text-sm font-semibold text-slate-700" },
-                  ...(p.cardPrice ? [{ text: p.cardPrice, className: "mt-1 text-sm font-semibold text-sky-700" }] : []),
-                ]}
-                bullets={bullets}
-                chips={chips}
-                compactMobile
-                image={
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={p.image}
-                    alt={p.title}
-                    className="h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
-                    loading="lazy"
-                  />
-                }
-              />
-            );
-          })}
-        </ResponsiveProductCarousel>
+        <div className="hidden md:block">
+          <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
+            {displayCards.map((p) => renderDisplayCard(p))}
+          </ResponsiveProductCarousel>
+        </div>
 
         {filtered.length === 0 && stickyCards.length === 0 && (
           <div className="mt-6 rounded-2xl border bg-white p-6 text-sm text-slate-700">
