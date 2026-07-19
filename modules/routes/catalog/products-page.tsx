@@ -1951,10 +1951,10 @@ function ProductsPageContent({
 	                <div className="mt-6 grid gap-4 lg:grid-cols-[1.4fr_.8fr]">
 	                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
 	                    <h3 className="text-lg font-extrabold text-slate-900">Signal Flow</h3>
-	                    <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+	                    <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
 	                      {ledDisplaySignalFlow.map((step, index) => (
-	                        <div key={step} className="flex items-stretch gap-3">
-	                          <div className="flex min-h-16 flex-1 items-center justify-center rounded-2xl border border-slate-200 bg-white px-3 py-4 text-center text-sm font-bold leading-6 text-slate-800 shadow-sm">
+	                        <div key={step} className="flex items-stretch gap-2 md:gap-3">
+	                          <div className="flex min-h-[3.6rem] flex-1 items-center justify-center rounded-xl border border-slate-200 bg-white px-2.5 py-3 text-center text-[12px] font-bold leading-5 text-slate-800 shadow-sm md:min-h-16 md:rounded-2xl md:px-3 md:py-4 md:text-sm md:leading-6">
 	                            {step}
 	                          </div>
 	                          {index < ledDisplaySignalFlow.length - 1 ? (
@@ -2550,25 +2550,25 @@ function ProductsPageContent({
               </table>
             </div>
 
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div className="mt-6 flex gap-2 md:flex-wrap md:gap-3">
               <Link
                 prefetch={false}
                 href={`${basePath}/indoor-led/`}
-                className="inline-flex rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
+                className="inline-flex min-w-0 flex-1 items-center justify-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-center text-[11px] font-extrabold leading-tight text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm md:flex-none md:rounded-xl md:px-5 md:text-sm"
               >
                 Explore Indoor Models -&gt;
               </Link>
               <Link
                 prefetch={false}
                 href={`${basePath}/outdoor/`}
-                className="inline-flex rounded-xl border border-slate-200 bg-white px-5 py-2 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
+                className="inline-flex min-w-0 flex-1 items-center justify-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-center text-[11px] font-extrabold leading-tight text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm md:flex-none md:rounded-xl md:px-5 md:text-sm"
               >
                 Explore Outdoor Models -&gt;
               </Link>
               <Link
                 prefetch={false}
                 href="/contact"
-                className="inline-flex rounded-xl bg-[#FF6A00] px-6 py-2 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#E45700] hover:shadow-md"
+                className="hidden rounded-xl bg-[#FF6A00] px-6 py-2 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#E45700] hover:shadow-md md:inline-flex"
               >
                 Get a Recommendation -&gt;
               </Link>
