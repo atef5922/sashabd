@@ -3078,7 +3078,37 @@ function ProductsPageContent({
               ))}
             </div>
 
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+            <div className="mt-6 rounded-3xl border bg-white p-4 md:hidden" style={{ borderColor: "rgba(255,106,0,0.12)" }}>
+              <div className="relative overflow-hidden">
+                <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-10" style={{ background: "linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
+                <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-10" style={{ background: "linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
+
+                <div className="group">
+                  <div className="flex w-max gap-3 animate-[renexMarquee_48s_linear_infinite] group-hover:[animation-play-state:paused] motion-reduce:animate-none">
+                    {[...ledTrustedInstitutions, ...ledTrustedInstitutions].map((ins, idx) => (
+                      <div
+                        key={`${ins.name}-${idx}`}
+                        className="flex h-[112px] w-[136px] shrink-0 flex-col items-center justify-center rounded-[20px] border bg-slate-50 px-3 py-3 text-center shadow-sm"
+                        style={{ borderColor: "rgba(255,106,0,0.10)" }}
+                        title={ins.name}
+                        aria-label={ins.name}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={ins.logo}
+                          alt={ins.name}
+                          className="h-12 w-full object-contain"
+                          loading="lazy"
+                        />
+                        <p className="mt-2 line-clamp-2 text-[11px] font-medium leading-4 text-slate-800">{ins.name}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 hidden md:grid md:grid-cols-4 lg:grid-cols-5 gap-3">
               {ledTrustedInstitutions.map((ins) => (
                 <div
                   key={ins.name}
