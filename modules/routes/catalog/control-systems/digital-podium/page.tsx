@@ -208,6 +208,137 @@ const installDeliverables = [
   "Installation + testing checklist and a user handover guide for presenters/teachers.",
 ] as const;
 
+const commonMistakes = [
+  "Only comparing display size without confirming touch quality, connectivity and integration scope.",
+  "Skipping cable distance and routing details, leading to messy and unsafe installations.",
+  "Not defining audio workflow, including mic types, PA routing, and recording or streaming requirements.",
+  "Unclear PC or OS requirement, causing mismatch in software workflow for teachers and presenters.",
+] as const;
+
+function getParitySurface(index: number) {
+  return {
+    borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+    background:
+      index % 2 === 0
+        ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+        : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+  };
+}
+
+const SectionShell = ({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string;
+  subtitle?: string;
+  children: React.ReactNode;
+}) => (
+  <section className="mt-8 rounded-[24px] border bg-white p-4 md:mt-10 md:rounded-3xl md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
+    <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">{title}</h2>
+    {subtitle ? (
+      <MobileIntroText
+        teaser={subtitle}
+        className="mt-2"
+        teaserClassName="w-full leading-6"
+        expandedClassName="text-sm leading-7 text-slate-600"
+        desktopClassName="text-slate-600 leading-7"
+      >
+        <p className="text-slate-600 leading-7 text-justify">{subtitle}</p>
+      </MobileIntroText>
+    ) : null}
+    <div className="mt-5">{children}</div>
+  </section>
+);
+
+const MobileParityCardGrid = ({
+  items,
+}: {
+  items: Array<{ title: string; desc: string; bullets?: string[] }>;
+}) => (
+  <>
+    <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+      {items.map((item, index) => (
+        <article key={item.title} className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4" style={getParitySurface(index)}>
+          <div className="text-[17px] font-extrabold leading-snug text-slate-900">{item.title}</div>
+          <p className="mt-2 text-[13px] leading-6 text-slate-700 text-justify">{item.desc}</p>
+          {item.bullets?.length ? (
+            <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
+              {item.bullets.map((line) => (
+                <li key={line} className="flex items-start gap-2">
+                  <span className="mt-1.5 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                  <span className="leading-6 text-justify">{line}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </article>
+      ))}
+    </div>
+
+    <div className="hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-3">
+      {items.map((item) => (
+        <article key={item.title} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}12` }}>
+          <div className="text-base font-extrabold text-slate-900">{item.title}</div>
+          <p className="mt-2 text-sm leading-7 text-slate-600 text-justify">{item.desc}</p>
+          {item.bullets?.length ? (
+            <ul className="mt-3 space-y-2 text-sm leading-7 text-slate-600">
+              {item.bullets.map((line) => (
+                <li key={line} className="flex gap-2">
+                  <span className="mt-2 h-1.5 w-1.5 flex-none rounded-full" style={{ background: BRAND.maroon }} />
+                  <span className="text-justify">{line}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          <div className="mt-4 h-1 w-10 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
+        </article>
+      ))}
+    </div>
+  </>
+);
+
+const MobileExpandableCards = ({
+  summaryLabel,
+  items,
+}: {
+  summaryLabel: string;
+  items: Array<{ title: string; subtitle?: string; fields: Array<{ label: string; value: string }> }>;
+}) => (
+  <details className="group md:hidden">
+    <summary
+      className="list-none cursor-pointer rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900 [::-webkit-details-marker]:hidden"
+      style={{
+        borderColor: `${BRAND.maroon}14`,
+        background: "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)",
+      }}
+    >
+      {summaryLabel}
+    </summary>
+    <div className="mt-3 space-y-3">
+      {items.map((item, index) => (
+        <article key={item.title} className="overflow-hidden rounded-[14px] border" style={getParitySurface(index)}>
+          <div className="px-4 py-4">
+            <div className="text-[16px] font-extrabold leading-snug text-slate-900">{item.title}</div>
+            {item.subtitle ? <p className="mt-1 text-[12.5px] leading-6 text-slate-700 text-justify">{item.subtitle}</p> : null}
+            <div className="mt-3 overflow-hidden rounded-[12px] border border-white/70 bg-white/75">
+              {item.fields.map((field, fieldIndex) => (
+                <div
+                  key={`${item.title}-${field.label}`}
+                  className={`grid grid-cols-[96px_minmax(0,1fr)] gap-3 px-3 py-2.5 ${fieldIndex !== 0 ? "border-t border-slate-200/70" : ""}`}
+                >
+                  <div className="text-[11px] font-extrabold uppercase tracking-[0.04em] text-slate-500">{field.label}</div>
+                  <div className="text-[12.5px] leading-6 text-slate-700 text-justify">{field.value}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </details>
+);
+
 export default function DigitalPodiumPage() {
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
   const faqJsonLd = {
@@ -219,21 +350,52 @@ export default function DigitalPodiumPage() {
       acceptedAnswer: { "@type": "Answer", text: x.a },
     })),
   };
+  const mobileProductRows = Array.from({ length: Math.ceil(digitalPodiumCatalog.length / 4) }, (_, index) =>
+    digitalPodiumCatalog.slice(index * 4, index * 4 + 4)
+  );
+
+  const renderPodiumCard = (p: (typeof digitalPodiumCatalog)[number]) => (
+    <ProductGridCard
+      key={p.slug}
+      href={`/digital-podium/${p.slug}/`}
+      title={p.title}
+      image={
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={p.image}
+          alt={p.title}
+          className="h-full w-full object-cover object-center bg-white transition duration-300 group-hover:scale-[1.03]"
+          loading="lazy"
+          decoding="async"
+        />
+      }
+      imageContainerClassName="bg-slate-100"
+      borderColor={`${BRAND.maroon}12`}
+      topLeftBadge={{ text: "Product", tone: "light" }}
+      metaLines={[{ text: p.priceLabel, className: "mt-2 text-sm font-semibold text-sky-700" }]}
+      bullets={p.cardHighlights.slice(0, 4)}
+      chips={(p.recommendedFor?.length ? p.recommendedFor : p.tags).slice(0, 3)}
+      accentColor={BRAND.maroon}
+      contactHref="/contact"
+      compactMobile
+      viewDetailsLabel="View details ->"
+    />
+  );
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 pb-10 pt-0 md:px-6">
+    <div className="digital-podium-page mx-auto w-full max-w-7xl px-3 pb-8 pt-0 md:px-6">
       <Breadcrumbs
         items={[
           homeBreadcrumb(),
           { href: "/digital-podium/", label: "Digital Podium", current: true },
         ]}
-        className="relative left-1/2 right-1/2 -mx-[50vw] mb-0 w-screen pt-0 text-sm text-slate-600"
+        className="relative left-1/2 right-1/2 -mx-[50vw] mb-0 hidden w-screen pt-0 text-sm text-slate-600 md:block"
         panelClassName="rounded-none border-x-0 border-t-0 px-4 py-3 shadow-none md:px-10"
         backButtonClassName="rounded-md"
       />
       <section
-        className="relative left-1/2 right-1/2 -mx-[50vw] w-screen overflow-hidden border-y bg-slate-950"
-        style={{ minHeight: "clamp(560px, calc(100svh - 64px), 780px)", borderColor: `${BRAND.maroon}12` }}
+        className="relative left-1/2 right-1/2 -mx-[50vw] min-h-[250px] w-screen overflow-hidden border-y bg-slate-950 md:min-h-[clamp(560px,calc(100svh-64px),780px)]"
+        style={{ borderColor: `${BRAND.maroon}12` }}
       >
         <div className="pointer-events-none absolute inset-0">
           <div
@@ -253,7 +415,7 @@ export default function DigitalPodiumPage() {
           />
         </div>
 
-        <div className="relative mx-auto flex w-full max-w-7xl flex-col justify-center px-5 py-8 md:px-10 md:py-10">
+        <div className="relative mx-auto flex w-full max-w-7xl flex-col justify-center px-4 py-5 md:px-10 md:py-10">
           <div className="flex w-full flex-col gap-4">
             <div className="flex flex-wrap items-center gap-3">
               <span
@@ -264,7 +426,7 @@ export default function DigitalPodiumPage() {
                 Control Systems - Bangladesh
               </span>
 
-              <nav className="flex flex-wrap items-center gap-2 text-xs font-semibold text-white/80">
+              <nav className="hidden flex-wrap items-center gap-2 text-xs font-semibold text-white/80 md:flex">
                 <Link href="/" className="hover:text-white">
                   Home
                 </Link>
@@ -313,7 +475,7 @@ export default function DigitalPodiumPage() {
               </Link>
             </div>
 
-            <div className="mt-7 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-7 hidden gap-2 sm:grid-cols-2 lg:grid lg:grid-cols-4">
               {highlights.map((x) => (
                 <div
                   key={x.title}
@@ -329,75 +491,105 @@ export default function DigitalPodiumPage() {
         </div>
       </section>
 
-      <section className="mt-8 rounded-3xl bg-white p-7 md:p-10">
-        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-          <div className="max-w-3xl">
-            <div
-              className="inline-flex w-fit items-center gap-2 rounded-full border bg-slate-50 px-4 py-2 text-xs font-semibold"
-              style={{ borderColor: `${BRAND.maroon}22` }}
-            >
-              <span className="h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
-              Models & configurations
-            </div>
-
-            <h2 className="mt-4 text-xl font-extrabold tracking-tight text-slate-900 md:text-3xl">
-              Digital Podium Models &amp; Price Range in Bangladesh
-            </h2>
-            <p className="mt-2 hidden text-slate-600 leading-7 text-justify md:block">
- Choose a model below to see specifications, buyer guidance and integration notes-written in our own words
-              and aligned with real procurement needs.
-            </p>
+      <SectionShell
+        title="Digital Podium Models & Price Range in Bangladesh"
+        subtitle="Choose a model below to compare price range, highlights and real-world configuration fit for classrooms, lecture halls and conference venues."
+      >
+        <div className="hidden md:flex md:items-center md:justify-between">
+          <div
+            className="inline-flex w-fit items-center gap-2 rounded-full border bg-slate-50 px-4 py-2 text-xs font-semibold"
+            style={{ borderColor: `${BRAND.maroon}22` }}
+          >
+            <span className="h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+            Models & configurations
           </div>
-
-          <div className="mt-3 flex items-center gap-2 md:mt-0">
-            <span
-              className="rounded-full border bg-slate-50 px-4 py-2 text-xs font-semibold text-slate-700"
-              style={{ borderColor: `${BRAND.maroon}12` }}
-            >
-              Showing {digitalPodiumCatalog.length} models
-            </span>
-          </div>
+          <span
+            className="rounded-full border bg-slate-50 px-4 py-2 text-xs font-semibold text-slate-700"
+            style={{ borderColor: `${BRAND.maroon}12` }}
+          >
+            Showing {digitalPodiumCatalog.length} models
+          </span>
         </div>
 
-        <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
-          {digitalPodiumCatalog.map((p) => {
-            const isStandard = p.slug === "standard-digital-podium-built-in-pc-sound";
-            const isPremium = p.slug === "premium-digital-podium-interactive-touch-display";
-            const useContain = isStandard || isPremium;
-            const detailHref = `/digital-podium/${p.slug}/`;
+        <div className="md:hidden">
+          {mobileProductRows.map((row, index) => (
+            <ResponsiveProductCarousel key={`mobile-podium-row-${index}`} className={index === 0 ? "mt-1" : "mt-4"}>
+              {row.map((item) => renderPodiumCard(item))}
+            </ResponsiveProductCarousel>
+          ))}
+        </div>
 
-            return (
-              <ProductGridCard
-                key={p.slug}
-                href={detailHref}
-                title={p.title}
-                image={
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={p.image}
-                    alt={p.title}
-                    className="h-full w-full object-cover object-center bg-white transition duration-300 group-hover:scale-[1.03]"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                }
-                imageContainerClassName="bg-slate-100"
-                borderColor={`${BRAND.maroon}12`}
-                topLeftBadge={{ text: "Product", tone: "light" }}
-                metaLines={[{ text: p.priceLabel, className: "mt-2 text-sm font-semibold text-sky-700" }]}
-                bullets={p.cardHighlights.slice(0, 4)}
-                chips={(p.recommendedFor?.length ? p.recommendedFor : p.tags).slice(0, 3)}
-                accentColor={BRAND.maroon}
-                contactHref="/contact"
-                compactMobile
-                viewDetailsLabel="View details ->"
-              />
-            );
-          })}
-        </ResponsiveProductCarousel>
-      </section>
+        <div className="hidden md:block">
+          <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
+            {digitalPodiumCatalog.map((item) => renderPodiumCard(item))}
+          </ResponsiveProductCarousel>
+        </div>
+      </SectionShell>
 
-      <section className="mt-8 rounded-3xl bg-white p-7 md:p-10">
+      <div className="md:hidden">
+        <SectionShell
+          title="What you get with a modern digital podium"
+          subtitle="A digital podium simplifies presentation workflow by keeping content, cabling and room integration under one stable lectern instead of spreading controls across multiple devices."
+        >
+          <MobileParityCardGrid items={featureGrid.map((item) => ({ title: item.title, desc: item.desc }))} />
+          <div className="mt-4 space-y-3">
+            <article className="rounded-[14px] border px-4 py-4" style={getParitySurface(0)}>
+              <div className="flex items-center justify-between gap-3">
+                <div className="text-[16px] font-extrabold leading-snug text-slate-900">Buyer checklist</div>
+                <span className="rounded-full px-3 py-1 text-[11px] font-extrabold" style={{ background: `${BRAND.maroon}12`, color: BRAND.maroon }}>
+                  Share for fast BOQ
+                </span>
+              </div>
+              <p className="mt-2 text-[12.5px] leading-6 text-slate-700 text-justify">
+                Send these points to receive a faster and more accurate digital podium quotation.
+              </p>
+              <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
+                {buyerChecklist.map((line) => (
+                  <li key={line} className="flex items-start gap-2">
+                    <span className="mt-1.5 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                    <span className="leading-6 text-justify">{line}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+            <article className="rounded-[14px] border px-4 py-4" style={getParitySurface(1)}>
+              <div className="flex items-center gap-3">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/logo/digital-podium.svg"
+                  alt="Digital Podium"
+                  className="h-12 w-12 rounded-[12px] border bg-white/80 p-2"
+                  style={{ borderColor: "rgba(255,255,255,0.7)" }}
+                  loading="lazy"
+                />
+                <div className="text-[16px] font-extrabold leading-snug text-slate-900">BOQ & tender support</div>
+              </div>
+              <p className="mt-2 text-[12.5px] leading-6 text-slate-700 text-justify">
+                Practical specifications, compliance mapping and selection guidance help procurement teams compare correctly and reduce mismatch risk.
+              </p>
+            </article>
+            <div className="grid grid-cols-2 gap-2">
+              <a
+                href={wa}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+              >
+                WhatsApp
+              </a>
+              <Link
+                href="/contact"
+                className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+                style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+              >
+                Request Quote
+              </Link>
+            </div>
+          </div>
+        </SectionShell>
+      </div>
+
+      <section className="mt-8 hidden rounded-3xl bg-white p-7 md:block md:p-10">
         <div className="grid gap-8 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">
@@ -491,7 +683,16 @@ export default function DigitalPodiumPage() {
         </div>
       </section>
 
-      <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
+      <div className="md:hidden">
+        <SectionShell
+          title="Where digital podiums are used"
+          subtitle="Use-case matters, so we recommend digital podium configuration based on audience size, room depth and the display or audio system already in place."
+        >
+          <MobileParityCardGrid items={useCases.map((item) => ({ title: item.title, desc: item.desc }))} />
+        </SectionShell>
+      </div>
+
+      <section className="mt-10 hidden rounded-3xl border bg-white p-7 md:block md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
         <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
             <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Where digital podiums are used</h2>
@@ -516,7 +717,49 @@ export default function DigitalPodiumPage() {
         </div>
       </section>
 
-      <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
+      <div className="md:hidden">
+        <SectionShell
+          title="Typical configuration options"
+          subtitle="These are common starting points. Final configuration depends on venue workflow, display target and installation scope."
+        >
+          <MobileExpandableCards
+            summaryLabel="Tap To Expand Configuration Options"
+            items={configurations.map((item) => ({
+              title: item.title,
+              subtitle: item.bestFor,
+              fields: [
+                { label: "Best for", value: item.bestFor },
+                { label: "Includes", value: item.includes },
+              ],
+            }))}
+          />
+          <div className="mt-4 rounded-[14px] border px-4 py-4" style={getParitySurface(0)}>
+            <div className="text-[16px] font-extrabold leading-snug text-slate-900">Need the right setup recommendation?</div>
+            <p className="mt-2 text-[12.5px] leading-6 text-slate-700 text-justify">
+              Share your room type, audience size and the display you want to connect for a practical digital podium recommendation with BOQ clarity.
+            </p>
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              <Link
+                href="/contact"
+                className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+                style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+              >
+                Request Quote
+              </Link>
+              <a
+                href={wa}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+              >
+                WhatsApp
+              </a>
+            </div>
+          </div>
+        </SectionShell>
+      </div>
+
+      <section className="mt-10 hidden rounded-3xl border bg-white p-7 md:block md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
         <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Typical configuration options</h2>
         <p className="mt-2 text-slate-600 leading-7">
           Below are common starting points. Final configuration depends on venue workflow, display type and installation
@@ -569,9 +812,35 @@ export default function DigitalPodiumPage() {
         </div>
       </section>
 
+      <div className="md:hidden">
+        <SectionShell
+          title="Digital podium buying guide (Bangladesh)"
+          subtitle="If you are comparing digital podium price in Bangladesh, these steps help you select the right setup for your room without over-specifying or missing key integration details."
+        >
+          <div className="mb-4 grid grid-cols-2 gap-2">
+            <Link
+              href="/contact"
+              className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+              style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+            >
+              Get recommendation
+            </Link>
+            <a
+              href={wa}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+            >
+              WhatsApp
+            </a>
+          </div>
+          <MobileParityCardGrid items={buyingGuide.map((item) => ({ title: item.title, desc: item.desc }))} />
+        </SectionShell>
+      </div>
+
       <section
         id="buying-guide"
-        className="mt-10 rounded-3xl border bg-white p-7 md:p-10"
+        className="mt-10 hidden rounded-3xl border bg-white p-7 md:block md:p-10"
         style={{ borderColor: `${BRAND.maroon}12` }}
       >
         <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
@@ -617,9 +886,18 @@ export default function DigitalPodiumPage() {
         </div>
       </section>
 
+      <div className="md:hidden">
+        <SectionShell
+          title="Key specifications explained"
+          subtitle="A smart podium setup is less about a long spec sheet and more about choosing the right specifications for daily classroom, lecture hall and conference use."
+        >
+          <MobileParityCardGrid items={specExplainers.map((item) => ({ title: item.k, desc: item.v }))} />
+        </SectionShell>
+      </div>
+
       <section
         id="specs-explained"
-        className="mt-10 rounded-3xl border bg-white p-7 md:p-10"
+        className="mt-10 hidden rounded-3xl border bg-white p-7 md:block md:p-10"
         style={{ borderColor: `${BRAND.maroon}12` }}
       >
         <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Key specifications explained</h2>
@@ -642,9 +920,69 @@ export default function DigitalPodiumPage() {
         </div>
       </section>
 
+      <div className="md:hidden">
+        <SectionShell
+          title="Installation & integration workflow"
+          subtitle="A digital podium is a room system, so reliable results come from planning the display, audio, cabling and presenter workflow together."
+        >
+          <MobileParityCardGrid
+            items={deliverySteps.map((step) => ({
+              title: `Step ${step.n}: ${step.t}`,
+              desc: step.d,
+            }))}
+          />
+          <div className="mt-4 space-y-3">
+            <article className="rounded-[14px] border px-4 py-4" style={getParitySurface(0)}>
+              <div className="text-[16px] font-extrabold leading-snug text-slate-900">Fast quotation checklist</div>
+              <p className="mt-2 text-[12.5px] leading-6 text-slate-700 text-justify">
+                Share these items and we will recommend a practical configuration with BOQ clarity and installation notes.
+              </p>
+              <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
+                {buyerChecklist.map((line) => (
+                  <li key={line} className="flex items-start gap-2">
+                    <span className="mt-1.5 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                    <span className="leading-6 text-justify">{line}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+            <article className="rounded-[14px] border px-4 py-4" style={getParitySurface(1)}>
+              <div className="text-[16px] font-extrabold leading-snug text-slate-900">What you'll receive from us</div>
+              <p className="mt-2 text-[12.5px] leading-6 text-slate-700 text-justify">
+                We focus on integration details so the podium setup stays reliable in daily use, not just on paper.
+              </p>
+              <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
+                {installDeliverables.map((line) => (
+                  <li key={line} className="flex items-start gap-2">
+                    <span className="mt-1.5 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                    <span className="leading-6 text-justify">{line}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+            <div className="grid grid-cols-2 gap-2">
+              <Link
+                href="/contact"
+                className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+                style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+              >
+                Request Quote
+              </Link>
+              <Link
+                href="/digital-podium/#buying-guide"
+                className="inline-flex min-h-9 items-center justify-center rounded-md border bg-white px-3 py-2 text-[11px] font-extrabold text-slate-900 shadow-sm"
+                style={{ borderColor: "rgba(15,23,42,0.12)" }}
+              >
+                Buying guide
+              </Link>
+            </div>
+          </div>
+        </SectionShell>
+      </div>
+
       <section
         id="installation"
-        className="mt-10 rounded-3xl border bg-white p-7 md:p-10"
+        className="mt-10 hidden rounded-3xl border bg-white p-7 md:block md:p-10"
         style={{ borderColor: `${BRAND.maroon}12` }}
       >
         <div className="flex flex-col gap-6 lg:grid lg:grid-cols-12 lg:gap-8">
@@ -749,9 +1087,52 @@ export default function DigitalPodiumPage() {
         </div>
       </section>
 
+      <div className="md:hidden">
+        <SectionShell
+          title="BOQ / tender-ready notes"
+          subtitle="For procurement, the goal is simple: compare like-for-like digital podium specifications so the delivered setup matches the room workflow and reduces mismatch risk."
+        >
+          <MobileParityCardGrid
+            items={[
+              {
+                title: "What to include in your BOQ",
+                desc: "Use these requirement points so the integration scope and expected workflow stay clear from the beginning.",
+                bullets: [...procurementNotes],
+              },
+              {
+                title: "Common mistakes to avoid",
+                desc: "These issues often create confusion during tender comparison and final delivery.",
+                bullets: [...commonMistakes],
+              },
+              {
+                title: "Need BOQ clarity for a tender?",
+                desc: "Share your BOQ, drawings and venue type. We will recommend a configuration and help define practical comparable specifications.",
+              },
+            ]}
+          />
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <Link
+              href="/contact"
+              className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+              style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+            >
+              Contact for BOQ
+            </Link>
+            <a
+              href={wa}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+            >
+              WhatsApp
+            </a>
+          </div>
+        </SectionShell>
+      </div>
+
       <section
         id="boq-tender"
-        className="mt-10 rounded-3xl border bg-white p-7 md:p-10"
+        className="mt-10 hidden rounded-3xl border bg-white p-7 md:block md:p-10"
         style={{ borderColor: `${BRAND.maroon}12` }}
       >
         <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">BOQ / tender-ready notes</h2>
@@ -825,7 +1206,14 @@ export default function DigitalPodiumPage() {
         </div>
       </section>
 
-      <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
+      <div className="md:hidden">
+        <SectionShell title="FAQs" subtitle="Quick answers about digital podium price, configuration and installation support in Bangladesh.">
+          <FaqAccordion accent={BRAND.maroon} items={FAQS} density="compact" />
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+        </SectionShell>
+      </div>
+
+      <section className="mt-10 hidden rounded-3xl border bg-white p-7 md:block md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
         <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
           <div className="max-w-2xl">
             <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">FAQs</h2>

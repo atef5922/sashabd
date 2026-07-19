@@ -591,25 +591,25 @@ export default function InteractiveFlatPanelPage() {
               </MobileIntroText>
             </div>
 
-            <div className="mt-3 grid grid-cols-3 gap-2 md:mt-2 md:flex md:flex-wrap md:gap-3">
+            <div className="mt-3 grid grid-cols-2 gap-2 md:mt-2 md:flex md:flex-wrap md:gap-3">
               <a
                 href={wa}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-2 py-2 text-[10px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-lg md:rounded-xl md:px-6 md:py-3.5 md:text-[15px]"
+                className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[10px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-lg md:rounded-xl md:px-6 md:py-3.5 md:text-[15px]"
               >
                 Get Quotation on WhatsApp
               </a>
               <Link
                 href="/contact"
-                className="inline-flex min-h-9 items-center justify-center rounded-md px-2 py-2 text-[10px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-lg md:rounded-xl md:px-6 md:py-3.5 md:text-[15px]"
+                className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[10px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-lg md:rounded-xl md:px-6 md:py-3.5 md:text-[15px]"
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
                 Request BOQ / Quotation
               </Link>
               <a
                 href={`tel:${siteConfig.phone}`}
-                className="inline-flex min-h-9 items-center justify-center rounded-md border border-white/30 bg-slate-950/30 px-2 py-2 text-[10px] font-extrabold text-white shadow-md backdrop-blur transition hover:bg-slate-950/40 hover:shadow-lg md:rounded-xl md:px-6 md:py-3.5 md:text-[15px]"
+                className="hidden min-h-9 items-center justify-center rounded-md border border-white/30 bg-slate-950/30 px-2 py-2 text-[10px] font-extrabold text-white shadow-md backdrop-blur transition hover:bg-slate-950/40 hover:shadow-lg md:inline-flex md:rounded-xl md:px-6 md:py-3.5 md:text-[15px]"
               >
                 Hotline: {siteConfig.phone}
               </a>
