@@ -80,30 +80,71 @@ const Section = ({
       ) : null}
       <span>{title}</span>
     </h2>
-    {subtitle ? <p className="mt-2 text-slate-600 leading-7">{subtitle}</p> : null}
+    {subtitle ? (
+      <MobileIntroText
+        teaser={subtitle}
+        className="mt-2"
+        teaserClassName="w-full leading-6"
+        expandedClassName="text-sm leading-7 text-slate-600"
+        desktopClassName="text-slate-600 leading-7"
+      >
+        <p className="text-slate-600 leading-7">{subtitle}</p>
+      </MobileIntroText>
+    ) : null}
     <div className="mt-5">{children}</div>
   </section>
 );
 
 const CardGrid = ({ items }: { items: { t: string; d: string; bullets?: string[] }[] }) => (
-  <div className="grid gap-4 md:grid-cols-3">
-    {items.map((x) => (
-      <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
-        <div className="text-lg font-bold text-slate-900">{x.t}</div>
-        <p className="mt-2 text-sm text-slate-600 leading-7">{x.d}</p>
-        {x.bullets?.length ? (
-          <ul className="mt-3 space-y-2 text-sm text-slate-700">
-            {x.bullets.map((b) => (
-              <li key={b} className="flex items-start gap-2">
-                <span className="mt-2 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
-                <span className="leading-7">{b}</span>
-              </li>
-            ))}
-          </ul>
-        ) : null}
-      </div>
-    ))}
-  </div>
+  <>
+    <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+      {items.map((x, index) => (
+        <div
+          key={x.t}
+          className="w-[86%] shrink-0 snap-start rounded-[20px] border px-4 py-4 shadow-[0_12px_28px_rgba(15,23,42,0.06)]"
+          style={{
+            borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+            background:
+              index % 2 === 0
+                ? "linear-gradient(180deg, rgba(236,254,255,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(224,242,254,0.98) 100%)"
+                : "linear-gradient(180deg, rgba(255,247,237,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(255,237,213,0.98) 100%)",
+          }}
+        >
+          <div className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</div>
+          <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
+          {x.bullets?.length ? (
+            <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
+              {x.bullets.map((b) => (
+                <li key={b} className="flex items-start gap-2">
+                  <span className="mt-1.5 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                  <span className="leading-6">{b}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
+      ))}
+    </div>
+
+    <div className="hidden gap-4 md:grid md:grid-cols-3">
+      {items.map((x) => (
+        <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
+          <div className="text-lg font-bold text-slate-900">{x.t}</div>
+          <p className="mt-2 text-sm text-slate-600 leading-7">{x.d}</p>
+          {x.bullets?.length ? (
+            <ul className="mt-3 space-y-2 text-sm text-slate-700">
+              {x.bullets.map((b) => (
+                <li key={b} className="flex items-start gap-2">
+                  <span className="mt-2 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                  <span className="leading-7">{b}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
+      ))}
+    </div>
+  </>
 );
 
 export default function IndoorProductsPage() {
@@ -259,7 +300,53 @@ export default function IndoorProductsPage() {
           </span>
           <span>Key Features of Indoor LED Display</span>
         </h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            {
+ i: "",
+              t: "Fine Pixel Pitch Clarity",
+              d: "High-definition visuals for near viewing with clear text, charts, and product media.",
+            },
+            {
+ i: "",
+              t: "Camera-Friendly Refresh",
+              d: "Stable refresh and processing reduce flicker in live camera, studio, and hybrid event use.",
+            },
+            {
+ i: "",
+              t: "Color & Brightness Control",
+              d: "Balanced indoor brightness and calibrated color output improve comfort and brand consistency.",
+            },
+            {
+ i: "",
+              t: "Efficient, Serviceable Design",
+              d: "Reliable power architecture, cleaner heat handling, and easier maintenance for long-term uptime.",
+            },
+          ].map((x, index) => (
+            <div
+              key={x.t}
+              className="w-[84%] shrink-0 snap-start rounded-[20px] border px-4 py-4 shadow-[0_12px_28px_rgba(15,23,42,0.06)]"
+              style={{
+                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(236,254,255,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(224,242,254,0.98) 100%)"
+                    : "linear-gradient(180deg, rgba(255,247,237,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(255,237,213,0.98) 100%)",
+              }}
+            >
+              <div className="flex items-center gap-2 text-base font-extrabold text-slate-900">
+                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-sm" aria-hidden="true">
+                  {x.i}
+                </span>
+                <span>{x.t}</span>
+              </div>
+              <p className="mt-2 text-sm leading-7 text-slate-600">{x.d}</p>
+              <div className="mt-4 h-1 w-12 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-4">
           {[
             {
  i: "",
@@ -295,7 +382,7 @@ export default function IndoorProductsPage() {
           ))}
         </div>
 
-        <div className="mt-5 flex flex-wrap gap-2 text-xs font-semibold text-slate-700">
+        <div className="mt-5 hidden flex-nowrap gap-2 overflow-x-auto pb-1 text-xs font-semibold text-slate-700 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:flex md:flex-wrap md:overflow-visible md:pb-0">
           {[
             "Best for showroom and corporate LED video wall",
             "Optimized for close viewing distance",
@@ -323,7 +410,51 @@ export default function IndoorProductsPage() {
         }
         subtitle="Key hardware elements that work together to deliver stable visuals, accurate control, and long-term indoor performance."
       >
-        <div className="grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            {
+              t: "LED module",
+              d: "The primary display surface that produces image output, color detail, and pixel-level visual clarity.",
+            },
+            {
+              t: "Receiving card",
+              d: "Receives video data from the control chain and maps content correctly to each module row and column.",
+            },
+            {
+              t: "Power supply",
+              d: "Converts and stabilizes electrical input for modules and control parts to ensure consistent operation.",
+            },
+            {
+              t: "LED cabinet",
+              d: "Holds modules and electronics in a structured frame for alignment, service access, and installation stability.",
+            },
+            {
+              t: "Sending card",
+              d: "Transmits processed video signals from the source system to the display control network.",
+            },
+            {
+              t: "Video processor",
+              d: "Handles signal scaling, switching, and output optimization for clean playback across different content sources.",
+            },
+          ].map((x, index) => (
+            <div
+              key={x.t}
+              className="w-[84%] shrink-0 snap-start rounded-[20px] border px-4 py-4 shadow-[0_12px_28px_rgba(15,23,42,0.06)]"
+              style={{
+                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(236,254,255,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(224,242,254,0.98) 100%)"
+                    : "linear-gradient(180deg, rgba(255,247,237,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(255,237,213,0.98) 100%)",
+              }}
+            >
+              <h3 className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
+              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3 md:grid">
           {[
             {
               t: "LED module",
@@ -369,7 +500,35 @@ export default function IndoorProductsPage() {
         }
         subtitle="Common indoor use cases where high clarity, stable performance, and professional content delivery are important."
       >
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            { t: "Corporate Boardroom", d: "Supports executive presentations, dashboards, and clear meeting communication." },
+            { t: "Control Room", d: "Enables continuous monitoring with sharp data visibility and stable long-hour output." },
+            { t: "Television Studio", d: "Delivers camera-friendly visuals for broadcast sets and program backdrops." },
+            { t: "Shopping Mall Advertising", d: "Displays dynamic brand campaigns and promotional content in high-traffic areas." },
+            { t: "Conference Hall", d: "Improves audience visibility for keynote visuals, text, and multimedia presentations." },
+            { t: "Command & Control Center", d: "Provides reliable screen performance for mission-critical operational decisions." },
+            { t: "Airport Display", d: "Shows public information, announcements, and wayfinding content clearly indoors." },
+            { t: "Exhibition Center", d: "Creates high-impact visual engagement for booths, product launches, and event zones." },
+          ].map((x, index) => (
+            <div
+              key={x.t}
+              className="w-[82%] shrink-0 snap-start rounded-[20px] border px-4 py-4 shadow-[0_12px_28px_rgba(15,23,42,0.06)]"
+              style={{
+                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(236,254,255,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(224,242,254,0.98) 100%)"
+                    : "linear-gradient(180deg, rgba(255,247,237,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(255,237,213,0.98) 100%)",
+              }}
+            >
+              <h3 className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
+              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden gap-4 sm:grid-cols-2 lg:grid-cols-4 md:grid">
           {[
             { t: "Corporate Boardroom", d: "Supports executive presentations, dashboards, and clear meeting communication." },
             { t: "Control Room", d: "Enables continuous monitoring with sharp data visibility and stable long-hour output." },
@@ -417,8 +576,8 @@ export default function IndoorProductsPage() {
  title="Indoor vs Outdoor LED Display Quick Comparison"
         subtitle="A simple comparison to avoid wrong selection and ensure the right build for your environment."
       >
-        <div className="overflow-hidden rounded-3xl border" style={{ borderColor: `${BRAND.maroon}12` }}>
-          <div className="grid md:grid-cols-3">
+        <div className="overflow-x-auto rounded-3xl border" style={{ borderColor: `${BRAND.maroon}12` }}>
+          <div className="grid min-w-[680px] md:min-w-0 md:grid-cols-3">
             <div className="bg-slate-50 p-5 text-sm font-bold text-slate-800">Topic</div>
             <div className="bg-white p-5 text-sm font-bold text-slate-800">Indoor LED</div>
             <div className="bg-white p-5 text-sm font-bold text-slate-800">Outdoor LED</div>
@@ -477,7 +636,43 @@ export default function IndoorProductsPage() {
         }
         subtitle="Follow this indoor LED display maintenance checklist to protect image quality, reduce downtime, and extend panel lifespan in showroom, office, and control room environments."
       >
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            {
+              t: "Cleaning",
+              d: "Use a soft anti-static microfiber cloth for routine dust removal from LED module surfaces and cabinet vents. Avoid spraying liquid directly on the screen; if needed, apply approved cleaner to the cloth first. Regular cleaning keeps brightness uniform, improves color clarity, and prevents early component stress from dust accumulation.",
+            },
+            {
+              t: "Calibration",
+              d: "Run periodic calibration for brightness, grayscale, and color temperature so all modules remain visually consistent. After module replacement, controller updates, or processor changes, complete remapping and color correction immediately. Proper calibration helps maintain sharp text, natural colors, and professional indoor visual quality.",
+            },
+            {
+              t: "Power safety",
+              d: "Use stable power input, proper earthing, and surge protection to safeguard power supplies, receiving cards, and control systems. Avoid frequent hard on-off cycles and follow a controlled startup/shutdown sequence. Strong power safety practice reduces failure risk, protects data integrity, and improves long-term system reliability.",
+            },
+            {
+              t: "Cooling",
+              d: "Maintain open airflow around cabinets, control racks, and power sections, especially in enclosed indoor installations. Inspect fans, clean ventilation paths, and monitor ambient temperature to avoid overheating. Effective cooling prevents thermal stress, helps color stability, and supports reliable long-hour operation.",
+            },
+          ].map((x, index) => (
+            <div
+              key={x.t}
+              className="w-[84%] shrink-0 snap-start rounded-[20px] border px-4 py-4 shadow-[0_12px_28px_rgba(15,23,42,0.06)]"
+              style={{
+                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(236,254,255,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(224,242,254,0.98) 100%)"
+                    : "linear-gradient(180deg, rgba(255,247,237,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(255,237,213,0.98) 100%)",
+              }}
+            >
+              <h3 className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
+              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden gap-4 sm:grid-cols-2 md:grid">
           {[
             {
               t: "Cleaning",
@@ -516,8 +711,8 @@ export default function IndoorProductsPage() {
         }
         subtitle="Compare indoor LED display and LCD video wall solutions by visual performance, scalability, maintenance, and long-term operating value to choose the right technology for your project."
       >
-        <div className="overflow-hidden rounded-3xl border" style={{ borderColor: `${BRAND.maroon}12` }}>
-          <div className="grid md:grid-cols-3">
+        <div className="overflow-x-auto rounded-3xl border" style={{ borderColor: `${BRAND.maroon}12` }}>
+          <div className="grid min-w-[760px] md:min-w-0 md:grid-cols-3">
             <div className="bg-slate-50 p-5 text-sm font-bold text-slate-800">Comparison Point</div>
             <div className="bg-white p-5 text-sm font-bold text-slate-800">Indoor LED Display</div>
             <div className="bg-white p-5 text-sm font-bold text-slate-800">LCD Video Wall</div>
@@ -545,7 +740,31 @@ export default function IndoorProductsPage() {
  title="Explore High-Performance LED Display in Bangladesh"
  subtitle="From indoor video walls to outdoor branding and rental event screens-explore the right category for your project."
       >
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            { t: "Indoor LED Displays", d: "Showroom, conference, control room solutions.", href: "/led-display/indoor-led/" },
+            { t: "Outdoor LED Displays", d: "Billboards, rooftop signage, public screens.", href: "/led-display/outdoor/" },
+            { t: "Rental LED Displays", d: "Stage events, concerts, quick setup cabinets.", href: "/led-display/rental-display/" },
+          ].map((x) => (
+            <Link
+              key={x.t}
+              href={x.href}
+              className="group w-[84%] shrink-0 snap-start rounded-[20px] border px-4 py-4 shadow-[0_12px_28px_rgba(15,23,42,0.06)] transition"
+              style={{
+                borderColor: `${BRAND.maroon}14`,
+                background: "linear-gradient(180deg, rgba(255,247,237,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(255,237,213,0.98) 100%)",
+              }}
+            >
+              <div className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</div>
+              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
+              <div className="mt-4 text-[12px] font-extrabold" style={{ color: BRAND.maroonText }}>
+                Explore -&gt;{" "}
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        <div className="hidden gap-4 md:grid md:grid-cols-3">
           {[
             { t: "Indoor LED Displays", d: "Showroom, conference, control room solutions.", href: "/led-display/indoor-led/" },
             { t: "Outdoor LED Displays", d: "Billboards, rooftop signage, public screens.", href: "/led-display/outdoor/" },
@@ -578,8 +797,8 @@ export default function IndoorProductsPage() {
         }
         subtitle="Use this practical pixel pitch selection guide to match viewing distance, content type, and budget so your indoor LED display stays sharp, comfortable, and cost-efficient."
       >
-        <div className="overflow-hidden rounded-3xl border" style={{ borderColor: `${BRAND.maroon}12` }}>
-          <div className="grid md:grid-cols-4">
+        <div className="overflow-x-auto rounded-3xl border" style={{ borderColor: `${BRAND.maroon}12` }}>
+          <div className="grid min-w-[820px] md:min-w-0 md:grid-cols-4">
             <div className="bg-slate-50 p-5 text-sm font-bold text-slate-800">Viewing Distance</div>
             <div className="bg-white p-5 text-sm font-bold text-slate-800">Content Priority</div>
             <div className="bg-white p-5 text-sm font-bold text-slate-800">Recommended Pixel Pitch</div>
@@ -601,7 +820,39 @@ export default function IndoorProductsPage() {
           </div>
         </div>
 
-        <div className="mt-5 grid gap-4 sm:grid-cols-3">
+        <div className="mt-5 -mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            {
+              t: "Step 1: Measure real viewing distance",
+              d: "Use the nearest regular audience point, not the wall-to-wall room size. Pixel pitch should be chosen based on actual eye-to-screen distance.",
+            },
+            {
+              t: "Step 2: Define dominant content",
+              d: "Dashboards, spreadsheets, and text-heavy use need finer pitch than motion-heavy video loops and branding visuals.",
+            },
+            {
+              t: "Step 3: Balance clarity with lifecycle cost",
+              d: "Finer pitch increases initial price, but the right choice reduces rework risk and ensures better long-term user satisfaction.",
+            },
+          ].map((x, index) => (
+            <div
+              key={x.t}
+              className="w-[84%] shrink-0 snap-start rounded-[20px] border px-4 py-4 shadow-[0_12px_28px_rgba(15,23,42,0.06)]"
+              style={{
+                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(236,254,255,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(224,242,254,0.98) 100%)"
+                    : "linear-gradient(180deg, rgba(255,247,237,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(255,237,213,0.98) 100%)",
+              }}
+            >
+              <h3 className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
+              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-5 hidden gap-4 sm:grid-cols-3 md:grid">
           {[
             {
               t: "Step 1: Measure real viewing distance",
@@ -629,9 +880,9 @@ export default function IndoorProductsPage() {
  title="Indoor LED Display Price Per Square Feet"
         subtitle="Indicative pricing by pixel pitch for quick comparison. For BOQ-based pricing, please share your required screen size and installation location."
       >
-        <div className="overflow-hidden rounded-3xl border" style={{ borderColor: `${BRAND.maroon}18` }}>
+        <div className="overflow-x-auto rounded-3xl border" style={{ borderColor: `${BRAND.maroon}18` }}>
           {/* Header row (light cyan like screenshot) */}
-          <div className="grid grid-cols-12 gap-0 bg-sky-50 px-4 py-3 text-[11px] font-extrabold uppercase tracking-wide text-slate-700">
+          <div className="grid min-w-[780px] grid-cols-12 gap-0 bg-sky-50 px-4 py-3 text-[11px] font-extrabold uppercase tracking-wide text-slate-700">
             <div className="col-span-7">Indoor LED Model</div>
             <div className="col-span-3 text-center">Pixel Pitch</div>
             <div className="col-span-2 text-right">Approx. Price (Per Sq.Ft)</div>
@@ -639,7 +890,7 @@ export default function IndoorProductsPage() {
 
           <div>
             {priceRows.map(({ p, pitchNum, price }) => (
-              <div key={p.slug} className="grid grid-cols-12 items-center gap-0 bg-white px-4 py-3 text-sm">
+              <div key={p.slug} className="grid min-w-[780px] grid-cols-12 items-center gap-0 bg-white px-4 py-3 text-sm">
                 <div className="col-span-7">
                   <Link
                     href={`/led-display/indoor-led/${p.slug}/`}
@@ -662,7 +913,7 @@ export default function IndoorProductsPage() {
           </div>
         </div>
 
-        <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-slate-700">
+        <div className="mt-4 hidden flex-nowrap gap-2 overflow-x-auto pb-1 text-xs font-semibold text-slate-700 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:flex md:flex-wrap md:overflow-visible md:pb-0">
  {["Tip: Smaller pitch = higher cost", "Camera use: choose higher refresh", "For exact BOQ: share W x H + site"].map(
             (t) => (
               <span
@@ -708,24 +959,32 @@ export default function IndoorProductsPage() {
  title="End-to-End LED Display Solution Process"
         subtitle="A clear delivery process from recommendation to installation to long-term service."
       >
-        <div className="grid gap-4 md:grid-cols-4">
+        <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-4">
           {[
             { t: "1) Survey", d: "Site visit, measurements, viewing distance, power check." },
             { t: "2) Design", d: "BOQ, structure plan, controller/processor selection." },
             { t: "3) Install", d: "Structure, wiring, cabinet assembly, safety checks." },
             { t: "4) Support", d: "Mapping, calibration, training, maintenance guidance." },
           ].map((x) => (
-            <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
+            <div
+              key={x.t}
+              className="rounded-[20px] border px-4 py-4 md:rounded-3xl md:bg-slate-50 md:p-6"
+              style={{
+                borderColor: `${BRAND.maroon}10`,
+                background:
+                  "linear-gradient(180deg, rgba(255,247,237,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(255,237,213,0.98) 100%)",
+              }}
+            >
               <div className="text-sm font-extrabold text-slate-900">{x.t}</div>
-              <p className="mt-2 text-sm text-slate-600 leading-7">{x.d}</p>
+              <p className="mt-2 text-[13px] text-slate-600 leading-6 md:text-sm md:leading-7">{x.d}</p>
             </div>
           ))}
         </div>
 
-        <div className="mt-6 flex flex-wrap gap-3">
+        <div className="mt-6 flex flex-nowrap gap-2.5 md:flex-wrap md:gap-3">
           <Link
             href="/contact"
-            className="rounded-xl px-5 py-3 text-sm font-extrabold text-white transition hover:-translate-y-0.5 hover:shadow-md"
+            className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >
             Get Indoor Display Consultation -&gt;
@@ -734,7 +993,7 @@ export default function IndoorProductsPage() {
             href={wa}
             target="_blank"
             rel="noreferrer"
-            className="rounded-xl bg-emerald-600 px-5 py-3 text-sm font-extrabold text-white transition hover:-translate-y-0.5 hover:bg-emerald-700"
+            className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white transition hover:-translate-y-0.5 hover:bg-emerald-700 md:rounded-xl md:px-5 md:py-3 md:text-sm"
           >
             WhatsApp Now
           </a>
@@ -761,10 +1020,10 @@ export default function IndoorProductsPage() {
         />
 
         {/* Final CTA button */}
-        <div className="mt-7 flex flex-wrap gap-3">
+        <div className="mt-7 flex flex-nowrap gap-2.5 md:flex-wrap md:gap-3">
           <Link
             href="/contact"
-            className="rounded-xl px-6 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-6 md:py-3 md:text-sm"
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >
             Get LED Display Consultation -&gt;
@@ -773,7 +1032,7 @@ export default function IndoorProductsPage() {
             href={wa}
             target="_blank"
             rel="noreferrer"
-            className="rounded-xl bg-emerald-600 px-6 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md"
+            className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md md:rounded-xl md:px-6 md:py-3 md:text-sm"
           >
             WhatsApp for BOQ
           </a>
