@@ -2295,7 +2295,7 @@ function ProductsPageContent({
               </article>
             </div>
 
-            <p className="mt-5 text-sm leading-7 text-slate-600">
+            <p className="mt-5 hidden text-sm leading-7 text-slate-600 md:block">
               Final technology selection depends on location, viewing distance, expected brightness, maintenance plan,
               and budget. For best results, compare SMD, GOB, and COB options based on real project conditions instead
               of choosing only by headline specification.
