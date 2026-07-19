@@ -3119,6 +3119,32 @@ function ProductsPageContent({
             </div>
 
           </section>
+
+          <section className="pb-[25px] pt-2">
+            <div
+              className="rounded-[24px] px-4 py-6 text-center md:px-5 md:py-7"
+            >
+              <div className="mx-auto max-w-3xl">
+                <h2 className="text-[26px] font-extrabold leading-tight tracking-tight text-slate-900 md:text-[32px]">
+                  Need a complete LED display solution?
+                </h2>
+                <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-slate-600 md:text-[15px] md:leading-8">
+                  Share your requirement or BOQ and we will suggest a practical solution path covering screen type,
+                  controller, power, structure, installation scope, and support planning for your project.
+                </p>
+                <div className="mt-5 flex justify-center">
+                  <a
+                    href={wa}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex min-h-11 items-center justify-center rounded-[14px] bg-[#081B44] px-5 py-3 text-sm font-extrabold text-white shadow-[0_14px_30px_rgba(8,27,68,0.22)] transition hover:-translate-y-0.5 hover:bg-[#0B255B] hover:shadow-[0_18px_34px_rgba(8,27,68,0.26)]"
+                  >
+                    WhatsApp project details
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
         </>
       )}
     </div>
