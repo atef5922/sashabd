@@ -2127,7 +2127,7 @@ function ProductsPageContent({
             <div className="mt-8 grid gap-6 md:grid-cols-2">
               <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
                 <div className="text-lg font-semibold text-slate-900">End-to-End LED Screen Implementation</div>
-                <p className="mt-2 text-sm leading-7 text-slate-600">
+                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
                   We help clients select the correct LED configuration based on viewing distance, environment, content type, and operational
                   requirements. Each project is planned with attention to power stability, structure safety, and long-term usability. Pricing is
                   specification-driven and clearly explained-covering modules, cabinets, control systems, structure, installation and calibration.
@@ -2237,7 +2237,7 @@ function ProductsPageContent({
             <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               <article className="rounded-2xl border border-slate-200 bg-white p-5">
                 <h3 className="text-lg font-semibold text-slate-900">SMD LED</h3>
-                <p className="mt-2 text-sm leading-7 text-slate-600">
+                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
                   SMD (Surface-Mounted Device) is the most common LED display technology where red, green, and blue
                   LEDs are integrated into a single package. It offers vibrant colors, wide viewing angles, and excellent
                   image quality for indoor and commercial LED displays.
@@ -2252,7 +2252,7 @@ function ProductsPageContent({
 
               <article className="rounded-2xl border border-slate-200 bg-white p-5">
                 <h3 className="text-lg font-semibold text-slate-900">GOB LED</h3>
-                <p className="mt-2 text-sm leading-7 text-slate-600">
+                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
                   GOB (Glue-on-Board) is an LED technology that adds a transparent protective layer over the LED surface.
                   This improves resistance to dust, moisture, and impact, making it ideal for durable indoor LED display
                   applications.
@@ -2267,7 +2267,7 @@ function ProductsPageContent({
 
               <article className="rounded-2xl border border-slate-200 bg-white p-5">
                 <h3 className="text-lg font-semibold text-slate-900">COB LED</h3>
-                <p className="mt-2 text-sm leading-7 text-slate-600">
+                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
                   COB (Chip-on-Board) mounts LED chips directly onto the circuit board, enabling finer pixel pitch and
                   better visual performance. It is widely used in premium indoor LED video walls, control rooms, and
                   corporate display solutions.
@@ -2282,7 +2282,7 @@ function ProductsPageContent({
 
               <article className="rounded-2xl border border-slate-200 bg-white p-5">
                 <h3 className="text-lg font-semibold text-slate-900">Micro LED</h3>
-                <p className="mt-2 text-sm leading-7 text-slate-600">
+                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
                   Micro LED uses ultra-small LED chips to deliver exceptional brightness, contrast, and image clarity. It is
                   considered one of the most advanced display technologies for high-end indoor visual experiences.
                 </p>
@@ -2399,7 +2399,7 @@ function ProductsPageContent({
 	                      </div>
 	                      <h3 className="text-xl font-extrabold leading-snug text-slate-900">{item.title}</h3>
 	                    </div>
-	                    <p className="mt-3 text-sm leading-7 text-slate-600">{item.text}</p>
+	                    <p className="mt-3 hidden text-sm leading-7 text-slate-600 md:block">{item.text}</p>
                     <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-700">
                       {item.bullets.map((bullet) => (
                         <li key={bullet} className="flex items-start gap-3">
