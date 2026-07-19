@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
 import MobileIntroText from "@/components/common/MobileIntroText";
@@ -21,6 +22,118 @@ const sectionClass =
   "mt-4 rounded-3xl border bg-white p-[10px] shadow-sm md:p-8";
 
 const sectionStyle = { borderColor: `${BRAND.maroon}12` };
+
+function getParitySurface(index: number) {
+  return {
+    borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+    background:
+      index % 2 === 0
+        ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+        : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+  };
+}
+
+const MobileSection = ({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string;
+  subtitle?: string;
+  children: ReactNode;
+}) => (
+  <section className="mt-8 rounded-[24px] border bg-white p-4 md:hidden" style={{ borderColor: `${BRAND.maroon}12` }}>
+    <h2 className="text-2xl font-extrabold tracking-tight text-slate-950">{title}</h2>
+    {subtitle ? (
+      <MobileIntroText
+        teaser={subtitle}
+        className="mt-2"
+        teaserClassName="w-full leading-6"
+        expandedClassName="text-sm leading-7 text-slate-600"
+        desktopClassName="text-slate-600 leading-7"
+      >
+        <p className="text-slate-600 leading-7 text-justify">{subtitle}</p>
+      </MobileIntroText>
+    ) : null}
+    <div className="mt-5">{children}</div>
+  </section>
+);
+
+const MobileParityCardGrid = ({
+  items,
+}: {
+  items: Array<{ title: string; desc: string; icon?: ReactNode; bullets?: string[]; meta?: string }>;
+}) => (
+  <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+    {items.map((item, index) => (
+      <article key={item.title} className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4" style={getParitySurface(index)}>
+        <div className="flex items-start gap-3">
+          {item.icon ? (
+            <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] bg-white/80 text-orange-600">
+              {item.icon}
+            </span>
+          ) : null}
+          <div className="min-w-0">
+            <div className="text-[17px] font-extrabold leading-snug text-slate-900">{item.title}</div>
+            {item.meta ? <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.04em] text-slate-500">{item.meta}</p> : null}
+          </div>
+        </div>
+        <p className="mt-2 text-[13px] leading-6 text-slate-700 text-justify">{item.desc}</p>
+        {item.bullets?.length ? (
+          <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
+            {item.bullets.map((point) => (
+              <li key={point} className="flex items-start gap-2">
+                <span className="mt-1.5 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                <span className="leading-6 text-justify">{point}</span>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </article>
+    ))}
+  </div>
+);
+
+const MobileExpandableCards = ({
+  summaryLabel,
+  items,
+}: {
+  summaryLabel: string;
+  items: Array<{ title: string; subtitle?: string; fields: Array<{ label: string; value: string }> }>;
+}) => (
+  <details className="group md:hidden">
+    <summary
+      className="list-none cursor-pointer rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900 [::-webkit-details-marker]:hidden"
+      style={{
+        borderColor: `${BRAND.maroon}14`,
+        background: "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)",
+      }}
+    >
+      {summaryLabel}
+    </summary>
+    <div className="mt-3 space-y-3">
+      {items.map((item, index) => (
+        <article key={item.title} className="overflow-hidden rounded-[14px] border" style={getParitySurface(index)}>
+          <div className="px-4 py-4">
+            <div className="text-[16px] font-extrabold leading-snug text-slate-900">{item.title}</div>
+            {item.subtitle ? <p className="mt-1 text-[12.5px] leading-6 text-slate-700 text-justify">{item.subtitle}</p> : null}
+            <div className="mt-3 overflow-hidden rounded-[12px] border border-white/70 bg-white/75">
+              {item.fields.map((field, fieldIndex) => (
+                <div
+                  key={`${item.title}-${field.label}`}
+                  className={`grid grid-cols-[94px_minmax(0,1fr)] gap-3 px-3 py-2.5 ${fieldIndex !== 0 ? "border-t border-slate-200/70" : ""}`}
+                >
+                  <div className="text-[11px] font-extrabold uppercase tracking-[0.04em] text-slate-500">{field.label}</div>
+                  <div className="text-[12.5px] leading-6 text-slate-700 text-justify">{field.value}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </details>
+);
 
 const applicationCards = [
   "Corporate Boardroom",
@@ -1019,6 +1132,37 @@ export default function ConferenceSystemPage() {
       acceptedAnswer: { "@type": "Answer", text: item.a },
     })),
   };
+  const mobileProductRows = Array.from({ length: Math.ceil(conferenceSystemCatalog.length / 4) }, (_, index) =>
+    conferenceSystemCatalog.slice(index * 4, index * 4 + 4)
+  );
+
+  const renderConferenceProductCard = (product: (typeof conferenceSystemCatalog)[number]) => (
+    <ProductGridCard
+      key={product.slug}
+      href={`/conference-system/${product.slug}/`}
+      title={product.title}
+      image={
+        <Image
+          src={product.image}
+          alt={product.title}
+          fill
+          sizes="(max-width: 1024px) 100vw, 33vw"
+          className="object-cover object-center transition duration-300 group-hover:scale-[1.03]"
+        />
+      }
+      imageContainerClassName="bg-slate-100"
+      borderColor={`${BRAND.maroon}12`}
+      topLeftBadge={{ text: product.badge, tone: "light" }}
+      topRightBadge={{ text: "Conference", tone: "dark" }}
+      metaLines={[{ text: product.cardPriceLabel, className: "mt-1 text-sm font-semibold text-sky-700" }]}
+      bullets={product.keyFeatures}
+      chips={product.bestFor}
+      accentColor={BRAND.maroon}
+      contactHref="/contact/"
+      compactMobile
+      viewDetailsLabel="View details ->"
+    />
+  );
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 pb-10 pt-0 md:px-6">
@@ -1067,40 +1211,36 @@ export default function ConferenceSystemPage() {
           </p>
         </div>
 
-        <ResponsiveProductCarousel className="product-grid-3" desktopClassName="md:grid-cols-2 lg:grid-cols-3" mobileGapClassName="gap-[10px]">
-          {conferenceSystemCatalog.map((product) => (
-            <ProductGridCard
-              key={product.slug}
-              href={`/conference-system/${product.slug}/`}
-              title={product.title}
-              image={
-                <Image
-                  src={product.image}
-                  alt={product.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 33vw"
-                  className="object-cover object-center transition duration-300 group-hover:scale-[1.03]"
-                />
-              }
-              imageContainerClassName="bg-slate-100"
-              borderColor={`${BRAND.maroon}12`}
-              topLeftBadge={{ text: product.badge, tone: "light" }}
-              topRightBadge={{ text: "Conference", tone: "dark" }}
-              metaLines={[
-                { text: product.cardPriceLabel, className: "mt-1 text-sm font-semibold text-sky-700" },
-              ]}
-              bullets={product.keyFeatures}
-              chips={product.bestFor}
-              accentColor={BRAND.maroon}
-              contactHref="/contact/"
-              compactMobile
-              viewDetailsLabel="View details ->"
-            />
+        <div className="md:hidden">
+          {mobileProductRows.map((row, index) => (
+            <ResponsiveProductCarousel key={`mobile-row-${index}`} className={index === 0 ? "mt-0" : "mt-4"} mobileGapClassName="gap-[10px]">
+              {row.map((product) => renderConferenceProductCard(product))}
+            </ResponsiveProductCarousel>
           ))}
-        </ResponsiveProductCarousel>
+        </div>
+
+        <div className="hidden md:block">
+          <ResponsiveProductCarousel className="product-grid-3" desktopClassName="md:grid-cols-2 lg:grid-cols-3" mobileGapClassName="gap-[10px]">
+            {conferenceSystemCatalog.map((product) => renderConferenceProductCard(product))}
+          </ResponsiveProductCarousel>
+        </div>
       </section>
 
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="what-is-conference-system">
+      <MobileSection
+        title="What is a Conference System?"
+        subtitle="A conference system is a professional audio communication setup for organized meetings, clearer speech pickup and better discussion control."
+      >
+        <article className="rounded-[14px] border px-4 py-4" style={getParitySurface(0)}>
+          <p className="text-[13px] leading-6 text-slate-700 text-justify">
+            A conference system is a professional audio communication solution used for meetings, boardrooms, seminar
+            rooms, training centers, government offices, corporate offices, hotels, educational institutions, and
+            conference halls. It includes chairman units, delegate units, a control unit, wireless microphones, DSP
+            processor, speakers, cables, and accessories to keep every speaker clear and every discussion organized.
+          </p>
+        </article>
+      </MobileSection>
+
+      <section className={`${sectionClass} hidden md:block`} style={sectionStyle} aria-labelledby="what-is-conference-system">
         <div className="max-w-5xl">
           <p className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.maroon }}>
             Meeting room audio solution
@@ -1117,7 +1257,37 @@ export default function ConferenceSystemPage() {
         </div>
       </section>
 
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-components">
+      <MobileSection
+        title="Key Components of a Conference System"
+        subtitle="The right component mix keeps speech clear, discussion organized and room-wide communication stable."
+      >
+        <MobileParityCardGrid
+          items={conferenceComponentCards.map((item) => ({
+            title: item.title,
+            desc: item.description,
+            bullets: item.features,
+            icon: <ConferenceComponentIconSvg icon={item.icon} />,
+          }))}
+        />
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          <Link
+            href="/contact/"
+            className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+            style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+          >
+            Get Expert Help
+          </Link>
+          <Link
+            href="/contact/"
+            className="inline-flex min-h-9 items-center justify-center rounded-md border bg-white px-3 py-2 text-[11px] font-extrabold text-slate-900 shadow-sm"
+            style={{ borderColor: `${BRAND.maroon}18` }}
+          >
+            Contact Us
+          </Link>
+        </div>
+      </MobileSection>
+
+      <section className={`${sectionClass} hidden md:block`} style={sectionStyle} aria-labelledby="conference-system-components">
         <div className="max-w-5xl">
           <p className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.maroon }}>
             Conference system equipment
@@ -1191,7 +1361,37 @@ export default function ConferenceSystemPage() {
         </div>
       </section>
 
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-benefits">
+      <MobileSection
+        title="Key Benefits of a Professional Conference System"
+        subtitle="A properly planned conference system improves meeting control, voice clarity and overall room professionalism."
+      >
+        <MobileParityCardGrid
+          items={conferenceBenefits.map((item) => ({
+            title: item.title,
+            desc: item.description,
+            bullets: item.bullets,
+            icon: <ConferenceBenefitIconSvg icon={item.icon} />,
+          }))}
+        />
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          <Link
+            href="/contact/"
+            className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+            style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+          >
+            Free Quotation
+          </Link>
+          <a
+            href="#conference-system-price"
+            className="inline-flex min-h-9 items-center justify-center rounded-md border bg-white px-3 py-2 text-[11px] font-extrabold text-slate-900 shadow-sm"
+            style={{ borderColor: `${BRAND.maroon}18` }}
+          >
+            View Price
+          </a>
+        </div>
+      </MobileSection>
+
+      <section className={`${sectionClass} hidden md:block`} style={sectionStyle} aria-labelledby="conference-system-benefits">
         <div className="max-w-5xl">
           <p className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.maroon }}>
             Conference System Benefits
@@ -1262,7 +1462,19 @@ export default function ConferenceSystemPage() {
         </div>
       </section>
 
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-applications">
+      <MobileSection
+        title="Conference System Applications"
+        subtitle="Different meeting environments need different microphone quantity, room audio planning and control workflow."
+      >
+        <MobileParityCardGrid
+          items={applicationCards.map((item) => ({
+            title: item,
+            desc: "Planned conference audio setup for clear speech pickup, controlled discussion, and reliable meeting room communication.",
+          }))}
+        />
+      </MobileSection>
+
+      <section className={`${sectionClass} hidden md:block`} style={sectionStyle} aria-labelledby="conference-system-applications">
         <h2 id="conference-system-applications" className="text-2xl font-extrabold tracking-tight text-slate-950">
           Conference System Applications
         </h2>
@@ -1279,7 +1491,42 @@ export default function ConferenceSystemPage() {
         </div>
       </section>
 
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-packages">
+      <MobileSection
+        title="Conference System Packages by Room Size"
+        subtitle="Package planning depends on room layout, participant count, microphone quantity, audio coverage and installation scope."
+      >
+        <MobileExpandableCards
+          summaryLabel="Tap To Expand Packages"
+          items={packageCards.map((item) => ({
+            title: item.title,
+            subtitle: item.bestFor,
+            fields: [
+              { label: "Best For", value: item.bestFor },
+              { label: "Included", value: item.included },
+              { label: "Capacity", value: item.capacity },
+              { label: "Recommended", value: item.recommended },
+            ],
+          }))}
+        />
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          <Link
+            href="/contact/"
+            className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+            style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+          >
+            Request Quote
+          </Link>
+          <Link
+            href="/contact/"
+            className="inline-flex min-h-9 items-center justify-center rounded-md border bg-white px-3 py-2 text-[11px] font-extrabold text-slate-900 shadow-sm"
+            style={{ borderColor: `${BRAND.maroon}18` }}
+          >
+            Consultation
+          </Link>
+        </div>
+      </MobileSection>
+
+      <section className={`${sectionClass} hidden md:block`} style={sectionStyle} aria-labelledby="conference-system-packages">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div className="max-w-4xl">
             <h2 id="conference-system-packages" className="text-2xl font-extrabold tracking-tight text-slate-950">
@@ -1335,7 +1582,19 @@ export default function ConferenceSystemPage() {
         </div>
       </section>
 
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="types-of-conference-systems">
+      <MobileSection
+        title="Types of Conference Systems"
+        subtitle="Choose the right conference system type based on room use, table layout, installation style and meeting workflow."
+      >
+        <MobileParityCardGrid
+          items={systemTypes.map((item) => ({
+            title: item.title,
+            desc: item.desc,
+          }))}
+        />
+      </MobileSection>
+
+      <section className={`${sectionClass} hidden md:block`} style={sectionStyle} aria-labelledby="types-of-conference-systems">
         <h2 id="types-of-conference-systems" className="text-2xl font-extrabold tracking-tight text-slate-950">
           Types of Conference Systems
         </h2>
@@ -1349,7 +1608,32 @@ export default function ConferenceSystemPage() {
         </div>
       </section>
 
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-price">
+      <MobileSection
+        title="Conference System Price in Bangladesh"
+        subtitle="Conference system price changes based on product model, microphone quantity, control hardware, room scope and installation requirement."
+      >
+        <MobileExpandableCards
+          summaryLabel="Tap To Expand Price List"
+          items={conferencePriceTableProducts.map((product) => ({
+            title: product.title,
+            subtitle: product.subtitle,
+            fields: [
+              { label: "Type", value: product.badge },
+              { label: "Best For", value: product.bestFor.join(", ") },
+              { label: "Price", value: normalizeDisplayedPriceText(product.priceLabel) },
+            ],
+          }))}
+        />
+        <article className="mt-4 rounded-[14px] border px-4 py-4" style={getParitySurface(1)}>
+          <p className="text-[12.5px] leading-6 text-slate-700 text-justify">
+            Product prices help estimate equipment cost, but final conference system price in Bangladesh depends on room
+            size, number of microphones, brand, control unit, audio processor, speaker setup, installation complexity,
+            and after-sales support.
+          </p>
+        </article>
+      </MobileSection>
+
+      <section className={`${sectionClass} hidden md:block`} style={sectionStyle} aria-labelledby="conference-system-price">
         <h2 id="conference-system-price" className="text-2xl font-extrabold tracking-tight text-slate-950">
           Conference System Price in Bangladesh
         </h2>
@@ -1411,7 +1695,27 @@ export default function ConferenceSystemPage() {
         </p>
       </section>
 
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="wired-vs-wireless-conference-system">
+      <MobileSection
+        title="Wired vs Wireless Conference System"
+        subtitle="Both wired and wireless systems work well when matched to the room layout, usage pattern and maintenance preference."
+      >
+        <MobileParityCardGrid
+          items={[
+            {
+              title: "Wired Conference System",
+              desc: "Best for permanent rooms where stable connection, fixed microphone points and lower maintenance are important.",
+              bullets: [...wiredPoints],
+            },
+            {
+              title: "Wireless Conference System",
+              desc: "Best for flexible rooms where clean tables, reconfiguration and mobility are important.",
+              bullets: [...wirelessPoints],
+            },
+          ]}
+        />
+      </MobileSection>
+
+      <section className={`${sectionClass} hidden md:block`} style={sectionStyle} aria-labelledby="wired-vs-wireless-conference-system">
         <h2 id="wired-vs-wireless-conference-system" className="text-2xl font-extrabold tracking-tight text-slate-950">
           Wired vs Wireless Conference System
         </h2>
@@ -1441,7 +1745,50 @@ export default function ConferenceSystemPage() {
         </div>
       </section>
 
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="choose-right-conference-system">
+      <MobileSection
+        title="How to Choose the Right Conference System in Bangladesh"
+        subtitle="The right conference setup depends on room size, participant count, mic type, AV integration and installation scope."
+      >
+        <MobileParityCardGrid
+          items={conferenceGuideCards.map((item) => ({
+            title: item.title,
+            desc: item.description,
+            bullets: item.bullets,
+            icon: <ConferenceGuideIconSvg icon={item.icon} />,
+          }))}
+        />
+        <div className="mt-5">
+          <MobileExpandableCards
+            summaryLabel="Tap To Expand Selection Guide"
+            items={conferenceSelectionGuideRows.map((row) => ({
+              title: row[0],
+              fields: [
+                { label: "Users", value: row[1] },
+                { label: "System", value: row[2] },
+                { label: "Best Use", value: row[3] },
+              ],
+            }))}
+          />
+        </div>
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          <Link
+            href="/contact/"
+            className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+            style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+          >
+            Free Quotation
+          </Link>
+          <a
+            href="#conference-system-price"
+            className="inline-flex min-h-9 items-center justify-center rounded-md border bg-white px-3 py-2 text-[11px] font-extrabold text-slate-900 shadow-sm"
+            style={{ borderColor: `${BRAND.maroon}18` }}
+          >
+            View Price
+          </a>
+        </div>
+      </MobileSection>
+
+      <section className={`${sectionClass} hidden md:block`} style={sectionStyle} aria-labelledby="choose-right-conference-system">
         <div className="max-w-5xl">
           <p className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.maroon }}>
             Buying Guide
@@ -1552,7 +1899,48 @@ export default function ConferenceSystemPage() {
         </div>
       </section>
 
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="why-choose-sasha">
+      <MobileSection
+        title="Why Choose Sasha Corporation for Conference Systems in Bangladesh?"
+        subtitle="We support conference projects with room-based planning, product selection, BOQ preparation, installation and after-sales guidance."
+      >
+        <MobileParityCardGrid
+          items={chooseSashaCards.map((item) => ({
+            title: item.title,
+            desc: item.description,
+            bullets: item.bullets,
+            icon: <ChooseSashaIconSvg icon={item.icon} />,
+          }))}
+        />
+        <div className="-mx-0.5 mt-4 flex snap-x snap-mandatory gap-2 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          {chooseSashaSupportStrip.map((item, index) => (
+            <div
+              key={item}
+              className="min-w-[170px] shrink-0 snap-start rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900"
+              style={getParitySurface(index)}
+            >
+              {item}
+            </div>
+          ))}
+        </div>
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          <Link
+            href="/contact/"
+            className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+            style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+          >
+            Free Quotation
+          </Link>
+          <a
+            href="#conference-system-price"
+            className="inline-flex min-h-9 items-center justify-center rounded-md border bg-white px-3 py-2 text-[11px] font-extrabold text-slate-900 shadow-sm"
+            style={{ borderColor: `${BRAND.maroon}18` }}
+          >
+            View Price
+          </a>
+        </div>
+      </MobileSection>
+
+      <section className={`${sectionClass} hidden md:block`} style={sectionStyle} aria-labelledby="why-choose-sasha">
         <div className="max-w-5xl">
           <p className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.maroon }}>
             Why Choose Us
@@ -1643,7 +2031,20 @@ export default function ConferenceSystemPage() {
         </div>
       </section>
 
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-brand-showcase">
+      <MobileSection
+        title="Brands We Work With"
+        subtitle="We work with trusted conference and audio brands so the final system stays dependable, service-friendly and project-ready."
+      >
+        <MobileParityCardGrid
+          items={conferenceBrandCards.map((brand) => ({
+            title: brand.title,
+            desc: brand.description,
+            meta: `${brand.badge} - ${brand.category}`,
+          }))}
+        />
+      </MobileSection>
+
+      <section className={`${sectionClass} hidden md:block`} style={sectionStyle} aria-labelledby="conference-brand-showcase">
         <div className="text-center">
           <h2 id="conference-brand-showcase" className="text-2xl font-extrabold tracking-tight text-slate-950">
             Brands We Work With
@@ -1705,7 +2106,29 @@ export default function ConferenceSystemPage() {
         </div>
       </section>
 
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-faq">
+      <MobileSection
+        title="Conference System FAQ"
+        subtitle="Quick answers about conference system price, microphone units, wired or wireless setup and installation support in Bangladesh."
+      >
+        <FaqAccordion items={conferenceFaqs} accent={BRAND.maroon} className="md:hidden" density="compact" />
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          <Link
+            href="/contact/"
+            className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+            style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+          >
+            Request Quote
+          </Link>
+          <a
+            href="#conference-system-price"
+            className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
+          >
+            View Price
+          </a>
+        </div>
+      </MobileSection>
+
+      <section className={`${sectionClass} hidden md:block`} style={sectionStyle} aria-labelledby="conference-system-faq">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div className="max-w-4xl">
             <h2 id="conference-system-faq" className="text-2xl font-extrabold tracking-tight text-slate-950">
