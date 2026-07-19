@@ -101,13 +101,13 @@ const CardGrid = ({ items }: { items: { t: string; d: string; bullets?: string[]
       {items.map((x, index) => (
         <div
           key={x.t}
-          className="w-[86%] shrink-0 snap-start rounded-[20px] border px-4 py-4 shadow-[0_12px_28px_rgba(15,23,42,0.06)]"
+              className="w-[86%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
           style={{
             borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
             background:
               index % 2 === 0
-                ? "linear-gradient(180deg, rgba(236,254,255,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(224,242,254,0.98) 100%)"
-                : "linear-gradient(180deg, rgba(255,247,237,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(255,237,213,0.98) 100%)",
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
           }}
         >
           <div className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</div>
@@ -325,13 +325,13 @@ export default function IndoorProductsPage() {
           ].map((x, index) => (
             <div
               key={x.t}
-              className="w-[84%] shrink-0 snap-start rounded-[20px] border px-4 py-4 shadow-[0_12px_28px_rgba(15,23,42,0.06)]"
+              className="w-[84%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
               style={{
                 borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
                 background:
                   index % 2 === 0
-                    ? "linear-gradient(180deg, rgba(236,254,255,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(224,242,254,0.98) 100%)"
-                    : "linear-gradient(180deg, rgba(255,247,237,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(255,237,213,0.98) 100%)",
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
               }}
             >
               <div className="flex items-center gap-2 text-base font-extrabold text-slate-900">
@@ -439,13 +439,13 @@ export default function IndoorProductsPage() {
           ].map((x, index) => (
             <div
               key={x.t}
-              className="w-[84%] shrink-0 snap-start rounded-[20px] border px-4 py-4 shadow-[0_12px_28px_rgba(15,23,42,0.06)]"
+              className="w-[84%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
               style={{
                 borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
                 background:
                   index % 2 === 0
-                    ? "linear-gradient(180deg, rgba(236,254,255,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(224,242,254,0.98) 100%)"
-                    : "linear-gradient(180deg, rgba(255,247,237,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(255,237,213,0.98) 100%)",
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
               }}
             >
               <h3 className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
@@ -513,13 +513,13 @@ export default function IndoorProductsPage() {
           ].map((x, index) => (
             <div
               key={x.t}
-              className="w-[82%] shrink-0 snap-start rounded-[20px] border px-4 py-4 shadow-[0_12px_28px_rgba(15,23,42,0.06)]"
+              className="w-[82%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
               style={{
                 borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
                 background:
                   index % 2 === 0
-                    ? "linear-gradient(180deg, rgba(236,254,255,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(224,242,254,0.98) 100%)"
-                    : "linear-gradient(180deg, rgba(255,247,237,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(255,237,213,0.98) 100%)",
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
               }}
             >
               <h3 className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
@@ -552,7 +552,10 @@ export default function IndoorProductsPage() {
  title="Indoor LED Display Project Consultation in Bangladesh"
  subtitle="Share your room size, viewing distance, and content type-then we recommend pixel pitch, screen size, processor, structure, and BOQ."
       >
-        <div className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
+        <div
+          className="rounded-[14px] border bg-[linear-gradient(180deg,#f8fbff_0%,#eef6ff_100%)] p-4 md:rounded-3xl md:bg-slate-50 md:p-6"
+          style={{ borderColor: `${BRAND.maroon}10` }}
+        >
           <ul className="space-y-3 text-sm text-slate-700">
             {[
               "Room size + viewing distance (front row to far row)",
@@ -586,13 +589,13 @@ export default function IndoorProductsPage() {
           ].map(([k, a, b], index) => (
             <article
               key={k}
-              className="overflow-hidden rounded-[16px] border shadow-[0_12px_28px_rgba(15,23,42,0.05)]"
+              className="overflow-hidden rounded-[14px] border"
               style={{
                 borderColor: `${BRAND.maroon}12`,
                 background:
                   index % 2 === 0
-                    ? "linear-gradient(180deg, rgba(240,249,255,0.98) 0%, rgba(255,255,255,0.98) 52%, rgba(224,242,254,0.98) 100%)"
-                    : "linear-gradient(180deg, rgba(255,247,237,0.98) 0%, rgba(255,255,255,0.98) 52%, rgba(255,237,213,0.98) 100%)",
+                    ? "linear-gradient(180deg, rgba(246,250,255,1) 0%, rgba(240,247,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,244,235,1) 100%)",
               }}
             >
               <div className="border-b px-4 py-3" style={{ borderColor: `${BRAND.maroon}12` }}>
@@ -693,13 +696,13 @@ export default function IndoorProductsPage() {
           ].map((x, index) => (
             <div
               key={x.t}
-              className="w-[84%] shrink-0 snap-start rounded-[20px] border px-4 py-4 shadow-[0_12px_28px_rgba(15,23,42,0.06)]"
+              className="w-[84%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
               style={{
                 borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
                 background:
                   index % 2 === 0
-                    ? "linear-gradient(180deg, rgba(236,254,255,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(224,242,254,0.98) 100%)"
-                    : "linear-gradient(180deg, rgba(255,247,237,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(255,237,213,0.98) 100%)",
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
               }}
             >
               <h3 className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
@@ -747,7 +750,44 @@ export default function IndoorProductsPage() {
         }
         subtitle="Compare indoor LED display and LCD video wall solutions by visual performance, scalability, maintenance, and long-term operating value to choose the right technology for your project."
       >
-        <div className="overflow-x-auto rounded-3xl border" style={{ borderColor: `${BRAND.maroon}12` }}>
+        <div className="space-y-3 md:hidden">
+          {[
+            ["Seam Visibility", "Seamless large canvas for unified visuals and cleaner branding impact.", "Visible bezel lines between panels can interrupt image continuity."],
+            ["Scalability", "Flexible sizing and aspect ratio for custom walls, stage sets, and creative layouts.", "Limited to fixed panel sizes and predefined grid combinations."],
+            ["Viewing Experience", "Strong brightness control, wide viewing angle, and better large-format immersion.", "Good close-view detail but reduced impact on very large wall formats."],
+            ["Long-Hour Operation", "Designed for stable continuous operation in control rooms and commercial environments.", "Can run long hours, but heat and bezel aging need tighter management over time."],
+            ["Maintenance", "Module-level servicing allows targeted replacement with lower downtime risk.", "Panel-level replacement may increase cost and downtime in some service cases."],
+            ["Best Use Case", "Showrooms, command centers, corporate lobbies, and premium indoor brand displays.", "Meeting rooms, monitoring walls, and budget-focused tiled display setups."],
+          ].map(([k, a, b], index) => (
+            <article
+              key={k}
+              className="overflow-hidden rounded-[12px] border"
+              style={{
+                borderColor: `${BRAND.maroon}12`,
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(246,250,255,1) 0%, rgba(240,247,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,244,235,1) 100%)",
+              }}
+            >
+              <div className="border-b px-4 py-3" style={{ borderColor: `${BRAND.maroon}12` }}>
+                <div className="text-[15px] font-extrabold tracking-tight text-slate-900">{k}</div>
+              </div>
+              <div className="grid grid-cols-2 gap-0">
+                <div className="border-r px-4 py-3" style={{ borderColor: `${BRAND.maroon}10` }}>
+                  <div className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00]">Indoor LED</div>
+                  <p className="text-[13px] leading-6 text-slate-700">{a}</p>
+                </div>
+                <div className="px-4 py-3">
+                  <div className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-sky-700">LCD Video Wall</div>
+                  <p className="text-[13px] leading-6 text-slate-700">{b}</p>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="hidden overflow-x-auto rounded-3xl border md:block" style={{ borderColor: `${BRAND.maroon}12` }}>
           <div className="grid min-w-[760px] md:min-w-0 md:grid-cols-3">
             <div className="bg-slate-50 p-5 text-sm font-bold text-slate-800">Comparison Point</div>
             <div className="bg-white p-5 text-sm font-bold text-slate-800">Indoor LED Display</div>
@@ -785,10 +825,10 @@ export default function IndoorProductsPage() {
             <Link
               key={x.t}
               href={x.href}
-              className="group w-[84%] shrink-0 snap-start rounded-[20px] border px-4 py-4 shadow-[0_12px_28px_rgba(15,23,42,0.06)] transition"
+              className="group w-[84%] shrink-0 snap-start rounded-[14px] border px-4 py-4 transition"
               style={{
                 borderColor: `${BRAND.maroon}14`,
-                background: "linear-gradient(180deg, rgba(255,247,237,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(255,237,213,0.98) 100%)",
+                background: "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
               }}
             >
               <div className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</div>
@@ -833,7 +873,49 @@ export default function IndoorProductsPage() {
         }
         subtitle="Use this practical pixel pitch selection guide to match viewing distance, content type, and budget so your indoor LED display stays sharp, comfortable, and cost-efficient."
       >
-        <div className="overflow-x-auto rounded-3xl border" style={{ borderColor: `${BRAND.maroon}12` }}>
+        <div className="space-y-3 md:hidden">
+          {[
+            ["1.5m to 2.5m", "Fine text, UI, close-face viewing", "P1.25 to P1.53", "Executive boardrooms, premium brand showrooms"],
+            ["2.5m to 4m", "Mixed text + video content", "P1.86 to P2.0", "Corporate meeting rooms, reception video walls"],
+            ["4m to 6m", "Presentation-heavy visuals", "P2.5", "Conference halls, educational auditoriums"],
+            ["6m+", "Large visuals, less micro-detail", "P3", "Large indoor stages, event halls, atrium displays"],
+          ].map(([distance, content, pitch, scenario], index) => (
+            <article
+              key={distance}
+              className="overflow-hidden rounded-[16px] border shadow-[0_12px_28px_rgba(15,23,42,0.05)]"
+              style={{
+                borderColor: `${BRAND.maroon}12`,
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(240,249,255,0.98) 0%, rgba(255,255,255,0.98) 52%, rgba(224,242,254,0.98) 100%)"
+                    : "linear-gradient(180deg, rgba(255,247,237,0.98) 0%, rgba(255,255,255,0.98) 52%, rgba(255,237,213,0.98) 100%)",
+              }}
+            >
+              <div className="border-b px-4 py-3" style={{ borderColor: `${BRAND.maroon}12` }}>
+                <div className="text-[15px] font-extrabold tracking-tight text-slate-900">{distance}</div>
+                <div className="mt-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00]">Viewing Distance</div>
+              </div>
+              <div className="space-y-3 px-4 py-3">
+                <div>
+                  <div className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-sky-700">Content Priority</div>
+                  <p className="text-[13px] leading-6 text-slate-700">{content}</p>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="rounded-[8px] border bg-white/92 px-3 py-2" style={{ borderColor: `${BRAND.maroon}12` }}>
+                    <div className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00]">Recommended Pitch</div>
+                    <div className="mt-1 text-[13px] font-bold leading-5 text-slate-900">{pitch}</div>
+                  </div>
+                  <div className="rounded-[8px] border bg-white/92 px-3 py-2" style={{ borderColor: `${BRAND.maroon}12` }}>
+                    <div className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-sky-700">Best Scenario</div>
+                    <div className="mt-1 text-[13px] leading-5 text-slate-700">{scenario}</div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="hidden overflow-x-auto rounded-3xl border md:block" style={{ borderColor: `${BRAND.maroon}12` }}>
           <div className="grid min-w-[820px] md:min-w-0 md:grid-cols-4">
             <div className="bg-slate-50 p-5 text-sm font-bold text-slate-800">Viewing Distance</div>
             <div className="bg-white p-5 text-sm font-bold text-slate-800">Content Priority</div>
@@ -873,13 +955,13 @@ export default function IndoorProductsPage() {
           ].map((x, index) => (
             <div
               key={x.t}
-              className="w-[84%] shrink-0 snap-start rounded-[20px] border px-4 py-4 shadow-[0_12px_28px_rgba(15,23,42,0.06)]"
+              className="w-[84%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
               style={{
                 borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
                 background:
                   index % 2 === 0
-                    ? "linear-gradient(180deg, rgba(236,254,255,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(224,242,254,0.98) 100%)"
-                    : "linear-gradient(180deg, rgba(255,247,237,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(255,237,213,0.98) 100%)",
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
               }}
             >
               <h3 className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
@@ -1004,11 +1086,11 @@ export default function IndoorProductsPage() {
           ].map((x) => (
             <div
               key={x.t}
-              className="rounded-[20px] border px-4 py-4 md:rounded-3xl md:bg-slate-50 md:p-6"
+              className="rounded-[14px] border px-4 py-4 md:rounded-3xl md:bg-slate-50 md:p-6"
               style={{
                 borderColor: `${BRAND.maroon}10`,
                 background:
-                  "linear-gradient(180deg, rgba(255,247,237,0.98) 0%, rgba(255,255,255,0.98) 54%, rgba(255,237,213,0.98) 100%)",
+                  "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
               }}
             >
               <div className="text-sm font-extrabold text-slate-900">{x.t}</div>
