@@ -1982,12 +1982,20 @@ function ProductsPageContent({
 	                    <h3 className="text-lg font-extrabold text-slate-900">Power Flow</h3>
 	                    <div className="mt-4 grid gap-2.5">
 	                      {ledDisplayPowerFlow.map((step, index) => (
-	                        <div key={step} className="flex items-center gap-2">
-	                          <div className="mx-auto flex min-h-[2.9rem] w-full max-w-[17.5rem] items-center justify-center rounded-lg border border-cyan-200/75 bg-[linear-gradient(180deg,#ecfeff_0%,#ffffff_54%,#cffafe_100%)] px-2 py-2 text-center text-[11px] font-bold leading-4 text-slate-800 shadow-sm md:mx-0 md:min-h-14 md:max-w-none md:rounded-2xl md:border-slate-200 md:bg-white md:px-3 md:py-3 md:text-sm md:leading-6">
+	                        <div key={step} className="relative md:flex md:items-center md:gap-2 md:pr-0">
+	                          <div className="mx-auto flex min-h-[2.9rem] w-full max-w-[17.5rem] items-center justify-center rounded-lg border border-cyan-200/75 bg-[linear-gradient(180deg,#ecfeff_0%,#ffffff_54%,#cffafe_100%)] px-2 py-2 text-center text-[11px] font-bold leading-4 text-slate-800 shadow-sm md:mx-0 md:min-h-14 md:max-w-none md:flex-1 md:rounded-2xl md:border-slate-200 md:bg-white md:px-3 md:py-3 md:text-sm md:leading-6">
 	                            {step}
 	                          </div>
-	                          <div
-                              className={`w-3 text-[11px] font-extrabold text-[#FF6A00] md:text-sm ${
+                            {index < ledDisplayPowerFlow.length - 1 ? (
+	                            <div
+                                className="absolute left-1/2 top-full flex -translate-x-1/2 -translate-y-1/2 items-center justify-center text-[13px] font-extrabold text-[#FF6A00] md:hidden"
+                                aria-hidden="true"
+                              >
+                                ↓
+                              </div>
+                            ) : null}
+                            <div
+                              className={`hidden w-3 self-stretch items-center justify-center text-[11px] font-extrabold text-[#FF6A00] md:flex md:text-sm ${
                                 index < ledDisplayPowerFlow.length - 1 ? "opacity-100" : "opacity-0"
                               }`}
                               aria-hidden="true"
