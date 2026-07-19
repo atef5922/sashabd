@@ -70,7 +70,7 @@ const Section = ({
   icon?: React.ReactNode;
   children: React.ReactNode;
 }) => (
-  <section className="mt-10 rounded-3xl border bg-white p-7 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
+  <section className="mt-8 rounded-[24px] border bg-white p-4 md:mt-10 md:rounded-3xl md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
     {icon ? (
       <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
         <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-orange-50 text-orange-600" aria-hidden="true">
@@ -81,33 +81,77 @@ const Section = ({
     ) : (
       <h2 className="text-2xl font-bold text-slate-900">{title}</h2>
     )}
-    {subtitle ? <p className="mt-2 text-slate-600 leading-7">{subtitle}</p> : null}
+    {subtitle ? (
+      <MobileIntroText
+        teaser={subtitle}
+        className="mt-2"
+        teaserClassName="w-full leading-6"
+        expandedClassName="text-sm leading-7 text-slate-600"
+        desktopClassName="text-slate-600 leading-7"
+      >
+        <p className="text-slate-600 leading-7">{subtitle}</p>
+      </MobileIntroText>
+    ) : null}
     <div className="mt-5">{children}</div>
   </section>
 );
 
 const CardGrid = ({ items }: { items: { i?: string; t: string; d: string; bullets?: string[] }[] }) => (
-  <div className="grid gap-4 md:grid-cols-3">
-    {items.map((x) => (
-      <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
-        <div className="flex items-center gap-2 text-lg font-bold text-slate-900">
-          {x.i ? <span aria-hidden="true">{x.i}</span> : null}
-          <span>{x.t}</span>
+  <>
+    <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+      {items.map((x, index) => (
+        <div
+          key={x.t}
+          className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+          style={{
+            borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+            background:
+              index % 2 === 0
+                ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+          }}
+        >
+          <div className="flex items-center gap-2 text-[17px] font-extrabold leading-snug text-slate-900">
+            {x.i ? <span aria-hidden="true">{x.i}</span> : null}
+            <span>{x.t}</span>
+          </div>
+          <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
+          {x.bullets?.length ? (
+            <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
+              {x.bullets.map((b) => (
+                <li key={b} className="flex items-start gap-2">
+                  <span className="mt-1.5 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                  <span className="leading-6">{b}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
         </div>
-        <p className="mt-2 text-sm text-slate-600 leading-7">{x.d}</p>
-        {x.bullets?.length ? (
-          <ul className="mt-3 space-y-2 text-sm text-slate-700">
-            {x.bullets.map((b) => (
-              <li key={b} className="flex items-start gap-2">
-                <span className="mt-2 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
-                <span className="leading-7">{b}</span>
-              </li>
-            ))}
-          </ul>
-        ) : null}
-      </div>
-    ))}
-  </div>
+      ))}
+    </div>
+
+    <div className="hidden gap-4 md:grid md:grid-cols-3">
+      {items.map((x) => (
+        <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
+          <div className="flex items-center gap-2 text-lg font-bold text-slate-900">
+            {x.i ? <span aria-hidden="true">{x.i}</span> : null}
+            <span>{x.t}</span>
+          </div>
+          <p className="mt-2 text-sm text-slate-600 leading-7">{x.d}</p>
+          {x.bullets?.length ? (
+            <ul className="mt-3 space-y-2 text-sm text-slate-700">
+              {x.bullets.map((b) => (
+                <li key={b} className="flex items-start gap-2">
+                  <span className="mt-2 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                  <span className="leading-7">{b}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
+      ))}
+    </div>
+  </>
 );
 
 export default function OutdoorProductsPage() {
@@ -165,7 +209,7 @@ export default function OutdoorProductsPage() {
     });
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 pb-8 pt-0 md:px-6">
+    <div className="outdoor-led-page mx-auto w-full max-w-7xl px-3 pb-8 pt-0 md:px-6">
       <Breadcrumbs
         items={[
           homeBreadcrumb(),
@@ -250,7 +294,7 @@ export default function OutdoorProductsPage() {
       </section>
 
       <section
-        className="mt-6 rounded-3xl border bg-white p-5 shadow-sm md:p-6"
+        className="mt-5 rounded-[24px] border bg-white p-4 shadow-sm md:mt-6 md:rounded-3xl md:p-6"
         style={{ borderColor: `${BRAND.maroon}12` }}
       >
         {/* PRODUCT GRID (boxed like /led-display/) */}
@@ -399,7 +443,53 @@ export default function OutdoorProductsPage() {
         }
         subtitle="Outdoor LED display solutions in Bangladesh are designed for daylight visibility, weather resistance, and stable long-distance performance for billboards, roadside branding, and public information screens."
       >
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            {
+ i: "",
+              t: "High Brightness Visibility",
+              d: "Clear and readable content under direct sunlight for roadside and open-air viewing.",
+            },
+            {
+ i: "",
+              t: "Weather-Resistant Build",
+              d: "Outdoor-ready cabinet design with better resistance to rain, dust, and humidity conditions.",
+            },
+            {
+ i: "",
+              t: "Long-Distance Readability",
+              d: "Optimized pixel pitch and screen scaling for larger audience zones and far-view impact.",
+            },
+            {
+ i: "",
+              t: "Stable Power & Protection",
+              d: "Reliable operation with proper grounding, surge protection, and balanced power distribution.",
+            },
+          ].map((x, index) => (
+            <div
+              key={x.t}
+              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+              style={{
+                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+              }}
+            >
+              <div className="flex items-center gap-2 text-base font-extrabold text-slate-900">
+                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-sm" aria-hidden="true">
+                  {x.i}
+                </span>
+                <span>{x.t}</span>
+              </div>
+              <p className="mt-2 text-sm leading-7 text-slate-600">{x.d}</p>
+              <div className="mt-4 h-1 w-12 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-4">
           {[
             {
  i: "",
@@ -435,7 +525,7 @@ export default function OutdoorProductsPage() {
           ))}
         </div>
 
-        <div className="mt-5 grid gap-2 text-xs font-semibold text-slate-700 md:grid-cols-4">
+        <div className="mt-5 hidden gap-2 text-xs font-semibold text-slate-700 md:grid md:grid-cols-4">
           {[
             "Best for highway billboards and roadside signage",
             "Built for sunlight and harsh weather exposure",
@@ -469,7 +559,63 @@ export default function OutdoorProductsPage() {
         }
         subtitle="Outdoor communication often fails because screens wash out in sunlight, break in weather, or become hard to manage at scale. This guide focuses on practical benefits that solve those day-to-day buyer problems."
       >
-        <div className="grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            {
+              t: "Sunlight readable high brightness",
+              d: "Content stays readable in direct daylight, so pricing, promotions, and safety messages remain visible during peak sun hours.",
+            },
+            {
+              t: "IP65 / IP66 weather protection",
+              d: "Sealed outdoor cabinets help protect modules from rain, dust, and humidity, lowering weather-related failure risk in Bangladesh conditions.",
+            },
+            {
+              t: "Long-distance visibility",
+              d: "Proper pixel-pitch planning keeps text and visuals readable from farther roads and open public zones without losing message clarity.",
+            },
+            {
+              t: "24/7 operation support",
+              d: "Designed for long-hour duty cycles with stable power planning, helping critical announcements run continuously with fewer interruptions.",
+            },
+            {
+              t: "Energy-efficient design",
+              d: "Modern driver and brightness control systems reduce unnecessary power draw, improving operating efficiency over long-term daily use.",
+            },
+            {
+              t: "Remote content management",
+              d: "Teams can update schedules, emergency notices, and campaign content remotely, reducing on-site dependency and update delay.",
+            },
+            {
+              t: "Power protection and voltage stability",
+              d: "Outdoor sites often face voltage fluctuation. With grounding, surge protection (SPD), and correctly sized power distribution, the display stays safer and more stable for daily operation.",
+            },
+            {
+              t: "Serviceable modular maintenance",
+              d: "Outdoor LED cabinets are built for easier servicing: modular parts, clear wiring, and practical access planning help reduce downtime during repairs, cleaning, or module replacement.",
+            },
+            {
+              t: "Advertisement and announcement in one screen",
+              d: "The same display can run commercial ads and public information, so businesses and institutions avoid separate systems for two communication goals.",
+            },
+          ].map((x, index) => (
+            <div
+              key={x.t}
+              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+              style={{
+                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+              }}
+            >
+              <h3 className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
+              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3 md:grid">
           {[
             {
               t: "Sunlight readable high brightness",
@@ -528,7 +674,44 @@ export default function OutdoorProductsPage() {
         }
         subtitle="A practical side-by-side guide to help buyers choose the right LED display type based on environment, protection level, visibility target, and budget planning."
       >
-        <div className="overflow-hidden rounded-3xl border" style={{ borderColor: `${BRAND.maroon}12` }}>
+        <div className="space-y-3 md:hidden">
+          {[
+            ["Brightness", "High brightness for daylight and open-sky readability.", "Comfort-tuned brightness for enclosed room viewing."],
+            ["Waterproof rating", "Typically IP65 / IP66 weather-ready structure.", "Usually non-waterproof, built for controlled interiors."],
+            ["Viewing distance", "Designed for medium to long-distance audience visibility.", "Optimized for close to medium viewing distance."],
+            ["Pixel pitch range", "Commonly larger pitch (for example P2.5 to P10).", "Commonly finer pitch (for example P1.25 to P3)."],
+            ["Installation area", "Roadside, rooftop, facade, highway, and public open areas.", "Boardrooms, showrooms, control rooms, and lobbies."],
+          ].map(([k, a, b], index) => (
+            <article
+              key={k}
+              className="overflow-hidden rounded-[14px]"
+              style={{
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(246,250,255,1) 0%, rgba(240,247,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,244,235,1) 100%)",
+              }}
+            >
+              <div className="overflow-hidden rounded-[14px] border" style={{ borderColor: "rgba(125, 211, 252, 0.65)" }}>
+                <div className="border-b px-4 py-3 text-center" style={{ borderColor: "rgba(125, 211, 252, 0.65)" }}>
+                  <div className="text-[15px] font-extrabold tracking-tight text-slate-900">{k}</div>
+                </div>
+                <div className="grid grid-cols-2 gap-0">
+                  <div className="border-r px-4 py-3" style={{ borderColor: "rgba(125, 211, 252, 0.65)" }}>
+                    <div className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00]">Outdoor LED</div>
+                    <p className="text-[13px] leading-6 text-slate-700">{a}</p>
+                  </div>
+                  <div className="px-4 py-3">
+                    <div className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-sky-700">Indoor LED</div>
+                    <p className="text-[13px] leading-6 text-slate-700">{b}</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="hidden overflow-hidden rounded-3xl border md:block" style={{ borderColor: `${BRAND.maroon}12` }}>
           <div className="grid md:grid-cols-3">
             <div className="bg-slate-50 p-5 text-sm font-bold text-slate-800">Parameter</div>
             <div className="bg-white p-5 text-sm font-bold text-slate-800">Outdoor LED Display</div>
@@ -565,7 +748,59 @@ export default function OutdoorProductsPage() {
         }
         subtitle="Outdoor LED modules are used where long-distance visibility and weather durability matter."
       >
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            {
+              t: "Roadside advertising LED billboard",
+              d: "Designed for passing traffic visibility with long-distance readability and strong daytime impact.",
+            },
+            {
+              t: "Rooftop LED display",
+              d: "Used for high-elevation branding where wide-area reach and weather-resistant performance are required.",
+            },
+            {
+              t: "Shopping mall outdoor signage",
+              d: "Supports promotions, campaign updates, and directional information in high-footfall exterior zones.",
+            },
+            {
+              t: "Corporate branding display",
+              d: "Delivers consistent brand communication on building facades and office-front outdoor locations.",
+            },
+            {
+              t: "Petrol pump digital signage",
+              d: "Displays fuel offers, safety notices, and service information clearly in open-air forecourt conditions.",
+            },
+            {
+              t: "Hotel / restaurant front signage",
+              d: "Highlights offers, menus, and event announcements to attract walk-in customers from street view.",
+            },
+            {
+              t: "Government notice display",
+              d: "Publishes public messages, awareness alerts, and civic updates in visible community-facing points.",
+            },
+            {
+              t: "Event & stadium perimeter display",
+              d: "Used for sponsor rotation, live event messaging, and audience communication around venue boundaries.",
+            },
+          ].map((x, index) => (
+            <div
+              key={x.t}
+              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+              style={{
+                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+              }}
+            >
+              <h3 className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
+              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden gap-4 sm:grid-cols-2 lg:grid-cols-4 md:grid">
           {[
             {
               t: "Roadside advertising LED billboard",
@@ -620,7 +855,62 @@ export default function OutdoorProductsPage() {
         }
         subtitle="A clear step-by-step outdoor LED deployment workflow to reduce installation risk and ensure stable long-term performance."
       >
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            {
+              t: "Site survey",
+              d: "Inspect location conditions, viewing angle, sunlight exposure, wind factors, and service access before planning.",
+            },
+            {
+              t: "Screen size planning",
+              d: "Finalize display dimensions based on viewing distance, content readability target, and available installation space.",
+            },
+            {
+              t: "Structure design",
+              d: "Prepare safe support framework considering load distribution, vibration control, and outdoor durability requirements.",
+            },
+            {
+              t: "Electrical planning",
+              d: "Design power routing, grounding, surge protection, and distribution panels for safe and stable operation.",
+            },
+            {
+              t: "LED cabinet installation",
+              d: "Install and align cabinets accurately to ensure seamless visual output and reliable service accessibility.",
+            },
+            {
+              t: "Configuration & calibration",
+              d: "Configure controller mapping, signal flow, and brightness-color calibration for uniform display quality.",
+            },
+            {
+              t: "Testing & handover",
+              d: "Run operational testing, safety checks, and final acceptance before formal project handover to the client.",
+            },
+            {
+              t: "After-sales support",
+              d: "Provide routine maintenance guidance, troubleshooting support, and service response for long-term reliability.",
+            },
+          ].map((x, idx) => (
+            <div
+              key={x.t}
+              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+              style={{
+                borderColor: idx % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  idx % 2 === 0
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+              }}
+            >
+              <div className="text-xs font-extrabold uppercase tracking-wide" style={{ color: BRAND.maroon }}>
+                Step {idx + 1}
+              </div>
+              <h3 className="mt-2 text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
+              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden gap-4 sm:grid-cols-2 lg:grid-cols-4 md:grid">
           {[
             {
               t: "Site survey",
@@ -671,12 +961,37 @@ export default function OutdoorProductsPage() {
  title="Outdoor LED Display Project Consultation in Bangladesh"
  subtitle="Share your location, viewing distance, and target screen size-then we recommend pitch, controller, structure, and BOQ."
       >
-        <div className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
-          <ul className="grid gap-3 text-sm text-slate-700 md:grid-cols-2">
+        <div className="rounded-[18px] border bg-slate-50 p-4 md:rounded-3xl md:p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
+          <details className="group md:hidden">
+            <summary
+              className="list-none cursor-pointer rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900 [::-webkit-details-marker]:hidden"
+              style={{ borderColor: `${BRAND.maroon}14`, background: "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)" }}
+            >
+              Tap To Expand Consultation Points
+            </summary>
+            <ul className="mt-3 grid gap-3 text-sm text-slate-700">
+              {[
+                "Location + environment: rooftop / roadside / market / highway",
+                "Viewing distance (near & far) + audience angle",
+                "Target screen size (ft) or wall size (W x H)",
+                "Content source: live HDMI / scheduled playback / remote control",
+                "Power: single/three phase + backup (IPS/Generator)",
+                "Weatherproof structure + service access (front/rear)",
+                "Safety: earthing + surge protection (SPD) planning",
+              ].map((x) => (
+                <li key={x} className="flex items-start gap-2 rounded-xl border bg-white p-3" style={{ borderColor: `${BRAND.maroon}10` }}>
+                  <span className="mt-2 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                  <span className="leading-7">{x}</span>
+                </li>
+              ))}
+            </ul>
+          </details>
+
+          <ul className="hidden gap-3 text-sm text-slate-700 md:grid md:grid-cols-2">
             {[
               "Location + environment: rooftop / roadside / market / highway",
               "Viewing distance (near & far) + audience angle",
- "Target screen size (ft) or wall size (W x H)",
+              "Target screen size (ft) or wall size (W x H)",
               "Content source: live HDMI / scheduled playback / remote control",
               "Power: single/three phase + backup (IPS/Generator)",
               "Weatherproof structure + service access (front/rear)",
@@ -689,10 +1004,10 @@ export default function OutdoorProductsPage() {
             ))}
           </ul>
 
-          <div className="mt-5 flex flex-wrap gap-3 md:justify-end md:pr-4">
+          <div className="mt-5 grid grid-cols-2 gap-3 md:flex md:flex-wrap md:justify-end md:pr-4">
             <Link
               href="/contact"
-              className="rounded-xl px-5 py-3 text-sm font-extrabold text-white transition hover:-translate-y-0.5 hover:shadow-md"
+              className="inline-flex min-h-10 items-center justify-center rounded-[10px] px-3 py-2 text-center text-[12px] font-extrabold text-white transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
               Get Outdoor BOQ -&gt;
@@ -701,7 +1016,7 @@ export default function OutdoorProductsPage() {
               href={wa}
               target="_blank"
               rel="nofollow noreferrer"
-              className="rounded-xl bg-emerald-600 px-5 py-3 text-sm font-extrabold text-white transition hover:-translate-y-0.5 hover:bg-emerald-700"
+              className="inline-flex min-h-10 items-center justify-center rounded-[10px] bg-emerald-600 px-3 py-2 text-center text-[12px] font-extrabold text-white transition hover:-translate-y-0.5 hover:bg-emerald-700 md:rounded-xl md:px-5 md:py-3 md:text-sm"
             >
               WhatsApp for Site Info
             </a>
@@ -714,7 +1029,57 @@ export default function OutdoorProductsPage() {
  title="Outdoor LED Installation Checklist (Weather + Safety)"
  subtitle="Outdoor screens fail mostly due to power/surge, water ingress, and weak structure-use this checklist to avoid common mistakes."
       >
-        <div className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            {
+ t: "Weatherproof build",
+              items: [
+                "Proper cabinet sealing + drainage route",
+                "Outdoor-rated connectors & cable glands",
+                "Ventilation / thermal path planning",
+                "Back cover & service doors access",
+              ],
+            },
+            {
+ t: "Power & protection",
+              items: ["Earthing/grounding", "Surge protection device (SPD)", "MCB/DB box", "Cable gauge by load"],
+            },
+            {
+ t: "Signal & control",
+              items: [
+                "CAT6/fiber (distance dependent)",
+                "Proper sender/processor selection",
+                "Ground loop noise prevention",
+                "Stable content playback system",
+              ],
+            },
+            { t: "Commissioning", items: ["Module checking", "Mapping", "Brightness tuning", "Burn-in + final inspection"] },
+          ].map((b, index) => (
+            <div
+              key={b.t}
+              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+              style={{
+                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+              }}
+            >
+              <div className="text-[17px] font-extrabold leading-snug text-slate-900">{b.t}</div>
+              <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
+                {b.items.map((i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="mt-1.5 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                    <span className="leading-6">{i}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden rounded-3xl border bg-slate-50 p-6 md:block" style={{ borderColor: `${BRAND.maroon}10` }}>
           <div className="grid gap-4 md:grid-cols-2">
             {[
               {
@@ -761,7 +1126,62 @@ export default function OutdoorProductsPage() {
  title="Outdoor LED Pixel Pitch Guide for Bangladesh (P2.5 to P10)"
         subtitle="If you are comparing outdoor LED display screen price in Bangladesh, pixel pitch and viewing distance should be selected together for better clarity, better budget control, and long-term performance."
       >
-        <div className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            {
+ i: "",
+              t: "Close roadside branding (P2.5-P4)",
+              d: "Best for shop frontage, market roads, and urban traffic where viewers stay relatively near the screen.",
+              bullets: ["Typical viewing: 3m to 10m", "Sharper text/logo visibility", "Good for detailed promotional content"],
+            },
+            {
+ i: "",
+              t: "Mid-range city visibility (P5-P6.67)",
+              d: "Balanced option for commercial facades and medium-distance public communication in busy city zones.",
+              bullets: ["Typical viewing: 8m to 25m", "Balanced clarity vs cost", "Useful for mixed text + motion graphics"],
+            },
+            {
+ i: "",
+              t: "Long-distance highways (P8-P10)",
+              d: "Suitable for highways, elevated roads, and large-format outdoor LED billboard communication.",
+              bullets: ["Typical viewing: 20m+", "Strong readability from distance", "Efficient for large ad surfaces"],
+            },
+            {
+ i: "",
+              t: "Selection checklist before purchase",
+              d: "For accurate outdoor LED display module price and model recommendation, confirm these key inputs first.",
+              bullets: ["Screen size (W x H)", "Installation height and traffic speed", "Ambient light and operating hours"],
+            },
+          ].map((item, index) => (
+            <div
+              key={item.t}
+              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+              style={{
+                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+              }}
+            >
+              <h3 className="text-[17px] font-extrabold leading-snug text-slate-900">
+                <span aria-hidden="true">{item.i}</span>
+                <span>{item.t}</span>
+              </h3>
+              <p className="mt-2 text-[13px] leading-6 text-slate-700">{item.d}</p>
+              <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
+                {item.bullets.map((b) => (
+                  <li key={b} className="flex items-start gap-2">
+                    <span className="mt-1.5 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                    <span className="leading-6">{b}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden rounded-3xl border bg-slate-50 p-6 md:block" style={{ borderColor: `${BRAND.maroon}10` }}>
           <div className="grid gap-4 md:grid-cols-2">
             {[
               {
@@ -847,7 +1267,55 @@ export default function OutdoorProductsPage() {
         }
         subtitle="Outdoor LED reliability depends on weather sealing, thermal control, and structural stability. These durability factors help reduce downtime and keep communication screens dependable in real outdoor conditions."
       >
-        <div className="grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            {
+              t: "Rain protection",
+              d: "Sealed cabinet joints, drainage paths, and protected connectors help prevent water ingress during monsoon rain and storm exposure.",
+            },
+            {
+              t: "Dust protection",
+              d: "Proper enclosure design and controlled ventilation reduce dust intrusion that can affect module brightness, signal stability, and service life.",
+            },
+            {
+              t: "Heat resistance",
+              d: "Thermal planning with airflow paths and component-grade temperature tolerance keeps screens stable under high daytime heat.",
+            },
+            {
+              t: "Rust-resistant structure",
+              d: "Corrosion-resistant frame materials and protective finishing help maintain structural safety in humid and coastal environments.",
+            },
+            {
+              t: "Stable outdoor performance",
+              d: "Balanced power distribution, weather-sealed integration, and periodic checks ensure consistent operation across changing outdoor conditions.",
+            },
+            {
+              t: "Wind load considerations",
+              d: "Mounting design must account for wind pressure, anchor strength, and structural load transfer to avoid vibration or panel misalignment.",
+            },
+            {
+              t: "24/7 reliability",
+              d: "Continuous-duty planning with surge protection, grounding, and preventive maintenance supports long-hour communication without frequent interruption.",
+            },
+          ].map((x, index) => (
+            <div
+              key={x.t}
+              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+              style={{
+                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+              }}
+            >
+              <h3 className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
+              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3 md:grid">
           {[
             {
               t: "Rain protection",
@@ -891,14 +1359,58 @@ export default function OutdoorProductsPage() {
  title="Outdoor LED Display Price Per Square Feet in Bangladesh"
         subtitle="Indicative pricing by pixel pitch for quick comparison. For BOQ-based pricing, please share your required screen size and installation location."
       >
-        <div className="overflow-hidden rounded-3xl border" style={{ borderColor: `${BRAND.maroon}18` }}>
-          {/* Header row (green tint like screenshot) */}
+        <details className="group md:hidden">
+          <summary
+            className="list-none cursor-pointer rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900 [::-webkit-details-marker]:hidden"
+            style={{ borderColor: `${BRAND.maroon}14`, background: "linear-gradient(180deg, rgba(236,253,245,1) 0%, rgba(220,252,231,1) 100%)" }}
+          >
+            Tap To Expand Price List
+          </summary>
+          <div className="mt-3 space-y-3">
+            {outdoorPriceRows.map(({ p, pitchNum, pitchLabel, price }, index) => (
+              <article
+                key={p.slug}
+                className="overflow-hidden rounded-[14px] border"
+                style={{
+                  borderColor: index % 2 === 0 ? "rgba(110,231,183,0.65)" : "rgba(125,211,252,0.65)",
+                  background:
+                    index % 2 === 0
+                      ? "linear-gradient(180deg, rgba(236,253,245,1) 0%, rgba(240,253,250,1) 100%)"
+                      : "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)",
+                }}
+              >
+                <div className="px-4 py-3">
+                  <Link
+                    href={`/led-display/outdoor/${p.slug}/`}
+                    className="text-[15px] font-extrabold leading-snug text-slate-900"
+                    style={{ textDecorationColor: `${BRAND.maroon}88` }}
+                    title="Click to view full specifications"
+                  >
+                    {p.title}
+                  </Link>
+                  <p className="mt-1 text-[12.5px] leading-6 text-slate-600">{p.subtitle}</p>
+                </div>
+                <div className="grid grid-cols-2 border-t" style={{ borderColor: "rgba(148,163,184,0.18)" }}>
+                  <div className="border-r px-4 py-3" style={{ borderColor: "rgba(148,163,184,0.18)" }}>
+                    <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00]">Pixel Pitch</div>
+                    <div className="mt-1 text-[13px] font-bold text-slate-900">{pitchNum != null ? `${pitchNum} mm` : pitchLabel}</div>
+                  </div>
+                  <div className="px-4 py-3">
+                    <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-emerald-700">Approx. Price</div>
+                    <div className="mt-1 text-[13px] font-bold text-slate-900">{price}</div>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </details>
+
+        <div className="hidden overflow-hidden rounded-3xl border md:block" style={{ borderColor: `${BRAND.maroon}18` }}>
           <div className="grid grid-cols-12 gap-0 bg-emerald-50 px-4 py-3 text-[11px] font-extrabold uppercase tracking-wide text-slate-700">
             <div className="col-span-7">Outdoor LED Model</div>
             <div className="col-span-3 text-center">Pixel Pitch</div>
             <div className="col-span-2 text-right">Approx. Price (Per Sq.Ft)</div>
           </div>
-
           <div>
             {outdoorPriceRows.map(({ p, pitchNum, pitchLabel, price }) => (
               <div key={p.slug} className="grid grid-cols-12 items-center gap-0 bg-white px-4 py-3 text-sm">
@@ -913,18 +1425,14 @@ export default function OutdoorProductsPage() {
                   </Link>
                   <div className="mt-1 text-xs text-slate-500">{p.subtitle}</div>
                 </div>
-
-                <div className="col-span-3 text-center text-sm text-slate-700">
-                  {pitchNum != null ? `${pitchNum} mm` : pitchLabel}
-                </div>
-
+                <div className="col-span-3 text-center text-sm text-slate-700">{pitchNum != null ? `${pitchNum} mm` : pitchLabel}</div>
                 <div className="col-span-2 text-right text-sm font-semibold text-slate-800">{price}</div>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-slate-700">
+        <div className="mt-4 hidden flex-nowrap gap-2 overflow-x-auto pb-1 text-xs font-semibold text-slate-700 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:flex md:flex-wrap md:overflow-visible md:pb-0">
  {["Tip: Smaller pitch = higher cost", "Outdoor: SPD + grounding recommended", "For exact BOQ: share W x H + location"].map(
             (t) => (
               <span
@@ -944,7 +1452,34 @@ export default function OutdoorProductsPage() {
  title="Explore LED Display Categories"
  subtitle="Compare indoor, outdoor and rental options-then choose the best category for your project."
       >
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            { t: "Indoor LED Displays", d: "Showroom, conference, control room solutions.", href: "/led-display/indoor-led/" },
+            { t: "Outdoor LED Displays", d: "Billboards, rooftop signage, public screens.", href: "/led-display/outdoor/" },
+            { t: "Rental LED Displays", d: "Stage events, concerts, quick setup cabinets.", href: "/led-display/rental-display/" },
+          ].map((x, index) => (
+            <Link
+              key={x.t}
+              href={x.href}
+              className="group w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4 transition"
+              style={{
+                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+              }}
+            >
+              <div className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</div>
+              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
+              <div className="mt-4 text-[12px] font-bold" style={{ color: BRAND.maroon }}>
+                Explore -&gt;
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        <div className="hidden gap-4 md:grid md:grid-cols-3">
           {[
             { t: "Indoor LED Displays", d: "Showroom, conference, control room solutions.", href: "/led-display/indoor-led/" },
             { t: "Outdoor LED Displays", d: "Billboards, rooftop signage, public screens.", href: "/led-display/outdoor/" },
@@ -976,7 +1511,59 @@ export default function OutdoorProductsPage() {
         }
         subtitle="Deployment planning varies by city environment, traffic behavior, weather exposure, and communication goals. Below is a practical city-wise outdoor LED overview across Bangladesh divisions."
       >
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          {[
+            {
+              t: "Outdoor LED Display in Dhaka",
+              d: "In Dhaka, outdoor LED deployment is usually focused on high-traffic corridors, commercial intersections, and dense retail zones where message rotation speed and high brightness readability are both critical for continuous audience reach.",
+            },
+            {
+              t: "Outdoor LED Display in Chattogram",
+              d: "Chattogram projects commonly require weather-conscious installation because of port-area humidity and mixed commercial routes, so structure strength, sealed cabinets, and stable remote content scheduling become key deployment priorities.",
+            },
+            {
+              t: "Outdoor LED Billboard in Sylhet",
+              d: "Sylhet deployments often prioritize resilient billboard communication for arterial roads and business districts, where rain-ready design and clear long-distance viewing help maintain consistent advertising and public information delivery.",
+            },
+            {
+              t: "Outdoor Advertising Screen in Khulna",
+              d: "In Khulna, outdoor advertising screens are typically planned for market-front visibility and roadside branding, with emphasis on efficient power use, dependable operation, and simple content updates for local campaign management.",
+            },
+            {
+              t: "Outdoor LED Display in Rajshahi",
+              d: "Rajshahi installations generally benefit from balanced brightness tuning and clear typography-first content, especially for educational, retail, and civic communication where readability during varied daylight conditions is essential.",
+            },
+            {
+              t: "Outdoor LED Display in Barishal",
+              d: "Barishal deployments are often designed with stronger moisture and seasonal weather considerations, combining protected cabinet integration and routine maintenance planning for stable year-round outdoor screen performance.",
+            },
+            {
+              t: "Outdoor LED Display in Rangpur",
+              d: "In Rangpur, outdoor LED strategy is frequently centered on highway-facing and district-level commercial points, where distance-based pitch planning and robust structure alignment support clear and reliable content visibility.",
+            },
+            {
+              t: "Outdoor LED Display in Mymensingh",
+              d: "Mymensingh projects commonly use outdoor LED displays for mixed-use branding and announcements near growth corridors, with practical focus on maintainability, scalable sizing, and uninterrupted operation for daily communication.",
+            },
+          ].map((x, index) => (
+            <div
+              key={x.t}
+              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
+              style={{
+                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+                background:
+                  index % 2 === 0
+                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+              }}
+            >
+              <h3 className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
+              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden gap-4 sm:grid-cols-2 md:grid">
           {[
             {
               t: "Outdoor LED Display in Dhaka",
@@ -1055,10 +1642,10 @@ export default function OutdoorProductsPage() {
           ]}
         />
 
-        <div className="mt-7 flex flex-wrap gap-3">
+        <div className="mt-7 grid grid-cols-2 gap-3 md:flex md:flex-wrap">
           <Link
             href="/contact"
-            className="rounded-xl px-6 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+            className="inline-flex min-h-10 items-center justify-center rounded-[10px] px-3 py-2 text-center text-[12px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-6 md:py-3 md:text-sm"
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >
             Get Outdoor Consultation -&gt;
@@ -1067,7 +1654,7 @@ export default function OutdoorProductsPage() {
             href={wa}
             target="_blank"
             rel="nofollow noreferrer"
-            className="rounded-xl bg-emerald-600 px-6 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md"
+            className="inline-flex min-h-10 items-center justify-center rounded-[10px] bg-emerald-600 px-3 py-2 text-center text-[12px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md md:rounded-xl md:px-6 md:py-3 md:text-sm"
           >
             WhatsApp for BOQ
           </a>
