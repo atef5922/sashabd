@@ -53,8 +53,8 @@ export default function MessageFromChairmanPage() {
         />
         <section className="max-w-full overflow-hidden rounded-[24px] border border-slate-200 bg-slate-50/60 p-4 md:rounded-3xl md:p-6">
           <div className="grid gap-5 lg:grid-cols-[320px_1fr]">
-            <div className="min-w-0 max-w-full overflow-hidden rounded-[18px] bg-white p-0 md:rounded-none md:border-0 md:bg-transparent md:p-0 md:overflow-visible">
-              <div className="min-w-0 max-w-full overflow-hidden rounded-[16px] bg-white p-0 md:rounded-2xl md:border md:border-slate-200 md:p-3 md:overflow-visible">
+            <div className="min-w-0 max-w-full overflow-hidden rounded-none bg-transparent p-0 md:rounded-none md:border-0 md:bg-transparent md:p-0 md:overflow-visible">
+              <div className="min-w-0 max-w-full overflow-hidden rounded-none bg-transparent p-0 md:rounded-2xl md:border md:border-slate-200 md:bg-white md:p-3 md:overflow-visible">
                 <div className="relative h-[330px] overflow-hidden rounded-[12px] border border-slate-200 bg-white md:h-[420px] md:rounded-xl">
                   <Image
                     src="/images/about/founder-mun-islam.webp"
