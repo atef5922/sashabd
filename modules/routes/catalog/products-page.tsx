@@ -3078,17 +3078,17 @@ function ProductsPageContent({
               ))}
             </div>
 
-            <div className="mt-6 rounded-3xl border bg-white p-4 md:hidden" style={{ borderColor: "rgba(255,106,0,0.12)" }}>
+            <div className="mt-6 rounded-3xl border bg-white p-4 md:p-5" style={{ borderColor: "rgba(255,106,0,0.12)" }}>
               <div className="relative overflow-hidden">
-                <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-10" style={{ background: "linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
-                <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-10" style={{ background: "linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
+                <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-10 md:w-14" style={{ background: "linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
+                <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-10 md:w-14" style={{ background: "linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
 
                 <div className="group">
                   <div className="flex w-max gap-3 animate-[renexMarquee_48s_linear_infinite] group-hover:[animation-play-state:paused] motion-reduce:animate-none">
                     {[...ledTrustedInstitutions, ...ledTrustedInstitutions].map((ins, idx) => (
                       <div
                         key={`${ins.name}-${idx}`}
-                        className="flex h-[112px] w-[136px] shrink-0 flex-col items-center justify-center rounded-[20px] border bg-slate-50 px-3 py-3 text-center shadow-sm"
+                        className="flex h-[112px] w-[136px] shrink-0 flex-col items-center justify-center rounded-[20px] border bg-slate-50 px-3 py-3 text-center shadow-sm md:h-[124px] md:w-[168px] md:px-4"
                         style={{ borderColor: "rgba(255,106,0,0.10)" }}
                         title={ins.name}
                         aria-label={ins.name}
@@ -3097,79 +3097,15 @@ function ProductsPageContent({
                         <img
                           src={ins.logo}
                           alt={ins.name}
-                          className="h-12 w-full object-contain"
+                          className="h-12 w-full object-contain md:h-14"
                           loading="lazy"
                         />
-                        <p className="mt-2 line-clamp-2 text-[11px] font-medium leading-4 text-slate-800">{ins.name}</p>
+                        <p className="mt-2 line-clamp-2 text-[11px] font-medium leading-4 text-slate-800 md:text-[12px] md:leading-[1.15rem]">{ins.name}</p>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="mt-6 hidden md:grid md:grid-cols-4 lg:grid-cols-5 gap-3">
-              {ledTrustedInstitutions.map((ins) => (
-                <div
-                  key={ins.name}
-                  className="group flex min-h-[120px] flex-col items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-center transition hover:bg-slate-100"
-                  title={ins.name}
-                  aria-label={ins.name}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={ins.logo}
-                    alt={ins.name}
-                    className={
-                      ins.logo === "/images/logo/nbr.webp"
-                        ? "h-16 w-full object-contain sm:h-20"
-                        : ins.logo === "/images/logo/Health-and-family-welfare.webp"
-                          ? "h-16 w-full object-contain sm:h-20"
-                          : ins.logo === "/images/logo/ecs.webp"
-                            ? "h-16 w-full object-contain sm:h-20"
-                            : ins.logo === "/images/logo/passport.webp"
-                              ? "h-16 w-full object-contain sm:h-20"
-                              : ins.logo === "/images/logo/bpsc.webp"
-                                ? "h-20 w-full object-contain sm:h-24"
-                                : ins.logo === "/images/logo/acc.webp"
-                                  ? "h-16 w-full object-contain sm:h-20"
-                                  : ins.logo === "/images/logo/dncc.webp"
-                                    ? "h-16 w-full object-contain sm:h-20"
-                                    : ins.logo === "/images/logo/dscc.webp"
-                                      ? "h-20 w-full object-contain sm:h-24"
-                                      : ins.logo === "/images/logo/sonali-bank.webp"
-                                        ? "h-16 w-full object-contain sm:h-20"
-                                        : ins.logo === "/images/logo/BSCIC.webp"
-                                          ? "h-16 w-full object-contain sm:h-20"
-                                          : ins.logo === "/images/logo/bsfic.webp"
-                                            ? "h-16 w-full object-contain sm:h-20"
-                                            : ins.logo === "/images/logo/parjatan.webp"
-                                              ? "h-14 w-full object-contain sm:h-16"
-                                              : ins.logo === "/images/logo/bgb.webp"
-                                                ? "h-16 w-full object-contain sm:h-20"
-                                                : ins.logo === "/images/logo/caab.webp"
-                                                  ? "h-16 w-full object-contain sm:h-20"
-                                                  : ins.logo === "/images/logo/brta.webp"
-                                                    ? "h-16 w-full object-contain sm:h-20"
-                                                    : ins.logo === "/images/logo/fire-service.webp"
-                                                      ? "h-16 w-full object-contain sm:h-20"
-                                                      : ins.logo === "/images/logo/ugc.webp"
-                                                        ? "h-16 w-full object-contain sm:h-20"
-                                                        : ins.logo === "/images/logo/ansar.webp"
-                                                          ? "h-16 w-full object-contain sm:h-20"
-                                                          : ins.logo === "/images/logo/bhbfc-logo-final.webp"
-                                                            ? "h-20 w-full object-contain sm:h-24"
-                                                            : ins.logo === "/images/logo/bpatc.webp"
-                                                              ? "h-20 w-full object-contain sm:h-24"
-                                                              : "h-10 w-full object-contain sm:h-11"
-                    }
-                    loading="lazy"
-                  />
-	                  <p className="mt-3 text-center !text-center text-sm font-medium leading-snug text-slate-800 break-words">
-                    {ins.name}
-                  </p>
-                </div>
-              ))}
             </div>
           </section>
 
