@@ -504,6 +504,8 @@ function ProductsPageContent({
   const mobileCarouselRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const componentCarouselRef = useRef<HTMLDivElement | null>(null);
   const componentSectionRef = useRef<HTMLDivElement | null>(null);
+  const whyChooseCarouselRef = useRef<HTMLDivElement | null>(null);
+  const whyChooseSectionRef = useRef<HTMLDivElement | null>(null);
   const allProducts = useMemo(() => buildProducts(basePath), [basePath]);
   const fullListGroups = useMemo(() => {
     const kinds: Array<FilterKey> = [
@@ -602,6 +604,7 @@ function ProductsPageContent({
   const [page, setPage] = useState(1);
   const [mobilePage, setMobilePage] = useState(1);
   const [activeComponentSlide, setActiveComponentSlide] = useState(0);
+  const [activeWhyChooseSlide, setActiveWhyChooseSlide] = useState(0);
   const desktopPageSize = ledOnly ? 21 : 20;
   const mobilePageSize = ledOnly ? 8 : desktopPageSize;
   const productImageSizes = "(max-width: 1024px) 100vw, 25vw";
@@ -1327,6 +1330,38 @@ function ProductsPageContent({
     return () => window.clearInterval(timer);
   }, [ledOnly, ledDisplayComponentCards.length]);
 
+  useEffect(() => {
+    if (!ledOnly) return;
+    const container = whyChooseCarouselRef.current;
+    if (!container) return;
+    if (sashaWhyChooseCards.length <= 1) return;
+    if (window.innerWidth >= 768) return;
+
+    const timer = window.setInterval(() => {
+      const section = whyChooseSectionRef.current ?? container;
+      if (!section) return;
+      if (document.visibilityState !== "visible") return;
+
+      const rect = section.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const isSectionVisible = rect.top < viewportHeight * 0.88 && rect.bottom > viewportHeight * 0.18;
+      if (!isSectionVisible) return;
+
+      setActiveWhyChooseSlide((prev) => {
+        const nextIndex = (prev + 1) % sashaWhyChooseCards.length;
+        const cards = Array.from(container.children) as HTMLElement[];
+        const target = cards[nextIndex];
+        if (target) {
+          const left = target.offsetLeft - container.offsetLeft;
+          container.scrollTo({ left, behavior: "smooth" });
+        }
+        return nextIndex;
+      });
+    }, 3200);
+
+    return () => window.clearInterval(timer);
+  }, [ledOnly]);
+
   const handleComponentCarouselScroll = () => {
     const container = componentCarouselRef.current;
     if (!container) return;
@@ -1353,6 +1388,42 @@ function ProductsPageContent({
 
   const scrollComponentCarouselToIndex = (index: number) => {
     const container = componentCarouselRef.current;
+    if (!container) return;
+
+    const cards = Array.from(container.children) as HTMLElement[];
+    const target = cards[index];
+    if (!target) return;
+
+    const left = target.offsetLeft - container.offsetLeft;
+    container.scrollTo({ left, behavior: "smooth" });
+  };
+
+  const handleWhyChooseCarouselScroll = () => {
+    const container = whyChooseCarouselRef.current;
+    if (!container) return;
+
+    const cards = Array.from(container.children) as HTMLElement[];
+    if (!cards.length) return;
+
+    const containerLeft = container.scrollLeft;
+    let nearestIndex = 0;
+    let nearestDistance = Number.POSITIVE_INFINITY;
+
+    cards.forEach((card, index) => {
+      const distance = Math.abs(card.offsetLeft - containerLeft);
+      if (distance < nearestDistance) {
+        nearestDistance = distance;
+        nearestIndex = index;
+      }
+    });
+
+    if (nearestIndex !== activeWhyChooseSlide) {
+      setActiveWhyChooseSlide(nearestIndex);
+    }
+  };
+
+  const scrollWhyChooseCarouselToIndex = (index: number) => {
+    const container = whyChooseCarouselRef.current;
     if (!container) return;
 
     const cards = Array.from(container.children) as HTMLElement[];
@@ -2664,7 +2735,7 @@ function ProductsPageContent({
           </section>
 
           <section className="py-3">
-            <div className="sc-led-why-section">
+            <div ref={whyChooseSectionRef} className="sc-led-why-section">
               <div className="sc-led-why-head">
                 <h2 className="sc-led-why-title text-2xl font-extrabold md:text-4xl">
                   Why Choose Sasha Corporation for LED Display Solutions?
@@ -2683,18 +2754,58 @@ function ProductsPageContent({
               </div>
 
               <div className="sc-led-why-grid-wrap">
-                <div className="sc-led-why-grid mt-4">
-	                {sashaWhyChooseCards.map((item) => (
-	                  <article key={item.title} className="sc-led-why-card">
-	                    <div className="flex items-center gap-3">
-	                      <div className="sc-led-why-card-icon shrink-0" aria-hidden="true">
-	                        <UiIcon name={item.icon} className="h-5 w-5 text-[#FF6A00]" />
-	                      </div>
-	                      <h3 className="sc-led-why-card-title !mt-0">{item.title}</h3>
-	                    </div>
-	                    <p className="sc-led-why-card-text">{item.text}</p>
+                <div
+                  ref={whyChooseCarouselRef}
+                  onScroll={handleWhyChooseCarouselScroll}
+                  className="mt-4 -mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden"
+                >
+	                {sashaWhyChooseCards.map((item, index) => (
+	                  <article
+                      key={item.title}
+                      className={`group flex w-[86%] shrink-0 snap-start flex-col rounded-[20px] border px-3.5 py-3 transition duration-300 ${componentMobileCardStyles[index % componentMobileCardStyles.length]}`}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] border border-white/75 bg-white/85 text-[#F56605] shadow-sm">
+                          <UiIcon name={item.icon} className="h-5 w-5" />
+                        </div>
+                        <h3 className="min-w-0 flex-1 text-[16px] font-extrabold leading-tight tracking-tight text-slate-900">
+                          {item.title}
+                        </h3>
+                      </div>
+                      <p className="mt-2.5 text-[12.5px] leading-[1.55] text-slate-700">{item.text}</p>
 	                  </article>
 	                ))}
+                </div>
+
+                <div className="mt-2.5 flex justify-center gap-1.5 md:hidden">
+                  {sashaWhyChooseCards.map((item, index) => (
+                    <button
+                      key={item.title}
+                      type="button"
+                      onClick={() => {
+                        scrollWhyChooseCarouselToIndex(index);
+                        setActiveWhyChooseSlide(index);
+                      }}
+                      className={`h-1.5 rounded-full transition-all ${activeWhyChooseSlide === index ? "w-6 bg-[#F56605]" : "w-1.5 bg-slate-300"}`}
+                      aria-label={`Go to ${item.title}`}
+                    />
+                  ))}
+                </div>
+
+                <div className="hidden md:block">
+                  <div className="sc-led-why-grid mt-4">
+	                  {sashaWhyChooseCards.map((item) => (
+	                    <article key={item.title} className="sc-led-why-card">
+	                      <div className="flex items-center gap-3">
+	                        <div className="sc-led-why-card-icon shrink-0" aria-hidden="true">
+	                          <UiIcon name={item.icon} className="h-5 w-5 text-[#FF6A00]" />
+	                        </div>
+	                        <h3 className="sc-led-why-card-title !mt-0">{item.title}</h3>
+	                      </div>
+	                      <p className="sc-led-why-card-text">{item.text}</p>
+	                    </article>
+	                  ))}
+                  </div>
                 </div>
               </div>
             </div>
