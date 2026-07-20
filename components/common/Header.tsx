@@ -238,6 +238,12 @@ export default function Header() {
     };
   }, [open]);
 
+  useEffect(() => {
+    setOpen(false);
+    setMobileProductsOpen(false);
+    setMobileAboutOpen(false);
+  }, [pathname]);
+
   return (
     <header
       className={cn(
@@ -664,8 +670,19 @@ export default function Header() {
                         handleNavClick(x.href, { closeMobile: true })(e);
                         setOpen(false);
                       }}
-                      className="block rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                      className={cn(
+                        "relative block rounded-lg px-3 py-2 text-sm transition",
+                        activeDropdownItemHref(x.href, "/about")
+                          ? "bg-[#FFF3EB] pl-5 font-semibold text-[#C84B00]"
+                          : "text-slate-700 hover:bg-slate-50"
+                      )}
                     >
+                      {activeDropdownItemHref(x.href, "/about") ? (
+                        <span
+                          className="absolute left-2 top-1/2 h-4 w-1 -translate-y-1/2 rounded-full bg-[#F56605]"
+                          aria-hidden="true"
+                        />
+                      ) : null}
                       {x.label}
                     </Link>
                   ))}
