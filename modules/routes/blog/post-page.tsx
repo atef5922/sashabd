@@ -562,7 +562,7 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
       />
 
       <article>
-        <div className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-100">
+        <div className="overflow-hidden rounded-[22px] border border-slate-200 bg-slate-100 md:rounded-3xl">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={post.coverImage}
@@ -575,14 +575,18 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
           <div className="inline-flex rounded-full border border-[#FF6A0030] bg-[#FF6A0018] px-3 py-1 text-xs font-bold text-[#C84B00]">
             {post.tag}
           </div>
-          <h1 className="mt-4 max-w-5xl text-2xl font-extrabold tracking-tight text-slate-900 md:text-4xl">{post.title}</h1>
-          <p className="mt-4 max-w-5xl text-sm leading-7 text-slate-700 md:text-base">{post.heroIntro}</p>
-          <div className="mt-5 flex flex-wrap items-center gap-3 text-xs text-slate-700 md:text-sm">
-            <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">{post.readTime}</span>
-            <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">
+          <h1 className="mt-3 max-w-5xl text-[1.75rem] font-extrabold leading-[1.22] tracking-tight text-slate-900 md:mt-4 md:text-4xl">
+            {post.title}
+          </h1>
+          <p className="mt-3 max-w-5xl text-justify text-[13px] leading-6 text-slate-700 md:mt-4 md:text-left md:text-base md:leading-7">
+            {post.heroIntro}
+          </p>
+          <div className="mt-4 grid grid-cols-2 gap-2 text-[11px] text-slate-700 md:mt-5 md:flex md:flex-wrap md:items-center md:gap-3 md:text-sm">
+            <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-center">{post.readTime}</span>
+            <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-center">
               Published {formatDate(post.publishedAt)}
             </span>
-            <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1">
+            <span className="col-span-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-center md:col-auto">
               Updated {formatDate(post.updatedAt)}
             </span>
           </div>
@@ -591,27 +595,29 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
 
       <section className="mt-6 grid gap-[10px] lg:grid-cols-[1fr_320px] lg:items-start">
         <div className="space-y-[10px]">
-          <article id="quick-summary" className="scroll-mt-24 rounded-3xl border border-orange-100 bg-orange-50/70 p-6 shadow-sm md:p-8">
-            <h2 className="text-xl font-bold text-slate-900 md:text-2xl">Quick Summary</h2>
-            <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-700 md:text-base">
+          <article id="quick-summary" className="scroll-mt-24 rounded-[22px] border border-orange-100 bg-orange-50/70 p-4 shadow-sm md:rounded-3xl md:p-8">
+            <h2 className="text-[1.1rem] font-bold text-slate-900 md:text-2xl">Quick Summary</h2>
+            <ul className="mt-3 space-y-2 text-[13px] leading-6 text-slate-700 md:mt-4 md:text-base md:leading-7">
               {summaryPoints.map((point) => (
                 <li key={point} className="flex items-start gap-3">
                   <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#FF6A00]" />
-                  <span>{point}</span>
+                  <span className="text-justify md:text-left">{point}</span>
                 </li>
               ))}
             </ul>
           </article>
 
-          <article id="introduction" className="scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
-            <h2 className="text-xl font-bold text-slate-900 md:text-2xl">Introduction</h2>
-            <p className="mt-4 text-sm leading-8 text-slate-700 md:text-base">{seoIntro}</p>
+          <article id="introduction" className="scroll-mt-24 rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm md:rounded-3xl md:p-8">
+            <h2 className="text-[1.1rem] font-bold text-slate-900 md:text-2xl">Introduction</h2>
+            <p className="mt-3 text-justify text-[13px] leading-6 text-slate-700 md:mt-4 md:text-left md:text-base md:leading-8">{seoIntro}</p>
             {blogInternalLinkBlock}
           </article>
 
-          <article className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:hidden md:p-8">
-            <h2 className="text-xl font-bold text-slate-900 md:text-2xl">Table of Contents</h2>
-            <ul className="mt-4 space-y-2 text-sm text-slate-700">
+          <details className="rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm md:hidden">
+            <summary className="cursor-pointer list-none text-[1.1rem] font-bold text-slate-900">
+              Table of Contents
+            </summary>
+            <ul className="mt-3 space-y-2 text-[13px] text-slate-700">
               {sectionLinks.map((item) => (
                 <li key={item.id}>
                   <a href={`#${item.id}`} className="transition hover:text-[#FF6A00]">
@@ -620,7 +626,7 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
                 </li>
               ))}
             </ul>
-          </article>
+          </details>
 
           {allSections.map((section, index) => {
             const sectionId = toSectionId(section.heading, index);
@@ -628,17 +634,17 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
               <article
                 key={section.heading}
                 id={sectionId}
-                className="scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8"
+                className="scroll-mt-24 rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm md:rounded-3xl md:p-8"
               >
                 <div className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-bold text-slate-600">
                   Section {index + 1}
                 </div>
-                <h2 className="mt-3 text-xl font-bold text-slate-900 md:text-2xl">{section.heading}</h2>
+                <h2 className="mt-3 text-[1.1rem] font-bold leading-[1.3] text-slate-900 md:text-2xl">{section.heading}</h2>
                 {section.paragraphs.map((text, paragraphIndex) => {
                   const paragraphLink = section.paragraphLinks?.find((link) => link.paragraphIndex === paragraphIndex);
 
                   return (
-                    <p key={text} className="mt-4 text-sm leading-8 text-slate-700 md:text-base">
+                    <p key={text} className="mt-3 text-justify text-[13px] leading-6 text-slate-700 md:mt-4 md:text-left md:text-base md:leading-8">
                       {text}
                       {paragraphLink ? (
                         <>
@@ -657,22 +663,22 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
                   );
                 })}
                 {section.bullets?.length ? (
-                  <ul className="mt-5 space-y-2 text-sm leading-7 text-slate-700 md:text-base">
+                  <ul className="mt-4 space-y-2 text-[13px] leading-6 text-slate-700 md:mt-5 md:text-base md:leading-7">
                     {section.bullets.map((point) => (
                       <li key={point} className="flex items-start gap-3">
                         <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#FF6A00]" />
-                        <span>{point}</span>
+                        <span className="text-justify md:text-left">{point}</span>
                       </li>
                     ))}
                   </ul>
                 ) : null}
                 {section.table ? (
-                  <div className="mt-5 overflow-x-auto rounded-2xl border border-slate-200">
-                    <table className="min-w-full border-collapse text-sm md:text-base">
+                  <div className="mt-4 overflow-x-auto rounded-[18px] border border-slate-200 md:mt-5 md:rounded-2xl">
+                    <table className="min-w-full border-collapse text-[13px] md:text-base">
                       <thead className="bg-slate-100">
                         <tr>
                           {section.table.headers.map((header) => (
-                            <th key={header} className="border-b border-slate-200 px-4 py-3 text-left font-bold text-slate-900">
+                            <th key={header} className="border-b border-slate-200 px-3 py-2.5 text-left font-bold text-slate-900 md:px-4 md:py-3">
                               {header}
                             </th>
                           ))}
@@ -682,7 +688,7 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
                         {section.table.rows.map((row) => (
                           <tr key={row.join("-")} className="bg-white">
                             {row.map((cell) => (
-                              <td key={cell} className="border-b border-slate-100 px-4 py-3 align-top text-slate-700 last:border-b-0">
+                              <td key={cell} className="border-b border-slate-100 px-3 py-2.5 align-top text-slate-700 last:border-b-0 md:px-4 md:py-3">
                                 {cell}
                               </td>
                             ))}
@@ -696,22 +702,22 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
             );
           })}
 
-          <section id="why-choose-us" className="scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
-            <h2 className="text-xl font-bold text-slate-900 md:text-2xl">{whyChooseUsTitle}</h2>
-            <p className="mt-3 text-sm leading-8 text-slate-700 md:text-base">{whyChooseUsIntro}</p>
-            <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-700 md:text-base">
+          <section id="why-choose-us" className="scroll-mt-24 rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm md:rounded-3xl md:p-8">
+            <h2 className="text-[1.1rem] font-bold leading-[1.3] text-slate-900 md:text-2xl">{whyChooseUsTitle}</h2>
+            <p className="mt-3 text-justify text-[13px] leading-6 text-slate-700 md:text-left md:text-base md:leading-8">{whyChooseUsIntro}</p>
+            <ul className="mt-4 space-y-2 text-[13px] leading-6 text-slate-700 md:text-base md:leading-7">
               {whyChooseUsPoints.map((point) => (
                 <li key={point} className="flex items-start gap-3">
                   <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#FF6A00]" />
-                  <span>{point}</span>
+                  <span className="text-justify md:text-left">{point}</span>
                 </li>
               ))}
             </ul>
           </section>
 
-          <section id="conclusion" className="scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
-            <h2 className="text-xl font-bold text-slate-900 md:text-2xl">Conclusion</h2>
-            <p className="mt-4 text-sm leading-8 text-slate-700 md:text-base">
+          <section id="conclusion" className="scroll-mt-24 rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm md:rounded-3xl md:p-8">
+            <h2 className="text-[1.1rem] font-bold text-slate-900 md:text-2xl">Conclusion</h2>
+            <p className="mt-3 text-justify text-[13px] leading-6 text-slate-700 md:mt-4 md:text-left md:text-base md:leading-8">
               {conclusionExternalLink && conclusionText.includes(conclusionExternalLink.phrase) ? (
                 <>
                   {conclusionText.split(conclusionExternalLink.phrase)[0]}
@@ -731,14 +737,14 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
             </p>
           </section>
 
-          <section id="internal-links" className="scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
-            <h2 className="text-xl font-bold text-slate-900 md:text-2xl">Related Useful Links</h2>
+          <section id="internal-links" className="scroll-mt-24 rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm md:rounded-3xl md:p-8">
+            <h2 className="text-[1.1rem] font-bold text-slate-900 md:text-2xl">Related Useful Links</h2>
             <div className="mt-4 grid gap-[10px] md:grid-cols-2">
               {internalLinks.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:border-orange-200 hover:text-[#FF6A00]"
+                  className="rounded-[14px] border border-slate-200 bg-slate-50 px-3 py-2.5 text-[13px] font-semibold text-slate-700 transition hover:border-orange-200 hover:text-[#FF6A00] md:rounded-xl md:px-4 md:py-3 md:text-sm"
                 >
                   {item.label}
                 </Link>
@@ -746,34 +752,34 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
             </div>
           </section>
 
-          <section id="faq" className="scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
-            <h2 className="text-xl font-bold text-slate-900 md:text-2xl">FAQ</h2>
+          <section id="faq" className="scroll-mt-24 rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm md:rounded-3xl md:p-8">
+            <h2 className="text-[1.1rem] font-bold text-slate-900 md:text-2xl">FAQ</h2>
             <div className="mt-4 space-y-[10px]">
               {post.faqs.map((faq) => (
-                <details key={faq.q} className="group rounded-xl border border-slate-200 bg-slate-50 p-4">
-                  <summary className="cursor-pointer text-sm font-semibold text-slate-900 md:text-base">{faq.q}</summary>
-                  <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base">{faq.a}</p>
+                <details key={faq.q} className="group rounded-[14px] border border-slate-200 bg-slate-50 p-3.5 md:rounded-xl md:p-4">
+                  <summary className="cursor-pointer text-[13px] font-semibold leading-5 text-slate-900 md:text-base">{faq.q}</summary>
+                  <p className="mt-3 text-justify text-[13px] leading-6 text-slate-700 md:text-left md:text-base md:leading-7">{faq.a}</p>
                 </details>
               ))}
             </div>
           </section>
 
-          <section id="cta" className="scroll-mt-24 rounded-3xl border border-slate-200 bg-gradient-to-br from-slate-100 to-slate-50 p-6 shadow-sm md:p-8">
-            <h2 className="text-xl font-bold text-slate-900 md:text-2xl">Looking for professional LED display solutions?</h2>
-            <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base">
+          <section id="cta" className="scroll-mt-24 rounded-[22px] border border-slate-200 bg-gradient-to-br from-slate-100 to-slate-50 p-4 shadow-sm md:rounded-3xl md:p-8">
+            <h2 className="text-[1.1rem] font-bold leading-[1.3] text-slate-900 md:text-2xl">Looking for professional LED display solutions?</h2>
+            <p className="mt-3 text-justify text-[13px] leading-6 text-slate-700 md:text-left md:text-base md:leading-7">
               Share your location, viewing distance, and target budget. We will suggest pixel pitch, cabinet format,
               and power setup that fits your use case.
             </p>
-            <div className="mt-5 flex flex-wrap gap-3">
+            <div className="mt-5 grid grid-cols-2 gap-2 md:flex md:flex-wrap md:gap-3">
               <Link
                 href="/contact"
-                className="rounded-xl bg-[#FF6A00] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#E45700]"
+                className="inline-flex min-h-10 items-center justify-center rounded-md bg-[#FF6A00] px-3 py-2 text-center text-[11px] font-extrabold text-white transition hover:-translate-y-0.5 hover:bg-[#E45700] md:rounded-xl md:px-4 md:py-2 md:text-sm md:font-semibold"
               >
                 Talk to an Expert
               </Link>
               <Link
                 href="/led-display/"
-                className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 transition hover:-translate-y-0.5 hover:bg-slate-100"
+                className="inline-flex min-h-10 items-center justify-center rounded-md border border-slate-300 bg-white px-3 py-2 text-center text-[11px] font-extrabold text-slate-800 transition hover:-translate-y-0.5 hover:bg-slate-100 md:rounded-xl md:px-4 md:py-2 md:text-sm md:font-semibold"
               >
                 Browse LED Displays
               </Link>
@@ -782,9 +788,9 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
         </div>
 
         <aside className="space-y-[10px] lg:sticky lg:top-24">
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="text-sm font-extrabold uppercase tracking-wide text-slate-900">Table of Contents</h2>
-            <ul className="mt-3 space-y-2 text-sm text-slate-700">
+          <section className="rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm md:rounded-2xl md:p-5">
+            <h2 className="text-[13px] font-extrabold uppercase tracking-wide text-slate-900 md:text-sm">Table of Contents</h2>
+            <ul className="mt-3 space-y-2 text-[13px] text-slate-700 md:text-sm">
               {sectionLinks.map((item) => (
                 <li key={item.id}>
                   <a href={`#${item.id}`} className="transition hover:text-[#FF6A00]">
@@ -795,9 +801,9 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
             </ul>
           </section>
 
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="text-sm font-extrabold uppercase tracking-wide text-slate-900">Quick Facts</h2>
-            <div className="mt-3 space-y-2 text-sm text-slate-700">
+          <section className="rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm md:rounded-2xl md:p-5">
+            <h2 className="text-[13px] font-extrabold uppercase tracking-wide text-slate-900 md:text-sm">Quick Facts</h2>
+            <div className="mt-3 space-y-2 text-[13px] text-slate-700 md:text-sm">
               <p>
                 <span className="font-semibold text-slate-900">Category:</span> {post.tag}
               </p>
@@ -810,16 +816,16 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
             </div>
           </section>
 
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 className="text-sm font-extrabold uppercase tracking-wide text-slate-900">Related Posts</h2>
+          <section className="rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm md:rounded-2xl md:p-5">
+            <h2 className="text-[13px] font-extrabold uppercase tracking-wide text-slate-900 md:text-sm">Related Posts</h2>
             <div className="mt-4 space-y-[10px]">
               {relatedPosts.map((item) => (
                 <Link
                   key={item.slug}
                   href={`/blog/${item.slug}`}
-                  className="group block overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 transition hover:-translate-y-0.5 hover:border-orange-200 hover:bg-white hover:shadow-md"
+                  className="group block overflow-hidden rounded-[18px] border border-slate-200 bg-slate-50 transition hover:-translate-y-0.5 hover:border-orange-200 hover:bg-white hover:shadow-md md:rounded-2xl"
                 >
-                  <div className="relative h-36 w-full overflow-hidden bg-slate-200">
+                  <div className="relative h-28 w-full overflow-hidden bg-slate-200 md:h-36">
                     <Image
                       src={item.coverImage}
                       alt={item.title}
@@ -829,15 +835,17 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
                       style={{ objectPosition: item.coverImagePosition?.card ?? "center" }}
                     />
                   </div>
-                  <div className="p-4">
-                    <div className="inline-flex rounded-full border border-[#FF6A0030] bg-[#FF6A0014] px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-[#C84B00]">
+                  <div className="p-3 md:p-4">
+                    <div className="inline-flex rounded-full border border-[#FF6A0030] bg-[#FF6A0014] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-[#C84B00] md:text-[11px]">
                       {item.tag}
                     </div>
-                    <h3 className="mt-3 line-clamp-2 text-base font-extrabold leading-6 text-slate-900 transition group-hover:text-[#FF6A00]">
+                    <h3 className="mt-2 line-clamp-2 text-[14px] font-extrabold leading-5 text-slate-900 transition group-hover:text-[#FF6A00] md:mt-3 md:text-base md:leading-6">
                       {item.title}
                     </h3>
-                    <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">{item.excerpt}</p>
-                    <div className="mt-3 flex items-center justify-between text-xs font-semibold text-slate-500">
+                    <p className="mt-1.5 line-clamp-2 text-justify text-[12px] leading-5 text-slate-600 md:mt-2 md:line-clamp-3 md:text-left md:text-sm md:leading-6">
+                      {item.excerpt}
+                    </p>
+                    <div className="mt-2 flex items-center justify-between text-[11px] font-semibold text-slate-500 md:mt-3 md:text-xs">
                       <span>{item.readTime}</span>
                       <span className="text-[#FF6A00] transition group-hover:translate-x-0.5">Read article -&gt;</span>
                     </div>
@@ -857,4 +865,3 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
     </main>
   );
 }
-
