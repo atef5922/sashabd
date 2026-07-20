@@ -7,6 +7,7 @@ import { receivingCardCatalog } from "@/lib/productsCatalog";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { normalizeDisplayedPriceText } from "@/lib/price";
 import { buildProductMetadata, ensureMetaDescription } from "@/lib/seo";
+import MobileFeaturedProductsRail from "@/components/products/MobileFeaturedProductsRail";
 import ReceivingCardSpecTabs from "./ReceivingCardSpecTabs";
 import ProductGridCard from "@/components/products/ProductGridCard";
 
@@ -266,12 +267,27 @@ export default async function ReceivingCardDetailsPage(
 
       {/* Featured Products */}
       <section className="mt-8 rounded-3xl border bg-white p-6 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
-        <h2 className="text-2xl font-bold text-slate-900">Featured Receiving Cards</h2>
-        <p className="mt-2 text-slate-600 leading-7">
+        <h2 className="hidden text-2xl font-bold text-slate-900 md:block">Featured Receiving Cards</h2>
+        <p className="mt-2 hidden text-slate-600 leading-7 md:block">
           Explore other popular receiving card models.
         </p>
 
-        <div className="mt-5 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-5">
+          <MobileFeaturedProductsRail
+            viewAllHref="/led-display/accessories/receiving-card/"
+            items={featuredProducts.map((fp) => ({
+              id: fp.slug,
+              href: `/led-display/accessories/receiving-card/${fp.slug}/`,
+              title: fp.title,
+              imageSrc: fp.image,
+              imageAlt: fp.title,
+              imageClassName: "h-full w-full object-cover transition duration-300",
+              imageContainerClassName: "bg-slate-100",
+            }))}
+          />
+        </div>
+
+        <div className="mt-5 hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-3">
           {featuredProducts.map((fp) => (
             <ProductGridCard
               key={fp.slug}
@@ -302,7 +318,7 @@ export default async function ReceivingCardDetailsPage(
       </section>
 
       {/* FAQs */}
-      <section className="mt-8 rounded-3xl border bg-white p-6 md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
+      <section className="mt-8 hidden rounded-3xl border bg-white p-6 md:block md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
         <h2 className="text-2xl font-bold text-slate-900">FAQs</h2>
         <p className="mt-2 text-slate-600 leading-7">Common questions about receiving card selection:</p>
 

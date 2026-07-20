@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import MobileFeaturedProductsRail from "@/components/products/MobileFeaturedProductsRail";
 import { normalizeDisplayedPriceText } from "@/lib/price";
 import type { ProductItem } from "../../lib/productsCatalog";
 import { useState } from "react";
@@ -471,7 +472,7 @@ export default function DisplayProductDetailPage({
       </section>
 
       <section className="mt-6">
-        <div className="flex items-center justify-between gap-3">
+        <div className="hidden items-center justify-between gap-3 md:flex">
           <div>
             <h2 className="text-base font-bold text-slate-900">Featured Products</h2>
             <p className="text-xs text-slate-600">Related products you may also like.</p>
@@ -481,7 +482,32 @@ export default function DisplayProductDetailPage({
           </Link>
         </div>
 
-        <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-4">
+          <MobileFeaturedProductsRail
+            viewAllHref={categoryHref}
+            items={featuredProducts.map((item) => {
+              const detailHref = `${featuredHrefPrefix.replace(/\/+$/, "")}/${item.slug}`;
+              return {
+                id: item.slug,
+                href: detailHref,
+                title: item.title,
+                imageSrc: item.image,
+                imageAlt: item.title,
+                imageContainerClassName: "bg-white",
+                imageClassName:
+                  `${item.category}:${item.slug}` === "indoor:p3-076-indoor-led-display"
+                    ? "h-full w-full object-cover object-center transition duration-300"
+                    : imageFitFixIds.has(`${item.category}:${item.slug}`)
+                      ? `${item.category}:${item.slug}` === "indoor:p2-5-indoor-led-display"
+                        ? "h-full w-full object-cover object-[58%_center] transition duration-300"
+                        : "h-full w-full object-cover object-center transition duration-300"
+                      : "h-full w-full object-contain transition duration-300",
+              };
+            })}
+          />
+        </div>
+
+        <div className="mt-4 hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-3">
           {featuredProducts.map((item) => {
             const detailHref = `${featuredHrefPrefix.replace(/\/+$/, "")}/${item.slug}`;
 

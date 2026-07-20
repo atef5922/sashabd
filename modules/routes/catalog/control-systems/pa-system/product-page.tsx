@@ -958,7 +958,7 @@ export default async function PaSystemDetailsPage(
         description={description}
       />
 
-      <section className="mx-auto w-full max-w-7xl px-4 pb-10 md:px-6">
+      <section className="mx-auto hidden w-full max-w-7xl px-4 pb-10 md:block md:px-6">
         <div className="mt-6 rounded-2xl border bg-white p-4" style={{ borderColor: "rgba(15,23,42,0.1)" }}>
           <h2 className="text-base font-bold text-slate-900">FAQ</h2>
           <p className="mt-1 text-xs leading-6 text-slate-600">

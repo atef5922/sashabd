@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { DigitalPodiumItem, DigitalPodiumSpecRow } from "./catalog";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
+import MobileFeaturedProductsRail from "@/components/products/MobileFeaturedProductsRail";
 import ProductGridCard from "@/components/products/ProductGridCard";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { normalizeDisplayedPriceText } from "@/lib/price";
@@ -230,7 +231,7 @@ export default function DigitalPodiumProductDetailPage({
 
       {featuredCards.length ? (
         <section className="mt-6 rounded-2xl border bg-white p-4" style={{ borderColor: "rgba(15,23,42,0.1)" }}>
-          <div className="flex items-center justify-between gap-3">
+          <div className="hidden items-center justify-between gap-3 md:flex">
             <div>
               <h2 className="text-base font-bold text-slate-900">Featured Products</h2>
               <p className="text-xs text-slate-600">Other digital podium options you may compare for your setup.</p>
@@ -244,7 +245,22 @@ export default function DigitalPodiumProductDetailPage({
             </Link>
           </div>
 
-          <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-4">
+            <MobileFeaturedProductsRail
+              viewAllHref="/digital-podium/"
+              items={featuredCards.map(({ product: item }) => ({
+                id: item.slug,
+                href: `/digital-podium/${item.slug}/`,
+                title: item.title,
+                imageSrc: item.image,
+                imageAlt: item.title,
+                imageClassName: "h-full w-full object-cover object-center transition duration-300",
+                imageContainerClassName: "bg-slate-50",
+              }))}
+            />
+          </div>
+
+          <div className="mt-4 hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-3">
             {featuredCards.map(({ product: item, highlights, recommendedFor }) => {
               const detailHref = `/digital-podium/${item.slug}/`;
 
