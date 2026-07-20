@@ -335,11 +335,11 @@ export default function ProjectsPage() {
             homeBreadcrumb(),
             { href: "/projects/", label: "Projects", current: true },
           ]}
-          className="mb-3 pt-3 text-sm text-slate-600"
+          className="mb-3 pt-3 text-sm text-slate-600 md:hidden"
         />
         {/* Hero (same feel as PA page) */}
         <section
-          className="relative left-1/2 right-1/2 -mx-[50vw] min-h-[360px] w-screen overflow-hidden border-y bg-slate-900 md:min-h-[520px] lg:min-h-[680px]"
+          className="relative left-1/2 right-1/2 -mx-[50vw] min-h-[360px] w-screen overflow-hidden border-y bg-slate-900 md:min-h-[420px] lg:min-h-[500px]"
           style={{ borderColor: `${BRAND.maroon}12` }}
         >
           <div className="pointer-events-none absolute inset-0">
@@ -361,8 +361,8 @@ export default function ProjectsPage() {
             />
           </div>
 
-          <div className="relative mx-auto flex w-full max-w-7xl flex-col justify-center px-4 py-8 md:px-10 md:py-12">
-            <div className="max-w-4xl">
+          <div className="relative mx-auto flex w-full max-w-7xl flex-col justify-center px-4 py-8 md:px-10 md:py-10">
+            <div className="max-w-4xl md:max-w-[34rem] lg:max-w-[38rem]">
               <span
                 className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-semibold text-white md:px-4 md:py-2 md:text-xs"
                 style={{ background: `${BRAND.maroon}24` }}
@@ -371,18 +371,18 @@ export default function ProjectsPage() {
                 Projects - Bangladesh
               </span>
 
-              <h1 className="mt-4 max-w-[16rem] text-[1.9rem] font-extrabold tracking-tight text-white md:max-w-none md:text-4xl">
+              <h1 className="mt-4 max-w-[16rem] text-[1.9rem] font-extrabold tracking-tight text-white md:mt-16 md:max-w-[30rem] md:text-[2.5rem] md:leading-[1.12] lg:max-w-[34rem] lg:text-[2.9rem]">
                 Project Portfolio by {BRAND_NAME}
               </h1>
-              <p className="mt-3 max-w-[21rem] text-justify text-[13px] leading-6 text-white/85 md:max-w-3xl md:text-left md:text-base md:leading-7">
+              <p className="mt-3 max-w-[21rem] text-justify text-[13px] leading-6 text-white/85 md:mt-6 md:max-w-[31rem] md:text-left md:text-[15px] md:leading-[1.75] lg:max-w-[34rem]">
                 Selected deliveries across Bangladesh-each entry highlights the site type, location, scope and delivery
                 approach so you can judge execution quality and long-term reliability.
               </p>
 
-              <div className="mt-5 grid max-w-[22rem] grid-cols-2 gap-2 md:mt-6 md:flex md:max-w-none md:flex-wrap md:gap-3">
+              <div className="mt-5 grid max-w-[22rem] grid-cols-2 gap-2 md:mt-12 md:flex md:max-w-none md:flex-wrap md:gap-3">
                 <Link
                   href="/contact/"
-                  className="inline-flex min-h-10 items-center justify-center rounded-md px-3 py-2 text-center text-[11px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-lg md:rounded-xl md:px-6 md:py-3.5 md:text-[15px]"
+                  className="inline-flex min-h-10 items-center justify-center rounded-md px-3 py-2 text-center text-[11px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-lg md:min-h-11 md:rounded-xl md:px-5 md:py-3 md:text-[14px]"
                   style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
                 >
                   Request a BOQ-based proposal
@@ -391,7 +391,7 @@ export default function ProjectsPage() {
                   href={wa}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex min-h-10 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-center text-[11px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-lg md:rounded-xl md:px-6 md:py-3.5 md:text-[15px]"
+                  className="inline-flex min-h-10 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-center text-[11px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-lg md:min-h-11 md:rounded-xl md:px-5 md:py-3 md:text-[14px]"
                 >
                   WhatsApp for quick discussion
                 </a>
@@ -429,10 +429,17 @@ export default function ProjectsPage() {
                 className="rounded-3xl border bg-slate-50 p-6 shadow-sm"
                 style={{ borderColor: `${BRAND.maroon}12` }}
               >
-                <div className="text-xs font-extrabold" style={{ color: BRAND.maroon }}>
-                  {x.n}.
+                <div className="flex items-start gap-3">
+                  <div
+                    className="inline-flex h-7 min-w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-extrabold leading-none"
+                    style={{ color: BRAND.maroon, background: `${BRAND.maroon}14` }}
+                  >
+                    {x.n}.
+                  </div>
+                  <div className="min-w-0 flex-1 pt-0.5 text-[15px] font-extrabold leading-[1.2] tracking-tight text-slate-900 lg:text-[16px] lg:whitespace-nowrap">
+                    {x.t}
+                  </div>
                 </div>
-                <div className="mt-2 text-base font-extrabold text-slate-900">{x.t}</div>
                 <p className="mt-2 text-sm leading-6 text-slate-600">{x.d}</p>
               </div>
             ))}
@@ -441,11 +448,11 @@ export default function ProjectsPage() {
 
         {/* Workflow */}
         <section className="mt-8 rounded-[22px] bg-white p-4 md:rounded-3xl md:p-10">
-          <div className="mx-auto max-w-5xl">
+          <div className="mx-auto max-w-5xl md:text-center">
             <h2 className="text-[1.35rem] font-extrabold tracking-tight text-slate-900 md:text-2xl">
               How we execute projects (planning -&gt; installation -&gt; handover)
             </h2>
-            <p className="mt-2 text-justify text-[13px] leading-6 text-slate-600 md:text-left md:text-sm">
+            <p className="mt-2 text-justify text-[13px] leading-6 text-slate-600 md:text-center md:text-sm">
               A clear workflow makes the engineering process easy to understand before you commit.
             </p>
           </div>
@@ -477,10 +484,17 @@ export default function ProjectsPage() {
                 className="rounded-3xl border bg-slate-50 p-6 shadow-sm"
                 style={{ borderColor: "rgba(15,23,42,0.10)" }}
               >
-                <div className="text-xs font-extrabold" style={{ color: BRAND.maroon }}>
-                  {x.n})
+                <div className="flex items-start gap-3">
+                  <div
+                    className="inline-flex h-7 min-w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-extrabold leading-none"
+                    style={{ color: BRAND.maroon, background: `${BRAND.maroon}14` }}
+                  >
+                    {x.n}.
+                  </div>
+                  <div className="min-w-0 flex-1 pt-0.5 text-base font-extrabold leading-[1.3] text-slate-900">
+                    {x.t}
+                  </div>
                 </div>
-                <div className="mt-2 text-base font-extrabold text-slate-900">{x.t}</div>
                 <p className="mt-2 text-sm leading-6 text-slate-600">{x.d}</p>
               </div>
             ))}
@@ -489,11 +503,11 @@ export default function ProjectsPage() {
 
         {/* Checklist */}
         <section className="mt-8 rounded-[22px] bg-white p-4 md:rounded-3xl md:p-10">
-          <div className="mx-auto max-w-5xl">
+          <div className="mx-auto max-w-5xl md:text-center">
             <h2 className="text-[1.35rem] font-extrabold tracking-tight text-slate-900 md:text-2xl">
               Delivery quality checklist (what we verify before handover)
             </h2>
-            <p className="mt-2 text-justify text-[13px] leading-6 text-slate-600 md:text-left md:text-sm">
+            <p className="mt-2 text-justify text-[13px] leading-6 text-slate-600 md:text-center md:text-sm">
               This checklist shows what we verify so you can judge reliability with confidence.
             </p>
           </div>
@@ -566,7 +580,9 @@ export default function ProjectsPage() {
                 </div>
 
                 <div className="p-4 md:p-6">
-                  <h3 className="text-[17px] font-extrabold leading-snug text-slate-900 md:text-base">{p.title}</h3>
+                  <h3 className="text-[17px] font-extrabold leading-snug text-slate-900 md:max-w-full md:overflow-hidden md:text-[14px] md:leading-tight md:tracking-tight md:text-ellipsis md:whitespace-nowrap lg:text-[15px] xl:text-base">
+                    {p.title}
+                  </h3>
                   <p className="mt-1 text-justify text-[11px] text-slate-600 md:text-left md:text-xs">{p.subtitle ?? buildProjectCardSubtitle(p)}</p>
 
                   <div className="mt-3 space-y-1.5 text-justify text-[12px] text-slate-700 md:hidden">
