@@ -77,7 +77,7 @@ function Title({
         {icon ? <TitleMark kind={icon} /> : null}
         {title}
       </h2>
-      <div className="mt-3 h-1 w-14 rounded-full" style={{ background: `${MAROON}B3` }} />
+      <div className="mt-3 hidden h-1 w-14 rounded-full md:block" style={{ background: `${MAROON}B3` }} />
       {desc ? <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600">{desc}</p> : null}
     </div>
   );

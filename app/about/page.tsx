@@ -55,7 +55,7 @@ function SectionTitle({
         {icon ? <span className="text-xl">{icon}</span> : null}
         {title}
       </h2>
-      <div className="mt-3 h-1 w-14 rounded-full" style={{ background: `${MAROON}B3` }} />
+      <div className="mt-3 hidden h-1 w-14 rounded-full md:block" style={{ background: `${MAROON}B3` }} />
       {subtitle ? (
         <MobileIntroText
           teaser={subtitle}
@@ -283,4 +283,3 @@ export default function AboutPage() {
     </main>
   );
 }
-
