@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import type { InteractiveFlatPanelItem } from "./catalog";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import MobileFeaturedProductsRail from "@/components/products/MobileFeaturedProductsRail";
+import MobilePostFeaturedCta from "@/components/products/MobilePostFeaturedCta";
 import ProductGridCard from "@/components/products/ProductGridCard";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { normalizeDisplayedPriceText } from "@/lib/price";
@@ -298,6 +299,19 @@ export default function InteractiveFlatPanelProductDetailPage({
           </div>
         </section>
       ) : null}
+
+      <MobilePostFeaturedCta
+        title="Need a complete interactive flat panel solution?"
+        description="Share your room size, seating distance, and daily usage workflow. We will suggest a relevant interactive flat panel setup with mounting, OPS PC, accessories, and installation planning."
+        primaryHref={wa}
+        primaryLabel="WhatsApp project details"
+        links={[
+          { label: "Browse IFP", href: "/interactive-flat-panel/" },
+          { label: "OPS & accessories", href: "/interactive-flat-panel/" },
+          { label: "View projects", href: "/projects/" },
+          { label: "Contact", href: "/contact/" },
+        ]}
+      />
     </div>
   );
 }

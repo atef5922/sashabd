@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import type { TurnstileItem, TurnstileKind } from "./catalog";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import MobileFeaturedProductsRail from "@/components/products/MobileFeaturedProductsRail";
+import MobilePostFeaturedCta from "@/components/products/MobilePostFeaturedCta";
 import ProductGridCard from "@/components/products/ProductGridCard";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { normalizeDisplayedPriceText } from "@/lib/price";
@@ -321,6 +322,19 @@ export default function TurnstileProductDetailPage({
           </div>
         </section>
       ) : null}
+
+      <MobilePostFeaturedCta
+        title="Need a complete turnstile gate solution?"
+        description="Share your entry point type, expected traffic, and access control requirement. We will suggest a relevant turnstile gate setup with controller, reader, installation, and project planning."
+        primaryHref={wa}
+        primaryLabel="WhatsApp project details"
+        links={[
+          { label: "Browse turnstiles", href: categoryHref },
+          { label: "Access control support", href: "/contact/" },
+          { label: "View projects", href: "/projects/" },
+          { label: "Contact", href: "/contact/" },
+        ]}
+      />
     </div>
   );
 }

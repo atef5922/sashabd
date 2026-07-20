@@ -43,23 +43,23 @@ export default function Breadcrumbs({
             panelClassName ?? "",
           ].join(" ").trim()}
         >
-          <ol className="flex flex-wrap items-center gap-y-1 text-[12px] md:text-sm">
+          <ol className="block w-full break-words text-[12px] leading-5 md:flex md:w-auto md:flex-wrap md:items-center md:gap-y-1 md:text-sm md:leading-normal">
             {items.map((item, index) => (
-              <li key={`${item.href}-${item.label}`} className="flex items-center">
+              <li key={`${item.href}-${item.label}`} className="contents md:flex md:max-w-full md:items-center">
                 {item.current ? (
                   <span
                     aria-current="page"
-                    className="font-semibold text-slate-900"
+                    className="whitespace-normal font-semibold text-slate-900"
                   >
                     {item.label}
                   </span>
                 ) : (
-                  <Link href={item.href} className="text-slate-900 hover:underline">
+                  <Link href={item.href} className="whitespace-normal text-slate-900 hover:underline">
                     {item.label}
                   </Link>
                 )}
                 {index < items.length - 1 ? (
-                  <span className="mx-2 text-slate-400">/</span>
+                  <span className="text-slate-400"> {" / "} </span>
                 ) : null}
               </li>
             ))}

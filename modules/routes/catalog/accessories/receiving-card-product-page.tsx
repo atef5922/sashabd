@@ -8,6 +8,7 @@ import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { normalizeDisplayedPriceText } from "@/lib/price";
 import { buildProductMetadata, ensureMetaDescription } from "@/lib/seo";
 import MobileFeaturedProductsRail from "@/components/products/MobileFeaturedProductsRail";
+import MobilePostFeaturedCta from "@/components/products/MobilePostFeaturedCta";
 import ReceivingCardSpecTabs from "./ReceivingCardSpecTabs";
 import ProductGridCard from "@/components/products/ProductGridCard";
 
@@ -316,6 +317,19 @@ export default async function ReceivingCardDetailsPage(
           ))}
         </div>
       </section>
+
+      <MobilePostFeaturedCta
+        title="Need help matching the right receiving card?"
+        description="Share your module type, HUB connection, cabinet resolution, and controller brand. We will help you shortlist a relevant receiving card with matching guidance for stable output."
+        primaryHref={wa}
+        primaryLabel="WhatsApp project details"
+        links={[
+          { label: "Browse receiving cards", href: "/led-display/accessories/receiving-card/" },
+          { label: "Controller guide", href: "/led-display/accessories/controller/" },
+          { label: "View projects", href: "/projects/" },
+          { label: "Contact", href: "/contact/" },
+        ]}
+      />
 
       {/* FAQs */}
       <section className="mt-8 hidden rounded-3xl border bg-white p-6 md:block md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>

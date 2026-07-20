@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import MobileFeaturedProductsRail from "@/components/products/MobileFeaturedProductsRail";
+import MobilePostFeaturedCta from "@/components/products/MobilePostFeaturedCta";
 import { normalizeDisplayedPriceText } from "@/lib/price";
 import type { ProductItem } from "../../lib/productsCatalog";
 import { useState } from "react";
@@ -584,6 +585,19 @@ export default function DisplayProductDetailPage({
           )})}
         </div>
       </section>
+
+      <MobilePostFeaturedCta
+        title={`Need a complete ${categoryLabel.toLowerCase()} solution?`}
+        description={`Share your screen size, installation type, and site details. We will help you plan a relevant ${categoryLabel.toLowerCase()} setup with modules, controller, power, structure, and support.`}
+        primaryHref={wa}
+        primaryLabel="WhatsApp project details"
+        links={[
+          { label: "Browse LED Display", href: "/led-display/" },
+          { label: "Installation & maintenance", href: "/services-support/" },
+          { label: "View projects", href: "/projects/" },
+          { label: "Contact", href: "/contact/" },
+        ]}
+      />
     </div>
   );
 }

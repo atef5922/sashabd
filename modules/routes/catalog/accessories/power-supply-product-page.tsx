@@ -8,6 +8,7 @@ import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { normalizeDisplayedPriceText } from "@/lib/price";
 import { buildProductMetadata, ensureMetaDescription } from "@/lib/seo";
 import MobileFeaturedProductsRail from "@/components/products/MobileFeaturedProductsRail";
+import MobilePostFeaturedCta from "@/components/products/MobilePostFeaturedCta";
 import ProductGridCard from "@/components/products/ProductGridCard";
 import AccessorySpecTabs from "./AccessorySpecTabs";
 
@@ -351,6 +352,19 @@ export default async function PowerSupplyDetailsPage(
         </div>
       </section>
 
+      <MobilePostFeaturedCta
+        title="Need the right power supply plan?"
+        description="Share your cabinet quantity, module count, and distribution plan. We will help you choose a relevant power supply setup with quantity estimation and wiring guidance."
+        primaryHref={wa}
+        primaryLabel="WhatsApp project details"
+        links={[
+          { label: "Browse power supplies", href: "/led-display/accessories/power-supply/" },
+          { label: "Installation support", href: "/services-support/" },
+          { label: "View projects", href: "/projects/" },
+          { label: "Contact", href: "/contact/" },
+        ]}
+      />
+
       {/* FAQs */}
       <section className="mt-8 hidden rounded-3xl border bg-white p-6 md:block md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
         <h2 className="text-2xl font-bold text-slate-900">FAQs</h2>
@@ -378,7 +392,6 @@ export default async function PowerSupplyDetailsPage(
     </div>
   );
 }
-
 
 
 

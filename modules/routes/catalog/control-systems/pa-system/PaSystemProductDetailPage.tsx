@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import type { PaSystemItem } from "./catalog";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import MobileFeaturedProductsRail from "@/components/products/MobileFeaturedProductsRail";
+import MobilePostFeaturedCta from "@/components/products/MobilePostFeaturedCta";
 import ProductGridCard from "@/components/products/ProductGridCard";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { normalizeDisplayedPriceText } from "@/lib/price";
@@ -130,7 +131,7 @@ export default function PaSystemProductDetailPage({
             >
               WhatsApp
             </a>
-            <Link href={backHref} className="rounded-full border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-700">
+            <Link href={backHref} className="hidden rounded-full border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-700 md:inline-flex">
               {backLabel}
             </Link>
           </div>
@@ -159,7 +160,7 @@ export default function PaSystemProductDetailPage({
               >
                 WhatsApp
               </a>
-              <Link href={backHref} className="rounded-full border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-700">
+              <Link href={backHref} className="hidden rounded-full border border-slate-300 bg-white px-4 py-2 text-xs font-bold text-slate-700 md:inline-flex">
                 {backLabel}
               </Link>
             </div>
@@ -309,6 +310,19 @@ export default function PaSystemProductDetailPage({
           </div>
         </section>
       ) : null}
+
+      <MobilePostFeaturedCta
+        title="Need a complete PA system solution?"
+        description="Share your building type, floor coverage, and announcement goal. We will propose a relevant PA system setup with amplifier, speaker, microphone, cabling, and zoning support."
+        primaryHref={wa}
+        primaryLabel="WhatsApp project details"
+        links={[
+          { label: "Browse PA System", href: categoryHref },
+          { label: "Installation & maintenance", href: "/services-support/" },
+          { label: "View projects", href: "/projects/" },
+          { label: "Contact", href: "/contact/" },
+        ]}
+      />
     </div>
   );
 }

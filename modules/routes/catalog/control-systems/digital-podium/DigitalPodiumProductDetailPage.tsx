@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import type { DigitalPodiumItem, DigitalPodiumSpecRow } from "./catalog";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import MobileFeaturedProductsRail from "@/components/products/MobileFeaturedProductsRail";
+import MobilePostFeaturedCta from "@/components/products/MobilePostFeaturedCta";
 import ProductGridCard from "@/components/products/ProductGridCard";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { normalizeDisplayedPriceText } from "@/lib/price";
@@ -299,6 +300,19 @@ export default function DigitalPodiumProductDetailPage({
           </div>
         </section>
       ) : null}
+
+      <MobilePostFeaturedCta
+        title="Need a complete digital podium solution?"
+        description="Share your institution type, hall size, and usage plan. We will propose a relevant digital podium setup with display, microphone, control, and installation support."
+        primaryHref={wa}
+        primaryLabel="WhatsApp project details"
+        links={[
+          { label: "Browse podiums", href: "/digital-podium/" },
+          { label: "Installation support", href: "/services-support/" },
+          { label: "View projects", href: "/projects/" },
+          { label: "Contact", href: "/contact/" },
+        ]}
+      />
     </div>
   );
 }
