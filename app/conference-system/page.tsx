@@ -62,7 +62,7 @@ const MobileSection = ({
 const MobileParityCardGrid = ({
   items,
 }: {
-  items: Array<{ title: string; desc: string; icon?: ReactNode; bullets?: string[]; meta?: string }>;
+  items: Array<{ title: string; desc: string; icon?: ReactNode; bullets?: readonly string[]; meta?: string }>;
 }) => (
   <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
     {items.map((item, index) => (
