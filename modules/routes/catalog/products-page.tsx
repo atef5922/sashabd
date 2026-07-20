@@ -1473,7 +1473,7 @@ function ProductsPageContent({
               : ""
           }
         >
-          <h1 className={`${ledOnly ? "text-center " : ""}text-3xl font-extrabold text-slate-900 md:text-4xl`}>
+          <h1 className={`${ledOnly ? "text-left md:text-center " : ""}text-[1.75rem] font-extrabold leading-[1.2] text-slate-900 md:text-4xl`}>
           {ledOnly ? "LED Display Price in Bangladesh 2026" : "All LED Products & Accessories"}
         </h1>
           {ledOnly ? (
@@ -1482,7 +1482,7 @@ function ProductsPageContent({
               expandedClassName="mx-auto mt-4 max-w-6xl"
               desktopClassName="mx-auto mt-4 max-w-6xl"
             >
-              <p className="text-justify text-[15px] leading-8 text-slate-700 md:text-[16px]">
+              <p className="text-justify text-[14px] leading-7 text-slate-700 md:text-[16px] md:leading-8">
                 Looking for the best <strong>LED display price in Bangladesh</strong>? <strong>Sasha Corporation</strong> is a trusted <strong>LED display supplier in Bangladesh</strong>, offering <strong>indoor LED displays</strong> from <strong>P0.9-P3</strong> and <strong>outdoor LED screens</strong> from <strong>P2.5-P10</strong> for commercial advertising, corporate branding, events, shopping malls, mosques, universities, and government projects. We provide <strong>LED video walls</strong>, <strong>digital LED billboards</strong>, <strong>advertising LED displays</strong>, <strong>rental LED screen panels</strong>, and <strong>digital signage systems</strong> with professional installation, controller and CMS setup, maintenance support, and nationwide after-sales service across Bangladesh.
               </p>
             </MobileIntroText>
@@ -1493,7 +1493,7 @@ function ProductsPageContent({
           )}
         </div>
         {ledOnly ? (
-          <div className="mt-3.5 rounded-[22px] border border-slate-200 bg-slate-50/90 p-2 shadow-sm md:p-2.5">
+            <div className="mt-3.5 rounded-[22px] border border-slate-200 bg-slate-50/90 p-2 shadow-sm md:p-2.5">
             <div className="grid gap-2 lg:grid-cols-4">
               {ledQuickActions.map((action) => {
                 const content = (
@@ -1516,7 +1516,9 @@ function ProductsPageContent({
                   </>
                 );
 
-                const className = `group ${action.primary ? "inline-flex" : "hidden md:inline-flex"} min-h-[36px] items-center gap-2 rounded-[16px] border px-3 py-2 text-[11.5px] font-semibold transition hover:-translate-y-0.5 ${
+                const className = `group ${
+                  action.primary || action.label === "Request BOQ-based proposal" ? "inline-flex" : "hidden md:inline-flex"
+                } min-h-[36px] items-center gap-2 rounded-[16px] border px-3 py-2 text-[11.5px] font-semibold transition hover:-translate-y-0.5 ${
                   action.primary
                     ? "border-transparent bg-[linear-gradient(135deg,#11a7c9_0%,#169bd5_58%,#1f7ae0_100%)] text-white shadow-[0_10px_24px_rgba(14,165,233,0.28)]"
                     : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50 hover:shadow-sm"
@@ -1554,13 +1556,13 @@ function ProductsPageContent({
                 </span>
               </div>
 
-              <div className="mt-3 flex flex-nowrap gap-1.5 overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-4 md:overflow-visible md:pb-0 xl:grid-cols-8">
+              <div className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-0 md:overflow-visible md:pb-0 xl:grid-cols-8">
                 {ledCategoryQuickLinks.map((item) => (
                   <Link
                     key={item.href}
                     prefetch={false}
                     href={item.href}
-                    className="group inline-flex min-w-[110px] shrink-0 items-center gap-1.5 rounded-[14px] border border-slate-200 bg-white px-2 py-1.5 text-[10px] font-semibold leading-tight text-slate-700 transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 hover:shadow-sm md:min-w-0 md:rounded-[16px] md:px-2.5 md:py-2 md:text-[10.5px]"
+                    className="group inline-flex min-w-0 items-center gap-1.5 rounded-[14px] border border-slate-200 bg-white px-2.5 py-2 text-[10px] font-semibold leading-tight text-slate-700 transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 hover:shadow-sm md:min-w-0 md:rounded-[16px] md:px-2.5 md:py-2 md:text-[10.5px]"
                   >
                     <span className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${item.tone} md:h-5.5 md:w-5.5`}>
                       <UiIcon name={item.icon} className="h-2.5 w-2.5 md:h-3 md:w-3" />
@@ -1891,7 +1893,7 @@ function ProductsPageContent({
 	          <section className="py-8">
 	            <div className="space-y-10">
 	              <div>
-	                <h2 className="text-2xl font-bold text-slate-900">What Is an LED Display?</h2>
+	                <h2 className="text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">What Is an LED Display?</h2>
                 <MobileIntroText
                   teaser="An LED Display is a modular digital screen built from many light-emitting diode pixels that create images, videos, text, and live visual content."
                   teaserLines={2}
@@ -1924,11 +1926,11 @@ function ProductsPageContent({
                   </>
                 </MobileIntroText>
 
-	                <aside className="mt-6 rounded-2xl border border-[#FF6A00]/20 bg-orange-50/70 p-5 shadow-sm">
-	                  <h3 className="text-lg font-extrabold text-slate-900">
+	                <aside className="mt-5 rounded-[18px] border border-[#FF6A00]/20 bg-orange-50/70 p-4 shadow-sm md:mt-6 md:rounded-2xl md:p-5">
+	                  <h3 className="text-[1rem] font-extrabold leading-[1.3] text-slate-900 md:text-lg">
 	                    Every LED Display Is Built Using Multiple Hardware Components
 	                  </h3>
-	                  <p className="mt-3 text-sm leading-7 text-slate-700">
+	                  <p className="mt-2.5 text-justify text-[13px] leading-6 text-slate-700 md:mt-3 md:text-left md:text-sm md:leading-7">
 	                    A professional LED display is not just a screen. It is a complete electronic display system
 	                    consisting of multiple hardware components that work together to deliver stable performance,
 	                    accurate colors, seamless video playback, and long-term reliability.
@@ -1937,7 +1939,7 @@ function ProductsPageContent({
 	              </div>
 
 	              <div ref={componentSectionRef}>
-	                <h2 className="text-2xl font-bold text-slate-900">Main Components of an LED Display System</h2>
+	                <h2 className="text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">Main Components of an LED Display System</h2>
                   <MobileIntroText
                     teaser="Every professional LED display system is built using several essential hardware components."
                     className="mt-3 max-w-5xl"
@@ -2005,7 +2007,7 @@ function ProductsPageContent({
 	              </div>
 
 	              <div>
-	                <h2 className="text-2xl font-bold text-slate-900">How an LED Display System Works</h2>
+	                <h2 className="text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">How an LED Display System Works</h2>
 	                <MobileIntroText
                     teaser="A professional LED display operates through the seamless communication of multiple hardware components."
                     className="mt-3 max-w-5xl"
@@ -2022,7 +2024,7 @@ function ProductsPageContent({
 
 	                <div className="mt-6 grid gap-4 lg:grid-cols-[1.4fr_.8fr]">
 	                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-	                    <h3 className="text-lg font-extrabold text-slate-900">Signal Flow</h3>
+	                    <h3 className="text-[1rem] font-extrabold text-slate-900 md:text-lg">Signal Flow</h3>
 	                    <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
 	                      {ledDisplaySignalFlow.map((step, index) => (
 	                        <div key={step} className="flex items-stretch gap-2 md:gap-3">
@@ -2050,7 +2052,7 @@ function ProductsPageContent({
 	                  </div>
 
 	                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 md:p-5">
-	                    <h3 className="text-lg font-extrabold text-slate-900">Power Flow</h3>
+	                    <h3 className="text-[1rem] font-extrabold text-slate-900 md:text-lg">Power Flow</h3>
 	                    <div className="mt-4 grid gap-2.5">
 	                      {ledDisplayPowerFlow.map((step, index) => (
 	                        <div key={step} className="relative md:flex md:items-center md:gap-2 md:pr-0">
@@ -2091,7 +2093,7 @@ function ProductsPageContent({
 	          </section>
 
 	          <section id="led-price-table" className="scroll-mt-24 py-8">
-	            <h2 className="text-2xl font-bold text-slate-900">
+	            <h2 className="text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
 	              LED Display Price List in Bangladesh
 	            </h2>
             <MobileIntroText
@@ -2124,9 +2126,33 @@ function ProductsPageContent({
             </MobileIntroText>
 
             <div className="mt-6 space-y-6">
-              <div className="rounded-2xl border border-slate-200 bg-white p-5">
-                <h3 className="text-lg font-semibold text-slate-900">Indoor LED Display Price (P1.25-P3.076)</h3>
-                <div className="mt-4 overflow-x-auto">
+              <div className="rounded-2xl border border-slate-200 bg-white p-4 md:p-5">
+                <h3 className="text-[1rem] font-semibold text-slate-900 md:text-lg">Indoor LED Display Price (P1.25-P3.076)</h3>
+                <details className="group mt-4 md:hidden">
+                  <summary
+                    className="list-none cursor-pointer rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900 [::-webkit-details-marker]:hidden"
+                    style={{
+                      borderColor: `${BRAND.maroon}14`,
+                      background: "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)",
+                    }}
+                  >
+                    Tap To Expand Indoor Price List
+                  </summary>
+                  <div className="mt-3 space-y-2">
+                    {indoorPriceRows.map((row) => (
+                      <Link
+                        key={row.href}
+                        prefetch={false}
+                        href={row.href}
+                        className="flex items-center justify-between gap-3 rounded-[14px] border border-slate-200 bg-slate-50 px-3 py-3"
+                      >
+                        <span className="min-w-0 flex-1 text-[12px] font-semibold leading-5 text-slate-900">{row.title}</span>
+                        <span className="shrink-0 text-[11px] font-extrabold text-[#F56605]">{row.price}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </details>
+                <div className="mt-4 hidden overflow-x-auto md:block">
                   <table className="min-w-full border-collapse text-left text-sm">
                     <thead className="bg-slate-50 text-xs font-bold uppercase tracking-wide text-slate-600">
                       <tr>
@@ -2150,9 +2176,33 @@ function ProductsPageContent({
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-slate-200 bg-white p-5">
-                <h3 className="text-lg font-semibold text-slate-900">Outdoor LED Display Price (P2.5-P10)</h3>
-                <div className="mt-4 overflow-x-auto">
+              <div className="rounded-2xl border border-slate-200 bg-white p-4 md:p-5">
+                <h3 className="text-[1rem] font-semibold text-slate-900 md:text-lg">Outdoor LED Display Price (P2.5-P10)</h3>
+                <details className="group mt-4 md:hidden">
+                  <summary
+                    className="list-none cursor-pointer rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900 [::-webkit-details-marker]:hidden"
+                    style={{
+                      borderColor: `${BRAND.maroon}14`,
+                      background: "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+                    }}
+                  >
+                    Tap To Expand Outdoor Price List
+                  </summary>
+                  <div className="mt-3 space-y-2">
+                    {outdoorPriceRows.map((row) => (
+                      <Link
+                        key={row.href}
+                        prefetch={false}
+                        href={row.href}
+                        className="flex items-center justify-between gap-3 rounded-[14px] border border-slate-200 bg-slate-50 px-3 py-3"
+                      >
+                        <span className="min-w-0 flex-1 text-[12px] font-semibold leading-5 text-slate-900">{row.title}</span>
+                        <span className="shrink-0 text-[11px] font-extrabold text-[#F56605]">{row.price}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </details>
+                <div className="mt-4 hidden overflow-x-auto md:block">
                   <table className="min-w-full border-collapse text-left text-sm">
                     <thead className="bg-slate-50 text-xs font-bold uppercase tracking-wide text-slate-600">
                       <tr>
@@ -2177,13 +2227,13 @@ function ProductsPageContent({
               </div>
             </div>
 
-            <p className="mt-1 text-sm leading-7 text-slate-600">
+            <p className="mt-2 text-justify text-[13px] leading-6 text-slate-600 md:mt-1 md:text-left md:text-sm md:leading-7">
               Note: Prices may vary depending on configuration, installation scope, and order quantity.
             </p>
           </section>
 
           <section className="py-8 mb-[25px]">
-            <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
+            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
               <UiIcon name="solutions" className="h-6 w-6 text-slate-800" />
               <span>LED Display Solutions in Bangladesh</span>
             </h2>
@@ -2203,20 +2253,20 @@ function ProductsPageContent({
               </>
             </MobileIntroText>
 
-            <div className="mt-8 grid gap-6 md:grid-cols-2">
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
-                <div className="text-lg font-semibold text-slate-900">End-to-End LED Screen Implementation</div>
+            <div className="mt-6 grid gap-4 md:mt-8 md:gap-6 md:grid-cols-2">
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 md:p-6">
+                <div className="text-[1rem] font-semibold text-slate-900 md:text-lg">End-to-End LED Screen Implementation</div>
                 <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
                   We help clients select the correct LED configuration based on viewing distance, environment, content type, and operational
                   requirements. Each project is planned with attention to power stability, structure safety, and long-term usability. Pricing is
                   specification-driven and clearly explained-covering modules, cabinets, control systems, structure, installation and calibration.
                 </p>
 
-                <ul className="mt-4 space-y-2 text-sm text-slate-700">
+                <ul className="mt-4 space-y-2 text-[13px] text-slate-700 md:text-sm">
                   {ledEndToEndBullets.map((bullet) => (
                     <li key={bullet} className="flex items-start gap-2">
                       <span className="mt-2 inline-block h-2 w-2 rounded-full bg-slate-900" />
-                      <span className="leading-7">{bullet}</span>
+                      <span className="text-justify leading-6 md:text-left md:leading-7">{bullet}</span>
                     </li>
                   ))}
                 </ul>
@@ -2244,9 +2294,9 @@ function ProductsPageContent({
                       <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white shadow-sm">
                         <UiIcon name={card.icon} className="h-5 w-5" />
                       </div>
-                      <div className="text-base font-semibold text-slate-900">{card.t}</div>
+                    <div className="text-[15px] font-semibold leading-5 text-slate-900 md:text-base">{card.t}</div>
                     </div>
-                    <p className="mt-3 text-sm leading-7 text-slate-600">{card.d}</p>
+                    <p className="mt-2.5 text-justify text-[13px] leading-6 text-slate-600 md:mt-3 md:text-left md:text-sm md:leading-7">{card.d}</p>
                   </div>
                 ))}
               </div>
@@ -2254,7 +2304,7 @@ function ProductsPageContent({
           </section>
 
           <section className="pt-8 pb-[25px]">
-            <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
+            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
               <UiIcon name="cost" className="h-6 w-6 text-slate-800" />
               <span>Benefits of Digital LED Display for Advertising</span>
             </h2>
@@ -2273,11 +2323,11 @@ function ProductsPageContent({
                 LED signage helps businesses run more effective, scalable, and cost-efficient advertising campaigns.
               </>
             </MobileIntroText>
-            <div className="mt-5 grid gap-4 md:grid-cols-2">
+            <div className="mt-5 grid gap-3 md:grid-cols-2 md:gap-4">
               {outdoorSignageBenefits.map((item, idx) => (
                 <div
                   key={item.t}
-                  className="rounded-3xl border bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                  className="rounded-[20px] border bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-3xl md:p-5"
                   style={{ borderColor: "rgba(255,106,0,0.16)" }}
                 >
                   <div className="flex items-center gap-2">
@@ -2287,14 +2337,14 @@ function ProductsPageContent({
                     >
                       {idx + 1}
                     </span>
-                    <h3 className="text-base font-extrabold text-slate-900">{item.t}</h3>
+                    <h3 className="text-[15px] font-extrabold leading-5 text-slate-900 md:text-base">{item.t}</h3>
                   </div>
-                  <p className="mt-3 text-sm leading-7 text-slate-600">{item.d}</p>
+                  <p className="mt-2.5 text-justify text-[13px] leading-6 text-slate-600 md:mt-3 md:text-left md:text-sm md:leading-7">{item.d}</p>
                   <ul className="mt-3 space-y-2">
                     {item.points.map((point) => (
-                      <li key={point} className="flex items-start gap-2 text-sm text-slate-700">
+                      <li key={point} className="flex items-start gap-2 text-[13px] text-slate-700 md:text-sm">
                         <span className="mt-2 inline-block h-1.5 w-1.5 rounded-full bg-[#FF6A00]" />
-                        <span className="leading-6">{point}</span>
+                        <span className="text-justify leading-6 md:text-left">{point}</span>
                       </li>
                     ))}
                   </ul>
@@ -2304,7 +2354,7 @@ function ProductsPageContent({
           </section>
 
           <section className="py-8">
-            <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
+            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
               <UiIcon name="display" className="h-6 w-6 text-slate-800" />
               <span>Types of LED Display Technology</span>
             </h2>
@@ -2322,7 +2372,7 @@ function ProductsPageContent({
               </>
             </MobileIntroText>
 
-            <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-5 grid gap-3 md:mt-6 md:gap-4 md:grid-cols-2 lg:grid-cols-4">
               <article className="rounded-2xl border border-slate-200 bg-white p-5">
                 <h3 className="text-lg font-semibold text-slate-900">SMD LED</h3>
                 <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
@@ -2391,7 +2441,7 @@ function ProductsPageContent({
           </section>
 
           <section className="pt-8 pb-[25px]">
-            <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
+            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
               <UiIcon name="check" className="h-6 w-6 text-slate-800" />
               <span>How to Choose the Right LED Display Screen in Bangladesh</span>
             </h2>
@@ -2485,14 +2535,14 @@ function ProductsPageContent({
 	                      <div className="inline-flex h-8 min-w-8 shrink-0 items-center justify-center rounded-lg bg-blue-600 px-2 text-xs font-extrabold text-white">
 	                        {item.no}
 	                      </div>
-	                      <h3 className="text-xl font-extrabold leading-snug text-slate-900">{item.title}</h3>
+	                      <h3 className="text-[1rem] font-extrabold leading-[1.3] text-slate-900 md:text-xl">{item.title}</h3>
 	                    </div>
 	                    <p className="mt-3 hidden text-sm leading-7 text-slate-600 md:block">{item.text}</p>
-                    <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-700">
+                    <ul className="mt-4 space-y-2 text-[13px] leading-6 text-slate-700 md:text-sm md:leading-7">
                       {item.bullets.map((bullet) => (
                         <li key={bullet} className="flex items-start gap-3">
                           <span className="mt-2 inline-block h-2 w-2 shrink-0 rounded-full bg-[#FF6A00]" />
-                          <span>{bullet}</span>
+                          <span className="text-justify md:text-left">{bullet}</span>
                         </li>
                       ))}
                     </ul>
@@ -2500,7 +2550,7 @@ function ProductsPageContent({
                 ))}
               </div>
 
-            <div className="mt-5 grid gap-4 md:grid-cols-3">
+            <div className="mt-5 grid gap-3 md:grid-cols-3 md:gap-4">
                 {[
                   {
                     t: "Step 1: Confirm screen category",
@@ -2525,14 +2575,14 @@ function ProductsPageContent({
                           : "border-cyan-200/80 bg-[linear-gradient(180deg,#ecfeff_0%,#ffffff_52%,#cffafe_100%)]"
                     }`}
                   >
-                    <div className="text-base font-extrabold text-slate-900">{x.t}</div>
-                    <p className="mt-2 text-sm leading-7 text-slate-600">{x.d}</p>
+                    <div className="text-[15px] font-extrabold leading-5 text-slate-900 md:text-base">{x.t}</div>
+                    <p className="mt-2 text-justify text-[13px] leading-6 text-slate-600 md:text-left md:text-sm md:leading-7">{x.d}</p>
                   </article>
                 ))}
               </div>
 
             <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-5">
-              <h3 className="text-base font-extrabold text-slate-900">What to share for an accurate LED display quotation</h3>
+              <h3 className="text-[15px] font-extrabold leading-5 text-slate-900 md:text-base">What to share for an accurate LED display quotation</h3>
               <MobileIntroText
                 teaser="A quick site survey or clear project information helps avoid mismatched size, incorrect pixel pitch, power issues, and hidden installation cost."
                 className="mt-2"
@@ -2546,7 +2596,7 @@ function ProductsPageContent({
                   correct LED screen price in Bangladesh with better accuracy.
                 </>
               </MobileIntroText>
-              <ul className="mt-4 grid gap-2 text-sm leading-7 text-slate-700 md:grid-cols-2">
+              <ul className="mt-4 grid gap-2 text-[13px] leading-6 text-slate-700 md:grid-cols-2 md:text-sm md:leading-7">
                 {[
                   "Location type: indoor, outdoor, showroom, event, or roadside advertising",
                   "Target screen size (W x H) or available wall, frame, or stage space",
@@ -2557,7 +2607,7 @@ function ProductsPageContent({
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2">
                     <span className="mt-2 inline-block h-2 w-2 rounded-full" style={{ background: "#FF6A00" }} />
-                    <span>{item}</span>
+                    <span className="text-justify md:text-left">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -2581,7 +2631,7 @@ function ProductsPageContent({
           </section>
 
           <section className="py-8">
-            <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
+            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
               <UiIcon name="compare" className="h-6 w-6 text-slate-800" />
               <span>Indoor vs Outdoor LED display in Bangladesh</span>
             </h2>
@@ -2599,13 +2649,13 @@ function ProductsPageContent({
               </>
             </MobileIntroText>
 
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
-              <article className="rounded-2xl border border-slate-200 bg-white p-5">
-                <h3 className="text-lg font-semibold text-slate-900">Indoor LED display: best for close viewing</h3>
-                <p className="mt-2 text-sm leading-7 text-slate-600">
+            <div className="mt-5 grid gap-3 md:mt-6 md:gap-4 md:grid-cols-2">
+              <article className="rounded-2xl border border-slate-200 bg-white p-4 md:p-5">
+                <h3 className="text-[1rem] font-semibold leading-[1.3] text-slate-900 md:text-lg">Indoor LED display: best for close viewing</h3>
+                <p className="mt-2 text-justify text-[13px] leading-6 text-slate-600 md:text-left md:text-sm md:leading-7">
                   Suitable for showrooms, offices, lobbies, studios, and meeting rooms where text and fine details need to stay sharp at short distances.
                 </p>
-                <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-700">
+                <ul className="mt-4 space-y-2 text-[13px] leading-6 text-slate-700 md:text-sm md:leading-7">
                   {[
                     "Finer pixel pitch for crisp text and high detail.",
                     "Higher refresh rate options for clean camera capture (events/streaming).",
@@ -2615,18 +2665,18 @@ function ProductsPageContent({
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2">
                       <span className="mt-2 inline-block h-2 w-2 rounded-full" style={{ background: "#FF6A00" }} />
-                      <span>{item}</span>
+                      <span className="text-justify md:text-left">{item}</span>
                     </li>
                   ))}
                 </ul>
               </article>
 
-              <article className="rounded-2xl border border-slate-200 bg-white p-5">
-                <h3 className="text-lg font-semibold text-slate-900">Outdoor LED display: built for daylight and weather</h3>
-                <p className="mt-2 text-sm leading-7 text-slate-600">
+              <article className="rounded-2xl border border-slate-200 bg-white p-4 md:p-5">
+                <h3 className="text-[1rem] font-semibold leading-[1.3] text-slate-900 md:text-lg">Outdoor LED display: built for daylight and weather</h3>
+                <p className="mt-2 text-justify text-[13px] leading-6 text-slate-600 md:text-left md:text-sm md:leading-7">
                   Recommended for roadside branding, shopfront signs, building facades, and public screens where sunlight, rain, and dust are key factors.
                 </p>
-                <ul className="mt-4 space-y-2 text-sm leading-7 text-slate-700">
+                <ul className="mt-4 space-y-2 text-[13px] leading-6 text-slate-700 md:text-sm md:leading-7">
                   {[
                     "Higher brightness planning for daylight readability.",
                     "Cabinet protection level (IP) and waterproof cable routing.",
@@ -2636,14 +2686,50 @@ function ProductsPageContent({
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2">
                       <span className="mt-2 inline-block h-2 w-2 rounded-full" style={{ background: "#FF6A00" }} />
-                      <span>{item}</span>
+                      <span className="text-justify md:text-left">{item}</span>
                     </li>
                   ))}
                 </ul>
               </article>
             </div>
 
-            <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white">
+            <details className="group mt-5 md:hidden">
+              <summary
+                className="list-none cursor-pointer rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900 [::-webkit-details-marker]:hidden"
+                style={{
+                  borderColor: `${BRAND.maroon}14`,
+                  background: "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)",
+                }}
+              >
+                Tap To Expand Comparison Factors
+              </summary>
+              <div className="mt-3 grid gap-2">
+                {[
+                  ["Viewing distance", "Short-to-mid (detail focused)", "Mid-to-long (visibility focused)"],
+                  ["Brightness target", "Comfortable indoor levels", "High brightness for daylight"],
+                  ["Cabinet protection", "Standard indoor cabinet", "Weather-ready cabinet (IP planning)"],
+                  ["Maintenance access", "Front/rear service based on wall setup", "Service access with safety constraints"],
+                  ["Power & safety", "Stable supply + grounding", "Surge protection + outdoor power distribution"],
+                  ["Typical use cases", "Video walls, dashboards, meeting rooms", "Signage, billboards, public screens"],
+                ].map((row) => (
+                  <div key={row[0]} className="rounded-[16px] border border-slate-200 bg-white p-3.5">
+                    <div className="text-[12px] font-extrabold uppercase tracking-[0.08em] text-[#F56605]">{row[0]}</div>
+                    <div className="mt-2 grid grid-cols-2 gap-2">
+                      <div className="rounded-[12px] bg-slate-50 px-3 py-2">
+                        <div className="text-[11px] font-bold text-slate-900">Indoor</div>
+                        <div className="mt-1 text-[12px] leading-5 text-slate-700">{row[1]}</div>
+                      </div>
+                      <div className="rounded-[12px] bg-slate-50 px-3 py-2">
+                        <div className="text-[11px] font-bold text-slate-900">Outdoor</div>
+                        <div className="mt-1 text-[12px] leading-5 text-slate-700">{row[2]}</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </details>
+
+            <div className="mt-6 hidden overflow-hidden rounded-2xl border border-slate-200 bg-white md:block">
               <table className="w-full text-left text-sm text-slate-700">
                 <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
                   <tr>
@@ -2697,7 +2783,7 @@ function ProductsPageContent({
           </section>
 
           <section className="py-8">
-            <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
+            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
               <UiIcon name="compare" className="h-6 w-6 text-slate-800" />
               <span>LED Display vs Projector vs LCD Video Wall in Bangladesh</span>
             </h2>
@@ -2718,14 +2804,14 @@ function ProductsPageContent({
             </MobileIntroText>
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               {ledCompare.map((item) => (
-                <div key={item.t} className="rounded-2xl border border-slate-200 bg-white p-5">
-                  <h3 className="text-lg font-semibold text-slate-900">{item.t}</h3>
+                <div key={item.t} className="rounded-2xl border border-slate-200 bg-white p-4 md:p-5">
+                  <h3 className="text-[1rem] font-semibold leading-[1.3] text-slate-900 md:text-lg">{item.t}</h3>
                   <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">{item.d}</p>
-                  <ul className="mt-4 space-y-2 text-sm text-slate-700">
+                  <ul className="mt-4 space-y-2 text-[13px] text-slate-700 md:text-sm">
                     {item.points.map((point) => (
                       <li key={point} className="flex items-start gap-2">
                         <span className="mt-2 inline-block h-2 w-2 rounded-full bg-slate-900" />
-                        <span>{point}</span>
+                        <span className="text-justify leading-6 md:text-left md:leading-7">{point}</span>
                       </li>
                     ))}
                   </ul>
@@ -2737,7 +2823,7 @@ function ProductsPageContent({
           <section className="py-3">
             <div ref={whyChooseSectionRef} className="sc-led-why-section">
               <div className="sc-led-why-head">
-                <h2 className="sc-led-why-title text-2xl font-extrabold md:text-4xl">
+                <h2 className="sc-led-why-title text-[1.45rem] font-extrabold leading-[1.25] md:text-4xl">
                   Why Choose Sasha Corporation for LED Display Solutions?
                 </h2>
                 <MobileIntroText
@@ -2812,7 +2898,7 @@ function ProductsPageContent({
           </section>
 
           <section className="py-8">
-            <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
+            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
               <UiIcon name="process" className="h-6 w-6 text-slate-800" />
               <span>LED Display Installation Process in Bangladesh</span>
             </h2>
@@ -2830,7 +2916,7 @@ function ProductsPageContent({
               </>
             </MobileIntroText>
 
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
+            <div className="mt-6 -mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 md:pb-0 md:pt-0">
               {[
                 {
                   t: "Step 1: Site Survey and Requirement Collection",
@@ -2887,14 +2973,14 @@ function ProductsPageContent({
                   ],
                 },
               ].map((step) => (
-                <article key={step.t} className="rounded-2xl border border-slate-200 bg-white p-5">
-                  <h3 className="text-base font-extrabold text-slate-900">{step.t}</h3>
+                <article key={step.t} className="w-[89%] shrink-0 snap-start rounded-2xl border border-slate-200 bg-white p-4 md:w-auto md:shrink md:snap-none md:p-5">
+                  <h3 className="text-[15px] font-extrabold leading-5 text-slate-900 md:text-base">{step.t}</h3>
                   <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">{step.d}</p>
-                  <ul className="mt-4 space-y-2 text-sm text-slate-700">
+                  <ul className="mt-4 space-y-2 text-[13px] text-slate-700 md:text-sm">
                     {step.points.map((point) => (
                       <li key={point} className="flex items-start gap-2">
                         <span className="mt-2 inline-block h-2 w-2 rounded-full bg-slate-900" />
-                        <span>{point}</span>
+                        <span className="text-justify leading-6 md:text-left md:leading-7">{point}</span>
                       </li>
                     ))}
                   </ul>
@@ -2939,7 +3025,7 @@ function ProductsPageContent({
           </section>
 
           <section className="py-8">
-            <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
+            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
               <UiIcon name="solutions" className="h-6 w-6 text-slate-800" />
               <span>Trusted Technology Partners & Authorized Brands</span>
             </h2>
@@ -3039,7 +3125,7 @@ function ProductsPageContent({
 
             <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
               <div className="w-full">
-                <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
+                <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
                   <span
                     className="inline-flex h-8 w-8 items-center justify-center rounded-full border bg-slate-50 text-slate-700"
                     style={{ borderColor: "rgba(255,106,0,0.2)" }}
@@ -3110,7 +3196,7 @@ function ProductsPageContent({
           </section>
 
           <section id="led-faq" className="scroll-mt-24 pt-8 pb-[25px]">
-            <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
+            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
               <UiIcon name="faq" className="h-6 w-6 text-slate-800" />
               <span>Frequently Asked Questions About LED Display</span>
             </h2>
@@ -3128,7 +3214,7 @@ function ProductsPageContent({
                 <h2 className="text-[26px] font-extrabold leading-tight tracking-tight text-slate-900 md:text-[32px]">
                   Need a complete LED display solution?
                 </h2>
-                <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-slate-600 md:text-[15px] md:leading-8">
+                <p className="mx-auto mt-3 max-w-2xl text-justify text-[13px] leading-6 text-slate-600 md:text-center md:text-[15px] md:leading-8">
                   Share your requirement or BOQ and we will suggest a practical solution path covering screen type,
                   controller, power, structure, installation scope, and support planning for your project.
                 </p>
@@ -3158,9 +3244,6 @@ export default function ProductsPage() {
 
   return <ProductsPageContent ledOnly={ledOnly} basePath={basePath} />;
 }
-
-
-
 
 
 
