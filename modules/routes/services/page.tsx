@@ -1,6 +1,7 @@
 import Link from "next/link";
 import FaqAccordion from "@/components/common/FaqAccordion";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
+import MobileIntroText from "@/components/common/MobileIntroText";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 
 const MAROON = "#FF6A00";
@@ -73,12 +74,16 @@ function Title({
 }) {
   return (
     <div>
-      <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight text-slate-900">
+      <h2 className="flex items-center gap-2 text-[1.45rem] font-bold tracking-tight text-slate-900 md:text-2xl">
         {icon ? <TitleMark kind={icon} /> : null}
         {title}
       </h2>
       <div className="mt-3 hidden h-1 w-14 rounded-full md:block" style={{ background: `${MAROON}B3` }} />
-      {desc ? <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600">{desc}</p> : null}
+      {desc ? (
+        <p className="mt-3 max-w-3xl text-justify text-[13px] leading-6 text-slate-600 md:mt-4 md:text-left md:text-base md:leading-7">
+          {desc}
+        </p>
+      ) : null}
     </div>
   );
 }
@@ -183,54 +188,67 @@ export default function ServicesPage() {
           ]}
           className="mb-3 pt-3 text-sm text-slate-600"
         />
-        <section className="rounded-3xl bg-white p-7 md:p-10">
+        <section className="rounded-[22px] bg-white p-4 md:rounded-3xl md:p-10">
           <div className="flex flex-col gap-4">
             <div className="max-w-3xl">
-              <h1 className="mt-4 text-xl font-extrabold tracking-tight text-slate-900 md:text-3xl">
+              <h1 className="mt-1 text-[1.7rem] font-extrabold tracking-tight text-slate-900 md:mt-4 md:text-3xl">
                 Our Services and Support
               </h1>
             </div>
 
-            <p className="mt-1 w-full text-justify text-base leading-7 text-slate-600">
-              End-to-end LED display service in Bangladesh, starting with requirement discovery and ending with a clear
-              handover and support plan. We help you select the right pixel pitch, brightness, and control ecosystem,
-              then guide structure and power safety (grounding, surge protection, distribution), complete installation,
-              controller and receiving-card setup, mapping, testing, and calibration for uniform output. After
-              delivery, we support troubleshooting, warranty coordination, preventive maintenance guidance, and upgrade
-              planning so your screen stays stable, serviceable, and easy to operate over the long run.
-            </p>
+            <MobileIntroText
+              teaser="End-to-end LED display service in Bangladesh, starting with requirement discovery and ending with a clear handover and support plan."
+              teaserLines={2}
+              className="mt-1"
+              teaserClassName="w-full text-justify [text-align-last:justify] text-[14px] leading-6 text-slate-600"
+              expandedClassName="text-sm leading-6 text-slate-600 text-justify"
+              desktopClassName="w-full"
+              buttonClassName="text-[12px]"
+            >
+              <div className="space-y-3">
+                <p className="w-full text-justify text-base leading-7 text-slate-600 md:text-left">
+                  End-to-end LED display service in Bangladesh, starting with requirement discovery and ending with a
+                  clear handover and support plan. We help you select the right pixel pitch, brightness, and control
+                  ecosystem, then guide structure and power safety (grounding, surge protection, distribution), complete
+                  installation, controller and receiving-card setup, mapping, testing, and calibration for uniform
+                  output. After delivery, we support troubleshooting, warranty coordination, preventive maintenance
+                  guidance, and upgrade planning so your screen stays stable, serviceable, and easy to operate over the
+                  long run.
+                </p>
 
-            <p className="mt-3 text-sm leading-7 text-slate-600">
-              For product options and current market planning, visit our{" "}
-              <Link href="/led-display/" className="font-extrabold text-slate-900 hover:underline">
-                LED Display Price in Bangladesh 2026
-              </Link>{" "}
-              page or contact our team for project-specific quotation support.
-            </p>
+                <p className="text-justify text-sm leading-7 text-slate-600 md:text-left">
+                  For product options and current market planning, visit our{" "}
+                  <Link href="/led-display/" className="font-extrabold text-slate-900 hover:underline">
+                    LED Display Price in Bangladesh 2026
+                  </Link>{" "}
+                  page or contact our team for project-specific quotation support.
+                </p>
+              </div>
+            </MobileIntroText>
 
-            <div className="mt-2 flex flex-wrap gap-3">
+            <div className="mt-2 grid grid-cols-2 gap-2 md:flex md:flex-wrap md:gap-3">
               <Link
                 href="/contact/"
-                className="rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:shadow-md"
+                className="inline-flex min-h-10 items-center justify-center rounded-md px-3 py-2 text-center text-[11px] font-extrabold text-white shadow-sm transition hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm md:font-semibold"
                 style={{ background: MAROON }}
               >
                 Request Service -&gt;
               </Link>
               <Link
                 href="/led-display/"
-                className="rounded-xl border bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-sm transition hover:shadow-md"
+                className="inline-flex min-h-10 items-center justify-center rounded-md border bg-white px-3 py-2 text-center text-[11px] font-extrabold text-slate-900 shadow-sm transition hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm md:font-semibold"
                 style={{ borderColor: `${MAROON}22` }}
               >
                 View Products
               </Link>
-              <span className="flex items-center text-sm text-slate-500">
+              <span className="hidden items-center text-sm text-slate-500 md:flex">
                 Tip: share location + indoor/outdoor + size for quick response
               </span>
             </div>
 
-            <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-slate-700">
+            <div className="-mx-0.5 mt-2 flex snap-x snap-mandatory gap-2 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mt-3 md:flex-wrap md:overflow-visible md:px-0 md:pb-0 md:text-xs">
               {["On-site Survey", "Clean Installation", "Warranty Guidance", "Maintenance Support"].map((x) => (
-                <span key={x} className="rounded-full border bg-slate-50 px-4 py-2" style={{ borderColor: `${MAROON}14` }}>
+                <span key={x} className="shrink-0 rounded-full border bg-slate-50 px-3 py-1.5 text-[11px] font-semibold text-slate-700 md:px-4 md:py-2 md:text-xs" style={{ borderColor: `${MAROON}14` }}>
                   {`+ ${x}`}
                 </span>
               ))}
@@ -238,30 +256,63 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        <section className="mt-8 rounded-3xl bg-white p-7 md:p-10">
+        <section className="mt-8 rounded-[22px] bg-white p-4 md:rounded-3xl md:p-10">
           <Title
             icon="SCOPE"
             title="What we support"
             desc="From basic installation to advanced controller configuration - choose only what you need."
           />
 
-          <div className="mt-7 flex flex-wrap gap-2">
+          <div className="-mx-0.5 mt-5 flex snap-x snap-mandatory gap-2 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mt-7 md:flex-wrap md:overflow-visible md:px-0 md:pb-0">
             {supportTags.map((t) => (
-              <span key={t} className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+              <span key={t} className="shrink-0 rounded-full bg-slate-100 px-3 py-1.5 text-[11px] font-semibold text-slate-700 md:px-3 md:py-1 md:text-xs">
                 {t}
               </span>
             ))}
           </div>
         </section>
 
-        <section className="mt-8 rounded-3xl bg-white p-7 md:p-10">
+        <section className="mt-8 rounded-[22px] bg-white p-4 md:rounded-3xl md:p-10">
           <Title
             icon="CATEGORIES"
             title="Indoor, Outdoor and Digital Product Service Coverage"
             desc="Complete service support for indoor LED displays, outdoor LED screens, and related digital product systems from planning to maintenance."
           />
 
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
+          <div className="-mx-0.5 mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+            {[
+              {
+                t: "Indoor LED Display Services",
+                d: "Planning, installation, controller setup, and calibration support for showroom, office, conference, and control room environments.",
+                points: ["Fine pitch setup support", "Uniform color or brightness tuning", "Signal and controller troubleshooting"],
+              },
+              {
+                t: "Outdoor LED Display Services",
+                d: "Weather-ready installation and performance support for billboard, signage, and public display projects with stability and safety focus.",
+                points: ["Brightness and visibility planning", "Power and protection guidance", "Outdoor reliability maintenance"],
+              },
+              {
+                t: "Other Digital Product Services",
+                d: "Support for controllers, receiving cards, power supplies, and other digital display accessories to keep full systems running smoothly.",
+                points: ["Controller or processor configuration", "Accessory compatibility checks", "Spare and lifecycle support"],
+              },
+            ].map((x) => (
+              <div key={x.t} className="w-[86%] shrink-0 snap-start rounded-[16px] border bg-slate-50 p-4" style={{ borderColor: `${MAROON}12` }}>
+                <h3 className="text-[17px] font-bold leading-snug text-slate-900">{x.t}</h3>
+                <p className="mt-2 text-justify text-[13px] leading-6 text-slate-600">{x.d}</p>
+                <ul className="mt-3 space-y-2 text-[12px] text-slate-700">
+                  {x.points.map((p) => (
+                    <li key={p} className="flex items-start gap-2">
+                      <span className="mt-1.5 inline-block h-1.5 w-1.5 rounded-full" style={{ background: MAROON }} />
+                      <span className="leading-5 text-justify">{p}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 hidden gap-4 md:grid md:grid-cols-3">
             {[
               {
                 t: "Indoor LED Display Services",
@@ -295,14 +346,40 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        <section className="mt-8 rounded-3xl bg-slate-50 p-7 md:p-10">
+        <section className="mt-8 rounded-[22px] bg-slate-50 p-4 md:rounded-3xl md:p-10">
           <Title
             icon="SERVICES"
             title="Services we provide"
             desc="Simple, practical services that cover the full lifecycle - planning -> supply -> installation -> support."
           />
 
-          <div className="mt-8 grid gap-8 lg:grid-cols-2">
+          <div className="-mx-0.5 mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+            {services.map((s) => (
+              <div key={s.title} className="w-[88%] shrink-0 snap-start rounded-[16px] border bg-white p-4" style={{ borderColor: `${MAROON}12` }}>
+                <div className="flex items-center gap-2.5">
+                  <div
+                    className="inline-flex h-6 min-w-6 items-center justify-center rounded-full text-[10px] font-bold text-white"
+                    style={{ background: MAROON }}
+                  >
+                    {s.icon}
+                  </div>
+                  <div className="min-w-0 flex-1 text-[16px] font-semibold leading-[1.25] text-slate-900">{s.title}</div>
+                </div>
+                <p className="mt-2 text-justify text-[13px] leading-6 text-slate-600">{s.desc}</p>
+
+                <ul className="mt-3 space-y-2 text-[12px] text-slate-700">
+                  {s.items.map((it) => (
+                    <li key={it} className="flex items-start gap-2">
+                      <span className="mt-1.5 inline-block h-1.5 w-1.5 rounded-full" style={{ background: MAROON }} />
+                      <span className="leading-5 text-justify">{it}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 hidden gap-8 lg:grid lg:grid-cols-2">
             {services.map((s) => (
               <div key={s.title} className="p-1">
                 <div className="flex items-start gap-3">
@@ -333,100 +410,184 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        <section className="mt-8 rounded-3xl bg-slate-50 p-7 md:p-10">
+        <section className="mt-8 rounded-[22px] bg-slate-50 p-4 md:rounded-3xl md:p-10">
           <div>
-            <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight text-slate-900">
- <span className="text-xl"></span>
+            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold tracking-tight text-slate-900 md:text-2xl">
               Warranty, service & support
             </h2>
-            <div className="mt-3 h-1 w-14 rounded-full" style={{ background: `${MAROON}B3` }} />
-            <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600">
-              We import products from China and provide official warranty and service support in Bangladesh. Our focus is long-term performance, quick troubleshooting and practical maintenance guidance.
-            </p>
+            <div className="mt-3 hidden h-1 w-14 rounded-full md:block" style={{ background: `${MAROON}B3` }} />
+            <MobileIntroText
+              teaser="We import products from China and provide official warranty and service support in Bangladesh."
+              teaserLines={2}
+              className="mt-3"
+              teaserClassName="max-w-3xl text-justify [text-align-last:justify] text-[13px] leading-6 text-slate-600"
+              expandedClassName="text-sm leading-6 text-slate-600 text-justify [text-align-last:justify]"
+              desktopClassName="max-w-3xl"
+              buttonClassName="text-[12px]"
+            >
+              <p className="max-w-3xl text-base leading-7 text-slate-600">
+                We import products from China and provide official warranty and service support in Bangladesh. Our focus
+                is long-term performance, quick troubleshooting and practical maintenance guidance.
+              </p>
+            </MobileIntroText>
           </div>
 
-          <div className="mt-9 grid gap-8 lg:grid-cols-3">
+          <div className="mt-5 grid gap-3 md:mt-9 md:gap-8 lg:grid-cols-3">
             <div>
-              <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
- <span></span> Official warranty (clear scope)
+              <h3 className="flex items-center gap-2 text-[14px] font-semibold text-slate-900 md:text-sm">
+                Official warranty (clear scope)
               </h3>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
- We keep warranty terms and service coverage clear-what's included, what's not, and how support is
-                provided. This helps clients avoid confusion during troubleshooting or replacement.
-              </p>
+              <MobileIntroText
+                teaser="We keep warranty terms and service coverage clear-what's included, what's not, and how support is provided."
+                teaserLines={2}
+                className="mt-2"
+                teaserClassName="text-justify [text-align-last:justify] text-[13px] leading-6 text-slate-600"
+                expandedClassName="text-sm leading-6 text-slate-600 text-justify [text-align-last:justify]"
+                desktopClassName="w-full"
+                buttonClassName="text-[12px]"
+              >
+                <p className="text-justify text-sm leading-6 text-slate-600 md:text-left">
+                  We keep warranty terms and service coverage clear-what&apos;s included, what&apos;s not, and how support is
+                  provided. This helps clients avoid confusion during troubleshooting or replacement.
+                </p>
+              </MobileIntroText>
             </div>
 
             <div>
-              <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
- <span></span> Troubleshooting support
+              <h3 className="flex items-center gap-2 text-[14px] font-semibold text-slate-900 md:text-sm">
+                Troubleshooting support
               </h3>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                We support common issues like signal or power diagnostics, controller configuration, module or cabinet
-                checking and operational guidance. Remote guidance is available, and on-site support can be arranged
-                when needed.
-              </p>
+              <MobileIntroText
+                teaser="We support common issues like signal or power diagnostics, controller configuration, module or cabinet checking and operational guidance."
+                teaserLines={2}
+                className="mt-2"
+                teaserClassName="text-justify [text-align-last:justify] text-[13px] leading-6 text-slate-600"
+                expandedClassName="text-sm leading-6 text-slate-600 text-justify [text-align-last:justify]"
+                desktopClassName="w-full"
+                buttonClassName="text-[12px]"
+              >
+                <p className="text-justify text-sm leading-6 text-slate-600 md:text-left">
+                  We support common issues like signal or power diagnostics, controller configuration, module or cabinet
+                  checking and operational guidance. Remote guidance is available, and on-site support can be arranged
+                  when needed.
+                </p>
+              </MobileIntroText>
             </div>
 
             <div>
-              <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
- <span></span> Maintenance & spare planning
+              <h3 className="flex items-center gap-2 text-[14px] font-semibold text-slate-900 md:text-sm">
+                Maintenance & spare planning
               </h3>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                We help you plan practical spares (modules, PSU, receiving cards) and guide routine maintenance so the
-                display stays stable over time. We also advise upgrades when you expand.
-              </p>
+              <MobileIntroText
+                teaser="We help you plan practical spares (modules, PSU, receiving cards) and guide routine maintenance so the display stays stable over time."
+                teaserLines={2}
+                className="mt-2"
+                teaserClassName="text-justify [text-align-last:justify] text-[13px] leading-6 text-slate-600"
+                expandedClassName="text-sm leading-6 text-slate-600 text-justify [text-align-last:justify]"
+                desktopClassName="w-full"
+                buttonClassName="text-[12px]"
+              >
+                <p className="text-justify text-sm leading-6 text-slate-600 md:text-left">
+                  We help you plan practical spares (modules, PSU, receiving cards) and guide routine maintenance so the
+                  display stays stable over time. We also advise upgrades when you expand.
+                </p>
+              </MobileIntroText>
             </div>
           </div>
         </section>
 
-        <section className="mt-8 rounded-3xl bg-white p-7 md:p-10">
+        <section className="mt-8 rounded-[22px] bg-white p-4 md:rounded-3xl md:p-10">
           <div>
-            <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight text-slate-900">
+            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold tracking-tight text-slate-900 md:text-2xl">
               <TitleMark kind="AFTER_SALES" />
               After sales services
             </h2>
-            <div className="mt-3 h-1 w-14 rounded-full" style={{ background: `${MAROON}B3` }} />
-            <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600">
-              We import LED display products from China and provide practical after-sales support in Bangladesh so your system stays stable, usable and ready for daily operation.
-            </p>
+            <div className="mt-3 hidden h-1 w-14 rounded-full md:block" style={{ background: `${MAROON}B3` }} />
+            <MobileIntroText
+              teaser="We import LED display products from China and provide practical after-sales support in Bangladesh."
+              teaserLines={2}
+              className="mt-3"
+              teaserClassName="max-w-3xl text-justify [text-align-last:justify] text-[13px] leading-6 text-slate-600"
+              expandedClassName="text-sm leading-6 text-slate-600 text-justify [text-align-last:justify]"
+              desktopClassName="max-w-3xl"
+              buttonClassName="text-[12px]"
+            >
+              <p className="max-w-3xl text-base leading-7 text-slate-600">
+                We import LED display products from China and provide practical after-sales support in Bangladesh so
+                your system stays stable, usable and ready for daily operation.
+              </p>
+            </MobileIntroText>
           </div>
 
-          <div className="mt-8 grid gap-8 lg:grid-cols-3">
+          <div className="mt-5 grid gap-3 md:mt-8 md:gap-8 lg:grid-cols-3">
             <div>
-              <h3 className="text-sm font-semibold text-slate-900">Technical support</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                Fast troubleshooting support for common power, signal and controller issues with clear guidance for quick recovery.
-              </p>
+              <h3 className="text-[14px] font-semibold text-slate-900 md:text-sm">Technical support</h3>
+              <MobileIntroText
+                teaser="Fast troubleshooting support for common power, signal and controller issues with clear guidance for quick recovery."
+                teaserLines={2}
+                className="mt-2"
+                teaserClassName="text-justify [text-align-last:justify] text-[13px] leading-6 text-slate-600"
+                expandedClassName="text-sm leading-6 text-slate-600 text-justify [text-align-last:justify]"
+                desktopClassName="w-full"
+                buttonClassName="text-[12px]"
+              >
+                <p className="text-justify text-sm leading-6 text-slate-600 md:text-left">
+                  Fast troubleshooting support for common power, signal and controller issues with clear guidance for
+                  quick recovery.
+                </p>
+              </MobileIntroText>
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-slate-900">Service coordination</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                Structured support process with clear scope, update flow and response planning for both remote and on-site cases.
-              </p>
+              <h3 className="text-[14px] font-semibold text-slate-900 md:text-sm">Service coordination</h3>
+              <MobileIntroText
+                teaser="Structured support process with clear scope, update flow and response planning for both remote and on-site cases."
+                teaserLines={2}
+                className="mt-2"
+                teaserClassName="text-justify [text-align-last:justify] text-[13px] leading-6 text-slate-600"
+                expandedClassName="text-sm leading-6 text-slate-600 text-justify [text-align-last:justify]"
+                desktopClassName="w-full"
+                buttonClassName="text-[12px]"
+              >
+                <p className="text-justify text-sm leading-6 text-slate-600 md:text-left">
+                  Structured support process with clear scope, update flow and response planning for both remote and
+                  on-site cases.
+                </p>
+              </MobileIntroText>
             </div>
 
             <div>
-              <h3 className="text-sm font-semibold text-slate-900">Lifecycle maintenance</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                Guidance for periodic maintenance, spare planning and upgrade decisions to keep your display reliable over time.
-              </p>
+              <h3 className="text-[14px] font-semibold text-slate-900 md:text-sm">Lifecycle maintenance</h3>
+              <MobileIntroText
+                teaser="Guidance for periodic maintenance, spare planning and upgrade decisions to keep your display reliable over time."
+                teaserLines={2}
+                className="mt-2"
+                teaserClassName="text-justify [text-align-last:justify] text-[13px] leading-6 text-slate-600"
+                expandedClassName="text-sm leading-6 text-slate-600 text-justify [text-align-last:justify]"
+                desktopClassName="w-full"
+                buttonClassName="text-[12px]"
+              >
+                <p className="text-justify text-sm leading-6 text-slate-600 md:text-left">
+                  Guidance for periodic maintenance, spare planning and upgrade decisions to keep your display reliable
+                  over time.
+                </p>
+              </MobileIntroText>
             </div>
           </div>
         </section>
 
-        <section className="mt-8 rounded-3xl bg-slate-50 p-7 md:p-10">
+        <section className="mt-8 rounded-[22px] bg-slate-50 p-4 md:rounded-3xl md:p-10">
           <Title
             icon="DELIVERABLES"
             title="What you get in handover"
             desc="Every completed project includes practical technical handover so your team can operate confidently."
           />
 
-          <div className="mt-7 grid gap-3 md:grid-cols-2">
+          <div className="mt-5 grid gap-2 md:mt-7 md:grid-cols-2 md:gap-3">
             {deliverables.map((item) => (
               <div
                 key={item}
-                className="rounded-xl border bg-white px-4 py-3 text-sm font-medium text-slate-700"
+                className="rounded-[14px] border bg-white px-3 py-2.5 text-[12px] font-medium text-slate-700 md:rounded-xl md:px-4 md:py-3 md:text-sm"
                 style={{ borderColor: `${MAROON}1F` }}
               >
                 <span className="font-semibold" style={{ color: MAROON }}>
@@ -438,14 +599,34 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        <section className="mt-8 rounded-3xl bg-rose-50 p-7 md:p-10">
+        <section className="mt-8 rounded-[22px] bg-rose-50 p-4 md:rounded-3xl md:p-10">
           <Title
             icon="PROCESS"
             title="How we work"
             desc="A clear workflow - fast response, clean setup and dependable after-sales support."
           />
 
-          <div className="mt-8 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          <div className="-mx-0.5 mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+            {steps.map((s) => (
+              <div key={s.n} className="w-[82%] shrink-0 snap-start rounded-[16px] border bg-white p-3.5" style={{ borderColor: `${MAROON}12` }}>
+                <div className="flex items-center gap-2.5">
+                  <div
+                    className="inline-flex h-5 min-w-5 items-center justify-center rounded-full text-[10px] font-extrabold leading-none"
+                    style={{ color: MAROON, background: `${MAROON}14` }}
+                  >
+                    {s.n}
+                  </div>
+                  <div className="min-w-0 flex-1 text-[16px] font-semibold leading-[1.25] text-slate-900">{s.t}</div>
+                  <div className="inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-slate-100 text-[10px] font-bold text-slate-700">
+                    {s.icon}
+                  </div>
+                </div>
+                <p className="mt-2 text-[12px] leading-5 text-slate-600">{s.d}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 hidden gap-8 md:grid md:grid-cols-2 lg:grid-cols-4">
             {steps.map((s) => (
               <div key={s.n} className="p-1">
                 <div className="flex items-center justify-between">
@@ -463,17 +644,17 @@ export default function ServicesPage() {
             ))}
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-6 grid grid-cols-2 gap-2 md:mt-8 md:flex md:flex-wrap md:gap-3">
             <Link
               href="/contact/"
-              className="rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:shadow-md"
+              className="inline-flex min-h-10 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm md:font-semibold"
               style={{ background: MAROON }}
             >
               Request Service -&gt;
             </Link>
             <Link
               href="/led-display/"
-              className="rounded-xl border bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-sm transition hover:shadow-md"
+              className="inline-flex min-h-10 items-center justify-center rounded-md border bg-white px-3 py-2 text-[11px] font-extrabold text-slate-900 shadow-sm transition hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm md:font-semibold"
               style={{ borderColor: `${MAROON}22` }}
             >
               Browse Products
@@ -481,7 +662,7 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        <section className="mt-8 rounded-3xl bg-white p-7 md:p-10">
+        <section className="mt-8 rounded-[22px] bg-white p-4 md:rounded-3xl md:p-10">
           <Title icon="FAQ" title="Frequently asked questions" desc="Quick answers to common service questions." />
 
           <div className="mt-7">
@@ -489,24 +670,24 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        <section className="mt-8 rounded-3xl bg-white p-7 md:p-10">
+        <section className="mt-8 rounded-[22px] bg-white p-4 md:rounded-3xl md:p-10">
           <div className="max-w-3xl">
-            <h3 className="text-2xl font-bold text-slate-900">Need LED display service support?</h3>
-            <p className="mt-3 text-base leading-7 text-slate-600">
+            <h3 className="text-[1.45rem] font-bold text-slate-900 md:text-2xl">Need LED display service support?</h3>
+            <p className="mt-3 text-[13px] leading-6 text-slate-600 md:text-base md:leading-7">
               Share indoor or outdoor type, location, and approximate size. We&apos;ll guide pixel pitch, scope and
               timeline quickly.
             </p>
 
-            <div className="mt-7 flex flex-wrap gap-3">
+            <div className="mt-6 grid grid-cols-2 gap-2 md:mt-7 md:flex md:flex-wrap md:gap-3">
               <Link
                 href="/contact/"
-                className="rounded-xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-sm transition hover:shadow-md"
+                className="inline-flex min-h-10 items-center justify-center rounded-md bg-white px-3 py-2 text-[11px] font-extrabold text-slate-900 shadow-sm transition hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm md:font-semibold"
               >
                 Contact Us
               </Link>
               <Link
                 href="/contact/"
-                className="rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:shadow-md"
+                className="inline-flex min-h-10 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm md:font-semibold"
                 style={{ background: MAROON }}
               >
                 Get Quotation
@@ -518,4 +699,3 @@ export default function ServicesPage() {
     </main>
   );
 }
-
