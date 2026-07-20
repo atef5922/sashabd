@@ -1646,16 +1646,16 @@ export default function ConferenceSystemPage() {
           <table className="w-full border-collapse text-left text-sm">
             <thead className="hidden bg-slate-50 text-slate-950 md:table-header-group">
               <tr>
-                <th className="w-[42%] px-4 py-3 font-extrabold">Product Name</th>
-                <th className="w-[18%] px-4 py-3 font-extrabold">Product Type</th>
-                <th className="w-[24%] px-4 py-3 font-extrabold">Best For</th>
+                <th className="w-[42%] border-r border-slate-200 px-4 py-3 font-extrabold">Product Name</th>
+                <th className="w-[18%] border-r border-slate-200 px-4 py-3 font-extrabold">Product Type</th>
+                <th className="w-[24%] border-r border-slate-200 px-4 py-3 font-extrabold">Best For</th>
                 <th className="w-[16%] px-4 py-3 text-right font-extrabold">Price</th>
               </tr>
             </thead>
             <tbody className="block divide-y divide-slate-200 md:table-row-group">
               {conferencePriceTableProducts.map((product) => (
                 <tr key={product.slug} className="block align-top md:table-row">
-                  <td className="block px-4 py-4 md:table-cell md:py-3">
+                  <td className="block px-4 py-4 md:table-cell md:border-r md:border-slate-200 md:py-3">
                     <Link
                       href={`/conference-system/${product.slug}/`}
                       className="block break-words font-extrabold leading-6 text-slate-950 underline-offset-4 transition hover:text-orange-600 hover:underline"
@@ -1678,8 +1678,8 @@ export default function ConferenceSystemPage() {
                       </div>
                     </div>
                   </td>
-                  <td className="hidden px-4 py-3 font-semibold text-slate-800 md:table-cell">{product.badge}</td>
-                  <td className="hidden px-4 py-3 text-slate-700 md:table-cell">{product.bestFor.join(", ")}</td>
+                  <td className="hidden px-4 py-3 font-semibold text-slate-800 md:table-cell md:border-r md:border-slate-200">{product.badge}</td>
+                  <td className="hidden px-4 py-3 text-slate-700 md:table-cell md:border-r md:border-slate-200">{product.bestFor.join(", ")}</td>
                   <td className="hidden px-4 py-3 text-right font-bold text-slate-900 md:table-cell">
                     {normalizeDisplayedPriceText(product.priceLabel)}
                   </td>
@@ -2064,43 +2064,32 @@ export default function ConferenceSystemPage() {
               key={brand.title}
               className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md md:p-6"
             >
-              <div className="flex items-start justify-between gap-3">
+              <div className="flex items-start justify-between gap-2">
                 <div
-                  className="flex min-h-16 w-full items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-center"
+                  className="flex min-h-12 w-full items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-center"
                   aria-label={`${brand.title} brand logo space`}
                 >
                   <a
                     href={brand.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-lg font-extrabold tracking-[0.12em] text-slate-950 transition hover:text-orange-600"
+                    className="text-[15px] font-extrabold tracking-[0.1em] text-slate-950 transition hover:text-orange-600 lg:text-[16px]"
                     aria-label={`Visit ${brand.title} official website`}
                   >
                     {brand.logoText}
                   </a>
                 </div>
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-sm font-extrabold text-orange-600">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-[11px] font-extrabold text-orange-600">
                   OK
                 </div>
               </div>
-              <div className="mt-5">
+              <div className="mt-4">
                 <span className="inline-flex rounded-full bg-orange-50 px-3 py-1 text-xs font-extrabold text-orange-700">
                   {brand.badge}
                 </span>
               </div>
-              <a
-                href={brand.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 block text-xl font-extrabold leading-snug text-slate-950 underline-offset-4 transition hover:text-orange-600 hover:underline"
-              >
-                {brand.title}
-              </a>
-              <p className="mt-2 text-sm font-semibold leading-6 text-slate-700">{brand.category}</p>
-              <p className="mt-4 text-sm leading-6 text-slate-600">{brand.description}</p>
-              <div className="mt-auto pt-5">
-                <span className="block h-1 w-10 rounded-full bg-orange-500/80" aria-hidden="true" />
-              </div>
+              <p className="mt-3 text-sm font-semibold leading-6 text-slate-700">{brand.category}</p>
+              <p className="mt-3 text-sm leading-6 text-slate-600">{brand.description}</p>
             </article>
           ))}
         </div>

@@ -136,7 +136,9 @@ const CardGrid = ({ items }: { items: { t: string; d: string; bullets?: string[]
     <div className="hidden gap-4 md:grid md:grid-cols-3">
       {items.map((x) => (
         <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
-          <div className="text-lg font-bold text-slate-900">{x.t}</div>
+          <div className="overflow-hidden text-ellipsis whitespace-nowrap text-[15px] font-extrabold tracking-tight text-slate-900 lg:text-[16px]">
+            {x.t}
+          </div>
           <p className="mt-2 text-sm text-slate-600 leading-7">{x.d}</p>
           {x.bullets?.length ? (
             <ul className="mt-3 space-y-2 text-sm text-slate-700">
@@ -1168,7 +1170,6 @@ export default function RentalProductsPage() {
     </div>
   );
 }
-
 
 
 

@@ -291,7 +291,6 @@ const MobileParityCardGrid = ({
               ))}
             </ul>
           ) : null}
-          <div className="mt-4 h-1 w-10 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
         </article>
       ))}
     </div>
@@ -389,7 +388,7 @@ export default function DigitalPodiumPage() {
           homeBreadcrumb(),
           { href: "/digital-podium/", label: "Digital Podium", current: true },
         ]}
-        className="relative left-1/2 right-1/2 -mx-[50vw] mb-0 hidden w-screen pt-0 text-sm text-slate-600 md:block"
+        className="hidden"
         panelClassName="rounded-none border-x-0 border-t-0 px-4 py-3 shadow-none md:px-10"
         backButtonClassName="rounded-md"
       />

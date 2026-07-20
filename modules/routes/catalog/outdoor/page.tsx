@@ -133,9 +133,11 @@ const CardGrid = ({ items }: { items: { i?: string; t: string; d: string; bullet
     <div className="hidden gap-4 md:grid md:grid-cols-3">
       {items.map((x) => (
         <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
-          <div className="flex items-center gap-2 text-lg font-bold text-slate-900">
+          <div className="flex items-center gap-2 text-slate-900">
             {x.i ? <span aria-hidden="true">{x.i}</span> : null}
-            <span>{x.t}</span>
+            <span className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[15px] font-extrabold leading-tight tracking-tight lg:text-[16px]">
+              {x.t}
+            </span>
           </div>
           <p className="mt-2 text-sm text-slate-600 leading-7">{x.d}</p>
           {x.bullets?.length ? (
@@ -484,7 +486,6 @@ export default function OutdoorProductsPage() {
                 <span>{x.t}</span>
               </div>
               <p className="mt-2 text-sm leading-7 text-slate-600">{x.d}</p>
-              <div className="mt-4 h-1 w-12 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
             </div>
           ))}
         </div>
@@ -513,14 +514,17 @@ export default function OutdoorProductsPage() {
             },
           ].map((x) => (
             <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
-              <div className="flex items-center gap-2 text-base font-extrabold text-slate-900">
-                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-sm" aria-hidden="true">
-                  {x.i}
+              <div className="flex items-center gap-2 text-slate-900">
+                {x.i ? (
+                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-sm" aria-hidden="true">
+                    {x.i}
+                  </span>
+                ) : null}
+                <span className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[15px] font-extrabold leading-tight tracking-tight lg:text-[16px]">
+                  {x.t}
                 </span>
-                <span>{x.t}</span>
               </div>
               <p className="mt-2 text-sm leading-7 text-slate-600">{x.d}</p>
-              <div className="mt-4 h-1 w-12 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
             </div>
           ))}
         </div>
@@ -713,8 +717,8 @@ export default function OutdoorProductsPage() {
 
         <div className="hidden overflow-hidden rounded-3xl border md:block" style={{ borderColor: `${BRAND.maroon}12` }}>
           <div className="grid md:grid-cols-3">
-            <div className="bg-slate-50 p-5 text-sm font-bold text-slate-800">Parameter</div>
-            <div className="bg-white p-5 text-sm font-bold text-slate-800">Outdoor LED Display</div>
+            <div className="border-b border-r border-slate-200 bg-slate-50 p-5 text-sm font-bold text-slate-800">Parameter</div>
+            <div className="border-b border-r border-slate-200 bg-white p-5 text-sm font-bold text-slate-800">Outdoor LED Display</div>
             <div className="bg-white p-5 text-sm font-bold text-slate-800">Indoor LED Display</div>
 
             {[
@@ -728,9 +732,9 @@ export default function OutdoorProductsPage() {
               ["Price range", "Varies by pitch, brightness class, structure, and weather protection scope.", "Varies by fine pitch level, resolution demand, and installation design."],
             ].map(([k, a, b]) => (
               <div key={k} className="contents">
-                <div className="bg-slate-50 p-5 text-sm text-slate-700">{k}</div>
-                <div className="bg-white p-5 text-sm text-slate-700">{a}</div>
-                <div className="bg-white p-5 text-sm text-slate-700">{b}</div>
+                <div className="border-b border-r border-slate-200 bg-slate-50 p-5 text-sm text-slate-700">{k}</div>
+                <div className="border-b border-r border-slate-200 bg-white p-5 text-sm text-slate-700">{a}</div>
+                <div className="border-b border-slate-200 bg-white p-5 text-sm text-slate-700">{b}</div>
               </div>
             ))}
           </div>
@@ -1406,15 +1410,15 @@ export default function OutdoorProductsPage() {
         </details>
 
         <div className="hidden overflow-hidden rounded-3xl border md:block" style={{ borderColor: `${BRAND.maroon}18` }}>
-          <div className="grid grid-cols-12 gap-0 bg-emerald-50 px-4 py-3 text-[11px] font-extrabold uppercase tracking-wide text-slate-700">
-            <div className="col-span-7">Outdoor LED Model</div>
-            <div className="col-span-3 text-center">Pixel Pitch</div>
+          <div className="grid grid-cols-12 gap-0 border-b border-slate-200 bg-emerald-50 px-4 py-3 text-[11px] font-extrabold uppercase tracking-wide text-slate-700">
+            <div className="col-span-7 border-r border-slate-200">Outdoor LED Model</div>
+            <div className="col-span-3 border-r border-slate-200 text-center">Pixel Pitch</div>
             <div className="col-span-2 text-right">Approx. Price (Per Sq.Ft)</div>
           </div>
-          <div>
+          <div className="divide-y divide-slate-200">
             {outdoorPriceRows.map(({ p, pitchNum, pitchLabel, price }) => (
               <div key={p.slug} className="grid grid-cols-12 items-center gap-0 bg-white px-4 py-3 text-sm">
-                <div className="col-span-7">
+                <div className="col-span-7 border-r border-slate-200 pr-4">
                   <Link
                     href={`/led-display/outdoor/${p.slug}/`}
                     className="font-semibold text-slate-900 hover:underline"
@@ -1425,7 +1429,7 @@ export default function OutdoorProductsPage() {
                   </Link>
                   <div className="mt-1 text-xs text-slate-500">{p.subtitle}</div>
                 </div>
-                <div className="col-span-3 text-center text-sm text-slate-700">{pitchNum != null ? `${pitchNum} mm` : pitchLabel}</div>
+                <div className="col-span-3 border-r border-slate-200 px-4 text-center text-sm text-slate-700">{pitchNum != null ? `${pitchNum} mm` : pitchLabel}</div>
                 <div className="col-span-2 text-right text-sm font-semibold text-slate-800">{price}</div>
               </div>
             ))}
@@ -1663,9 +1667,6 @@ export default function OutdoorProductsPage() {
     </div>
   );
 }
-
-
-
 
 
 

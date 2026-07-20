@@ -156,10 +156,6 @@ export default function ControlSystemsPage() {
                   ))}
                 </div>
 
-                <div
-                  className="mt-5 h-1 w-10 rounded-full transition-all group-hover:w-20"
-                  style={{ background: `${BRAND.maroon}B3` }}
-                />
                 <div className="mt-3 text-sm font-bold" style={{ color: BRAND.maroon }}>
                   View details -&gt;
                 </div>

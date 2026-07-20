@@ -1592,14 +1592,11 @@ export default function PaSystemPage() {
                 <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-orange-600">
                   <PaSolutionIcon name={processStep.icon} />
                 </div>
-                <div className="relative mt-5 text-lg font-extrabold leading-snug text-slate-950">
+                <div className="relative mt-5 overflow-hidden text-ellipsis whitespace-nowrap text-[15px] font-extrabold leading-tight tracking-tight text-slate-950 lg:text-[16px]">
                   <span className="sr-only">Step {processStep.step}: </span>
                   {processStep.title}
                 </div>
                 <p className="relative mt-3 text-sm leading-6 text-slate-600">{processStep.description}</p>
-                <div className="mt-auto pt-5">
-                  <span className="block h-1 w-10 rounded-full bg-orange-500/80" aria-hidden="true" />
-                </div>
               </article>
             </li>
           ))}
@@ -1693,11 +1690,10 @@ export default function PaSystemPage() {
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-orange-600 transition-colors group-hover:bg-orange-100">
                 <PaSolutionIcon name={feature.icon} />
               </div>
-              <div className="mt-5 text-lg font-extrabold leading-snug text-slate-950">{feature.title}</div>
-              <p className="mt-3 text-sm leading-6 text-slate-600">{feature.description}</p>
-              <div className="mt-auto pt-5">
-                <span className="block h-1 w-10 rounded-full bg-orange-500/80" aria-hidden="true" />
+              <div className="mt-5 overflow-hidden text-ellipsis whitespace-nowrap text-[15px] font-extrabold leading-tight tracking-tight text-slate-950 lg:text-[16px]">
+                {feature.title}
               </div>
+              <p className="mt-3 text-sm leading-6 text-slate-600">{feature.description}</p>
             </article>
           ))}
         </div>
@@ -1795,43 +1791,32 @@ export default function PaSystemPage() {
               key={brand.title}
               className="pa-brand-showcase__card group flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_14px_34px_rgba(15,23,42,0.06)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(15,23,42,0.10)] md:p-6"
             >
-              <div className="flex items-start justify-between gap-3">
+              <div className="flex items-start justify-between gap-2">
                 <div
-                  className="pa-brand-showcase__logo flex min-h-16 w-full items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-center"
+                  className="pa-brand-showcase__logo flex min-h-12 w-full items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-center"
                   aria-label={`${brand.title} brand logo space`}
                 >
                   <a
                     href={brand.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-lg font-extrabold tracking-[0.12em] text-slate-950 transition hover:text-orange-600"
+                    className="text-[15px] font-extrabold tracking-[0.1em] text-slate-950 transition hover:text-orange-600 lg:text-[16px]"
                     aria-label={`Visit ${brand.title} official website`}
                   >
                     {brand.logoText}
                   </a>
                 </div>
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-orange-600">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-600">
                   <PaSolutionIcon name="verifiedShield" />
                 </div>
               </div>
-              <div className="mt-5">
+              <div className="mt-4">
                 <span className="inline-flex rounded-full bg-orange-50 px-3 py-1 text-xs font-extrabold text-orange-700">
                   {brand.badge}
                 </span>
               </div>
-              <a
-                href={brand.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 block text-xl font-extrabold leading-snug text-slate-950 underline-offset-4 transition hover:text-orange-600 hover:underline"
-              >
-                {brand.title}
-              </a>
-              <p className="mt-2 text-sm font-semibold leading-6 text-slate-700">{brand.category}</p>
-              <p className="mt-4 text-sm leading-6 text-slate-600">{brand.description}</p>
-              <div className="mt-auto pt-5">
-                <span className="block h-1 w-10 rounded-full bg-orange-500/80" aria-hidden="true" />
-              </div>
+              <p className="mt-3 text-sm font-semibold leading-6 text-slate-700">{brand.category}</p>
+              <p className="mt-3 text-sm leading-6 text-slate-600">{brand.description}</p>
             </article>
           ))}
         </div>
@@ -1977,7 +1962,6 @@ export default function PaSystemPage() {
             >
               <div className="text-base font-extrabold text-slate-900">{x.t}</div>
               <p className="mt-2 text-sm leading-6 text-slate-600">{x.d}</p>
-              <div className="mt-4 h-1 w-10 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
             </div>
           ))}
         </div>

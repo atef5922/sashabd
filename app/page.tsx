@@ -837,7 +837,6 @@ export default function HomePage() {
                         </div>
                       </div>
 
-                      <div className="mt-4 h-1 w-10 rounded-full transition-all group-hover:w-20" style={{ background: `linear-gradient(90deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }} />
                       <div className="mt-3 text-xs font-semibold text-slate-600 leading-6">Installation | Calibration | Support</div>
                     </div>
                   ))}
@@ -862,7 +861,6 @@ export default function HomePage() {
     </div>
   );
 }
-
 
 
 

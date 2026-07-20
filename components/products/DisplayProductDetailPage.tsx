@@ -560,9 +560,6 @@ export default function DisplayProductDetailPage({
                   <div className="line-clamp-2 text-lg font-semibold text-slate-900">{item.title}</div>
                 </Link>
                 {item.cardPrice ? <p className="mt-1 text-sm font-semibold text-sky-700">{normalizeDisplayedPriceText(item.cardPrice)}</p> : null}
-
-	                <div className="mt-5 h-1 w-10 rounded-full bg-[#FF6A00]/70" />
-
                 <div className="mt-3 flex items-center justify-between gap-3">
                   <Link
                     href="/contact"

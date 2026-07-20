@@ -129,7 +129,9 @@ const CardGrid = ({ items }: { items: { t: string; d: string; bullets?: string[]
     <div className="hidden gap-4 md:grid md:grid-cols-3">
       {items.map((x) => (
         <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
-          <div className="text-lg font-bold text-slate-900">{x.t}</div>
+          <div className="overflow-hidden text-ellipsis whitespace-nowrap text-[15px] font-extrabold tracking-tight text-slate-900 lg:text-[16px]">
+            {x.t}
+          </div>
           <p className="mt-2 text-sm text-slate-600 leading-7">{x.d}</p>
           {x.bullets?.length ? (
             <ul className="mt-3 space-y-2 text-sm text-slate-700">
@@ -341,7 +343,6 @@ export default function IndoorProductsPage() {
                 <span>{x.t}</span>
               </div>
               <p className="mt-2 text-sm leading-7 text-slate-600">{x.d}</p>
-              <div className="mt-4 h-1 w-12 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
             </div>
           ))}
         </div>
@@ -370,14 +371,17 @@ export default function IndoorProductsPage() {
             },
           ].map((x) => (
             <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
-              <div className="flex items-center gap-2 text-base font-extrabold text-slate-900">
-                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-sm" aria-hidden="true">
-                  {x.i}
+              <div className="flex items-center gap-2 text-slate-900">
+                {x.i ? (
+                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-sm" aria-hidden="true">
+                    {x.i}
+                  </span>
+                ) : null}
+                <span className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[15px] font-extrabold leading-tight tracking-tight lg:text-[16px]">
+                  {x.t}
                 </span>
-                <span>{x.t}</span>
               </div>
               <p className="mt-2 text-sm leading-7 text-slate-600">{x.d}</p>
-              <div className="mt-4 h-1 w-12 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
             </div>
           ))}
         </div>
@@ -621,8 +625,8 @@ export default function IndoorProductsPage() {
 
         <div className="hidden overflow-x-auto rounded-3xl border md:block" style={{ borderColor: `${BRAND.maroon}12` }}>
           <div className="grid min-w-[680px] md:min-w-0 md:grid-cols-3">
-            <div className="bg-slate-50 p-5 text-sm font-bold text-slate-800">Topic</div>
-            <div className="bg-white p-5 text-sm font-bold text-slate-800">Indoor LED</div>
+            <div className="border-b border-r border-slate-200 bg-slate-50 p-5 text-sm font-bold text-slate-800">Topic</div>
+            <div className="border-b border-r border-slate-200 bg-white p-5 text-sm font-bold text-slate-800">Indoor LED</div>
             <div className="bg-white p-5 text-sm font-bold text-slate-800">Outdoor LED</div>
 
             {[
@@ -633,9 +637,9 @@ export default function IndoorProductsPage() {
               ["Power/Surge", "Stable power + grounding", "Grounding + SPD strongly recommended"],
             ].map(([k, a, b]) => (
               <div key={k} className="contents">
-                <div className="bg-slate-50 p-5 text-sm text-slate-700">{k}</div>
-                <div className="bg-white p-5 text-sm text-slate-700">{a}</div>
-                <div className="bg-white p-5 text-sm text-slate-700">{b}</div>
+                <div className="border-b border-r border-slate-200 bg-slate-50 p-5 text-sm text-slate-700">{k}</div>
+                <div className="border-b border-r border-slate-200 bg-white p-5 text-sm text-slate-700">{a}</div>
+                <div className="border-b border-slate-200 bg-white p-5 text-sm text-slate-700">{b}</div>
               </div>
             ))}
           </div>
@@ -797,8 +801,8 @@ export default function IndoorProductsPage() {
 
         <div className="hidden overflow-x-auto rounded-3xl border md:block" style={{ borderColor: `${BRAND.maroon}12` }}>
           <div className="grid min-w-[760px] md:min-w-0 md:grid-cols-3">
-            <div className="bg-slate-50 p-5 text-sm font-bold text-slate-800">Comparison Point</div>
-            <div className="bg-white p-5 text-sm font-bold text-slate-800">Indoor LED Display</div>
+            <div className="border-b border-r border-slate-200 bg-slate-50 p-5 text-sm font-bold text-slate-800">Comparison Point</div>
+            <div className="border-b border-r border-slate-200 bg-white p-5 text-sm font-bold text-slate-800">Indoor LED Display</div>
             <div className="bg-white p-5 text-sm font-bold text-slate-800">LCD Video Wall</div>
 
             {[
@@ -810,9 +814,9 @@ export default function IndoorProductsPage() {
               ["Best Use Case", "Showrooms, command centers, corporate lobbies, and premium indoor brand displays.", "Meeting rooms, monitoring walls, and budget-focused tiled display setups."],
             ].map(([k, a, b]) => (
               <div key={k} className="contents">
-                <div className="bg-slate-50 p-5 text-sm text-slate-700">{k}</div>
-                <div className="bg-white p-5 text-sm text-slate-700">{a}</div>
-                <div className="bg-white p-5 text-sm text-slate-700">{b}</div>
+                <div className="border-b border-r border-slate-200 bg-slate-50 p-5 text-sm text-slate-700">{k}</div>
+                <div className="border-b border-r border-slate-200 bg-white p-5 text-sm text-slate-700">{a}</div>
+                <div className="border-b border-slate-200 bg-white p-5 text-sm text-slate-700">{b}</div>
               </div>
             ))}
           </div>
@@ -927,9 +931,9 @@ export default function IndoorProductsPage() {
 
         <div className="hidden overflow-x-auto rounded-3xl border md:block" style={{ borderColor: `${BRAND.maroon}12` }}>
           <div className="grid min-w-[820px] md:min-w-0 md:grid-cols-4">
-            <div className="bg-slate-50 p-5 text-sm font-bold text-slate-800">Viewing Distance</div>
-            <div className="bg-white p-5 text-sm font-bold text-slate-800">Content Priority</div>
-            <div className="bg-white p-5 text-sm font-bold text-slate-800">Recommended Pixel Pitch</div>
+            <div className="border-b border-r border-slate-200 bg-slate-50 p-5 text-sm font-bold text-slate-800">Viewing Distance</div>
+            <div className="border-b border-r border-slate-200 bg-white p-5 text-sm font-bold text-slate-800">Content Priority</div>
+            <div className="border-b border-r border-slate-200 bg-white p-5 text-sm font-bold text-slate-800">Recommended Pixel Pitch</div>
             <div className="bg-white p-5 text-sm font-bold text-slate-800">Best Indoor Scenario</div>
 
             {[
@@ -939,10 +943,10 @@ export default function IndoorProductsPage() {
               ["6m+", "Large visuals, less micro-detail", "P3", "Large indoor stages, event halls, atrium displays"],
             ].map(([distance, content, pitch, scenario]) => (
               <div key={distance} className="contents">
-                <div className="bg-slate-50 p-5 text-sm text-slate-700">{distance}</div>
-                <div className="bg-white p-5 text-sm text-slate-700">{content}</div>
-                <div className="bg-white p-5 text-sm font-semibold text-slate-800">{pitch}</div>
-                <div className="bg-white p-5 text-sm text-slate-700">{scenario}</div>
+                <div className="border-b border-r border-slate-200 bg-slate-50 p-5 text-sm text-slate-700">{distance}</div>
+                <div className="border-b border-r border-slate-200 bg-white p-5 text-sm text-slate-700">{content}</div>
+                <div className="border-b border-r border-slate-200 bg-white p-5 text-sm font-semibold text-slate-800">{pitch}</div>
+                <div className="border-b border-slate-200 bg-white p-5 text-sm text-slate-700">{scenario}</div>
               </div>
             ))}
           </div>

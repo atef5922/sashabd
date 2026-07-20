@@ -426,7 +426,6 @@ const MobileParityCardGrid = ({
               ))}
             </ul>
           ) : null}
-          <div className="mt-4 h-1 w-10 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
         </article>
       ))}
     </div>
@@ -526,7 +525,7 @@ export default function InteractiveFlatPanelPage() {
           homeBreadcrumb(),
           { href: "/interactive-flat-panel/", label: "Interactive Flat Panel", current: true },
         ]}
-        className="relative left-1/2 right-1/2 -mx-[50vw] mb-0 hidden w-screen pt-0 text-sm text-slate-600 md:block"
+        className="hidden"
         panelClassName="rounded-none border-x-0 border-t-0 px-4 py-3 shadow-none md:px-10"
         backButtonClassName="rounded-md"
       />
@@ -715,19 +714,19 @@ export default function InteractiveFlatPanelPage() {
         />
 
         <div className="hidden rounded-3xl border bg-slate-50 p-6 md:block" style={{ borderColor: `${BRAND.maroon}12` }}>
-          <table className="w-full table-fixed text-left text-sm">
+          <table className="w-full table-fixed border-collapse text-left text-sm">
             <thead>
-              <tr className="bg-white/60">
-                <th className="w-[18%] px-4 py-3 align-top font-extrabold text-slate-900">Screen size</th>
-                <th className="w-[30%] px-4 py-3 align-top font-extrabold text-slate-900">Indicative price (BDT)</th>
+              <tr className="border-b border-slate-200 bg-white/70">
+                <th className="w-[18%] border-r border-slate-200 px-4 py-3 align-top font-extrabold text-slate-900">Screen size</th>
+                <th className="w-[30%] border-r border-slate-200 px-4 py-3 align-top font-extrabold text-slate-900">Indicative price (BDT)</th>
                 <th className="w-[52%] px-4 py-3 align-top font-extrabold text-slate-900">Most common use</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-slate-200">
               {priceRows.map((row) => (
                 <tr key={row.size}>
-                  <td className="px-4 py-3 align-top font-semibold text-slate-900 break-words">{row.size}</td>
-                  <td className="px-4 py-3 align-top font-semibold text-slate-700 break-words">{row.price}</td>
+                  <td className="border-r border-slate-200 px-4 py-3 align-top font-semibold text-slate-900 break-words">{row.size}</td>
+                  <td className="border-r border-slate-200 px-4 py-3 align-top font-semibold text-slate-700 break-words">{row.price}</td>
                   <td className="px-4 py-3 align-top text-slate-700 break-words">{row.use}</td>
                 </tr>
               ))}
@@ -782,19 +781,19 @@ export default function InteractiveFlatPanelPage() {
               Use this quick guide when the farthest seat matters. For precise sizing, share your room layout and seating depth.
             </p>
             <div className="mt-4">
-              <table className="w-full table-fixed text-left text-sm">
+              <table className="w-full table-fixed border-collapse text-left text-sm">
                 <thead>
-                  <tr className="bg-white/60">
-                    <th className="w-[22%] px-4 py-3 align-top font-extrabold text-slate-900">Viewing distance</th>
-                    <th className="w-[22%] px-4 py-3 align-top font-extrabold text-slate-900">Recommended size</th>
+                  <tr className="border-b border-slate-200 bg-white/70">
+                    <th className="w-[22%] border-r border-slate-200 px-4 py-3 align-top font-extrabold text-slate-900">Viewing distance</th>
+                    <th className="w-[22%] border-r border-slate-200 px-4 py-3 align-top font-extrabold text-slate-900">Recommended size</th>
                     <th className="w-[56%] px-4 py-3 align-top font-extrabold text-slate-900">Typical room</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-slate-200">
                   {viewingDistanceRows.map((row) => (
                     <tr key={row.distance}>
-                      <td className="px-4 py-3 align-top font-semibold text-slate-900 break-words">{row.distance}</td>
-                      <td className="px-4 py-3 align-top text-slate-700 break-words">{row.size}</td>
+                      <td className="border-r border-slate-200 px-4 py-3 align-top font-semibold text-slate-900 break-words">{row.distance}</td>
+                      <td className="border-r border-slate-200 px-4 py-3 align-top text-slate-700 break-words">{row.size}</td>
                       <td className="px-4 py-3 align-top text-slate-700 break-words">{row.room}</td>
                     </tr>
                   ))}
@@ -817,7 +816,6 @@ export default function InteractiveFlatPanelPage() {
                 </li>
               ))}
             </ul>
-            <div className="mt-5 h-1 w-10 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
           </div>
         </div>
       </SectionShell>
@@ -863,19 +861,19 @@ export default function InteractiveFlatPanelPage() {
         />
 
         <div className="hidden rounded-3xl border bg-slate-50 p-6 md:block" style={{ borderColor: `${BRAND.maroon}12` }}>
-          <table className="w-full table-fixed text-left text-sm">
+          <table className="w-full table-fixed border-collapse text-left text-sm">
             <thead>
-              <tr className="bg-white/60">
-                <th className="w-[28%] px-4 py-3 align-top font-extrabold text-slate-900">Use case</th>
-                <th className="w-[20%] px-4 py-3 align-top font-extrabold text-slate-900">Recommended size</th>
+              <tr className="border-b border-slate-200 bg-white/70">
+                <th className="w-[28%] border-r border-slate-200 px-4 py-3 align-top font-extrabold text-slate-900">Use case</th>
+                <th className="w-[20%] border-r border-slate-200 px-4 py-3 align-top font-extrabold text-slate-900">Recommended size</th>
                 <th className="w-[52%] px-4 py-3 align-top font-extrabold text-slate-900">Key focus</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-slate-200">
               {useCaseRows.map((row) => (
                 <tr key={row.use}>
-                  <td className="px-4 py-3 align-top font-semibold text-slate-900 break-words">{row.use}</td>
-                  <td className="px-4 py-3 align-top text-slate-700 break-words">{row.size}</td>
+                  <td className="border-r border-slate-200 px-4 py-3 align-top font-semibold text-slate-900 break-words">{row.use}</td>
+                  <td className="border-r border-slate-200 px-4 py-3 align-top text-slate-700 break-words">{row.size}</td>
                   <td className="px-4 py-3 align-top text-slate-700 break-words">{row.focus}</td>
                 </tr>
               ))}

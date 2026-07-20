@@ -390,7 +390,9 @@ export default function ServicesPage() {
                     {s.icon}
                   </div>
                   <div className="min-w-0">
-                    <div className="text-lg font-semibold text-slate-900">{s.title}</div>
+                    <div className="overflow-hidden text-ellipsis whitespace-nowrap text-[15px] font-extrabold tracking-tight text-slate-900 lg:text-[16px]">
+                      {s.title}
+                    </div>
                     <p className="mt-2 text-sm leading-6 text-slate-600">{s.desc}</p>
 
                     <ul className="mt-4 space-y-2 text-sm text-slate-700">
@@ -401,8 +403,6 @@ export default function ServicesPage() {
                         </li>
                       ))}
                     </ul>
-
-                    <div className="mt-5 h-1 w-12 rounded-full" style={{ background: `${MAROON}B3` }} />
                   </div>
                 </div>
               </div>
@@ -639,7 +639,6 @@ export default function ServicesPage() {
                 </div>
                 <div className="mt-2 text-lg font-semibold text-slate-900">{s.t}</div>
                 <p className="mt-2 text-sm leading-6 text-slate-600">{s.d}</p>
-                <div className="mt-5 h-1 w-10 rounded-full" style={{ background: `${MAROON}B3` }} />
               </div>
             ))}
           </div>

@@ -587,19 +587,19 @@ export function RentGuideContent() {
           <span>Event Suitability Matrix for Rental LED Screen </span>
         </h2>
         <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200">
-          <table className="w-full text-left text-sm text-slate-700">
+          <table className="w-full border-collapse text-left text-sm text-slate-700">
             <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
               <tr>
-                <th className="px-4 py-3">Event Type</th>
-                <th className="px-4 py-3">Rental Fit</th>
+                <th className="border-r border-slate-200 px-4 py-3">Event Type</th>
+                <th className="border-r border-slate-200 px-4 py-3">Rental Fit</th>
                 <th className="px-4 py-3">Why It Works</th>
               </tr>
             </thead>
             <tbody>
               {eventFitMatrix.map((row) => (
                 <tr key={row.type} className="border-t border-slate-100">
-                  <td className="px-4 py-3 font-semibold text-slate-900">{row.type}</td>
-                  <td className="px-4 py-3">{row.fit}</td>
+                  <td className="border-r border-slate-200 px-4 py-3 font-semibold text-slate-900">{row.type}</td>
+                  <td className="border-r border-slate-200 px-4 py-3">{row.fit}</td>
                   <td className="px-4 py-3">{row.note}</td>
                 </tr>
               ))}
@@ -633,21 +633,21 @@ export function RentGuideContent() {
           depends on show duration, screen dimension, and support scope.
         </p>
         <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200">
-          <table className="w-full text-left text-sm text-slate-700">
+          <table className="w-full border-collapse text-left text-sm text-slate-700">
             <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
               <tr>
-                <th className="px-4 py-3">Event Type</th>
-                <th className="px-4 py-3">Typical Setup</th>
-                <th className="px-4 py-3">Budget Trend</th>
+                <th className="border-r border-slate-200 px-4 py-3">Event Type</th>
+                <th className="border-r border-slate-200 px-4 py-3">Typical Setup</th>
+                <th className="border-r border-slate-200 px-4 py-3">Budget Trend</th>
                 <th className="px-4 py-3">Rental Note</th>
               </tr>
             </thead>
             <tbody>
               {rentalPriceGuideRows.map((row) => (
                 <tr key={row.eventType} className="border-t border-slate-100">
-                  <td className="px-4 py-3 font-semibold text-slate-900">{row.eventType}</td>
-                  <td className="px-4 py-3">{row.setupScale}</td>
-                  <td className="px-4 py-3">{row.budgetTrend}</td>
+                  <td className="border-r border-slate-200 px-4 py-3 font-semibold text-slate-900">{row.eventType}</td>
+                  <td className="border-r border-slate-200 px-4 py-3">{row.setupScale}</td>
+                  <td className="border-r border-slate-200 px-4 py-3">{row.budgetTrend}</td>
                   <td className="px-4 py-3">{row.note}</td>
                 </tr>
               ))}

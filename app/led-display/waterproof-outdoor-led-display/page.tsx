@@ -597,28 +597,28 @@ export default function WaterproofOutdoorLedDisplayPage() {
           <span>Comparison: Standard Outdoor vs Waterproof Outdoor Display</span>
         </h2>
         <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200">
-          <table className="w-full text-left text-sm text-slate-700">
+          <table className="w-full border-collapse text-left text-sm text-slate-700">
             <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
               <tr>
-                <th className="px-4 py-3">Parameter</th>
-                <th className="px-4 py-3">Standard Outdoor</th>
+                <th className="border-r border-slate-200 px-4 py-3">Parameter</th>
+                <th className="border-r border-slate-200 px-4 py-3">Standard Outdoor</th>
                 <th className="px-4 py-3">Waterproof Outdoor</th>
               </tr>
             </thead>
             <tbody>
               <tr className="border-t border-slate-100">
-                <td className="px-4 py-3 font-semibold text-slate-900">Weather tolerance</td>
-                <td className="px-4 py-3">Moderate</td>
+                <td className="border-r border-slate-200 px-4 py-3 font-semibold text-slate-900">Weather tolerance</td>
+                <td className="border-r border-slate-200 px-4 py-3">Moderate</td>
                 <td className="px-4 py-3">High for rain and humidity scenarios</td>
               </tr>
               <tr className="border-t border-slate-100">
-                <td className="px-4 py-3 font-semibold text-slate-900">Maintenance risk</td>
-                <td className="px-4 py-3">Higher in exposed sites</td>
+                <td className="border-r border-slate-200 px-4 py-3 font-semibold text-slate-900">Maintenance risk</td>
+                <td className="border-r border-slate-200 px-4 py-3">Higher in exposed sites</td>
                 <td className="px-4 py-3">Lower when installed with correct safety stack</td>
               </tr>
               <tr className="border-t border-slate-100">
-                <td className="px-4 py-3 font-semibold text-slate-900">Best fit</td>
-                <td className="px-4 py-3">Semi-covered installations</td>
+                <td className="border-r border-slate-200 px-4 py-3 font-semibold text-slate-900">Best fit</td>
+                <td className="border-r border-slate-200 px-4 py-3">Semi-covered installations</td>
                 <td className="px-4 py-3">Roadside, rooftop, and open public zones</td>
               </tr>
             </tbody>
@@ -654,19 +654,19 @@ export default function WaterproofOutdoorLedDisplayPage() {
           <span>Risk Matrix for Outdoor Waterproof LED Display Projects</span>
         </h2>
         <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200">
-          <table className="w-full text-left text-sm text-slate-700">
+          <table className="w-full border-collapse text-left text-sm text-slate-700">
             <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
               <tr>
-                <th className="px-4 py-3">Risk</th>
-                <th className="px-4 py-3">Possible Impact</th>
+                <th className="border-r border-slate-200 px-4 py-3">Risk</th>
+                <th className="border-r border-slate-200 px-4 py-3">Possible Impact</th>
                 <th className="px-4 py-3">Control Action</th>
               </tr>
             </thead>
             <tbody>
               {riskMatrix.map((row) => (
                 <tr key={row.risk} className="border-t border-slate-100">
-                  <td className="px-4 py-3 font-semibold text-slate-900">{row.risk}</td>
-                  <td className="px-4 py-3">{row.impact}</td>
+                  <td className="border-r border-slate-200 px-4 py-3 font-semibold text-slate-900">{row.risk}</td>
+                  <td className="border-r border-slate-200 px-4 py-3">{row.impact}</td>
                   <td className="px-4 py-3">{row.control}</td>
                 </tr>
               ))}
@@ -722,19 +722,19 @@ export default function WaterproofOutdoorLedDisplayPage() {
           Choosing the right IP level helps align hardware durability with real weather exposure and maintenance workload.
         </p>
         <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200">
-          <table className="w-full text-left text-sm text-slate-700">
+          <table className="w-full border-collapse text-left text-sm text-slate-700">
             <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
               <tr>
-                <th className="px-4 py-3">IP Level</th>
-                <th className="px-4 py-3">Protection Scope</th>
+                <th className="border-r border-slate-200 px-4 py-3">IP Level</th>
+                <th className="border-r border-slate-200 px-4 py-3">Protection Scope</th>
                 <th className="px-4 py-3">Best Fit Scenario</th>
               </tr>
             </thead>
             <tbody>
               {ipGuideRows.map((row) => (
                 <tr key={row.rating} className="border-t border-slate-100">
-                  <td className="px-4 py-3 font-semibold text-slate-900">{row.rating}</td>
-                  <td className="px-4 py-3">{row.protection}</td>
+                  <td className="border-r border-slate-200 px-4 py-3 font-semibold text-slate-900">{row.rating}</td>
+                  <td className="border-r border-slate-200 px-4 py-3">{row.protection}</td>
                   <td className="px-4 py-3">{row.bestFor}</td>
                 </tr>
               ))}

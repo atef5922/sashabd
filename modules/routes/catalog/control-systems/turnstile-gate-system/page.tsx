@@ -1019,7 +1019,6 @@ export default function TurnstileGateSystemPage() {
             >
               <div className="text-lg font-extrabold text-slate-900">{x.title}</div>
               <div className="mt-2 text-sm leading-6 text-slate-600">{x.desc}</div>
-              <div className="mt-4 h-1 w-10 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
             </div>
           ))}
         </div>
@@ -1078,7 +1077,6 @@ export default function TurnstileGateSystemPage() {
             >
               <div className="text-lg font-extrabold text-slate-900">{x.title}</div>
               <div className="mt-2 text-sm leading-6 text-slate-600">{x.desc}</div>
-              <div className="mt-4 h-1 w-10 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
             </div>
           ))}
         </div>
@@ -1112,7 +1110,6 @@ export default function TurnstileGateSystemPage() {
             >
               <div className="text-lg font-extrabold text-slate-900">{x.title}</div>
               <div className="mt-2 text-sm leading-6 text-slate-600">{x.desc}</div>
-              <div className="mt-4 h-1 w-10 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
             </div>
           ))}
         </div>
@@ -1403,16 +1400,12 @@ export default function TurnstileGateSystemPage() {
                 >
                   {String(index + 1).padStart(2, "0")}
                 </div>
-                <div className="flex flex-1 flex-col">
-                  <h3 className="text-lg font-extrabold leading-snug text-slate-900">{feature.title}</h3>
+                <div className="flex min-w-0 flex-1 flex-col">
+                  <h3 className="overflow-hidden text-ellipsis whitespace-nowrap text-[15px] font-extrabold leading-tight tracking-tight text-slate-900 lg:text-[16px]">
+                    {feature.title}
+                  </h3>
                   <p className="mt-3 text-sm leading-7 text-slate-600">{feature.desc}</p>
                 </div>
-              </div>
-              <div className="mt-auto pt-5">
-                <div
-                  className="h-1.5 w-14 rounded-full transition-all duration-300 group-hover:w-24"
-                  style={{ background: "linear-gradient(90deg, #f97316, rgba(249,115,22,0.35))" }}
-                />
               </div>
             </article>
           ))}
@@ -1596,7 +1589,6 @@ export default function TurnstileGateSystemPage() {
                 <div className="text-base font-extrabold text-slate-900">{x.title}</div>
               </div>
               <div className="mt-3 text-sm leading-6 text-slate-600">{x.desc}</div>
-              <div className="mt-4 h-1 w-10 rounded-full" style={{ background: `${BRAND.maroon}B3` }} />
             </div>
           ))}
         </div>

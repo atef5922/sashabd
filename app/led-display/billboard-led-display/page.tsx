@@ -671,21 +671,21 @@ export default function BillboardLedDisplayPage() {
           by structure scope, installation condition, and site utility readiness.
         </p>
         <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200">
-          <table className="w-full text-left text-sm text-slate-700">
+          <table className="w-full border-collapse text-left text-sm text-slate-700">
             <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
               <tr>
-                <th className="px-4 py-3">Pixel Pitch</th>
-                <th className="px-4 py-3">Typical Viewing Context</th>
-                <th className="px-4 py-3">Budget Band</th>
+                <th className="border-r border-slate-200 px-4 py-3">Pixel Pitch</th>
+                <th className="border-r border-slate-200 px-4 py-3">Typical Viewing Context</th>
+                <th className="border-r border-slate-200 px-4 py-3">Budget Band</th>
                 <th className="px-4 py-3">Best Use</th>
               </tr>
             </thead>
             <tbody>
               {billboardPriceRows.map((row) => (
                 <tr key={row.pitch} className="border-t border-slate-100">
-                  <td className="px-4 py-3 font-semibold text-slate-900">{row.pitch}</td>
-                  <td className="px-4 py-3">{row.viewing}</td>
-                  <td className="px-4 py-3">{row.budgetBand}</td>
+                  <td className="border-r border-slate-200 px-4 py-3 font-semibold text-slate-900">{row.pitch}</td>
+                  <td className="border-r border-slate-200 px-4 py-3">{row.viewing}</td>
+                  <td className="border-r border-slate-200 px-4 py-3">{row.budgetBand}</td>
                   <td className="px-4 py-3">{row.bestUse}</td>
                 </tr>
               ))}
