@@ -18,6 +18,9 @@ const trustedTechPartnerLogos: Array<{ name: string; src: string; href?: string 
   { name: "Renex Digital", src: "/images/brands/renex-exact.webp", href: "https://renex.com.bd/" },
 ];
 
+const hiddenPartnerNames = new Set(["Absen", "Unilumin", "Leyard"]);
+const visibleTrustedTechPartnerLogos = trustedTechPartnerLogos.filter((brand) => !hiddenPartnerNames.has(brand.name));
+
 const featureTags = [
   "Quality-focused workflow",
   "Authorized brand ecosystem",
@@ -42,6 +45,24 @@ export default function TrustedTechnologyPartnersSection() {
   const marqueeTrackRef = useRef<HTMLDivElement | null>(null);
   const marqueeFrameRef = useRef<number | null>(null);
   const marqueeOffsetRef = useRef(0);
+  const trustedPartnersSubtitle =
+    "We use globally trusted LED display components in Bangladesh projects with LianTronics, AOTO Electronics, G-Energy, Lampro, NovaStar, Huidu, Colorlight, Mean Well, Mugnee Multiple Limited, and Renex Digital to ensure stable performance, reliable power, and long-term support.";
+  const trustedPartnersSubtitleContent = (
+    <>
+      We use globally trusted LED display components in Bangladesh projects with{" "}
+      <span className="font-bold text-slate-900">LianTronics</span>,{" "}
+      <span className="font-bold text-slate-900">AOTO Electronics</span>,{" "}
+      <span className="font-bold text-slate-900">G-Energy</span>,{" "}
+      <span className="font-bold text-slate-900">Lampro</span>,{" "}
+      <span className="font-bold text-slate-900">NovaStar</span>,{" "}
+      <span className="font-bold text-slate-900">Huidu</span>,{" "}
+      <span className="font-bold text-slate-900">Colorlight</span>,{" "}
+      <span className="font-bold text-slate-900">Mean Well</span>,{" "}
+      <span className="font-bold text-slate-900">Mugnee Multiple Limited</span>, and{" "}
+      <span className="font-bold text-slate-900">Renex Digital</span> to ensure stable performance, reliable power, and
+      long-term support.
+    </>
+  );
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -113,57 +134,23 @@ export default function TrustedTechnologyPartnersSection() {
   return (
     <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-slate-50/80 py-5 md:py-6">
       <div className="mx-auto w-full max-w-7xl px-4 py-1 md:px-6">
-        <h2 className="mx-auto flex max-w-5xl items-start justify-center gap-2 pb-0 text-center text-[1.55rem] font-bold leading-tight text-slate-900 after:hidden md:items-center md:text-2xl">
-          <span
-            className="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border bg-slate-50 text-slate-700 md:mt-0 md:h-8 md:w-8"
-            style={{ borderColor: "rgba(255,106,0,0.2)" }}
-            aria-hidden="true"
-          >
-            <svg viewBox="0 0 24 24" className="h-4 w-4 md:h-4.5 md:w-4.5" fill="none">
-              <path d="M12 3 5 6v6c0 4.2 2.7 7.2 7 9 4.3-1.8 7-4.8 7-9V6l-7-3Z" stroke="currentColor" strokeWidth="1.8" />
-              <path d="m9 12 2 2 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </span>
+        <h2 className="mx-auto flex max-w-5xl items-center justify-center gap-2 pb-0 text-center text-[1.45rem] font-bold leading-[1.25] text-slate-900 after:hidden md:text-2xl">
+          <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-slate-800" aria-hidden="true">
+            <path d="M4 12h16M12 4v16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+            <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
+          </svg>
           <span className="text-balance">Trusted Technology Partners & Authorized Brands</span>
         </h2>
 
         <div className="mx-auto mt-2 max-w-5xl text-center text-sm leading-6 text-slate-600">
-          <p className="hidden md:block">
-            We source trusted LED display components for Bangladesh projects with{" "}
-            <span className="font-bold text-slate-900" title="Absen" aria-label="Absen">
-              Absen
-            </span>
-            ,{" "}
-            <span className="font-bold text-slate-900" title="Unilumin" aria-label="Unilumin">
-              Unilumin
-            </span>
-            ,{" "}
-            <span className="font-bold text-slate-900" title="Leyard" aria-label="Leyard">
-              Leyard
-            </span>
-            ,{" "}
-            <span className="font-bold text-slate-900" title="LianTronics" aria-label="LianTronics">
-              LianTronics
-            </span>
-            , and{" "}
-            <span className="font-bold text-slate-900" title="AOTO Electronics" aria-label="AOTO Electronics">
-              AOTO Electronics
-            </span>{" "}
-            - plus NovaStar, Huidu, Colorlight, and Mean Well - for stable performance &amp; long-term support.
-          </p>
+          <p className="hidden md:block">{trustedPartnersSubtitleContent}</p>
 
           <div className="md:hidden">
             {mobileExpanded ? (
-              <p className="mx-auto text-[13px] leading-5 text-slate-600">
-                We source trusted LED display components for Bangladesh projects with{" "}
-                <span className="font-bold text-slate-900">Absen, Unilumin, Leyard, LianTronics, and AOTO Electronics</span>
-                {" "}plus <span className="font-bold text-slate-900">NovaStar, Huidu, Colorlight, and Mean Well</span> for
-                stable performance &amp; long-term support.
-              </p>
+              <p className="mx-auto text-[13px] leading-5 text-slate-600">{trustedPartnersSubtitleContent}</p>
             ) : (
               <p className="mx-auto max-w-full truncate text-[13px] leading-5">
-                We source trusted LED display components for Bangladesh projects with Absen, Unilumin, Leyard,
-                LianTronics, and AOTO Electronics...
+                We use globally trusted LED display components in Bangladesh projects with LianTronics, AOTO Electronics...
               </p>
             )}
             <button
@@ -192,7 +179,7 @@ export default function TrustedTechnologyPartnersSection() {
                 ref={marqueeTrackRef}
                 className="flex w-max gap-2 will-change-transform md:gap-3 md:animate-[renexMarquee_42s_linear_infinite] md:group-hover:[animation-play-state:paused] motion-reduce:animate-none"
               >
-                {[...trustedTechPartnerLogos, ...trustedTechPartnerLogos].map((brand, index) =>
+                {[...visibleTrustedTechPartnerLogos, ...visibleTrustedTechPartnerLogos].map((brand, index) =>
                   brand.href ? (
                     <a
                       key={`${brand.name}-${index}`}

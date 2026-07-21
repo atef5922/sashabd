@@ -893,6 +893,9 @@ function ProductsPageContent({
     { name: "Mugnee Multiple Limited", src: "/images/logo/mugnee.webp", href: "https://www.mugnee.com/" },
     { name: "Renex Digital", src: "/images/brands/renex-exact.webp", href: "https://renex.com.bd/" },
   ];
+  const visibleTrustedTechPartnerLogos = trustedTechPartnerLogos.filter(
+    (brand) => !["Absen", "Unilumin", "Leyard"].includes(brand.name)
+  );
 
   const ledEndToEndBullets = [
     "Indoor video walls for offices, malls, studios",
@@ -3038,12 +3041,12 @@ function ProductsPageContent({
             >
               <>
                 We use globally trusted LED display components in Bangladesh projects with{" "}
-                {trustedTechPartnerLogos.map((b, idx) => (
+                {visibleTrustedTechPartnerLogos.map((b, idx) => (
                   <span key={b.name}>
                     <span className="font-bold text-slate-900" title={b.name} aria-label={b.name}>
                       {b.name}
                     </span>
-                    {idx < trustedTechPartnerLogos.length - 2 ? ", " : idx === trustedTechPartnerLogos.length - 2 ? ", and " : ""}
+                    {idx < visibleTrustedTechPartnerLogos.length - 2 ? ", " : idx === visibleTrustedTechPartnerLogos.length - 2 ? ", and " : ""}
                   </span>
                 ))}{" "}
                 to ensure stable performance, reliable power, and long-term support.
@@ -3057,7 +3060,7 @@ function ProductsPageContent({
 
                 <div className="group">
                   <div className="flex w-max gap-3 animate-[renexMarquee_42s_linear_infinite] group-hover:[animation-play-state:paused] motion-reduce:animate-none">
-                    {[...trustedTechPartnerLogos, ...trustedTechPartnerLogos].map((b, idx) => (
+                    {[...visibleTrustedTechPartnerLogos, ...visibleTrustedTechPartnerLogos].map((b, idx) => (
                       <div
                         key={`${b.name}-${idx}`}
                         className="flex h-16 w-40 shrink-0 items-center justify-center rounded-[20px] border bg-white px-4 shadow-sm"
@@ -3244,7 +3247,6 @@ export default function ProductsPage() {
 
   return <ProductsPageContent ledOnly={ledOnly} basePath={basePath} />;
 }
-
 
 
 
