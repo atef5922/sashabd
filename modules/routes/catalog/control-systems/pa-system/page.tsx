@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
@@ -374,21 +375,27 @@ const PA_WHY_CHOOSE_FEATURES: Array<{
   },
 ];
 
-const PA_BRANDS: Array<{
+type BrandShowcaseItem = {
   title: string;
   category: string;
   description: string;
   badge: string;
-  logoText: string;
+  logoSrc: string;
+  logoWidth: number;
+  logoHeight: number;
   url: string;
-}> = [
+};
+
+const PA_BRANDS: BrandShowcaseItem[] = [
   {
     title: "Bosch",
     category: "Professional PA & Voice Evacuation Systems",
     description:
       "Bosch is a globally trusted manufacturer of public address, voice evacuation, conference, and professional audio systems. Bosch solutions are widely used in airports, hospitals, educational institutions, commercial buildings, and large infrastructure projects where reliability and safety are essential.",
     badge: "Global Brand",
-    logoText: "BOSCH",
+    logoSrc: "/images/brands/audio/bosch-logo.svg",
+    logoWidth: 102,
+    logoHeight: 22,
     url: "https://www.bosch.com/",
   },
   {
@@ -397,7 +404,9 @@ const PA_BRANDS: Array<{
     description:
       "TOA is known for dependable public address, paging, amplifier, microphone, and speaker solutions. Its products are commonly used in schools, offices, factories, houses of worship, and commercial facilities.",
     badge: "Trusted Audio Brand",
-    logoText: "TOA",
+    logoSrc: "/images/brands/audio/toa-logo.png",
+    logoWidth: 90,
+    logoHeight: 27,
     url: "https://www.toa.eu/public-address-systems",
   },
   {
@@ -406,7 +415,9 @@ const PA_BRANDS: Array<{
     description:
       "DSPPA specializes in public address systems, IP audio solutions, conference systems, and background music systems. Their products support both small installations and large multi-zone communication networks.",
     badge: "IP Audio Expert",
-    logoText: "DSPPA",
+    logoSrc: "/images/brands/audio/dsppa-logo.png",
+    logoWidth: 118,
+    logoHeight: 24,
     url: "https://www.dsppatech.com/",
   },
 ];
@@ -879,6 +890,40 @@ const CardGrid = ({
   </>
 );
 
+const BrandTitleBox = ({
+  brand,
+}: {
+  brand: Pick<BrandShowcaseItem, "title" | "logoSrc" | "logoWidth" | "logoHeight" | "url">;
+}) => (
+  <div>
+    <div
+      className="pa-brand-showcase__logo flex min-h-12 w-full items-center rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 transition-colors duration-200 hover:border-orange-200 hover:bg-orange-50/40"
+      aria-label={`${brand.title} brand logo space`}
+    >
+      <a
+        href={brand.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group/brand flex w-full items-center justify-center gap-2.5 text-slate-950"
+        aria-label={`Visit ${brand.title} official website`}
+      >
+        <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-50 text-orange-600 ring-1 ring-orange-100">
+          <PaSolutionIcon name="verifiedShield" />
+        </span>
+        <span className="flex h-9 items-center md:h-10">
+          <Image
+            src={brand.logoSrc}
+            alt={`${brand.title} logo`}
+            width={brand.logoWidth}
+            height={brand.logoHeight}
+            className="h-auto max-h-6 w-auto object-contain md:max-h-7"
+          />
+        </span>
+      </a>
+    </div>
+  </div>
+);
+
 const MobileExpandableCards = ({
   summaryLabel,
   items,
@@ -1106,14 +1151,14 @@ export default function PaSystemPage() {
       </div>
 
       <section className="pa-system-solutions mt-[10px] hidden rounded-2xl border border-slate-200 bg-white px-[15px] py-6 shadow-sm md:block md:py-8 lg:py-10">
-        <div className="pa-system-solutions__intro max-w-5xl">
+        <div className="pa-system-solutions__intro max-w-none">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-orange-600">
             Public address planning and installation
           </p>
           <h2 className="mt-3 text-2xl font-extrabold leading-tight tracking-tight text-slate-950 md:text-3xl">
             PA System Solutions in Bangladesh
           </h2>
-          <p className="mt-4 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
+          <p className="mt-4 max-w-none text-sm leading-7 text-slate-700 md:text-base md:leading-8">
             Sasha Corporation provides complete PA system solutions for mosques, schools, offices, factories,
             hospitals, shopping malls, and commercial buildings across Bangladesh. Our solutions include system
             design, equipment selection, supply, installation, testing, commissioning, and after-sales support.
@@ -1142,11 +1187,11 @@ export default function PaSystemPage() {
         </div>
 
         <div className="pa-system-solutions__workflow mt-10">
-          <div className="max-w-4xl">
+          <div className="max-w-none">
             <h3 className="text-xl font-extrabold tracking-tight text-slate-950 md:text-2xl">
               How Does a PA System Work?
             </h3>
-            <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
+            <p className="mt-3 max-w-none text-sm leading-7 text-slate-700 md:text-base md:leading-8">
               A PA system follows a simple audio path from source to speaker. The right equipment and planning keep
               the message clear across the selected zone or full facility.
             </p>
@@ -1176,11 +1221,11 @@ export default function PaSystemPage() {
         </div>
 
         <div className="pa-system-solutions__applications mt-10">
-          <div className="max-w-4xl">
+          <div className="max-w-none">
             <h3 className="text-xl font-extrabold tracking-tight text-slate-950 md:text-2xl">
               Common Applications of PA Systems
             </h3>
-            <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
+            <p className="mt-3 max-w-none text-sm leading-7 text-slate-700 md:text-base md:leading-8">
               Different environments need different speaker placement, zone control, and operating workflows. These
               are some of the most common PA system use cases we support.
             </p>
@@ -1280,11 +1325,15 @@ export default function PaSystemPage() {
               key={component.title}
               className="pa-components__card flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_14px_34px_rgba(15,23,42,0.06)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(15,23,42,0.10)] md:p-6"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-orange-600">
-                <PaSolutionIcon name={component.icon} />
+              <div className="flex items-center gap-3 text-slate-950">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-orange-600">
+                  <PaSolutionIcon name={component.icon} />
+                </div>
+                <div className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[14px] font-extrabold leading-tight tracking-tight text-slate-950 lg:text-[15px]">
+                  {component.title}
+                </div>
               </div>
-              <div className="mt-5 text-base font-extrabold leading-snug text-slate-950">{component.title}</div>
-              <p className="mt-3 text-sm leading-6 text-slate-600">{component.description}</p>
+              <p className="mt-3 text-sm leading-6 text-slate-600 text-justify">{component.description}</p>
             </article>
           ))}
         </div>
@@ -1330,14 +1379,14 @@ export default function PaSystemPage() {
       </div>
 
       <section className="pa-application-solutions mt-[10px] hidden rounded-2xl border border-slate-200 bg-white px-[15px] py-6 shadow-sm md:block md:py-8 lg:py-10">
-        <div className="pa-application-solutions__header max-w-5xl">
+        <div className="pa-application-solutions__header max-w-none">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-orange-600">
             Application-based PA planning
           </p>
           <h2 className="mt-3 text-2xl font-extrabold leading-tight tracking-tight text-slate-950 md:text-3xl">
             PA System Solutions by Application
           </h2>
-          <p className="mt-4 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
+          <p className="mt-4 max-w-none text-sm leading-7 text-slate-700 md:text-base md:leading-8">
             Different environments require different speaker types, amplifier configurations, paging capabilities, and
             coverage requirements. Sasha Corporation provides customized PA system solutions for mosques, educational
             institutions, offices, factories, hospitals, shopping malls, and commercial facilities across Bangladesh.
@@ -1488,14 +1537,14 @@ export default function PaSystemPage() {
         </div>
 
         <section className="pa-speaker-types mt-[10px]" aria-labelledby="types-of-pa-speakers-heading">
-          <div className="max-w-5xl">
+          <div className="max-w-none">
             <h3
               id="types-of-pa-speakers-heading"
               className="text-xl font-extrabold leading-tight tracking-tight text-slate-950 md:text-2xl"
             >
               Types of PA Speakers
             </h3>
-            <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
+            <p className="mt-3 max-w-none text-sm leading-7 text-slate-700 md:text-base md:leading-8">
               Different PA speaker types are designed for different environments and communication requirements.
               Choosing the right speaker helps improve voice clarity, coverage, and overall system performance. The
               most suitable speaker depends on factors such as indoor or outdoor use, mounting location, audience size,
@@ -1509,11 +1558,15 @@ export default function PaSystemPage() {
                 key={speaker.title}
                 className="pa-speaker-types__card flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_14px_34px_rgba(15,23,42,0.06)] md:p-6"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-orange-600">
-                  <PaSolutionIcon name={speaker.icon} />
+                <div className="flex items-center gap-3 text-slate-950">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-orange-600">
+                    <PaSolutionIcon name={speaker.icon} />
+                  </div>
+                  <div className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[14px] font-extrabold leading-tight tracking-tight text-slate-950 lg:text-[15px]">
+                    {speaker.title}
+                  </div>
                 </div>
-                <div className="mt-5 text-lg font-extrabold leading-snug text-slate-950">{speaker.title}</div>
-                <p className="mt-4 text-sm leading-6 text-slate-600">{speaker.description}</p>
+                <p className="mt-4 text-sm leading-6 text-slate-600 text-justify">{speaker.description}</p>
               </article>
             ))}
           </div>
@@ -1558,14 +1611,14 @@ export default function PaSystemPage() {
         className="pa-installation-process mt-[10px] hidden rounded-3xl bg-white px-[15px] py-7 md:block md:py-10"
         aria-labelledby="pa-installation-process-heading"
       >
-        <div className="max-w-5xl">
+        <div className="max-w-none">
           <h2
             id="pa-installation-process-heading"
             className="text-2xl font-extrabold tracking-tight text-slate-900 md:text-3xl"
           >
             Our PA System Design and Installation Process
           </h2>
-          <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
+          <p className="mt-3 max-w-none text-sm leading-7 text-slate-700 md:text-base md:leading-8">
             A properly designed PA system requires more than selecting speakers and amplifiers. At Sasha Corporation, we
             follow a structured process to ensure clear voice coverage, reliable performance, efficient operation, and
             long-term system stability. Every project is planned based on building layout, coverage requirements,
@@ -1589,14 +1642,16 @@ export default function PaSystemPage() {
                 >
                   {String(processStep.step).padStart(2, "0")}
                 </span>
-                <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-orange-600">
-                  <PaSolutionIcon name={processStep.icon} />
+                <div className="relative flex items-center gap-3 text-slate-950">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-orange-600">
+                    <PaSolutionIcon name={processStep.icon} />
+                  </div>
+                  <div className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[14px] font-extrabold leading-tight tracking-tight text-slate-950 lg:text-[15px]">
+                    <span className="sr-only">Step {processStep.step}: </span>
+                    {processStep.title}
+                  </div>
                 </div>
-                <div className="relative mt-5 overflow-hidden text-ellipsis whitespace-nowrap text-[15px] font-extrabold leading-tight tracking-tight text-slate-950 lg:text-[16px]">
-                  <span className="sr-only">Step {processStep.step}: </span>
-                  {processStep.title}
-                </div>
-                <p className="relative mt-3 text-sm leading-6 text-slate-600">{processStep.description}</p>
+                <p className="relative mt-3 text-sm leading-6 text-slate-600 text-justify">{processStep.description}</p>
               </article>
             </li>
           ))}
@@ -1687,13 +1742,15 @@ export default function PaSystemPage() {
               key={feature.title}
               className="pa-solution-choice__card group flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_14px_34px_rgba(15,23,42,0.06)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(15,23,42,0.10)] md:p-6"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-50 text-orange-600 transition-colors group-hover:bg-orange-100">
-                <PaSolutionIcon name={feature.icon} />
+              <div className="flex items-center gap-3 text-slate-950">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-orange-50 text-orange-600 transition-colors group-hover:bg-orange-100">
+                  <PaSolutionIcon name={feature.icon} />
+                </div>
+                <div className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[14px] font-extrabold leading-tight tracking-tight text-slate-950 lg:text-[15px]">
+                  {feature.title}
+                </div>
               </div>
-              <div className="mt-5 overflow-hidden text-ellipsis whitespace-nowrap text-[15px] font-extrabold leading-tight tracking-tight text-slate-950 lg:text-[16px]">
-                {feature.title}
-              </div>
-              <p className="mt-3 text-sm leading-6 text-slate-600">{feature.description}</p>
+              <p className="mt-3 text-sm leading-6 text-slate-600 text-justify">{feature.description}</p>
             </article>
           ))}
         </div>
@@ -1732,13 +1789,24 @@ export default function PaSystemPage() {
           subtitle="We work with trusted PA and professional audio brands so the final system remains dependable, service-friendly and appropriate for your project budget."
           icon={<PaSolutionIcon name="verifiedShield" />}
         >
-          <CardGrid
-            items={PA_BRANDS.map((brand) => ({
-              title: brand.title,
-              desc: brand.description,
-              meta: `${brand.badge} - ${brand.category}`,
-            }))}
-          />
+          <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            {PA_BRANDS.map((brand, index) => (
+              <article key={brand.title} className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4" style={getParitySurface(index)}>
+                <div>
+                  <span className="inline-flex rounded-full bg-orange-50 px-3 py-1 text-[11px] font-extrabold text-orange-700">
+                    {brand.badge}
+                  </span>
+                </div>
+                <div className="mt-3">
+                  <BrandTitleBox brand={brand} />
+                </div>
+                <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.04em] text-slate-500 text-justify">
+                  {brand.category}
+                </p>
+                <p className="mt-2 text-[13px] leading-6 text-slate-700 text-justify">{brand.description}</p>
+              </article>
+            ))}
+          </div>
           <article className="mt-4 rounded-[14px] border px-4 py-4" style={getParitySurface(0)}>
             <div className="text-[16px] font-extrabold leading-snug text-slate-900">Trusted Brands for Reliable Communication</div>
             <p className="mt-2 text-[12.5px] leading-6 text-slate-700 text-justify">
@@ -1791,32 +1859,16 @@ export default function PaSystemPage() {
               key={brand.title}
               className="pa-brand-showcase__card group flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_14px_34px_rgba(15,23,42,0.06)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(15,23,42,0.10)] md:p-6"
             >
-              <div className="flex items-start justify-between gap-2">
-                <div
-                  className="pa-brand-showcase__logo flex min-h-12 w-full items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-center"
-                  aria-label={`${brand.title} brand logo space`}
-                >
-                  <a
-                    href={brand.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[15px] font-extrabold tracking-[0.1em] text-slate-950 transition hover:text-orange-600 lg:text-[16px]"
-                    aria-label={`Visit ${brand.title} official website`}
-                  >
-                    {brand.logoText}
-                  </a>
-                </div>
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-orange-600">
-                  <PaSolutionIcon name="verifiedShield" />
-                </div>
-              </div>
-              <div className="mt-4">
+              <div>
                 <span className="inline-flex rounded-full bg-orange-50 px-3 py-1 text-xs font-extrabold text-orange-700">
                   {brand.badge}
                 </span>
               </div>
-              <p className="mt-3 text-sm font-semibold leading-6 text-slate-700">{brand.category}</p>
-              <p className="mt-3 text-sm leading-6 text-slate-600">{brand.description}</p>
+              <div className="mt-3">
+                <BrandTitleBox brand={brand} />
+              </div>
+              <p className="mt-3 text-sm font-semibold leading-6 text-slate-700 text-justify">{brand.category}</p>
+              <p className="mt-3 text-sm leading-6 text-slate-600 text-justify">{brand.description}</p>
             </article>
           ))}
         </div>

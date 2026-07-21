@@ -629,14 +629,27 @@ const conferenceSelectionGuideRows = [
   ["Large Conference Hall", "50+", "Digital conference system with amplifier and speakers", "Large meetings and events"],
 ] as const;
 
-const conferenceBrandCards = [
+type ConferenceBrandCard = {
+  title: string;
+  category: string;
+  description: string;
+  badge: string;
+  logoSrc: string;
+  logoWidth: number;
+  logoHeight: number;
+  url: string;
+};
+
+const conferenceBrandCards: ConferenceBrandCard[] = [
   {
     title: "Bosch",
     category: "Professional Conference & Voice Communication Systems",
     description:
       "Bosch is a globally trusted manufacturer of public address, voice evacuation, conference, and professional audio systems. Bosch solutions are widely used in airports, hospitals, educational institutions, commercial buildings, and large infrastructure projects where reliability and safety are essential.",
     badge: "Global Brand",
-    logoText: "BOSCH",
+    logoSrc: "/images/brands/audio/bosch-logo.svg",
+    logoWidth: 102,
+    logoHeight: 22,
     url: "https://www.bosch.com/",
   },
   {
@@ -645,7 +658,9 @@ const conferenceBrandCards = [
     description:
       "TOA is known for dependable public address, paging, amplifier, microphone, and speaker solutions. Its products are commonly used in schools, offices, factories, houses of worship, and commercial facilities.",
     badge: "Trusted Audio Brand",
-    logoText: "TOA",
+    logoSrc: "/images/brands/audio/toa-logo.png",
+    logoWidth: 90,
+    logoHeight: 27,
     url: "https://www.toa.eu/public-address-systems",
   },
   {
@@ -654,10 +669,49 @@ const conferenceBrandCards = [
     description:
       "DSPPA specializes in public address systems, IP audio solutions, conference systems, and background music systems. Their products support both small installations and large multi-zone communication networks.",
     badge: "IP Audio Expert",
-    logoText: "DSPPA",
+    logoSrc: "/images/brands/audio/dsppa-logo.png",
+    logoWidth: 118,
+    logoHeight: 24,
     url: "https://www.dsppatech.com/",
   },
-] as const;
+];
+
+const ConferenceBrandTitleBox = ({
+  brand,
+}: {
+  brand: Pick<ConferenceBrandCard, "title" | "logoSrc" | "logoWidth" | "logoHeight" | "url">;
+}) => (
+  <div>
+    <div
+      className="flex min-h-12 w-full items-center rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 transition-colors duration-200 hover:border-orange-200 hover:bg-orange-50/40"
+      aria-label={`${brand.title} brand logo space`}
+    >
+      <a
+        href={brand.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group/brand flex w-full items-center justify-center gap-2.5 text-slate-950"
+        aria-label={`Visit ${brand.title} official website`}
+      >
+        <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-50 text-orange-600 ring-1 ring-orange-100">
+          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M12 3 5 6v5c0 4.6 2.9 8.4 7 10 4.1-1.6 7-5.4 7-10V6l-7-3Z" />
+            <path d="m9 12 2 2 4-5" />
+          </svg>
+        </span>
+        <span className="flex h-9 items-center md:h-10">
+          <Image
+            src={brand.logoSrc}
+            alt={`${brand.title} logo`}
+            width={brand.logoWidth}
+            height={brand.logoHeight}
+            className="h-auto max-h-6 w-auto object-contain md:max-h-7"
+          />
+        </span>
+      </a>
+    </div>
+  </div>
+);
 
 const conferencePriceTableProducts = conferenceSystemCatalog.slice(0, 8);
 
@@ -2035,13 +2089,24 @@ export default function ConferenceSystemPage() {
         title="Brands We Work With"
         subtitle="We work with trusted conference and audio brands so the final system stays dependable, service-friendly and project-ready."
       >
-        <MobileParityCardGrid
-          items={conferenceBrandCards.map((brand) => ({
-            title: brand.title,
-            desc: brand.description,
-            meta: `${brand.badge} - ${brand.category}`,
-          }))}
-        />
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          {conferenceBrandCards.map((brand, index) => (
+            <article key={brand.title} className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4" style={getParitySurface(index)}>
+              <div>
+                <span className="inline-flex rounded-full bg-orange-50 px-3 py-1 text-[11px] font-extrabold text-orange-700">
+                  {brand.badge}
+                </span>
+              </div>
+              <div className="mt-3">
+                <ConferenceBrandTitleBox brand={brand} />
+              </div>
+              <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.04em] text-slate-500 text-justify">
+                {brand.category}
+              </p>
+              <p className="mt-2 text-[13px] leading-6 text-slate-700 text-justify">{brand.description}</p>
+            </article>
+          ))}
+        </div>
       </MobileSection>
 
       <section className={`${sectionClass} hidden md:block`} style={sectionStyle} aria-labelledby="conference-brand-showcase">
@@ -2064,32 +2129,16 @@ export default function ConferenceSystemPage() {
               key={brand.title}
               className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md md:p-6"
             >
-              <div className="flex items-start justify-between gap-2">
-                <div
-                  className="flex min-h-12 w-full items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-center"
-                  aria-label={`${brand.title} brand logo space`}
-                >
-                  <a
-                    href={brand.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[15px] font-extrabold tracking-[0.1em] text-slate-950 transition hover:text-orange-600 lg:text-[16px]"
-                    aria-label={`Visit ${brand.title} official website`}
-                  >
-                    {brand.logoText}
-                  </a>
-                </div>
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-[11px] font-extrabold text-orange-600">
-                  OK
-                </div>
-              </div>
-              <div className="mt-4">
+              <div>
                 <span className="inline-flex rounded-full bg-orange-50 px-3 py-1 text-xs font-extrabold text-orange-700">
                   {brand.badge}
                 </span>
               </div>
-              <p className="mt-3 text-sm font-semibold leading-6 text-slate-700">{brand.category}</p>
-              <p className="mt-3 text-sm leading-6 text-slate-600">{brand.description}</p>
+              <div className="mt-3">
+                <ConferenceBrandTitleBox brand={brand} />
+              </div>
+              <p className="mt-3 text-sm font-semibold leading-6 text-slate-700 text-justify">{brand.category}</p>
+              <p className="mt-3 text-sm leading-6 text-slate-600 text-justify">{brand.description}</p>
             </article>
           ))}
         </div>
