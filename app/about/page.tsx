@@ -55,7 +55,6 @@ function SectionTitle({
         {icon ? <span className="text-xl">{icon}</span> : null}
         {title}
       </h2>
-      <div className="mt-3 hidden h-1 w-14 rounded-full md:block" style={{ background: `${MAROON}B3` }} />
       {subtitle ? (
         <MobileIntroText
           teaser={subtitle}
@@ -189,7 +188,7 @@ export default function AboutPage() {
         {/* WHO WE ARE */}
         <section className="mt-8 rounded-[24px] bg-white p-4 md:rounded-3xl md:p-10">
           <SectionTitle
-            icon=""
+            icon="👋"
             title="Who we are"
             subtitleClassName="mt-4 w-full text-base leading-7 text-slate-600 text-justify"
             subtitle={`${BRAND_NAME} is a Bangladesh-based LED display solutions team. We help businesses, showrooms, institutions, and event operators choose the right LED configuration based on viewing distance, environment (indoor/outdoor), and budget, then deliver a complete setup with installation, calibration, and support. In Bangladesh's LED display sector, we are recognized as one of the top providers, driven by reliable engineering decisions, clean delivery, and long-term after-sales support.`}
@@ -198,6 +197,7 @@ export default function AboutPage() {
           <div className="mt-6 grid gap-5 lg:grid-cols-2">
             <div className="rounded-[16px] border border-slate-200/80 bg-slate-50/70 p-4 md:rounded-none md:border-0 md:bg-transparent md:p-0">
               <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+                <span className="text-base">📦</span>
                 <span>What we deliver</span>
               </h3>
               <div className="mt-3 space-y-2 text-slate-600">
@@ -217,7 +217,7 @@ export default function AboutPage() {
         {/* HOW WE WORK */}
         <section className="mt-8 rounded-[24px] bg-rose-50 p-4 md:rounded-3xl md:p-10">
           <SectionTitle
-            icon=""
+            icon="🛠️"
             title="How we work"
             subtitle="We keep the process simple and clear so you know what you're getting and when you'll get it, without confusion or hidden scope."
           />
@@ -247,7 +247,7 @@ export default function AboutPage() {
           <div className="grid gap-5 lg:grid-cols-2 lg:gap-12">
             <div className="min-w-0 overflow-hidden rounded-[16px] border border-slate-200/80 bg-slate-50/70 p-4 md:rounded-none md:border-0 md:bg-transparent md:p-0 md:overflow-visible">
               <SectionTitle
-                icon=""
+                icon="🎯"
                 title="Mission"
                 subtitle="Deliver reliable LED display solutions that create long-term value: selected correctly, installed safely, calibrated properly, and supported responsibly."
               />
@@ -263,7 +263,7 @@ export default function AboutPage() {
 
             <div className="min-w-0 overflow-hidden rounded-[16px] border border-slate-200/80 bg-slate-50/70 p-4 md:rounded-none md:border-0 md:bg-transparent md:p-0 md:overflow-visible">
               <SectionTitle
-                icon=""
+                icon="🔭"
                 title="Vision"
                 subtitle="Become one of the most trusted LED display partners in Bangladesh by setting standards for quality, transparency and technical responsibility."
               />
