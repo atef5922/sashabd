@@ -43,6 +43,29 @@ body {
   font-weight: var(--site-font-weight-normal);
 }
 
+main :where(p, li, dd, blockquote) {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+main :where(.text-center) :where(p, li, dd, blockquote),
+main :where(p, li, dd, blockquote).text-center {
+  text-align: center;
+  text-align-last: center;
+}
+
+main :where(.text-left) :where(p, li, dd, blockquote),
+main :where(p, li, dd, blockquote).text-left {
+  text-align: left;
+  text-align-last: auto;
+}
+
+main :where(.text-right) :where(p, li, dd, blockquote),
+main :where(p, li, dd, blockquote).text-right {
+  text-align: right;
+  text-align-last: auto;
+}
+
 .led-display-page :is(p, li, td, dd, blockquote) {
   text-align: justify;
   text-justify: inter-word;
