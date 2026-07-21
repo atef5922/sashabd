@@ -517,6 +517,7 @@ function ProductsPageContent({
       "receiving-card",
       "controller",
       "power-supply",
+      "led-accessories",
     ];
     const labels: Record<string, string> = {
       indoor: "Indoor LED Display",
@@ -527,6 +528,7 @@ function ProductsPageContent({
       "receiving-card": "Receiving Card",
       controller: "Controller",
       "power-supply": "Power Supply",
+      "led-accessories": "LED Accessories",
     };
 
     return kinds
@@ -538,6 +540,10 @@ function ProductsPageContent({
       })
       .filter((g) => g.items.length > 0);
   }, [allProducts]);
+  const ledFullListLinks = useMemo(
+    () => fullListGroups.flatMap((group) => group.items.map((item) => ({ ...item, groupLabel: group.label }))),
+    [fullListGroups]
+  );
   const waPhone = siteConfig.whatsapp.replace(/\D/g, "");
   const wa = `https://api.whatsapp.com/send/?phone=${waPhone}&text&type=phone_number&app_absent=0`;
   const shareUrl = `https://${siteConfig.domain}${basePath}/`;
@@ -1559,13 +1565,13 @@ function ProductsPageContent({
                 </span>
               </div>
 
-              <div className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-0 md:overflow-visible md:pb-0 xl:grid-cols-8">
+              <div className="mt-3 -mx-1 flex snap-x snap-mandatory gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-4 md:gap-0 md:overflow-visible md:px-0 md:pb-0 xl:grid-cols-8">
                 {ledCategoryQuickLinks.map((item) => (
                   <Link
                     key={item.href}
                     prefetch={false}
                     href={item.href}
-                    className="group inline-flex min-w-0 items-center gap-1.5 rounded-[14px] border border-slate-200 bg-white px-2.5 py-2 text-[10px] font-semibold leading-tight text-slate-700 transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 hover:shadow-sm md:min-w-0 md:rounded-[16px] md:px-2.5 md:py-2 md:text-[10.5px]"
+                    className="group inline-flex min-w-[146px] shrink-0 snap-start items-center gap-1.5 rounded-[14px] border border-slate-200 bg-white px-2.5 py-2 text-[10px] font-semibold leading-tight text-slate-700 transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 hover:shadow-sm md:min-w-0 md:shrink md:rounded-[16px] md:px-2.5 md:py-2 md:text-[10.5px]"
                   >
                     <span className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${item.tone} md:h-5.5 md:w-5.5`}>
                       <UiIcon name={item.icon} className="h-2.5 w-2.5 md:h-3 md:w-3" />
@@ -1883,6 +1889,60 @@ function ProductsPageContent({
 
       </section>
 
+      {ledOnly ? (
+        <section className="mt-3 !bg-transparent !p-0 !shadow-none">
+          <details className="group overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm">
+            <summary className="flex cursor-pointer list-none items-start justify-between gap-3 px-4 py-4 md:px-5 md:py-4 [&::-webkit-details-marker]:hidden">
+              <div className="flex min-w-0 items-start gap-3">
+                <span
+                  className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-cyan-200 bg-cyan-50 text-cyan-700"
+                  aria-hidden="true"
+                >
+                  <UiIcon name="display" className="h-5 w-5" />
+                </span>
+                <div className="min-w-0">
+                  <div className="text-[1.15rem] font-extrabold leading-tight text-slate-900 md:text-[1.35rem]">
+                    Browse all products (full list)
+                  </div>
+                  <p className="mt-1 hidden text-sm leading-6 text-slate-600 md:block">
+                    Open to jump to any product page. This helps product discovery and internal site navigation.
+                  </p>
+                </div>
+              </div>
+              <span
+                className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-cyan-50 text-cyan-700 transition group-open:rotate-180"
+                aria-hidden="true"
+              >
+                <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none">
+                  <path d="m6 9 6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
+            </summary>
+
+            <div className="border-t border-slate-200 px-4 py-4 md:px-5 md:py-5">
+              <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-slate-500">
+                Internal Product Links
+              </p>
+              <nav aria-label="Full LED display product list" className="mt-4">
+                <div className="grid gap-x-8 gap-y-2 md:grid-cols-2 xl:grid-cols-4">
+                  {ledFullListLinks.map((item) => (
+                    <Link
+                      key={item.href}
+                      prefetch={false}
+                      href={item.href}
+                      className="inline-flex min-w-0 items-start text-[14px] leading-7 text-slate-700 transition hover:text-[#F56605]"
+                      title={`${item.title} - ${item.groupLabel}`}
+                    >
+                      <span className="truncate">{item.title}</span>
+                    </Link>
+                  ))}
+                </div>
+              </nav>
+            </div>
+          </details>
+        </section>
+      ) : null}
+
       {/* Empty state */}
 	      {filtered.length === 0 && (
 	        <section className={ledOnly ? "py-8 text-center text-slate-700" : "rounded-3xl border bg-white p-8 text-center text-slate-700"}>
@@ -1896,7 +1956,10 @@ function ProductsPageContent({
 	          <section className="py-8">
 	            <div className="space-y-10">
 	              <div>
-	                <h2 className="text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">What Is an LED Display?</h2>
+	                <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
+                    <UiIcon name="display" className="h-6 w-6 text-slate-800" />
+                    <span>What Is an LED Display?</span>
+                  </h2>
                 <MobileIntroText
                   teaser="An LED Display is a modular digital screen built from many light-emitting diode pixels that create images, videos, text, and live visual content."
                   teaserLines={2}
@@ -1942,7 +2005,10 @@ function ProductsPageContent({
 	              </div>
 
 	              <div ref={componentSectionRef}>
-	                <h2 className="text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">Main Components of an LED Display System</h2>
+	                <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
+                    <UiIcon name="module" className="h-6 w-6 text-slate-800" />
+                    <span>Main Components of an LED Display System</span>
+                  </h2>
                   <MobileIntroText
                     teaser="Every professional LED display system is built using several essential hardware components."
                     className="mt-3 max-w-5xl"
@@ -2010,7 +2076,10 @@ function ProductsPageContent({
 	              </div>
 
 	              <div>
-	                <h2 className="text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">How an LED Display System Works</h2>
+	                <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
+                    <UiIcon name="process" className="h-6 w-6 text-slate-800" />
+                    <span>How an LED Display System Works</span>
+                  </h2>
 	                <MobileIntroText
                     teaser="A professional LED display operates through the seamless communication of multiple hardware components."
                     className="mt-3 max-w-5xl"
@@ -2096,8 +2165,9 @@ function ProductsPageContent({
 	          </section>
 
 	          <section id="led-price-table" className="scroll-mt-24 py-8">
-	            <h2 className="text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-	              LED Display Price List in Bangladesh
+	            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
+                <UiIcon name="cost" className="h-6 w-6 text-slate-800" />
+	              <span>LED Display Price List in Bangladesh</span>
 	            </h2>
             <MobileIntroText
               teaser="LED display price in Bangladesh varies based on pixel pitch, screen size, display type, brightness, cabinet quality, controller system, and installation complexity."
@@ -2826,8 +2896,9 @@ function ProductsPageContent({
           <section className="py-3">
             <div ref={whyChooseSectionRef} className="sc-led-why-section">
               <div className="sc-led-why-head">
-                <h2 className="sc-led-why-title text-[1.45rem] font-extrabold leading-[1.25] md:text-4xl">
-                  Why Choose Sasha Corporation for LED Display Solutions?
+                <h2 className="sc-led-why-title flex items-center gap-2 text-[1.45rem] font-extrabold leading-[1.25] md:text-4xl">
+                  <UiIcon name="support" className="h-6 w-6 shrink-0 text-slate-800 md:h-7 md:w-7" />
+                  <span>Why Choose Sasha Corporation for LED Display Solutions?</span>
                 </h2>
                 <MobileIntroText
                   teaser="Sasha Corporation supplies, installs, configures, and supports LED display solutions across Bangladesh."
@@ -3247,7 +3318,3 @@ export default function ProductsPage() {
 
   return <ProductsPageContent ledOnly={ledOnly} basePath={basePath} />;
 }
-
-
-
-

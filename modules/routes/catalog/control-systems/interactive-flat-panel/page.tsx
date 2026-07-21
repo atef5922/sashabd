@@ -647,39 +647,42 @@ export default function InteractiveFlatPanelPage() {
       </SectionShell>
 
       <section className="mt-8 rounded-[24px] border bg-white p-4 md:mt-10 md:rounded-3xl md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <div className="min-w-0">
-            <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Interactive Flat Panel Models</h2>
-            <MobileIntroText
-              teaser="Popular brand and size combinations are listed below so you can shortlist by room fit, workflow and support scope."
-              className="mt-2"
-              teaserClassName="w-full leading-6"
-              expandedClassName="text-sm leading-7 text-slate-600"
-              desktopClassName="text-slate-600 leading-7"
-            >
-              <p className="text-slate-600 leading-7 text-justify">
-                Popular brand and size combinations are listed below so you can shortlist by room fit, workflow and support scope. For
-                procurement, focus on the full package: model, accessories, mounting method and installation support.
-              </p>
-            </MobileIntroText>
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+            <div className="min-w-0">
+              <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Interactive Flat Panel Models</h2>
+            </div>
+            <div className="grid grid-cols-2 gap-2 self-start md:mt-0.5 md:flex md:flex-nowrap md:items-center md:justify-end md:self-start">
+              <Link
+                href="/contact"
+                className="inline-flex min-h-10 min-w-0 items-center justify-center gap-1 whitespace-nowrap rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:min-h-[40px] md:min-w-[152px] md:rounded-xl md:px-4 md:py-2.5 md:text-[13px]"
+                style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+              >
+                <span>Request Quotation</span>
+                <span aria-hidden="true">-&gt;</span>
+              </Link>
+              <a
+                href={wa}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex min-h-10 min-w-0 items-center justify-center whitespace-nowrap rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md md:min-h-[40px] md:min-w-[108px] md:rounded-xl md:px-4 md:py-2.5 md:text-[13px]"
+              >
+                WhatsApp
+              </a>
+            </div>
           </div>
-          <div className="grid grid-cols-2 gap-2 md:mt-0 md:flex md:flex-nowrap">
-            <Link
-              href="/contact"
-              className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:min-h-[42px] md:rounded-xl md:px-4 md:py-2.5 md:text-sm"
-              style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-            >
-              Request Quotation -&gt;
-            </Link>
-            <a
-              href={wa}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md md:min-h-[42px] md:rounded-xl md:px-4 md:py-2.5 md:text-sm"
-            >
-              WhatsApp
-            </a>
-          </div>
+          <MobileIntroText
+            teaser="Popular brand and size combinations are listed below so you can shortlist by room fit, workflow and support scope."
+            className="min-w-0"
+            teaserClassName="w-full leading-6"
+            expandedClassName="text-sm leading-7 text-slate-600"
+            desktopClassName="w-full text-slate-600 leading-7"
+          >
+            <p className="w-full text-slate-600 leading-7 text-justify">
+              Popular brand and size combinations are listed below so you can shortlist by room fit, workflow and support scope. For
+              procurement, focus on the full package: model, accessories, mounting method and installation support.
+            </p>
+          </MobileIntroText>
         </div>
 
         <div className="md:hidden">

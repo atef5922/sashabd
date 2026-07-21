@@ -95,7 +95,7 @@ const Section = ({
   </section>
 );
 
-const CardGrid = ({ items }: { items: { t: string; d: string; bullets?: string[] }[] }) => (
+const CardGrid = ({ items }: { items: { i?: React.ReactNode; t: string; d: string; bullets?: string[] }[] }) => (
   <>
     <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
       {items.map((x, index) => (
@@ -110,7 +110,10 @@ const CardGrid = ({ items }: { items: { t: string; d: string; bullets?: string[]
                     : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
           }}
         >
-          <div className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</div>
+          <div className="flex items-center gap-2 text-[17px] font-extrabold leading-snug text-slate-900">
+            {x.i ? <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-orange-600" aria-hidden="true">{x.i}</span> : null}
+            <span>{x.t}</span>
+          </div>
           <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
           {x.bullets?.length ? (
             <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
@@ -129,8 +132,11 @@ const CardGrid = ({ items }: { items: { t: string; d: string; bullets?: string[]
     <div className="hidden gap-4 md:grid md:grid-cols-3">
       {items.map((x) => (
         <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
-          <div className="overflow-hidden text-ellipsis whitespace-nowrap text-[15px] font-extrabold tracking-tight text-slate-900 lg:text-[16px]">
-            {x.t}
+          <div className="flex items-center gap-2 text-slate-900">
+            {x.i ? <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-orange-600" aria-hidden="true">{x.i}</span> : null}
+            <span className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[15px] font-extrabold tracking-tight lg:text-[16px]">
+              {x.t}
+            </span>
           </div>
           <p className="mt-2 text-sm text-slate-600 leading-7">{x.d}</p>
           {x.bullets?.length ? (
@@ -305,22 +311,22 @@ export default function IndoorProductsPage() {
         <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
           {[
             {
- i: "",
+ i: "◎",
               t: "Fine Pixel Pitch Clarity",
               d: "High-definition visuals for near viewing with clear text, charts, and product media.",
             },
             {
- i: "",
+ i: "◉",
               t: "Camera-Friendly Refresh",
               d: "Stable refresh and processing reduce flicker in live camera, studio, and hybrid event use.",
             },
             {
- i: "",
+ i: "◐",
               t: "Color & Brightness Control",
               d: "Balanced indoor brightness and calibrated color output improve comfort and brand consistency.",
             },
             {
- i: "",
+ i: "▣",
               t: "Efficient, Serviceable Design",
               d: "Reliable power architecture, cleaner heat handling, and easier maintenance for long-term uptime.",
             },
@@ -350,22 +356,22 @@ export default function IndoorProductsPage() {
         <div className="hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-4">
           {[
             {
- i: "",
+ i: "◎",
               t: "Fine Pixel Pitch Clarity",
               d: "High-definition visuals for near viewing with clear text, charts, and product media.",
             },
             {
- i: "",
+ i: "◉",
               t: "Camera-Friendly Refresh",
               d: "Stable refresh and processing reduce flicker in live camera, studio, and hybrid event use.",
             },
             {
- i: "",
+ i: "◐",
               t: "Color & Brightness Control",
               d: "Balanced indoor brightness and calibrated color output improve comfort and brand consistency.",
             },
             {
- i: "",
+ i: "▣",
               t: "Efficient, Serviceable Design",
               d: "Reliable power architecture, cleaner heat handling, and easier maintenance for long-term uptime.",
             },
@@ -554,6 +560,13 @@ export default function IndoorProductsPage() {
       {/* Consultation */}
       <Section
  title="Indoor LED Display Project Consultation in Bangladesh"
+        titleIcon={
+          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 12h14" />
+            <path d="M12 5v14" />
+            <circle cx="12" cy="12" r="8" />
+          </svg>
+        }
  subtitle="Share your room size, viewing distance, and content type-then we recommend pixel pitch, screen size, processor, structure, and BOQ."
       >
         <div
@@ -581,6 +594,13 @@ export default function IndoorProductsPage() {
       {/* Indoor vs Outdoor */}
       <Section
  title="Indoor vs Outdoor LED Display Quick Comparison"
+        titleIcon={
+          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M7 4v14M17 6v14M4 18h6M14 20h6" />
+            <circle cx="7" cy="4" r="2" fill="currentColor" stroke="none" />
+            <circle cx="17" cy="6" r="2" fill="currentColor" stroke="none" />
+          </svg>
+        }
         subtitle="A simple comparison to avoid wrong selection and ensure the right build for your environment."
       >
         <div className="space-y-3 md:hidden">
@@ -649,21 +669,32 @@ export default function IndoorProductsPage() {
       {/* Technical specs explained */}
       <Section
  title="Indoor LED Display Technical Specifications Explained"
+        titleIcon={
+          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M4 7h16" />
+            <path d="M4 12h10" />
+            <path d="M4 17h7" />
+            <circle cx="18" cy="12" r="2" />
+          </svg>
+        }
         subtitle="Understanding specs helps you compare models and choose the right ecosystem."
       >
         <CardGrid
           items={[
             {
+              i: <span className="text-sm">🔎</span>,
  t: "Pixel Pitch",
               d: "Smaller pitch = higher resolution and better close viewing. Choose by viewing distance and content detail.",
               bullets: ["Close viewing: smaller pitch", "Halls: bigger pitch", "Budget vs clarity balance"],
             },
             {
+              i: <span className="text-sm">↻</span>,
  t: "Refresh Rate",
  d: "Higher refresh is better for camera/live video-reduces flicker lines in recording.",
               bullets: ["Stage/studio: high refresh", "Clean signal cabling", "Processor quality matters"],
             },
             {
+              i: <span className="text-sm">◐</span>,
  t: "Brightness & Grayscale",
               d: "Brightness must be comfortable indoors; grayscale affects smooth gradients and professional look.",
               bullets: ["Calibration improves uniformity", "Quality PSU helps stability", "Avoid over-bright setup"],
@@ -826,6 +857,12 @@ export default function IndoorProductsPage() {
       {/* Xplore solutions */}
       <Section
  title="Explore High-Performance LED Display in Bangladesh"
+        titleIcon={
+          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M4 12h16M12 4v16" />
+            <circle cx="12" cy="12" r="8" />
+          </svg>
+        }
  subtitle="From indoor video walls to outdoor branding and rental event screens-explore the right category for your project."
       >
         <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
@@ -1205,6 +1242,13 @@ export default function IndoorProductsPage() {
       {/* FAQs */}
       <Section
  title="FAQs About LED Display Solution"
+        titleIcon={
+          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M9.5 9a2.5 2.5 0 1 1 4.2 1.8c-.9.8-1.7 1.2-1.7 2.2" />
+            <circle cx="12" cy="16.8" r="1" fill="currentColor" stroke="none" />
+          </svg>
+        }
         subtitle="Practical answers to common questions before ordering an LED display project in Bangladesh."
       >
         <FaqAccordion

@@ -134,12 +134,12 @@ export default function TrustedTechnologyPartnersSection() {
   return (
     <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-slate-50/80 py-5 md:py-6">
       <div className="mx-auto w-full max-w-7xl px-4 py-1 md:px-6">
-        <h2 className="mx-auto flex max-w-5xl items-center justify-center gap-2 pb-0 text-center text-[1.45rem] font-bold leading-[1.25] text-slate-900 after:hidden md:text-2xl">
-          <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6 text-slate-800" aria-hidden="true">
+        <h2 className="mx-auto flex max-w-5xl items-start justify-center gap-2 pb-0 text-center text-[1.45rem] font-bold leading-[1.25] text-slate-900 after:hidden md:items-center md:text-2xl">
+          <svg viewBox="0 0 24 24" fill="none" className="mt-0.5 h-6 w-6 shrink-0 text-slate-800 md:mt-0" aria-hidden="true">
             <path d="M4 12h16M12 4v16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
             <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
           </svg>
-          <span className="text-balance">Trusted Technology Partners & Authorized Brands</span>
+          <span className="min-w-0 text-balance">Trusted Technology Partners & Authorized Brands</span>
         </h2>
 
         <div className="mx-auto mt-2 max-w-5xl text-center text-sm leading-6 text-slate-600">

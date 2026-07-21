@@ -96,7 +96,7 @@ const Section = ({
   </section>
 );
 
-const CardGrid = ({ items }: { items: { i?: string; t: string; d: string; bullets?: string[] }[] }) => (
+const CardGrid = ({ items }: { items: { i?: React.ReactNode; t: string; d: string; bullets?: string[] }[] }) => (
   <>
     <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
       {items.map((x, index) => (
@@ -448,22 +448,22 @@ export default function OutdoorProductsPage() {
         <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
           {[
             {
- i: "",
+ i: "☀",
               t: "High Brightness Visibility",
               d: "Clear and readable content under direct sunlight for roadside and open-air viewing.",
             },
             {
- i: "",
+ i: "☔",
               t: "Weather-Resistant Build",
               d: "Outdoor-ready cabinet design with better resistance to rain, dust, and humidity conditions.",
             },
             {
- i: "",
+ i: "↔",
               t: "Long-Distance Readability",
               d: "Optimized pixel pitch and screen scaling for larger audience zones and far-view impact.",
             },
             {
- i: "",
+ i: "⚡",
               t: "Stable Power & Protection",
               d: "Reliable operation with proper grounding, surge protection, and balanced power distribution.",
             },
@@ -493,22 +493,22 @@ export default function OutdoorProductsPage() {
         <div className="hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-4">
           {[
             {
- i: "",
+ i: "☀",
               t: "High Brightness Visibility",
               d: "Clear and readable content under direct sunlight for roadside and open-air viewing.",
             },
             {
- i: "",
+ i: "☔",
               t: "Weather-Resistant Build",
               d: "Outdoor-ready cabinet design with better resistance to rain, dust, and humidity conditions.",
             },
             {
- i: "",
+ i: "↔",
               t: "Long-Distance Readability",
               d: "Optimized pixel pitch and screen scaling for larger audience zones and far-view impact.",
             },
             {
- i: "",
+ i: "⚡",
               t: "Stable Power & Protection",
               d: "Reliable operation with proper grounding, surge protection, and balanced power distribution.",
             },
@@ -1031,6 +1031,12 @@ export default function OutdoorProductsPage() {
       {/* Key outdoor checklist */}
       <Section
  title="Outdoor LED Installation Checklist (Weather + Safety)"
+        icon={
+          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="9" />
+            <path d="m8.2 12.2 2.4 2.4 5.2-5.2" />
+          </svg>
+        }
  subtitle="Outdoor screens fail mostly due to power/surge, water ingress, and weak structure-use this checklist to avoid common mistakes."
       >
         <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
@@ -1128,30 +1134,37 @@ export default function OutdoorProductsPage() {
 
       <Section
  title="Outdoor LED Pixel Pitch Guide for Bangladesh (P2.5 to P10)"
+        icon={
+          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M7 4v14M17 6v14M4 18h6M14 20h6" />
+            <circle cx="7" cy="4" r="2" fill="currentColor" stroke="none" />
+            <circle cx="17" cy="6" r="2" fill="currentColor" stroke="none" />
+          </svg>
+        }
         subtitle="If you are comparing outdoor LED display screen price in Bangladesh, pixel pitch and viewing distance should be selected together for better clarity, better budget control, and long-term performance."
       >
         <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
           {[
             {
- i: "",
+ i: "◎",
               t: "Close roadside branding (P2.5-P4)",
               d: "Best for shop frontage, market roads, and urban traffic where viewers stay relatively near the screen.",
               bullets: ["Typical viewing: 3m to 10m", "Sharper text/logo visibility", "Good for detailed promotional content"],
             },
             {
- i: "",
+ i: "◉",
               t: "Mid-range city visibility (P5-P6.67)",
               d: "Balanced option for commercial facades and medium-distance public communication in busy city zones.",
               bullets: ["Typical viewing: 8m to 25m", "Balanced clarity vs cost", "Useful for mixed text + motion graphics"],
             },
             {
- i: "",
+ i: "⬒",
               t: "Long-distance highways (P8-P10)",
               d: "Suitable for highways, elevated roads, and large-format outdoor LED billboard communication.",
               bullets: ["Typical viewing: 20m+", "Strong readability from distance", "Efficient for large ad surfaces"],
             },
             {
- i: "",
+ i: "✓",
               t: "Selection checklist before purchase",
               d: "For accurate outdoor LED display module price and model recommendation, confirm these key inputs first.",
               bullets: ["Screen size (W x H)", "Installation height and traffic speed", "Ambient light and operating hours"],
@@ -1189,25 +1202,25 @@ export default function OutdoorProductsPage() {
           <div className="grid gap-4 md:grid-cols-2">
             {[
               {
- i: "",
+ i: "◎",
                 t: "Close roadside branding (P2.5-P4)",
                 d: "Best for shop frontage, market roads, and urban traffic where viewers stay relatively near the screen.",
                 bullets: ["Typical viewing: 3m to 10m", "Sharper text/logo visibility", "Good for detailed promotional content"],
               },
               {
- i: "",
+ i: "◉",
                 t: "Mid-range city visibility (P5-P6.67)",
                 d: "Balanced option for commercial facades and medium-distance public communication in busy city zones.",
                 bullets: ["Typical viewing: 8m to 25m", "Balanced clarity vs cost", "Useful for mixed text + motion graphics"],
               },
               {
- i: "",
+ i: "⬒",
                 t: "Long-distance highways (P8-P10)",
                 d: "Suitable for highways, elevated roads, and large-format outdoor LED billboard communication.",
                 bullets: ["Typical viewing: 20m+", "Strong readability from distance", "Efficient for large ad surfaces"],
               },
               {
- i: "",
+ i: "✓",
                 t: "Selection checklist before purchase",
                 d: "For accurate outdoor LED display module price and model recommendation, confirm these key inputs first.",
                 bullets: ["Screen size (W x H)", "Installation height and traffic speed", "Ambient light and operating hours"],
@@ -1235,24 +1248,30 @@ export default function OutdoorProductsPage() {
 
       <Section
  title="Outdoor LED Display Maintenance and Performance Tips"
+        icon={
+          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="m14.5 6.5 3 3-7.5 7.5H7v-3l7.5-7.5Z" />
+            <path d="m13 8 3 3" />
+          </svg>
+        }
         subtitle="A weatherproof outdoor LED display can deliver stable output for years when power quality, ventilation, and periodic service are managed correctly."
       >
         <CardGrid
           items={[
             {
- i: "",
+ i: "☀",
               t: "Prevent brightness drop",
               d: "Use proper brightness scheduling (day/night) and avoid running at maximum brightness all the time.",
               bullets: ["Auto brightness sensor setup", "Daypart brightness profile", "Seasonal calibration checks"],
             },
             {
- i: "",
+ i: "☔",
               t: "Protect against rain, dust, and surge",
               d: "Most outdoor failures in Bangladesh come from water ingress and electrical surges, not from modules alone.",
               bullets: ["Seal check before monsoon", "Regular SPD/earthing inspection", "Connector and cable gland review"],
             },
             {
- i: "",
+ i: "🛠",
               t: "Plan preventive maintenance",
               d: "A fixed maintenance cycle keeps outdoor LED display boards stable and reduces emergency repair cost.",
               bullets: ["Monthly visual inspection", "Quarterly cabinet health check", "Spare module + PSU backup stock"],
@@ -1454,6 +1473,12 @@ export default function OutdoorProductsPage() {
       {/* Explore solutions */}
       <Section
  title="Explore LED Display Categories"
+        icon={
+          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M4 12h16M12 4v16" />
+            <circle cx="12" cy="12" r="8" />
+          </svg>
+        }
  subtitle="Compare indoor, outdoor and rental options-then choose the best category for your project."
       >
         <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
@@ -1612,7 +1637,14 @@ export default function OutdoorProductsPage() {
 
       {/* FAQs */}
       <Section
- title="FAQs About Outdoor LED Display in Bangladesh"
+title="FAQs About Outdoor LED Display in Bangladesh"
+        icon={
+          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M9.5 9a2.5 2.5 0 1 1 4.2 1.8c-.9.8-1.7 1.2-1.7 2.2" />
+            <circle cx="12" cy="16.8" r="1" fill="currentColor" stroke="none" />
+          </svg>
+        }
         subtitle="Common questions before ordering an outdoor LED screen / billboard project."
       >
         <FaqAccordion
@@ -1667,6 +1699,5 @@ export default function OutdoorProductsPage() {
     </div>
   );
 }
-
 
 

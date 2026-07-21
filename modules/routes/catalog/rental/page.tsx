@@ -776,6 +776,13 @@ export default function RentalProductsPage() {
       {/* Applications */}
       <Section
  title="Rental LED Display Applications in Bangladesh"
+        titleIcon={
+          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M4 19h16" />
+            <path d="M6 16V8l6-3 6 3v8" />
+            <path d="M9 11h6" />
+          </svg>
+        }
         subtitle="Rental cabinets are built for fast event setup where speed, safety, and visual impact matter."
       >
         <CardGrid
@@ -802,6 +809,12 @@ export default function RentalProductsPage() {
       {/* Setup checklist */}
       <Section
  title="Fast Setup Checklist (Rental LED Screen)"
+        titleIcon={
+          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="9" />
+            <path d="m8.2 12.2 2.4 2.4 5.2-5.2" />
+          </svg>
+        }
         subtitle="A simple checklist used by event teams to avoid common issues during live programs."
       >
         <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
@@ -1062,6 +1075,12 @@ export default function RentalProductsPage() {
       {/* Explore */}
       <Section
  title="Explore LED Display Categories"
+        titleIcon={
+          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M4 12h16M12 4v16" />
+            <circle cx="12" cy="12" r="8" />
+          </svg>
+        }
  subtitle="Compare indoor, outdoor and rental options-then choose the best category for your project."
       >
         <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
@@ -1116,6 +1135,13 @@ export default function RentalProductsPage() {
       {/* FAQs */}
       <Section
  title="FAQs About Rental LED Display"
+        titleIcon={
+          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M9.5 9a2.5 2.5 0 1 1 4.2 1.8c-.9.8-1.7 1.2-1.7 2.2" />
+            <circle cx="12" cy="16.8" r="1" fill="currentColor" stroke="none" />
+          </svg>
+        }
         subtitle="Common questions before booking a rental LED screen for events and live programs."
       >
         <FaqAccordion
@@ -1170,6 +1196,5 @@ export default function RentalProductsPage() {
     </div>
   );
 }
-
 
 

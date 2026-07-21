@@ -77,25 +77,25 @@ export default function AboutPage() {
   const steps = [
     {
       n: "01",
-      icon: "",
+      icon: "📝",
       t: "Requirement & information",
       d: "You share indoor/outdoor, location, approximate size and your purpose (signage, showroom, stage, events, etc.).",
     },
     {
       n: "02",
- icon: "",
+      icon: "📐",
       t: "Planning & guidance",
       d: "We recommend pixel pitch and brightness, and guide you on structure, power line and safety checklist.",
     },
     {
       n: "03",
- icon: "",
+      icon: "🛠️",
       t: "Install & configure",
       d: "Installation, wiring, controller mapping, configuration testing, and clean finishing with safety priority.",
     },
     {
       n: "04",
-      icon: "",
+      icon: "✅",
       t: "Calibration & handover",
       d: "We calibrate for uniform output, test stability, provide basic training and outline support/warranty process.",
     },

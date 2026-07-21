@@ -128,7 +128,7 @@ export default function AboutPage() {
         {/* CONTACT DETAILS + MAP (same section/content) */}
         <section className="mt-8 rounded-[24px] bg-slate-50 p-4 md:rounded-3xl md:p-10">
           <SectionTitle
- icon=""
+            icon="📍"
             title="Contact & Location"
  desc="For quotation, site survey or support-reach us anytime. Share your location, indoor/outdoor and approximate size for faster guidance."
           />
@@ -266,7 +266,6 @@ export default function AboutPage() {
     </main>
   );
 }
-
 
 
 
