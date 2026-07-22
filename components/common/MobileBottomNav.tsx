@@ -101,7 +101,7 @@ export default function MobileBottomNav() {
   return (
     <nav
       aria-label="Mobile quick navigation"
-      className={`fixed inset-x-0 bottom-0 z-[85] border-t border-slate-200 bg-white/95 shadow-[0_-8px_24px_rgba(15,23,42,0.08)] backdrop-blur md:hidden transition-transform duration-300 ${isVisible ? "translate-y-0" : "translate-y-full"}`}
+      className={`fixed inset-x-0 bottom-0 z-[85] border-t border-slate-200 bg-white/95 shadow-[0_-8px_24px_rgba(15,23,42,0.08)] backdrop-blur sm:hidden transition-transform duration-300 ${isVisible ? "translate-y-0" : "translate-y-full"}`}
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       <div className="grid h-15 grid-cols-5 items-stretch">

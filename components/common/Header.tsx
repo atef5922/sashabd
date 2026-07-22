@@ -253,12 +253,12 @@ export default function Header() {
     >
       <div className="mx-auto flex h-[4.15rem] max-w-7xl items-center gap-1.5 px-3 py-0 md:h-18 md:gap-0 md:pl-3 md:pr-4">
         <Link prefetch={false} href="/" onClick={handleNavClick("/")} className="flex shrink-0 items-center gap-2">
-          <div className="relative h-[3.2rem] w-[6.4rem] shrink-0 overflow-visible rounded-md md:h-24 md:w-40">
+          <div className="relative h-[2.95rem] w-[5.95rem] shrink-0 overflow-visible rounded-md sm:h-[3.05rem] sm:w-[6.15rem] md:h-24 md:w-40">
             <Image
               src={isScrolled ? "/sasha-corporation-after-scroll.png" : "/sasha-corporation-final-l.webp"}
               alt={`${BRAND_NAME} logo`}
               fill
-              className="object-contain object-left scale-[1.08] md:scale-100"
+              className="object-contain object-left scale-100 md:scale-100"
               sizes="160px"
             />
           </div>
@@ -509,7 +509,7 @@ export default function Header() {
       {/* MOBILE NAV */}
       {open && (
         <div className="border-t bg-white md:hidden">
-          <div className="mx-auto max-h-[calc(100svh-72px)] max-w-7xl overflow-y-auto overscroll-contain px-4 py-3">
+          <div className="mx-auto max-h-[calc(100svh-72px)] max-w-7xl overflow-y-auto overscroll-contain px-4 pb-24 pt-3">
             <div className="flex flex-col gap-2">
               {/* Home */}
 	              <Link prefetch={false} href="/"

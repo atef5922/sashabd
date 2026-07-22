@@ -6,6 +6,7 @@
     "scripts": {
         "dev": "next dev --webpack",
         "build": "next build",
+        "build:package": "powershell -ExecutionPolicy Bypass -File scripts/build-static-package.ps1",
         "start": "next start",
         "lint": "eslint",
         "indexnow:submit": "node scripts/indexnow-submit.mjs"
