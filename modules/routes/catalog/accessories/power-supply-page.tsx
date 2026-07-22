@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "LED Display Power Supply",
     description: "Browse 5V high-current LED display PSU models with practical wiring and protection guidance.",
-    url: "/led-display/accessories/power-supply",
+    url: "/led-display/accessories/power-supply/",
     type: "website",
     images: [
       {

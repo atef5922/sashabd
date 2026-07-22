@@ -1157,7 +1157,7 @@ export const metadata: Metadata = {
     title: `${PAGE_TITLE} | Sasha Corporation`,
     description:
       "Professional conference microphone, wireless conference, and audio control systems for meeting rooms and conference halls.",
-    url: "/conference-system",
+    url: "/conference-system/",
     type: "website",
     images: [
       {

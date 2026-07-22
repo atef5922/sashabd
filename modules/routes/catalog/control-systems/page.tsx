@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Control Systems in Bangladesh",
     description: "PA system, turnstile gate system and digital podium in Bangladesh.",
-    url: "/control-systems",
+    url: "/control-systems/",
     type: "website",
     images: [
       {
@@ -37,7 +37,7 @@ const categories = [
     slug: "interactive-flat-panel",
     title: "Interactive Flat Panel",
     subtitle: "4K touch display for smart classrooms, training and meeting room collaboration.",
-    href: "/control-systems/interactive-flat-panel",
+    href: "/interactive-flat-panel/",
     image: "/images/Interactive flat panel/interactive-card.webp",
     tags: ["4K Touch", "Smart classroom", "Meeting room"],
   },
@@ -45,7 +45,7 @@ const categories = [
     slug: "pa-system",
     title: "PA Sound System",
     subtitle: "Public address system for announcements in office, factory, mosque, school and events.",
-    href: "/control-systems/pa-system",
+    href: "/pa-system/",
     image: "/images/logo/PA-sound.webp",
     tags: ["Amplifier", "Speaker", "Microphone"],
   },
@@ -53,7 +53,7 @@ const categories = [
     slug: "turnstile-gate-system",
     title: "Turnstile Gate System",
     subtitle: "Access control and entry management for office, factory and public venues.",
-    href: "/control-systems/turnstile-gate-system",
+    href: "/turnstile-gate/",
     image: "/images/logo/turnstile-gate-common.webp",
     tags: ["RFID", "Fingerprint", "Access control"],
   },
@@ -61,7 +61,7 @@ const categories = [
     slug: "digital-podium",
     title: "Digital Podium",
     subtitle: "Smart podium/lectern for presentations in classrooms, lecture halls and conference venues.",
-    href: "/control-systems/digital-podium",
+    href: "/digital-podium/",
     image: "/images/podium/Podium-common.webp",
     tags: ["Smart podium", "Lectern", "Presentation"],
   },
@@ -174,37 +174,37 @@ export default function ControlSystemsPage() {
         <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {[
             {
-              href: "/control-systems/pa-system/school-mosque-pa-rack-package-mixer-amp-paging-mic/",
+              href: "/pa-system/school-mosque-pa-rack-package-mixer-amp-paging-mic/",
               title: "School & Mosque PA Rack Package",
               desc: "Mixer + amplifier + paging mic package for daily announcements.",
             },
             {
-              href: "/control-systems/pa-system/digital-control-pa-system-audio-matrix-dsp/",
+              href: "/pa-system/digital-control-pa-system-audio-matrix-dsp/",
               title: "Digital Control PA System (Audio Matrix DSP)",
               desc: "Zoning and intelligent routing for multi-area sites.",
             },
             {
-              href: "/control-systems/pa-system/2-channel-power-amplifier-2x500w/",
+              href: "/pa-system/2-channel-power-amplifier-2x500w/",
  title: "2-Channel Power Amplifier (2 - 500W)",
               desc: "High power output for larger halls and multi-speaker zones.",
             },
             {
-              href: "/control-systems/pa-system/60w-column-speaker-mosque-hall/",
+              href: "/pa-system/60w-column-speaker-mosque-hall/",
               title: "60W Column Speaker",
               desc: "Speech clarity option for mosque/hall environments.",
             },
             {
-              href: "/control-systems/pa-system/50w-outdoor-horn-speaker-siren-announcement/",
+              href: "/pa-system/50w-outdoor-horn-speaker-siren-announcement/",
               title: "50W Outdoor Horn Speaker",
               desc: "Outdoor announcement and siren use cases.",
             },
             {
-              href: "/control-systems/turnstile-gate-system/ai-face-recognition-turnstile-gate/",
+              href: "/turnstile-gate/ai-face-recognition-turnstile-gate/",
               title: "AI Face Recognition Turnstile Gate",
               desc: "Modern access control for office and factory entry points.",
             },
             {
-              href: "/control-systems/digital-podium/",
+              href: "/digital-podium/",
               title: "Digital Podium (Smart Lectern)",
               desc: "Presentation control and clean AV workflow for classrooms and events.",
             },

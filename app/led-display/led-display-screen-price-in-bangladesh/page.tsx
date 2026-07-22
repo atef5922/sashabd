@@ -12,13 +12,13 @@ export const canonicalMetadata: Metadata = {
   title: "LED Display Screen Price in Bangladesh",
   description:
     "Explore LED display screen price in Bangladesh with practical pricing drivers, budgeting steps, and category comparison for indoor, outdoor, and rental use.",
-  alternates: { canonical: "/led-display/price-guide-bangladesh/" },
+  alternates: { canonical: "/led-display/" },
   robots: { index: false, follow: true },
   openGraph: {
     title: "LED Display Screen Price in Bangladesh",
     description:
       "Explore LED display screen price in Bangladesh with practical pricing drivers, budgeting steps, and category comparison for indoor, outdoor, and rental use.",
-    url: "/led-display/price-guide-bangladesh/",
+    url: "/led-display/",
     type: "article",
     images: [
       {
@@ -919,7 +919,7 @@ export function PriceGuideBangladeshContent() {
                     "@type": "ListItem",
                     position: 3,
                     name: "LED Screen Price in Bangladesh",
-                    item: `https://${siteConfig.domain}/led-display/price-guide-bangladesh/`,
+                    item: `https://${siteConfig.domain}/led-display/`,
                   },
                 ],
               },
@@ -939,5 +939,5 @@ export function PriceGuideBangladeshContent() {
 }
 
 export default function LegacyLedDisplayScreenPricePage() {
-  permanentRedirect("/led-display/price-guide-bangladesh/");
+  permanentRedirect("/led-display/");
 }

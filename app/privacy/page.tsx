@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     title: `Privacy Policy | ${BRAND_NAME}`,
     description:
       "Learn how Sasha Corporation collects, uses, protects, and manages inquiry and contact data.",
-    url: "/privacy",
+    url: "/privacy/",
     type: "website",
     images: [
       {

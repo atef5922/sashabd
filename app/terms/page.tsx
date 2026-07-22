@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     title: `Terms & Conditions | ${BRAND_NAME}`,
     description:
       "Understand service, quotation, delivery, installation, warranty, and support terms for LED display projects in Bangladesh.",
-    url: "/terms",
+    url: "/terms/",
     type: "website",
     images: [
       {
@@ -113,7 +113,7 @@ export default function TermsPage() {
           <Link href="/contact" className="rounded-xl bg-[#FF6A00] px-5 py-3 text-sm font-extrabold text-white transition hover:bg-[#E45700]">
             Contact Support
           </Link>
-          <Link href="/privacy" className="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
+          <Link href="/privacy/" className="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50">
             Privacy Policy
           </Link>
         </div>

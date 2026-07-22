@@ -1,2 +1,6 @@
-export { default, metadata } from "@/modules/routes/catalog/control-systems/pa-system/page";
+import { permanentRedirect } from "next/navigation";
+
+export default function LegacyPaSystemPage() {
+  permanentRedirect("/pa-system/");
+}
 

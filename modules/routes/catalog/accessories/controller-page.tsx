@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "LED Controller / Video Processor",
  description: "Controllers & video processors for LED screens-view features, specs and request a recommendation.",
-    url: "/led-display/accessories/controller",
+    url: "/led-display/accessories/controller/",
     type: "website",
     images: [
       {

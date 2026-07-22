@@ -144,13 +144,13 @@ export const canonicalMetadata: Metadata = {
   title: "Indoor LED Video Wall in Bangladesh | Showroom & Shop",
   description:
     "Indoor LED video wall guide with pixel pitch planning, screen size tips, content strategy, and installation notes for Bangladesh projects.",
-  alternates: { canonical: "/led-display/indoor-led-video-wall-guide/" },
+  alternates: { canonical: "/led-display/indoor-led-video-wall-bangladesh/" },
   robots: { index: false, follow: true },
   openGraph: {
     title: "Indoor LED Video Wall in Bangladesh | Showroom & Shop",
     description:
       "Indoor LED video wall guide with pixel pitch planning, screen size tips, content strategy, and installation notes for Bangladesh projects.",
-    url: "/led-display/indoor-led-video-wall-guide/",
+    url: "/led-display/indoor-led-video-wall-bangladesh/",
     type: "article",
     images: [
       {
@@ -421,4 +421,3 @@ export function IndoorLedVideoWallBangladeshContent() {
 export default function LegacyIndoorLedVideoWallPage() {
   permanentRedirect("/led-display/indoor-led-video-wall-bangladesh/");
 }
-

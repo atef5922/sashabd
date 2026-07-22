@@ -117,7 +117,7 @@ export default function BlogAndCaseStudyPage() {
           {blogPosts.map((item) => (
             <Link
               key={item.title}
-              href={`/blog/${item.slug}`}
+              href={`/blog/${item.slug}/`}
               className="group block overflow-hidden rounded-[16px] border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl md:rounded-2xl"
             >
               <div className="relative h-24 overflow-hidden md:h-44">

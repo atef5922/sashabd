@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     title: `Return Policy | ${BRAND_NAME}`,
     description:
       "Read return, replacement, and reporting conditions for LED display products and accessories.",
-    url: "/return-policy",
+    url: "/return-policy/",
     type: "website",
     images: [
       {

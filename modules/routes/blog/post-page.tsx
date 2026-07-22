@@ -504,7 +504,7 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
   const whyChooseUsIntro = whyChooseUsContent.intro;
   const whyChooseUsPoints = whyChooseUsContent.points;
   const internalLinks = [
-    { href: "/blog", label: "All Blog Articles" },
+    { href: "/blog/", label: "All Blog Articles" },
     { href: "/led-display/", label: "LED Display Solutions" },
     { href: "/services-support/", label: "Services & Support" },
     { href: "/led-display/indoor-led/", label: "Indoor LED Display" },
@@ -822,7 +822,7 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
               {relatedPosts.map((item) => (
                 <Link
                   key={item.slug}
-                  href={`/blog/${item.slug}`}
+                  href={`/blog/${item.slug}/`}
                   className="group block overflow-hidden rounded-[18px] border border-slate-200 bg-slate-50 transition hover:-translate-y-0.5 hover:border-orange-200 hover:bg-white hover:shadow-md md:rounded-2xl"
                 >
                   <div className="relative h-28 w-full overflow-hidden bg-slate-200 md:h-36">
@@ -854,7 +854,7 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
               ))}
             </div>
             <Link
-              href="/blog"
+              href="/blog/"
               className="mt-5 inline-flex text-sm font-semibold text-[#FF6A00] hover:underline"
             >
               Back to all articles

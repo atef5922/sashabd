@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: "Interactive Flat Panel in Bangladesh | Smart Classroom and Meeting Room",
     description:
  "Interactive flat panel price and selection guidance in Bangladesh-screen size planning, OPS PC options, installation and after-sales support.",
-    url: "/interactive-flat-panel",
+    url: "/interactive-flat-panel/",
     type: "website",
     images: [
       {

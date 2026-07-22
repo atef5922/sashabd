@@ -81,7 +81,7 @@ export const metadata: Metadata = {
     title: PAGE_TITLE,
     description:
       "Turnstile Gate Price in Bangladesh. Sasha Corporation supplies tripod turnstile, flap barrier, speed gate, RFID access control & face recognition systems.",
-    url: "/turnstile-gate",
+    url: "/turnstile-gate/",
     type: "website",
     images: [
       {

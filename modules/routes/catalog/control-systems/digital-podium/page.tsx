@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     title: "Digital Podium Price in Bangladesh | Smart Podium & Installation",
     description:
  "Supply and installation of digital podiums in Bangladesh for smart classrooms, universities and corporate training-touch control, connectivity planning and after-sales support.",
-    url: "/digital-podium",
+    url: "/digital-podium/",
     type: "website",
     images: [
       {

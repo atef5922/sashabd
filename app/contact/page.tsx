@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     title: "Contact Us for Quotation",
     description:
       "Reach Sasha Corporation for LED display project quotation, consultation and support.",
-    url: "/contact",
+    url: "/contact/",
     type: "website",
     images: [
       {

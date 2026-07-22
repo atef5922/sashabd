@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: "Waterproof Outdoor LED Display Bangladesh | Weatherproof",
     description:
       "Waterproof outdoor LED display guide for rain, dust, and humidity conditions in Bangladesh with safety, reliability, and maintenance priorities.",
-    url: "/led-display/waterproof-outdoor-led-display",
+    url: "/led-display/waterproof-outdoor-led-display/",
     type: "article",
     images: [
       {
@@ -846,4 +846,3 @@ export default function WaterproofOutdoorLedDisplayPage() {
     </main>
   );
 }
-

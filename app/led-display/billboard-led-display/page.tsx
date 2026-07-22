@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     title: "Billboard LED Display in Bangladesh | Waterproof Display",
     description:
       "Billboard LED Screen in Bangladesh for outdoor advertising, roadside branding and long-distance visibility. Compare brightness, cabinet quality and durability.",
-    url: "/led-display/billboard-led-display",
+    url: "/led-display/billboard-led-display/",
     type: "article",
     images: [
       {
@@ -826,4 +826,3 @@ export default function BillboardLedDisplayPage() {
     </main>
   );
 }
-

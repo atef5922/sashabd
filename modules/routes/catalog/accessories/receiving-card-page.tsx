@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "LED Display Receiving Card",
     description: "Receiving cards for LED display cabinets: compatibility, mapping guidance and support.",
-    url: "/led-display/accessories/receiving-card",
+    url: "/led-display/accessories/receiving-card/",
     type: "website",
     images: [
       {

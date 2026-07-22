@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     title: "Message from Founder",
     description:
       "Founder message from Sasha Corporation on growth, innovation and customer commitment.",
-    url: "/about/message-from-founder",
+    url: "/about/message-from-founder/",
     type: "article",
     images: [
       {
