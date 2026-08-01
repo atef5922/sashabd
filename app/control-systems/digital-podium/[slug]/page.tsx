@@ -1,5 +1,21 @@
+import type { Metadata } from "next";
 import { permanentRedirect } from "next/navigation";
 import { digitalPodiumCatalog } from "@/modules/routes/catalog/control-systems/digital-podium/catalog";
+
+export async function generateMetadata({
+  params,
+}: LegacyDigitalPodiumProductPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  return {
+    robots: {
+      index: false,
+      follow: true,
+    },
+    alternates: {
+      canonical: `/digital-podium/${slug}/`,
+    },
+  };
+}
 
 type LegacyDigitalPodiumProductPageProps = {
   params: Promise<{ slug: string }>;

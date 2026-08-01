@@ -509,7 +509,7 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
     { href: "/services-support/", label: "Services & Support" },
     { href: "/led-display/indoor-led/", label: "Indoor LED Display" },
     { href: "/led-display/outdoor/", label: "Outdoor LED Display" },
-    { href: "/contact", label: "Talk to Our Team" },
+    { href: "/contact/", label: "Talk to Our Team" },
   ];
 
   const canonical = withTrailingSlash(`/blog/${post.slug}`);
@@ -772,7 +772,7 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
             </p>
             <div className="mt-5 grid grid-cols-2 gap-2 md:flex md:flex-wrap md:gap-3">
               <Link
-                href="/contact"
+                href="/contact/"
                 className="inline-flex min-h-10 items-center justify-center rounded-md bg-[#FF6A00] px-3 py-2 text-center text-[11px] font-extrabold text-white transition hover:-translate-y-0.5 hover:bg-[#E45700] md:rounded-xl md:px-4 md:py-2 md:text-sm md:font-semibold"
               >
                 Talk to an Expert

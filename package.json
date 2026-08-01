@@ -8,7 +8,13 @@
         "build": "next build",
         "build:package": "powershell -ExecutionPolicy Bypass -File scripts/build-static-package.ps1",
         "start": "next start",
+        "serve:static": "node scripts/serve-static.mjs --port=4173",
         "lint": "eslint",
+        "typecheck": "tsc --noEmit",
+        "test": "node --test tests/seo.test.mjs",
+        "seo:audit": "node scripts/seo-audit.mjs",
+        "seo:audit:local": "node scripts/seo-audit.mjs --base=http://127.0.0.1:4173 --expected-origin=https://sashabd.com --output=reports/seo-audit.json",
+        "seo:audit:production": "node scripts/seo-audit.mjs --base=https://sashabd.com --expected-origin=https://sashabd.com --output=reports/production-seo-audit.json",
         "indexnow:submit": "node scripts/indexnow-submit.mjs"
     },
     "dependencies": {

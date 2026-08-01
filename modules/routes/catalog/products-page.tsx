@@ -577,7 +577,7 @@ function ProductsPageContent({
     },
     {
       label: "Request BOQ-based proposal",
-      href: "/contact",
+      href: "/contact/",
       icon: "guide",
       kind: "internal" as const,
     },
@@ -602,7 +602,7 @@ function ProductsPageContent({
     { label: "Controller", href: "/led-display/accessories/controller/", icon: "controller", tone: "text-orange-600 bg-orange-50 border-orange-100" },
     { label: "Power Supply", href: "/led-display/accessories/power-supply/", icon: "power", tone: "text-cyan-600 bg-cyan-50 border-cyan-100" },
     { label: "LED Accessories", href: "/led-display/accessories/led-accessories/", icon: "cable", tone: "text-indigo-600 bg-indigo-50 border-indigo-100" },
-    { label: "Projects", href: "/projects", icon: "display", tone: "text-slate-600 bg-slate-50 border-slate-200" },
+    { label: "Projects", href: "/projects/", icon: "display", tone: "text-slate-600 bg-slate-50 border-slate-200" },
   ];
 
   const [filter, setFilter] = useState<FilterKey>("all");
@@ -2345,7 +2345,7 @@ function ProductsPageContent({
                 </ul>
 
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <Link prefetch={false} href="/contact" className="rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">
+                  <Link prefetch={false} href="/contact/" className="rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">
                     Request a Free Quotation -&gt;
                   </Link>
                 </div>
@@ -2686,7 +2686,7 @@ function ProductsPageContent({
               </ul>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link
-                  href="/contact"
+                  href="/contact/"
                   className="inline-flex rounded-xl bg-[#FF6A00] px-6 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#E45700] hover:shadow-md"
                 >
                   Get Buying Help -&gt;
@@ -2847,7 +2847,7 @@ function ProductsPageContent({
               </Link>
               <Link
                 prefetch={false}
-                href="/contact"
+                href="/contact/"
                 className="hidden rounded-xl bg-[#FF6A00] px-6 py-2 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#E45700] hover:shadow-md md:inline-flex"
               >
                 Get a Recommendation -&gt;

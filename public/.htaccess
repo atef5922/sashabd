@@ -59,32 +59,32 @@ AddDefaultCharset UTF-8
   # Control Systems landing removed; PA Sound System moved to top-level URL
   RewriteRule ^control-systems/?$ /pa-system/ [R=301,L]
   RewriteRule ^control-systems/pa-system/?$ /pa-system/ [R=301,L]
-  RewriteRule ^control-systems/pa-system/(.+)/?$ /pa-system/$1/ [R=301,L]
+  RewriteRule ^control-systems/pa-system/([^/]+)/?$ /pa-system/$1/ [R=301,L]
   RewriteRule ^control-systems/digital-podium/?$ /digital-podium/ [R=301,L]
-  RewriteRule ^control-systems/digital-podium/(.+)/?$ /digital-podium/$1/ [R=301,L]
+  RewriteRule ^control-systems/digital-podium/([^/]+)/?$ /digital-podium/$1/ [R=301,L]
   RewriteRule ^control-systems/interactive-flat-panel/?$ /interactive-flat-panel/ [R=301,L]
-  RewriteRule ^control-systems/interactive-flat-panel/(.+)/?$ /interactive-flat-panel/$1/ [R=301,L]
+  RewriteRule ^control-systems/interactive-flat-panel/([^/]+)/?$ /interactive-flat-panel/$1/ [R=301,L]
   RewriteRule ^control-systems/turnstile-gate-system/?$ /turnstile-gate/ [R=301,L]
-  RewriteRule ^control-systems/turnstile-gate-system/(.+)/?$ /turnstile-gate/$1/ [R=301,L]
+  RewriteRule ^control-systems/turnstile-gate-system/([^/]+)/?$ /turnstile-gate/$1/ [R=301,L]
 
   # Indoor (legacy aliases first)
-  RewriteRule ^led-display/indoor/p4-indoor-led-display/?$ /led-display/indoor-led/p1-77-indoor-led-display/ [R=301,L]
-  RewriteRule ^led-display/indoor/p5-indoor-led-display/?$ /led-display/indoor-led/p1-35-indoor-led-display/ [R=301,L]
+  RewriteRule ^led-display/indoor/p4-indoor-led-display/?$ /led-display/indoor-led/p4-indoor-led-display-module/ [R=301,L]
+  RewriteRule ^led-display/indoor/p5-indoor-led-display/?$ /led-display/indoor-led/ [R=301,L]
 
   RewriteRule ^led-display/indoor/?$ /led-display/indoor-led/ [R=301,L]
-  RewriteRule ^led-display/indoor/(.+)/?$ /led-display/indoor-led/$1/ [R=301,L]
+  RewriteRule ^led-display/indoor/([^/]+)/?$ /led-display/indoor-led/$1/ [R=301,L]
 
   # Top-level indoor-led legacy
   RewriteRule ^indoor-led/?$ /led-display/indoor-led/ [R=301,L]
-  RewriteRule ^indoor-led/(.+)/?$ /led-display/indoor-led/$1/ [R=301,L]
+  RewriteRule ^indoor-led/([^/]+)/?$ /led-display/indoor-led/$1/ [R=301,L]
 
   # Rental
   RewriteRule ^led-display/rental/?$ /led-display/rental-display/ [R=301,L]
-  RewriteRule ^led-display/rental/(.+)/?$ /led-display/rental-display/$1/ [R=301,L]
+  RewriteRule ^led-display/rental/([^/]+)/?$ /led-display/rental-display/$1/ [R=301,L]
 
   # Top-level rental-display legacy
   RewriteRule ^rental-display/?$ /led-display/rental-display/ [R=301,L]
-  RewriteRule ^rental-display/(.+)/?$ /led-display/rental-display/$1/ [R=301,L]
+  RewriteRule ^rental-display/([^/]+)/?$ /led-display/rental-display/$1/ [R=301,L]
 
   # Price guide
   RewriteRule ^led-display/price-guide/?$ /led-display/ [R=301,L]
@@ -114,17 +114,17 @@ AddDefaultCharset UTF-8
   RewriteRule ^products/?$ /led-display/ [R=301,L]
 
   RewriteRule ^products/indoor/?$ /led-display/indoor-led/ [R=301,L]
-  RewriteRule ^products/indoor/(.+)/?$ /led-display/indoor-led/$1/ [R=301,L]
+  RewriteRule ^products/indoor/([^/]+)/?$ /led-display/indoor-led/$1/ [R=301,L]
 
   RewriteRule ^products/outdoor/?$ /led-display/outdoor/ [R=301,L]
-  RewriteRule ^products/outdoor/(.+)/?$ /led-display/outdoor/$1/ [R=301,L]
+  RewriteRule ^products/outdoor/([^/]+)/?$ /led-display/outdoor/$1/ [R=301,L]
 
   RewriteRule ^products/rental/?$ /led-display/rental-display/ [R=301,L]
-  RewriteRule ^products/rental/(.+)/?$ /led-display/rental-display/$1/ [R=301,L]
+  RewriteRule ^products/rental/([^/]+)/?$ /led-display/rental-display/$1/ [R=301,L]
 
   RewriteRule ^products/accessories/?$ /led-display/accessories/ [R=301,L]
   RewriteRule ^products/accessories/(controller|power-supply|receiving-card|led-accessories)/?$ /led-display/accessories/$1/ [R=301,L]
-  RewriteRule ^products/accessories/(controller|power-supply|receiving-card|led-accessories)/(.+)/?$ /led-display/accessories/$1/$2/ [R=301,L]
+  RewriteRule ^products/accessories/(controller|power-supply|receiving-card|led-accessories)/([^/]+)/?$ /led-display/accessories/$1/$2/ [R=301,L]
 
   # ------------------------------
   # URL hygiene (static export)
@@ -158,6 +158,11 @@ AddDefaultCharset UTF-8
   # Long-cache for versioned/static assets
   <FilesMatch "\.(?:css|js|mjs|json|map|woff2|png|jpe?g|gif|svg|webp|ico)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
+    Header set X-Robots-Tag "noindex"
+  </FilesMatch>
+
+  <FilesMatch "^(?!robots\.txt$).*\.(?:txt)$">
+    Header set X-Robots-Tag "noindex"
   </FilesMatch>
 
   # HTML should revalidate (Cloudflare can still cache at edge if configured)

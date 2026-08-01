@@ -345,7 +345,7 @@ export default function DisplayProductDetailPage({
 
           <div className="mt-3 flex flex-wrap gap-2">
             <Link
-              href="/contact"
+              href="/contact/"
               className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
@@ -371,7 +371,7 @@ export default function DisplayProductDetailPage({
 
             <div className="mt-4 flex flex-wrap gap-2">
               <Link
-                href="/contact"
+                href="/contact/"
                 className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
@@ -562,7 +562,7 @@ export default function DisplayProductDetailPage({
                 {item.cardPrice ? <p className="mt-1 text-sm font-semibold text-sky-700">{normalizeDisplayedPriceText(item.cardPrice)}</p> : null}
                 <div className="mt-3 flex items-center justify-between gap-3">
                   <Link
-                    href="/contact"
+                    href="/contact/"
                     onClick={(event) => event.stopPropagation()}
                     className="relative z-20 inline-flex items-center rounded-full bg-sky-500 px-4 py-2 text-xs font-extrabold text-white whitespace-nowrap"
                   >

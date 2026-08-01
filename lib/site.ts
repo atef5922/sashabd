@@ -1,6 +1,7 @@
 export const siteConfig = {
   name: "Sashabd",
   domain: "sashabd.com",
+  canonicalOrigin: "https://sashabd.com",
   phone: "+880160-8843419",
   whatsapp: "+880160-8843419",
   emailUser: "info",

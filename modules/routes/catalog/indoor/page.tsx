@@ -239,7 +239,7 @@ export default function IndoorProductsPage() {
 
           <div className="mobile-intro-actions mt-4 flex flex-nowrap gap-2.5 md:mt-5 md:flex-wrap md:gap-3">
             <Link
-              href="/contact"
+              href="/contact/"
               className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
@@ -271,7 +271,10 @@ export default function IndoorProductsPage() {
 
           <div className="mt-3 hidden flex-wrap gap-x-4 gap-y-2 text-xs font-semibold text-slate-600 md:flex">
             <span className="text-slate-500">Related:</span>
-            <Link href="/contact" className="underline underline-offset-4 hover:text-slate-900">
+            <Link href="/led-display/indoor-led-video-wall-bangladesh/" className="underline underline-offset-4 hover:text-slate-900">
+              Indoor LED video wall
+            </Link>
+            <Link href="/contact/" className="underline underline-offset-4 hover:text-slate-900">
               BOQ quotation
             </Link>
             <Link href="/services-support/" className="underline underline-offset-4 hover:text-slate-900">
@@ -1222,7 +1225,7 @@ export default function IndoorProductsPage() {
 
         <div className="mt-6 flex flex-nowrap gap-2.5 md:flex-wrap md:gap-3">
           <Link
-            href="/contact"
+            href="/contact/"
             className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >
@@ -1268,7 +1271,7 @@ export default function IndoorProductsPage() {
         {/* Final CTA button */}
         <div className="mt-7 flex flex-nowrap gap-2.5 md:flex-wrap md:gap-3">
           <Link
-            href="/contact"
+            href="/contact/"
             className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-6 md:py-3 md:text-sm"
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >

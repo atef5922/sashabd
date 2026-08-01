@@ -1,5 +1,5 @@
-/led-display/indoor/p4-indoor-led-display          /led-display/indoor-led/          301
-/led-display/indoor/p4-indoor-led-display/         /led-display/indoor-led/          301
+/led-display/indoor/p4-indoor-led-display          /led-display/indoor-led/p4-indoor-led-display-module/ 301
+/led-display/indoor/p4-indoor-led-display/         /led-display/indoor-led/p4-indoor-led-display-module/ 301
 /led-display/indoor/p4-indoor-led-display/*        /led-display/indoor-led/          301
 
 /?m=:value                                         /                                  301!
@@ -61,9 +61,9 @@
 /led-display/led-display-screen-price-in-bangladesh/         /led-display/            301
 /led-display/led-display-screen-price-in-bangladesh/*        /led-display/:splat/     301
 
-/led-display/digital-led-display          /led-display/digital-led-display-guide/         301
-/led-display/digital-led-display/         /led-display/digital-led-display-guide/         301
-/led-display/digital-led-display/*        /led-display/digital-led-display-guide/:splat/  301
+/led-display/digital-led-display          /led-display/                                  301
+/led-display/digital-led-display/         /led-display/                                  301
+/led-display/digital-led-display/*        /led-display/:splat/                           301
 
 /led-display/indoor-led-video-wall-guide          /led-display/indoor-led-video-wall-bangladesh/         301
 /led-display/indoor-led-video-wall-guide/         /led-display/indoor-led-video-wall-bangladesh/         301

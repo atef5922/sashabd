@@ -134,7 +134,7 @@ export default function AccessoriesPage() {
           {/* CTA buttons moved under hero (horizontal line) */}
           <div className="mt-4 flex flex-wrap gap-3">
             <Link
-              href="/contact"
+              href="/contact/"
               className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
@@ -247,7 +247,7 @@ export default function AccessoriesPage() {
           A typical LED wall has three essential building blocks: (1) a <b>controller / video processor</b> to accept and
           manage input signals, (2) a <b>receiving card</b> to distribute mapped data to each cabinet, and (3) a stable
           <b> power supply</b> to deliver clean DC power to modules and control hardware. When these accessories match the
- screen's resolution and cabinet wiring, you get stable brightness, smooth motion, accurate mapping, and fewer
+ screen&apos;s resolution and cabinet wiring, you get stable brightness, smooth motion, accurate mapping, and fewer
           downtime issues.
         </p>
         <div className="mt-5 grid gap-4 md:grid-cols-3">
@@ -340,7 +340,7 @@ export default function AccessoriesPage() {
           <span>Power Supply (PSU): Why It Matters</span>
         </h2>
         <p className="mt-3 text-slate-600 leading-7 text-justify">
-          A power supply is not just a "5V box." It affects brightness stability, long-term reliability, and safety. LED
+          A power supply is not just a &quot;5V box.&quot; It affects brightness stability, long-term reliability, and safety. LED
           modules draw high current, and poor-quality PSUs can cause voltage drop, overheating, flicker under load, or
           premature failure. A correctly sized PSU with proper protections helps your screen run cooler, stay stable, and
           reduce maintenance cost over time.
@@ -413,7 +413,7 @@ export default function AccessoriesPage() {
         </div>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link
-            href="/contact"
+            href="/contact/"
             className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >

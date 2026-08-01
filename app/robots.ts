@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site";
+import { absoluteUrl } from "@/lib/seo";
 
 export const dynamic = "force-static";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = `https://${siteConfig.domain}`.replace(/\/+$/, "");
   return {
     rules: [
       {
@@ -13,7 +13,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/", "/cdn-cgi/"],
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: absoluteUrl("/sitemap.xml"),
     host: siteConfig.domain,
   };
 }

@@ -418,7 +418,7 @@ export default async function InteractiveFlatPanelDetailsPage(
         relatedLinks={[
           { href: "/interactive-flat-panel/", label: "Interactive Flat Panel listing" },
           { href: "/interactive-flat-panel/#size-selection", label: "Size selection guide" },
-          { href: "/contact", label: "Request quotation" },
+          { href: "/contact/", label: "Request quotation" },
         ]}
         whatYouGet={[
           "Model and size guidance based on room layout",

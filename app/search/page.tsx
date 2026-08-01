@@ -1,7 +1,16 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import SearchClient from "./search-client";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
+
+export const metadata: Metadata = {
+  title: "Search",
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 export default function SearchPage() {
   return (

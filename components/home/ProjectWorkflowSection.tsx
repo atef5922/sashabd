@@ -30,7 +30,7 @@ const workflowSteps: WorkflowStep[] = [
     title: "Design, Specification & Quotation",
     description:
       "Our team aligns pixel pitch, structure, controller, power and budget planning into a quotation-ready recommendation for Bangladesh projects.",
-    href: "/services/",
+    href: "/services-support/",
     linkLabel: "See our service approach",
     phaseClassName: "text-emerald-700",
   },

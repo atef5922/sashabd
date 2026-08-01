@@ -3,21 +3,34 @@ import { siteConfig } from "./site";
 import { BRAND_NAME } from "./brand";
 
 const DEFAULT_SOCIAL_IMAGE = "/images/hero.webp";
+const FILE_PATH_PATTERN = /\/[a-z0-9][a-z0-9._-]*\.[a-z0-9]{1,8}$/i;
 
-function getSiteBaseUrl(): string {
-  const raw = `https://${siteConfig.domain}`.trim();
-  return raw.replace(/\/+$/, "");
+export function getSiteBaseUrl(): string {
+  return siteConfig.canonicalOrigin.replace(/\/+$/, "");
+}
+
+/** Normalize a page URL or path to the site's canonical path policy. */
+export function canonicalPath(input: string): string {
+  const parsed = new URL(input.trim() || "/", `${getSiteBaseUrl()}/`);
+  let pathname = parsed.pathname
+    .replace(/\/{2,}/g, "/")
+    .replace(/\/(?:index\.html?)$/i, "/")
+    .toLowerCase();
+
+  if (!pathname.startsWith("/")) pathname = `/${pathname}`;
+  if (pathname !== "/" && !FILE_PATH_PATTERN.test(pathname)) {
+    pathname = `${pathname.replace(/\/+$/, "")}/`;
+  }
+
+  return pathname || "/";
 }
 
 export function withTrailingSlash(path: string): string {
-  if (!path || path === "/") return "/";
-  return path.endsWith("/") ? path : `${path}/`;
+  return canonicalPath(path);
 }
 
 export function absoluteUrl(path: string): string {
-  const base = getSiteBaseUrl();
-  const p = withTrailingSlash(path).replace(/^\/+/, "/");
-  return `${base}${p}`;
+  return `${getSiteBaseUrl()}${canonicalPath(path)}`;
 }
 
 export function socialImageUrl(path = DEFAULT_SOCIAL_IMAGE): string {

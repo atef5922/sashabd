@@ -425,7 +425,6 @@ export default function HomePage() {
             </div>
 
             <div className="mt-6 max-w-4xl">
-              <h1 className="sr-only">Sasha Corporation - Smart technology solutions in Bangladesh</h1>
               <h2 className="text-3xl font-extrabold tracking-tight text-white md:text-4xl">
                 Smart Technology Solutions in Bangladesh.
               </h2>
@@ -861,7 +860,6 @@ export default function HomePage() {
     </div>
   );
 }
-
 
 
 

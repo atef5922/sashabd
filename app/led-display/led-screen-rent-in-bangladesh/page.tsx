@@ -219,7 +219,7 @@ const rentalLinks = [
     desc: "Compare rental screen options for stage, conference, and event use.",
   },
   {
-    href: "/led-display",
+    href: "/led-display/",
     anchor: "Browse LED Display Categories",
     desc: "Review all LED categories before choosing rent vs buy.",
   },
@@ -229,7 +229,7 @@ const rentalLinks = [
     desc: "Understand technical service scope before booking.",
   },
   {
-    href: "/contact",
+    href: "/contact/",
     anchor: "Request Event LED Rental Quote",
     desc: "Share venue and event details to get project-based estimation.",
   },
@@ -575,7 +575,7 @@ export function RentGuideContent() {
           <Link href="/led-display/rental-display/" className="rounded-xl bg-[#FF6A00] px-5 py-3 text-sm font-extrabold text-white">
             See Rental Models
           </Link>
-          <Link href="/contact" className="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-900">
+          <Link href="/contact/" className="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-900">
             Get Rental Quotation
           </Link>
         </div>
@@ -765,7 +765,7 @@ export function RentGuideContent() {
           ))}
         </div>
         <div className="mt-5 flex flex-wrap gap-3">
-          <Link href="/contact" className="rounded-xl bg-[#FF6A00] px-5 py-3 text-sm font-extrabold text-white">
+          <Link href="/contact/" className="rounded-xl bg-[#FF6A00] px-5 py-3 text-sm font-extrabold text-white">
             Book Event LED Screen Consultation
           </Link>
           <a

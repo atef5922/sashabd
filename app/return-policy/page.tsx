@@ -126,7 +126,7 @@ export default function ReturnPolicyPage() {
           with order details for faster resolution.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
-          <Link href="/contact" className="rounded-xl bg-[#FF6A00] px-5 py-3 text-sm font-extrabold text-white transition hover:bg-[#E45700]">
+          <Link href="/contact/" className="rounded-xl bg-[#FF6A00] px-5 py-3 text-sm font-extrabold text-white transition hover:bg-[#E45700]">
             Contact Support
           </Link>
           <Link href="/terms/" className="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-900 transition hover:bg-slate-50">

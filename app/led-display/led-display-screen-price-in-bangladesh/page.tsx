@@ -234,7 +234,7 @@ const guideLinks = [
   { href: "/led-display/outdoor/", anchor: "Outdoor LED Module Price", desc: "Roadside and billboard-oriented budget planning." },
   { href: "/led-display/rental-display/", anchor: "Rental LED Screen Package", desc: "Stage and temporary event package options." },
   { href: "/led-display/", anchor: "Browse LED Display Categories", desc: "See indoor, outdoor, rental and accessories in one list." },
-  { href: "/contact", anchor: "Get Exact Price by Project Size", desc: "Share size and use case to receive project quote." },
+  { href: "/contact/", anchor: "Get Exact Price by Project Size", desc: "Share size and use case to receive project quote." },
 ];
 
 const howWeWorkSteps = [
@@ -646,10 +646,10 @@ export function PriceGuideBangladeshContent() {
           </table>
         </div>
         <div className="mt-5 flex flex-wrap gap-3">
-          <Link prefetch={false} href="/contact" className="rounded-xl bg-[#FF6A00] px-5 py-3 text-sm font-extrabold text-white">
+          <Link prefetch={false} href="/contact/" className="rounded-xl bg-[#FF6A00] px-5 py-3 text-sm font-extrabold text-white">
             View Full Price Guide
           </Link>
-          <Link prefetch={false} href="/contact" className="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-900">
+          <Link prefetch={false} href="/contact/" className="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-900">
             Request Project Quotation
           </Link>
         </div>
@@ -860,7 +860,7 @@ export function PriceGuideBangladeshContent() {
           ))}
         </div>
         <div className="mt-5 flex flex-wrap gap-3">
-          <Link prefetch={false} href="/contact" className="rounded-xl bg-[#FF6A00] px-5 py-3 text-sm font-extrabold text-white">
+          <Link prefetch={false} href="/contact/" className="rounded-xl bg-[#FF6A00] px-5 py-3 text-sm font-extrabold text-white">
             Get Exact Price by Project Size
           </Link>
           <a

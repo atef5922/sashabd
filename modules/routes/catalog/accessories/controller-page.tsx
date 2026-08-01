@@ -139,7 +139,7 @@ export default function ControllerProductsPage() {
 
           <div className="mobile-intro-actions mt-4 flex flex-nowrap gap-2.5 md:flex-wrap md:gap-3">
             <Link
-              href="/contact"
+              href="/contact/"
               className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >

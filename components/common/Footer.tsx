@@ -25,6 +25,7 @@ const companyLinks: FooterLinkItem[] = [
   { href: "/services-support/", label: "Services" },
   { href: "/projects/", label: "Projects" },
   { href: "/blog/", label: "Blog" },
+  { href: "/return-policy/", label: "Return Policy" },
   { href: "/contact/", label: "Request Quotation" },
 ];
 

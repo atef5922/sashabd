@@ -250,7 +250,7 @@ export default function OutdoorProductsPage() {
 
           <div className="mobile-intro-actions mt-4 flex flex-nowrap gap-2.5 md:mt-5 md:flex-wrap md:gap-3">
             <Link
-              href="/contact"
+              href="/contact/"
               className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
@@ -1010,7 +1010,7 @@ export default function OutdoorProductsPage() {
 
           <div className="mt-5 grid grid-cols-2 gap-3 md:flex md:flex-wrap md:justify-end md:pr-4">
             <Link
-              href="/contact"
+              href="/contact/"
               className="inline-flex min-h-10 items-center justify-center rounded-[10px] px-3 py-2 text-center text-[12px] font-extrabold text-white transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
@@ -1680,7 +1680,7 @@ title="FAQs About Outdoor LED Display in Bangladesh"
 
         <div className="mt-7 grid grid-cols-2 gap-3 md:flex md:flex-wrap">
           <Link
-            href="/contact"
+            href="/contact/"
             className="inline-flex min-h-10 items-center justify-center rounded-[10px] px-3 py-2 text-center text-[12px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-6 md:py-3 md:text-sm"
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >

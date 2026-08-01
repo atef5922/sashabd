@@ -751,7 +751,7 @@ export default function TurnstileGateSystemPage() {
 
             <div className="mt-2 flex flex-wrap gap-3">
               <Link
-                href="/contact"
+                href="/contact/"
                 className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
@@ -916,7 +916,7 @@ export default function TurnstileGateSystemPage() {
         />
         <div className="mt-4 grid grid-cols-2 gap-2">
           <Link
-            href="/contact"
+            href="/contact/"
             className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >
@@ -978,7 +978,7 @@ export default function TurnstileGateSystemPage() {
             </p>
           </div>
           <Link
-            href="/contact"
+            href="/contact/"
             className="inline-flex shrink-0 items-center justify-center rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
             style={{ background: BRAND.maroonDark }}
           >
@@ -1530,7 +1530,7 @@ export default function TurnstileGateSystemPage() {
               </ul>
               <div className="mt-5 flex flex-wrap gap-2">
                 <Link
-                  href="/contact"
+                  href="/contact/"
                   className="rounded-xl px-4 py-2 text-sm font-extrabold text-white shadow-sm transition hover:shadow-md"
                   style={{ background: BRAND.maroonDark }}
                 >
@@ -1626,7 +1626,7 @@ export default function TurnstileGateSystemPage() {
       >
         <div className="grid grid-cols-2 gap-2">
           <Link
-            href="/contact"
+            href="/contact/"
             className="inline-flex min-h-10 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >
@@ -1657,7 +1657,7 @@ export default function TurnstileGateSystemPage() {
 
         <div className="mt-6 flex flex-wrap gap-3">
           <Link
-            href="/contact"
+            href="/contact/"
             className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >

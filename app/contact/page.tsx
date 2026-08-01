@@ -236,16 +236,16 @@ export default function AboutPage() {
         <section className="mt-8 rounded-[24px] bg-slate-50 p-4 md:rounded-3xl md:p-10">
           <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
             <div className="min-w-0">
- <h3 className="text-2xl font-bold text-slate-900">Let's build your LED display project</h3>
+ <h3 className="text-2xl font-bold text-slate-900">Let&apos;s build your LED display project</h3>
               <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600 text-justify">
- Share your location and screen size-we'll suggest the best setup and send a quotation with clear scope and
+ Share your location and screen size-we&apos;ll suggest the best setup and send a quotation with clear scope and
                 timeline.
               </p>
             </div>
 
             <div className="grid w-full grid-cols-2 gap-2 md:flex md:w-auto md:flex-wrap md:gap-3">
               <Link
-                href="/contact"
+                href="/contact/"
                 className="inline-flex min-h-10 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm md:font-semibold"
                 style={{ background: MAROON_DARK }}
               >
