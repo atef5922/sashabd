@@ -89,7 +89,7 @@ export default async function RentalProductDetailsPage(
       relatedLinks={[
         { href: "/led-display/", label: "LED Display" },
         { href: "/led-display/rental-display/", label: "Rental category" },
-        { href: "/contact", label: "BOQ quotation" },
+        { href: "/contact/", label: "BOQ quotation" },
         { href: "/services-support/", label: "Installation & maintenance" },
       ]}
       overview={`${product.title} is optimized for rental stage and event deployment where quick assembly, stable playback, and easy serviceability are required. Final setup should align with venue dimensions, rigging method, and power safety.`}

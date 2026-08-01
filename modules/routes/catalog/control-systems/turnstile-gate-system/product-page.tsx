@@ -265,7 +265,7 @@ export default async function TurnstileDetailsPage(
         relatedLinks={[
           { href: "/turnstile-gate/", label: "Turnstile Gate System" },
           { href: "/services-support/", label: "Services" },
-          { href: "/contact", label: "Request quotation" },
+          { href: "/contact/", label: "Request quotation" },
         ]}
         overview={details.overview}
         keyFeatures={details.keyFeatures}

@@ -265,7 +265,7 @@ export function IndoorLedVideoWallBangladeshContent() {
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link
-            href="/contact"
+            href="/contact/"
             className="inline-flex items-center justify-center rounded-xl bg-[#FF6A00] px-6 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#E45700] hover:shadow-md"
           >
             Request a Free Quotation -&gt;

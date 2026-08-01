@@ -600,7 +600,7 @@ export default function InteractiveFlatPanelPage() {
                 Get Quotation on WhatsApp
               </a>
               <Link
-                href="/contact"
+                href="/contact/"
                 className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[10px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-lg md:rounded-xl md:px-6 md:py-3.5 md:text-[15px]"
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
@@ -654,7 +654,7 @@ export default function InteractiveFlatPanelPage() {
             </div>
             <div className="grid grid-cols-2 gap-2 self-start md:mt-0.5 md:flex md:flex-nowrap md:items-center md:justify-end md:self-start">
               <Link
-                href="/contact"
+                href="/contact/"
                 className="inline-flex min-h-10 min-w-0 items-center justify-center gap-1 whitespace-nowrap rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:min-h-[40px] md:min-w-[152px] md:rounded-xl md:px-4 md:py-2.5 md:text-[13px]"
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
@@ -829,7 +829,7 @@ export default function InteractiveFlatPanelPage() {
       >
         <div className="grid grid-cols-2 gap-2 md:mb-6 md:flex md:flex-nowrap">
           <Link
-            href="/contact"
+            href="/contact/"
             className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:min-h-[42px] md:rounded-xl md:px-4 md:py-2.5 md:text-sm"
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >
@@ -913,7 +913,7 @@ export default function InteractiveFlatPanelPage() {
                 </ul>
                 <div className="mt-4 grid grid-cols-2 gap-2">
                   <Link
-                    href="/contact"
+                    href="/contact/"
                     className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
                     style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
                   >
@@ -964,7 +964,7 @@ export default function InteractiveFlatPanelPage() {
 
                 <div className="mt-5 flex flex-wrap gap-2">
                   <Link
-                    href="/contact"
+                    href="/contact/"
                     className="flex-1 rounded-xl px-4 py-3 text-center text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                     style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
                   >

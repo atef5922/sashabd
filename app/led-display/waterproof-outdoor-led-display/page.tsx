@@ -214,12 +214,12 @@ const waterproofLinks = [
     desc: "Review visibility, placement, and campaign-focused outdoor planning.",
   },
   {
-    href: "/contact",
+    href: "/contact/",
     anchor: "Request Outdoor LED Budget Support",
     desc: "Share site details before approving waterproof project budget.",
   },
   {
-    href: "/contact",
+    href: "/contact/",
     anchor: "Request Waterproof Site Survey",
     desc: "Share location and dimensions to get project-ready recommendation.",
   },
@@ -642,7 +642,7 @@ export default function WaterproofOutdoorLedDisplayPage() {
           <Link href="/led-display/outdoor/" className="rounded-xl bg-[#FF6A00] px-5 py-3 text-sm font-extrabold text-white">
             Outdoor Product List
           </Link>
-          <Link href="/contact" className="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-900">
+          <Link href="/contact/" className="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-900">
             Get Waterproof BOQ
           </Link>
         </div>
@@ -817,7 +817,7 @@ export default function WaterproofOutdoorLedDisplayPage() {
           ))}
         </div>
         <div className="mt-5 flex flex-wrap gap-3">
-          <Link href="/contact" className="rounded-xl bg-[#FF6A00] px-5 py-3 text-sm font-extrabold text-white">
+          <Link href="/contact/" className="rounded-xl bg-[#FF6A00] px-5 py-3 text-sm font-extrabold text-white">
             Request Waterproof Site Survey
           </Link>
           <a

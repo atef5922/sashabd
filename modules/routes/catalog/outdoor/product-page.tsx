@@ -53,7 +53,7 @@ export default async function OutdoorProductDetailsPage(
       relatedLinks={[
         { href: "/led-display/", label: "LED Display" },
         { href: "/led-display/outdoor/", label: "Outdoor category" },
-        { href: "/contact", label: "BOQ quotation" },
+        { href: "/contact/", label: "BOQ quotation" },
         { href: "/services-support/", label: "Installation & maintenance" },
       ]}
       overview={`${product.title} is suitable for outdoor visibility where weather conditions, installation safety, and content readability from distance are critical. Final planning should confirm height, viewing angle, and stable power routing.`}

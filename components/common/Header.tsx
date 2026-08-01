@@ -51,12 +51,12 @@ const nav: NavItem[] = [
             desc: "Stage \u2022 Event \u2022 Live program",
           },
           {
-            href: "/interactive-flat-panel",
+            href: "/interactive-flat-panel/",
             label: "Interactive Flat Panel",
             desc: "Smart classroom & meeting display",
           },
           {
-            href: "/digital-podium",
+            href: "/digital-podium/",
             label: "Digital Podium",
             desc: "Smart podium for classrooms & events",
           },
@@ -89,19 +89,19 @@ const nav: NavItem[] = [
   { type: "link", href: "/turnstile-gate/", label: "Turnstile Gate" },
   {
     type: "dropdown",
-    href: "/about",
+    href: "/about/",
     label: "About",
     groups: [
       {
         title: "About",
         items: [
           {
-            href: "/about",
+            href: "/about/",
             label: "About Us",
             desc: "Company profile and service approach",
           },
           {
-            href: "/about/message-from-founder",
+            href: "/about/message-from-founder/",
             label: "Message from Founder",
             desc: "Founder's note and vision",
           },
@@ -109,7 +109,7 @@ const nav: NavItem[] = [
       },
     ],
   },
-  { type: "link", href: "/contact", label: "Contact" },
+  { type: "link", href: "/contact/", label: "Contact" },
 ];
 
 function cn(...classes: Array<string | false | undefined>) {
@@ -239,9 +239,12 @@ export default function Header() {
   }, [open]);
 
   useEffect(() => {
-    setOpen(false);
-    setMobileProductsOpen(false);
-    setMobileAboutOpen(false);
+    const timer = window.setTimeout(() => {
+      setOpen(false);
+      setMobileProductsOpen(false);
+      setMobileAboutOpen(false);
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [pathname]);
 
   return (
@@ -469,7 +472,7 @@ export default function Header() {
                       >
                          All Products -&gt;
                       </Link>
-                      <Link prefetch={false} href="/contact"
+                      <Link prefetch={false} href="/contact/"
                         onClick={handleNavClick("/contact")}
                         className="rounded-xl border bg-white px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50"
                       >
@@ -547,8 +550,8 @@ export default function Header() {
                     { href: "/led-display/indoor-led/", label: "Indoor LED Display" },
                     { href: "/led-display/outdoor/", label: "Outdoor LED Display" },
                     { href: "/led-display/rental-display/", label: "Rental LED Display" },
-                    { href: "/interactive-flat-panel", label: "Interactive Flat Panel" },
-                    { href: "/digital-podium", label: "Digital Podium" },
+                    { href: "/interactive-flat-panel/", label: "Interactive Flat Panel" },
+                    { href: "/digital-podium/", label: "Digital Podium" },
                     { href: "/led-display/accessories/receiving-card/", label: "Receiving Card" },
                     { href: "/led-display/accessories/controller/", label: "Controller" },
                     { href: "/led-display/accessories/power-supply/", label: "Power Supply" },
@@ -660,8 +663,8 @@ export default function Header() {
                     About
                   </div>
                   {[
-                    { href: "/about", label: "About Us" },
-                    { href: "/about/message-from-founder", label: "Message from Founder" },
+                    { href: "/about/", label: "About Us" },
+                    { href: "/about/message-from-founder/", label: "Message from Founder" },
                   ].map((x) => (
 	                    <Link key={x.href}
 	                      prefetch={false}
@@ -691,7 +694,7 @@ export default function Header() {
 
               {/* Rest links */}
               {[
-                { href: "/contact", label: "Contact" },
+                { href: "/contact/", label: "Contact" },
               ].map((x) => (
 	                <Link key={x.href}
 	                  prefetch={false}

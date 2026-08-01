@@ -466,7 +466,7 @@ export default function DigitalPodiumPage() {
                 Get Quotation on WhatsApp
               </a>
               <Link
-                href="/contact"
+                href="/contact/"
                 className="inline-flex min-h-9 items-center justify-center rounded-md px-2.5 py-2 text-[10px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-lg md:rounded-xl md:px-6 md:py-3.5 md:text-[15px]"
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
@@ -577,7 +577,7 @@ export default function DigitalPodiumPage() {
                 WhatsApp
               </a>
               <Link
-                href="/contact"
+                href="/contact/"
                 className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
@@ -650,7 +650,7 @@ export default function DigitalPodiumPage() {
                   WhatsApp
                 </a>
                 <Link
-                  href="/contact"
+                  href="/contact/"
                   className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                   style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
                 >
@@ -739,7 +739,7 @@ export default function DigitalPodiumPage() {
             </p>
             <div className="mt-4 grid grid-cols-2 gap-2">
               <Link
-                href="/contact"
+                href="/contact/"
                 className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
@@ -786,13 +786,13 @@ export default function DigitalPodiumPage() {
             <div className="max-w-2xl">
               <div className="text-sm font-extrabold text-slate-900">Need the right setup recommendation?</div>
               <p className="mt-2 text-sm text-slate-600 leading-7">
- Share your room type, audience size, and the display you want to connect. We'll suggest a practical
+ Share your room type, audience size, and the display you want to connect. We&apos;ll suggest a practical
                 digital podium configuration with BOQ clarity and installation planning.
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
               <Link
-                href="/contact"
+                href="/contact/"
                 className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
@@ -818,7 +818,7 @@ export default function DigitalPodiumPage() {
         >
           <div className="mb-4 grid grid-cols-2 gap-2">
             <Link
-              href="/contact"
+              href="/contact/"
               className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
@@ -848,13 +848,13 @@ export default function DigitalPodiumPage() {
               Digital podium buying guide (Bangladesh)
             </h2>
             <p className="mt-2 text-slate-600 leading-7">
- If you're comparing digital podium price in Bangladesh, these steps help you select the right setup for
+ If you&apos;re comparing digital podium price in Bangladesh, these steps help you select the right setup for
  your room-without over-specifying or missing key integration details.
             </p>
           </div>
           <div className="mt-2 flex flex-wrap gap-2 md:mt-0">
             <Link
-              href="/contact"
+              href="/contact/"
               className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
@@ -902,7 +902,7 @@ export default function DigitalPodiumPage() {
         <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Key specifications explained</h2>
         <p className="mt-2 text-slate-600 leading-7">
  A world-class smart podium setup is less about a long spec sheet-and more about choosing the specifications
- that match daily use. Here's what matters most for classrooms, lecture halls and conference venues.
+ that match daily use. Here&apos;s what matters most for classrooms, lecture halls and conference venues.
         </p>
 
         <div className="mt-6 grid items-stretch gap-4 md:grid-cols-2">
@@ -946,7 +946,7 @@ export default function DigitalPodiumPage() {
               </ul>
             </article>
             <article className="rounded-[14px] border px-4 py-4" style={getParitySurface(1)}>
-              <div className="text-[16px] font-extrabold leading-snug text-slate-900">What you'll receive from us</div>
+              <div className="text-[16px] font-extrabold leading-snug text-slate-900">What you&apos;ll receive from us</div>
               <p className="mt-2 text-[12.5px] leading-6 text-slate-700 text-justify">
                 We focus on integration details so the podium setup stays reliable in daily use, not just on paper.
               </p>
@@ -961,7 +961,7 @@ export default function DigitalPodiumPage() {
             </article>
             <div className="grid grid-cols-2 gap-2">
               <Link
-                href="/contact"
+                href="/contact/"
                 className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
@@ -1018,7 +1018,7 @@ export default function DigitalPodiumPage() {
             <div className="rounded-3xl border bg-white p-6" style={{ borderColor: `${BRAND.maroon}12` }}>
               <div className="text-sm font-extrabold text-slate-900">Fast quotation checklist</div>
               <p className="mt-2 text-sm text-slate-600 leading-7">
- Share these items and we'll recommend a practical configuration with BOQ clarity and installation notes.
+ Share these items and we&apos;ll recommend a practical configuration with BOQ clarity and installation notes.
               </p>
               <ul className="mt-4 space-y-2 text-sm text-slate-700">
                 {buyerChecklist.map((t) => (
@@ -1032,7 +1032,7 @@ export default function DigitalPodiumPage() {
               </ul>
               <div className="mt-5 flex flex-wrap gap-2">
                 <Link
-                  href="/contact"
+                  href="/contact/"
                   className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                   style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
                 >
@@ -1050,7 +1050,7 @@ export default function DigitalPodiumPage() {
             </div>
 
             <div className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}12` }}>
- <div className="text-sm font-extrabold text-slate-900">What you'll receive from us</div>
+ <div className="text-sm font-extrabold text-slate-900">What you&apos;ll receive from us</div>
               <p className="mt-2 text-sm text-slate-600 leading-7">
               The goal is a clean, reliable podium setup that works daily, so we focus on integration details, not just
                 the hardware.
@@ -1074,7 +1074,7 @@ export default function DigitalPodiumPage() {
                   Buying guide
                 </Link>
                 <Link
-                  href="/contact"
+                  href="/contact/"
                   className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                   style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
                 >
@@ -1111,7 +1111,7 @@ export default function DigitalPodiumPage() {
           />
           <div className="mt-4 grid grid-cols-2 gap-2">
             <Link
-              href="/contact"
+              href="/contact/"
               className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
@@ -1179,12 +1179,12 @@ export default function DigitalPodiumPage() {
               <div className="mt-5 rounded-2xl bg-slate-50 p-5">
                 <div className="text-sm font-extrabold text-slate-900">Need BOQ clarity for a tender?</div>
                 <p className="mt-2 text-sm text-slate-600 leading-7">
- Share your BOQ/drawings and venue type. We'll recommend a configuration and help define practical,
+ Share your BOQ/drawings and venue type. We&apos;ll recommend a configuration and help define practical,
                   comparable specifications.
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <Link
-                    href="/contact"
+                    href="/contact/"
                     className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                     style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
                   >
@@ -1222,7 +1222,7 @@ export default function DigitalPodiumPage() {
           </div>
           <div className="mt-2 flex flex-wrap gap-2 md:mt-0">
             <Link
-              href="/contact"
+              href="/contact/"
               className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >

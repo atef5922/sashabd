@@ -126,7 +126,7 @@ export default function LedAccessoriesListingPage() {
 
           <div className="mobile-intro-actions mt-4 grid grid-cols-3 gap-2 md:flex md:flex-wrap md:gap-3">
             <Link
-              href="/contact"
+              href="/contact/"
               className="inline-flex min-h-9 items-center justify-center rounded-md px-2 py-2 text-center text-[9.5px] font-extrabold leading-[1.1] text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >

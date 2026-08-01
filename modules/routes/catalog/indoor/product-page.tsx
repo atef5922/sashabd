@@ -16,11 +16,16 @@ export async function generateMetadata(
   const list = getProductsByCategory("indoor");
   const item = list.find((x) => x.slug === slug);
   if (!item) return { title: "Indoor LED Display Model" };
+  const needsUniqueDescription = new Set([
+    "p1-86-indoor-led-display",
+    "p2-indoor-led-display",
+    "p3-076-indoor-led-display",
+  ]).has(slug);
 
   return buildProductMetadata({
     title: item.title,
     description: ensureMetaDescription(
-      item.subtitle,
+      needsUniqueDescription ? `${item.title}. ${item.subtitle}` : item.subtitle,
       "Indoor LED module specifications, recommended viewing use-cases, and installation support in Bangladesh."
     ),
     path: `/led-display/indoor-led/${slug}`,
@@ -99,7 +104,7 @@ export default async function IndoorProductDetailsPage(
       relatedLinks={[
         { href: "/led-display/", label: "LED Display" },
         { href: "/led-display/indoor-led/", label: "Indoor category" },
-        { href: "/contact", label: "BOQ quotation" },
+        { href: "/contact/", label: "BOQ quotation" },
         { href: "/services-support/", label: "Installation & maintenance" },
       ]}
       overview={pageOverview}

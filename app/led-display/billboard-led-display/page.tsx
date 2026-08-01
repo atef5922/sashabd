@@ -215,12 +215,12 @@ const billboardLinks = [
     desc: "Browse indoor, outdoor, rental and accessory options in one place.",
   },
   {
-    href: "/contact",
+    href: "/contact/",
     anchor: "Request LED Display Budget Support",
     desc: "Share your billboard size and location for a project-based estimate.",
   },
   {
-    href: "/contact",
+    href: "/contact/",
     anchor: "Request Billboard Quotation in Bangladesh",
     desc: "Share location and size to receive project-based estimate.",
   },
@@ -621,7 +621,7 @@ export default function BillboardLedDisplayPage() {
           <Link href="/led-display/outdoor/" className="rounded-xl bg-[#FF6A00] px-5 py-3 text-sm font-extrabold text-white">
             Explore Outdoor Models -&gt;
           </Link>
-          <Link href="/contact" className="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-900">
+          <Link href="/contact/" className="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-900">
             Request Site Survey
           </Link>
         </div>
@@ -783,7 +783,7 @@ export default function BillboardLedDisplayPage() {
           ))}
         </div>
         <div className="mt-5 flex flex-wrap gap-3">
-          <Link href="/contact" className="rounded-xl bg-[#FF6A00] px-5 py-3 text-sm font-extrabold text-white">
+          <Link href="/contact/" className="rounded-xl bg-[#FF6A00] px-5 py-3 text-sm font-extrabold text-white">
             Get Billboard Price by Screen Size
           </Link>
           <a

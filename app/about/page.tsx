@@ -164,7 +164,7 @@ export default function AboutPage() {
             {/* CTA buttons under hero (horizontal line) */}
             <div className="mt-2 grid grid-cols-2 gap-2 md:flex md:flex-wrap md:gap-3">
               <Link
-                href="/contact"
+                href="/contact/"
                 className="inline-flex min-h-10 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm md:font-semibold"
                 style={{ background: MAROON }}
               >

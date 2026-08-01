@@ -82,7 +82,7 @@ export default function BlogAndCaseStudyPage() {
             </MobileIntroText>
             <div className="mt-5 grid grid-cols-2 gap-2 md:mt-6 md:flex md:flex-wrap md:gap-3">
               <Link
-                href="/contact"
+                href="/contact/"
                 className="inline-flex min-h-10 w-full min-w-0 items-center justify-center rounded-md bg-[#FF6A00] px-3 py-2 text-center text-[11px] font-extrabold leading-4 text-white transition hover:bg-[#E45700] md:rounded-xl md:px-5 md:py-3 md:text-sm"
               >
                 Plan Your Project
@@ -168,7 +168,7 @@ export default function BlogAndCaseStudyPage() {
         </p>
         <div className="relative mt-5 grid grid-cols-2 gap-2 md:mt-6 md:flex md:flex-wrap md:gap-3">
           <Link
-            href="/contact"
+            href="/contact/"
             className="inline-flex min-h-10 items-center justify-center rounded-md bg-[#FF6A00] px-3 py-2 text-center text-[11px] font-extrabold text-white transition hover:bg-[#E45700] md:rounded-xl md:px-5 md:py-3 md:text-sm"
           >
             Get Free Consultation

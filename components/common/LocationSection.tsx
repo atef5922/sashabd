@@ -86,7 +86,7 @@ export default function LocationSection() {
               </a>
               <Link
                 prefetch={false}
-                href="/contact"
+                href="/contact/"
                 className="rounded-xl border bg-white px-5 py-3 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50"
                 style={{ borderColor: `${BRAND.maroon}22` }}
               >

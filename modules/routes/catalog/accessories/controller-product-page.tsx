@@ -244,7 +244,7 @@ export default async function ControllerDetailsPage(
 
           <div className="mt-5 flex flex-wrap gap-3">
             <Link
-              href="/contact"
+              href="/contact/"
               className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
@@ -304,7 +304,7 @@ export default async function ControllerDetailsPage(
               WhatsApp quotation
             </a>
             <Link
-              href="/contact"
+              href="/contact/"
               className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
@@ -479,7 +479,7 @@ export default async function ControllerDetailsPage(
             WhatsApp for Support
           </a>
           <Link
-            href="/contact"
+            href="/contact/"
             className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >

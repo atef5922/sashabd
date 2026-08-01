@@ -30,7 +30,7 @@ const whyChooseItems: WhyChooseItem[] = [
     title: "Specification & quotation clarity",
     description:
       "From pixel pitch and cabinet structure to controller, receiving card and power planning, we keep pricing direction more practical and easier to compare.",
-    href: "/services/",
+    href: "/services-support/",
     linkLabel: "See planning support",
     accentClassName: "text-emerald-700",
     icon: (
@@ -88,7 +88,7 @@ const whyChooseItems: WhyChooseItem[] = [
     title: "Solutions across multiple categories",
     description:
       "One experienced team can support LED display, PA system, conference system, interactive panel and turnstile projects without fragmented coordination.",
-    href: "/products/",
+    href: "/led-display/",
     linkLabel: "Explore product categories",
     accentClassName: "text-rose-700",
     icon: (

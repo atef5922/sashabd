@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { siteConfig } from "@/lib/site";
+import { absoluteUrl } from "@/lib/seo";
 import {
   controllerCatalog,
   indoorCatalog,
@@ -18,17 +18,14 @@ import { conferenceSystemCatalog } from "./conference-system/catalog";
 
 export const dynamic = "force-static";
 
-function baseUrl(): string {
-  return `https://${siteConfig.domain}`.replace(/\/+$/, "");
-}
-
 function abs(path: string): string {
-  const p = path.startsWith("/") ? path : `/${path}`;
-  return `${baseUrl()}${p}`;
+  return absoluteUrl(path);
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
+  // Update this only when the shared/static page content changes. Blog entries
+  // retain their own published/updated dates below.
+  const now = new Date("2026-08-01T00:00:00.000Z");
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: abs("/"), lastModified: now, changeFrequency: "weekly", priority: 1 },

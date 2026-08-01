@@ -6,7 +6,7 @@ import Footer from "../components/common/Footer";
 import FloatingActions from "../components/common/FloatingActions";
 import MobileBottomNav from "../components/common/MobileBottomNav";
 import { siteConfig } from "../lib/site";
-import { socialImageUrl, withTrailingSlash } from "../lib/seo";
+import { absoluteUrl, getSiteBaseUrl, socialImageUrl, withTrailingSlash } from "../lib/seo";
 import Script from "next/script";
 import { GA_ID } from "@/lib/gtag";
 import GaPageview from "@/components/analytics/GaPageview";
@@ -26,7 +26,7 @@ const notoSansBengali = Noto_Sans_Bengali({
   variable: "--font-noto-sans-bengali",
 });
 
-const siteUrl = `https://${siteConfig.domain}`;
+const siteUrl = getSiteBaseUrl();
 const socialImage = socialImageUrl();
 
 export const metadata: Metadata = {
@@ -107,7 +107,7 @@ export default function RootLayout({
                 {
                   "@type": "Organization",
                   name: BRAND_NAME,
-                  url: siteUrl,
+                  url: absoluteUrl("/"),
                   logo: `${siteUrl}/sasha-corporation-final-l.webp`,
                   contactPoint: [
                     {
@@ -122,7 +122,7 @@ export default function RootLayout({
                 {
                   "@type": "LocalBusiness",
                   name: BRAND_NAME,
-                  url: siteUrl,
+                  url: absoluteUrl("/"),
                   telephone: siteConfig.phone,
                   address: {
                     "@type": "PostalAddress",
@@ -135,12 +135,7 @@ export default function RootLayout({
                 {
                   "@type": "WebSite",
                   name: BRAND_NAME,
-                  url: siteUrl,
-                  potentialAction: {
-                    "@type": "SearchAction",
-                    target: `${siteUrl}/search/?q={search_term_string}`,
-                    "query-input": "required name=search_term_string",
-                  },
+                  url: absoluteUrl("/"),
                 },
               ],
             }),

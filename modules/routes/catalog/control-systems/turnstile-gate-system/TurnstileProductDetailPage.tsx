@@ -121,7 +121,7 @@ export default function TurnstileProductDetailPage({
 
           <div className="mt-3 flex flex-wrap gap-2">
             <Link
-              href="/contact"
+              href="/contact/"
               className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
@@ -153,7 +153,7 @@ export default function TurnstileProductDetailPage({
 
             <div className="mt-4 flex flex-wrap gap-2">
               <Link
-                href="/contact"
+                href="/contact/"
                 className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >

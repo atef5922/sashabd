@@ -1,0 +1,9 @@
+source_url,status_code,destination_url,hop_count,final_url,final_status,classification,recommended_action
+/control-systems/,301,http://127.0.0.1:4173/pa-system/,1,https://sashabd.com/pa-system/,200,intentional permanent migration,Keep
+/control-systems/pa-system/wired-gooseneck-paging-microphone/,301,http://127.0.0.1:4173/pa-system/wired-gooseneck-paging-microphone/,1,https://sashabd.com/pa-system/wired-gooseneck-paging-microphone/,200,intentional permanent migration,Keep
+/control-systems/turnstile-gate-system,301,http://127.0.0.1:4173/turnstile-gate/,1,https://sashabd.com/turnstile-gate/,200,intentional permanent migration,Keep
+/led-display/indoor/p4-indoor-led-display/,301,http://127.0.0.1:4173/led-display/indoor-led/p4-indoor-led-display-module/,1,https://sashabd.com/led-display/indoor-led/p4-indoor-led-display-module/,200,intentional permanent migration,Keep
+/led-display/indoor/p5-indoor-led-display/,301,http://127.0.0.1:4173/led-display/indoor-led/,1,https://sashabd.com/led-display/indoor-led/,200,intentional permanent migration,Keep
+/products/,301,http://127.0.0.1:4173/led-display/,1,https://sashabd.com/led-display/,200,intentional permanent migration,Keep
+/services/,301,http://127.0.0.1:4173/services-support/,1,https://sashabd.com/services-support/,200,intentional permanent migration,Keep
+/blog-and-case-study/,301,http://127.0.0.1:4173/blog/,1,https://sashabd.com/blog/,200,intentional permanent migration,Keep
