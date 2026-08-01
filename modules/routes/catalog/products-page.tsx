@@ -1953,217 +1953,6 @@ function ProductsPageContent({
 	
 	      {ledOnly && (
 	        <>
-	          <section className="py-8">
-	            <div className="space-y-10">
-	              <div>
-	                <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-                    <UiIcon name="display" className="h-6 w-6 text-slate-800" />
-                    <span>What Is an LED Display?</span>
-                  </h2>
-                <MobileIntroText
-                  teaser="An LED Display is a modular digital screen built from many light-emitting diode pixels that create images, videos, text, and live visual content."
-                  teaserLines={2}
-                  className="mt-4"
-                  teaserClassName="w-full leading-6"
-                  expandedClassName="space-y-4 text-sm leading-7 text-slate-600"
-                  desktopClassName="mt-4 space-y-4 text-sm leading-7 text-slate-600 md:text-[15px] md:leading-8"
-                >
-                  <>
-                    <p>
-                      An <strong>LED Display</strong> is a modular digital screen built from many light-emitting
-                      diode pixels that create images, videos, text, and live visual content. In a professional{" "}
-                      <strong>LED Display System</strong>, each <strong>LED Module</strong> contains red, green,
-                      and blue LEDs. A controller or sending card receives the video source, the receiving card
-                      distributes display data, and the power supply keeps every module running with stable DC power.
-                      This coordinated hardware process allows an <strong>LED Screen</strong> to show bright,
-                      seamless, high-impact content at almost any custom size.
-                    </p>
-                    <p>
-                      Businesses choose <strong>LED Display in Bangladesh</strong> for retail branding, showroom
-                      promotion, corporate reception areas, command centers, stage programs, public information
-                      boards, <strong>Digital Signage</strong>, <strong>Digital Billboard</strong> advertising, and
-                      large <strong>LED Video Wall</strong> installations. Indoor LED Display solutions are designed
-                      for close viewing, smoother detail, and controlled lighting environments, while Outdoor LED
-                      Display systems use higher brightness, stronger cabinets, weather-ready protection, and safer
-                      mounting plans for daylight and outdoor exposure. Whether the project is a compact indoor
-                      signage screen or a roadside outdoor display, the final performance depends on matching the LED
-                      module, cabinet, controller, receiving card, cables, steel structure, and power supply correctly.
-                    </p>
-                  </>
-                </MobileIntroText>
-
-	                <aside className="mt-5 rounded-[18px] border border-[#FF6A00]/20 bg-orange-50/70 p-4 shadow-sm md:mt-6 md:rounded-2xl md:p-5">
-	                  <h3 className="text-[1rem] font-extrabold leading-[1.3] text-slate-900 md:text-lg">
-	                    Every LED Display Is Built Using Multiple Hardware Components
-	                  </h3>
-	                  <p className="mt-2.5 text-justify text-[13px] leading-6 text-slate-700 md:mt-3 md:text-left md:text-sm md:leading-7">
-	                    A professional LED display is not just a screen. It is a complete electronic display system
-	                    consisting of multiple hardware components that work together to deliver stable performance,
-	                    accurate colors, seamless video playback, and long-term reliability.
-	                  </p>
-	                </aside>
-	              </div>
-
-	              <div ref={componentSectionRef}>
-	                <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-                    <UiIcon name="module" className="h-6 w-6 text-slate-800" />
-                    <span>Main Components of an LED Display System</span>
-                  </h2>
-                  <MobileIntroText
-                    teaser="Every professional LED display system is built using several essential hardware components."
-                    className="mt-3 max-w-5xl"
-                    teaserClassName="w-full"
-                    expandedClassName="text-sm leading-7 text-slate-600"
-                    desktopClassName="text-sm leading-7 text-slate-600 md:text-[15px] md:leading-8"
-                  >
-                    <>Every professional LED display system is built using several essential hardware components. Each component performs a specific function to ensure stable operation, high image quality, and reliable long-term performance.</>
-                  </MobileIntroText>
-
-                  <div
-                    ref={componentCarouselRef}
-                    onScroll={handleComponentCarouselScroll}
-                    className="mt-6 -mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden"
-                  >
-                    {ledDisplayComponentCards.map((component, index) => (
-                      <article
-                        key={component.name}
-                        className={`group flex w-[86%] shrink-0 snap-start flex-col rounded-[20px] border px-3.5 py-3 transition duration-300 ${componentMobileCardStyles[index % componentMobileCardStyles.length]}`}
-                      >
-                        <div className="flex items-center gap-2.5">
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] border border-white/75 bg-white/85 text-[#F56605] shadow-sm">
-                            <UiIcon name={component.icon} className="h-5 w-5" />
-                          </div>
-                          <h3 className="min-w-0 flex-1 text-[16px] font-extrabold leading-tight tracking-tight text-slate-900">
-                            {component.name}
-                          </h3>
-                        </div>
-                        <p className="mt-2.5 text-[12.5px] leading-[1.55] text-slate-700">{component.description}</p>
-                      </article>
-                    ))}
-                  </div>
-
-                  <div className="mt-2.5 flex justify-center gap-1.5 md:hidden">
-                    {ledDisplayComponentCards.map((component, index) => (
-                      <button
-                        key={component.name}
-                        type="button"
-                        onClick={() => {
-                          scrollComponentCarouselToIndex(index);
-                          setActiveComponentSlide(index);
-                        }}
-                        className={`h-1.5 rounded-full transition-all ${activeComponentSlide === index ? "w-6 bg-[#F56605]" : "w-1.5 bg-slate-300"}`}
-                        aria-label={`Go to ${component.name}`}
-                      />
-                    ))}
-                  </div>
-
-	                <div className="mt-6 hidden items-stretch gap-4 md:grid md:grid-cols-2 lg:grid-cols-3">
-	                  {ledDisplayComponentCards.map((component) => (
-		                    <article
-		                      key={component.name}
-		                      className="group flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#FF6A00]/50 hover:shadow-md"
-		                    >
-		                      <div className="flex items-center gap-3">
-		                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#FF6A00]/20 bg-orange-50 text-[#FF6A00] transition group-hover:bg-[#FF6A00] group-hover:text-white">
-		                          <UiIcon name={component.icon} className="h-6 w-6" />
-		                        </div>
-		                        <h3 className="text-lg font-extrabold leading-snug text-slate-900">{component.name}</h3>
-		                      </div>
-		                      <p className="mt-3 text-sm leading-7 text-slate-600">{component.description}</p>
-		                    </article>
-	                  ))}
-	                </div>
-	              </div>
-
-	              <div>
-	                <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-                    <UiIcon name="process" className="h-6 w-6 text-slate-800" />
-                    <span>How an LED Display System Works</span>
-                  </h2>
-	                <MobileIntroText
-                    teaser="A professional LED display operates through the seamless communication of multiple hardware components."
-                    className="mt-3 max-w-5xl"
-                    teaserClassName="w-full"
-                    expandedClassName="text-sm leading-7 text-slate-600"
-                    desktopClassName="text-sm leading-7 text-slate-600 md:text-[15px] md:leading-8"
-                  >
-                    <>
-                      A professional LED display operates through the seamless communication of multiple hardware
-                      components. The diagram below illustrates how video signals and electrical power travel through the
-                      complete LED display system.
-                    </>
-                  </MobileIntroText>
-
-	                <div className="mt-6 grid gap-4 lg:grid-cols-[1.4fr_.8fr]">
-	                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-	                    <h3 className="text-[1rem] font-extrabold text-slate-900 md:text-lg">Signal Flow</h3>
-	                    <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
-	                      {ledDisplaySignalFlow.map((step, index) => (
-	                        <div key={step} className="flex items-stretch gap-2 md:gap-3">
-	                          <div
-                              className={`flex min-h-[3.55rem] flex-1 items-center justify-center rounded-xl border px-2.5 py-3 text-center text-[12px] font-bold leading-5 text-slate-800 shadow-sm md:min-h-16 md:rounded-2xl md:px-3 md:py-4 md:text-sm md:leading-6 ${
-                                index % 4 === 0
-                                  ? "border-sky-200/80 bg-[linear-gradient(180deg,#f0f9ff_0%,#ffffff_52%,#e0f2fe_100%)]"
-                                  : index % 4 === 1
-                                    ? "border-violet-200/80 bg-[linear-gradient(180deg,#f5f3ff_0%,#ffffff_52%,#ede9fe_100%)]"
-                                    : index % 4 === 2
-                                      ? "border-emerald-200/80 bg-[linear-gradient(180deg,#ecfdf5_0%,#ffffff_52%,#d1fae5_100%)]"
-                                      : "border-orange-200/80 bg-[linear-gradient(180deg,#fff7ed_0%,#ffffff_52%,#ffedd5_100%)]"
-                              }`}
-                            >
-	                            {step}
-	                          </div>
-	                          {index < ledDisplaySignalFlow.length - 1 ? (
-	                            <div className="hidden items-center text-sm font-extrabold text-[#FF6A00] sm:flex">
-	                              -&gt;
-	                            </div>
-	                          ) : null}
-	                        </div>
-	                      ))}
-	                    </div>
-	                  </div>
-
-	                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 md:p-5">
-	                    <h3 className="text-[1rem] font-extrabold text-slate-900 md:text-lg">Power Flow</h3>
-	                    <div className="mt-4 grid gap-2.5">
-	                      {ledDisplayPowerFlow.map((step, index) => (
-	                        <div key={step} className="relative md:flex md:items-center md:gap-2 md:pr-0">
-	                          <div className="mx-auto flex min-h-[2.9rem] w-full max-w-[17.5rem] items-center justify-center rounded-lg border border-cyan-200/75 bg-[linear-gradient(180deg,#ecfeff_0%,#ffffff_54%,#cffafe_100%)] px-2 py-2 text-center text-[11px] font-bold leading-4 text-slate-800 shadow-sm md:mx-0 md:min-h-14 md:max-w-none md:flex-1 md:rounded-2xl md:border-slate-200 md:bg-white md:px-3 md:py-3 md:text-sm md:leading-6">
-	                            {step}
-	                          </div>
-                            {index < ledDisplayPowerFlow.length - 1 ? (
-	                            <div
-                                className="absolute left-1/2 top-full flex -translate-x-1/2 -translate-y-1/2 items-center justify-center text-[13px] font-extrabold text-[#FF6A00] md:hidden"
-                                aria-hidden="true"
-                              >
-                                ↓
-                              </div>
-                            ) : null}
-                            <div
-                              className={`hidden w-3 self-stretch items-center justify-center text-[11px] font-extrabold text-[#FF6A00] md:flex md:text-sm ${
-                                index < ledDisplayPowerFlow.length - 1 ? "opacity-100" : "opacity-0"
-                              }`}
-                              aria-hidden="true"
-                            >
-                              -&gt;
-                            </div>
-	                        </div>
-	                      ))}
-	                    </div>
-	                  </div>
-	                </div>
-
-	                <p className="mt-5 hidden rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-7 text-slate-600 md:block">
-	                  Every component inside an LED display system performs a dedicated function. The controller processes
-	                  video signals, the receiving card distributes display data, the SMPS supplies stable power, while FRC
-	                  and CAT6 cables ensure reliable communication between all components. Together they deliver smooth
-	                  video playback, vibrant colors, stable operation, and long-term performance for both indoor and
-	                  outdoor LED display installations.
-	                </p>
-	              </div>
-	            </div>
-	          </section>
-
 	          <section id="led-price-table" className="scroll-mt-24 py-8">
 	            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
                 <UiIcon name="cost" className="h-6 w-6 text-slate-800" />
@@ -2302,214 +2091,6 @@ function ProductsPageContent({
 
             <p className="mt-2 text-justify text-[13px] leading-6 text-slate-600 md:mt-1 md:text-left md:text-sm md:leading-7">
               Note: Prices may vary depending on configuration, installation scope, and order quantity.
-            </p>
-          </section>
-
-          <section className="py-8 mb-[25px]">
-            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-              <UiIcon name="solutions" className="h-6 w-6 text-slate-800" />
-              <span>LED Display Solutions in Bangladesh</span>
-            </h2>
-            <MobileIntroText
-              teaser="Sasha corporation provides complete LED Screen solutions in Bangladesh covering planning, product selection, installation, configuration, and ongoing support."
-              className="mt-2"
-              teaserClassName="w-full"
-              expandedClassName="text-sm leading-7 text-slate-600"
-              desktopClassName="text-sm leading-7 text-slate-600"
-            >
-              <>
-                Sasha corporation provides complete LED Screen solutions in Bangladesh covering planning, product selection, installation,
-                configuration, and ongoing support for indoor LED panel, outdoor LED Billboard, rental LED display,
-                and LED video wall projects. From commercial advertising and retail branding to corporate,
-                institutional, and event environments, our team focuses on practical specifications, stable
-                performance, and long-term service support for consistent visual impact.
-              </>
-            </MobileIntroText>
-
-            <div className="mt-6 grid gap-4 md:mt-8 md:gap-6 md:grid-cols-2">
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 md:p-6">
-                <div className="text-[1rem] font-semibold text-slate-900 md:text-lg">End-to-End LED Screen Implementation</div>
-                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
-                  We help clients select the correct LED configuration based on viewing distance, environment, content type, and operational
-                  requirements. Each project is planned with attention to power stability, structure safety, and long-term usability. Pricing is
-                  specification-driven and clearly explained-covering modules, cabinets, control systems, structure, installation and calibration.
-                </p>
-
-                <ul className="mt-4 space-y-2 text-[13px] text-slate-700 md:text-sm">
-                  {ledEndToEndBullets.map((bullet) => (
-                    <li key={bullet} className="flex items-start gap-2">
-                      <span className="mt-2 inline-block h-2 w-2 rounded-full bg-slate-900" />
-                      <span className="text-justify leading-6 md:text-left md:leading-7">{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <Link prefetch={false} href="/contact/" className="rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">
-                    Request a Free Quotation -&gt;
-                  </Link>
-                </div>
-              </div>
-
-              <div className="grid gap-4 md:grid-cols-2">
-                {ledReliabilityCards.map((card, index) => (
-                  <div
-                    key={card.t}
-                    className={`rounded-2xl border p-5 md:border-slate-200 md:bg-white ${
-                      index % 3 === 0
-                        ? "border-sky-200/80 bg-[linear-gradient(180deg,#f0f9ff_0%,#ffffff_52%,#e0f2fe_100%)]"
-                        : index % 3 === 1
-                          ? "border-emerald-200/80 bg-[linear-gradient(180deg,#ecfdf5_0%,#ffffff_52%,#d1fae5_100%)]"
-                          : "border-orange-200/80 bg-[linear-gradient(180deg,#fff7ed_0%,#ffffff_52%,#ffedd5_100%)]"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white shadow-sm">
-                        <UiIcon name={card.icon} className="h-5 w-5" />
-                      </div>
-                    <div className="text-[15px] font-semibold leading-5 text-slate-900 md:text-base">{card.t}</div>
-                    </div>
-                    <p className="mt-2.5 text-justify text-[13px] leading-6 text-slate-600 md:mt-3 md:text-left md:text-sm md:leading-7">{card.d}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          <section className="pt-8 pb-[25px]">
-            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-              <UiIcon name="cost" className="h-6 w-6 text-slate-800" />
-              <span>Benefits of Digital LED Display for Advertising</span>
-            </h2>
-            <MobileIntroText
-              teaser="Digital LED signage for outdoor advertising improves visibility, message control, and campaign performance for brands in Bangladesh."
-              className="mt-3"
-              teaserClassName="w-full"
-              expandedClassName="text-sm leading-7 text-slate-600"
-              desktopClassName="text-sm leading-7 text-slate-600"
-            >
-              <>
-                Digital LED signage for outdoor advertising improves visibility, message control, and campaign performance
-                for brands in Bangladesh. It enables high-brightness display output for daylight readability, faster
-                content updates for time-sensitive promotions, and measurable communication impact across roadsides,
-                commercial zones, and public locations. With better audience attention and flexible scheduling, outdoor
-                LED signage helps businesses run more effective, scalable, and cost-efficient advertising campaigns.
-              </>
-            </MobileIntroText>
-            <div className="mt-5 grid gap-3 md:grid-cols-2 md:gap-4">
-              {outdoorSignageBenefits.map((item, idx) => (
-                <div
-                  key={item.t}
-                  className="rounded-[20px] border bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-3xl md:p-5"
-                  style={{ borderColor: "rgba(255,106,0,0.16)" }}
-                >
-                  <div className="flex items-center gap-2">
-                    <span
-                      className="inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold text-white"
-                      style={{ backgroundColor: "#FF6A00" }}
-                    >
-                      {idx + 1}
-                    </span>
-                    <h3 className="text-[15px] font-extrabold leading-5 text-slate-900 md:text-base">{item.t}</h3>
-                  </div>
-                  <p className="mt-2.5 text-justify text-[13px] leading-6 text-slate-600 md:mt-3 md:text-left md:text-sm md:leading-7">{item.d}</p>
-                  <ul className="mt-3 space-y-2">
-                    {item.points.map((point) => (
-                      <li key={point} className="flex items-start gap-2 text-[13px] text-slate-700 md:text-sm">
-                        <span className="mt-2 inline-block h-1.5 w-1.5 rounded-full bg-[#FF6A00]" />
-                        <span className="text-justify leading-6 md:text-left">{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section className="py-8">
-            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-              <UiIcon name="display" className="h-6 w-6 text-slate-800" />
-              <span>Types of LED Display Technology</span>
-            </h2>
-            <MobileIntroText
-              teaser="Choosing the right LED display technology helps improve visual quality, durability, and long-term value."
-              className="mt-3"
-              teaserClassName="w-full"
-              expandedClassName="text-sm leading-7 text-slate-600"
-              desktopClassName="text-sm leading-7 text-slate-600"
-            >
-              <>
-                Choosing the right LED display technology helps improve visual quality, durability, and long-term value.
-                Below is a practical comparison of common technologies used in Bangladesh for indoor, outdoor, rental,
-                and commercial LED screen projects.
-              </>
-            </MobileIntroText>
-
-            <div className="mt-5 grid gap-3 md:mt-6 md:gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <article className="rounded-2xl border border-slate-200 bg-white p-5">
-                <h3 className="text-lg font-semibold text-slate-900">SMD LED</h3>
-                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
-                  SMD (Surface-Mounted Device) is the most common LED display technology where red, green, and blue
-                  LEDs are integrated into a single package. It offers vibrant colors, wide viewing angles, and excellent
-                  image quality for indoor and commercial LED displays.
-                </p>
-                <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                  <li>Good viewing angle and color uniformity for indoor and semi-outdoor usage.</li>
-                  <li>Popular for retail branding, conference rooms, showrooms, and stage backdrops.</li>
-                  <li>Supports a wide range of pixel pitch options for different viewing distances.</li>
-                  <li>Cost-effective and widely available for new installation and maintenance support.</li>
-                </ul>
-              </article>
-
-              <article className="rounded-2xl border border-slate-200 bg-white p-5">
-                <h3 className="text-lg font-semibold text-slate-900">GOB LED</h3>
-                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
-                  GOB (Glue-on-Board) is an LED technology that adds a transparent protective layer over the LED surface.
-                  This improves resistance to dust, moisture, and impact, making it ideal for durable indoor LED display
-                  applications.
-                </p>
-                <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                  <li>Better physical protection compared with standard exposed LED module surfaces.</li>
-                  <li>Useful for schools, shopping malls, transport hubs, and high-traffic indoor zones.</li>
-                  <li>Helps reduce risk of dead pixels caused by accidental touch or minor impact.</li>
-                  <li>A practical option when reliability and panel safety are top priorities.</li>
-                </ul>
-              </article>
-
-              <article className="rounded-2xl border border-slate-200 bg-white p-5">
-                <h3 className="text-lg font-semibold text-slate-900">COB LED</h3>
-                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
-                  COB (Chip-on-Board) mounts LED chips directly onto the circuit board, enabling finer pixel pitch and
-                  better visual performance. It is widely used in premium indoor LED video walls, control rooms, and
-                  corporate display solutions.
-                </p>
-                <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                  <li>Suitable for fine-pitch indoor LED wall requirements and close-distance viewing.</li>
-                  <li>Offers strong black level performance and improved perceived contrast in many setups.</li>
-                  <li>Common in control rooms, corporate lobbies, studios, and command center environments.</li>
-                  <li>Typically considered for premium projects with long-term professional usage goals.</li>
-                </ul>
-              </article>
-
-              <article className="rounded-2xl border border-slate-200 bg-white p-5">
-                <h3 className="text-lg font-semibold text-slate-900">Micro LED</h3>
-                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
-                  Micro LED uses ultra-small LED chips to deliver exceptional brightness, contrast, and image clarity. It is
-                  considered one of the most advanced display technologies for high-end indoor visual experiences.
-                </p>
-                <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                  <li>Excellent brightness uniformity and contrast for flagship indoor installs.</li>
-                  <li>Very fine pixel pitch options for close-view premium environments.</li>
-                  <li>Energy-efficient with long service life for enterprise-grade deployments.</li>
-                  <li>Used in luxury showrooms, broadcast studios, and high-end control rooms.</li>
-                </ul>
-              </article>
-            </div>
-
-            <p className="mt-5 hidden text-sm leading-7 text-slate-600 md:block">
-              Final technology selection depends on location, viewing distance, expected brightness, maintenance plan,
-              and budget. For best results, compare SMD, GOB, and COB options based on real project conditions instead
-              of choosing only by headline specification.
             </p>
           </section>
 
@@ -2855,41 +2436,74 @@ function ProductsPageContent({
             </div>
           </section>
 
-          <section className="py-8">
+          <section className="py-8 mb-[25px]">
             <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-              <UiIcon name="compare" className="h-6 w-6 text-slate-800" />
-              <span>LED Display vs Projector vs LCD Video Wall in Bangladesh</span>
+              <UiIcon name="solutions" className="h-6 w-6 text-slate-800" />
+              <span>LED Display Solutions in Bangladesh</span>
             </h2>
             <MobileIntroText
-              teaser="Compare LED display vs projector vs LCD video wall in Bangladesh to choose the right display solution for your business or project."
+              teaser="Sasha corporation provides complete LED Screen solutions in Bangladesh covering planning, product selection, installation, configuration, and ongoing support."
               className="mt-2"
               teaserClassName="w-full"
               expandedClassName="text-sm leading-7 text-slate-600"
               desktopClassName="text-sm leading-7 text-slate-600"
             >
               <>
-                Compare LED display vs projector vs LCD video wall in Bangladesh to choose the right display solution
-                for your business, showroom, office, conference room, control room, retail space, or event setup. This
-                quick comparison highlights brightness, image clarity, viewing distance, maintenance needs, and long-term
-                operating cost so you can choose the best option for digital signage, presentation, advertising, or video
-                wall use.
+                Sasha corporation provides complete LED Screen solutions in Bangladesh covering planning, product selection, installation,
+                configuration, and ongoing support for indoor LED panel, outdoor LED Billboard, rental LED display,
+                and LED video wall projects. From commercial advertising and retail branding to corporate,
+                institutional, and event environments, our team focuses on practical specifications, stable
+                performance, and long-term service support for consistent visual impact.
               </>
             </MobileIntroText>
-            <div className="mt-6 grid gap-4 md:grid-cols-3">
-              {ledCompare.map((item) => (
-                <div key={item.t} className="rounded-2xl border border-slate-200 bg-white p-4 md:p-5">
-                  <h3 className="text-[1rem] font-semibold leading-[1.3] text-slate-900 md:text-lg">{item.t}</h3>
-                  <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">{item.d}</p>
-                  <ul className="mt-4 space-y-2 text-[13px] text-slate-700 md:text-sm">
-                    {item.points.map((point) => (
-                      <li key={point} className="flex items-start gap-2">
-                        <span className="mt-2 inline-block h-2 w-2 rounded-full bg-slate-900" />
-                        <span className="text-justify leading-6 md:text-left md:leading-7">{point}</span>
-                      </li>
-                    ))}
-                  </ul>
+
+            <div className="mt-6 grid gap-4 md:mt-8 md:gap-6 md:grid-cols-2">
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 md:p-6">
+                <div className="text-[1rem] font-semibold text-slate-900 md:text-lg">End-to-End LED Screen Implementation</div>
+                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
+                  We help clients select the correct LED configuration based on viewing distance, environment, content type, and operational
+                  requirements. Each project is planned with attention to power stability, structure safety, and long-term usability. Pricing is
+                  specification-driven and clearly explained-covering modules, cabinets, control systems, structure, installation and calibration.
+                </p>
+
+                <ul className="mt-4 space-y-2 text-[13px] text-slate-700 md:text-sm">
+                  {ledEndToEndBullets.map((bullet) => (
+                    <li key={bullet} className="flex items-start gap-2">
+                      <span className="mt-2 inline-block h-2 w-2 rounded-full bg-slate-900" />
+                      <span className="text-justify leading-6 md:text-left md:leading-7">{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <Link prefetch={false} href="/contact/" className="rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">
+                    Request a Free Quotation -&gt;
+                  </Link>
                 </div>
-              ))}
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-2">
+                {ledReliabilityCards.map((card, index) => (
+                  <div
+                    key={card.t}
+                    className={`rounded-2xl border p-5 md:border-slate-200 md:bg-white ${
+                      index % 3 === 0
+                        ? "border-sky-200/80 bg-[linear-gradient(180deg,#f0f9ff_0%,#ffffff_52%,#e0f2fe_100%)]"
+                        : index % 3 === 1
+                          ? "border-emerald-200/80 bg-[linear-gradient(180deg,#ecfdf5_0%,#ffffff_52%,#d1fae5_100%)]"
+                          : "border-orange-200/80 bg-[linear-gradient(180deg,#fff7ed_0%,#ffffff_52%,#ffedd5_100%)]"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white shadow-sm">
+                        <UiIcon name={card.icon} className="h-5 w-5" />
+                      </div>
+                    <div className="text-[15px] font-semibold leading-5 text-slate-900 md:text-base">{card.t}</div>
+                    </div>
+                    <p className="mt-2.5 text-justify text-[13px] leading-6 text-slate-600 md:mt-3 md:text-left md:text-sm md:leading-7">{card.d}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </section>
 
@@ -3095,6 +2709,392 @@ function ProductsPageContent({
                   </div>
                 ))}
               </div>
+            </div>
+          </section>
+
+	          <section className="py-8">
+	            <div className="space-y-10">
+	              <div>
+	                <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
+                    <UiIcon name="display" className="h-6 w-6 text-slate-800" />
+                    <span>What Is an LED Display?</span>
+                  </h2>
+                <MobileIntroText
+                  teaser="An LED Display is a modular digital screen built from many light-emitting diode pixels that create images, videos, text, and live visual content."
+                  teaserLines={2}
+                  className="mt-4"
+                  teaserClassName="w-full leading-6"
+                  expandedClassName="space-y-4 text-sm leading-7 text-slate-600"
+                  desktopClassName="mt-4 space-y-4 text-sm leading-7 text-slate-600 md:text-[15px] md:leading-8"
+                >
+                  <>
+                    <p>
+                      An <strong>LED Display</strong> is a modular digital screen built from many light-emitting
+                      diode pixels that create images, videos, text, and live visual content. In a professional{" "}
+                      <strong>LED Display System</strong>, each <strong>LED Module</strong> contains red, green,
+                      and blue LEDs. A controller or sending card receives the video source, the receiving card
+                      distributes display data, and the power supply keeps every module running with stable DC power.
+                      This coordinated hardware process allows an <strong>LED Screen</strong> to show bright,
+                      seamless, high-impact content at almost any custom size.
+                    </p>
+                    <p>
+                      Businesses choose <strong>LED Display in Bangladesh</strong> for retail branding, showroom
+                      promotion, corporate reception areas, command centers, stage programs, public information
+                      boards, <strong>Digital Signage</strong>, <strong>Digital Billboard</strong> advertising, and
+                      large <strong>LED Video Wall</strong> installations. Indoor LED Display solutions are designed
+                      for close viewing, smoother detail, and controlled lighting environments, while Outdoor LED
+                      Display systems use higher brightness, stronger cabinets, weather-ready protection, and safer
+                      mounting plans for daylight and outdoor exposure. Whether the project is a compact indoor
+                      signage screen or a roadside outdoor display, the final performance depends on matching the LED
+                      module, cabinet, controller, receiving card, cables, steel structure, and power supply correctly.
+                    </p>
+                  </>
+                </MobileIntroText>
+
+	                <aside className="mt-5 rounded-[18px] border border-[#FF6A00]/20 bg-orange-50/70 p-4 shadow-sm md:mt-6 md:rounded-2xl md:p-5">
+	                  <h3 className="text-[1rem] font-extrabold leading-[1.3] text-slate-900 md:text-lg">
+	                    Every LED Display Is Built Using Multiple Hardware Components
+	                  </h3>
+	                  <p className="mt-2.5 text-justify text-[13px] leading-6 text-slate-700 md:mt-3 md:text-left md:text-sm md:leading-7">
+	                    A professional LED display is not just a screen. It is a complete electronic display system
+	                    consisting of multiple hardware components that work together to deliver stable performance,
+	                    accurate colors, seamless video playback, and long-term reliability.
+	                  </p>
+	                </aside>
+	              </div>
+
+	              <div ref={componentSectionRef}>
+	                <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
+                    <UiIcon name="module" className="h-6 w-6 text-slate-800" />
+                    <span>Main Components of an LED Display System</span>
+                  </h2>
+                  <MobileIntroText
+                    teaser="Every professional LED display system is built using several essential hardware components."
+                    className="mt-3 max-w-5xl"
+                    teaserClassName="w-full"
+                    expandedClassName="text-sm leading-7 text-slate-600"
+                    desktopClassName="text-sm leading-7 text-slate-600 md:text-[15px] md:leading-8"
+                  >
+                    <>Every professional LED display system is built using several essential hardware components. Each component performs a specific function to ensure stable operation, high image quality, and reliable long-term performance.</>
+                  </MobileIntroText>
+
+                  <div
+                    ref={componentCarouselRef}
+                    onScroll={handleComponentCarouselScroll}
+                    className="mt-6 -mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden"
+                  >
+                    {ledDisplayComponentCards.map((component, index) => (
+                      <article
+                        key={component.name}
+                        className={`group flex w-[86%] shrink-0 snap-start flex-col rounded-[20px] border px-3.5 py-3 transition duration-300 ${componentMobileCardStyles[index % componentMobileCardStyles.length]}`}
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] border border-white/75 bg-white/85 text-[#F56605] shadow-sm">
+                            <UiIcon name={component.icon} className="h-5 w-5" />
+                          </div>
+                          <h3 className="min-w-0 flex-1 text-[16px] font-extrabold leading-tight tracking-tight text-slate-900">
+                            {component.name}
+                          </h3>
+                        </div>
+                        <p className="mt-2.5 text-[12.5px] leading-[1.55] text-slate-700">{component.description}</p>
+                      </article>
+                    ))}
+                  </div>
+
+                  <div className="mt-2.5 flex justify-center gap-1.5 md:hidden">
+                    {ledDisplayComponentCards.map((component, index) => (
+                      <button
+                        key={component.name}
+                        type="button"
+                        onClick={() => {
+                          scrollComponentCarouselToIndex(index);
+                          setActiveComponentSlide(index);
+                        }}
+                        className={`h-1.5 rounded-full transition-all ${activeComponentSlide === index ? "w-6 bg-[#F56605]" : "w-1.5 bg-slate-300"}`}
+                        aria-label={`Go to ${component.name}`}
+                      />
+                    ))}
+                  </div>
+
+	                <div className="mt-6 hidden items-stretch gap-4 md:grid md:grid-cols-2 lg:grid-cols-3">
+	                  {ledDisplayComponentCards.map((component) => (
+		                    <article
+		                      key={component.name}
+		                      className="group flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#FF6A00]/50 hover:shadow-md"
+		                    >
+		                      <div className="flex items-center gap-3">
+		                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#FF6A00]/20 bg-orange-50 text-[#FF6A00] transition group-hover:bg-[#FF6A00] group-hover:text-white">
+		                          <UiIcon name={component.icon} className="h-6 w-6" />
+		                        </div>
+		                        <h3 className="text-lg font-extrabold leading-snug text-slate-900">{component.name}</h3>
+		                      </div>
+		                      <p className="mt-3 text-sm leading-7 text-slate-600">{component.description}</p>
+		                    </article>
+	                  ))}
+	                </div>
+	              </div>
+
+	              <div>
+	                <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
+                    <UiIcon name="process" className="h-6 w-6 text-slate-800" />
+                    <span>How an LED Display System Works</span>
+                  </h2>
+	                <MobileIntroText
+                    teaser="A professional LED display operates through the seamless communication of multiple hardware components."
+                    className="mt-3 max-w-5xl"
+                    teaserClassName="w-full"
+                    expandedClassName="text-sm leading-7 text-slate-600"
+                    desktopClassName="text-sm leading-7 text-slate-600 md:text-[15px] md:leading-8"
+                  >
+                    <>
+                      A professional LED display operates through the seamless communication of multiple hardware
+                      components. The diagram below illustrates how video signals and electrical power travel through the
+                      complete LED display system.
+                    </>
+                  </MobileIntroText>
+
+	                <div className="mt-6 grid gap-4 lg:grid-cols-[1.4fr_.8fr]">
+	                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+	                    <h3 className="text-[1rem] font-extrabold text-slate-900 md:text-lg">Signal Flow</h3>
+	                    <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
+	                      {ledDisplaySignalFlow.map((step, index) => (
+	                        <div key={step} className="flex items-stretch gap-2 md:gap-3">
+	                          <div
+                              className={`flex min-h-[3.55rem] flex-1 items-center justify-center rounded-xl border px-2.5 py-3 text-center text-[12px] font-bold leading-5 text-slate-800 shadow-sm md:min-h-16 md:rounded-2xl md:px-3 md:py-4 md:text-sm md:leading-6 ${
+                                index % 4 === 0
+                                  ? "border-sky-200/80 bg-[linear-gradient(180deg,#f0f9ff_0%,#ffffff_52%,#e0f2fe_100%)]"
+                                  : index % 4 === 1
+                                    ? "border-violet-200/80 bg-[linear-gradient(180deg,#f5f3ff_0%,#ffffff_52%,#ede9fe_100%)]"
+                                    : index % 4 === 2
+                                      ? "border-emerald-200/80 bg-[linear-gradient(180deg,#ecfdf5_0%,#ffffff_52%,#d1fae5_100%)]"
+                                      : "border-orange-200/80 bg-[linear-gradient(180deg,#fff7ed_0%,#ffffff_52%,#ffedd5_100%)]"
+                              }`}
+                            >
+	                            {step}
+	                          </div>
+	                          {index < ledDisplaySignalFlow.length - 1 ? (
+	                            <div className="hidden items-center text-sm font-extrabold text-[#FF6A00] sm:flex">
+	                              -&gt;
+	                            </div>
+	                          ) : null}
+	                        </div>
+	                      ))}
+	                    </div>
+	                  </div>
+
+	                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 md:p-5">
+	                    <h3 className="text-[1rem] font-extrabold text-slate-900 md:text-lg">Power Flow</h3>
+	                    <div className="mt-4 grid gap-2.5">
+	                      {ledDisplayPowerFlow.map((step, index) => (
+	                        <div key={step} className="relative md:flex md:items-center md:gap-2 md:pr-0">
+	                          <div className="mx-auto flex min-h-[2.9rem] w-full max-w-[17.5rem] items-center justify-center rounded-lg border border-cyan-200/75 bg-[linear-gradient(180deg,#ecfeff_0%,#ffffff_54%,#cffafe_100%)] px-2 py-2 text-center text-[11px] font-bold leading-4 text-slate-800 shadow-sm md:mx-0 md:min-h-14 md:max-w-none md:flex-1 md:rounded-2xl md:border-slate-200 md:bg-white md:px-3 md:py-3 md:text-sm md:leading-6">
+	                            {step}
+	                          </div>
+                            {index < ledDisplayPowerFlow.length - 1 ? (
+	                            <div
+                                className="absolute left-1/2 top-full flex -translate-x-1/2 -translate-y-1/2 items-center justify-center text-[13px] font-extrabold text-[#FF6A00] md:hidden"
+                                aria-hidden="true"
+                              >
+                                ↓
+                              </div>
+                            ) : null}
+                            <div
+                              className={`hidden w-3 self-stretch items-center justify-center text-[11px] font-extrabold text-[#FF6A00] md:flex md:text-sm ${
+                                index < ledDisplayPowerFlow.length - 1 ? "opacity-100" : "opacity-0"
+                              }`}
+                              aria-hidden="true"
+                            >
+                              -&gt;
+                            </div>
+	                        </div>
+	                      ))}
+	                    </div>
+	                  </div>
+	                </div>
+
+	                <p className="mt-5 hidden rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-7 text-slate-600 md:block">
+	                  Every component inside an LED display system performs a dedicated function. The controller processes
+	                  video signals, the receiving card distributes display data, the SMPS supplies stable power, while FRC
+	                  and CAT6 cables ensure reliable communication between all components. Together they deliver smooth
+	                  video playback, vibrant colors, stable operation, and long-term performance for both indoor and
+	                  outdoor LED display installations.
+	                </p>
+	              </div>
+	            </div>
+	          </section>
+
+          <section className="py-8">
+            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
+              <UiIcon name="display" className="h-6 w-6 text-slate-800" />
+              <span>Types of LED Display Technology</span>
+            </h2>
+            <MobileIntroText
+              teaser="Choosing the right LED display technology helps improve visual quality, durability, and long-term value."
+              className="mt-3"
+              teaserClassName="w-full"
+              expandedClassName="text-sm leading-7 text-slate-600"
+              desktopClassName="text-sm leading-7 text-slate-600"
+            >
+              <>
+                Choosing the right LED display technology helps improve visual quality, durability, and long-term value.
+                Below is a practical comparison of common technologies used in Bangladesh for indoor, outdoor, rental,
+                and commercial LED screen projects.
+              </>
+            </MobileIntroText>
+
+            <div className="mt-5 grid gap-3 md:mt-6 md:gap-4 md:grid-cols-2 lg:grid-cols-4">
+              <article className="rounded-2xl border border-slate-200 bg-white p-5">
+                <h3 className="text-lg font-semibold text-slate-900">SMD LED</h3>
+                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
+                  SMD (Surface-Mounted Device) is the most common LED display technology where red, green, and blue
+                  LEDs are integrated into a single package. It offers vibrant colors, wide viewing angles, and excellent
+                  image quality for indoor and commercial LED displays.
+                </p>
+                <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
+                  <li>Good viewing angle and color uniformity for indoor and semi-outdoor usage.</li>
+                  <li>Popular for retail branding, conference rooms, showrooms, and stage backdrops.</li>
+                  <li>Supports a wide range of pixel pitch options for different viewing distances.</li>
+                  <li>Cost-effective and widely available for new installation and maintenance support.</li>
+                </ul>
+              </article>
+
+              <article className="rounded-2xl border border-slate-200 bg-white p-5">
+                <h3 className="text-lg font-semibold text-slate-900">GOB LED</h3>
+                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
+                  GOB (Glue-on-Board) is an LED technology that adds a transparent protective layer over the LED surface.
+                  This improves resistance to dust, moisture, and impact, making it ideal for durable indoor LED display
+                  applications.
+                </p>
+                <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
+                  <li>Better physical protection compared with standard exposed LED module surfaces.</li>
+                  <li>Useful for schools, shopping malls, transport hubs, and high-traffic indoor zones.</li>
+                  <li>Helps reduce risk of dead pixels caused by accidental touch or minor impact.</li>
+                  <li>A practical option when reliability and panel safety are top priorities.</li>
+                </ul>
+              </article>
+
+              <article className="rounded-2xl border border-slate-200 bg-white p-5">
+                <h3 className="text-lg font-semibold text-slate-900">COB LED</h3>
+                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
+                  COB (Chip-on-Board) mounts LED chips directly onto the circuit board, enabling finer pixel pitch and
+                  better visual performance. It is widely used in premium indoor LED video walls, control rooms, and
+                  corporate display solutions.
+                </p>
+                <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
+                  <li>Suitable for fine-pitch indoor LED wall requirements and close-distance viewing.</li>
+                  <li>Offers strong black level performance and improved perceived contrast in many setups.</li>
+                  <li>Common in control rooms, corporate lobbies, studios, and command center environments.</li>
+                  <li>Typically considered for premium projects with long-term professional usage goals.</li>
+                </ul>
+              </article>
+
+              <article className="rounded-2xl border border-slate-200 bg-white p-5">
+                <h3 className="text-lg font-semibold text-slate-900">Micro LED</h3>
+                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
+                  Micro LED uses ultra-small LED chips to deliver exceptional brightness, contrast, and image clarity. It is
+                  considered one of the most advanced display technologies for high-end indoor visual experiences.
+                </p>
+                <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
+                  <li>Excellent brightness uniformity and contrast for flagship indoor installs.</li>
+                  <li>Very fine pixel pitch options for close-view premium environments.</li>
+                  <li>Energy-efficient with long service life for enterprise-grade deployments.</li>
+                  <li>Used in luxury showrooms, broadcast studios, and high-end control rooms.</li>
+                </ul>
+              </article>
+            </div>
+
+            <p className="mt-5 hidden text-sm leading-7 text-slate-600 md:block">
+              Final technology selection depends on location, viewing distance, expected brightness, maintenance plan,
+              and budget. For best results, compare SMD, GOB, and COB options based on real project conditions instead
+              of choosing only by headline specification.
+            </p>
+          </section>
+
+          <section className="py-8">
+            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
+              <UiIcon name="compare" className="h-6 w-6 text-slate-800" />
+              <span>LED Display vs Projector vs LCD Video Wall in Bangladesh</span>
+            </h2>
+            <MobileIntroText
+              teaser="Compare LED display vs projector vs LCD video wall in Bangladesh to choose the right display solution for your business or project."
+              className="mt-2"
+              teaserClassName="w-full"
+              expandedClassName="text-sm leading-7 text-slate-600"
+              desktopClassName="text-sm leading-7 text-slate-600"
+            >
+              <>
+                Compare LED display vs projector vs LCD video wall in Bangladesh to choose the right display solution
+                for your business, showroom, office, conference room, control room, retail space, or event setup. This
+                quick comparison highlights brightness, image clarity, viewing distance, maintenance needs, and long-term
+                operating cost so you can choose the best option for digital signage, presentation, advertising, or video
+                wall use.
+              </>
+            </MobileIntroText>
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              {ledCompare.map((item) => (
+                <div key={item.t} className="rounded-2xl border border-slate-200 bg-white p-4 md:p-5">
+                  <h3 className="text-[1rem] font-semibold leading-[1.3] text-slate-900 md:text-lg">{item.t}</h3>
+                  <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">{item.d}</p>
+                  <ul className="mt-4 space-y-2 text-[13px] text-slate-700 md:text-sm">
+                    {item.points.map((point) => (
+                      <li key={point} className="flex items-start gap-2">
+                        <span className="mt-2 inline-block h-2 w-2 rounded-full bg-slate-900" />
+                        <span className="text-justify leading-6 md:text-left md:leading-7">{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="pt-8 pb-[25px]">
+            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
+              <UiIcon name="cost" className="h-6 w-6 text-slate-800" />
+              <span>Benefits of Digital LED Display for Advertising</span>
+            </h2>
+            <MobileIntroText
+              teaser="Digital LED signage for outdoor advertising improves visibility, message control, and campaign performance for brands in Bangladesh."
+              className="mt-3"
+              teaserClassName="w-full"
+              expandedClassName="text-sm leading-7 text-slate-600"
+              desktopClassName="text-sm leading-7 text-slate-600"
+            >
+              <>
+                Digital LED signage for outdoor advertising improves visibility, message control, and campaign performance
+                for brands in Bangladesh. It enables high-brightness display output for daylight readability, faster
+                content updates for time-sensitive promotions, and measurable communication impact across roadsides,
+                commercial zones, and public locations. With better audience attention and flexible scheduling, outdoor
+                LED signage helps businesses run more effective, scalable, and cost-efficient advertising campaigns.
+              </>
+            </MobileIntroText>
+            <div className="mt-5 grid gap-3 md:grid-cols-2 md:gap-4">
+              {outdoorSignageBenefits.map((item, idx) => (
+                <div
+                  key={item.t}
+                  className="rounded-[20px] border bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-3xl md:p-5"
+                  style={{ borderColor: "rgba(255,106,0,0.16)" }}
+                >
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold text-white"
+                      style={{ backgroundColor: "#FF6A00" }}
+                    >
+                      {idx + 1}
+                    </span>
+                    <h3 className="text-[15px] font-extrabold leading-5 text-slate-900 md:text-base">{item.t}</h3>
+                  </div>
+                  <p className="mt-2.5 text-justify text-[13px] leading-6 text-slate-600 md:mt-3 md:text-left md:text-sm md:leading-7">{item.d}</p>
+                  <ul className="mt-3 space-y-2">
+                    {item.points.map((point) => (
+                      <li key={point} className="flex items-start gap-2 text-[13px] text-slate-700 md:text-sm">
+                        <span className="mt-2 inline-block h-1.5 w-1.5 rounded-full bg-[#FF6A00]" />
+                        <span className="text-justify leading-6 md:text-left">{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
           </section>
 
