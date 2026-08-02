@@ -2535,22 +2535,22 @@ function ProductsPageContent({
                 <div
                   ref={whyChooseCarouselRef}
                   onScroll={handleWhyChooseCarouselScroll}
-                  className="mt-4 -mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden"
+                  className="mt-4 -mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:snap-none md:grid-cols-2 md:gap-[0.65rem] md:overflow-visible md:px-0 md:pb-0 md:pt-0 xl:grid-cols-4"
                 >
 	                {sashaWhyChooseCards.map((item, index) => (
 	                  <article
                       key={item.title}
-                      className={`group flex w-[86%] shrink-0 snap-start flex-col rounded-[20px] border px-3.5 py-3 transition duration-300 ${componentMobileCardStyles[index % componentMobileCardStyles.length]}`}
+                      className={`group flex w-[86%] shrink-0 snap-start flex-col rounded-[20px] border px-3.5 py-3 transition duration-300 md:relative md:min-h-full md:min-w-0 md:w-auto md:shrink md:snap-normal md:overflow-hidden md:rounded-[24px] md:border-white/10 md:bg-[linear-gradient(180deg,rgba(255,255,255,0.1),rgba(255,255,255,0.05))] md:p-[0.9rem] md:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_14px_34px_rgba(15,23,42,0.22)] md:backdrop-blur-[14px] md:transition-[transform,border-color,box-shadow,background] md:duration-[220ms] md:ease-in-out md:after:absolute md:after:inset-x-0 md:after:bottom-0 md:after:h-[3px] md:after:bg-[linear-gradient(90deg,rgba(255,106,0,0),rgba(255,106,0,0.95),rgba(255,140,0,0))] md:after:opacity-[0.88] md:hover:-translate-y-1 md:hover:border-[rgba(255,106,0,0.58)] md:hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.13),rgba(255,255,255,0.07))] md:hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_18px_38px_rgba(15,23,42,0.28),0_0_0_1px_rgba(255,106,0,0.18),0_0_24px_rgba(255,106,0,0.16)] ${componentMobileCardStyles[index % componentMobileCardStyles.length]}`}
                     >
-                      <div className="flex items-center gap-2.5">
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] border border-white/75 bg-white/85 text-[#F56605] shadow-sm">
+                      <div className="flex min-w-0 items-center gap-2.5 md:gap-3">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] border border-white/75 bg-white/85 text-[#F56605] shadow-sm md:h-12 md:w-12 md:rounded-full md:border-[rgba(255,106,0,0.32)] md:bg-[linear-gradient(180deg,rgba(255,106,0,0.2),rgba(255,106,0,0.08))] md:text-[#FF6A00] md:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_24px_rgba(255,106,0,0.16)]">
                           <UiIcon name={item.icon} className="h-5 w-5" />
                         </div>
-                        <h3 className="min-w-0 flex-1 text-[16px] font-extrabold leading-tight tracking-tight text-slate-900">
+                        <h3 className="min-w-0 flex-1 whitespace-normal break-words text-[16px] font-extrabold leading-tight tracking-tight text-slate-900 md:mt-0 md:text-[1.02rem] md:font-semibold md:leading-[1.5] md:tracking-normal">
                           {item.title}
                         </h3>
                       </div>
-                      <p className="mt-2.5 text-[12.5px] leading-[1.55] text-slate-700">{item.text}</p>
+                      <p className="mt-2.5 whitespace-normal break-words text-[12.5px] leading-[1.55] text-slate-700 md:mt-[0.7rem] md:text-[0.94rem] md:leading-[1.8] md:text-[#475569]">{item.text}</p>
 	                  </article>
 	                ))}
                 </div>
@@ -2570,21 +2570,6 @@ function ProductsPageContent({
                   ))}
                 </div>
 
-                <div className="hidden md:block">
-                  <div className="sc-led-why-grid mt-4">
-	                  {sashaWhyChooseCards.map((item) => (
-	                    <article key={item.title} className="sc-led-why-card">
-	                      <div className="flex items-center gap-3">
-	                        <div className="sc-led-why-card-icon shrink-0" aria-hidden="true">
-	                          <UiIcon name={item.icon} className="h-5 w-5 text-[#FF6A00]" />
-	                        </div>
-	                        <h3 className="sc-led-why-card-title !mt-0">{item.title}</h3>
-	                      </div>
-	                      <p className="sc-led-why-card-text">{item.text}</p>
-	                    </article>
-	                  ))}
-                  </div>
-                </div>
               </div>
             </div>
           </section>
