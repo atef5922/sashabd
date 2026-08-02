@@ -3104,18 +3104,23 @@ function ProductsPageContent({
 
                 <div className="group">
                   <div className="flex w-max gap-3 animate-[renexMarquee_42s_linear_infinite] group-hover:[animation-play-state:paused] motion-reduce:animate-none">
-                    {[...visibleTrustedTechPartnerLogos, ...visibleTrustedTechPartnerLogos].map((b, idx) => (
+                    {[false, true].flatMap((isClone) =>
+                      visibleTrustedTechPartnerLogos.map((brand) => ({ ...brand, isClone }))
+                    ).map((b) => (
                       <div
-                        key={`${b.name}-${idx}`}
+                        key={`${b.name}-${b.isClone ? "visual-clone" : "canonical"}`}
                         className="flex h-16 w-40 shrink-0 items-center justify-center rounded-[20px] border bg-white px-4 shadow-sm"
                         style={{ borderColor: "rgba(255,106,0,0.12)" }}
-                        title={b.name}
-                        aria-label={b.name}
+                        title={b.isClone ? undefined : b.name}
+                        aria-label={b.isClone ? undefined : b.name}
+                        aria-hidden={b.isClone ? "true" : undefined}
+                        role={b.isClone ? "presentation" : undefined}
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={b.src}
-                          alt={b.name}
+                          alt={b.isClone ? "" : b.name}
+                          aria-hidden={b.isClone ? "true" : undefined}
                           className={
                             b.name === "G-Energy"
                               ? "h-12 w-auto max-w-[152px] object-contain"
