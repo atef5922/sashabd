@@ -143,6 +143,25 @@ test("LED display Why Choose benefits render one canonical card list", () => {
   assert.match(section, /xl:grid-cols-4/);
 });
 
+test("LED display technology partner marquee exposes one semantic logo set", () => {
+  const source = read("modules/routes/catalog/products-page.tsx");
+  const dataSource = source.match(/const trustedTechPartnerLogos:[\s\S]*?= \[([\s\S]*?)\];/)?.[1];
+  const section = source.match(/Trusted Technology Partners & Authorized Brands([\s\S]*?)Our Valuable Clients/)?.[1];
+
+  assert.ok(dataSource, "Technology partner logo data must be present");
+  assert.ok(section, "Technology Partners section source must be present");
+
+  const sourceBrands = [...dataSource.matchAll(/name: "([^"]+)"/g)].map((match) => match[1]);
+  const visibleBrands = sourceBrands.filter((brand) => !["Absen", "Unilumin", "Leyard"].includes(brand));
+  assert.equal(visibleBrands.length, 10);
+  assert.equal(new Set(visibleBrands).size, visibleBrands.length);
+  assert.match(section, /\[false, true\]\.flatMap/);
+  assert.match(section, /aria-hidden=\{b\.isClone \? "true" : undefined\}/);
+  assert.match(section, /role=\{b\.isClone \? "presentation" : undefined\}/);
+  assert.match(section, /alt=\{b\.isClone \? "" : b\.name\}/);
+  assert.match(section, /key=\{`\$\{b\.name\}-\$\{b\.isClone \? "visual-clone" : "canonical"\}`\}/);
+});
+
 test("redirect configuration has no exact-source destination chains", () => {
   const rows = redirects.split(/\r?\n/).map((line) => line.trim()).filter((line) => line && !line.startsWith("#"));
   const exact = rows.map((line) => line.split(/\s+/)).filter(([source]) => !source.includes("*") && !source.includes(":"));
