@@ -98,6 +98,17 @@ test("custom 404 and dynamic metadata implementations exist", () => {
   }
 });
 
+test("LED display products use one responsive card render path", () => {
+  const source = read("modules/routes/catalog/products-page.tsx");
+  const productGrid = source.match(/\{\/\* PRODUCTS GRID \*\/\}([\s\S]*?)\{showMobilePagination/)?.[1];
+
+  assert.ok(productGrid, "LED product grid source must be present");
+  assert.equal((productGrid.match(/section\.products\.map\(\(product\)/g) ?? []).length, 1);
+  assert.equal((productGrid.match(/desktopPagedProducts\.map\(renderCatalogCard\)/g) ?? []).length, 1);
+  assert.match(productGrid, /data-led-product-id=\{product\.id\}/);
+  assert.match(productGrid, /desktopPagedProductIds\.has\(product\.id\)/);
+});
+
 test("redirect configuration has no exact-source destination chains", () => {
   const rows = redirects.split(/\r?\n/).map((line) => line.trim()).filter((line) => line && !line.startsWith("#"));
   const exact = rows.map((line) => line.split(/\s+/)).filter(([source]) => !source.includes("*") && !source.includes(":"));
