@@ -1261,6 +1261,8 @@ function ProductsPageContent({
   const desktopStartIndex = shouldPaginate ? (desktopCurrentPage - 1) * desktopPageSize : 0;
   const desktopEndIndex = shouldPaginate ? Math.min(desktopStartIndex + desktopPageSize, filtered.length) : filtered.length;
   const desktopPagedProducts = shouldPaginate ? filtered.slice(desktopStartIndex, desktopEndIndex) : filtered;
+  const desktopPagedProductIds = new Set(desktopPagedProducts.map((product) => product.id));
+  const desktopProductOrderById = new Map(filtered.map((product, index) => [product.id, index]));
   const desktopPaginationItems = shouldPaginate ? getPaginationItems(desktopCurrentPage, desktopTotalPages) : [];
   const showDesktopPagination = shouldPaginate && filtered.length > 0 && desktopTotalPages > 1;
   const mobileTotalPages = ledOnly ? Math.max(1, Math.ceil(filtered.length / mobilePageSize)) : desktopTotalPages;
@@ -1695,10 +1697,10 @@ function ProductsPageContent({
       <section className="mt-3 space-y-3 !bg-transparent !p-0 !shadow-none">
         {ledOnly ? (
           <>
-            <div className="space-y-4 md:hidden">
+            <div className="space-y-4 md:grid md:grid-cols-2 md:gap-[10px] md:space-y-0 lg:grid-cols-3">
               {mobileLedSections.map((section) => (
-                <div key={section.id}>
-                  <div className="mb-2 flex items-center justify-between gap-3">
+                <div key={section.id} className="md:contents">
+                  <div className="mb-2 flex items-center justify-between gap-3 md:hidden">
                     <div className="text-sm font-extrabold leading-tight text-slate-900">{section.title}</div>
                     <Link
                       prefetch={false}
@@ -1715,11 +1717,11 @@ function ProductsPageContent({
                     </Link>
                   </div>
 
-                  <div className="relative">
+                  <div className="relative md:contents">
                     <button
                       type="button"
                       onClick={() => scrollMobileCarousel(section.id, -1)}
-                      className="absolute -left-2 top-[28%] z-20 inline-flex -translate-y-1/2 items-center justify-center p-0 text-[#F56605] transition active:scale-95"
+                      className="absolute -left-2 top-[28%] z-20 inline-flex -translate-y-1/2 items-center justify-center p-0 text-[#F56605] transition active:scale-95 md:hidden"
                       aria-label={`Previous ${section.title} products`}
                     >
                       <svg viewBox="0 0 24 24" className="h-7 w-7 drop-shadow-[0_2px_4px_rgba(255,255,255,0.55)]" fill="none" aria-hidden="true">
@@ -1727,15 +1729,22 @@ function ProductsPageContent({
                       </svg>
                     </button>
 
-                    <div className="overflow-hidden px-1">
+                    <div className="overflow-hidden px-1 md:contents">
                       <div
                         ref={(node) => {
                           mobileCarouselRefs.current[section.id] = node;
                         }}
-                        className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                        className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:contents"
                       >
                         {section.products.map((product) => (
-                          <div key={product.id} className="min-w-[calc((100%-0.75rem)/2)] shrink-0 basis-[calc((100%-0.75rem)/2)] snap-start">
+                          <div
+                            key={product.id}
+                            data-led-product-id={product.id}
+                            className={`min-w-[calc((100%-0.75rem)/2)] shrink-0 basis-[calc((100%-0.75rem)/2)] snap-start md:min-w-0 md:basis-auto md:shrink ${
+                              desktopPagedProductIds.has(product.id) ? "" : "md:hidden"
+                            }`}
+                            style={{ order: desktopProductOrderById.get(product.id) }}
+                          >
                             {renderCatalogCard(product)}
                           </div>
                         ))}
@@ -1745,7 +1754,7 @@ function ProductsPageContent({
                     <button
                       type="button"
                       onClick={() => scrollMobileCarousel(section.id, 1)}
-                      className="absolute -right-2 top-[28%] z-20 inline-flex -translate-y-1/2 items-center justify-center p-0 text-[#F56605] transition active:scale-95"
+                      className="absolute -right-2 top-[28%] z-20 inline-flex -translate-y-1/2 items-center justify-center p-0 text-[#F56605] transition active:scale-95 md:hidden"
                       aria-label={`Next ${section.title} products`}
                     >
                       <svg viewBox="0 0 24 24" className="h-7 w-7 drop-shadow-[0_2px_4px_rgba(255,255,255,0.55)]" fill="none" aria-hidden="true">
@@ -1755,11 +1764,6 @@ function ProductsPageContent({
                   </div>
                 </div>
               ))}
-            </div>
-            <div className="hidden md:block">
-              <ResponsiveProductCarousel className="product-grid-3" desktopClassName="md:grid-cols-2 lg:grid-cols-3" mobileGapClassName="gap-[10px]">
-                {desktopPagedProducts.map(renderCatalogCard)}
-              </ResponsiveProductCarousel>
             </div>
           </>
         ) : (
