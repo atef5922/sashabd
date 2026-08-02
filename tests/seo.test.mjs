@@ -155,11 +155,13 @@ test("LED display technology partner marquee exposes one semantic logo set", () 
   const visibleBrands = sourceBrands.filter((brand) => !["Absen", "Unilumin", "Leyard"].includes(brand));
   assert.equal(visibleBrands.length, 10);
   assert.equal(new Set(visibleBrands).size, visibleBrands.length);
-  assert.match(section, /\[false, true\]\.flatMap/);
-  assert.match(section, /aria-hidden=\{b\.isClone \? "true" : undefined\}/);
-  assert.match(section, /role=\{b\.isClone \? "presentation" : undefined\}/);
-  assert.match(section, /alt=\{b\.isClone \? "" : b\.name\}/);
-  assert.match(section, /key=\{`\$\{b\.name\}-\$\{b\.isClone \? "visual-clone" : "canonical"\}`\}/);
+  assert.match(section, /\[false, true\]\.map\(\(isClone\)/);
+  assert.match(section, /key=\{isClone \? "visual-clone-track" : "canonical-track"\}/);
+  assert.match(section, /aria-hidden=\{isClone \? "true" : undefined\}/);
+  assert.match(section, /inert=\{isClone \? true : undefined\}/);
+  assert.match(section, /role=\{isClone \? "presentation" : undefined\}/);
+  assert.match(section, /alt=\{isClone \? "" : b\.name\}/);
+  assert.match(section, /key=\{`\$\{b\.name\}-\$\{isClone \? "visual-clone" : "canonical"\}`\}/);
 });
 
 test("redirect configuration has no exact-source destination chains", () => {

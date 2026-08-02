@@ -3103,45 +3103,51 @@ function ProductsPageContent({
                 <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-14" style={{ background: "linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
 
                 <div className="group">
-                  <div className="flex w-max gap-3 animate-[renexMarquee_42s_linear_infinite] group-hover:[animation-play-state:paused] motion-reduce:animate-none">
-                    {[false, true].flatMap((isClone) =>
-                      visibleTrustedTechPartnerLogos.map((brand) => ({ ...brand, isClone }))
-                    ).map((b) => (
+                  <div className="flex w-max animate-[renexMarquee_42s_linear_infinite] group-hover:[animation-play-state:paused] motion-reduce:animate-none">
+                    {[false, true].map((isClone) => (
                       <div
-                        key={`${b.name}-${b.isClone ? "visual-clone" : "canonical"}`}
-                        className="flex h-16 w-40 shrink-0 items-center justify-center rounded-[20px] border bg-white px-4 shadow-sm"
-                        style={{ borderColor: "rgba(255,106,0,0.12)" }}
-                        title={b.isClone ? undefined : b.name}
-                        aria-label={b.isClone ? undefined : b.name}
-                        aria-hidden={b.isClone ? "true" : undefined}
-                        role={b.isClone ? "presentation" : undefined}
+                        key={isClone ? "visual-clone-track" : "canonical-track"}
+                        className="flex gap-3 pr-3"
+                        aria-hidden={isClone ? "true" : undefined}
+                        inert={isClone ? true : undefined}
+                        role={isClone ? "presentation" : undefined}
                       >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={b.src}
-                          alt={b.isClone ? "" : b.name}
-                          aria-hidden={b.isClone ? "true" : undefined}
-                          className={
-                            b.name === "G-Energy"
-                              ? "h-12 w-auto max-w-[152px] object-contain"
-                              : b.name === "LianTronics"
-                                ? "h-9 w-auto max-w-[148px] object-contain"
-                                : b.name === "AOTO Electronics"
-                                  ? "h-10 w-auto max-w-[132px] object-contain"
-                                  : b.name === "Lampro"
-                                ? "h-9 w-auto max-w-[136px] object-contain"
-                                : b.name === "Huidu"
-                                  ? "h-10 w-auto max-w-[145px] object-contain"
-                                  : b.name === "NovaStar"
-                                    ? "h-10 w-auto max-w-[150px] object-contain"
-                                    : b.name === "Mugnee Multiple Limited"
-                                      ? "h-10 w-auto max-w-[156px] object-contain"
-                                      : b.name === "Renex Digital"
-                                        ? "h-12 w-full max-w-none object-cover object-center"
-                                    : "h-10 w-auto max-w-[146px] object-contain"
-                          }
-                          loading="lazy"
-                        />
+                        {visibleTrustedTechPartnerLogos.map((b) => (
+                          <div
+                            key={`${b.name}-${isClone ? "visual-clone" : "canonical"}`}
+                            className="flex h-16 w-40 shrink-0 items-center justify-center rounded-[20px] border bg-white px-4 shadow-sm"
+                            style={{ borderColor: "rgba(255,106,0,0.12)" }}
+                            title={isClone ? undefined : b.name}
+                            aria-label={isClone ? undefined : b.name}
+                          >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={b.src}
+                              alt={isClone ? "" : b.name}
+                              aria-hidden={isClone ? "true" : undefined}
+                              className={
+                                b.name === "G-Energy"
+                                  ? "h-12 w-auto max-w-[152px] object-contain"
+                                  : b.name === "LianTronics"
+                                    ? "h-9 w-auto max-w-[148px] object-contain"
+                                    : b.name === "AOTO Electronics"
+                                      ? "h-10 w-auto max-w-[132px] object-contain"
+                                      : b.name === "Lampro"
+                                    ? "h-9 w-auto max-w-[136px] object-contain"
+                                    : b.name === "Huidu"
+                                      ? "h-10 w-auto max-w-[145px] object-contain"
+                                      : b.name === "NovaStar"
+                                        ? "h-10 w-auto max-w-[150px] object-contain"
+                                        : b.name === "Mugnee Multiple Limited"
+                                          ? "h-10 w-auto max-w-[156px] object-contain"
+                                          : b.name === "Renex Digital"
+                                            ? "h-12 w-full max-w-none object-cover object-center"
+                                        : "h-10 w-auto max-w-[146px] object-contain"
+                              }
+                              loading="lazy"
+                            />
+                          </div>
+                        ))}
                       </div>
                     ))}
                   </div>
