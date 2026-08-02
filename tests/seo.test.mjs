@@ -126,6 +126,23 @@ test("LED display main components render one canonical card list", () => {
   assert.match(section, /lg:grid-cols-3/);
 });
 
+test("LED display Why Choose benefits render one canonical card list", () => {
+  const source = read("modules/routes/catalog/products-page.tsx");
+  const dataSource = source.match(/const sashaWhyChooseCards = \[([\s\S]*?)\];/)?.[1];
+  const section = source.match(/Why Choose Sasha Corporation for LED Display Solutions\?([\s\S]*?)LED Display Installation Process in Bangladesh/)?.[1];
+
+  assert.ok(dataSource, "Sasha Why Choose benefit data must be present");
+  assert.ok(section, "Why Choose Sasha section source must be present");
+
+  const benefitTitles = [...dataSource.matchAll(/title: "([^"]+)"/g)].map((match) => match[1]);
+  assert.equal(benefitTitles.length, 8);
+  assert.equal(new Set(benefitTitles).size, benefitTitles.length);
+  assert.equal((section.match(/sashaWhyChooseCards\.map\(\(item/g) ?? []).length, 2);
+  assert.equal((section.match(/<article/g) ?? []).length, 1);
+  assert.match(section, /md:grid-cols-2/);
+  assert.match(section, /xl:grid-cols-4/);
+});
+
 test("redirect configuration has no exact-source destination chains", () => {
   const rows = redirects.split(/\r?\n/).map((line) => line.trim()).filter((line) => line && !line.startsWith("#"));
   const exact = rows.map((line) => line.split(/\s+/)).filter(([source]) => !source.includes("*") && !source.includes(":"));
