@@ -252,6 +252,26 @@ test("P2.6 and P3 rental LED card features stay rental-specific", () => {
   }
 });
 
+test("LED display internal product links use only LED-relevant product families", () => {
+  const source = read("modules/routes/catalog/products-page.tsx");
+  const allowlist = source.match(/const LED_DISPLAY_INTERNAL_LINK_KINDS:[\s\S]*?= \[([\s\S]*?)\];/)?.[1];
+  const linkBuilder = source.match(/const fullListGroups = useMemo\(\(\) => \{([\s\S]*?)const ledFullListLinks = useMemo/)?.[1];
+  const section = source.match(/Internal Product Links([\s\S]*?)<\/details>/)?.[1];
+
+  assert.ok(allowlist, "LED internal-link allowlist must be present");
+  assert.ok(linkBuilder, "Internal-link group builder must be present");
+  assert.ok(section, "Internal Product Links section must be present");
+
+  for (const kind of ["indoor", "outdoor", "rental", "receiving-card", "controller", "power-supply", "led-accessories"]) {
+    assert.match(allowlist, new RegExp(`"${kind}"`));
+  }
+
+  assert.doesNotMatch(allowlist, /"interactive-flat-panel"/);
+  assert.doesNotMatch(allowlist, /"digital-podium"/);
+  assert.match(linkBuilder, /const kinds = LED_DISPLAY_INTERNAL_LINK_KINDS/);
+  assert.match(section, /ledFullListLinks\.map\(\(item\)/);
+});
+
 test("redirect configuration has no exact-source destination chains", () => {
   const rows = redirects.split(/\r?\n/).map((line) => line.trim()).filter((line) => line && !line.startsWith("#"));
   const exact = rows.map((line) => line.split(/\s+/)).filter(([source]) => !source.includes("*") && !source.includes(":"));
