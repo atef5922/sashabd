@@ -217,6 +217,41 @@ test("LED product-card fallbacks avoid unrelated template feature text", () => {
   assert.ok(card.indexOf("Regulated 5V DC cabinet output") < card.indexOf(`Stable control ${"system"} workflow`));
 });
 
+test("P2.6 and P3 rental LED card features stay rental-specific", () => {
+  const catalog = read("lib/productsCatalog.ts");
+  const p26 = catalog.match(/title: "P2\.6 Rental LED Display"[\s\S]*?quickFeatures: \[([\s\S]*?)\],\s*bestFor:/)?.[1];
+  const p3 = catalog.match(/title: "P3 Rental LED Display"[\s\S]*?quickFeatures: \[([\s\S]*?)\],\s*bestFor:/)?.[1];
+
+  assert.ok(p26, "P2.6 rental quickFeatures must be present");
+  assert.ok(p3, "P3 rental quickFeatures must be present");
+
+  for (const [source, expected] of [
+    [
+      p26,
+      [
+        "Pixel pitch P2.6 for close-view stage displays",
+        "Lightweight rental cabinet design",
+        "Quick-lock cabinet system for faster setup",
+        "Suitable for events, stages, and rental projects",
+      ],
+    ],
+    [
+      p3,
+      [
+        "Pixel pitch P3 for stage and event displays",
+        "Lightweight rental cabinet design",
+        "Quick-lock cabinet system for repeated installation",
+        "Suitable for indoor events and medium viewing distances",
+      ],
+    ],
+  ]) {
+    const features = [...source.matchAll(/"([^"]+)"/g)].map((match) => match[1]);
+    assert.deepEqual(features, expected);
+    assert.equal(features.length, 4);
+    assert.doesNotMatch(source, /presentation|collaboration|training|touch-ready/i);
+  }
+});
+
 test("redirect configuration has no exact-source destination chains", () => {
   const rows = redirects.split(/\r?\n/).map((line) => line.trim()).filter((line) => line && !line.startsWith("#"));
   const exact = rows.map((line) => line.split(/\s+/)).filter(([source]) => !source.includes("*") && !source.includes(":"));

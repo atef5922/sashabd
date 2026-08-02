@@ -485,7 +485,12 @@ export const rentalCatalog: ProductItem[] = [
     image: "/images/rental/P2.6-Rental-LED-Display.webp",
     cardPrice: getLedDisplayCardPrice("p2-6-rental-led-display"),
 
-    quickFeatures: ["Lightweight cabinet", "Quick lock system", "Sharp visuals", "Event-friendly"],
+    quickFeatures: [
+      "Pixel pitch P2.6 for close-view stage displays",
+      "Lightweight rental cabinet design",
+      "Quick-lock cabinet system for faster setup",
+      "Suitable for events, stages, and rental projects",
+    ],
     bestFor: ["Stage backdrop", "Corporate events", "Live concerts", "Indoor rental LED wall"],
     keySpecs: [
       { k: "Pixel Pitch", v: "P2.6 (2.6mm)" },
@@ -506,7 +511,12 @@ export const rentalCatalog: ProductItem[] = [
     image: "/images/rental/P3-Rental-LED-Display.webp",
     cardPrice: getLedDisplayCardPrice("p3-rental-led-display"),
 
-    quickFeatures: ["Lightweight cabinet", "Quick lock system", "Sharp visuals", "Event-friendly"],
+    quickFeatures: [
+      "Pixel pitch P3 for stage and event displays",
+      "Lightweight rental cabinet design",
+      "Quick-lock cabinet system for repeated installation",
+      "Suitable for indoor events and medium viewing distances",
+    ],
     bestFor: ["Stage backdrop", "Corporate events", "Live concerts"],
     keySpecs: [
       { k: "Pixel Pitch", v: "P3 (3mm)" },
@@ -2796,7 +2806,6 @@ export const controllerCatalog: ControllerProduct[] = [
 export function getControllerBySlug(slug: string): ControllerProduct | null {
   return controllerCatalog.find((x) => x.slug === slug) ?? null;
 }
-
 
 
 
