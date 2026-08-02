@@ -109,6 +109,23 @@ test("LED display products use one responsive card render path", () => {
   assert.match(productGrid, /desktopPagedProductIds\.has\(product\.id\)/);
 });
 
+test("LED display main components render one canonical card list", () => {
+  const source = read("modules/routes/catalog/products-page.tsx");
+  const dataSource = source.match(/const ledDisplayComponentCards = \[([\s\S]*?)\];/)?.[1];
+  const section = source.match(/Main Components of an LED Display System([\s\S]*?)How an LED Display System Works/)?.[1];
+
+  assert.ok(dataSource, "LED display component card data must be present");
+  assert.ok(section, "Main Components section source must be present");
+
+  const componentNames = [...dataSource.matchAll(/name: "([^"]+)"/g)].map((match) => match[1]);
+  assert.equal(componentNames.length, 9);
+  assert.equal(new Set(componentNames).size, componentNames.length);
+  assert.equal((section.match(/ledDisplayComponentCards\.map\(\(component/g) ?? []).length, 2);
+  assert.equal((section.match(/<article/g) ?? []).length, 1);
+  assert.match(section, /md:grid-cols-2/);
+  assert.match(section, /lg:grid-cols-3/);
+});
+
 test("redirect configuration has no exact-source destination chains", () => {
   const rows = redirects.split(/\r?\n/).map((line) => line.trim()).filter((line) => line && !line.startsWith("#"));
   const exact = rows.map((line) => line.split(/\s+/)).filter(([source]) => !source.includes("*") && !source.includes(":"));
