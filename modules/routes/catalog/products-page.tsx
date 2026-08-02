@@ -2785,22 +2785,22 @@ function ProductsPageContent({
                   <div
                     ref={componentCarouselRef}
                     onScroll={handleComponentCarouselScroll}
-                    className="mt-6 -mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden"
+                    className="mt-6 -mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:snap-none md:grid-cols-2 md:items-stretch md:gap-4 md:overflow-visible md:px-0 md:pb-0 md:pt-0 lg:grid-cols-3"
                   >
                     {ledDisplayComponentCards.map((component, index) => (
                       <article
                         key={component.name}
-                        className={`group flex w-[86%] shrink-0 snap-start flex-col rounded-[20px] border px-3.5 py-3 transition duration-300 ${componentMobileCardStyles[index % componentMobileCardStyles.length]}`}
+                        className={`group flex w-[86%] shrink-0 snap-start flex-col rounded-[20px] border px-3.5 py-3 transition duration-300 md:h-full md:w-auto md:shrink md:snap-normal md:rounded-2xl md:border-slate-200 md:bg-none md:bg-white md:p-5 md:shadow-sm md:hover:-translate-y-1 md:hover:border-[#FF6A00]/50 md:hover:shadow-md ${componentMobileCardStyles[index % componentMobileCardStyles.length]}`}
                       >
                         <div className="flex items-center gap-2.5">
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] border border-white/75 bg-white/85 text-[#F56605] shadow-sm">
-                            <UiIcon name={component.icon} className="h-5 w-5" />
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] border border-white/75 bg-white/85 text-[#F56605] shadow-sm md:h-12 md:w-12 md:rounded-2xl md:border-[#FF6A00]/20 md:bg-orange-50 md:text-[#FF6A00] md:shadow-none md:transition md:group-hover:bg-[#FF6A00] md:group-hover:text-white">
+                            <UiIcon name={component.icon} className="h-5 w-5 md:h-6 md:w-6" />
                           </div>
-                          <h3 className="min-w-0 flex-1 text-[16px] font-extrabold leading-tight tracking-tight text-slate-900">
+                          <h3 className="min-w-0 flex-1 text-[16px] font-extrabold leading-tight tracking-tight text-slate-900 md:flex-none md:text-lg md:leading-snug md:tracking-normal">
                             {component.name}
                           </h3>
                         </div>
-                        <p className="mt-2.5 text-[12.5px] leading-[1.55] text-slate-700">{component.description}</p>
+                        <p className="mt-2.5 text-[12.5px] leading-[1.55] text-slate-700 md:mt-3 md:text-sm md:leading-7 md:text-slate-600">{component.description}</p>
                       </article>
                     ))}
                   </div>
@@ -2820,22 +2820,6 @@ function ProductsPageContent({
                     ))}
                   </div>
 
-	                <div className="mt-6 hidden items-stretch gap-4 md:grid md:grid-cols-2 lg:grid-cols-3">
-	                  {ledDisplayComponentCards.map((component) => (
-		                    <article
-		                      key={component.name}
-		                      className="group flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#FF6A00]/50 hover:shadow-md"
-		                    >
-		                      <div className="flex items-center gap-3">
-		                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#FF6A00]/20 bg-orange-50 text-[#FF6A00] transition group-hover:bg-[#FF6A00] group-hover:text-white">
-		                          <UiIcon name={component.icon} className="h-6 w-6" />
-		                        </div>
-		                        <h3 className="text-lg font-extrabold leading-snug text-slate-900">{component.name}</h3>
-		                      </div>
-		                      <p className="mt-3 text-sm leading-7 text-slate-600">{component.description}</p>
-		                    </article>
-	                  ))}
-	                </div>
 	              </div>
 
 	              <div>
