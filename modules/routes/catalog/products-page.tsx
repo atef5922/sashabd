@@ -49,6 +49,16 @@ type FilterKey =
   | "power-supply"
   | "led-accessories";
 
+const LED_DISPLAY_INTERNAL_LINK_KINDS: FilterKey[] = [
+  "indoor",
+  "outdoor",
+  "rental",
+  "receiving-card",
+  "controller",
+  "power-supply",
+  "led-accessories",
+];
+
 type UnifiedProduct = {
   id: string;
   kind?: "led" | "accessory" | "pa" | "turnstile" | "podium" | "interactive-flat-panel";
@@ -508,17 +518,7 @@ function ProductsPageContent({
   const whyChooseSectionRef = useRef<HTMLDivElement | null>(null);
   const allProducts = useMemo(() => buildProducts(basePath), [basePath]);
   const fullListGroups = useMemo(() => {
-    const kinds: Array<FilterKey> = [
-      "indoor",
-      "outdoor",
-      "rental",
-      "interactive-flat-panel",
-      "digital-podium",
-      "receiving-card",
-      "controller",
-      "power-supply",
-      "led-accessories",
-    ];
+    const kinds = LED_DISPLAY_INTERNAL_LINK_KINDS;
     const labels: Record<string, string> = {
       indoor: "Indoor LED Display",
       outdoor: "Outdoor LED Display",
