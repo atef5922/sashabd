@@ -54,7 +54,7 @@ function cleanHighlightText(text: string): string {
     .replace(/\bwide viewing angle\b/gi, "Wide viewing angle coverage")
     .replace(/\bsharp visuals\b/gi, "Sharp visual performance")
     .replace(/\bquick lock system\b/gi, "Quick-lock cabinet system")
-    .replace(/\blightweight cabinet\b/gi, "Lightweight cabinet design")
+    .replace(/\blightweight cabinet\b(?!\s+design)/gi, "Lightweight cabinet design")
     .replace(/\bcost effective for bigger area\b/gi, "Cost-efficient for larger display areas")
     .replace(/\bgreat for far viewing\b/gi, "Suitable for longer viewing distances")
     .replace(/\bgood for far viewing\b/gi, "Suitable for longer viewing distances")
