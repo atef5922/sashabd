@@ -164,6 +164,26 @@ test("LED display technology partner marquee exposes one semantic logo set", () 
   assert.match(section, /key=\{`\$\{b\.name\}-\$\{isClone \? "visual-clone" : "canonical"\}`\}/);
 });
 
+test("LED display client marquee exposes one semantic client set", () => {
+  const source = read("modules/routes/catalog/products-page.tsx");
+  const dataSource = source.match(/const ledTrustedInstitutions:[\s\S]*?= \[([\s\S]*?)\];/)?.[1];
+  const section = source.match(/Our Valuable Clients([\s\S]*?)Frequently Asked Questions About LED Display/)?.[1];
+
+  assert.ok(dataSource, "Client logo data must be present");
+  assert.ok(section, "Our Valuable Clients section source must be present");
+
+  const sourceClients = [...dataSource.matchAll(/name: "([^"]+)"/g)].map((match) => match[1]);
+  assert.equal(sourceClients.length, 15);
+  assert.equal(new Set(sourceClients).size, sourceClients.length);
+  assert.match(section, /\[false, true\]\.map\(\(isClone\)/);
+  assert.match(section, /key=\{isClone \? "visual-clone-client-track" : "canonical-client-track"\}/);
+  assert.match(section, /aria-hidden=\{isClone \? "true" : undefined\}/);
+  assert.match(section, /inert=\{isClone \? true : undefined\}/);
+  assert.match(section, /role=\{isClone \? "presentation" : undefined\}/);
+  assert.match(section, /alt=\{isClone \? "" : ins\.name\}/);
+  assert.match(section, /key=\{`\$\{ins\.name\}-\$\{isClone \? "visual-clone" : "canonical"\}`\}/);
+});
+
 test("redirect configuration has no exact-source destination chains", () => {
   const rows = redirects.split(/\r?\n/).map((line) => line.trim()).filter((line) => line && !line.startsWith("#"));
   const exact = rows.map((line) => line.split(/\s+/)).filter(([source]) => !source.includes("*") && !source.includes(":"));

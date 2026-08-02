@@ -2855,30 +2855,27 @@ function ProductsPageContent({
 	                    </div>
 	                  </div>
 
-	                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 md:p-5">
+	                  <div className="self-start rounded-2xl border border-slate-200 bg-slate-50 p-4">
 	                    <h3 className="text-[1rem] font-extrabold text-slate-900 md:text-lg">Power Flow</h3>
-	                    <div className="mt-4 grid gap-2.5">
+	                    <div className="mt-3 grid gap-2">
 	                      {ledDisplayPowerFlow.map((step, index) => (
-	                        <div key={step} className="relative md:flex md:items-center md:gap-2 md:pr-0">
-	                          <div className="mx-auto flex min-h-[2.9rem] w-full max-w-[17.5rem] items-center justify-center rounded-lg border border-cyan-200/75 bg-[linear-gradient(180deg,#ecfeff_0%,#ffffff_54%,#cffafe_100%)] px-2 py-2 text-center text-[11px] font-bold leading-4 text-slate-800 shadow-sm md:mx-0 md:min-h-14 md:max-w-none md:flex-1 md:rounded-2xl md:border-slate-200 md:bg-white md:px-3 md:py-3 md:text-sm md:leading-6">
+	                        <div
+                            key={step}
+                            className={`relative flex flex-col items-center ${
+                              index < ledDisplayPowerFlow.length - 1 ? "pb-3.5 md:pb-4" : ""
+                            }`}
+                          >
+	                          <div className="mx-auto flex min-h-11 w-full max-w-[17.5rem] items-center justify-center rounded-lg border border-cyan-200/75 bg-[linear-gradient(180deg,#ecfeff_0%,#ffffff_54%,#cffafe_100%)] px-2 py-2 text-center text-[11px] font-bold leading-4 text-slate-800 shadow-sm md:mx-0 md:min-h-12 md:max-w-none md:flex-1 md:rounded-2xl md:border-slate-200 md:bg-white md:px-3 md:text-sm md:leading-6">
 	                            {step}
 	                          </div>
                             {index < ledDisplayPowerFlow.length - 1 ? (
 	                            <div
-                                className="absolute left-1/2 top-full flex -translate-x-1/2 -translate-y-1/2 items-center justify-center text-[13px] font-extrabold text-[#FF6A00] md:hidden"
+                                className="absolute bottom-0 left-1/2 flex h-4 w-4 -translate-x-1/2 items-center justify-center text-base font-extrabold leading-none text-[#FF6A00] md:h-5 md:w-5 md:text-lg"
                                 aria-hidden="true"
                               >
                                 ↓
                               </div>
                             ) : null}
-                            <div
-                              className={`hidden w-3 self-stretch items-center justify-center text-[11px] font-extrabold text-[#FF6A00] md:flex md:text-sm ${
-                                index < ledDisplayPowerFlow.length - 1 ? "opacity-100" : "opacity-0"
-                              }`}
-                              aria-hidden="true"
-                            >
-                              -&gt;
-                            </div>
 	                        </div>
 	                      ))}
 	                    </div>
@@ -3228,23 +3225,34 @@ function ProductsPageContent({
                 <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-10 md:w-14" style={{ background: "linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
 
                 <div className="group">
-                  <div className="flex w-max gap-3 animate-[renexMarquee_48s_linear_infinite] group-hover:[animation-play-state:paused] motion-reduce:animate-none">
-                    {[...ledTrustedInstitutions, ...ledTrustedInstitutions].map((ins, idx) => (
+                  <div className="flex w-max animate-[renexMarquee_48s_linear_infinite] group-hover:[animation-play-state:paused] motion-reduce:animate-none">
+                    {[false, true].map((isClone) => (
                       <div
-                        key={`${ins.name}-${idx}`}
-                        className="flex h-[112px] w-[136px] shrink-0 flex-col items-center justify-center rounded-[20px] border bg-slate-50 px-3 py-3 text-center shadow-sm md:h-[124px] md:w-[168px] md:px-4"
-                        style={{ borderColor: "rgba(255,106,0,0.10)" }}
-                        title={ins.name}
-                        aria-label={ins.name}
+                        key={isClone ? "visual-clone-client-track" : "canonical-client-track"}
+                        className="flex gap-3 pr-3"
+                        aria-hidden={isClone ? "true" : undefined}
+                        inert={isClone ? true : undefined}
+                        role={isClone ? "presentation" : undefined}
                       >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={ins.logo}
-                          alt={ins.name}
-                          className="h-12 w-full object-contain md:h-14"
-                          loading="lazy"
-                        />
-                        <p className="mt-2 line-clamp-2 text-[11px] font-medium leading-4 text-slate-800 md:text-[12px] md:leading-[1.15rem]">{ins.name}</p>
+                        {ledTrustedInstitutions.map((ins) => (
+                          <div
+                            key={`${ins.name}-${isClone ? "visual-clone" : "canonical"}`}
+                            className="flex h-[112px] w-[136px] shrink-0 flex-col items-center justify-center rounded-[20px] border bg-slate-50 px-3 py-3 text-center shadow-sm md:h-[124px] md:w-[168px] md:px-4"
+                            style={{ borderColor: "rgba(255,106,0,0.10)" }}
+                            title={isClone ? undefined : ins.name}
+                            aria-label={isClone ? undefined : ins.name}
+                          >
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={ins.logo}
+                              alt={isClone ? "" : ins.name}
+                              aria-hidden={isClone ? "true" : undefined}
+                              className="h-12 w-full object-contain md:h-14"
+                              loading="lazy"
+                            />
+                            <p className="mx-auto mt-2 line-clamp-2 max-w-[112px] !text-center text-[11px] font-medium leading-4 tracking-normal text-slate-800 ![text-align-last:center] md:max-w-[138px] md:text-[12px] md:leading-[1.15rem]">{ins.name}</p>
+                          </div>
+                        ))}
                       </div>
                     ))}
                   </div>
