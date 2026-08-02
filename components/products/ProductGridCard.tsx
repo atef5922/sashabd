@@ -87,6 +87,69 @@ function shouldReplaceWeakHighlights(bullets: readonly string[], chips: readonly
 function getContextualFallbacks(title: string, bullets: readonly string[], chips: readonly string[]): string[] {
   const haystack = `${title} ${bullets.join(" ")} ${chips.join(" ")}`.toLowerCase();
 
+  if (/magnet.*led module|module fixing/.test(haystack)) {
+    return [
+      "Front-service LED module fixing",
+      "Module removal during maintenance",
+      "Cabinet fixing method dependent",
+      "Service-friendly spare hardware",
+    ];
+  }
+
+  if (/power connector cable|dc harness|cabinet and module power connection/.test(haystack)) {
+    return [
+      "Low-voltage DC cabinet wiring",
+      "Power supply to module connection",
+      "Connector matching project dependent",
+      "Useful for maintenance stock",
+    ];
+  }
+
+  if (/frc flat ribbon|ribbon cable/.test(haystack)) {
+    return [
+      "Internal cabinet signal connection",
+      "Receiving card to HUB board wiring",
+      "IDC termination compatibility check",
+      "Useful for service replacement",
+    ];
+  }
+
+  if (/26 pin idc female connector/.test(haystack)) {
+    return [
+      "26-pin ribbon-cable termination",
+      "Cabinet data wiring connection",
+      "HUB board connection work",
+      "Useful for service replacement",
+    ];
+  }
+
+  if (/16 pin idc female connector/.test(haystack)) {
+    return [
+      "16-pin ribbon-cable termination",
+      "Selected cabinet wiring connection",
+      "Matching FRC cable assembly",
+      "Useful for service replacement",
+    ];
+  }
+
+  if (/structure.*mounting|mounting accessories|brackets|clamps/.test(haystack)) {
+    return [
+      "Brackets and mounting hardware",
+      "Wall, hanging, or gantry setup",
+      "Site-specific structure planning",
+      "Service access planning support",
+    ];
+  }
+
+  if (/5v 20a.*(switch mode power supply|smps)|5v 20a/.test(haystack)) {
+    return [
+      "Regulated 5V DC cabinet output",
+      "20A model for compatible cabinet loads",
+      "AC input and DC terminal wiring",
+      "Ventilated cabinet installation planning",
+    ];
+  }
+
   if (/(pa|speaker|amplifier|microphone|conference)/.test(haystack)) {
     if (/analog.*100v|100v.*analog/.test(haystack)) {
       return [

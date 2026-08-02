@@ -184,6 +184,39 @@ test("LED display client marquee exposes one semantic client set", () => {
   assert.match(section, /key=\{`\$\{ins\.name\}-\$\{isClone \? "visual-clone" : "canonical"\}`\}/);
 });
 
+test("LED product-card fallbacks avoid unrelated template feature text", () => {
+  const card = read("components/products/ProductGridCard.tsx");
+  const highlights = read("lib/productCardHighlights.ts");
+  const catalog = read("lib/productsCatalog.ts");
+
+  assert.match(highlights, /lightweight cabinet\\b\(\?!\\s\+design\)/);
+  assert.doesNotMatch(catalog, new RegExp(`design ${"design"} design`));
+
+  for (const relevantFeature of [
+    "Front-service LED module fixing",
+    "Low-voltage DC cabinet wiring",
+    "Internal cabinet signal connection",
+    "26-pin ribbon-cable termination",
+    "16-pin ribbon-cable termination",
+    "Brackets and mounting hardware",
+    "Regulated 5V DC cabinet output",
+  ]) {
+    assert.ok(card.includes(relevantFeature), `${relevantFeature} fallback must exist`);
+  }
+
+  for (const genericFeature of [
+    `Clear voice ${"coverage"} planning`,
+    `Access-control ${"integration"} ready`,
+    `Stable control ${"system"} workflow`,
+  ]) {
+    assert.ok(card.includes(genericFeature), `${genericFeature} may remain only for non-LED fallback contexts`);
+  }
+
+  assert.ok(card.indexOf("Front-service LED module fixing") < card.indexOf(`Access-control ${"integration"} ready`));
+  assert.ok(card.indexOf("Internal cabinet signal connection") < card.indexOf(`Clear voice ${"coverage"} planning`));
+  assert.ok(card.indexOf("Regulated 5V DC cabinet output") < card.indexOf(`Stable control ${"system"} workflow`));
+});
+
 test("redirect configuration has no exact-source destination chains", () => {
   const rows = redirects.split(/\r?\n/).map((line) => line.trim()).filter((line) => line && !line.startsWith("#"));
   const exact = rows.map((line) => line.split(/\s+/)).filter(([source]) => !source.includes("*") && !source.includes(":"));
