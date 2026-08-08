@@ -13,6 +13,7 @@ export default function ResponsiveProductCarousel({
   mobileGapClassName = "gap-3",
   mobileLayout = "carousel",
   hideMobileArrows = false,
+  desktopContents = false,
 }: {
   children: React.ReactNode;
   desktopClassName?: string;
@@ -20,6 +21,7 @@ export default function ResponsiveProductCarousel({
   mobileGapClassName?: string;
   mobileLayout?: "carousel" | "grid";
   hideMobileArrows?: boolean;
+  desktopContents?: boolean;
 }) {
   const trackRef = useRef<HTMLDivElement | null>(null);
   const items = Children.toArray(children);
@@ -33,7 +35,7 @@ export default function ResponsiveProductCarousel({
   };
 
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn("relative", desktopContents && "md:contents", className)}>
       {!hideMobileArrows && mobileLayout === "carousel" ? (
         <>
           <button
@@ -60,15 +62,19 @@ export default function ResponsiveProductCarousel({
         </>
       ) : null}
 
-      <div className="overflow-hidden px-1 md:px-0">
+      <div className={cn("overflow-hidden px-1 md:px-0", desktopContents && "md:contents md:px-0")}>
         <div
           ref={trackRef}
           className={cn(
             mobileLayout === "grid"
-              ? "grid grid-cols-2 overflow-visible pb-1 pt-1 md:grid md:overflow-visible md:pb-0 md:pt-0"
-              : "flex snap-x snap-mandatory overflow-x-auto pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:grid md:overflow-visible md:snap-none md:pb-0 md:pt-0",
+              ? desktopContents
+                ? "grid grid-cols-2 overflow-visible pb-1 pt-1 md:contents md:pb-0 md:pt-0"
+                : "grid grid-cols-2 overflow-visible pb-1 pt-1 md:grid md:overflow-visible md:pb-0 md:pt-0"
+              : desktopContents
+                ? "flex snap-x snap-mandatory overflow-x-auto pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:contents md:overflow-visible md:snap-none md:pb-0 md:pt-0"
+                : "flex snap-x snap-mandatory overflow-x-auto pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:grid md:overflow-visible md:snap-none md:pb-0 md:pt-0",
             mobileGapClassName,
-            desktopClassName,
+            !desktopContents && desktopClassName,
           )}
         >
           {items.map((child, index) => (

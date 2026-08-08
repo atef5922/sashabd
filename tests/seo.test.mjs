@@ -7,6 +7,15 @@ const root = process.cwd();
 const read = (file) => readFileSync(path.join(root, file), "utf8");
 const htaccess = read("public/.htaccess");
 const redirects = read("public/_redirects");
+const occurrences = (source, text) => source.split(text).length - 1;
+
+function sectionBetween(source, start, end) {
+  const startIndex = source.indexOf(start);
+  assert.notEqual(startIndex, -1, `${start} section start must exist`);
+  const endIndex = source.indexOf(end, startIndex + start.length);
+  assert.notEqual(endIndex, -1, `${end} section boundary must exist`);
+  return source.slice(startIndex, endIndex);
+}
 
 function sourceFiles(directory) {
   const files = [];
@@ -107,6 +116,76 @@ test("LED display products use one responsive card render path", () => {
   assert.equal((productGrid.match(/desktopPagedProducts\.map\(renderCatalogCard\)/g) ?? []).length, 1);
   assert.match(productGrid, /data-led-product-id=\{product\.id\}/);
   assert.match(productGrid, /desktopPagedProductIds\.has\(product\.id\)/);
+});
+
+test("indoor LED page duplicate-prone groups render from one semantic source", () => {
+  const source = read("modules/routes/catalog/indoor/page.tsx");
+  const filter = read("components/products/IndoorFilterSection.tsx");
+
+  assert.equal(occurrences(filter, "mobileDisplayRows.map((row, index)"), 1);
+  assert.equal(occurrences(filter, "displayCards.map((p) => renderDisplayCard(p))"), 0);
+  assert.match(filter, /desktopContents/);
+  assert.equal(occurrences(source, "priceRows.map"), 1);
+  assert.equal(occurrences(source, "{ t: \"1) Survey\""), 1);
+  assert.equal(occurrences(source, "{ t: \"2) Design\""), 1);
+  assert.equal(occurrences(source, "{ t: \"3) Install\""), 1);
+  assert.equal(occurrences(source, "{ t: \"4) Support\""), 1);
+  assert.equal(occurrences(source, "items.map((x, index)"), 1);
+  assert.equal(occurrences(source, "rows.map(([k, a, b], index)"), 1);
+  assert.equal(occurrences(source, "rows.map(([distance, content, pitch, scenario], index)"), 1);
+
+  for (const [start, end, labels] of [
+    [
+      "Key Features of Indoor LED Display",
+      "Best for showroom",
+      ["Fine Pixel Pitch Clarity", "Camera-Friendly Refresh", "Color & Brightness Control", "Efficient, Serviceable Design"],
+    ],
+    [
+      "Main Components of an Indoor LED Display",
+      "Applications of Indoor LED Displays",
+      ["LED module", "Receiving card", "Power supply", "LED cabinet", "Sending card", "Video processor"],
+    ],
+    [
+      "Applications of Indoor LED Displays",
+      "Indoor LED Display Project Consultation in Bangladesh",
+      ["Corporate Boardroom", "Control Room", "Television Studio", "Shopping Mall Advertising", "Conference Hall", "Command & Control Center", "Airport Display", "Exhibition Center"],
+    ],
+    [
+      "Indoor vs Outdoor LED Display Quick Comparison",
+      "Indoor LED Display Technical Specifications Explained",
+      ["Brightness", "Protection", "Pixel Pitch", "Cabinet Service", "Power/Surge"],
+    ],
+    [
+      "Indoor LED Display Technical Specifications Explained",
+      "Indoor LED Display Maintenance Guide",
+      ["Pixel Pitch", "Refresh Rate", "Brightness & Grayscale"],
+    ],
+    [
+      "Indoor LED Display Maintenance Guide",
+      "Indoor LED Display vs LCD Video Wall",
+      ["Cleaning", "Calibration", "Power safety", "Cooling"],
+    ],
+    [
+      "Indoor LED Display vs LCD Video Wall",
+      "Explore High-Performance LED Display in Bangladesh",
+      ["Seam Visibility", "Scalability", "Viewing Experience", "Long-Hour Operation", "Maintenance", "Best Use Case"],
+    ],
+    [
+      "Explore High-Performance LED Display in Bangladesh",
+      "How to Choose the Right Pixel Pitch for Indoor LED Display",
+      ["Indoor LED Displays", "Outdoor LED Displays", "Rental LED Displays"],
+    ],
+    [
+      "How to Choose the Right Pixel Pitch for Indoor LED Display",
+      "Indoor LED Display Price Per Square Feet",
+      ["1.5m to 2.5m", "2.5m to 4m", "4m to 6m", "6m+", "Step 1: Measure real viewing distance", "Step 2: Define dominant content", "Step 3: Balance clarity with lifecycle cost"],
+    ],
+  ]) {
+    const section = sectionBetween(source, start, end);
+    for (const label of labels) {
+      assert.equal(occurrences(section, label), 1, `${label} must appear once in ${start}`);
+    }
+  }
 });
 
 test("LED display main components render one canonical card list", () => {
