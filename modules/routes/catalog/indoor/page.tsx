@@ -5,6 +5,7 @@ import { siteConfig } from "@/lib/site";
 import { getProductsByCategory, ledAccessoriesCatalog, type ProductItem } from "@/lib/productsCatalog";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
+import MobileDisclosure from "@/components/common/MobileDisclosure";
 import MobileIntroText from "@/components/common/MobileIntroText";
 import IndoorFilterSection from "@/components/products/IndoorFilterSection";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
@@ -95,65 +96,185 @@ const Section = ({
   </section>
 );
 
-const CardGrid = ({ items }: { items: { i?: React.ReactNode; t: string; d: string; bullets?: string[] }[] }) => (
-  <>
-    <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
-      {items.map((x, index) => (
-        <div
-          key={x.t}
-          className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
-          style={{
-            borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
-            background:
-              index % 2 === 0
-                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
-                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
-          }}
-        >
-          <div className="flex items-center gap-2 text-[17px] font-extrabold leading-snug text-slate-900">
-            {x.i ? <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-orange-600" aria-hidden="true">{x.i}</span> : null}
-            <span>{x.t}</span>
-          </div>
-          <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
-          {x.bullets?.length ? (
-            <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
-              {x.bullets.map((b) => (
-                <li key={b} className="flex items-start gap-2">
-                  <span className="mt-1.5 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
-                  <span className="leading-6">{b}</span>
-                </li>
-              ))}
-            </ul>
-          ) : null}
-        </div>
-      ))}
-    </div>
+function responsiveCardStyle(index: number, desktopBorderColor = `${BRAND.maroon}10`) {
+  return {
+    "--mobile-border-color": index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+    "--mobile-bg":
+      index % 2 === 0
+        ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+        : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+    "--desktop-border-color": desktopBorderColor,
+  } as React.CSSProperties;
+}
 
-    <div className="hidden gap-4 md:grid md:grid-cols-3">
-      {items.map((x) => (
-        <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
-          <div className="flex items-center gap-2 text-slate-900">
-            {x.i ? <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-orange-600" aria-hidden="true">{x.i}</span> : null}
-            <span className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[15px] font-extrabold tracking-tight lg:text-[16px]">
+type CardGridItem = { i?: React.ReactNode; t: string; d: string; bullets?: string[] };
+
+const CardGrid = ({
+  items,
+  desktopClassName = "md:grid-cols-3",
+  mobileItemClassName = "w-[89%]",
+  iconClassName = "text-orange-600",
+  titleAsHeading = false,
+}: {
+  items: CardGridItem[];
+  desktopClassName?: string;
+  mobileItemClassName?: string;
+  iconClassName?: string;
+  titleAsHeading?: boolean;
+}) => (
+  <div
+    className={`-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:gap-4 md:overflow-visible md:px-0 md:pb-0 md:pt-0 ${desktopClassName}`}
+  >
+    {items.map((x, index) => (
+      <div
+        key={x.t}
+        className={`${mobileItemClassName} shrink-0 snap-start rounded-[14px] border border-[var(--mobile-border-color)] bg-[var(--mobile-bg)] px-4 py-4 md:w-auto md:rounded-3xl md:border-[var(--desktop-border-color)] md:bg-slate-50 md:p-6`}
+        style={responsiveCardStyle(index)}
+      >
+        {titleAsHeading ? (
+          <h3 className="text-[17px] font-extrabold leading-snug text-slate-900 md:text-base">{x.t}</h3>
+        ) : (
+          <div className="flex items-center gap-2 text-[17px] font-extrabold leading-snug text-slate-900 md:text-slate-900">
+            {x.i ? <span className={`inline-flex h-7 w-7 items-center justify-center rounded-full bg-white ${iconClassName}`} aria-hidden="true">{x.i}</span> : null}
+            <span className="md:min-w-0 md:overflow-hidden md:text-ellipsis md:whitespace-nowrap md:text-[15px] md:tracking-tight lg:text-[16px]">
               {x.t}
             </span>
           </div>
-          <p className="mt-2 text-sm text-slate-600 leading-7">{x.d}</p>
-          {x.bullets?.length ? (
-            <ul className="mt-3 space-y-2 text-sm text-slate-700">
-              {x.bullets.map((b) => (
-                <li key={b} className="flex items-start gap-2">
-                  <span className="mt-2 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
-                  <span className="leading-7">{b}</span>
-                </li>
-              ))}
-            </ul>
-          ) : null}
-        </div>
+        )}
+        <p className="mt-2 text-[13px] leading-6 text-slate-700 md:text-sm md:leading-7 md:text-slate-600">{x.d}</p>
+        {x.bullets?.length ? (
+          <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700 md:text-sm">
+            {x.bullets.map((b) => (
+              <li key={b} className="flex items-start gap-2">
+                <span className="mt-1.5 inline-block h-2 w-2 rounded-full md:mt-2" style={{ background: BRAND.maroon }} />
+                <span className="leading-6 md:leading-7">{b}</span>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </div>
+    ))}
+  </div>
+);
+
+type ComparisonRow = readonly [string, string, string];
+type PitchGuideRow = readonly [string, string, string, string];
+type SolutionCard = { t: string; d: string; href: string };
+
+const ComparisonGrid = ({
+  rows,
+  topicHeader,
+  firstHeader,
+  secondHeader,
+  minWidthClassName = "md:min-w-0",
+}: {
+  rows: ComparisonRow[];
+  topicHeader: string;
+  firstHeader: string;
+  secondHeader: string;
+  minWidthClassName?: string;
+}) => (
+  <div className="w-full max-w-full space-y-3 md:space-y-0 md:overflow-x-auto md:rounded-3xl md:border" style={{ borderColor: `${BRAND.maroon}12` }}>
+    <div className={`${minWidthClassName} min-w-0 max-w-full md:grid md:grid-cols-3`}>
+      <div className="hidden border-b border-r border-slate-200 bg-slate-50 p-5 text-sm font-bold text-slate-800 md:block">{topicHeader}</div>
+      <div className="hidden border-b border-r border-slate-200 bg-white p-5 text-sm font-bold text-slate-800 md:block">{firstHeader}</div>
+      <div className="hidden bg-white p-5 text-sm font-bold text-slate-800 md:block">{secondHeader}</div>
+
+      {rows.map(([k, a, b], index) => (
+        <article
+          key={k}
+          className="w-full max-w-full overflow-hidden rounded-[14px] bg-[var(--mobile-bg)] md:contents md:bg-transparent"
+          style={responsiveCardStyle(index)}
+        >
+          <div className="w-full max-w-full overflow-hidden rounded-[14px] border border-[rgba(125,211,252,0.65)] md:contents md:rounded-none md:border-0">
+            <div className="border-b border-[rgba(125,211,252,0.65)] px-4 py-3 text-center md:border-r md:border-slate-200 md:bg-slate-50 md:p-5 md:text-left md:text-sm md:font-normal md:text-slate-700">
+              <div className="text-[15px] font-extrabold tracking-tight text-slate-900 md:text-sm md:font-normal md:text-slate-700">{k}</div>
+            </div>
+            <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-0 md:contents">
+              <div className="min-w-0 border-r border-[rgba(125,211,252,0.65)] px-4 py-3 md:border-b md:border-r md:border-slate-200 md:bg-white md:p-5">
+                <div className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00] md:hidden">{firstHeader}</div>
+                <p className="break-words text-[13px] leading-6 text-slate-700 md:text-sm md:leading-normal">{a}</p>
+              </div>
+              <div className="min-w-0 px-4 py-3 md:border-b md:border-slate-200 md:bg-white md:p-5">
+                <div className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-sky-700 md:hidden">{secondHeader}</div>
+                <p className="break-words text-[13px] leading-6 text-slate-700 md:text-sm md:leading-normal">{b}</p>
+              </div>
+            </div>
+          </div>
+        </article>
       ))}
     </div>
-  </>
+  </div>
 );
+
+const PitchGuideGrid = ({ rows }: { rows: PitchGuideRow[] }) => (
+  <div className="w-full max-w-full space-y-3 md:space-y-0 md:overflow-x-auto md:rounded-3xl md:border" style={{ borderColor: `${BRAND.maroon}12` }}>
+    <div className="min-w-0 max-w-full md:grid md:min-w-0 md:grid-cols-4">
+      <div className="hidden border-b border-r border-slate-200 bg-slate-50 p-5 text-sm font-bold text-slate-800 md:block">Viewing Distance</div>
+      <div className="hidden border-b border-r border-slate-200 bg-white p-5 text-sm font-bold text-slate-800 md:block">Content Priority</div>
+      <div className="hidden border-b border-r border-slate-200 bg-white p-5 text-sm font-bold text-slate-800 md:block">Recommended Pixel Pitch</div>
+      <div className="hidden bg-white p-5 text-sm font-bold text-slate-800 md:block">Best Indoor Scenario</div>
+
+      {rows.map(([distance, content, pitch, scenario], index) => (
+        <article
+          key={distance}
+          className="w-full max-w-full overflow-hidden rounded-[14px] bg-[var(--mobile-bg)] md:contents md:bg-transparent"
+          style={responsiveCardStyle(index)}
+        >
+          <div className="w-full max-w-full overflow-hidden rounded-[14px] border border-[rgba(125,211,252,0.65)] md:contents md:rounded-none md:border-0">
+            <div className="border-b border-[rgba(125,211,252,0.65)] px-4 py-3 text-center md:border-r md:border-slate-200 md:bg-slate-50 md:p-5 md:text-left md:text-sm md:font-normal md:text-slate-700">
+              <div className="text-[15px] font-extrabold tracking-tight text-slate-900 md:text-sm md:font-normal md:text-slate-700">{distance}</div>
+              <div className="mt-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00] md:hidden">Viewing Distance</div>
+            </div>
+            <div className="border-b border-[rgba(125,211,252,0.65)] px-4 py-3 md:border-r md:border-slate-200 md:bg-white md:p-5">
+              <div className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-sky-700 md:hidden">Content Priority</div>
+              <p className="text-[13px] leading-6 text-slate-700 md:text-sm md:leading-normal">{content}</p>
+            </div>
+            <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-0 md:contents">
+              <div className="min-w-0 border-r border-[rgba(125,211,252,0.65)] px-4 py-3 md:border-b md:border-r md:border-slate-200 md:bg-white md:p-5">
+                <div className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00] md:hidden">Recommended Pitch</div>
+                <div className="mt-1 break-words text-[13px] font-bold leading-5 text-slate-900 md:mt-0 md:text-sm md:font-semibold md:text-slate-800">{pitch}</div>
+              </div>
+              <div className="min-w-0 px-4 py-3 md:border-b md:border-slate-200 md:bg-white md:p-5">
+                <div className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-sky-700 md:hidden">Best Scenario</div>
+                <div className="mt-1 break-words text-[13px] leading-5 text-slate-700 md:mt-0 md:text-sm md:leading-normal">{scenario}</div>
+              </div>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+);
+
+const SolutionGrid = ({ items }: { items: SolutionCard[] }) => (
+  <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible md:px-0 md:pb-0 md:pt-0">
+    {items.map((x) => (
+      <Link
+        key={x.t}
+        href={x.href}
+        className="group w-[89%] shrink-0 snap-start rounded-[14px] border border-[var(--mobile-border-color)] bg-[var(--mobile-bg)] px-4 py-4 transition md:w-auto md:rounded-3xl md:border-[var(--desktop-border-color)] md:bg-slate-50 md:p-6 md:hover:-translate-y-0.5 md:hover:bg-white md:hover:shadow-md"
+        style={responsiveCardStyle(1, `${BRAND.maroon}12`)}
+      >
+        <div className="text-[17px] font-extrabold leading-snug text-slate-900 md:text-lg">{x.t}</div>
+        <p className="mt-2 text-[13px] leading-6 text-slate-700 md:text-sm md:leading-7 md:text-slate-600">{x.d}</p>
+        <div className="mt-4 text-[12px] font-extrabold md:text-sm md:font-bold" style={{ color: BRAND.maroonText }}>
+          Explore -&gt;{" "}
+        </div>
+      </Link>
+    ))}
+  </div>
+);
+
+function priceRowStyle(index: number) {
+  return {
+    "--price-mobile-border": index % 2 === 0 ? "rgba(110,231,183,0.65)" : "rgba(125,211,252,0.65)",
+    "--price-mobile-bg":
+      index % 2 === 0
+        ? "linear-gradient(180deg, rgba(236,253,245,1) 0%, rgba(240,253,250,1) 100%)"
+        : "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)",
+  } as React.CSSProperties;
+}
 
 export default function IndoorProductsPage() {
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
@@ -311,8 +432,10 @@ export default function IndoorProductsPage() {
           </span>
           <span>Key Features of Indoor LED Display</span>
         </h2>
-        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
-          {[
+        <CardGrid
+          desktopClassName="md:grid-cols-2 lg:grid-cols-4"
+          iconClassName="text-sm text-slate-900"
+          items={[
             {
  i: "◎",
               t: "Fine Pixel Pitch Clarity",
@@ -333,67 +456,8 @@ export default function IndoorProductsPage() {
               t: "Efficient, Serviceable Design",
               d: "Reliable power architecture, cleaner heat handling, and easier maintenance for long-term uptime.",
             },
-          ].map((x, index) => (
-            <div
-              key={x.t}
-              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
-              style={{
-                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
-                background:
-                  index % 2 === 0
-                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
-                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
-              }}
-            >
-              <div className="flex items-center gap-2 text-base font-extrabold text-slate-900">
-                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-sm" aria-hidden="true">
-                  {x.i}
-                </span>
-                <span>{x.t}</span>
-              </div>
-              <p className="mt-2 text-sm leading-7 text-slate-600">{x.d}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-4">
-          {[
-            {
- i: "◎",
-              t: "Fine Pixel Pitch Clarity",
-              d: "High-definition visuals for near viewing with clear text, charts, and product media.",
-            },
-            {
- i: "◉",
-              t: "Camera-Friendly Refresh",
-              d: "Stable refresh and processing reduce flicker in live camera, studio, and hybrid event use.",
-            },
-            {
- i: "◐",
-              t: "Color & Brightness Control",
-              d: "Balanced indoor brightness and calibrated color output improve comfort and brand consistency.",
-            },
-            {
- i: "▣",
-              t: "Efficient, Serviceable Design",
-              d: "Reliable power architecture, cleaner heat handling, and easier maintenance for long-term uptime.",
-            },
-          ].map((x) => (
-            <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
-              <div className="flex items-center gap-2 text-slate-900">
-                {x.i ? (
-                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-sm" aria-hidden="true">
-                    {x.i}
-                  </span>
-                ) : null}
-                <span className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-[15px] font-extrabold leading-tight tracking-tight lg:text-[16px]">
-                  {x.t}
-                </span>
-              </div>
-              <p className="mt-2 text-sm leading-7 text-slate-600">{x.d}</p>
-            </div>
-          ))}
-        </div>
+          ]}
+        />
 
         <div className="mt-5 hidden flex-nowrap gap-2 overflow-x-auto pb-1 text-xs font-semibold text-slate-700 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:flex md:flex-wrap md:overflow-visible md:pb-0">
           {[
@@ -423,8 +487,10 @@ export default function IndoorProductsPage() {
         }
         subtitle="Key hardware elements that work together to deliver stable visuals, accurate control, and long-term indoor performance."
       >
-        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
-          {[
+        <CardGrid
+          titleAsHeading
+          desktopClassName="md:grid-cols-2 lg:grid-cols-3"
+          items={[
             {
               t: "LED module",
               d: "The primary display surface that produces image output, color detail, and pixel-level visual clarity.",
@@ -449,57 +515,8 @@ export default function IndoorProductsPage() {
               t: "Video processor",
               d: "Handles signal scaling, switching, and output optimization for clean playback across different content sources.",
             },
-          ].map((x, index) => (
-            <div
-              key={x.t}
-              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
-              style={{
-                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
-                background:
-                  index % 2 === 0
-                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
-                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
-              }}
-            >
-              <h3 className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
-              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="hidden items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3 md:grid">
-          {[
-            {
-              t: "LED module",
-              d: "The primary display surface that produces image output, color detail, and pixel-level visual clarity.",
-            },
-            {
-              t: "Receiving card",
-              d: "Receives video data from the control chain and maps content correctly to each module row and column.",
-            },
-            {
-              t: "Power supply",
-              d: "Converts and stabilizes electrical input for modules and control parts to ensure consistent operation.",
-            },
-            {
-              t: "LED cabinet",
-              d: "Holds modules and electronics in a structured frame for alignment, service access, and installation stability.",
-            },
-            {
-              t: "Sending card",
-              d: "Transmits processed video signals from the source system to the display control network.",
-            },
-            {
-              t: "Video processor",
-              d: "Handles signal scaling, switching, and output optimization for clean playback across different content sources.",
-            },
-          ].map((x) => (
-            <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
-              <h3 className="text-base font-extrabold text-slate-900">{x.t}</h3>
-              <p className="mt-2 text-sm leading-7 text-slate-600">{x.d}</p>
-            </div>
-          ))}
-        </div>
+          ]}
+        />
       </Section>
 
       <Section
@@ -513,8 +530,11 @@ export default function IndoorProductsPage() {
         }
         subtitle="Common indoor use cases where high clarity, stable performance, and professional content delivery are important."
       >
-        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
-          {[
+        <CardGrid
+          titleAsHeading
+          mobileItemClassName="w-[82%]"
+          desktopClassName="md:grid-cols-2 lg:grid-cols-4"
+          items={[
             { t: "Corporate Boardroom", d: "Supports executive presentations, dashboards, and clear meeting communication." },
             { t: "Control Room", d: "Enables continuous monitoring with sharp data visibility and stable long-hour output." },
             { t: "Television Studio", d: "Delivers camera-friendly visuals for broadcast sets and program backdrops." },
@@ -523,41 +543,8 @@ export default function IndoorProductsPage() {
             { t: "Command & Control Center", d: "Provides reliable screen performance for mission-critical operational decisions." },
             { t: "Airport Display", d: "Shows public information, announcements, and wayfinding content clearly indoors." },
             { t: "Exhibition Center", d: "Creates high-impact visual engagement for booths, product launches, and event zones." },
-          ].map((x, index) => (
-            <div
-              key={x.t}
-              className="w-[82%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
-              style={{
-                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
-                background:
-                  index % 2 === 0
-                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
-                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
-              }}
-            >
-              <h3 className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
-              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="hidden gap-4 sm:grid-cols-2 lg:grid-cols-4 md:grid">
-          {[
-            { t: "Corporate Boardroom", d: "Supports executive presentations, dashboards, and clear meeting communication." },
-            { t: "Control Room", d: "Enables continuous monitoring with sharp data visibility and stable long-hour output." },
-            { t: "Television Studio", d: "Delivers camera-friendly visuals for broadcast sets and program backdrops." },
-            { t: "Shopping Mall Advertising", d: "Displays dynamic brand campaigns and promotional content in high-traffic areas." },
-            { t: "Conference Hall", d: "Improves audience visibility for keynote visuals, text, and multimedia presentations." },
-            { t: "Command & Control Center", d: "Provides reliable screen performance for mission-critical operational decisions." },
-            { t: "Airport Display", d: "Shows public information, announcements, and wayfinding content clearly indoors." },
-            { t: "Exhibition Center", d: "Creates high-impact visual engagement for booths, product launches, and event zones." },
-          ].map((x) => (
-            <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
-              <h3 className="text-base font-extrabold text-slate-900">{x.t}</h3>
-              <p className="mt-2 text-sm leading-7 text-slate-600">{x.d}</p>
-            </div>
-          ))}
-        </div>
+          ]}
+        />
       </Section>
 
       {/* Consultation */}
@@ -606,67 +593,18 @@ export default function IndoorProductsPage() {
         }
         subtitle="A simple comparison to avoid wrong selection and ensure the right build for your environment."
       >
-        <div className="space-y-3 md:hidden">
-          {[
+        <ComparisonGrid
+          topicHeader="Topic"
+          firstHeader="Indoor LED"
+          secondHeader="Outdoor LED"
+          rows={[
             ["Brightness", "Comfort-focused, indoor lighting suitable", "High brightness, sunlight visible"],
             ["Protection", "Dust control + ventilation planning", "IP-rated sealing + water drainage"],
             ["Pixel Pitch", "Usually smaller (fine pitch)", "Often larger for distance viewing"],
             ["Cabinet Service", "Front/rear service options", "Service doors + weatherproof access"],
             ["Power/Surge", "Stable power + grounding", "Grounding + SPD strongly recommended"],
-          ].map(([k, a, b], index) => (
-            <article
-              key={k}
-              className="overflow-hidden rounded-[14px]"
-              style={{
-                background:
-                  index % 2 === 0
-                    ? "linear-gradient(180deg, rgba(246,250,255,1) 0%, rgba(240,247,255,1) 100%)"
-                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,244,235,1) 100%)",
-              }}
-            >
-              <div
-                className="overflow-hidden rounded-[14px] border"
-                style={{ borderColor: "rgba(125, 211, 252, 0.65)" }}
-              >
-                <div className="border-b px-4 py-3 text-center" style={{ borderColor: "rgba(125, 211, 252, 0.65)" }}>
-                  <div className="text-[15px] font-extrabold tracking-tight text-slate-900">{k}</div>
-                </div>
-                <div className="grid grid-cols-2 gap-0">
-                  <div className="border-r px-4 py-3" style={{ borderColor: "rgba(125, 211, 252, 0.65)" }}>
-                    <div className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00]">Indoor LED</div>
-                    <p className="text-[13px] leading-6 text-slate-700">{a}</p>
-                  </div>
-                  <div className="px-4 py-3">
-                    <div className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-sky-700">Outdoor LED</div>
-                    <p className="text-[13px] leading-6 text-slate-700">{b}</p>
-                  </div>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        <div className="hidden overflow-x-auto rounded-3xl border md:block" style={{ borderColor: `${BRAND.maroon}12` }}>
-          <div className="grid min-w-[680px] md:min-w-0 md:grid-cols-3">
-            <div className="border-b border-r border-slate-200 bg-slate-50 p-5 text-sm font-bold text-slate-800">Topic</div>
-            <div className="border-b border-r border-slate-200 bg-white p-5 text-sm font-bold text-slate-800">Indoor LED</div>
-            <div className="bg-white p-5 text-sm font-bold text-slate-800">Outdoor LED</div>
-
-            {[
-              ["Brightness", "Comfort-focused, indoor lighting suitable", "High brightness, sunlight visible"],
-              ["Protection", "Dust control + ventilation planning", "IP-rated sealing + water drainage"],
-              ["Pixel Pitch", "Usually smaller (fine pitch)", "Often larger for distance viewing"],
-              ["Cabinet Service", "Front/rear service options", "Service doors + weatherproof access"],
-              ["Power/Surge", "Stable power + grounding", "Grounding + SPD strongly recommended"],
-            ].map(([k, a, b]) => (
-              <div key={k} className="contents">
-                <div className="border-b border-r border-slate-200 bg-slate-50 p-5 text-sm text-slate-700">{k}</div>
-                <div className="border-b border-r border-slate-200 bg-white p-5 text-sm text-slate-700">{a}</div>
-                <div className="border-b border-slate-200 bg-white p-5 text-sm text-slate-700">{b}</div>
-              </div>
-            ))}
-          </div>
-        </div>
+          ]}
+        />
       </Section>
 
       {/* Technical specs explained */}
@@ -717,8 +655,10 @@ export default function IndoorProductsPage() {
         }
         subtitle="Follow this indoor LED display maintenance checklist to protect image quality, reduce downtime, and extend panel lifespan in showroom, office, and control room environments."
       >
-        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
-          {[
+        <CardGrid
+          titleAsHeading
+          desktopClassName="sm:grid-cols-2"
+          items={[
             {
               t: "Cleaning",
               d: "Use a soft anti-static microfiber cloth for routine dust removal from LED module surfaces and cabinet vents. Avoid spraying liquid directly on the screen; if needed, apply approved cleaner to the cloth first. Regular cleaning keeps brightness uniform, improves color clarity, and prevents early component stress from dust accumulation.",
@@ -735,49 +675,8 @@ export default function IndoorProductsPage() {
               t: "Cooling",
               d: "Maintain open airflow around cabinets, control racks, and power sections, especially in enclosed indoor installations. Inspect fans, clean ventilation paths, and monitor ambient temperature to avoid overheating. Effective cooling prevents thermal stress, helps color stability, and supports reliable long-hour operation.",
             },
-          ].map((x, index) => (
-            <div
-              key={x.t}
-              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
-              style={{
-                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
-                background:
-                  index % 2 === 0
-                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
-                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
-              }}
-            >
-              <h3 className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
-              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="hidden gap-4 sm:grid-cols-2 md:grid">
-          {[
-            {
-              t: "Cleaning",
-              d: "Use a soft anti-static microfiber cloth for routine dust removal from LED module surfaces and cabinet vents. Avoid spraying liquid directly on the screen; if needed, apply approved cleaner to the cloth first. Regular cleaning keeps brightness uniform, improves color clarity, and prevents early component stress from dust accumulation.",
-            },
-            {
-              t: "Calibration",
-              d: "Run periodic calibration for brightness, grayscale, and color temperature so all modules remain visually consistent. After module replacement, controller updates, or processor changes, complete remapping and color correction immediately. Proper calibration helps maintain sharp text, natural colors, and professional indoor visual quality.",
-            },
-            {
-              t: "Power safety",
-              d: "Use stable power input, proper earthing, and surge protection to safeguard power supplies, receiving cards, and control systems. Avoid frequent hard on-off cycles and follow a controlled startup/shutdown sequence. Strong power safety practice reduces failure risk, protects data integrity, and improves long-term system reliability.",
-            },
-            {
-              t: "Cooling",
-              d: "Maintain open airflow around cabinets, control racks, and power sections, especially in enclosed indoor installations. Inspect fans, clean ventilation paths, and monitor ambient temperature to avoid overheating. Effective cooling prevents thermal stress, helps color stability, and supports reliable long-hour operation.",
-            },
-          ].map((x) => (
-            <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
-              <h3 className="text-base font-extrabold text-slate-900">{x.t}</h3>
-              <p className="mt-2 text-sm leading-7 text-slate-600">{x.d}</p>
-            </div>
-          ))}
-        </div>
+          ]}
+        />
       </Section>
 
       <Section
@@ -792,69 +691,19 @@ export default function IndoorProductsPage() {
         }
         subtitle="Compare indoor LED display and LCD video wall solutions by visual performance, scalability, maintenance, and long-term operating value to choose the right technology for your project."
       >
-        <div className="space-y-3 md:hidden">
-          {[
+        <ComparisonGrid
+          topicHeader="Comparison Point"
+          firstHeader="Indoor LED Display"
+          secondHeader="LCD Video Wall"
+          rows={[
             ["Seam Visibility", "Seamless large canvas for unified visuals and cleaner branding impact.", "Visible bezel lines between panels can interrupt image continuity."],
             ["Scalability", "Flexible sizing and aspect ratio for custom walls, stage sets, and creative layouts.", "Limited to fixed panel sizes and predefined grid combinations."],
             ["Viewing Experience", "Strong brightness control, wide viewing angle, and better large-format immersion.", "Good close-view detail but reduced impact on very large wall formats."],
             ["Long-Hour Operation", "Designed for stable continuous operation in control rooms and commercial environments.", "Can run long hours, but heat and bezel aging need tighter management over time."],
             ["Maintenance", "Module-level servicing allows targeted replacement with lower downtime risk.", "Panel-level replacement may increase cost and downtime in some service cases."],
             ["Best Use Case", "Showrooms, command centers, corporate lobbies, and premium indoor brand displays.", "Meeting rooms, monitoring walls, and budget-focused tiled display setups."],
-          ].map(([k, a, b], index) => (
-            <article
-              key={k}
-              className="overflow-hidden rounded-[14px]"
-              style={{
-                background:
-                  index % 2 === 0
-                    ? "linear-gradient(180deg, rgba(246,250,255,1) 0%, rgba(240,247,255,1) 100%)"
-                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,244,235,1) 100%)",
-              }}
-            >
-              <div
-                className="overflow-hidden rounded-[14px] border"
-                style={{ borderColor: "rgba(125, 211, 252, 0.65)" }}
-              >
-                <div className="border-b px-4 py-3 text-center" style={{ borderColor: "rgba(125, 211, 252, 0.65)" }}>
-                  <div className="text-[15px] font-extrabold tracking-tight text-slate-900">{k}</div>
-                </div>
-                <div className="grid grid-cols-2 gap-0">
-                  <div className="border-r px-4 py-3" style={{ borderColor: "rgba(125, 211, 252, 0.65)" }}>
-                    <div className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00]">Indoor LED</div>
-                    <p className="text-[13px] leading-6 text-slate-700">{a}</p>
-                  </div>
-                  <div className="px-4 py-3">
-                    <div className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-sky-700">LCD Video Wall</div>
-                    <p className="text-[13px] leading-6 text-slate-700">{b}</p>
-                  </div>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        <div className="hidden overflow-x-auto rounded-3xl border md:block" style={{ borderColor: `${BRAND.maroon}12` }}>
-          <div className="grid min-w-[760px] md:min-w-0 md:grid-cols-3">
-            <div className="border-b border-r border-slate-200 bg-slate-50 p-5 text-sm font-bold text-slate-800">Comparison Point</div>
-            <div className="border-b border-r border-slate-200 bg-white p-5 text-sm font-bold text-slate-800">Indoor LED Display</div>
-            <div className="bg-white p-5 text-sm font-bold text-slate-800">LCD Video Wall</div>
-
-            {[
-              ["Seam Visibility", "Seamless large canvas for unified visuals and cleaner branding impact.", "Visible bezel lines between panels can interrupt image continuity."],
-              ["Scalability", "Flexible sizing and aspect ratio for custom walls, stage sets, and creative layouts.", "Limited to fixed panel sizes and predefined grid combinations."],
-              ["Viewing Experience", "Strong brightness control, wide viewing angle, and better large-format immersion.", "Good close-view detail but reduced impact on very large wall formats."],
-              ["Long-Hour Operation", "Designed for stable continuous operation in control rooms and commercial environments.", "Can run long hours, but heat and bezel aging need tighter management over time."],
-              ["Maintenance", "Module-level servicing allows targeted replacement with lower downtime risk.", "Panel-level replacement may increase cost and downtime in some service cases."],
-              ["Best Use Case", "Showrooms, command centers, corporate lobbies, and premium indoor brand displays.", "Meeting rooms, monitoring walls, and budget-focused tiled display setups."],
-            ].map(([k, a, b]) => (
-              <div key={k} className="contents">
-                <div className="border-b border-r border-slate-200 bg-slate-50 p-5 text-sm text-slate-700">{k}</div>
-                <div className="border-b border-r border-slate-200 bg-white p-5 text-sm text-slate-700">{a}</div>
-                <div className="border-b border-slate-200 bg-white p-5 text-sm text-slate-700">{b}</div>
-              </div>
-            ))}
-          </div>
-        </div>
+          ]}
+        />
       </Section>
 
       {/* Xplore solutions */}
@@ -868,50 +717,13 @@ export default function IndoorProductsPage() {
         }
  subtitle="From indoor video walls to outdoor branding and rental event screens-explore the right category for your project."
       >
-        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
-          {[
+        <SolutionGrid
+          items={[
             { t: "Indoor LED Displays", d: "Showroom, conference, control room solutions.", href: "/led-display/indoor-led/" },
             { t: "Outdoor LED Displays", d: "Billboards, rooftop signage, public screens.", href: "/led-display/outdoor/" },
             { t: "Rental LED Displays", d: "Stage events, concerts, quick setup cabinets.", href: "/led-display/rental-display/" },
-          ].map((x) => (
-            <Link
-              key={x.t}
-              href={x.href}
-              className="group w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4 transition"
-              style={{
-                borderColor: `${BRAND.maroon}14`,
-                background: "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
-              }}
-            >
-              <div className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</div>
-              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
-              <div className="mt-4 text-[12px] font-extrabold" style={{ color: BRAND.maroonText }}>
-                Explore -&gt;{" "}
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        <div className="hidden gap-4 md:grid md:grid-cols-3">
-          {[
-            { t: "Indoor LED Displays", d: "Showroom, conference, control room solutions.", href: "/led-display/indoor-led/" },
-            { t: "Outdoor LED Displays", d: "Billboards, rooftop signage, public screens.", href: "/led-display/outdoor/" },
-            { t: "Rental LED Displays", d: "Stage events, concerts, quick setup cabinets.", href: "/led-display/rental-display/" },
-          ].map((x) => (
-            <Link
-              key={x.t}
-              href={x.href}
-              className="group rounded-3xl border bg-slate-50 p-6 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-md"
-              style={{ borderColor: `${BRAND.maroon}12` }}
-            >
-              <div className="text-lg font-extrabold text-slate-900">{x.t}</div>
-              <p className="mt-2 text-sm text-slate-600 leading-7">{x.d}</p>
-              <div className="mt-4 text-sm font-bold" style={{ color: BRAND.maroonText }}>
-                Explore -&gt;{" "}
-              </div>
-            </Link>
-          ))}
-        </div>
+          ]}
+        />
       </Section>
 
       <Section
@@ -925,125 +737,34 @@ export default function IndoorProductsPage() {
         }
         subtitle="Use this practical pixel pitch selection guide to match viewing distance, content type, and budget so your indoor LED display stays sharp, comfortable, and cost-efficient."
       >
-        <div className="space-y-3 md:hidden">
-          {[
+        <PitchGuideGrid
+          rows={[
             ["1.5m to 2.5m", "Fine text, UI, close-face viewing", "P1.25 to P1.53", "Executive boardrooms, premium brand showrooms"],
             ["2.5m to 4m", "Mixed text + video content", "P1.86 to P2.0", "Corporate meeting rooms, reception video walls"],
             ["4m to 6m", "Presentation-heavy visuals", "P2.5", "Conference halls, educational auditoriums"],
             ["6m+", "Large visuals, less micro-detail", "P3", "Large indoor stages, event halls, atrium displays"],
-          ].map(([distance, content, pitch, scenario], index) => (
-            <article
-              key={distance}
-              className="overflow-hidden rounded-[14px]"
-              style={{
-                background:
-                  index % 2 === 0
-                    ? "linear-gradient(180deg, rgba(246,250,255,1) 0%, rgba(240,247,255,1) 100%)"
-                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,244,235,1) 100%)",
-              }}
-            >
-              <div
-                className="overflow-hidden rounded-[14px] border"
-                style={{ borderColor: "rgba(125, 211, 252, 0.65)" }}
-              >
-                <div className="border-b px-4 py-3 text-center" style={{ borderColor: "rgba(125, 211, 252, 0.65)" }}>
-                  <div className="text-[15px] font-extrabold tracking-tight text-slate-900">{distance}</div>
-                  <div className="mt-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00]">Viewing Distance</div>
-                </div>
-                <div className="border-b px-4 py-3" style={{ borderColor: "rgba(125, 211, 252, 0.65)" }}>
-                  <div className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-sky-700">Content Priority</div>
-                  <p className="text-[13px] leading-6 text-slate-700">{content}</p>
-                </div>
-                <div className="grid grid-cols-2 gap-0">
-                  <div className="border-r px-4 py-3" style={{ borderColor: "rgba(125, 211, 252, 0.65)" }}>
-                    <div className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00]">Recommended Pitch</div>
-                    <div className="mt-1 text-[13px] font-bold leading-5 text-slate-900">{pitch}</div>
-                  </div>
-                  <div className="px-4 py-3">
-                    <div className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-sky-700">Best Scenario</div>
-                    <div className="mt-1 text-[13px] leading-5 text-slate-700">{scenario}</div>
-                  </div>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
+          ]}
+        />
 
-        <div className="hidden overflow-x-auto rounded-3xl border md:block" style={{ borderColor: `${BRAND.maroon}12` }}>
-          <div className="grid min-w-[820px] md:min-w-0 md:grid-cols-4">
-            <div className="border-b border-r border-slate-200 bg-slate-50 p-5 text-sm font-bold text-slate-800">Viewing Distance</div>
-            <div className="border-b border-r border-slate-200 bg-white p-5 text-sm font-bold text-slate-800">Content Priority</div>
-            <div className="border-b border-r border-slate-200 bg-white p-5 text-sm font-bold text-slate-800">Recommended Pixel Pitch</div>
-            <div className="bg-white p-5 text-sm font-bold text-slate-800">Best Indoor Scenario</div>
-
-            {[
-              ["1.5m to 2.5m", "Fine text, UI, close-face viewing", "P1.25 to P1.53", "Executive boardrooms, premium brand showrooms"],
-              ["2.5m to 4m", "Mixed text + video content", "P1.86 to P2.0", "Corporate meeting rooms, reception video walls"],
-              ["4m to 6m", "Presentation-heavy visuals", "P2.5", "Conference halls, educational auditoriums"],
-              ["6m+", "Large visuals, less micro-detail", "P3", "Large indoor stages, event halls, atrium displays"],
-            ].map(([distance, content, pitch, scenario]) => (
-              <div key={distance} className="contents">
-                <div className="border-b border-r border-slate-200 bg-slate-50 p-5 text-sm text-slate-700">{distance}</div>
-                <div className="border-b border-r border-slate-200 bg-white p-5 text-sm text-slate-700">{content}</div>
-                <div className="border-b border-r border-slate-200 bg-white p-5 text-sm font-semibold text-slate-800">{pitch}</div>
-                <div className="border-b border-slate-200 bg-white p-5 text-sm text-slate-700">{scenario}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-5 -mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
-          {[
-            {
-              t: "Step 1: Measure real viewing distance",
-              d: "Use the nearest regular audience point, not the wall-to-wall room size. Pixel pitch should be chosen based on actual eye-to-screen distance.",
-            },
-            {
-              t: "Step 2: Define dominant content",
-              d: "Dashboards, spreadsheets, and text-heavy use need finer pitch than motion-heavy video loops and branding visuals.",
-            },
-            {
-              t: "Step 3: Balance clarity with lifecycle cost",
-              d: "Finer pitch increases initial price, but the right choice reduces rework risk and ensures better long-term user satisfaction.",
-            },
-          ].map((x, index) => (
-            <div
-              key={x.t}
-              className="w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4"
-              style={{
-                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
-                background:
-                  index % 2 === 0
-                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
-                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
-              }}
-            >
-              <h3 className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</h3>
-              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-5 hidden gap-4 sm:grid-cols-3 md:grid">
-          {[
-            {
-              t: "Step 1: Measure real viewing distance",
-              d: "Use the nearest regular audience point, not the wall-to-wall room size. Pixel pitch should be chosen based on actual eye-to-screen distance.",
-            },
-            {
-              t: "Step 2: Define dominant content",
-              d: "Dashboards, spreadsheets, and text-heavy use need finer pitch than motion-heavy video loops and branding visuals.",
-            },
-            {
-              t: "Step 3: Balance clarity with lifecycle cost",
-              d: "Finer pitch increases initial price, but the right choice reduces rework risk and ensures better long-term user satisfaction.",
-            },
-          ].map((x) => (
-            <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
-              <h3 className="text-base font-extrabold text-slate-900">{x.t}</h3>
-              <p className="mt-2 text-sm leading-7 text-slate-600">{x.d}</p>
-            </div>
-          ))}
+        <div className="mt-5">
+          <CardGrid
+            titleAsHeading
+            desktopClassName="sm:grid-cols-3"
+            items={[
+              {
+                t: "Step 1: Measure real viewing distance",
+                d: "Use the nearest regular audience point, not the wall-to-wall room size. Pixel pitch should be chosen based on actual eye-to-screen distance.",
+              },
+              {
+                t: "Step 2: Define dominant content",
+                d: "Dashboards, spreadsheets, and text-heavy use need finer pitch than motion-heavy video loops and branding visuals.",
+              },
+              {
+                t: "Step 3: Balance clarity with lifecycle cost",
+                d: "Finer pitch increases initial price, but the right choice reduces rework risk and ensures better long-term user satisfaction.",
+              },
+            ]}
+          />
         </div>
       </Section>
 
@@ -1052,81 +773,53 @@ export default function IndoorProductsPage() {
  title="Indoor LED Display Price Per Square Feet"
         subtitle="Indicative pricing by pixel pitch for quick comparison. For BOQ-based pricing, please share your required screen size and installation location."
       >
-        <details className="group md:hidden">
-          <summary className="list-none cursor-pointer rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900 [::-webkit-details-marker]:hidden" style={{ borderColor: `${BRAND.maroon}14`, background: "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)" }}>
-            Tap To Expand Price List
-          </summary>
-          <div className="mt-3 space-y-3">
+        <MobileDisclosure
+          label="Tap To Expand Price List"
+          buttonClassName="cursor-pointer rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900"
+          buttonStyle={{ borderColor: `${BRAND.maroon}14`, background: "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)" }}
+          contentClassName="mt-3 space-y-3 md:mt-0 md:space-y-0 md:overflow-x-auto md:rounded-3xl md:border"
+          contentStyle={{ borderColor: `${BRAND.maroon}18` }}
+          desktopDisplayClassName="md:block"
+        >
+          <div>
+            {/* Header row (light cyan like screenshot) */}
+            <div className="hidden min-w-[780px] grid-cols-12 gap-0 bg-sky-50 px-4 py-3 text-[11px] font-extrabold uppercase tracking-wide text-slate-700 md:grid">
+              <div className="col-span-7">Indoor LED Model</div>
+              <div className="col-span-3 text-center">Pixel Pitch</div>
+              <div className="col-span-2 text-right">Approx. Price (Per Sq.Ft)</div>
+            </div>
+
             {priceRows.map(({ p, pitchNum, price }, index) => (
               <article
                 key={p.slug}
-                className="overflow-hidden rounded-[14px] border"
-                style={{
-                  borderColor: index % 2 === 0 ? "rgba(110,231,183,0.65)" : "rgba(125,211,252,0.65)",
-                  background:
-                    index % 2 === 0
-                      ? "linear-gradient(180deg, rgba(236,253,245,1) 0%, rgba(240,253,250,1) 100%)"
-                      : "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)",
-                }}
+                className="overflow-hidden rounded-[14px] border border-[var(--price-mobile-border)] bg-[var(--price-mobile-bg)] md:grid md:min-w-[780px] md:grid-cols-12 md:items-center md:gap-0 md:rounded-none md:border-0 md:bg-white md:px-4 md:py-3 md:text-sm"
+                style={priceRowStyle(index)}
               >
-                <div className="px-4 py-3">
+                <div className="px-4 py-3 md:col-span-7 md:px-0 md:py-0">
                   <Link
                     href={`/led-display/indoor-led/${p.slug}/`}
-                    className="text-[15px] font-extrabold leading-snug text-slate-900"
+                    className="text-[15px] font-extrabold leading-snug text-slate-900 md:text-sm md:font-semibold md:hover:underline"
                     style={{ textDecorationColor: `${BRAND.maroon}88` }}
                     title="Click to view full specifications"
                   >
                     {p.title}
                   </Link>
-                  <p className="mt-1 text-[12.5px] leading-6 text-slate-600">{p.subtitle}</p>
+                  <p className="mt-1 text-[12.5px] leading-6 text-slate-600 md:text-xs md:leading-normal md:text-slate-500">{p.subtitle}</p>
                 </div>
-                <div className="grid grid-cols-2 border-t" style={{ borderColor: "rgba(148,163,184,0.18)" }}>
-                  <div className="border-r px-4 py-3" style={{ borderColor: "rgba(148,163,184,0.18)" }}>
-                    <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00]">Pixel Pitch</div>
-                    <div className="mt-1 text-[13px] font-bold text-slate-900">{pitchNum != null ? `${pitchNum} mm` : getPitchLabel(p)}</div>
+                <div className="grid grid-cols-2 border-t border-[rgba(148,163,184,0.18)] md:contents">
+                  <div className="border-r border-[rgba(148,163,184,0.18)] px-4 py-3 md:col-span-3 md:border-0 md:px-0 md:py-0 md:text-center md:text-sm md:text-slate-700">
+                    <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00] md:hidden">Pixel Pitch</div>
+                    <div className="mt-1 text-[13px] font-bold text-slate-900 md:mt-0 md:text-sm md:font-normal md:text-slate-700">{pitchNum != null ? `${pitchNum} mm` : getPitchLabel(p)}</div>
                   </div>
-                  <div className="px-4 py-3">
-                    <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-emerald-700">Approx. Price</div>
-                    <div className="mt-1 text-[13px] font-bold text-slate-900">{price}</div>
+                  <div className="px-4 py-3 md:col-span-2 md:px-0 md:py-0 md:text-right">
+                    <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-emerald-700 md:hidden">Approx. Price</div>
+                    <div className="mt-1 text-[13px] font-bold text-slate-900 md:text-sm md:font-semibold md:text-slate-800">{price}</div>
                   </div>
                 </div>
               </article>
             ))}
           </div>
-        </details>
-
-        <div className="hidden overflow-x-auto rounded-3xl border md:block" style={{ borderColor: `${BRAND.maroon}18` }}>
-          {/* Header row (light cyan like screenshot) */}
-          <div className="grid min-w-[780px] grid-cols-12 gap-0 bg-sky-50 px-4 py-3 text-[11px] font-extrabold uppercase tracking-wide text-slate-700">
-            <div className="col-span-7">Indoor LED Model</div>
-            <div className="col-span-3 text-center">Pixel Pitch</div>
-            <div className="col-span-2 text-right">Approx. Price (Per Sq.Ft)</div>
-          </div>
-
-          <div>
-            {priceRows.map(({ p, pitchNum, price }) => (
-              <div key={p.slug} className="grid min-w-[780px] grid-cols-12 items-center gap-0 bg-white px-4 py-3 text-sm">
-                <div className="col-span-7">
-                  <Link
-                    href={`/led-display/indoor-led/${p.slug}/`}
-                    className="font-semibold text-slate-900 hover:underline"
-                    style={{ textDecorationColor: `${BRAND.maroon}88` }}
-                    title="Click to view full specifications"
-                  >
-                    {p.title}
-                  </Link>
-                  <div className="mt-1 text-xs text-slate-500">{p.subtitle}</div>
-                </div>
-
-                <div className="col-span-3 text-center text-sm text-slate-700">
-                  {pitchNum != null ? `${pitchNum} mm` : getPitchLabel(p)}
-                </div>
-
-                <div className="col-span-2 text-right text-sm font-semibold text-slate-800">{price}</div>
-              </div>
-            ))}
-          </div>
-        </div>
+        </MobileDisclosure>
 
         <div className="mt-4 hidden flex-nowrap gap-2 overflow-x-auto pb-1 text-xs font-semibold text-slate-700 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:flex md:flex-wrap md:overflow-visible md:pb-0">
  {["Tip: Smaller pitch = higher cost", "Camera use: choose higher refresh", "For exact BOQ: share W x H + site"].map(
@@ -1174,11 +867,15 @@ export default function IndoorProductsPage() {
  title="End-to-End LED Display Solution Process"
         subtitle="A clear delivery process from recommendation to installation to long-term service."
       >
-        <details className="group md:hidden">
-          <summary className="list-none cursor-pointer rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900 [::-webkit-details-marker]:hidden" style={{ borderColor: `${BRAND.maroon}14`, background: "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)" }}>
-            Tap To Expand Process Steps
-          </summary>
-          <div className="mt-3 grid gap-3">
+        <MobileDisclosure
+          label="Tap To Expand Process Steps"
+          buttonClassName="cursor-pointer rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900"
+          buttonStyle={{ borderColor: `${BRAND.maroon}14`, background: "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)" }}
+          contentClassName="mt-3 gap-3 md:mt-0 md:grid-cols-4"
+          mobileOpenClassName="grid"
+          desktopDisplayClassName="md:grid"
+        >
+          <div className="contents">
             {[
               { t: "1) Survey", d: "Site visit, measurements, viewing distance, power check." },
               { t: "2) Design", d: "BOQ, structure plan, controller/processor selection." },
@@ -1187,7 +884,7 @@ export default function IndoorProductsPage() {
             ].map((x) => (
               <div
                 key={x.t}
-                className="rounded-[14px] border px-4 py-4"
+                className="rounded-[14px] border px-4 py-4 md:rounded-3xl md:bg-slate-50 md:p-6"
                 style={{
                   borderColor: `${BRAND.maroon}10`,
                   background:
@@ -1195,33 +892,11 @@ export default function IndoorProductsPage() {
                 }}
               >
                 <div className="text-sm font-extrabold text-slate-900">{x.t}</div>
-                <p className="mt-2 text-[13px] text-slate-600 leading-6">{x.d}</p>
+                <p className="mt-2 text-[13px] text-slate-600 leading-6 md:text-sm md:leading-7">{x.d}</p>
               </div>
             ))}
           </div>
-        </details>
-
-        <div className="hidden grid gap-3 sm:grid-cols-2 md:grid-cols-4 md:grid">
-          {[
-            { t: "1) Survey", d: "Site visit, measurements, viewing distance, power check." },
-            { t: "2) Design", d: "BOQ, structure plan, controller/processor selection." },
-            { t: "3) Install", d: "Structure, wiring, cabinet assembly, safety checks." },
-            { t: "4) Support", d: "Mapping, calibration, training, maintenance guidance." },
-          ].map((x) => (
-            <div
-              key={x.t}
-              className="rounded-[14px] border px-4 py-4 md:rounded-3xl md:bg-slate-50 md:p-6"
-              style={{
-                borderColor: `${BRAND.maroon}10`,
-                background:
-                  "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
-              }}
-            >
-              <div className="text-sm font-extrabold text-slate-900">{x.t}</div>
-              <p className="mt-2 text-[13px] text-slate-600 leading-6 md:text-sm md:leading-7">{x.d}</p>
-            </div>
-          ))}
-        </div>
+        </MobileDisclosure>
 
         <div className="mt-6 flex flex-nowrap gap-2.5 md:flex-wrap md:gap-3">
           <Link

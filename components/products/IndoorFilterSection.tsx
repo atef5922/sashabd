@@ -212,18 +212,16 @@ export default function IndoorFilterSection({
           Choose a model based on viewing distance, content type and environment. Open any model to see detailed specs.
         </p>
 
-        <div className="md:hidden">
+        <div className="space-y-4 md:mt-6 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 lg:grid-cols-3">
           {mobileDisplayRows.map((row, index) => (
-            <ResponsiveProductCarousel key={`mobile-row-${index}`} className={index === 0 ? "mt-6" : "mt-4"}>
+            <ResponsiveProductCarousel
+              key={`mobile-row-${index}`}
+              className={index === 0 ? "mt-6 md:mt-0" : "mt-4 md:mt-0"}
+              desktopContents
+            >
               {row.map((p) => renderDisplayCard(p))}
             </ResponsiveProductCarousel>
           ))}
-        </div>
-
-        <div className="hidden md:block">
-          <ResponsiveProductCarousel className="mt-6" desktopClassName="md:grid-cols-2 lg:grid-cols-3">
-            {displayCards.map((p) => renderDisplayCard(p))}
-          </ResponsiveProductCarousel>
         </div>
 
         {filtered.length === 0 && stickyCards.length === 0 && (
