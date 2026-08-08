@@ -678,13 +678,13 @@ function ProductsPageContent({
     if (!ledOnly) return [];
 
     const mobileConfig = [
-      { key: "indoor" as FilterKey, title: "Indoor LED Display", prefix: "indoor:", href: "/led-display/indoor-led/" },
-      { key: "outdoor" as FilterKey, title: "Outdoor LED Display", prefix: "outdoor:", href: "/led-display/outdoor/" },
-      { key: "rental" as FilterKey, title: "Rental LED Display", prefix: "rental:", href: "/led-display/rental-display/" },
-      { key: "receiving-card" as FilterKey, title: "Receiving Card", prefix: "receiving-card:", href: "/led-display/accessories/receiving-card/" },
-      { key: "controller" as FilterKey, title: "Controller", prefix: "controller:", href: "/led-display/accessories/controller/" },
-      { key: "power-supply" as FilterKey, title: "Power Supply", prefix: "power-supply:", href: "/led-display/accessories/power-supply/" },
-      { key: "led-accessories" as FilterKey, title: "LED Accessories", prefix: "led-accessories:", href: "/led-display/accessories/led-accessories/" },
+      { key: "indoor" as FilterKey, title: "Indoor LED Display", prefix: "indoor:", href: "/led-display/indoor-led/", viewAllLabel: "View Indoor" },
+      { key: "outdoor" as FilterKey, title: "Outdoor LED Display", prefix: "outdoor:", href: "/led-display/outdoor/", viewAllLabel: "View Outdoor" },
+      { key: "rental" as FilterKey, title: "Rental LED Display", prefix: "rental:", href: "/led-display/rental-display/", viewAllLabel: "View Rental" },
+      { key: "receiving-card" as FilterKey, title: "Receiving Card", prefix: "receiving-card:", href: "/led-display/accessories/receiving-card/", viewAllLabel: "View Cards" },
+      { key: "controller" as FilterKey, title: "Controller", prefix: "controller:", href: "/led-display/accessories/controller/", viewAllLabel: "View Controllers" },
+      { key: "power-supply" as FilterKey, title: "Power Supply", prefix: "power-supply:", href: "/led-display/accessories/power-supply/", viewAllLabel: "View PSUs" },
+      { key: "led-accessories" as FilterKey, title: "LED Accessories", prefix: "led-accessories:", href: "/led-display/accessories/led-accessories/", viewAllLabel: "View Accessories" },
     ];
 
     const visibleConfig = filter === "all" ? mobileConfig : mobileConfig.filter((section) => section.key === filter);
@@ -694,6 +694,7 @@ function ProductsPageContent({
         id: section.key,
         title: section.title,
         href: section.href,
+        viewAllLabel: section.viewAllLabel,
         products: filtered.filter((p) => p.id.startsWith(section.prefix)),
       }))
       .filter((section) => section.products.length > 0);
@@ -1707,7 +1708,7 @@ function ProductsPageContent({
                       href={section.href}
                       className="inline-flex shrink-0 items-center gap-1 text-[11px] font-bold text-slate-800"
                     >
-                      <span>View all</span>
+                      <span>{section.viewAllLabel}</span>
                       <span className="text-[#F56605]">
                         <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" aria-hidden="true">
                           <path d="M5 12h11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />

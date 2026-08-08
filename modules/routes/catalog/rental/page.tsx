@@ -364,6 +364,9 @@ export default function RentalProductsPage() {
 
         <div className="mt-3 hidden flex-wrap gap-x-4 gap-y-2 text-xs font-semibold text-slate-600 md:flex">
           <span className="text-slate-500">Related:</span>
+          <Link href="/led-display/" className="underline underline-offset-4 hover:text-slate-900">
+            LED display price hub
+          </Link>
           <Link href="/led-display/rent-guide/" className="underline underline-offset-4 hover:text-slate-900">
             Rental price guide
           </Link>
@@ -1196,5 +1199,4 @@ export default function RentalProductsPage() {
     </div>
   );
 }
-
 

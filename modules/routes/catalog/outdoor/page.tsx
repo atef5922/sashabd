@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { siteConfig } from "@/lib/site";
-import { ledAccessoriesCatalog, outdoorCatalog } from "@/lib/productsCatalog";
+import { getLedDisplayTablePrice, ledAccessoriesCatalog, outdoorCatalog } from "@/lib/productsCatalog";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
 import MobileIntroText from "@/components/common/MobileIntroText";
@@ -178,30 +178,15 @@ export default function OutdoorProductsPage() {
     { name: "Renex Digital", src: "/images/brands/renex-exact.webp", href: "https://renex.com.bd/" },
   ];
 
- // ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Price table (photo theke neya)
-  const outdoorPriceByPitch: { pitch: number; range: string }[] = [
- { pitch: 2.5, range: "6,600 - 16,500" },
- { pitch: 3.0, range: "6,100 - 10,800" },
- { pitch: 3.076, range: "4,200 - 4,950" },
- { pitch: 4.0, range: "8,643 - 10,300" },
- { pitch: 5.0, range: "6,102 - 7,700" },
- { pitch: 6.0, range: "10,100 - 11,900" },
- { pitch: 6.67, range: "6,002 - 7,300" },
- { pitch: 8.0, range: "14,601 - 16,300" },
- { pitch: 10.0, range: "2,544 - 5,900" },
-  ];
-
-  function getApproxOutdoorPrice(pitch: number | null): string {
-    if (pitch == null) return "Request quote";
-    const hit = outdoorPriceByPitch.find((x) => Math.abs(x.pitch - pitch) <= 0.001);
-    return hit ? hit.range : "Request quote";
+  function getApproxOutdoorPrice(slug: string): string {
+    return getLedDisplayTablePrice(slug) ?? "Request quote";
   }
 
   const outdoorPriceRows = [...all]
     .map((p) => {
       const pitchLabel = getPitchLabel(p);
       const pitchNum = parsePitchNumber(pitchLabel);
-      return { p, pitchNum, pitchLabel, price: getApproxOutdoorPrice(pitchNum) };
+      return { p, pitchNum, pitchLabel, price: getApproxOutdoorPrice(p.slug) };
     })
     .sort((a, b) => {
       const av = a.pitchNum ?? 999;
@@ -282,6 +267,9 @@ export default function OutdoorProductsPage() {
 
           <div className="mt-3 hidden flex-wrap gap-x-4 gap-y-2 text-xs font-semibold text-slate-600 md:flex">
             <span className="text-slate-500">Related:</span>
+            <Link href="/led-display/" className="underline underline-offset-4 hover:text-slate-900">
+              LED display price hub
+            </Link>
             <Link href="/led-display/waterproof-outdoor-led-display/" className="underline underline-offset-4 hover:text-slate-900">
               Waterproof guide
             </Link>
@@ -1699,5 +1687,3 @@ title="FAQs About Outdoor LED Display in Bangladesh"
     </div>
   );
 }
-
-

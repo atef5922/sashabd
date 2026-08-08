@@ -81,9 +81,9 @@ export const commonSections: BlogSection[] = [
 export const blogPosts: BlogPost[] = [
   {
     slug: "led-display-price-in-bangladesh-complete-buying-guide",
-    title: "LED Display Price in Bangladesh - Complete Buying Guide",
+    title: "LED Display Buying Guide in Bangladesh - Price Factors & Planning",
     excerpt:
-      "Detailed buying guide for LED display price in Bangladesh, including indoor, outdoor, and rental LED screen price logic.",
+      "Educational buying guide for LED display price planning in Bangladesh, including indoor, outdoor, and rental LED screen cost factors.",
     tag: "Price Guide",
     coverImage: "/images/blog/blog1.webp",
     coverImagePosition: {
@@ -95,12 +95,12 @@ export const blogPosts: BlogPost[] = [
     publishedAt: "2026-03-02",
     updatedAt: "2026-03-10",
     keywords: [
-      "led display price in bangladesh",
+      "led display price planning bangladesh",
       "led screen price bd",
       "led video wall price",
     ],
     heroIntro:
-      "If you are searching for LED display price in Bangladesh, this article gives a complete and practical buying roadmap. You will learn display types, price factors, realistic budget ranges, and how to choose the right screen without overspending.",
+      "Use this LED display buying guide as a price-planning roadmap for Bangladesh. It explains display types, cost factors, budget logic, and how to choose the right screen before requesting a BOQ-based quotation.",
     uniqueSections: [
       {
         heading: "What is LED Display",
@@ -144,9 +144,9 @@ export const blogPosts: BlogPost[] = [
         ],
       },
       {
-        heading: "LED Display Price Range in Bangladesh",
+        heading: "LED Display Budget Range Planning",
         paragraphs: [
-          "The following ranges are practical budget references for initial planning. Final led display price in bangladesh can vary by project scope, brand class, and installation condition.",
+          "The following ranges are practical budget references for initial planning. Final project cost can vary by project scope, brand class, and installation condition.",
           "Use this table as a directional estimate, then finalize through site survey and BOQ-based quotation.",
         ],
         table: {
@@ -195,7 +195,7 @@ export const blogPosts: BlogPost[] = [
         a: "Not always, but outdoor models often need stronger brightness and weather protection, which can increase cost depending on project requirements.",
       },
       {
-        q: "How can I get an accurate LED display price in Bangladesh?",
+        q: "How can I get an accurate LED display quotation?",
         a: "Share site photos, expected size, content type, and viewing distance first. Then request a BOQ-based quotation after technical assessment.",
       },
     ],
