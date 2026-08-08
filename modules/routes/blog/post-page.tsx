@@ -153,13 +153,15 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
     `This article on ${post.title.toLowerCase()} is designed to answer high-intent search queries and help buyers make a confident decision. ` +
     `If you are researching ${post.keywords[0]}, this guide provides practical comparison, real usage context, and implementation-ready direction.`;
   const conclusionText =
-    `In summary, the right decision for ${post.title.toLowerCase()} depends on real site condition, audience distance, content priority, and long-term operating plan. ` +
-    `When these inputs are validated early, you can avoid overspending, reduce technical risk, and achieve better uptime with predictable performance.`;
-  const conclusionExternalLink =
+    post.slug === "led-display-price-in-bangladesh-complete-buying-guide"
+      ? "In summary, this LED display buying guide is best used for planning: confirm environment, viewing distance, content priority, and long-term operating needs first. Then compare current product options on the Sasha LED display hub before requesting a BOQ-based quotation."
+      : `In summary, the right decision for ${post.title.toLowerCase()} depends on real site condition, audience distance, content priority, and long-term operating plan. ` +
+        `When these inputs are validated early, you can avoid overspending, reduce technical risk, and achieve better uptime with predictable performance.`;
+  const conclusionInternalLink =
     post.slug === "led-display-price-in-bangladesh-complete-buying-guide"
       ? {
-          phrase: "led display price in bangladesh",
-          href: "https://www.arozex.com/led-display/",
+          phrase: "Sasha LED display hub",
+          href: "/led-display/",
         }
       : null;
 
@@ -718,18 +720,16 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
           <section id="conclusion" className="scroll-mt-24 rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm md:rounded-3xl md:p-8">
             <h2 className="text-[1.1rem] font-bold text-slate-900 md:text-2xl">Conclusion</h2>
             <p className="mt-3 text-justify text-[13px] leading-6 text-slate-700 md:mt-4 md:text-left md:text-base md:leading-8">
-              {conclusionExternalLink && conclusionText.includes(conclusionExternalLink.phrase) ? (
+              {conclusionInternalLink && conclusionText.includes(conclusionInternalLink.phrase) ? (
                 <>
-                  {conclusionText.split(conclusionExternalLink.phrase)[0]}
-                  <a
-                    href={conclusionExternalLink.href}
-                    target="_blank"
-                    rel="noopener"
+                  {conclusionText.split(conclusionInternalLink.phrase)[0]}
+                  <Link
+                    href={conclusionInternalLink.href}
                     className="text-inherit"
                   >
-                    {conclusionExternalLink.phrase}
-                  </a>
-                  {conclusionText.split(conclusionExternalLink.phrase).slice(1).join(conclusionExternalLink.phrase)}
+                    {conclusionInternalLink.phrase}
+                  </Link>
+                  {conclusionText.split(conclusionInternalLink.phrase).slice(1).join(conclusionInternalLink.phrase)}
                 </>
               ) : (
                 conclusionText

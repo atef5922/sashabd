@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { siteConfig } from "@/lib/site";
-import { getProductsByCategory, ledAccessoriesCatalog, type ProductItem } from "@/lib/productsCatalog";
+import { getLedDisplayTablePrice, getProductsByCategory, ledAccessoriesCatalog, type ProductItem } from "@/lib/productsCatalog";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
 import MobileDisclosure from "@/components/common/MobileDisclosure";
@@ -285,24 +285,8 @@ export default function IndoorProductsPage() {
     p.slug === "26-pin-frc-ribbon-cable-idc"
   );
 
-  // Price table (approx) mapping by pixel pitch (mm)
-  const priceByPitch: { pitch: number; range: string }[] = [
- { pitch: 1.25, range: "10,600 - 18,200" },
- { pitch: 1.53, range: "9,600 - 20,300" },
- { pitch: 1.667, range: "9,748 - 17,700" },
- { pitch: 1.86, range: "8,600 - 17,000" },
- { pitch: 2.0, range: "7,599 - 13,450" },
- { pitch: 2.5, range: "6,600 - 12,250" },
- { pitch: 3.0, range: "5,600 - 11,100" },
- { pitch: 3.076, range: "4,600 - 11,650" },
- { pitch: 4.0, range: "3,600 - 8,750" },
- { pitch: 5.0, range: "6,205 - 7,950" },
-  ];
-
-  function getApproxPrice(pitch: number | null): string {
-    if (pitch == null) return "Request quote";
-    const hit = priceByPitch.find((x) => Math.abs(x.pitch - pitch) <= 0.001);
-    return hit ? hit.range : "Request quote";
+  function getApproxPrice(slug: string): string {
+    return getLedDisplayTablePrice(slug) ?? "Request quote";
   }
 
   const excludedPriceRowSlugs = new Set<string>();
@@ -313,7 +297,7 @@ export default function IndoorProductsPage() {
     .map((p) => {
       const pitchLabel = getPitchLabel(p);
       const pitchNum = parsePitchNumber(pitchLabel);
-      return { p, pitchLabel, pitchNum, price: getApproxPrice(pitchNum) };
+      return { p, pitchLabel, pitchNum, price: getApproxPrice(p.slug) };
     })
     .sort((a, b) => {
       const av = a.pitchNum ?? 999;
@@ -393,6 +377,9 @@ export default function IndoorProductsPage() {
 
           <div className="mt-3 hidden flex-wrap gap-x-4 gap-y-2 text-xs font-semibold text-slate-600 md:flex">
             <span className="text-slate-500">Related:</span>
+            <Link href="/led-display/" className="underline underline-offset-4 hover:text-slate-900">
+              LED display price hub
+            </Link>
             <Link href="/led-display/indoor-led-video-wall-bangladesh/" className="underline underline-offset-4 hover:text-slate-900">
               Indoor LED video wall
             </Link>
