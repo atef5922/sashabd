@@ -83,7 +83,6 @@ const Section = ({
     </h2>
     {subtitle ? (
       <MobileIntroText
-        teaser={subtitle}
         className="mt-2"
         teaserClassName="w-full leading-6"
         expandedClassName="text-sm leading-7 text-slate-600"

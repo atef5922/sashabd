@@ -17,7 +17,7 @@ export default function MobileIntroText({
   teaserLines = 1,
   singleDom = false,
 }: {
-  teaser: string;
+  teaser?: string;
   children: React.ReactNode;
   className?: string;
   teaserClassName?: string;
@@ -28,6 +28,7 @@ export default function MobileIntroText({
   singleDom?: boolean;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const previewText = teaser ?? "";
 
   if (singleDom) {
     const collapsedClassName =
@@ -79,7 +80,7 @@ export default function MobileIntroText({
                 : undefined
             }
           >
-            {teaser}
+            {previewText}
           </p>
         )}
         <button
