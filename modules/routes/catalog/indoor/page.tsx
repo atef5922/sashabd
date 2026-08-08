@@ -87,7 +87,8 @@ const Section = ({
         className="mt-2"
         teaserClassName="w-full leading-6"
         expandedClassName="text-sm leading-7 text-slate-600"
-        desktopClassName="text-slate-600 leading-7"
+        desktopClassName="md:text-slate-600 md:leading-7 md:[&>*]:!leading-7"
+        singleDom
       >
         <p className="text-slate-600 leading-7">{subtitle}</p>
       </MobileIntroText>
@@ -192,11 +193,11 @@ const ComparisonGrid = ({
             </div>
             <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-0 md:contents">
               <div className="min-w-0 border-r border-[rgba(125,211,252,0.65)] px-4 py-3 md:border-b md:border-r md:border-slate-200 md:bg-white md:p-5">
-                <div className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00] md:hidden">{firstHeader}</div>
+                <div data-label={firstHeader} className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00] before:content-[attr(data-label)] md:hidden" />
                 <p className="break-words text-[13px] leading-6 text-slate-700 md:text-sm md:leading-normal">{a}</p>
               </div>
               <div className="min-w-0 px-4 py-3 md:border-b md:border-slate-200 md:bg-white md:p-5">
-                <div className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-sky-700 md:hidden">{secondHeader}</div>
+                <div data-label={secondHeader} className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-sky-700 before:content-[attr(data-label)] md:hidden" />
                 <p className="break-words text-[13px] leading-6 text-slate-700 md:text-sm md:leading-normal">{b}</p>
               </div>
             </div>
@@ -224,19 +225,19 @@ const PitchGuideGrid = ({ rows }: { rows: PitchGuideRow[] }) => (
           <div className="w-full max-w-full overflow-hidden rounded-[14px] border border-[rgba(125,211,252,0.65)] md:contents md:rounded-none md:border-0">
             <div className="border-b border-[rgba(125,211,252,0.65)] px-4 py-3 text-center md:border-r md:border-slate-200 md:bg-slate-50 md:p-5 md:text-left md:text-sm md:font-normal md:text-slate-700">
               <div className="text-[15px] font-extrabold tracking-tight text-slate-900 md:text-sm md:font-normal md:text-slate-700">{distance}</div>
-              <div className="mt-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00] md:hidden">Viewing Distance</div>
+              <div data-label="Viewing Distance" className="mt-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00] before:content-[attr(data-label)] md:hidden" />
             </div>
             <div className="border-b border-[rgba(125,211,252,0.65)] px-4 py-3 md:border-r md:border-slate-200 md:bg-white md:p-5">
-              <div className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-sky-700 md:hidden">Content Priority</div>
+              <div data-label="Content Priority" className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-sky-700 before:content-[attr(data-label)] md:hidden" />
               <p className="text-[13px] leading-6 text-slate-700 md:text-sm md:leading-normal">{content}</p>
             </div>
             <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-0 md:contents">
               <div className="min-w-0 border-r border-[rgba(125,211,252,0.65)] px-4 py-3 md:border-b md:border-r md:border-slate-200 md:bg-white md:p-5">
-                <div className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00] md:hidden">Recommended Pitch</div>
+                <div data-label="Recommended Pitch" className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00] before:content-[attr(data-label)] md:hidden" />
                 <div className="mt-1 break-words text-[13px] font-bold leading-5 text-slate-900 md:mt-0 md:text-sm md:font-semibold md:text-slate-800">{pitch}</div>
               </div>
               <div className="min-w-0 px-4 py-3 md:border-b md:border-slate-200 md:bg-white md:p-5">
-                <div className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-sky-700 md:hidden">Best Scenario</div>
+                <div data-label="Best Scenario" className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-sky-700 before:content-[attr(data-label)] md:hidden" />
                 <div className="mt-1 break-words text-[13px] leading-5 text-slate-700 md:mt-0 md:text-sm md:leading-normal">{scenario}</div>
               </div>
             </div>
@@ -345,7 +346,8 @@ export default function IndoorProductsPage() {
           <MobileIntroText
             teaser="Compare the best indoor LED display options in Bangladesh for viewing distance, pixel pitch and daily content."
             expandedClassName="mt-3"
-            desktopClassName="mt-3"
+            desktopClassName="md:mt-3 md:[&>*]:!leading-7"
+            singleDom
           >
             <p className="w-full text-justify text-slate-600 leading-7">
               Compare the best <strong>indoor LED display</strong> options in Bangladesh by viewing distance, pixel pitch, refresh rate,
@@ -808,11 +810,11 @@ export default function IndoorProductsPage() {
                 </div>
                 <div className="grid grid-cols-2 border-t border-[rgba(148,163,184,0.18)] md:contents">
                   <div className="border-r border-[rgba(148,163,184,0.18)] px-4 py-3 md:col-span-3 md:border-0 md:px-0 md:py-0 md:text-center md:text-sm md:text-slate-700">
-                    <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00] md:hidden">Pixel Pitch</div>
+                    <div data-label="Pixel Pitch" className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00] before:content-[attr(data-label)] md:hidden" />
                     <div className="mt-1 text-[13px] font-bold text-slate-900 md:mt-0 md:text-sm md:font-normal md:text-slate-700">{pitchNum != null ? `${pitchNum} mm` : getPitchLabel(p)}</div>
                   </div>
                   <div className="px-4 py-3 md:col-span-2 md:px-0 md:py-0 md:text-right">
-                    <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-emerald-700 md:hidden">Approx. Price</div>
+                    <div data-label="Approx. Price" className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-emerald-700 before:content-[attr(data-label)] md:hidden" />
                     <div className="mt-1 text-[13px] font-bold text-slate-900 md:text-sm md:font-semibold md:text-slate-800">{price}</div>
                   </div>
                 </div>

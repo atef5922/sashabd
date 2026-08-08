@@ -121,10 +121,14 @@ test("LED display products use one responsive card render path", () => {
 test("indoor LED page duplicate-prone groups render from one semantic source", () => {
   const source = read("modules/routes/catalog/indoor/page.tsx");
   const filter = read("components/products/IndoorFilterSection.tsx");
+  const mobileIntro = read("components/common/MobileIntroText.tsx");
 
   assert.equal(occurrences(filter, "mobileDisplayRows.map((row, index)"), 1);
   assert.equal(occurrences(filter, "displayCards.map((p) => renderDisplayCard(p))"), 0);
   assert.match(filter, /desktopContents/);
+  assert.match(mobileIntro, /singleDom/);
+  assert.equal(occurrences(source, "singleDom"), 2);
+  assert.ok(occurrences(source, "before:content-[attr(data-label)]") >= 8);
   assert.equal(occurrences(source, "priceRows.map"), 1);
   assert.equal(occurrences(source, "{ t: \"1) Survey\""), 1);
   assert.equal(occurrences(source, "{ t: \"2) Design\""), 1);
