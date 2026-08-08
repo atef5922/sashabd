@@ -129,6 +129,13 @@ test("indoor LED page duplicate-prone groups render from one semantic source", (
   assert.match(mobileIntro, /singleDom/);
   assert.equal(occurrences(source, "singleDom"), 2);
   assert.ok(occurrences(source, "before:content-[attr(data-label)]") >= 8);
+  const sectionWrapper = sectionBetween(source, "const Section = ({", "function responsiveCardStyle");
+  const sectionSubtitles = [...source.matchAll(/\bsubtitle="([^"]+)"/g)].map((match) => match[1]);
+
+  assert.ok(sectionWrapper, "Indoor section wrapper must be present");
+  assert.equal(sectionSubtitles.length, 14);
+  assert.equal(new Set(sectionSubtitles).size, sectionSubtitles.length);
+  assert.match(sectionWrapper, /teaser=\{subtitle\}[\s\S]*singleDom[\s\S]*<p className="text-slate-600 leading-7">\{subtitle\}<\/p>/);
   assert.equal(occurrences(source, "priceRows.map"), 1);
   assert.equal(occurrences(source, "{ t: \"1) Survey\""), 1);
   assert.equal(occurrences(source, "{ t: \"2) Design\""), 1);
