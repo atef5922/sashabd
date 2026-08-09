@@ -125,6 +125,14 @@ test("responsive header search instances use unique accessible IDs", () => {
   assert.doesNotMatch(search, /id="header-search(?:-results)?"/);
 });
 
+test("desktop About dropdown uses its canonical compact variant", () => {
+  const header = read("components/common/Header.tsx");
+
+  assert.match(header, /href: "\/about\/",\s*label: "About"/);
+  assert.match(header, /const isAboutDropdown = item\.href === "\/about\/"/);
+  assert.match(header, /!isControlSystemsDropdown && !isAboutDropdown/);
+});
+
 test("custom 404 and dynamic metadata implementations exist", () => {
   assert.match(htaccess, /ErrorDocument 404 \/404\.html/);
   assert.match(read("app/not-found.tsx"), /404 Error/);
@@ -648,4 +656,14 @@ test("Batch 3 close-out renders each Services semantic set once", () => {
   assert.equal((source.match(/const services = \[([\s\S]*?)\];/)?.[1].match(/\bicon:/g) ?? []).length, 4);
   assert.equal((source.match(/const steps = \[([\s\S]*?)\];/)?.[1].match(/\bn:/g) ?? []).length, 4);
   assert.equal(occurrences(source, "singleDom"), 9);
+});
+
+test("footer decorative waves use complete SVG curve commands", () => {
+  const source = read("components/common/Footer.tsx");
+  const wavePath = source.match(/d=\{`M0 [^`]+`\}/)?.[0] ?? "";
+
+  assert.match(wavePath, / C 40 .*?, 95 .*?, 160 \$\{46 - row\}`\}/);
+  assert.doesNotMatch(wavePath, /, 205 |, 240 /);
+  assert.doesNotMatch(wavePath, /undefined|null|NaN/);
+  assert.equal(occurrences(source, '<FooterBottomPattern side="'), 2);
 });
