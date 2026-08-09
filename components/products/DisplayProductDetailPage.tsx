@@ -2,11 +2,10 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import MobileFeaturedProductsRail from "@/components/products/MobileFeaturedProductsRail";
 import MobilePostFeaturedCta from "@/components/products/MobilePostFeaturedCta";
 import { normalizeDisplayedPriceText } from "@/lib/price";
 import type { ProductItem } from "../../lib/productsCatalog";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 
@@ -295,12 +294,20 @@ export default function DisplayProductDetailPage({
   overview,
 }: DisplayProductDetailPageProps) {
   const router = useRouter();
+  const featuredRailRef = useRef<HTMLDivElement | null>(null);
   const [activeTab, setActiveTab] = useState<"spec" | "description">("spec");
   const pitch = getSpecValue(product, "Pixel Pitch");
   const recommended = product.bestFor.join(", ");
   const completeSpecs = buildCompleteSpecs(product, detailedSpecs);
   const heroFeatures = buildHeroFeatures(product, completeSpecs);
   const descriptionParagraph = cleanText(buildDescriptionParagraph(product));
+
+  const scrollFeaturedRail = (direction: 1 | -1) => {
+    const track = featuredRailRef.current;
+    if (!track) return;
+    const amount = Math.max(track.clientWidth - 64, 220) * direction;
+    track.scrollBy({ left: amount, behavior: "smooth" });
+  };
 
   return (
     <div className="display-detail-desktop-copy mx-auto w-full max-w-7xl px-4 py-8 md:px-6">
@@ -473,113 +480,136 @@ export default function DisplayProductDetailPage({
       </section>
 
       <section className="mt-6">
-        <div className="hidden items-center justify-between gap-3 md:flex">
+        <div className="flex items-center justify-between gap-3">
           <div>
             <h2 className="text-base font-bold text-slate-900">Featured Products</h2>
-            <p className="text-xs text-slate-600">Related products you may also like.</p>
+            <p className="hidden text-xs text-slate-600 md:block">Related products you may also like.</p>
           </div>
-          <Link href={categoryHref} className="text-xs font-bold" style={{ color: BRAND.maroon }}>
-            View all products
+          <Link
+            prefetch={false}
+            href={categoryHref}
+            className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap text-[11px] font-bold text-slate-800 md:text-xs md:text-[#FF6A00]"
+          >
+            <span>View all products</span>
+            <span className="text-[#F56605] md:hidden">
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" aria-hidden="true">
+                <path d="M5 12h11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <path d="m12 7 5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
           </Link>
         </div>
 
-        <div className="mt-4">
-          <MobileFeaturedProductsRail
-            viewAllHref={categoryHref}
-            items={featuredProducts.map((item) => {
-              const detailHref = `${featuredHrefPrefix.replace(/\/+$/, "")}/${item.slug}`;
-              return {
-                id: item.slug,
-                href: detailHref,
-                title: item.title,
-                imageSrc: item.image,
-                imageAlt: item.title,
-                imageContainerClassName: "bg-white",
-                imageClassName:
-                  `${item.category}:${item.slug}` === "indoor:p3-076-indoor-led-display"
-                    ? "h-full w-full object-cover object-center transition duration-300"
-                    : imageFitFixIds.has(`${item.category}:${item.slug}`)
-                      ? `${item.category}:${item.slug}` === "indoor:p2-5-indoor-led-display"
-                        ? "h-full w-full object-cover object-[58%_center] transition duration-300"
-                        : "h-full w-full object-cover object-center transition duration-300"
-                      : "h-full w-full object-contain transition duration-300",
-              };
-            })}
-          />
-        </div>
+        <div className="relative mt-4">
+          <button
+            type="button"
+            onClick={() => scrollFeaturedRail(-1)}
+            className="absolute -left-2 top-[28%] z-20 inline-flex -translate-y-1/2 items-center justify-center p-0 text-[#F56605] transition active:scale-95 md:hidden"
+            aria-label="Previous Featured Products"
+          >
+            <svg viewBox="0 0 24 24" className="h-7 w-7 drop-shadow-[0_2px_4px_rgba(255,255,255,0.55)]" fill="none" aria-hidden="true">
+              <path d="m14 7-5 5 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
 
-        <div className="mt-4 hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-3">
-          {featuredProducts.map((item) => {
-            const detailHref = `${featuredHrefPrefix.replace(/\/+$/, "")}/${item.slug}`;
-
-            return (
-            <article
-              key={item.slug}
-              role="link"
-              tabIndex={0}
-              onClick={() => router.push(detailHref)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  router.push(detailHref);
-                }
-              }}
-              className="group cursor-pointer overflow-hidden rounded-3xl border bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-              style={{ borderColor: "rgba(15,23,42,0.10)" }}
+          <div className="overflow-hidden px-1 md:overflow-visible md:px-0">
+            <div
+              ref={featuredRailRef}
+              className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:pb-0 md:pt-0 lg:grid-cols-3"
             >
-              <Link href={detailHref} className="group block">
-                <div className="product-card-image-frame relative aspect-square w-full bg-white">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className={
-                      `${item.category}:${item.slug}` === "indoor:p3-076-indoor-led-display"
-                        ? "h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
-                        : imageFitFixIds.has(`${item.category}:${item.slug}`)
-                        ? `${item.category}:${item.slug}` === "indoor:p2-5-indoor-led-display"
-                          ? "h-full w-full object-cover object-[58%_center] transition duration-300 group-hover:scale-[1.03]"
-                          : "h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
-                        : "h-full w-full object-contain transition duration-300 group-hover:scale-[1.04]"
-                    }
-                    loading="lazy"
-                  />
-                  <span className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-800 shadow">
-                    {item.category === "outdoor" ? "Outdoor" : item.category === "rental" ? "Rental" : "Indoor"}
-                  </span>
-                  {item.pitchLabel ? (
-                    <span className="absolute right-3 top-3 rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white shadow">
-                      {item.pitchLabel}
-                    </span>
-                  ) : null}
-                </div>
-              </Link>
+              {featuredProducts.map((item) => {
+                const detailHref = `${featuredHrefPrefix.replace(/\/+$/, "")}/${item.slug}`;
 
-              <div className="p-5">
-                <Link href={detailHref} className="block">
-                  <div className="line-clamp-2 text-lg font-semibold text-slate-900">{item.title}</div>
-                </Link>
-                {item.cardPrice ? <p className="mt-1 text-sm font-semibold text-sky-700">{normalizeDisplayedPriceText(item.cardPrice)}</p> : null}
-                <div className="mt-3 flex items-center justify-between gap-3">
-                  <Link
-                    href="/contact/"
-                    onClick={(event) => event.stopPropagation()}
-                    className="relative z-20 inline-flex items-center rounded-full bg-sky-500 px-4 py-2 text-xs font-extrabold text-white whitespace-nowrap"
+                return (
+                  <article
+                    key={item.slug}
+                    role="link"
+                    tabIndex={0}
+                    onClick={() => router.push(detailHref)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        router.push(detailHref);
+                      }
+                    }}
+                    className="group flex h-full min-w-[calc((100%-0.75rem)/2)] shrink-0 basis-[calc((100%-0.75rem)/2)] snap-start cursor-pointer flex-col overflow-hidden rounded-md border bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg md:min-w-0 md:basis-auto md:rounded-3xl"
+                    style={{ borderColor: "rgba(15,23,42,0.10)" }}
                   >
-                    Request quotation
-                  </Link>
-                  <Link
-                    href={detailHref}
-                    onClick={(event) => event.stopPropagation()}
-                    className="text-sm font-bold whitespace-nowrap hover:underline group-hover:underline"
-                    style={{ color: BRAND.maroon }}
-                  >
-                    View details -&gt;
-                  </Link>
-                </div>
-              </div>
-            </article>
-          )})}
+                    <Link href={detailHref} className="group block">
+                      <div className="product-card-image-frame relative aspect-[4/3] w-full bg-white md:aspect-square">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className={
+                            `${item.category}:${item.slug}` === "indoor:p3-076-indoor-led-display"
+                              ? "h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
+                              : imageFitFixIds.has(`${item.category}:${item.slug}`)
+                              ? `${item.category}:${item.slug}` === "indoor:p2-5-indoor-led-display"
+                                ? "h-full w-full object-cover object-[58%_center] transition duration-300 group-hover:scale-[1.03]"
+                                : "h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
+                              : "h-full w-full object-contain transition duration-300 group-hover:scale-[1.04]"
+                          }
+                          loading="lazy"
+                        />
+                        <span className="absolute left-3 top-3 hidden rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-800 shadow md:block">
+                          {item.category === "outdoor" ? "Outdoor" : item.category === "rental" ? "Rental" : "Indoor"}
+                        </span>
+                        {item.pitchLabel ? (
+                          <span className="absolute right-3 top-3 hidden rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white shadow md:block">
+                            {item.pitchLabel}
+                          </span>
+                        ) : null}
+                      </div>
+                    </Link>
+
+                    <div className="flex flex-1 flex-col p-3 md:block md:p-5">
+                      <Link href={detailHref} className="block">
+                        <div className="min-h-[2.55rem] line-clamp-2 text-[13px] font-bold leading-snug text-slate-900 md:min-h-0 md:text-lg md:font-semibold">
+                          {item.title}
+                        </div>
+                      </Link>
+                      {item.cardPrice ? (
+                        <p className="mt-1 hidden text-sm font-semibold text-sky-700 md:block">{normalizeDisplayedPriceText(item.cardPrice)}</p>
+                      ) : null}
+                      <div className="mt-auto pt-3 md:mt-3 md:flex md:items-center md:justify-between md:gap-3 md:pt-0">
+                        <Link
+                          href="/contact/"
+                          onClick={(event) => event.stopPropagation()}
+                          className="relative z-20 hidden items-center rounded-full bg-sky-500 px-4 py-2 text-xs font-extrabold text-white whitespace-nowrap md:inline-flex"
+                        >
+                          Request quotation
+                        </Link>
+                        <Link
+                          href={detailHref}
+                          onClick={(event) => event.stopPropagation()}
+                          className="inline-flex min-h-8 w-full items-center justify-between rounded-md border border-[#F56605]/20 bg-[#FFF7F1] py-1 pl-3 pr-1 text-[10px] font-bold leading-tight text-[#C84B00] shadow-sm transition hover:border-[#F56605]/35 hover:bg-[#FFF1E8] md:min-h-0 md:w-auto md:border-0 md:bg-transparent md:p-0 md:text-sm md:shadow-none md:hover:bg-transparent md:hover:underline md:group-hover:underline"
+                        >
+                          <span>View details -&gt;</span>
+                          <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#F56605] text-white shadow-[0_5px_12px_rgba(245,102,5,0.22)] md:hidden">
+                            <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" aria-hidden="true">
+                              <path d="m10 7 5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => scrollFeaturedRail(1)}
+            className="absolute -right-2 top-[28%] z-20 inline-flex -translate-y-1/2 items-center justify-center p-0 text-[#F56605] transition active:scale-95 md:hidden"
+            aria-label="Next Featured Products"
+          >
+            <svg viewBox="0 0 24 24" className="h-7 w-7 drop-shadow-[0_2px_4px_rgba(255,255,255,0.55)]" fill="none" aria-hidden="true">
+              <path d="m10 7 5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
         </div>
       </section>
 

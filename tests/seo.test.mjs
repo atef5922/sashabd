@@ -118,6 +118,15 @@ test("LED display products use one responsive card render path", () => {
   assert.match(productGrid, /desktopPagedProductIds\.has\(product\.id\)/);
 });
 
+test("LED product details render one Featured Products dataset", () => {
+  const source = read("components/products/DisplayProductDetailPage.tsx");
+  const featuredSection = source.match(/<section className="mt-6">([\s\S]*?)<MobilePostFeaturedCta/)?.[1];
+
+  assert.ok(featuredSection, "Featured Products section source must be present");
+  assert.equal((featuredSection.match(/featuredProducts\.map\(\(item\)/g) ?? []).length, 1);
+  assert.doesNotMatch(featuredSection, /MobileFeaturedProductsRail/);
+});
+
 test("indoor LED page duplicate-prone groups render from one semantic source", () => {
   const source = read("modules/routes/catalog/indoor/page.tsx");
   const filter = read("components/products/IndoorFilterSection.tsx");
