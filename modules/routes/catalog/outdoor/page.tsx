@@ -5,6 +5,7 @@ import { siteConfig } from "@/lib/site";
 import { getLedDisplayTablePrice, ledAccessoriesCatalog, outdoorCatalog } from "@/lib/productsCatalog";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
+import MobileDisclosure from "@/components/common/MobileDisclosure";
 import MobileIntroText from "@/components/common/MobileIntroText";
 import OutdoorFilterSection from "@/components/products/OutdoorFilterSection";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
@@ -43,6 +44,12 @@ const BRAND = {
   maroon: "#FF6A00",
   maroonDark: "#E45700",
 };
+
+const outdoorCategoryLinks = [
+  { t: "Indoor LED Displays", d: "Showroom, conference, control room solutions.", href: "/led-display/indoor-led/" },
+  { t: "Outdoor LED Displays", d: "Billboards, rooftop signage, public screens.", href: "/led-display/outdoor/" },
+  { t: "Rental LED Displays", d: "Stage events, concerts, quick setup cabinets.", href: "/led-display/rental-display/" },
+];
 
 function getPitchLabel(p: (typeof outdoorCatalog)[number]): string {
   const spec = p.keySpecs.find((x) => x.k.toLowerCase().includes("pixel"));
@@ -88,6 +95,7 @@ const Section = ({
         teaserClassName="w-full leading-6"
         expandedClassName="text-sm leading-7 text-slate-600"
         desktopClassName="text-slate-600 leading-7"
+        singleDom
       >
         <p className="text-slate-600 leading-7">{subtitle}</p>
       </MobileIntroText>
@@ -95,6 +103,27 @@ const Section = ({
     <div className="mt-5">{children}</div>
   </section>
 );
+
+function responsiveCardStyle(index: number, desktopBorderColor = `${BRAND.maroon}10`) {
+  return {
+    "--mobile-border-color": index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
+    "--mobile-bg":
+      index % 2 === 0
+        ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
+        : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
+    "--desktop-border-color": desktopBorderColor,
+  } as React.CSSProperties;
+}
+
+function priceRowStyle(index: number) {
+  return {
+    "--price-mobile-border": index % 2 === 0 ? "rgba(110,231,183,0.65)" : "rgba(125,211,252,0.65)",
+    "--price-mobile-bg":
+      index % 2 === 0
+        ? "linear-gradient(180deg, rgba(236,253,245,1) 0%, rgba(240,253,250,1) 100%)"
+        : "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)",
+  } as React.CSSProperties;
+}
 
 const CardGrid = ({ items }: { items: { i?: React.ReactNode; t: string; d: string; bullets?: string[] }[] }) => (
   <>
@@ -219,6 +248,7 @@ export default function OutdoorProductsPage() {
             teaser="Outdoor LED displays are built for daylight visibility, weather resistance and long-distance readability in Bangladesh."
             expandedClassName="mt-3"
             desktopClassName="mt-3"
+            singleDom
           >
             <p className="w-full text-justify text-slate-600 leading-7">
               <strong>Outdoor LED Displays</strong> are engineered for strong daylight visibility, weather resistance, and long-distance readability
@@ -1370,78 +1400,52 @@ export default function OutdoorProductsPage() {
  title="Outdoor LED Display Price Per Square Feet in Bangladesh"
         subtitle="Indicative pricing by pixel pitch for quick comparison. For BOQ-based pricing, please share your required screen size and installation location."
       >
-        <details className="group md:hidden">
-          <summary
-            className="list-none cursor-pointer rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900 [::-webkit-details-marker]:hidden"
-            style={{ borderColor: `${BRAND.maroon}14`, background: "linear-gradient(180deg, rgba(236,253,245,1) 0%, rgba(220,252,231,1) 100%)" }}
-          >
-            Tap To Expand Price List
-          </summary>
-          <div className="mt-3 space-y-3">
+        <MobileDisclosure
+          label="Tap To Expand Price List"
+          buttonClassName="cursor-pointer rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900"
+          buttonStyle={{ borderColor: `${BRAND.maroon}14`, background: "linear-gradient(180deg, rgba(236,253,245,1) 0%, rgba(220,252,231,1) 100%)" }}
+          contentClassName="mt-3 space-y-3 md:mt-0 md:space-y-0 md:overflow-x-auto md:rounded-3xl md:border"
+          contentStyle={{ borderColor: `${BRAND.maroon}18` }}
+          desktopDisplayClassName="md:block"
+        >
+          <div>
+            <div className="hidden grid-cols-12 gap-0 border-b border-slate-200 bg-emerald-50 px-4 py-3 text-[11px] font-extrabold uppercase tracking-wide text-slate-700 md:grid">
+              <div className="col-span-7 border-r border-slate-200">Outdoor LED Model</div>
+              <div className="col-span-3 border-r border-slate-200 text-center">Pixel Pitch</div>
+              <div className="col-span-2 text-right">Approx. Price (Per Sq.Ft)</div>
+            </div>
+
             {outdoorPriceRows.map(({ p, pitchNum, pitchLabel, price }, index) => (
               <article
                 key={p.slug}
-                className="overflow-hidden rounded-[14px] border"
-                style={{
-                  borderColor: index % 2 === 0 ? "rgba(110,231,183,0.65)" : "rgba(125,211,252,0.65)",
-                  background:
-                    index % 2 === 0
-                      ? "linear-gradient(180deg, rgba(236,253,245,1) 0%, rgba(240,253,250,1) 100%)"
-                      : "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)",
-                }}
+                className="overflow-hidden rounded-[14px] border border-[var(--price-mobile-border)] bg-[var(--price-mobile-bg)] md:grid md:grid-cols-12 md:items-center md:gap-0 md:rounded-none md:border-0 md:border-b md:border-slate-200 md:bg-white md:px-4 md:py-3 md:text-sm md:last:border-b-0"
+                style={priceRowStyle(index)}
               >
-                <div className="px-4 py-3">
+                <div className="px-4 py-3 md:col-span-7 md:border-r md:border-slate-200 md:px-0 md:py-0 md:pr-4">
                   <Link
                     href={`/led-display/outdoor/${p.slug}/`}
-                    className="text-[15px] font-extrabold leading-snug text-slate-900"
+                    className="text-[15px] font-extrabold leading-snug text-slate-900 md:text-sm md:font-semibold md:hover:underline"
                     style={{ textDecorationColor: `${BRAND.maroon}88` }}
                     title="Click to view full specifications"
                   >
                     {p.title}
                   </Link>
-                  <p className="mt-1 text-[12.5px] leading-6 text-slate-600">{p.subtitle}</p>
+                  <p className="mt-1 text-[12.5px] leading-6 text-slate-600 md:text-xs md:leading-normal md:text-slate-500">{p.subtitle}</p>
                 </div>
-                <div className="grid grid-cols-2 border-t" style={{ borderColor: "rgba(148,163,184,0.18)" }}>
-                  <div className="border-r px-4 py-3" style={{ borderColor: "rgba(148,163,184,0.18)" }}>
-                    <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00]">Pixel Pitch</div>
-                    <div className="mt-1 text-[13px] font-bold text-slate-900">{pitchNum != null ? `${pitchNum} mm` : pitchLabel}</div>
+                <div className="grid grid-cols-2 border-t border-[rgba(148,163,184,0.18)] md:contents">
+                  <div className="border-r border-[rgba(148,163,184,0.18)] px-4 py-3 md:col-span-3 md:border-slate-200 md:px-0 md:py-0 md:text-center md:text-sm md:text-slate-700">
+                    <div data-label="Pixel Pitch" className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-[#C84B00] before:content-[attr(data-label)] md:hidden" />
+                    <div className="mt-1 text-[13px] font-bold text-slate-900 md:mt-0 md:text-sm md:font-normal md:text-slate-700">{pitchNum != null ? `${pitchNum} mm` : pitchLabel}</div>
                   </div>
-                  <div className="px-4 py-3">
-                    <div className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-emerald-700">Approx. Price</div>
-                    <div className="mt-1 text-[13px] font-bold text-slate-900">{price}</div>
+                  <div className="px-4 py-3 md:col-span-2 md:px-0 md:py-0 md:text-right">
+                    <div data-label="Approx. Price" className="text-[10px] font-extrabold uppercase tracking-[0.08em] text-emerald-700 before:content-[attr(data-label)] md:hidden" />
+                    <div className="mt-1 text-[13px] font-bold text-slate-900 md:mt-0 md:text-sm md:font-semibold md:text-slate-800">{price}</div>
                   </div>
                 </div>
               </article>
             ))}
           </div>
-        </details>
-
-        <div className="hidden overflow-hidden rounded-3xl border md:block" style={{ borderColor: `${BRAND.maroon}18` }}>
-          <div className="grid grid-cols-12 gap-0 border-b border-slate-200 bg-emerald-50 px-4 py-3 text-[11px] font-extrabold uppercase tracking-wide text-slate-700">
-            <div className="col-span-7 border-r border-slate-200">Outdoor LED Model</div>
-            <div className="col-span-3 border-r border-slate-200 text-center">Pixel Pitch</div>
-            <div className="col-span-2 text-right">Approx. Price (Per Sq.Ft)</div>
-          </div>
-          <div className="divide-y divide-slate-200">
-            {outdoorPriceRows.map(({ p, pitchNum, pitchLabel, price }) => (
-              <div key={p.slug} className="grid grid-cols-12 items-center gap-0 bg-white px-4 py-3 text-sm">
-                <div className="col-span-7 border-r border-slate-200 pr-4">
-                  <Link
-                    href={`/led-display/outdoor/${p.slug}/`}
-                    className="font-semibold text-slate-900 hover:underline"
-                    style={{ textDecorationColor: `${BRAND.maroon}88` }}
-                    title="Click to view full specifications"
-                  >
-                    {p.title}
-                  </Link>
-                  <div className="mt-1 text-xs text-slate-500">{p.subtitle}</div>
-                </div>
-                <div className="col-span-3 border-r border-slate-200 px-4 text-center text-sm text-slate-700">{pitchNum != null ? `${pitchNum} mm` : pitchLabel}</div>
-                <div className="col-span-2 text-right text-sm font-semibold text-slate-800">{price}</div>
-              </div>
-            ))}
-          </div>
-        </div>
+        </MobileDisclosure>
 
         <div className="mt-4 hidden flex-nowrap gap-2 overflow-x-auto pb-1 text-xs font-semibold text-slate-700 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:flex md:flex-wrap md:overflow-visible md:pb-0">
  {["Tip: Smaller pitch = higher cost", "Outdoor: SPD + grounding recommended", "For exact BOQ: share W x H + location"].map(
@@ -1469,48 +1473,17 @@ export default function OutdoorProductsPage() {
         }
  subtitle="Compare indoor, outdoor and rental options-then choose the best category for your project."
       >
-        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
-          {[
-            { t: "Indoor LED Displays", d: "Showroom, conference, control room solutions.", href: "/led-display/indoor-led/" },
-            { t: "Outdoor LED Displays", d: "Billboards, rooftop signage, public screens.", href: "/led-display/outdoor/" },
-            { t: "Rental LED Displays", d: "Stage events, concerts, quick setup cabinets.", href: "/led-display/rental-display/" },
-          ].map((x, index) => (
+        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible md:px-0 md:pb-0 md:pt-0">
+          {outdoorCategoryLinks.map((x, index) => (
             <Link
               key={x.t}
               href={x.href}
-              className="group w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4 transition"
-              style={{
-                borderColor: index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
-                background:
-                  index % 2 === 0
-                    ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
-                    : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
-              }}
+              className="group w-[89%] shrink-0 snap-start rounded-[14px] border border-[var(--mobile-border-color)] bg-[var(--mobile-bg)] px-4 py-4 transition md:w-auto md:rounded-3xl md:border-[var(--desktop-border-color)] md:bg-slate-50 md:p-6 md:hover:-translate-y-0.5 md:hover:bg-white md:hover:shadow-md"
+              style={responsiveCardStyle(index, `${BRAND.maroon}12`)}
             >
-              <div className="text-[17px] font-extrabold leading-snug text-slate-900">{x.t}</div>
-              <p className="mt-2 text-[13px] leading-6 text-slate-700">{x.d}</p>
-              <div className="mt-4 text-[12px] font-bold" style={{ color: BRAND.maroon }}>
-                Explore -&gt;
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        <div className="hidden gap-4 md:grid md:grid-cols-3">
-          {[
-            { t: "Indoor LED Displays", d: "Showroom, conference, control room solutions.", href: "/led-display/indoor-led/" },
-            { t: "Outdoor LED Displays", d: "Billboards, rooftop signage, public screens.", href: "/led-display/outdoor/" },
-            { t: "Rental LED Displays", d: "Stage events, concerts, quick setup cabinets.", href: "/led-display/rental-display/" },
-          ].map((x) => (
-            <Link
-              key={x.t}
-              href={x.href}
-              className="group rounded-3xl border bg-slate-50 p-6 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-md"
-              style={{ borderColor: `${BRAND.maroon}12` }}
-            >
-              <div className="text-lg font-extrabold text-slate-900">{x.t}</div>
-              <p className="mt-2 text-sm text-slate-600 leading-7">{x.d}</p>
-              <div className="mt-4 text-sm font-bold" style={{ color: BRAND.maroon }}>
+              <div className="text-[17px] font-extrabold leading-snug text-slate-900 md:text-lg">{x.t}</div>
+              <p className="mt-2 text-[13px] leading-6 text-slate-700 md:text-sm md:leading-7 md:text-slate-600">{x.d}</p>
+              <div className="mt-4 text-[12px] font-bold md:text-sm" style={{ color: BRAND.maroon }}>
                 Explore -&gt;{" "}
               </div>
             </Link>

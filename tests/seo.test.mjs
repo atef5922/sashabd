@@ -67,13 +67,34 @@ test("sitemap uses canonical utility and stable last-modified values", () => {
   assert.match(sitemap, /new Date\("2026-08-01T00:00:00\.000Z"\)/);
 });
 
-test("robots.txt remains crawlable and declares only the canonical sitemap", () => {
+test("production robots.txt remains crawlable and Vercel staging is blocked", () => {
   const robots = read("app/robots.ts");
+  const layout = read("app/layout.tsx");
+  const seo = read("lib/seo.ts");
+  const deployment = read("lib/deployment.ts");
   const headers = read("public/_headers");
-  assert.match(robots, /allow: "\/"/);
-  assert.doesNotMatch(robots, /disallow:\s*\[?"\/"/i);
-  assert.match(robots, /absoluteUrl\("\/sitemap\.xml"\)/);
+  const stagingBranch = sectionBetween(robots, "if (isVercelStagingBuild())", "\n\n  return {");
+  const productionBranch = robots.slice(robots.indexOf("\n\n  return {") + 2);
+
+  assert.match(deployment, /process\.env\.VERCEL === "1"/);
+  assert.match(stagingBranch, /disallow: "\/"/);
+  assert.match(productionBranch, /allow: "\/"/);
+  assert.match(productionBranch, /absoluteUrl\("\/sitemap\.xml"\)/);
+  assert.match(layout, /const allowIndexing = !isVercelStagingBuild\(\)/);
+  assert.match(seo, /const allowIndexing = index && !isVercelStagingBuild\(\)/);
   assert.doesNotMatch(headers, /^\/\*\.txt\s*\r?\n\s*X-Robots-Tag: noindex/m);
+});
+
+test("Vercel applies a global staging noindex response header", () => {
+  const config = JSON.parse(read("vercel.json"));
+  const wildcard = config.headers.find((entry) => entry.source === "/(.*)");
+  const robotsHeader = wildcard?.headers.find((header) => header.key.toLowerCase() === "x-robots-tag");
+  const ledSources = sourceFiles(path.join(root, "app", "led-display"));
+
+  assert.equal(robotsHeader?.value, "noindex, nofollow");
+  for (const file of ledSources) {
+    assert.doesNotMatch(readFileSync(file, "utf8"), /robots:\s*\{\s*index:\s*true,\s*follow:\s*true\s*\}/);
+  }
 });
 
 test("public source contains no hardcoded HTTP/www or legacy navigation URLs", () => {
@@ -125,6 +146,53 @@ test("LED product details render one Featured Products dataset", () => {
   assert.ok(featuredSection, "Featured Products section source must be present");
   assert.equal((featuredSection.match(/featuredProducts\.map\(\(item\)/g) ?? []).length, 1);
   assert.doesNotMatch(featuredSection, /MobileFeaturedProductsRail/);
+});
+
+test("LED product detail hero is LCP-ready and Product schema stays factual", () => {
+  const source = read("components/products/DisplayProductDetailPage.tsx");
+  const schemaComponent = read("components/products/ProductStructuredData.tsx");
+  const schema = read("lib/productStructuredData.ts");
+  const hero = source.match(/<section className="grid gap-4[\s\S]*?<div>\s*<h1/)?.[0];
+
+  assert.ok(hero, "Product hero source must be present");
+  assert.match(hero, /loading="eager"/);
+  assert.match(hero, /fetchPriority="high"/);
+  assert.match(hero, /decoding="async"/);
+  assert.match(hero, /width=\{heroImageDimensions\.width\}/);
+  assert.match(hero, /height=\{heroImageDimensions\.height\}/);
+  assert.doesNotMatch(hero, /loading="lazy"/);
+  assert.match(schemaComponent, /type="application\/ld\+json"/);
+  assert.match(schemaComponent, /buildProductStructuredData/);
+  assert.doesNotMatch(source, /buildProductStructuredData/);
+  for (const file of [
+    "modules/routes/catalog/indoor/product-page.tsx",
+    "modules/routes/catalog/outdoor/product-page.tsx",
+    "modules/routes/catalog/rental/product-page.tsx",
+  ]) {
+    assert.match(read(file), /<ProductStructuredData/);
+  }
+  assert.match(schema, /"@type": "Product"/);
+  assert.match(schema, /name: product\.title/);
+  assert.match(schema, /url: absoluteUrl\(path\)/);
+  assert.match(schema, /description: product\.subtitle/);
+  assert.doesNotMatch(schema, /AggregateOffer|\boffers?\s*:|\bbrand\s*:|\bsku\s*:|\bmodel\s*:|\bgtin\w*\s*:|\bmpn\s*:/i);
+});
+
+test("outdoor LED price and category sections use one responsive semantic source", () => {
+  const source = read("modules/routes/catalog/outdoor/page.tsx");
+  const sectionWrapper = sectionBetween(source, "const Section = ({", "function responsiveCardStyle");
+  const categoryData = sectionBetween(source, "const outdoorCategoryLinks", "function getPitchLabel");
+  const priceSection = sectionBetween(source, "Outdoor LED Display Price Per Square Feet in Bangladesh", "Explore LED Display Categories");
+  const categorySection = sectionBetween(source, "Explore LED Display Categories", "City Wise Outdoor LED Display Deployment");
+
+  assert.match(sectionWrapper, /singleDom/);
+  assert.equal(occurrences(source, "singleDom"), 2);
+  assert.equal(occurrences(priceSection, "outdoorPriceRows.map"), 1);
+  assert.match(priceSection, /<MobileDisclosure/);
+  assert.equal(occurrences(categorySection, "outdoorCategoryLinks.map"), 1);
+  for (const label of ["Indoor LED Displays", "Outdoor LED Displays", "Rental LED Displays"]) {
+    assert.equal(occurrences(categoryData, label), 1);
+  }
 });
 
 test("indoor LED page duplicate-prone groups render from one semantic source", () => {

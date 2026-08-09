@@ -50,6 +50,17 @@ const imageFitFixIds = new Set<string>([
   "outdoor:p10-outdoor-led-display-module",
 ]);
 
+const defaultHeroImageDimensions = { width: 1536, height: 1024 };
+const heroImageDimensionOverrides: Record<string, { width: number; height: number }> = {
+  "/images/outdoor/Premium Quality Outdoor LED Display.webp": { width: 1448, height: 1086 },
+  "/images/rental/P2.6-Rental-LED-Display.webp": { width: 1024, height: 1024 },
+  "/images/indoor/P4 Indoor LED Display.webp": { width: 1824, height: 862 },
+};
+
+function getHeroImageDimensions(image: string) {
+  return heroImageDimensionOverrides[image] ?? defaultHeroImageDimensions;
+}
+
 function getSpecValue(product: ProductItem, key: string): string | null {
   const match = product.keySpecs.find((s) => s.k.toLowerCase() === key.toLowerCase());
   return match?.v ?? null;
@@ -301,6 +312,7 @@ export default function DisplayProductDetailPage({
   const completeSpecs = buildCompleteSpecs(product, detailedSpecs);
   const heroFeatures = buildHeroFeatures(product, completeSpecs);
   const descriptionParagraph = cleanText(buildDescriptionParagraph(product));
+  const heroImageDimensions = getHeroImageDimensions(product.image);
 
   const scrollFeaturedRail = (direction: 1 | -1) => {
     const track = featuredRailRef.current;
@@ -330,8 +342,12 @@ export default function DisplayProductDetailPage({
           <img
             src={product.image}
             alt={product.title}
+            width={heroImageDimensions.width}
+            height={heroImageDimensions.height}
             className="h-full w-full object-contain bg-white p-2"
-            loading="lazy"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
           />
         </div>
 

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import DisplayProductDetailPage from "@/components/products/DisplayProductDetailPage";
+import ProductStructuredData from "@/components/products/ProductStructuredData";
 import { siteConfig } from "@/lib/site";
 import { getRelatedProducts, outdoorCatalog } from "@/lib/productsCatalog";
 import { buildProductMetadata, compactProductTitle, ensureMetaDescription } from "@/lib/seo";
@@ -40,7 +41,13 @@ export default async function OutdoorProductDetailsPage(
   const detailedSpecs = product.keySpecs;
 
   return (
-    <DisplayProductDetailPage
+    <>
+      <ProductStructuredData
+        product={product}
+        categoryLabel="Outdoor"
+        path={`/led-display/outdoor/${product.slug}/`}
+      />
+      <DisplayProductDetailPage
       product={product}
       categoryLabel="Outdoor"
       categoryHref="/led-display/outdoor/"
@@ -56,7 +63,8 @@ export default async function OutdoorProductDetailsPage(
         { href: "/contact/", label: "BOQ quotation" },
         { href: "/services-support/", label: "Installation & maintenance" },
       ]}
-      overview={`${product.title} is suitable for outdoor visibility where weather conditions, installation safety, and content readability from distance are critical. Final planning should confirm height, viewing angle, and stable power routing.`}
-    />
+        overview={`${product.title} is suitable for outdoor visibility where weather conditions, installation safety, and content readability from distance are critical. Final planning should confirm height, viewing angle, and stable power routing.`}
+      />
+    </>
   );
 }

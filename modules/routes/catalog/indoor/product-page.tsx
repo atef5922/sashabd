@@ -1,6 +1,7 @@
 import { notFound, permanentRedirect } from "next/navigation";
 import type { Metadata } from "next";
 import DisplayProductDetailPage from "@/components/products/DisplayProductDetailPage";
+import ProductStructuredData from "@/components/products/ProductStructuredData";
 import { siteConfig } from "@/lib/site";
 import { getProductsByCategory, getRelatedProducts } from "@/lib/productsCatalog";
 import { buildProductMetadata, ensureMetaDescription } from "@/lib/seo";
@@ -91,7 +92,13 @@ export default async function IndoorProductDetailsPage(
       : overview;
 
   return (
-    <DisplayProductDetailPage
+    <>
+      <ProductStructuredData
+        product={product}
+        categoryLabel="Indoor"
+        path={`/led-display/indoor-led/${product.slug}/`}
+      />
+      <DisplayProductDetailPage
       product={product}
       categoryLabel="Indoor"
       categoryHref="/led-display/indoor-led/"
@@ -107,7 +114,8 @@ export default async function IndoorProductDetailsPage(
         { href: "/contact/", label: "BOQ quotation" },
         { href: "/services-support/", label: "Installation & maintenance" },
       ]}
-      overview={pageOverview}
-    />
+        overview={pageOverview}
+      />
+    </>
   );
 }

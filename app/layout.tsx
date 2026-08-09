@@ -11,6 +11,7 @@ import Script from "next/script";
 import { GA_ID } from "@/lib/gtag";
 import GaPageview from "@/components/analytics/GaPageview";
 import { BRAND_NAME } from "@/lib/brand";
+import { isVercelStagingBuild } from "@/lib/deployment";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ const notoSansBengali = Noto_Sans_Bengali({
 
 const siteUrl = getSiteBaseUrl();
 const socialImage = socialImageUrl();
+const allowIndexing = !isVercelStagingBuild();
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -35,12 +37,12 @@ export const metadata: Metadata = {
   description:
     "Sasha Corporation provides indoor, outdoor, rental and accessory solutions with planning, installation and long-term support.",
   robots: {
-    index: true,
-    follow: true,
+    index: allowIndexing,
+    follow: allowIndexing,
     nocache: false,
     googleBot: {
-      index: true,
-      follow: true,
+      index: allowIndexing,
+      follow: allowIndexing,
       "max-image-preview": "large",
       "max-snippet": -1,
       "max-video-preview": -1,
