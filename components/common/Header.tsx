@@ -268,11 +268,11 @@ export default function Header() {
         </Link>
 
         <div className="min-w-0 flex-1 md:hidden">
-          <HeaderSearch isScrolled={isScrolled} className="max-w-none" />
+          <HeaderSearch isScrolled={isScrolled} inputId="header-search-mobile" className="max-w-none" />
         </div>
 
         <div className="hidden md:flex flex-1 items-center px-4">
-          <HeaderSearch isScrolled={isScrolled} />
+          <HeaderSearch isScrolled={isScrolled} inputId="header-search-desktop" />
         </div>
 
         <a

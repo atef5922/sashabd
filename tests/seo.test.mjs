@@ -113,6 +113,18 @@ test("public source contains no hardcoded HTTP/www or legacy navigation URLs", (
   assert.deepEqual([...new Set(violations)], []);
 });
 
+test("responsive header search instances use unique accessible IDs", () => {
+  const header = read("components/common/Header.tsx");
+  const search = read("components/common/HeaderSearch.tsx");
+
+  assert.match(header, /inputId="header-search-mobile"/);
+  assert.match(header, /inputId="header-search-desktop"/);
+  assert.match(search, /htmlFor=\{inputId\}/);
+  assert.match(search, /id=\{inputId\}/);
+  assert.match(search, /const resultsId = `\$\{inputId\}-results`/);
+  assert.doesNotMatch(search, /id="header-search(?:-results)?"/);
+});
+
 test("custom 404 and dynamic metadata implementations exist", () => {
   assert.match(htaccess, /ErrorDocument 404 \/404\.html/);
   assert.match(read("app/not-found.tsx"), /404 Error/);
@@ -192,6 +204,131 @@ test("outdoor LED price and category sections use one responsive semantic source
   assert.equal(occurrences(categorySection, "outdoorCategoryLinks.map"), 1);
   for (const label of ["Indoor LED Displays", "Outdoor LED Displays", "Rental LED Displays"]) {
     assert.equal(occurrences(categoryData, label), 1);
+  }
+});
+
+test("outdoor LED duplicate-prone groups render one canonical semantic set", () => {
+  const source = read("modules/routes/catalog/outdoor/page.tsx");
+  const filter = read("components/products/OutdoorFilterSection.tsx");
+  const cardGrid = sectionBetween(source, "const CardGrid", "export default function OutdoorProductsPage");
+
+  assert.equal(occurrences(filter, "mobileDisplayRows.map((row, index)"), 1);
+  assert.equal(occurrences(filter, "displayCards.map((p) => renderDisplayCard(p))"), 0);
+  assert.match(filter, /desktopContents/);
+  assert.equal(occurrences(cardGrid, "items.map((x, index)"), 1);
+
+  for (const [start, end, labels] of [
+    [
+      "Key Features of Outdoor LED Display",
+      "Why Choose Outdoor LED Display",
+      ["High Brightness Visibility", "Weather-Resistant Build", "Long-Distance Readability", "Stable Power & Protection"],
+    ],
+    [
+      "Why Choose Outdoor LED Display",
+      "Outdoor vs Indoor LED Display Comparison",
+      ["Sunlight readable high brightness", "IP65 / IP66 weather protection", "Long-distance visibility", "24/7 operation support", "Energy-efficient design", "Remote content management", "Power protection and voltage stability", "Serviceable modular maintenance", "Advertisement and announcement in one screen"],
+    ],
+    [
+      "Outdoor vs Indoor LED Display Comparison",
+      "Applications of outdoor LED Displays",
+      ["Brightness", "Waterproof rating", "Viewing distance", "Pixel pitch range", "Installation area", "Cabinet protection", "Use case", "Price range"],
+    ],
+    [
+      "Applications of outdoor LED Displays",
+      "Outdoor LED Display Installation Process",
+      ["Roadside advertising LED billboard", "Rooftop LED display", "Shopping mall outdoor signage", "Corporate branding display", "Petrol pump digital signage", "Hotel / restaurant front signage", "Government notice display", "Event & stadium perimeter display"],
+    ],
+    [
+      "Outdoor LED Display Installation Process",
+      "Outdoor LED Display Project Consultation in Bangladesh",
+      ["Site survey", "Screen size planning", "Structure design", "Electrical planning", "LED cabinet installation", "Configuration & calibration", "Testing & handover", "After-sales support"],
+    ],
+    [
+      "Outdoor LED Display Project Consultation in Bangladesh",
+      "Outdoor LED Installation Checklist (Weather + Safety)",
+      ["Location + environment: rooftop / roadside / market / highway", "Viewing distance (near & far) + audience angle", "Target screen size (ft) or wall size (W x H)", "Content source: live HDMI / scheduled playback / remote control", "Power: single/three phase + backup (IPS/Generator)", "Weatherproof structure + service access (front/rear)", "Safety: earthing + surge protection (SPD) planning"],
+    ],
+    [
+      "Outdoor LED Installation Checklist (Weather + Safety)",
+      "Outdoor LED Pixel Pitch Guide for Bangladesh (P2.5 to P10)",
+      ["Weatherproof build", "Power & protection", "Signal & control", "Commissioning"],
+    ],
+    [
+      "Outdoor LED Pixel Pitch Guide for Bangladesh (P2.5 to P10)",
+      "Outdoor LED Display Maintenance and Performance Tips",
+      ["Close roadside branding (P2.5-P4)", "Mid-range city visibility (P5-P6.67)", "Long-distance highways (P8-P10)", "Selection checklist before purchase"],
+    ],
+    [
+      "Outdoor LED Screen Waterproof & Durability",
+      "Outdoor LED Display Price Per Square Feet in Bangladesh",
+      ["Rain protection", "Dust protection", "Heat resistance", "Rust-resistant structure", "Stable outdoor performance", "Wind load considerations", "24/7 reliability"],
+    ],
+    [
+      "City Wise Outdoor LED Display Deployment",
+      "FAQs About Outdoor LED Display in Bangladesh",
+      ["Outdoor LED Display in Dhaka", "Outdoor LED Display in Chattogram", "Outdoor LED Billboard in Sylhet", "Outdoor Advertising Screen in Khulna", "Outdoor LED Display in Rajshahi", "Outdoor LED Display in Barishal", "Outdoor LED Display in Rangpur", "Outdoor LED Display in Mymensingh"],
+    ],
+  ]) {
+    const section = sectionBetween(source, start, end);
+    for (const label of labels) {
+      assert.equal(occurrences(section, label), 1, `${label} must appear once in ${start}`);
+    }
+  }
+});
+
+test("rental LED duplicate-prone groups render one canonical semantic set", () => {
+  const source = read("modules/routes/catalog/rental/page.tsx");
+  const sectionWrapper = sectionBetween(source, "const Section = ({", "function responsiveCardStyle");
+  const cardGrid = sectionBetween(source, "const CardGrid", "export default function RentalProductsPage");
+
+  assert.equal(occurrences(source, "singleDom"), 2);
+  assert.match(sectionWrapper, /singleDom/);
+  assert.equal(occurrences(source, "mobileDisplayRows.map((row, index)"), 1);
+  assert.equal(occurrences(source, "displayCards.map((p) => renderDisplayCard(p))"), 0);
+  assert.match(source, /desktopContents/);
+  assert.equal(occurrences(cardGrid, "items.map((x, index)"), 1);
+
+  for (const [start, end, labels] of [
+    [
+      "Types of LED Display Rental Solutions",
+      "Why Choose Our Rental LED Display",
+      ["Indoor Rental LED Display", "Outdoor Rental LED Screen", "Stage Background LED Screen", "Concert LED Video Wall", "Wedding LED Display", "Corporate Event LED Screen", "Exhibition LED Display"],
+    ],
+    [
+      "Why Choose Our Rental LED Display",
+      "LED Screen Rental for Events",
+      ["High brightness LED panels", "Seamless video wall display", "Professional installation", "On-site technical support", "Flexible screen sizes", "Fast setup and dismantling"],
+    ],
+    [
+      "LED Screen Rental for Events",
+      "LED Display Rental Process",
+      ["Concert", "Wedding", "Political Event", "Corporate Event", "Trade Show", "Product Launch", "Live Streaming Event", "Stage Backdrop"],
+    ],
+    [
+      "LED Display Rental Process",
+      "Rental LED Display Applications in Bangladesh",
+      ["Contact us", "Share event details", "Choose screen size", "Installation by our engineers", "Event support & operation"],
+    ],
+    [
+      "Fast Setup Checklist (Rental LED Screen)",
+      "Rental LED Display Cost Drivers in Bangladesh",
+      ["Structure & safety", "Power planning", "Signal & mapping", "Show readiness"],
+    ],
+    [
+      "Rental LED Event Booking Planner",
+      "Explore LED Display Categories",
+      ["Event & Screen Scope", "Technical Inputs", "Rigging & Safety", "Handover Checklist"],
+    ],
+    [
+      "Explore LED Display Categories",
+      "FAQs About Rental LED Display",
+      ["Indoor LED Displays", "Outdoor LED Displays", "Rental LED Displays"],
+    ],
+  ]) {
+    const section = sectionBetween(source, start, end);
+    for (const label of labels) {
+      assert.equal(occurrences(section, label), 1, `${label} must appear once in ${start}`);
+    }
   }
 });
 
