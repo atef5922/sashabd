@@ -403,45 +403,25 @@ export default function ProjectsPage() {
 
         {/* Value blocks */}
         <section className="mt-6 rounded-[22px] bg-white p-4 md:rounded-3xl md:p-10">
-          <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible md:px-0 md:pb-0 md:pt-0 md:[scrollbar-width:auto]">
             {valueBlocks.map((x) => (
               <div
                 key={x.n}
-                className="w-[82%] shrink-0 snap-start rounded-[16px] border bg-slate-50 p-3.5 shadow-sm"
+                className="w-[82%] shrink-0 snap-start rounded-[16px] border bg-slate-50 p-3.5 shadow-sm md:w-auto md:rounded-3xl md:p-6"
                 style={{ borderColor: `${BRAND.maroon}12` }}
               >
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-2.5 md:items-start md:gap-3">
                   <div
-                    className="inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-extrabold leading-none"
+                    className="inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-extrabold leading-none md:h-7 md:min-w-7 md:text-[11px]"
                     style={{ color: BRAND.maroon, background: `${BRAND.maroon}14` }}
                   >
                     {x.n}.
                   </div>
-                  <div className="min-w-0 flex-1 text-[16px] font-extrabold leading-[1.25] text-slate-900">{x.t}</div>
-                </div>
-                <p className="mt-2 text-justify text-[12px] leading-5 text-slate-600 md:text-left">{x.d}</p>
-              </div>
-            ))}
-          </div>
-          <div className="hidden gap-4 md:grid md:grid-cols-3">
-            {valueBlocks.map((x) => (
-              <div
-                key={x.n}
-                className="rounded-3xl border bg-slate-50 p-6 shadow-sm"
-                style={{ borderColor: `${BRAND.maroon}12` }}
-              >
-                <div className="flex items-start gap-3">
-                  <div
-                    className="inline-flex h-7 min-w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-extrabold leading-none"
-                    style={{ color: BRAND.maroon, background: `${BRAND.maroon}14` }}
-                  >
-                    {x.n}.
-                  </div>
-                  <div className="min-w-0 flex-1 pt-0.5 text-[15px] font-extrabold leading-[1.2] tracking-tight text-slate-900 lg:text-[16px] lg:whitespace-nowrap">
+                  <div className="min-w-0 flex-1 text-[16px] font-extrabold leading-[1.25] text-slate-900 md:pt-0.5 md:text-[15px] md:leading-[1.2] lg:whitespace-nowrap lg:text-[16px]">
                     {x.t}
                   </div>
                 </div>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{x.d}</p>
+                <p className="mt-2 text-justify text-[12px] leading-5 text-slate-600 md:text-left md:text-sm md:leading-6">{x.d}</p>
               </div>
             ))}
           </div>
@@ -458,45 +438,25 @@ export default function ProjectsPage() {
             </p>
           </div>
 
-          <div className="-mx-0.5 mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          <div className="-mx-0.5 mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:mt-6 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 md:pb-0 md:pt-0 md:[scrollbar-width:auto] lg:grid-cols-4">
             {workflowSteps.map((x) => (
               <div
                 key={x.n}
-                className="w-[82%] shrink-0 snap-start rounded-[16px] border bg-slate-50 p-3.5 shadow-sm"
+                className="w-[82%] shrink-0 snap-start rounded-[16px] border bg-slate-50 p-3.5 shadow-sm md:w-auto md:rounded-3xl md:p-6"
                 style={{ borderColor: "rgba(15,23,42,0.10)" }}
               >
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-2.5 md:items-start md:gap-3">
                   <div
-                    className="inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-extrabold leading-none"
-                    style={{ color: BRAND.maroon, background: `${BRAND.maroon}14` }}
-                  >
-                    {x.n})
-                  </div>
-                  <div className="min-w-0 flex-1 text-[16px] font-extrabold leading-[1.25] text-slate-900">{x.t}</div>
-                </div>
-                <p className="mt-2 text-justify text-[12px] leading-5 text-slate-600">{x.d}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-6 hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-4">
-            {workflowSteps.map((x) => (
-              <div
-                key={x.n}
-                className="rounded-3xl border bg-slate-50 p-6 shadow-sm"
-                style={{ borderColor: "rgba(15,23,42,0.10)" }}
-              >
-                <div className="flex items-start gap-3">
-                  <div
-                    className="inline-flex h-7 min-w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-extrabold leading-none"
+                    className="inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-extrabold leading-none md:h-7 md:min-w-7 md:text-[11px]"
                     style={{ color: BRAND.maroon, background: `${BRAND.maroon}14` }}
                   >
                     {x.n}.
                   </div>
-                  <div className="min-w-0 flex-1 pt-0.5 text-base font-extrabold leading-[1.3] text-slate-900">
+                  <div className="min-w-0 flex-1 text-[16px] font-extrabold leading-[1.25] text-slate-900 md:pt-0.5 md:text-base md:leading-[1.3]">
                     {x.t}
                   </div>
                 </div>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{x.d}</p>
+                <p className="mt-2 text-justify text-[12px] leading-5 text-slate-600 md:text-left md:text-sm md:leading-6">{x.d}</p>
               </div>
             ))}
           </div>
@@ -513,35 +473,28 @@ export default function ProjectsPage() {
             </p>
           </div>
 
-          <div className="mt-5 grid grid-cols-2 gap-2 md:hidden">
-            {checklistRows.map((row) => (
-              <article
-                key={row.title}
-                className="rounded-[14px] border bg-slate-50 p-3"
-                style={{ borderColor: "rgba(15,23,42,0.10)" }}
-              >
-                <div className="text-[13px] font-extrabold leading-5 text-slate-900">{row.title}</div>
-                <p className="mt-1.5 line-clamp-3 text-justify text-[11px] leading-5 text-slate-600">{row.reason}</p>
-                <div className="mt-2 inline-flex rounded-full border bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-700" style={{ borderColor: "rgba(15,23,42,0.12)" }}>
-                  {row.scope}
-                </div>
-              </article>
-            ))}
-          </div>
-
-          <div className="mt-6 hidden overflow-hidden rounded-3xl border bg-white md:block" style={{ borderColor: "rgba(15,23,42,0.10)" }}>
-            <div className="grid grid-cols-12 gap-0 bg-slate-50 px-4 py-3 text-[11px] font-extrabold uppercase tracking-wide text-slate-700">
+          <div
+            className="mt-5 grid grid-cols-2 gap-2 md:mt-6 md:block md:overflow-hidden md:rounded-3xl md:border md:bg-white"
+            style={{ borderColor: "rgba(15,23,42,0.10)" }}
+          >
+            <div className="hidden grid-cols-12 gap-0 bg-slate-50 px-4 py-3 text-[11px] font-extrabold uppercase tracking-wide text-slate-700 md:grid">
               <div className="col-span-4">Checklist item</div>
               <div className="col-span-5">Why it matters</div>
               <div className="col-span-3">Covered in</div>
             </div>
 
             {checklistRows.map((row) => (
-              <div key={row.title} className="grid grid-cols-12 gap-0 bg-white px-4 py-3 text-sm">
-                <div className="col-span-4 font-semibold text-slate-900">{row.title}</div>
-                <div className="col-span-5 text-slate-700">{row.reason}</div>
-                <div className="col-span-3 text-slate-700">{row.scope}</div>
-              </div>
+              <article
+                key={row.title}
+                className="rounded-[14px] border bg-slate-50 p-3 md:grid md:grid-cols-12 md:gap-0 md:rounded-none md:border-0 md:bg-white md:px-4 md:py-3 md:text-sm"
+                style={{ borderColor: "rgba(15,23,42,0.10)" }}
+              >
+                <div className="text-[13px] font-extrabold leading-5 text-slate-900 md:col-span-4 md:text-sm md:font-semibold">{row.title}</div>
+                <p className="mt-1.5 line-clamp-3 text-justify text-[11px] leading-5 text-slate-600 md:col-span-5 md:mt-0 md:line-clamp-none md:text-left md:text-sm md:leading-normal md:text-slate-700">{row.reason}</p>
+                <div className="mt-2 inline-flex rounded-full border bg-white px-2.5 py-1 text-[10px] font-semibold text-slate-700 md:col-span-3 md:mt-0 md:block md:rounded-none md:border-0 md:bg-transparent md:px-0 md:py-0 md:text-sm md:font-normal" style={{ borderColor: "rgba(15,23,42,0.12)" }}>
+                  {row.scope}
+                </div>
+              </article>
             ))}
           </div>
 

@@ -5,6 +5,8 @@ import MobileIntroText from "@/components/common/MobileIntroText";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 
 const MAROON = "#FF6A00";
+const SINGLE_DOM_DESKTOP_RESET =
+  "md:text-left md:[text-align-last:auto] md:[&>*]:!block md:[&>*]:[-webkit-line-clamp:unset]";
 
 type TitleIconKind = "SCOPE" | "CATEGORIES" | "SERVICES" | "DELIVERABLES" | "PROCESS" | "FAQ" | "AFTER_SALES";
 
@@ -87,6 +89,24 @@ function Title({
     </div>
   );
 }
+
+const serviceCoverage = [
+  {
+    t: "Indoor LED Display Services",
+    d: "Planning, installation, controller setup, and calibration support for showroom, office, conference, and control room environments.",
+    points: ["Fine pitch setup support", "Uniform color or brightness tuning", "Signal and controller troubleshooting"],
+  },
+  {
+    t: "Outdoor LED Display Services",
+    d: "Weather-ready installation and performance support for billboard, signage, and public display projects with stability and safety focus.",
+    points: ["Brightness and visibility planning", "Power and protection guidance", "Outdoor reliability maintenance"],
+  },
+  {
+    t: "Other Digital Product Services",
+    d: "Support for controllers, receiving cards, power supplies, and other digital display accessories to keep full systems running smoothly.",
+    points: ["Controller or processor configuration", "Accessory compatibility checks", "Spare and lifecycle support"],
+  },
+];
 
 const services = [
   {
@@ -197,12 +217,13 @@ export default function ServicesPage() {
             </div>
 
             <MobileIntroText
+              singleDom
               teaser="End-to-end LED display service in Bangladesh, starting with requirement discovery and ending with a clear handover and support plan."
               teaserLines={2}
               className="mt-1"
               teaserClassName="w-full text-justify [text-align-last:justify] text-[14px] leading-6 text-slate-600"
               expandedClassName="text-sm leading-6 text-slate-600 text-justify"
-              desktopClassName="w-full"
+              desktopClassName={`${SINGLE_DOM_DESKTOP_RESET} w-full`}
               buttonClassName="text-[12px]"
             >
               <div className="space-y-3">
@@ -279,65 +300,16 @@ export default function ServicesPage() {
             desc="Complete service support for indoor LED displays, outdoor LED screens, and related digital product systems from planning to maintenance."
           />
 
-          <div className="-mx-0.5 mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
-            {[
-              {
-                t: "Indoor LED Display Services",
-                d: "Planning, installation, controller setup, and calibration support for showroom, office, conference, and control room environments.",
-                points: ["Fine pitch setup support", "Uniform color or brightness tuning", "Signal and controller troubleshooting"],
-              },
-              {
-                t: "Outdoor LED Display Services",
-                d: "Weather-ready installation and performance support for billboard, signage, and public display projects with stability and safety focus.",
-                points: ["Brightness and visibility planning", "Power and protection guidance", "Outdoor reliability maintenance"],
-              },
-              {
-                t: "Other Digital Product Services",
-                d: "Support for controllers, receiving cards, power supplies, and other digital display accessories to keep full systems running smoothly.",
-                points: ["Controller or processor configuration", "Accessory compatibility checks", "Spare and lifecycle support"],
-              },
-            ].map((x) => (
-              <div key={x.t} className="w-[86%] shrink-0 snap-start rounded-[16px] border bg-slate-50 p-4" style={{ borderColor: `${MAROON}12` }}>
-                <h3 className="text-[17px] font-bold leading-snug text-slate-900">{x.t}</h3>
-                <p className="mt-2 text-justify text-[13px] leading-6 text-slate-600">{x.d}</p>
-                <ul className="mt-3 space-y-2 text-[12px] text-slate-700">
+          <div className="-mx-0.5 mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:mt-8 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible md:px-0 md:pb-0 md:[scrollbar-width:auto]">
+            {serviceCoverage.map((x) => (
+              <div key={x.t} className="w-[86%] shrink-0 snap-start rounded-[16px] border bg-slate-50 p-4 md:w-auto md:rounded-3xl md:p-6" style={{ borderColor: `${MAROON}12` }}>
+                <h3 className="text-[17px] font-bold leading-snug text-slate-900 md:text-base">{x.t}</h3>
+                <p className="mt-2 text-justify text-[13px] leading-6 text-slate-600 md:text-left md:text-sm">{x.d}</p>
+                <ul className="mt-3 space-y-2 text-[12px] text-slate-700 md:mt-4 md:text-sm">
                   {x.points.map((p) => (
                     <li key={p} className="flex items-start gap-2">
-                      <span className="mt-1.5 inline-block h-1.5 w-1.5 rounded-full" style={{ background: MAROON }} />
-                      <span className="leading-5 text-justify">{p}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-8 hidden gap-4 md:grid md:grid-cols-3">
-            {[
-              {
-                t: "Indoor LED Display Services",
-                d: "Planning, installation, controller setup, and calibration support for showroom, office, conference, and control room environments.",
-                points: ["Fine pitch setup support", "Uniform color or brightness tuning", "Signal and controller troubleshooting"],
-              },
-              {
-                t: "Outdoor LED Display Services",
-                d: "Weather-ready installation and performance support for billboard, signage, and public display projects with stability and safety focus.",
-                points: ["Brightness and visibility planning", "Power and protection guidance", "Outdoor reliability maintenance"],
-              },
-              {
-                t: "Other Digital Product Services",
-                d: "Support for controllers, receiving cards, power supplies, and other digital display accessories to keep full systems running smoothly.",
-                points: ["Controller or processor configuration", "Accessory compatibility checks", "Spare and lifecycle support"],
-              },
-            ].map((x) => (
-              <div key={x.t} className="rounded-3xl border bg-slate-50 p-6" style={{ borderColor: `${MAROON}12` }}>
-                <h3 className="text-base font-bold text-slate-900">{x.t}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{x.d}</p>
-                <ul className="mt-4 space-y-2 text-sm text-slate-700">
-                  {x.points.map((p) => (
-                    <li key={p} className="flex items-start gap-2">
-                      <span className="mt-2 inline-block h-1.5 w-1.5 rounded-full" style={{ background: MAROON }} />
-                      <span className="leading-6">{p}</span>
+                      <span className="mt-1.5 inline-block h-1.5 w-1.5 rounded-full md:mt-2" style={{ background: MAROON }} />
+                      <span className="text-justify leading-5 md:text-left md:leading-6">{p}</span>
                     </li>
                   ))}
                 </ul>
@@ -353,53 +325,25 @@ export default function ServicesPage() {
             desc="Simple, practical services that cover the full lifecycle - planning -> supply -> installation -> support."
           />
 
-          <div className="-mx-0.5 mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          <div className="-mx-0.5 mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:mt-8 md:grid md:grid-cols-2 md:gap-8 md:overflow-visible md:px-0 md:pb-0 md:[scrollbar-width:auto]">
             {services.map((s) => (
-              <div key={s.title} className="w-[88%] shrink-0 snap-start rounded-[16px] border bg-white p-4" style={{ borderColor: `${MAROON}12` }}>
-                <div className="flex items-center gap-2.5">
+              <div key={s.title} className="w-[88%] shrink-0 snap-start rounded-[16px] border bg-white p-4 md:w-auto md:rounded-none md:border-0 md:bg-transparent md:p-1" style={{ borderColor: `${MAROON}12` }}>
+                <div className="flex items-center gap-2.5 md:items-start md:gap-3">
                   <div
-                    className="inline-flex h-6 min-w-6 items-center justify-center rounded-full text-[10px] font-bold text-white"
+                    className="inline-flex h-6 min-w-6 items-center justify-center rounded-full text-[10px] font-bold text-white md:mt-1 md:h-8 md:w-8 md:text-xs"
                     style={{ background: MAROON }}
                   >
                     {s.icon}
                   </div>
-                  <div className="min-w-0 flex-1 text-[16px] font-semibold leading-[1.25] text-slate-900">{s.title}</div>
-                </div>
-                <p className="mt-2 text-justify text-[13px] leading-6 text-slate-600">{s.desc}</p>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[16px] font-semibold leading-[1.25] text-slate-900 md:overflow-hidden md:text-ellipsis md:whitespace-nowrap md:text-[15px] md:font-extrabold lg:text-[16px]">{s.title}</div>
+                    <p className="mt-2 text-justify text-[13px] leading-6 text-slate-600 md:text-left md:text-sm">{s.desc}</p>
 
-                <ul className="mt-3 space-y-2 text-[12px] text-slate-700">
-                  {s.items.map((it) => (
-                    <li key={it} className="flex items-start gap-2">
-                      <span className="mt-1.5 inline-block h-1.5 w-1.5 rounded-full" style={{ background: MAROON }} />
-                      <span className="leading-5 text-justify">{it}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-8 hidden gap-8 lg:grid lg:grid-cols-2">
-            {services.map((s) => (
-              <div key={s.title} className="p-1">
-                <div className="flex items-start gap-3">
-                  <div
-                    className="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-white"
-                    style={{ background: MAROON }}
-                  >
-                    {s.icon}
-                  </div>
-                  <div className="min-w-0">
-                    <div className="overflow-hidden text-ellipsis whitespace-nowrap text-[15px] font-extrabold tracking-tight text-slate-900 lg:text-[16px]">
-                      {s.title}
-                    </div>
-                    <p className="mt-2 text-sm leading-6 text-slate-600">{s.desc}</p>
-
-                    <ul className="mt-4 space-y-2 text-sm text-slate-700">
+                    <ul className="mt-3 space-y-2 text-[12px] text-slate-700 md:mt-4 md:text-sm">
                       {s.items.map((it) => (
                         <li key={it} className="flex items-start gap-2">
-                          <span className="mt-2 inline-block h-1.5 w-1.5 rounded-full" style={{ background: MAROON }} />
-                          <span className="leading-6">{it}</span>
+                          <span className="mt-1.5 inline-block h-1.5 w-1.5 rounded-full md:mt-2" style={{ background: MAROON }} />
+                          <span className="text-justify leading-5 md:text-left md:leading-6">{it}</span>
                         </li>
                       ))}
                     </ul>
@@ -417,12 +361,13 @@ export default function ServicesPage() {
             </h2>
             <div className="mt-3 hidden h-1 w-14 rounded-full md:block" style={{ background: `${MAROON}B3` }} />
             <MobileIntroText
+              singleDom
               teaser="We import products from China and provide official warranty and service support in Bangladesh."
               teaserLines={2}
               className="mt-3"
               teaserClassName="max-w-3xl text-justify [text-align-last:justify] text-[13px] leading-6 text-slate-600"
               expandedClassName="text-sm leading-6 text-slate-600 text-justify [text-align-last:justify]"
-              desktopClassName="max-w-3xl"
+              desktopClassName={`${SINGLE_DOM_DESKTOP_RESET} max-w-3xl`}
               buttonClassName="text-[12px]"
             >
               <p className="max-w-3xl text-base leading-7 text-slate-600">
@@ -438,12 +383,13 @@ export default function ServicesPage() {
                 Official warranty (clear scope)
               </h3>
               <MobileIntroText
+                singleDom
                 teaser="We keep warranty terms and service coverage clear-what's included, what's not, and how support is provided."
                 teaserLines={2}
                 className="mt-2"
                 teaserClassName="text-justify [text-align-last:justify] text-[13px] leading-6 text-slate-600"
                 expandedClassName="text-sm leading-6 text-slate-600 text-justify [text-align-last:justify]"
-                desktopClassName="w-full"
+                desktopClassName={`${SINGLE_DOM_DESKTOP_RESET} w-full`}
                 buttonClassName="text-[12px]"
               >
                 <p className="text-justify text-sm leading-6 text-slate-600 md:text-left">
@@ -458,12 +404,13 @@ export default function ServicesPage() {
                 Troubleshooting support
               </h3>
               <MobileIntroText
+                singleDom
                 teaser="We support common issues like signal or power diagnostics, controller configuration, module or cabinet checking and operational guidance."
                 teaserLines={2}
                 className="mt-2"
                 teaserClassName="text-justify [text-align-last:justify] text-[13px] leading-6 text-slate-600"
                 expandedClassName="text-sm leading-6 text-slate-600 text-justify [text-align-last:justify]"
-                desktopClassName="w-full"
+                desktopClassName={`${SINGLE_DOM_DESKTOP_RESET} w-full`}
                 buttonClassName="text-[12px]"
               >
                 <p className="text-justify text-sm leading-6 text-slate-600 md:text-left">
@@ -479,12 +426,13 @@ export default function ServicesPage() {
                 Maintenance & spare planning
               </h3>
               <MobileIntroText
+                singleDom
                 teaser="We help you plan practical spares (modules, PSU, receiving cards) and guide routine maintenance so the display stays stable over time."
                 teaserLines={2}
                 className="mt-2"
                 teaserClassName="text-justify [text-align-last:justify] text-[13px] leading-6 text-slate-600"
                 expandedClassName="text-sm leading-6 text-slate-600 text-justify [text-align-last:justify]"
-                desktopClassName="w-full"
+                desktopClassName={`${SINGLE_DOM_DESKTOP_RESET} w-full`}
                 buttonClassName="text-[12px]"
               >
                 <p className="text-justify text-sm leading-6 text-slate-600 md:text-left">
@@ -504,12 +452,13 @@ export default function ServicesPage() {
             </h2>
             <div className="mt-3 hidden h-1 w-14 rounded-full md:block" style={{ background: `${MAROON}B3` }} />
             <MobileIntroText
+              singleDom
               teaser="We import LED display products from China and provide practical after-sales support in Bangladesh."
               teaserLines={2}
               className="mt-3"
               teaserClassName="max-w-3xl text-justify [text-align-last:justify] text-[13px] leading-6 text-slate-600"
               expandedClassName="text-sm leading-6 text-slate-600 text-justify [text-align-last:justify]"
-              desktopClassName="max-w-3xl"
+              desktopClassName={`${SINGLE_DOM_DESKTOP_RESET} max-w-3xl`}
               buttonClassName="text-[12px]"
             >
               <p className="max-w-3xl text-base leading-7 text-slate-600">
@@ -523,12 +472,13 @@ export default function ServicesPage() {
             <div>
               <h3 className="text-[14px] font-semibold text-slate-900 md:text-sm">Technical support</h3>
               <MobileIntroText
+                singleDom
                 teaser="Fast troubleshooting support for common power, signal and controller issues with clear guidance for quick recovery."
                 teaserLines={2}
                 className="mt-2"
                 teaserClassName="text-justify [text-align-last:justify] text-[13px] leading-6 text-slate-600"
                 expandedClassName="text-sm leading-6 text-slate-600 text-justify [text-align-last:justify]"
-                desktopClassName="w-full"
+                desktopClassName={`${SINGLE_DOM_DESKTOP_RESET} w-full`}
                 buttonClassName="text-[12px]"
               >
                 <p className="text-justify text-sm leading-6 text-slate-600 md:text-left">
@@ -541,12 +491,13 @@ export default function ServicesPage() {
             <div>
               <h3 className="text-[14px] font-semibold text-slate-900 md:text-sm">Service coordination</h3>
               <MobileIntroText
+                singleDom
                 teaser="Structured support process with clear scope, update flow and response planning for both remote and on-site cases."
                 teaserLines={2}
                 className="mt-2"
                 teaserClassName="text-justify [text-align-last:justify] text-[13px] leading-6 text-slate-600"
                 expandedClassName="text-sm leading-6 text-slate-600 text-justify [text-align-last:justify]"
-                desktopClassName="w-full"
+                desktopClassName={`${SINGLE_DOM_DESKTOP_RESET} w-full`}
                 buttonClassName="text-[12px]"
               >
                 <p className="text-justify text-sm leading-6 text-slate-600 md:text-left">
@@ -559,12 +510,13 @@ export default function ServicesPage() {
             <div>
               <h3 className="text-[14px] font-semibold text-slate-900 md:text-sm">Lifecycle maintenance</h3>
               <MobileIntroText
+                singleDom
                 teaser="Guidance for periodic maintenance, spare planning and upgrade decisions to keep your display reliable over time."
                 teaserLines={2}
                 className="mt-2"
                 teaserClassName="text-justify [text-align-last:justify] text-[13px] leading-6 text-slate-600"
                 expandedClassName="text-sm leading-6 text-slate-600 text-justify [text-align-last:justify]"
-                desktopClassName="w-full"
+                desktopClassName={`${SINGLE_DOM_DESKTOP_RESET} w-full`}
                 buttonClassName="text-[12px]"
               >
                 <p className="text-justify text-sm leading-6 text-slate-600 md:text-left">
@@ -606,39 +558,22 @@ export default function ServicesPage() {
             desc="A clear workflow - fast response, clean setup and dependable after-sales support."
           />
 
-          <div className="-mx-0.5 mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:hidden">
+          <div className="-mx-0.5 mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:mt-8 md:grid md:grid-cols-2 md:gap-8 md:overflow-visible md:px-0 md:pb-0 md:[scrollbar-width:auto] lg:grid-cols-4">
             {steps.map((s) => (
-              <div key={s.n} className="w-[82%] shrink-0 snap-start rounded-[16px] border bg-white p-3.5" style={{ borderColor: `${MAROON}12` }}>
-                <div className="flex items-center gap-2.5">
+              <div key={s.n} className="w-[82%] shrink-0 snap-start rounded-[16px] border bg-white p-3.5 md:w-auto md:rounded-none md:border-0 md:bg-transparent md:p-1" style={{ borderColor: `${MAROON}12` }}>
+                <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2.5 md:grid-cols-[1fr_auto] md:gap-x-2 md:gap-y-0">
                   <div
-                    className="inline-flex h-5 min-w-5 items-center justify-center rounded-full text-[10px] font-extrabold leading-none"
-                    style={{ color: MAROON, background: `${MAROON}14` }}
+                    className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#FF6A0014] text-[10px] font-extrabold leading-none md:col-start-1 md:row-start-1 md:h-auto md:min-w-0 md:justify-start md:bg-transparent md:text-xs"
+                    style={{ color: MAROON }}
                   >
                     {s.n}
                   </div>
-                  <div className="min-w-0 flex-1 text-[16px] font-semibold leading-[1.25] text-slate-900">{s.t}</div>
-                  <div className="inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-slate-100 text-[10px] font-bold text-slate-700">
+                  <div className="min-w-0 text-[16px] font-semibold leading-[1.25] text-slate-900 md:col-span-2 md:col-start-1 md:row-start-2 md:mt-2 md:text-lg">{s.t}</div>
+                  <div className="inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-slate-100 text-[10px] font-bold text-slate-700 md:col-start-2 md:row-start-1 md:h-7 md:min-w-7 md:bg-white md:px-2 md:text-xs">
                     {s.icon}
                   </div>
                 </div>
-                <p className="mt-2 text-[12px] leading-5 text-slate-600">{s.d}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-8 hidden gap-8 md:grid md:grid-cols-2 lg:grid-cols-4">
-            {steps.map((s) => (
-              <div key={s.n} className="p-1">
-                <div className="flex items-center justify-between">
-                  <div className="text-xs font-bold" style={{ color: MAROON }}>
-                    {s.n}
-                  </div>
-                  <div className="inline-flex h-7 min-w-7 items-center justify-center rounded-full bg-white px-2 text-xs font-bold text-slate-700">
-                    {s.icon}
-                  </div>
-                </div>
-                <div className="mt-2 text-lg font-semibold text-slate-900">{s.t}</div>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{s.d}</p>
+                <p className="mt-2 text-[12px] leading-5 text-slate-600 md:text-sm md:leading-6">{s.d}</p>
               </div>
             ))}
           </div>
