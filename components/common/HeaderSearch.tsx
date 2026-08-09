@@ -206,9 +206,11 @@ function normalizeSearchText(value: string): string {
 
 export default function HeaderSearch({
   isScrolled,
+  inputId,
   className,
 }: {
   isScrolled: boolean;
+  inputId: string;
   className?: string;
 }) {
   const router = useRouter();
@@ -240,6 +242,7 @@ export default function HeaderSearch({
   }, [index, query]);
 
   const isOpen = hasFocus && normalizeSearchText(query).length > 0;
+  const resultsId = `${inputId}-results`;
 
   // activeIndex resets naturally via query dependency - no manual reset needed
 
@@ -310,11 +313,11 @@ export default function HeaderSearch({
               </svg>
             </button>
 
-            <label className="sr-only" htmlFor="header-search">
+            <label className="sr-only" htmlFor={inputId}>
               Search products
             </label>
             <input
-              id="header-search"
+              id={inputId}
               ref={inputRef}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -366,7 +369,7 @@ export default function HeaderSearch({
               autoComplete="off"
               spellCheck={false}
               aria-autocomplete="list"
-              aria-controls={isOpen ? "header-search-results" : undefined}
+              aria-controls={isOpen ? resultsId : undefined}
             />
 
             {query ? (
@@ -390,7 +393,7 @@ export default function HeaderSearch({
 
       {isOpen ? (
         <div
-          id="header-search-results"
+          id={resultsId}
           className="absolute left-0 top-full z-50 mt-2 w-full max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl"
         >
           <div className="max-h-[420px] overflow-auto p-2">
