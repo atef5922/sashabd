@@ -36,11 +36,28 @@ test("canonical host and protocol normalize directly to HTTPS non-www", () => {
 });
 
 test("legacy redirects precede trailing-slash normalization and use one direct destination", () => {
-  const legacy = "RewriteRule ^control-systems/turnstile-gate-system/?$ /turnstile-gate/ [R=301,L]";
   const slash = "RewriteCond %{REQUEST_URI} !/$";
-  assert.ok(htaccess.includes(legacy));
-  assert.ok(htaccess.indexOf(legacy) < htaccess.lastIndexOf(slash));
+  for (const legacy of [
+    "RewriteRule ^control-systems/?$ /pa-system/ [R=301,L]",
+    "RewriteRule ^control-systems/pa-system/?$ /pa-system/ [R=301,L]",
+    "RewriteRule ^control-systems/digital-podium/?$ /digital-podium/ [R=301,L]",
+    "RewriteRule ^control-systems/turnstile-gate-system/?$ /turnstile-gate/ [R=301,L]",
+    "RewriteRule ^led-display/digital-led-display/?$ /led-display/ [R=301,L]",
+  ]) {
+    assert.ok(htaccess.includes(legacy));
+    assert.ok(htaccess.indexOf(legacy) < htaccess.lastIndexOf(slash));
+  }
   assert.match(htaccess, /\^control-systems\/pa-system\/\(\[\^\/\]\+\)\/\?\$/);
+});
+
+test("GSC m-query alternates are stripped before trailing-slash normalization", () => {
+  const rootRule = "RewriteRule ^ https://sashabd.com/? [R=301,L]";
+  const pathRule = "RewriteRule ^ %{REQUEST_URI}? [R=301,L]";
+  const slashRule = "# Enforce trailing slash for non-file URLs";
+
+  assert.equal(occurrences(htaccess, "RewriteCond %{QUERY_STRING} ^m=[^&]+$ [NC]"), 2);
+  assert.ok(htaccess.indexOf(rootRule) < htaccess.indexOf(slashRule));
+  assert.ok(htaccess.indexOf(pathRule) < htaccess.indexOf(slashRule));
 });
 
 test("known broken indoor redirects now land on valid canonical targets", () => {
@@ -123,6 +140,14 @@ test("responsive header search instances use unique accessible IDs", () => {
   assert.match(search, /id=\{inputId\}/);
   assert.match(search, /const resultsId = `\$\{inputId\}-results`/);
   assert.doesNotMatch(search, /id="header-search(?:-results)?"/);
+});
+
+test("desktop About dropdown uses its canonical compact variant", () => {
+  const header = read("components/common/Header.tsx");
+
+  assert.match(header, /href: "\/about\/",\s*label: "About"/);
+  assert.match(header, /const isAboutDropdown = item\.href === "\/about\/"/);
+  assert.match(header, /!isControlSystemsDropdown && !isAboutDropdown/);
 });
 
 test("custom 404 and dynamic metadata implementations exist", () => {
@@ -648,4 +673,14 @@ test("Batch 3 close-out renders each Services semantic set once", () => {
   assert.equal((source.match(/const services = \[([\s\S]*?)\];/)?.[1].match(/\bicon:/g) ?? []).length, 4);
   assert.equal((source.match(/const steps = \[([\s\S]*?)\];/)?.[1].match(/\bn:/g) ?? []).length, 4);
   assert.equal(occurrences(source, "singleDom"), 9);
+});
+
+test("footer decorative waves use complete SVG curve commands", () => {
+  const source = read("components/common/Footer.tsx");
+  const wavePath = source.match(/d=\{`M0 [^`]+`\}/)?.[0] ?? "";
+
+  assert.match(wavePath, / C 40 .*?, 95 .*?, 160 \$\{46 - row\}`\}/);
+  assert.doesNotMatch(wavePath, /, 205 |, 240 /);
+  assert.doesNotMatch(wavePath, /undefined|null|NaN/);
+  assert.equal(occurrences(source, '<FooterBottomPattern side="'), 2);
 });

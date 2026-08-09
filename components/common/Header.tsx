@@ -326,7 +326,7 @@ export default function Header() {
             const isLedDropdown = item.href === "/led-display/";
             const isAccessoriesDropdown = item.href === "/led-display/accessories/";
             const isControlSystemsDropdown = item.href === "/control-systems";
-            const isAboutDropdown = item.href === "/about";
+            const isAboutDropdown = item.href === "/about/";
             const isCompactDropdown =
               isLedDropdown || isAccessoriesDropdown || isControlSystemsDropdown || isAboutDropdown;
             const isEnhancedDropdown =

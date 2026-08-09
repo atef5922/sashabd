@@ -228,7 +228,7 @@ function FooterBottomPattern({ side }: { side: "left" | "right" }) {
         {Array.from({ length: 12 }).map((_, row) => (
           <path
             key={row}
-            d={`M0 ${100 - row * 6} C 40 ${88 - row * 3}, 95 ${56 - row * 2}, 160 ${46 - row}, 205 ${40 - row * 0.5}, 240 ${28 - row * 0.4}`}
+            d={`M0 ${100 - row * 6} C 40 ${88 - row * 3}, 95 ${56 - row * 2}, 160 ${46 - row}`}
             fill="none"
             stroke={`url(#footer-wave-${side})`}
             strokeWidth="1.5"

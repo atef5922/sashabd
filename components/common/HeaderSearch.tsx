@@ -394,9 +394,9 @@ export default function HeaderSearch({
       {isOpen ? (
         <div
           id={resultsId}
-          className="absolute left-0 top-full z-50 mt-2 w-full max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl"
+          className="fixed inset-x-3 top-[4.65rem] z-50 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl md:absolute md:inset-x-auto md:left-0 md:top-full md:mt-2 md:w-full md:max-w-[calc(100vw-2rem)]"
         >
-          <div className="max-h-[420px] overflow-auto p-2">
+          <div className="max-h-[calc(100dvh-9.5rem)] overflow-y-auto overscroll-contain p-2 md:max-h-[420px]">
             {results.length ? (
               results.map((r, idx) => (
                 <Link
@@ -405,23 +405,23 @@ export default function HeaderSearch({
                   href={r.href}
                   onClick={() => setHasFocus(false)}
                   className={cn(
-                    "flex items-center gap-3 rounded-xl px-3 py-2.5 transition",
+                    "flex min-w-0 items-center gap-2.5 rounded-xl px-2.5 py-2.5 transition md:gap-3 md:px-3",
                     idx === activeIndex ? "bg-slate-200 shadow-sm" : "hover:bg-slate-100 hover:shadow-sm"
                   )}
                 >
-                  <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-white">
-                    <Image src={r.image} alt={r.title} fill className="object-contain" sizes="40px" />
+                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-slate-200 bg-white md:h-10 md:w-10">
+                    <Image src={r.image} alt={r.title} fill className="object-contain" sizes="(max-width: 767px) 48px, 40px" />
                   </div>
-                  <div className="min-w-0">
-                    <div className="text-sm font-extrabold text-slate-900">{r.title}</div>
-                    <div className="mt-0.5 flex flex-wrap items-center gap-2 text-[11px] font-semibold text-slate-600">
-                      <span className="rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5">
+                  <div className="min-w-0 flex-1">
+                    <div className="line-clamp-2 text-[13px] font-extrabold leading-[1.15rem] text-slate-900 md:text-sm md:leading-normal">{r.title}</div>
+                    <div className="mt-1 flex min-w-0 items-center gap-1.5 text-[10px] font-semibold text-slate-600 md:mt-0.5 md:flex-wrap md:gap-2 md:text-[11px]">
+                      <span className="max-w-[45%] shrink-0 truncate rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 md:max-w-none">
                         {r.badge}
                       </span>
                       {r.pitch ? (
-                        <span className="rounded-full bg-slate-900 px-2 py-0.5 text-white">{r.pitch}</span>
+                        <span className="shrink-0 rounded-full bg-slate-900 px-2 py-0.5 text-white">{r.pitch}</span>
                       ) : null}
-                      <span className="truncate">{r.subtitle}</span>
+                      <span className="min-w-0 flex-1 truncate">{r.subtitle}</span>
                     </div>
                   </div>
                 </Link>
