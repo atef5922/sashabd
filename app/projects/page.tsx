@@ -30,16 +30,16 @@ type Project = {
 };
 
 /**
- * Add your real projects here.
- * When this list is empty, the page shows template cards as a formatting example.
+ * Add only business-verified, publishable projects here.
  */
 const projects: Project[] = [];
 
+/** Formatting fixtures only. Never render these as Sasha Corporation project evidence. */
 const templateProjects: Project[] = [
   {
     id: "template-2",
     title: "Outdoor Digital Billboard Installation",
-    badge: "Delivered project",
+    badge: "Template example",
     image: "/images/project-page/project-chattogram-card.webp",
     imageClassName: "object-cover object-center",
     organization: "Nusaifa Trading",
@@ -65,7 +65,7 @@ const templateProjects: Project[] = [
   {
     id: "template-5",
     title: "Turnstile Gate System (Access Control)",
-    badge: "Delivered project",
+    badge: "Template example",
     image: "/images/project-page/project-turnstile-gate.webp",
     imageClassName: "object-cover object-center",
     organization: "Office access control",
@@ -91,7 +91,7 @@ const templateProjects: Project[] = [
   {
     id: "template-1",
     title: "Indoor LED Video Wall Delivery",
-    badge: "Delivered project",
+    badge: "Template example",
     image: "/images/project-page/project-indoor-wall.webp",
     imageClassName: "object-cover object-center",
     organization: "Corporate office (confidential)",
@@ -117,7 +117,7 @@ const templateProjects: Project[] = [
   {
     id: "template-4",
     title: "Rental LED Screen (Event Setup)",
-    badge: "Delivered project",
+    badge: "Template example",
     image: "/images/project-page/project-rental.webp",
     imageClassName: "object-cover object-center",
     organization: "Event stage / conference",
@@ -143,7 +143,7 @@ const templateProjects: Project[] = [
   {
     id: "template-3",
     title: "PA Sound System Setup (Paging + Zoning)",
-    badge: "Delivered project",
+    badge: "Template example",
     image: "/images/project-page/project-pa-system.webp",
     imageClassName: "object-cover object-center",
     organization: "Office building",
@@ -169,7 +169,7 @@ const templateProjects: Project[] = [
   {
     id: "template-6",
     title: "Indoor LED Display for Retail / Showroom",
-    badge: "Delivered project",
+    badge: "Template example",
     image: "/images/project-page/Project-indoor-showroom.webp",
     imageClassName: "object-cover object-center",
     organization: "Showroom / retail branding",
@@ -196,8 +196,8 @@ const templateProjects: Project[] = [
 
 const FAQS: { q: string; a: string }[] = [
   {
-    q: "Do these projects represent real work in Bangladesh?",
-    a: "Yes. This page summarizes real delivery patterns and typical scopes. Some client names may remain confidential depending on policy, but the solution scope and delivery focus are shown for clarity.",
+    q: "Why are client project details not listed yet?",
+    a: "Project case studies are published only after business verification and client approval. No demo or unverified client project is presented here as completed work.",
   },
   {
     q: "What details should I share for a matching proposal?",
@@ -287,15 +287,17 @@ const checklistRows = [
   },
 ] as const;
 
+const PAGE_TITLE = `Project Planning & Delivery Process | ${BRAND_NAME}`;
+const PAGE_DESCRIPTION =
+  `Review ${BRAND_NAME}'s planning process for LED displays, PA systems, and access control, from site review and BOQ scope to installation, commissioning, and handover.`;
+
 export const metadata: Metadata = {
-  title: { absolute: "Project Portfolio | LED, PA & Access Control in Bangladesh" },
-  description:
-    `Explore ${BRAND_NAME} project deliveries across Bangladesh - LED displays, rental event screens, PA systems, and access control with scope highlights and quality checks.`,
+  title: { absolute: PAGE_TITLE },
+  description: PAGE_DESCRIPTION,
   alternates: { canonical: absoluteUrl("/projects/") },
   openGraph: {
-    title: "Project Portfolio | Completed Deliveries in Bangladesh",
-    description:
-      `Explore ${BRAND_NAME} project deliveries across Bangladesh - LED displays, rental event screens, PA systems, and access control with scope highlights and quality checks.`,
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
     url: absoluteUrl("/projects/"),
     type: "website",
     images: [
@@ -303,15 +305,14 @@ export const metadata: Metadata = {
         url: socialImageUrl(),
         width: 1200,
         height: 630,
-        alt: "Project Portfolio | Completed Deliveries in Bangladesh",
+        alt: PAGE_TITLE,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Project Portfolio | Completed Deliveries in Bangladesh",
-    description:
- `Explore ${BRAND_NAME} project deliveries across Bangladesh-LED, rental, PA and access control with scope highlights and quality checks.`,
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
     images: [socialImageUrl()],
   },
 };
@@ -324,8 +325,8 @@ function buildProjectCardSubtitle(p: Project): string {
 export default function ProjectsPage() {
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
 
-  const showTemplates = projects.length === 0;
-  const list = showTemplates ? templateProjects : projects;
+  const list = projects;
+  const hasWithheldTemplates = templateProjects.length > 0;
 
   return (
     <main className="w-full bg-transparent">
@@ -368,15 +369,15 @@ export default function ProjectsPage() {
                 style={{ background: `${BRAND.maroon}24` }}
               >
                 <span className="h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
-                Projects - Bangladesh
+                Project Planning - Bangladesh
               </span>
 
               <h1 className="mt-4 max-w-[16rem] text-[1.9rem] font-extrabold tracking-tight text-white md:mt-16 md:max-w-[30rem] md:text-[2.5rem] md:leading-[1.12] lg:max-w-[34rem] lg:text-[2.9rem]">
-                Project Portfolio by {BRAND_NAME}
+                Project Planning &amp; Delivery Process
               </h1>
               <p className="mt-3 max-w-[21rem] text-justify text-[13px] leading-6 text-white/85 md:mt-6 md:max-w-[31rem] md:text-left md:text-[15px] md:leading-[1.75] lg:max-w-[34rem]">
-                Selected deliveries across Bangladesh-each entry highlights the site type, location, scope and delivery
-                approach so you can judge execution quality and long-term reliability.
+                Review our workflow, technical checks, and handover approach. Verified case studies will be published
+                only after business validation and client approval.
               </p>
 
               <div className="mt-5 grid max-w-[22rem] grid-cols-2 gap-2 md:mt-12 md:flex md:max-w-none md:flex-wrap md:gap-3">
@@ -647,6 +648,26 @@ export default function ProjectsPage() {
                 </div>
               </article>
             ))}
+            {list.length === 0 ? (
+              <div
+                className="w-full rounded-[20px] border bg-white p-5 shadow-sm sm:col-span-2 sm:rounded-3xl md:p-8 lg:col-span-3"
+                style={{ borderColor: "rgba(15,23,42,0.10)" }}
+              >
+                <h2 className="text-xl font-extrabold text-slate-900">Verified project case studies</h2>
+                <p className="mt-2 max-w-3xl text-sm leading-7 text-slate-600">
+                  No client project is currently published from the verified repository dataset.
+                  {hasWithheldTemplates
+                    ? " Demo formatting records are withheld and are not presented as completed work."
+                    : ""}
+                </p>
+                <Link
+                  href="/contact/"
+                  className="mt-4 inline-flex min-h-10 items-center justify-center rounded-full bg-sky-600 px-4 py-2 text-xs font-extrabold text-white transition hover:bg-sky-700"
+                >
+                  Discuss project requirements
+                </Link>
+              </div>
+            ) : null}
           </div>
         </section>
 
@@ -668,7 +689,7 @@ export default function ProjectsPage() {
         <section className="mt-10 rounded-[22px] bg-slate-50 p-4 md:rounded-3xl md:p-10">
           <div className="mx-auto max-w-5xl text-center">
             <h2 className="text-[1.5rem] font-extrabold tracking-tight text-slate-900 md:text-3xl">
-              Planning a similar project?
+              Planning a project?
             </h2>
             <p className="mx-auto mt-3 max-w-[19rem] text-[13px] leading-6 text-slate-600 md:max-w-3xl md:text-base md:leading-7">
               Share screen size (W x H), indoor/outdoor, location, viewing distance and BOQ/space notes. We will propose a

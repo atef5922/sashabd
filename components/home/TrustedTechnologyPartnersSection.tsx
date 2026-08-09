@@ -23,7 +23,7 @@ const visibleTrustedTechPartnerLogos = trustedTechPartnerLogos.filter((brand) =>
 
 const featureTags = [
   "Quality-focused workflow",
-  "Authorized brand ecosystem",
+  "Project-specific component planning",
   "Industry-grade components",
   "Project-based support & service",
 ] as const;
@@ -139,7 +139,7 @@ export default function TrustedTechnologyPartnersSection() {
             <path d="M4 12h16M12 4v16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
             <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
           </svg>
-          <span className="min-w-0 text-balance">Trusted Technology Partners & Authorized Brands</span>
+          <span className="min-w-0 text-balance">LED Technology &amp; Component Brands</span>
         </h2>
 
         <div className="mx-auto mt-2 max-w-5xl text-center text-sm leading-6 text-slate-600">

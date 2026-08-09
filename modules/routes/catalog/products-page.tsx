@@ -602,7 +602,7 @@ function ProductsPageContent({
     { label: "Controller", href: "/led-display/accessories/controller/", icon: "controller", tone: "text-orange-600 bg-orange-50 border-orange-100" },
     { label: "Power Supply", href: "/led-display/accessories/power-supply/", icon: "power", tone: "text-cyan-600 bg-cyan-50 border-cyan-100" },
     { label: "LED Accessories", href: "/led-display/accessories/led-accessories/", icon: "cable", tone: "text-indigo-600 bg-indigo-50 border-indigo-100" },
-    { label: "Projects", href: "/projects/", icon: "display", tone: "text-slate-600 bg-slate-50 border-slate-200" },
+    { label: "LED Buying Guide", href: "/blog/led-display-price-in-bangladesh-complete-buying-guide/", icon: "guide", tone: "text-slate-600 bg-slate-50 border-slate-200" },
   ];
 
   const [filter, setFilter] = useState<FilterKey>("all");
@@ -1490,12 +1490,12 @@ function ProductsPageContent({
         </h1>
           {ledOnly ? (
             <MobileIntroText
-              teaser="Looking for the best LED display price in Bangladesh with indoor, outdoor and rental options in one place?"
+              teaser="Compare LED display prices in Bangladesh across indoor, outdoor, and rental options in one place."
               expandedClassName="mx-auto mt-4 max-w-6xl"
               desktopClassName="mx-auto mt-4 max-w-6xl"
             >
               <p className="text-justify text-[14px] leading-7 text-slate-700 md:text-[16px] md:leading-8">
-                Looking for the best <strong>LED display price in Bangladesh</strong>? <strong>Sasha Corporation</strong> is a trusted <strong>LED display supplier in Bangladesh</strong>, offering <strong>indoor LED displays</strong> from <strong>P0.9-P3</strong> and <strong>outdoor LED screens</strong> from <strong>P2.5-P10</strong> for commercial advertising, corporate branding, events, shopping malls, mosques, universities, and government projects. We provide <strong>LED video walls</strong>, <strong>digital LED billboards</strong>, <strong>advertising LED displays</strong>, <strong>rental LED screen panels</strong>, and <strong>digital signage systems</strong> with professional installation, controller and CMS setup, maintenance support, and nationwide after-sales service across Bangladesh.
+                Compare <strong>LED display prices in Bangladesh</strong> for <strong>indoor LED displays</strong> from <strong>P0.9-P3</strong> and <strong>outdoor LED screens</strong> from <strong>P2.5-P10</strong>. Sasha Corporation supplies LED video walls, digital LED billboards, advertising displays, rental LED screen panels, and digital signage systems for commercial, corporate, event, education, and institutional requirements. Installation, controller and CMS setup, maintenance guidance, and after-sales support are provided according to the agreed project scope.
               </p>
             </MobileIntroText>
           ) : (
@@ -2527,7 +2527,7 @@ function ProductsPageContent({
                   desktopClassName="text-sm leading-7 md:text-base md:leading-8"
                 >
                   <>
-                    Sasha Corporation supplies, installs, configures, and supports LED display solutions across Bangladesh. We provide indoor LED displays, outdoor LED billboards, rental LED screens, LED video walls, controllers, receiving cards, power supplies, maintenance services, and after-sales technical support for commercial, corporate, event, and government projects. Our solutions come with 1-3 year warranty, 24/7 customer support, and regular maintenance services to ensure long-term performance and reliability.
+                    Sasha Corporation supplies, installs, configures, and supports LED display solutions across Bangladesh. Project scope may include indoor LED displays, outdoor LED billboards, rental LED screens, LED video walls, controllers, receiving cards, power supplies, maintenance, and after-sales technical support. Warranty, response time, and maintenance terms are confirmed in the quotation according to the selected product and project scope.
                   </>
                 </MobileIntroText>
               </div>
@@ -2590,7 +2590,11 @@ function ProductsPageContent({
               <>
                 A proper LED display installation process improves visual performance, operational safety, and long-term
                 reliability. The workflow below gives a simple and practical overview so buyers can understand how a
-                professional LED screen project is planned, installed, tested, and handed over in Bangladesh.
+                professional LED screen project is planned, installed, tested, and handed over in Bangladesh. Review our{" "}
+                <Link href="/services-support/" className="font-semibold text-slate-900 underline underline-offset-2">
+                  installation and support services
+                </Link>{" "}
+                for scope planning.
               </>
             </MobileIntroText>
 
@@ -3072,7 +3076,7 @@ function ProductsPageContent({
           <section className="py-8">
             <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
               <UiIcon name="solutions" className="h-6 w-6 text-slate-800" />
-              <span>Trusted Technology Partners & Authorized Brands</span>
+              <span>LED Technology &amp; Component Brands</span>
             </h2>
             <MobileIntroText
               teaser="We use globally trusted LED display components in Bangladesh projects to ensure stable performance, reliable power, and long-term support."
@@ -3155,7 +3159,7 @@ function ProductsPageContent({
               <div className="mt-4 flex flex-nowrap items-center gap-2 overflow-x-auto pb-1 text-xs font-semibold text-slate-700 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:flex-wrap md:justify-center md:overflow-visible md:pb-0">
                 {[
                   "Quality-focused workflow",
-                  "Dedicated LED engineering team",
+                  "Project-specific technical planning",
                   "Industry-grade components",
                   "Project-based support & service",
                 ].map((t) => (

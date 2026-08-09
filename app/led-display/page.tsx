@@ -3,17 +3,17 @@ import ProductsPage from "@/modules/routes/catalog/products-page";
 import { socialImageUrl } from "@/lib/seo";
 import { BRAND_NAME } from "@/lib/brand";
 
-const PAGE_TITLE = "LED Display Price in Bangladesh 2026";
+const PAGE_TITLE = "LED Display Price in Bangladesh 2026 | Sasha Corporation";
+const PAGE_DESCRIPTION =
+  "Compare 2026 LED display prices in Bangladesh for indoor, outdoor, and rental screens. Review specifications, installation guidance, and request a quotation.";
 
 export const metadata: Metadata = {
   title: { absolute: PAGE_TITLE },
-  description:
-    "LED Display Price in Bangladesh. Explore Indoor LED Display, Outdoor LED Billboard, LED Video Wall, Digital LED Signage, Rental LED Screen & Professional Installation Solutions.",
+  description: PAGE_DESCRIPTION,
   alternates: { canonical: "/led-display/" },
   openGraph: {
     title: PAGE_TITLE,
-    description:
-      "LED Display Price in Bangladesh. Explore Indoor LED Display, Outdoor LED Billboard, LED Video Wall, Digital LED Signage, Rental LED Screen & Professional Installation Solutions.",
+    description: PAGE_DESCRIPTION,
     url: "/led-display/",
     type: "website",
     images: [
@@ -27,8 +27,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     title: PAGE_TITLE,
-    description:
-      "LED Display Price in Bangladesh. Explore Indoor LED Display, Outdoor LED Billboard, LED Video Wall, Digital LED Signage, Rental LED Screen & Professional Installation Solutions.",
+    description: PAGE_DESCRIPTION,
     card: "summary_large_image",
     images: [socialImageUrl()],
   },
@@ -38,8 +37,7 @@ const collectionPageSchema = {
   "@type": "CollectionPage",
   name: PAGE_TITLE,
   url: "https://sashabd.com/led-display/",
-  description:
-    "LED Display Price in Bangladesh. Explore Indoor LED Display, Outdoor LED Billboard, LED Video Wall, Digital LED Signage, Rental LED Screen & Professional Installation Solutions.",
+  description: PAGE_DESCRIPTION,
   isPartOf: {
     "@type": "WebSite",
     name: BRAND_NAME,

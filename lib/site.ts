@@ -10,8 +10,4 @@ export const siteConfig = {
   tagline: "LED Display Sales | Installation | Support",
   description:
     "We import LED displays from China, sell across Bangladesh, and provide professional installation & after-sales support.",
-  socials: {
-    facebook: "https://www.facebook.com/",
-    youtube: "https://www.youtube.com/",
-  },
 };

@@ -60,7 +60,7 @@ const heroServiceHighlights = [
   "Site survey",
   "Installation",
   "Calibration & training",
-  "Warranty-backed support",
+  "Scope-based warranty guidance",
 ];
 
 const trustedInstitutions: Array<{
@@ -860,7 +860,6 @@ export default function HomePage() {
     </div>
   );
 }
-
 
 
 
