@@ -626,3 +626,26 @@ test("Batch 3 keeps main LED SERP intent factual and authority links focused", (
   assert.match(landing, /href="\/services-support\/"/);
   assert.doesNotMatch(landing, /1-3 year warranty|24\/7 customer support|nationwide after-sales service/i);
 });
+
+test("Batch 3 close-out renders each Projects semantic set once", () => {
+  const source = read("app/projects/page.tsx");
+
+  assert.equal(occurrences(source, "valueBlocks.map((x)"), 1);
+  assert.equal(occurrences(source, "workflowSteps.map((x)"), 1);
+  assert.equal(occurrences(source, "checklistRows.map((row)"), 1);
+  assert.equal((source.match(/const valueBlocks = \[([\s\S]*?)\] as const;/)?.[1].match(/\bn:/g) ?? []).length, 3);
+  assert.equal((source.match(/const workflowSteps = \[([\s\S]*?)\] as const;/)?.[1].match(/\bn:/g) ?? []).length, 4);
+  assert.equal((source.match(/const checklistRows = \[([\s\S]*?)\] as const;/)?.[1].match(/title:/g) ?? []).length, 6);
+});
+
+test("Batch 3 close-out renders each Services semantic set once", () => {
+  const source = read("modules/routes/services/page.tsx");
+
+  assert.equal(occurrences(source, "serviceCoverage.map((x)"), 1);
+  assert.equal(occurrences(source, "services.map((s)"), 1);
+  assert.equal(occurrences(source, "steps.map((s)"), 1);
+  assert.equal((source.match(/const serviceCoverage = \[([\s\S]*?)\];/)?.[1].match(/\bt:/g) ?? []).length, 3);
+  assert.equal((source.match(/const services = \[([\s\S]*?)\];/)?.[1].match(/\bicon:/g) ?? []).length, 4);
+  assert.equal((source.match(/const steps = \[([\s\S]*?)\];/)?.[1].match(/\bn:/g) ?? []).length, 4);
+  assert.equal(occurrences(source, "singleDom"), 9);
+});
