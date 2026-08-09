@@ -452,7 +452,7 @@ test("LED display Why Choose benefits render one canonical card list", () => {
 test("LED display technology partner marquee exposes one semantic logo set", () => {
   const source = read("modules/routes/catalog/products-page.tsx");
   const dataSource = source.match(/const trustedTechPartnerLogos:[\s\S]*?= \[([\s\S]*?)\];/)?.[1];
-  const section = source.match(/Trusted Technology Partners & Authorized Brands([\s\S]*?)Our Valuable Clients/)?.[1];
+  const section = source.match(/LED Technology &amp; Component Brands([\s\S]*?)Our Valuable Clients/)?.[1];
 
   assert.ok(dataSource, "Technology partner logo data must be present");
   assert.ok(section, "Technology Partners section source must be present");
@@ -584,4 +584,45 @@ test("redirect configuration has no exact-source destination chains", () => {
   const sources = new Set(exact.map(([source]) => source));
   const chains = exact.filter(([, destination]) => sources.has(destination));
   assert.deepEqual(chains, []);
+});
+
+test("Batch 3 withholds template projects from published case-study evidence", () => {
+  const source = read("app/projects/page.tsx");
+
+  assert.match(source, /const projects: Project\[\] = \[\]/);
+  assert.match(source, /const list = projects;/);
+  assert.match(source, /Never render these as Sasha Corporation project evidence/);
+  assert.match(source, /No client project is currently published from the verified repository dataset/);
+  assert.doesNotMatch(source, /const list = .*templateProjects/);
+  assert.doesNotMatch(source, /badge: "Delivered project"/);
+  assert.doesNotMatch(source, /Do these projects represent real work in Bangladesh/);
+});
+
+test("Batch 3 removes unverified social profiles and relationship claims", () => {
+  const site = read("lib/site.ts");
+  const footer = read("components/common/Footer.tsx");
+  const floatingActions = read("components/common/FloatingActions.tsx");
+  const homePartners = read("components/home/TrustedTechnologyPartnersSection.tsx");
+  const ledLanding = read("modules/routes/catalog/products-page.tsx");
+
+  for (const source of [site, footer, floatingActions]) {
+    assert.doesNotMatch(source, /https:\/\/www\.(?:facebook|youtube)\.com\/?["']/);
+  }
+  assert.doesNotMatch(floatingActions, /Messenger|showMessenger|siteConfig\.socials/);
+  assert.match(floatingActions, /aria-label="Chat on WhatsApp"/);
+  for (const source of [homePartners, ledLanding]) {
+    assert.doesNotMatch(source, /Authorized Brands|Authorized brand ecosystem/);
+    assert.match(source, /LED Technology &amp; Component Brands/);
+  }
+});
+
+test("Batch 3 keeps main LED SERP intent factual and authority links focused", () => {
+  const page = read("app/led-display/page.tsx");
+  const landing = read("modules/routes/catalog/products-page.tsx");
+
+  assert.match(page, /LED Display Price in Bangladesh 2026 \| Sasha Corporation/);
+  assert.match(page, /Compare 2026 LED display prices in Bangladesh/);
+  assert.match(landing, /\/blog\/led-display-price-in-bangladesh-complete-buying-guide\//);
+  assert.match(landing, /href="\/services-support\/"/);
+  assert.doesNotMatch(landing, /1-3 year warranty|24\/7 customer support|nationwide after-sales service/i);
 });

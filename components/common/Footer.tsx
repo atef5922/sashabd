@@ -258,28 +258,6 @@ export default function Footer() {
 
   const socialLinks: FooterSocialItem[] = [
     {
-      href: siteConfig.socials.facebook,
-      label: "Sasha Corporation Facebook",
-      className:
-        "border-[#1877F2]/40 bg-[#1877F2]/12 text-[#4D9CFF] hover:border-[#1877F2]/60 hover:bg-[#1877F2]/20 hover:text-white",
-      icon: (
-        <svg viewBox="0 0 24 24" className="h-4.5 w-4.5 fill-current" aria-hidden="true">
-          <path d="M13.5 22v-8h2.7l.5-3h-3.2V9.1c0-.9.3-1.6 1.7-1.6h1.8V4.8c-.3 0-1.4-.1-2.7-.1-2.7 0-4.5 1.6-4.5 4.6V11H7v3h2.8v8h3.7z" />
-        </svg>
-      ),
-    },
-    {
-      href: siteConfig.socials.youtube,
-      label: "Sasha Corporation YouTube",
-      className:
-        "border-[#FF2B2B]/40 bg-[#FF2B2B]/12 text-[#FF5757] hover:border-[#FF2B2B]/60 hover:bg-[#FF2B2B]/20 hover:text-white",
-      icon: (
-        <svg viewBox="0 0 24 24" className="h-4.5 w-4.5 fill-current" aria-hidden="true">
-          <path d="M23 12c0 2.1-.2 4.2-.5 5.2-.3 1.1-1.2 1.9-2.2 2.2-1.1.3-5.3.5-8.3.5s-7.2-.2-8.3-.5c-1.1-.3-1.9-1.2-2.2-2.2C1.2 16.2 1 14.1 1 12s.2-4.2.5-5.2C1.8 5.7 2.7 4.9 3.7 4.6 4.8 4.3 9 4.1 12 4.1s7.2.2 8.3.5c1.1.3 1.9 1.2 2.2 2.2.3 1 .5 3.1.5 5.2zM10 8.8v6.4l5.6-3.2L10 8.8z" />
-        </svg>
-      ),
-    },
-    {
       href: whatsappUrl,
       label: "Sasha Corporation WhatsApp support",
       className:
@@ -335,7 +313,7 @@ export default function Footer() {
               </div>
 
               <div className="mt-3 max-w-sm border-t border-white/8 pt-2.5">
-                <div className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Follow Us</div>
+                <div className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Connect</div>
                 <div className="mt-2 flex flex-wrap items-center gap-2">
                   {socialLinks.map((item) => (
                     <FooterSocialLink key={item.label} {...item} />
