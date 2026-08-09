@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { siteConfig } from "./site";
 import { BRAND_NAME } from "./brand";
+import { isVercelStagingBuild } from "./deployment";
 
 const DEFAULT_SOCIAL_IMAGE = "/images/hero.webp";
 const FILE_PATH_PATTERN = /\/[a-z0-9][a-z0-9._-]*\.[a-z0-9]{1,8}$/i;
@@ -111,14 +112,15 @@ export function buildProductMetadata({
   );
   const finalTitle = compactProductTitle(title);
   const imageUrl = socialImageUrl(image);
+  const allowIndexing = index && !isVercelStagingBuild();
 
   return {
     title: { absolute: finalTitle },
     description: finalDescription,
     alternates: { canonical },
     robots: {
-      index,
-      follow: true,
+      index: allowIndexing,
+      follow: allowIndexing,
     },
     openGraph: {
       title: openGraphTitle ?? finalTitle,

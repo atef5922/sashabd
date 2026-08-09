@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import DisplayProductDetailPage from "@/components/products/DisplayProductDetailPage";
+import ProductStructuredData from "@/components/products/ProductStructuredData";
 import { siteConfig } from "@/lib/site";
 import { getRelatedProducts, rentalCatalog, type ProductItem } from "@/lib/productsCatalog";
 import { buildProductMetadata, ensureMetaDescription } from "@/lib/seo";
@@ -76,7 +77,13 @@ export default async function RentalProductDetailsPage(
   const detailedSpecs = product.keySpecs;
 
   return (
-    <DisplayProductDetailPage
+    <>
+      <ProductStructuredData
+        product={product}
+        categoryLabel="Rental"
+        path={`/led-display/rental-display/${product.slug}/`}
+      />
+      <DisplayProductDetailPage
       product={product}
       categoryLabel="Rental"
       categoryHref="/led-display/rental-display/"
@@ -92,7 +99,8 @@ export default async function RentalProductDetailsPage(
         { href: "/contact/", label: "BOQ quotation" },
         { href: "/services-support/", label: "Installation & maintenance" },
       ]}
-      overview={`${product.title} is optimized for rental stage and event deployment where quick assembly, stable playback, and easy serviceability are required. Final setup should align with venue dimensions, rigging method, and power safety.`}
-    />
+        overview={`${product.title} is optimized for rental stage and event deployment where quick assembly, stable playback, and easy serviceability are required. Final setup should align with venue dimensions, rigging method, and power safety.`}
+      />
+    </>
   );
 }
