@@ -21,6 +21,33 @@ function ChevronRight({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
+function SolutionsTitleIcon() {
+  return (
+    <span
+      aria-hidden="true"
+      className="mx-auto mb-1 flex h-8 w-8 -translate-y-0.5 items-center justify-center rounded-full border border-[#0069A8]/20 bg-sky-50 text-[#0069A8] align-middle shadow-[0_10px_22px_rgba(0,105,168,0.12)] md:mb-0 md:ml-0 md:mr-2 md:inline-flex md:h-9 md:w-9"
+    >
+      <svg viewBox="0 0 24 24" className="h-4 w-4 md:h-5 md:w-5" fill="none">
+        <rect
+          x="4"
+          y="5"
+          width="16"
+          height="10"
+          rx="1.8"
+          stroke="currentColor"
+          strokeWidth="1.8"
+        />
+        <path
+          d="M9 19h6M12 15v4M7.5 9.5h5M16 9.2c1 1 1 2.6 0 3.6"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+        />
+      </svg>
+    </span>
+  );
+}
+
 export default function LedSolutionsChipsSection() {
   const [mobileExpanded, setMobileExpanded] = useState(false);
   const chips: ChipLink[] = [
@@ -42,7 +69,8 @@ export default function LedSolutionsChipsSection() {
     <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(248,250,252,0.82)_100%)] py-5 md:py-6">
       <div className="mx-auto w-full max-w-7xl px-4 py-1 md:px-6">
         <h2 className="mx-auto max-w-5xl pb-0 text-center text-[19px] font-extrabold leading-tight tracking-tight text-slate-900 after:hidden md:text-[24px]">
-          Commercial Display, Audio & Smart Technology Solutions in Bangladesh
+          <SolutionsTitleIcon />
+          <span>Commercial Display, Audio & Smart Technology Solutions in Bangladesh</span>
         </h2>
         <div className="mx-auto mt-1.5 max-w-5xl text-center text-[12.5px] font-medium leading-6 text-slate-600 md:text-[13.5px]">
           <p className="hidden md:block">
