@@ -32,7 +32,10 @@ export default function HeroBackground({
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const transitionRef = useRef<number | null>(null);
   const dragStartRef = useRef<number | null>(null);
+  const dragStartYRef = useRef<number | null>(null);
   const dragOffsetRef = useRef(0);
+  const dragOffsetYRef = useRef(0);
+  const isHorizontalDragRef = useRef(false);
   const isTransitioningRef = useRef(false);
 
   const runSlideChange = useCallback((direction: 1 | -1) => {
@@ -71,42 +74,59 @@ export default function HeroBackground({
     };
   }, [nextSlide]);
 
-  const beginDrag = (clientX: number) => {
+  const beginDrag = (clientX: number, clientY: number) => {
     dragStartRef.current = clientX;
+    dragStartYRef.current = clientY;
     dragOffsetRef.current = 0;
+    dragOffsetYRef.current = 0;
+    isHorizontalDragRef.current = false;
     setDragOffset(0);
     if (timerRef.current) clearInterval(timerRef.current);
   };
 
-  const updateDrag = (clientX: number) => {
+  const updateDrag = (clientX: number, clientY: number) => {
     if (dragStartRef.current === null) return;
 
     const nextOffset = clientX - dragStartRef.current;
-    dragOffsetRef.current = nextOffset;
-    setDragOffset(nextOffset);
+    const nextOffsetY = dragStartYRef.current === null ? 0 : clientY - dragStartYRef.current;
+    const absX = Math.abs(nextOffset);
+    const absY = Math.abs(nextOffsetY);
+
+    if (!isHorizontalDragRef.current && (absX > 8 || absY > 8)) {
+      isHorizontalDragRef.current = absX > absY * 1.2;
+    }
+
+    dragOffsetYRef.current = nextOffsetY;
+    dragOffsetRef.current = isHorizontalDragRef.current ? nextOffset : 0;
+    setDragOffset(dragOffsetRef.current);
   };
 
   const endDrag = () => {
     if (dragStartRef.current !== null) {
-      if (dragOffsetRef.current < -60) {
+      const isSwipe = isHorizontalDragRef.current && Math.abs(dragOffsetRef.current) > Math.abs(dragOffsetYRef.current);
+
+      if (isSwipe && dragOffsetRef.current < -60) {
         nextSlide();
-      } else if (dragOffsetRef.current > 60) {
+      } else if (isSwipe && dragOffsetRef.current > 60) {
         prevSlide();
       }
       resetTimer();
     }
 
     dragStartRef.current = null;
+    dragStartYRef.current = null;
     dragOffsetRef.current = 0;
+    dragOffsetYRef.current = 0;
+    isHorizontalDragRef.current = false;
     setDragOffset(0);
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    beginDrag(e.clientX);
+    beginDrag(e.clientX, e.clientY);
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    updateDrag(e.clientX);
+    updateDrag(e.clientX, e.clientY);
   };
 
   const handleMouseUp = () => {
@@ -120,12 +140,16 @@ export default function HeroBackground({
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    beginDrag(e.touches[0]?.clientX ?? 0);
+    const touch = e.touches[0];
+    if (!touch) return;
+    beginDrag(touch.clientX, touch.clientY);
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    updateDrag(e.touches[0]?.clientX ?? 0);
-    if (Math.abs(dragOffsetRef.current) > 8 && e.cancelable) {
+    const touch = e.touches[0];
+    if (!touch) return;
+    updateDrag(touch.clientX, touch.clientY);
+    if (isHorizontalDragRef.current && Math.abs(dragOffsetRef.current) > 8 && e.cancelable) {
       e.preventDefault();
     }
   };
