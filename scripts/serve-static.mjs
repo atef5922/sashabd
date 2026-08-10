@@ -34,10 +34,23 @@ function redirectFor(url) {
 
 function fileFor(pathname) {
   const decoded = decodeURIComponent(pathname);
-  const candidate = decoded === "/" ? path.join(root, "index.html") : decoded.endsWith("/") ? path.join(root, decoded, "index.html") : path.join(root, decoded);
+  const candidate =
+    decoded === "/" ? path.join(root, "index.html") : decoded.endsWith("/") ? path.join(root, decoded, "index.html") : path.join(root, decoded);
   const resolved = path.resolve(candidate);
-  if (!resolved.startsWith(root) || !existsSync(resolved) || !statSync(resolved).isFile()) return null;
-  return resolved;
+  if (resolved.startsWith(root) && existsSync(resolved) && statSync(resolved).isFile()) return resolved;
+
+  const parts = decoded.split("/");
+  const basename = parts.pop() || "";
+  const rscMatch = basename.match(/^(__next\.[^.]+)\.(.+\.txt)$/);
+  if (!rscMatch) return null;
+
+  const restBase = rscMatch[2].slice(0, -".txt".length);
+  const restParts = restBase.split(".");
+  const fileName = `${restParts.pop()}.txt`;
+  const rscCandidate = path.join(root, ...parts, rscMatch[1], ...restParts, fileName);
+  const rscResolved = path.resolve(rscCandidate);
+  if (!rscResolved.startsWith(root) || !existsSync(rscResolved) || !statSync(rscResolved).isFile()) return null;
+  return rscResolved;
 }
 
 createServer((request, response) => {

@@ -165,6 +165,11 @@ test("custom 404 and dynamic metadata implementations exist", () => {
   }
 });
 
+test("static export RSC txt rewrites resolve dotted payload requests", () => {
+  assert.match(htaccess, /RewriteRule \^\(\.\*\/\)\?\(__next\\\.\[\^.\]\+\)\\\.\(\.\+\\\.txt\)\$ \$1\$2\/\$3 \[N\]/);
+  assert.match(htaccess, /RewriteRule \^\(\.\*\/__next\\\.\[\^\/\]\+\/\.\+\)\\\.\(\[\^\/.\]\+\\\.txt\)\$ \$1\/\$2 \[N\]/);
+});
+
 test("LED display products use one responsive card render path", () => {
   const source = read("modules/routes/catalog/products-page.tsx");
   const productGrid = source.match(/\{\/\* PRODUCTS GRID \*\/\}([\s\S]*?)\{showMobilePagination/)?.[1];
