@@ -48,6 +48,20 @@ function SolutionsTitleIcon() {
   );
 }
 
+function SolutionsBadgeIcon() {
+  return (
+    <span
+      aria-hidden="true"
+      className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#0069A8]/20 bg-sky-50 text-[#0069A8] shadow-[inset_0_1px_0_rgba(255,255,255,0.92)]"
+    >
+      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none">
+        <rect x="4" y="5" width="16" height="10" rx="1.8" stroke="currentColor" strokeWidth="1.8" />
+        <path d="M9 19h6M12 15v4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      </svg>
+    </span>
+  );
+}
+
 export default function LedSolutionsChipsSection() {
   const [mobileExpanded, setMobileExpanded] = useState(false);
   const chips: ChipLink[] = [
@@ -68,7 +82,13 @@ export default function LedSolutionsChipsSection() {
   return (
     <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(248,250,252,0.82)_100%)] py-5 md:py-6">
       <div className="mx-auto w-full max-w-7xl px-4 py-1 md:px-6">
-        <h2 className="mx-auto max-w-5xl pb-0 text-center text-[19px] font-extrabold leading-tight tracking-tight text-slate-900 after:hidden md:text-[24px]">
+        <div className="text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-[#0069A8]/20 bg-white px-4 py-2 text-[12px] font-semibold text-[#0069A8] shadow-[0_10px_24px_rgba(15,23,42,0.06)] ring-1 ring-[#0069A8]/10">
+            <SolutionsBadgeIcon />
+            <span>Commercial Solutions</span>
+          </span>
+        </div>
+        <h2 className="mx-auto mt-3 max-w-5xl pb-0 text-center text-[19px] font-extrabold leading-tight tracking-tight text-slate-900 after:hidden md:text-[24px]">
           <SolutionsTitleIcon />
           <span>Commercial Display, Audio & Smart Technology Solutions in Bangladesh</span>
         </h2>
