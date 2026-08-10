@@ -69,6 +69,49 @@ function getMobileWorkflowCardClassName(phaseClassName: string) {
   return "border-violet-100 bg-[linear-gradient(180deg,rgba(255,255,255,0.98)_0%,rgba(248,250,252,0.98)_100%)] shadow-[0_12px_28px_rgba(15,23,42,0.06)] ring-1 ring-violet-100/80";
 }
 
+function WorkflowBadgeIcon() {
+  return (
+    <span
+      aria-hidden="true"
+      className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#0069A8]/20 bg-sky-50 text-[#0069A8] shadow-[inset_0_1px_0_rgba(255,255,255,0.92)]"
+    >
+      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none">
+        <path
+          d="M5 6h6l2 3h6v9H5V6Z"
+          stroke="currentColor"
+          strokeWidth="1.9"
+          strokeLinejoin="round"
+        />
+        <path d="M8 13h8" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" />
+      </svg>
+    </span>
+  );
+}
+
+function WorkflowTitleIcon() {
+  return (
+    <span
+      aria-hidden="true"
+      className="mx-auto mb-1 flex h-8 w-8 -translate-y-0.5 items-center justify-center rounded-full border border-[#0069A8]/20 bg-sky-50 text-[#0069A8] align-middle shadow-[0_10px_22px_rgba(0,105,168,0.12)] md:mb-0 md:ml-0 md:mr-2 md:inline-flex md:h-9 md:w-9"
+    >
+      <svg viewBox="0 0 24 24" className="h-4 w-4 md:h-5 md:w-5" fill="none">
+        <path
+          d="M6 6h3v3H6V6ZM15 6h3v3h-3V6ZM6 15h3v3H6v-3ZM15 15h3v3h-3v-3Z"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M9 7.5h6M16.5 9v6M15 16.5H9"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+        />
+      </svg>
+    </span>
+  );
+}
+
 function ArrowRight({ className = "h-4 w-4" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
@@ -96,11 +139,13 @@ export default function ProjectWorkflowSection() {
     <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[linear-gradient(180deg,rgba(248,250,252,0.94)_0%,rgba(255,255,255,1)_20%,rgba(248,250,252,0.96)_100%)] py-6 md:py-7">
       <div className="mx-auto w-full max-w-7xl px-4 md:px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center rounded-full border border-sky-100 bg-white px-4 py-2 text-[12px] font-semibold text-sky-700 shadow-[0_8px_20px_rgba(15,23,42,0.05)]">
-            Our Project Workflow
+          <span className="inline-flex items-center gap-2 rounded-full border border-[#0069A8]/20 bg-white px-4 py-2 text-[12px] font-semibold text-[#0069A8] shadow-[0_10px_24px_rgba(15,23,42,0.06)] ring-1 ring-[#0069A8]/10">
+            <WorkflowBadgeIcon />
+            <span>Our Project Workflow</span>
           </span>
           <h2 className="mt-3 pb-0 text-[25px] font-extrabold leading-tight tracking-tight text-slate-900 after:hidden md:text-[40px]">
-            How Sasha Corporation handles project workflow in Bangladesh
+            <WorkflowTitleIcon />
+            <span>How Sasha Corporation handles project workflow in Bangladesh</span>
           </h2>
           <div className="mt-2 text-sm leading-7 text-slate-600 md:text-[15px]">
             <p className="hidden md:block">

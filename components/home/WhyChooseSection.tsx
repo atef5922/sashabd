@@ -130,6 +130,48 @@ function getMobileCardClassName(accentClassName: string) {
   return "border-rose-200/75 bg-[linear-gradient(180deg,#fff1f2_0%,#ffffff_46%,#ffe4e6_100%)] shadow-[0_14px_34px_rgba(244,63,94,0.10)]";
 }
 
+function WhyChooseBadgeIcon() {
+  return (
+    <span
+      aria-hidden="true"
+      className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#0069A8]/20 bg-sky-50 text-[#0069A8] shadow-[inset_0_1px_0_rgba(255,255,255,0.92)]"
+    >
+      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none">
+        <path
+          d="M12 3.5 14.3 8l5 .7-3.6 3.5.9 5-4.6-2.4-4.6 2.4.9-5L4.7 8.7l5-.7L12 3.5Z"
+          stroke="currentColor"
+          strokeWidth="1.65"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </span>
+  );
+}
+
+function WhyChooseTitleIcon() {
+  return (
+    <span
+      aria-hidden="true"
+      className="mx-auto mb-1 flex h-8 w-8 -translate-y-0.5 items-center justify-center rounded-full border border-[#0069A8]/20 bg-sky-50 text-[#0069A8] align-middle shadow-[0_10px_22px_rgba(0,105,168,0.12)] md:mb-0 md:ml-0 md:mr-2 md:inline-flex md:h-9 md:w-9"
+    >
+      <svg viewBox="0 0 24 24" className="h-4 w-4 md:h-5 md:w-5" fill="none">
+        <path
+          d="M12 3 5 6v6c0 4.2 2.7 7.2 7 9 4.3-1.8 7-4.8 7-9V6l-7-3Z"
+          stroke="currentColor"
+          strokeWidth="1.8"
+        />
+        <path
+          d="m9.2 12.3 1.8 1.8 3.8-4"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </span>
+  );
+}
+
 export default function WhyChooseSection() {
   const [mobileExpanded, setMobileExpanded] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
@@ -175,11 +217,13 @@ export default function WhyChooseSection() {
     <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(248,250,252,0.92)_48%,rgba(255,255,255,1)_100%)] py-6 md:py-7">
       <div className="mx-auto w-full max-w-7xl px-4 md:px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center rounded-full border border-orange-100 bg-white px-4 py-2 text-[12px] font-semibold text-orange-700 shadow-[0_8px_20px_rgba(15,23,42,0.05)]">
-            Why Choose Sasha Corporation
+          <span className="inline-flex items-center gap-2 rounded-full border border-[#0069A8]/20 bg-white px-4 py-2 text-[12px] font-semibold text-[#0069A8] shadow-[0_10px_24px_rgba(15,23,42,0.06)] ring-1 ring-[#0069A8]/10">
+            <WhyChooseBadgeIcon />
+            <span>Why Choose Sasha Corporation</span>
           </span>
           <h2 className="mt-3 pb-0 text-[25px] font-extrabold leading-tight tracking-tight text-slate-900 after:hidden md:text-[40px]">
-            Why businesses in Bangladesh choose our technology solutions
+            <WhyChooseTitleIcon />
+            <span>Why businesses in Bangladesh choose our technology solutions</span>
           </h2>
           <div className="mt-2 text-sm leading-7 text-slate-600 md:text-[15px]">
             <p className="hidden md:block">

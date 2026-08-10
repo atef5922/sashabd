@@ -40,6 +40,26 @@ function getLogoClassName(name: string) {
   return "h-8 w-auto max-w-[112px] object-contain md:h-10 md:max-w-[146px]";
 }
 
+function TechnologyBrandsTitleIcon() {
+  return (
+    <span
+      aria-hidden="true"
+      className="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#0069A8]/20 bg-sky-50 text-[#0069A8] shadow-[0_10px_22px_rgba(0,105,168,0.12)] md:mt-0"
+    >
+      <svg viewBox="0 0 24 24" fill="none" className="h-4.5 w-4.5">
+        <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" strokeWidth="1.8" />
+        <path
+          d="M10 4v3M14 4v3M10 17v3M14 17v3M4 10h3M4 14h3M17 10h3M17 14h3"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+        />
+        <path d="M10.2 12h3.6M12 10.2v3.6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      </svg>
+    </span>
+  );
+}
+
 export default function TrustedTechnologyPartnersSection() {
   const [mobileExpanded, setMobileExpanded] = useState(false);
   const marqueeTrackRef = useRef<HTMLDivElement | null>(null);
@@ -135,10 +155,7 @@ export default function TrustedTechnologyPartnersSection() {
     <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-slate-50/80 py-5 md:py-6">
       <div className="mx-auto w-full max-w-7xl px-4 py-1 md:px-6">
         <h2 className="mx-auto flex max-w-5xl items-start justify-center gap-2 pb-0 text-center text-[1.45rem] font-bold leading-[1.25] text-slate-900 after:hidden md:items-center md:text-2xl">
-          <svg viewBox="0 0 24 24" fill="none" className="mt-0.5 h-6 w-6 shrink-0 text-slate-800 md:mt-0" aria-hidden="true">
-            <path d="M4 12h16M12 4v16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-            <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
-          </svg>
+          <TechnologyBrandsTitleIcon />
           <span className="min-w-0 text-balance">LED Technology &amp; Component Brands</span>
         </h2>
 
