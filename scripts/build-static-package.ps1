@@ -73,6 +73,24 @@ if ($missingAssets.Count -gt 0) {
   throw ("Missing referenced _next asset(s):`n" + ($missingAssets -join "`n"))
 }
 
+Write-Host "Creating RSC compatibility aliases..."
+$rscAliasCount = 0
+$rscRootDirs = Get-ChildItem $outDir -Recurse -Directory -Filter "__next.*"
+foreach ($rscRootDir in $rscRootDirs) {
+  $parentDir = Split-Path -Parent $rscRootDir.FullName
+  $prefix = Split-Path -Leaf $rscRootDir.FullName
+  $rscRootPath = $rscRootDir.FullName.TrimEnd("\", "/")
+  $rscFiles = Get-ChildItem $rscRootDir.FullName -Recurse -File -Filter "*.txt"
+
+  foreach ($rscFile in $rscFiles) {
+    $relative = $rscFile.FullName.Substring($rscRootPath.Length + 1)
+    $aliasName = $prefix + "." + ($relative -replace "[\\/]", ".")
+    $aliasPath = Join-Path $parentDir $aliasName
+    Copy-Item -LiteralPath $rscFile.FullName -Destination $aliasPath -Force
+    $rscAliasCount++
+  }
+}
+
 $deployInstructions = @"
 SASHABD STATIC DEPLOY PACKAGE
 
@@ -93,6 +111,7 @@ $manifest = [ordered]@{
   generatedAt = (Get-Date).ToString("s")
   htmlFileCount = $htmlFiles.Count
   nextAssetReferenceCount = $allAssetReferences.Count
+  rscCompatibilityAliasCount = $rscAliasCount
   sampleAssetReferences = @($allAssetReferences | Select-Object -First 20)
 }
 $manifest | ConvertTo-Json -Depth 4 | Set-Content -Path "out/deploy-manifest.json"

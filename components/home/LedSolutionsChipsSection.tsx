@@ -25,7 +25,7 @@ function SolutionsTitleIcon() {
   return (
     <span
       aria-hidden="true"
-      className="mx-auto mb-1 flex h-8 w-8 -translate-y-0.5 items-center justify-center rounded-full border border-[#0069A8]/20 bg-sky-50 text-[#0069A8] align-middle shadow-[0_10px_22px_rgba(0,105,168,0.12)] md:mb-0 md:ml-0 md:mr-2 md:inline-flex md:h-9 md:w-9"
+      className="hidden h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#0069A8]/20 bg-sky-50 text-[#0069A8] shadow-[0_10px_22px_rgba(0,105,168,0.12)] md:inline-flex md:h-9 md:w-9"
     >
       <svg viewBox="0 0 24 24" className="h-4 w-4 md:h-5 md:w-5" fill="none">
         <rect
@@ -88,7 +88,7 @@ export default function LedSolutionsChipsSection() {
             <span>Commercial Solutions</span>
           </span>
         </div>
-        <h2 className="mx-auto mt-3 max-w-5xl pb-0 text-center text-[19px] font-extrabold leading-tight tracking-tight text-slate-900 after:hidden md:text-[24px]">
+        <h2 className="mx-auto mt-3 flex max-w-[340px] items-center justify-center gap-2 pb-0 text-center text-[19px] font-extrabold leading-tight tracking-tight text-slate-900 after:hidden md:max-w-5xl md:text-[24px]">
           <SolutionsTitleIcon />
           <span>Commercial Display, Audio & Smart Technology Solutions in Bangladesh</span>
         </h2>

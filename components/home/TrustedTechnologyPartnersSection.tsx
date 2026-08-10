@@ -44,7 +44,7 @@ function TechnologyBrandsTitleIcon() {
   return (
     <span
       aria-hidden="true"
-      className="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#0069A8]/20 bg-sky-50 text-[#0069A8] shadow-[0_10px_22px_rgba(0,105,168,0.12)] md:mt-0"
+      className="hidden h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#0069A8]/20 bg-sky-50 text-[#0069A8] shadow-[0_10px_22px_rgba(0,105,168,0.12)] md:inline-flex"
     >
       <svg viewBox="0 0 24 24" fill="none" className="h-4.5 w-4.5">
         <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" strokeWidth="1.8" />
@@ -179,7 +179,7 @@ export default function TrustedTechnologyPartnersSection() {
             <span>Technology Partners</span>
           </span>
         </div>
-        <h2 className="mx-auto mt-3 flex max-w-5xl items-start justify-center gap-2 pb-0 text-center text-[1.45rem] font-bold leading-[1.25] text-slate-900 after:hidden md:items-center md:text-2xl">
+        <h2 className="mx-auto mt-3 block max-w-[300px] pb-0 text-center text-[20px] font-bold leading-tight text-slate-900 after:hidden md:flex md:max-w-5xl md:items-center md:justify-center md:gap-2 md:text-2xl md:leading-[1.25]">
           <TechnologyBrandsTitleIcon />
           <span className="min-w-0 text-balance">LED Technology &amp; Component Brands</span>
         </h2>
