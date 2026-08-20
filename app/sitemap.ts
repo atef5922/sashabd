@@ -15,6 +15,12 @@ import { turnstileCatalog } from "@/modules/routes/catalog/control-systems/turns
 import { digitalPodiumCatalog } from "@/modules/routes/catalog/control-systems/digital-podium/catalog";
 import { interactiveFlatPanelCatalog } from "@/modules/routes/catalog/control-systems/interactive-flat-panel/catalog";
 import { conferenceSystemCatalog } from "./conference-system/catalog";
+import {
+  conferenceBrandConfigs,
+  conferenceCategoryConfigs,
+  hasConferenceBrandProducts,
+  hasConferenceCategoryProducts,
+} from "./conference-system/taxonomy";
 
 export const dynamic = "force-static";
 
@@ -46,6 +52,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: abs("/interactive-flat-panel/"), lastModified: now, changeFrequency: "weekly", priority: 0.76 },
     { url: abs("/pa-system/"), lastModified: now, changeFrequency: "weekly", priority: 0.76 },
     { url: abs("/conference-system/"), lastModified: now, changeFrequency: "weekly", priority: 0.76 },
+    { url: abs("/conference-system/brands/"), lastModified: now, changeFrequency: "monthly", priority: 0.64 },
     { url: abs("/turnstile-gate/"), lastModified: now, changeFrequency: "weekly", priority: 0.76 },
     { url: abs("/digital-podium/"), lastModified: now, changeFrequency: "weekly", priority: 0.74 },
 
@@ -111,6 +118,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...conferenceSystemCatalog.map((p) => ({
       url: abs(`/conference-system/${p.slug}/`),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.62,
+    })),
+    ...conferenceCategoryConfigs.filter(hasConferenceCategoryProducts).map((category) => ({
+      url: abs(`/conference-system/${category.slug}/`),
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.64,
+    })),
+    ...conferenceBrandConfigs.filter(hasConferenceBrandProducts).map((brand) => ({
+      url: abs(`/conference-system/brands/${brand.slug}/`),
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.62,

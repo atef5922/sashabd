@@ -39,7 +39,7 @@ export default function ConferenceProductDetailPage({
   }, [product.images]);
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 py-8 md:px-6">
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 md:px-6" data-conference-route-kind="product">
       <Breadcrumbs
         items={[
           homeBreadcrumb(),

@@ -538,10 +538,14 @@ export function getConferenceProductPriceLabel(product: ConferenceProduct): stri
   return product.price.displayLabel;
 }
 
-export function validateConferenceCatalog(products: readonly ConferenceProduct[]): string[] {
+export function validateConferenceCatalog(
+  products: readonly ConferenceProduct[],
+  reservedSlugs: readonly string[] = [],
+): string[] {
   const errors: string[] = [];
   const ids = new Set<string>();
   const slugs = new Set<string>();
+  const reservedSlugSet = new Set(reservedSlugs);
   const validCategories = new Set<string>(CONFERENCE_SYSTEM_CATEGORIES);
   const validConnections = new Set<string>(CONFERENCE_CONNECTIONS);
   const validTypes = new Set<string>(CONFERENCE_PRODUCT_TYPES);
@@ -556,6 +560,7 @@ export function validateConferenceCatalog(products: readonly ConferenceProduct[]
 
     if (!product.slug.trim()) errors.push(`${reference}: missing slug`);
     else if (slugs.has(product.slug)) errors.push(`${reference}: duplicate slug ${product.slug}`);
+    else if (reservedSlugSet.has(product.slug)) errors.push(`${reference}: reserved slug collision ${product.slug}`);
     slugs.add(product.slug);
 
     if (!product.name.trim()) errors.push(`${reference}: missing name`);

@@ -288,6 +288,118 @@ test("Conference normalized prices preserve all 12 visible amounts", () => {
   assert.deepEqual(actualPrices, expectedPrices);
 });
 
+test("Conference taxonomy registries are unique and collision-protected", () => {
+  const taxonomy = read("app/conference-system/taxonomy.ts");
+  const catalog = read("app/conference-system/catalog.ts");
+  const categorySource = sectionBetween(
+    taxonomy,
+    "export const conferenceCategoryConfigs",
+    "export const conferenceBrandConfigs",
+  );
+  const brandSource = sectionBetween(
+    taxonomy,
+    "export const conferenceBrandConfigs",
+    "export const RESERVED_CONFERENCE_PRODUCT_SLUGS",
+  );
+  const categoryIds = [...categorySource.matchAll(/^    id: "([^"]+)",$/gm)].map((match) => match[1]);
+  const categorySlugs = [...categorySource.matchAll(/^    slug: "([^"]+)",$/gm)].map((match) => match[1]);
+  const brandIds = [...brandSource.matchAll(/^    id: "([^"]+)",$/gm)].map((match) => match[1]);
+  const brandSlugs = [...brandSource.matchAll(/^    slug: "([^"]+)",$/gm)].map((match) => match[1]);
+
+  assert.equal(categorySlugs.length, 10);
+  assert.equal(new Set(categorySlugs).size, categorySlugs.length);
+  assert.equal(new Set(brandSlugs).size, brandSlugs.length);
+  assert.equal(new Set([...categoryIds, ...brandIds]).size, categoryIds.length + brandIds.length);
+  assert.deepEqual(categorySlugs, [
+    "audio-conference-system",
+    "video-conference-system",
+    "wired-conference-system",
+    "wireless-conference-system",
+    "chairman-unit",
+    "delegate-unit",
+    "control-unit",
+    "conference-dsp",
+    "conference-amplifier",
+    "complete-package",
+  ]);
+  assert.deepEqual(brandSlugs, ["bosch", "toa", "honeywell", "spon", "cmx", "huidu"]);
+  assert.match(taxonomy, /RESERVED_CONFERENCE_PRODUCT_SLUGS = \[[\s\S]*\.\.\.conferenceCategoryConfigs\.map/);
+  assert.match(taxonomy, /"brands",/);
+  assert.match(taxonomy, /validateConferenceCatalog\(conferenceSystemCatalog, RESERVED_CONFERENCE_PRODUCT_SLUGS\)/);
+  assert.match(catalog, /reserved slug collision/);
+});
+
+test("Conference taxonomy matches only normalized catalog fields", () => {
+  const taxonomy = read("app/conference-system/taxonomy.ts");
+  const catalog = read("app/conference-system/catalog.ts");
+
+  for (const matcher of [
+    'product.systemCategory === "audio"',
+    'product.systemCategory === "video"',
+    'product.connection === "wired"',
+    'product.connection === "wireless"',
+    'product.productTypes.includes("chairman-unit")',
+    'product.productTypes.includes("delegate-unit")',
+    'product.productTypes.includes("control-unit")',
+    'product.productTypes.includes("dsp")',
+    'product.productTypes.includes("amplifier")',
+    'product.productTypes.includes("package")',
+  ]) {
+    assert.ok(taxonomy.includes(matcher), `${matcher} must drive taxonomy matching`);
+  }
+  assert.doesNotMatch(taxonomy, /matchProduct:[^\n]+(?:title|description|specifications|tags)/);
+  assert.match(taxonomy, /product\.brand\?\.slug === brand\.slug/);
+
+  const representativeMappings = [
+    ["huidu-hd-vp950-conference-video-processor", 'systemCategory: "video"', 'productTypes: ["processor"]'],
+    ["spon-lcm-6013cv-l-digital-conference-chairman-unit", 'systemCategory: "audio"', 'productTypes: ["chairman-unit"]'],
+    ["spon-lcm-6013dv-l-digital-conference-delegate-unit", 'systemCategory: "audio"', 'productTypes: ["delegate-unit"]'],
+    ["spon-lcm-6010-digital-conference-system-central-unit", 'systemCategory: "audio"', 'productTypes: ["control-unit"]'],
+    ["spon-sap-f88e-8x8-digital-audio-processor-dsp", 'systemCategory: "audio"', 'productTypes: ["dsp"]'],
+    ["spon-gen-5301p26-network-integrated-amplifier", 'systemCategory: "audio"', 'productTypes: ["amplifier"]'],
+    ["spon-lcs-5252d-wireless-conference-delegate-unit", 'connection: "wireless"', 'brand: { name: "SPON", slug: "spon" }'],
+  ];
+
+  for (const [slug, fieldA, fieldB] of representativeMappings) {
+    const start = catalog.indexOf(`slug: "${slug}"`);
+    const end = catalog.indexOf("\n  {", start);
+    const block = catalog.slice(start, end === -1 ? undefined : end);
+    assert.ok(block.includes(fieldA), `${slug} must include ${fieldA}`);
+    assert.ok(block.includes(fieldB), `${slug} must include ${fieldB}`);
+  }
+
+  for (const slug of ["gen-5301p13-conference-microphone-unit", "nac-720w-wireless-conference-system"]) {
+    const start = catalog.indexOf(`slug: "${slug}"`);
+    const end = catalog.indexOf("\n  {", start);
+    assert.doesNotMatch(catalog.slice(start, end), /^    brand:/m, `${slug} must remain unbranded`);
+  }
+});
+
+test("Conference taxonomy routes are static, distinct, and safely indexed", () => {
+  const firstLevelRoute = read("app/conference-system/[slug]/page.tsx");
+  const brandRoute = read("app/conference-system/brands/[brandSlug]/page.tsx");
+  const brandHub = read("app/conference-system/brands/page.tsx");
+  const collection = read("app/conference-system/ConferenceCollectionPage.tsx");
+  const detail = read("app/conference-system/ConferenceProductDetailPage.tsx");
+  const sitemap = read("app/sitemap.ts");
+
+  assert.match(firstLevelRoute, /dynamicParams = false/);
+  assert.match(firstLevelRoute, /conferenceSystemCatalog\.map\(\(product\) => \(\{ slug: product\.slug \}\)\)/);
+  assert.match(firstLevelRoute, /conferenceCategoryConfigs\.map\(\(category\) => \(\{ slug: category\.slug \}\)\)/);
+  assert.match(firstLevelRoute, /getConferenceProductBySlug\(slug\)/);
+  assert.match(firstLevelRoute, /getConferenceCategoryBySlug\(slug\)/);
+  assert.match(firstLevelRoute, /robots: \{ index: false, follow: true \}/);
+  assert.match(brandRoute, /dynamicParams = false/);
+  assert.match(brandRoute, /conferenceBrandConfigs\.map\(\(brand\) => \(\{ brandSlug: brand\.slug \}\)\)/);
+  assert.match(brandRoute, /robots: \{ index: false, follow: true \}/);
+  assert.match(brandHub, /data-conference-route-kind="brands-hub"/);
+  assert.match(collection, /data-conference-route-kind=\{routeKind\}/);
+  assert.match(detail, /data-conference-route-kind="product"/);
+  assert.match(sitemap, /conferenceCategoryConfigs\.filter\(hasConferenceCategoryProducts\)/);
+  assert.match(sitemap, /conferenceBrandConfigs\.filter\(hasConferenceBrandProducts\)/);
+  assert.match(sitemap, /\/conference-system\/brands\//);
+});
+
 test("LED product details render one Featured Products dataset", () => {
   const source = read("components/products/DisplayProductDetailPage.tsx");
   const featuredSection = source.match(/<section className="mt-6">([\s\S]*?)<MobilePostFeaturedCta/)?.[1];
