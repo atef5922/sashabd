@@ -10,7 +10,7 @@ import ProductGridCard from "@/components/products/ProductGridCard";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { normalizeDisplayedPriceText } from "@/lib/price";
 import { socialImageUrl } from "@/lib/seo";
-import { conferenceSystemCatalog } from "./catalog";
+import { conferenceSystemCatalog, getConferenceProductPrimaryImage } from "./catalog";
 
 const BRAND = { maroon: "#FF6A00", maroonDark: "#E45700" };
 const PAGE_TITLE = "Conference system price in bangladesh 2026";
@@ -1122,33 +1122,37 @@ export default function ConferenceSystemPage() {
       acceptedAnswer: { "@type": "Answer", text: item.a },
     })),
   };
-  const renderConferenceProductCard = (product: (typeof conferenceSystemCatalog)[number]) => (
-    <ProductGridCard
-      key={product.slug}
-      href={`/conference-system/${product.slug}/`}
-      title={product.title}
-      image={
-        <Image
-          src={product.image}
-          alt={product.title}
-          fill
-          sizes="(max-width: 1024px) 100vw, 33vw"
-          className="object-cover object-center transition duration-300 group-hover:scale-[1.03]"
-        />
-      }
-      imageContainerClassName="bg-slate-100"
-      borderColor={`${BRAND.maroon}12`}
-      topLeftBadge={{ text: product.badge, tone: "light" }}
-      topRightBadge={{ text: "Conference", tone: "dark" }}
-      metaLines={[{ text: product.cardPriceLabel, className: "mt-1 text-sm font-semibold text-sky-700" }]}
-      bullets={product.keyFeatures}
-      chips={product.bestFor}
-      accentColor={BRAND.maroon}
-      contactHref="/contact/"
-      compactMobile
-      viewDetailsLabel="View details ->"
-    />
-  );
+  const renderConferenceProductCard = (product: (typeof conferenceSystemCatalog)[number]) => {
+    const primaryImage = getConferenceProductPrimaryImage(product);
+
+    return (
+      <ProductGridCard
+        key={product.slug}
+        href={`/conference-system/${product.slug}/`}
+        title={product.name}
+        image={
+          <Image
+            src={primaryImage.src}
+            alt={primaryImage.alt}
+            fill
+            sizes="(max-width: 1024px) 100vw, 33vw"
+            className="object-cover object-center transition duration-300 group-hover:scale-[1.03]"
+          />
+        }
+        imageContainerClassName="bg-slate-100"
+        borderColor={`${BRAND.maroon}12`}
+        topLeftBadge={{ text: product.badge, tone: "light" }}
+        topRightBadge={{ text: "Conference", tone: "dark" }}
+        metaLines={[{ text: product.price.displayLabel, className: "mt-1 text-sm font-semibold text-sky-700" }]}
+        bullets={product.keyFeatures}
+        chips={product.applications}
+        accentColor={BRAND.maroon}
+        contactHref="/contact/"
+        compactMobile
+        viewDetailsLabel="View details ->"
+      />
+    );
+  };
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 pb-10 pt-0 md:px-6">
@@ -1496,9 +1500,9 @@ export default function ConferenceSystemPage() {
                       href={`/conference-system/${product.slug}/`}
                       className="block break-words font-extrabold leading-6 text-slate-950 underline-offset-4 transition hover:text-orange-600 hover:underline"
                     >
-                      {product.title}
+                      {product.name}
                     </Link>
-                    <p className="mt-1 text-xs leading-5 text-slate-500">{product.subtitle}</p>
+                    <p className="mt-1 text-xs leading-5 text-slate-500">{product.shortDescription}</p>
                     <div className="mt-3 grid gap-2 md:hidden">
                       <div className="flex items-start justify-between gap-4 rounded-xl bg-slate-50 px-3 py-2">
                         <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">Type</span>
@@ -1506,18 +1510,18 @@ export default function ConferenceSystemPage() {
                       </div>
                       <div className="rounded-xl bg-slate-50 px-3 py-2">
                         <span className="block text-xs font-extrabold uppercase tracking-wide text-slate-500">Best For</span>
-                        <span className="mt-1 block text-xs leading-5 text-slate-700">{product.bestFor.join(", ")}</span>
+                        <span className="mt-1 block text-xs leading-5 text-slate-700">{product.applications.join(", ")}</span>
                       </div>
                       <div className="flex items-center justify-between gap-4 rounded-xl bg-orange-50 px-3 py-2">
                         <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">Price</span>
-                        <span className="text-right text-sm font-extrabold text-slate-950">{normalizeDisplayedPriceText(product.priceLabel)}</span>
+                        <span className="text-right text-sm font-extrabold text-slate-950">{normalizeDisplayedPriceText(product.price.displayLabel)}</span>
                       </div>
                     </div>
                   </td>
                   <td className="hidden px-4 py-3 font-semibold text-slate-800 md:table-cell md:border-r md:border-slate-200">{product.badge}</td>
-                  <td className="hidden px-4 py-3 text-slate-700 md:table-cell md:border-r md:border-slate-200">{product.bestFor.join(", ")}</td>
+                  <td className="hidden px-4 py-3 text-slate-700 md:table-cell md:border-r md:border-slate-200">{product.applications.join(", ")}</td>
                   <td className="hidden px-4 py-3 text-right font-bold text-slate-900 md:table-cell">
-                    {normalizeDisplayedPriceText(product.priceLabel)}
+                    {normalizeDisplayedPriceText(product.price.displayLabel)}
                   </td>
                 </tr>
               ))}

@@ -24,17 +24,19 @@ export default function ConferenceProductDetailPage({
   relatedProducts,
   wa,
 }: ConferenceProductDetailPageProps) {
-  const [activeImage, setActiveImage] = useState(product.gallery[0] ?? product.image);
+  const [activeImage, setActiveImage] = useState(
+    product.images.find((image) => image.primary)?.src ?? product.images[0].src
+  );
   const [activeTab, setActiveTab] = useState<"spec" | "description">("spec");
 
   const visibleGallery = useMemo(() => {
     const seen = new Set<string>();
-    return [product.image, ...product.gallery].filter((src) => {
-      if (seen.has(src)) return false;
-      seen.add(src);
+    return product.images.filter((image) => {
+      if (seen.has(image.src)) return false;
+      seen.add(image.src);
       return true;
     });
-  }, [product.gallery, product.image]);
+  }, [product.images]);
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-8 md:px-6">
@@ -42,25 +44,25 @@ export default function ConferenceProductDetailPage({
         items={[
           homeBreadcrumb(),
           { href: "/conference-system/", label: "Conference System" },
-          { href: `/conference-system/${product.slug}/`, label: product.title, current: true },
+          { href: `/conference-system/${product.slug}/`, label: product.name, current: true },
         ]}
       />
 
       <section className="grid gap-5 rounded-2xl border bg-white p-4 md:grid-cols-[minmax(0,1fr)_minmax(320px,0.9fr)]" style={{ borderColor: "rgba(15,23,42,0.1)" }}>
         <div className="grid gap-3 sm:grid-cols-[84px_minmax(0,1fr)]">
           <div className="order-2 flex gap-2 overflow-x-auto sm:order-1 sm:flex-col sm:overflow-visible">
-            {visibleGallery.map((src, index) => (
+            {visibleGallery.map((image, index) => (
               <button
-                key={src}
+                key={image.src}
                 type="button"
-                onClick={() => setActiveImage(src)}
+                onClick={() => setActiveImage(image.src)}
                 aria-label={`Show product image ${index + 1}`}
                 className="relative h-20 w-20 flex-none overflow-hidden rounded-xl border bg-white shadow-sm transition hover:-translate-y-0.5"
-                style={{ borderColor: activeImage === src ? BRAND.maroon : "rgba(15,23,42,0.12)" }}
+                style={{ borderColor: activeImage === image.src ? BRAND.maroon : "rgba(15,23,42,0.12)" }}
               >
                 <Image
-                  src={src}
-                  alt={`${product.title} thumbnail ${index + 1}`}
+                  src={image.src}
+                  alt={`${image.alt} thumbnail ${index + 1}`}
                   fill
                   sizes="80px"
                   className="object-contain p-2"
@@ -72,7 +74,7 @@ export default function ConferenceProductDetailPage({
           <div className="order-1 relative aspect-square overflow-hidden rounded-xl bg-white sm:order-2">
             <Image
               src={activeImage}
-              alt={product.title}
+              alt={product.name}
               fill
               priority
               sizes="(max-width: 768px) 100vw, 50vw"
@@ -93,9 +95,9 @@ export default function ConferenceProductDetailPage({
             ))}
           </div>
 
-          <h1 className="mt-3 text-2xl font-bold leading-tight text-slate-900 md:text-3xl">{product.title}</h1>
-          <p className="mt-2 text-sm font-semibold text-sky-700">Price: {normalizeDisplayedPriceText(product.priceLabel)}</p>
-          <p className="mt-2 text-sm leading-7 text-slate-700">{product.subtitle}</p>
+          <h1 className="mt-3 text-2xl font-bold leading-tight text-slate-900 md:text-3xl">{product.name}</h1>
+          <p className="mt-2 text-sm font-semibold text-sky-700">Price: {normalizeDisplayedPriceText(product.price.displayLabel)}</p>
+          <p className="mt-2 text-sm leading-7 text-slate-700">{product.shortDescription}</p>
 
           <h2 className="mt-4 text-sm font-bold text-slate-900">Key Features</h2>
           <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700 marker:text-slate-500">
@@ -105,7 +107,7 @@ export default function ConferenceProductDetailPage({
           </ul>
 
           <div className="mt-4 flex flex-wrap gap-2">
-            {product.bestFor.map((item) => (
+            {product.applications.map((item) => (
               <span
                 key={item}
                 className="rounded-full border bg-white px-3 py-1.5 text-xs font-semibold text-slate-700"
@@ -196,10 +198,10 @@ export default function ConferenceProductDetailPage({
                   </tr>
                 </thead>
                 <tbody>
-                  {product.specs.map((spec) => (
-                    <tr key={`${spec.k}-${spec.v}`} className="border-b border-slate-100 last:border-b-0">
-                      <td className="py-2 pr-4 font-semibold text-slate-900">{spec.k}</td>
-                      <td className="py-2 text-right text-slate-700">{spec.v}</td>
+                  {product.specifications.map((spec) => (
+                    <tr key={`${spec.key}-${spec.value}`} className="border-b border-slate-100 last:border-b-0">
+                      <td className="py-2 pr-4 font-semibold text-slate-900">{spec.key}</td>
+                      <td className="py-2 text-right text-slate-700">{spec.value}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -234,16 +236,16 @@ export default function ConferenceProductDetailPage({
               >
                 <div className="relative aspect-square bg-white">
                   <Image
-                    src={item.image}
-                    alt={item.title}
+                    src={item.images.find((image) => image.primary)?.src ?? item.images[0].src}
+                    alt={item.name}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-contain p-5 transition duration-200 group-hover:scale-[1.02]"
                   />
                 </div>
                 <div className="p-4">
-                  <h3 className="text-sm font-extrabold leading-snug text-slate-900 line-clamp-2">{item.title}</h3>
-                  <p className="mt-1 text-xs font-semibold text-sky-700">Price: {normalizeDisplayedPriceText(item.priceLabel)}</p>
+                  <h3 className="text-sm font-extrabold leading-snug text-slate-900 line-clamp-2">{item.name}</h3>
+                  <p className="mt-1 text-xs font-semibold text-sky-700">Price: {normalizeDisplayedPriceText(item.price.displayLabel)}</p>
                 </div>
               </Link>
             ))}

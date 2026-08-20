@@ -216,6 +216,78 @@ test("Conference System renders one responsive semantic content set", () => {
   }
 });
 
+test("Conference catalog is normalized, complete, and route-stable", () => {
+  const catalog = read("app/conference-system/catalog.ts");
+  const route = read("app/conference-system/[slug]/page.tsx");
+  const landing = read("app/conference-system/page.tsx");
+  const detail = read("app/conference-system/ConferenceProductDetailPage.tsx");
+  const expectedSlugs = [
+    "gen-5301p13-conference-microphone-unit",
+    "nac-720w-wireless-conference-system",
+    "spon-gen-5301p26-network-integrated-amplifier",
+    "spon-sap-f88e-8x8-digital-audio-processor-dsp",
+    "spon-lcm-6010-digital-conference-system-central-unit",
+    "spon-lcm-6013cv-l-digital-conference-chairman-unit",
+    "spon-lcm-6013dv-l-digital-conference-delegate-unit",
+    "spon-lcm-6015p-12-port-wireless-microphone-charger",
+    "spon-lcs-5251cd-digital-conference-microphone-system",
+    "spon-lcs-5252d-wireless-conference-delegate-unit",
+    "spon-lcs-5301z-wireless-digital-conference-access-point",
+    "huidu-hd-vp950-conference-video-processor",
+  ];
+  const ids = [...catalog.matchAll(/^    id: "([^"]+)",$/gm)].map((match) => match[1]);
+  const slugs = [...catalog.matchAll(/^    slug: "([^"]+)",$/gm)].map((match) => match[1]);
+  const productBlocks = catalog.split(/\n  \{\n    id: /).slice(1);
+
+  assert.equal(productBlocks.length, 12);
+  assert.equal(new Set(ids).size, 12, "Conference product IDs must be unique");
+  assert.equal(new Set(slugs).size, 12, "Conference product slugs must be unique");
+  assert.deepEqual(slugs, expectedSlugs, "existing public Conference slugs must not change");
+
+  for (const block of productBlocks) {
+    assert.match(block, /^"[^"]+",\n    slug: "[^"]+",\n    name: "[^"]+",/);
+    assert.match(block, /shortDescription: "[^"]+"/);
+    assert.match(block, /description:\s*(?:"|\n\s+")[\s\S]+/);
+    assert.match(block, /productTypes: \["(?:chairman-unit|delegate-unit|control-unit|dsp|amplifier|camera|video-bar|speakerphone|package|accessory|microphone|charger|access-point|processor|other)"\]/);
+    assert.match(block, /price: \{ type: "fixed", amount: \d+, currency: "BDT", displayLabel: "[^"]+" \}/);
+    assert.match(block, /images: \[[\s\S]*?src: [^,]+, alt: "[^"]+", primary: true/);
+    assert.match(block, /applications: \[[^\]]+\]/);
+    assert.match(block, /specifications: \[[\s\S]*?\{ key: "[^"]+", value: "[^"]+" \}/);
+    assert.match(block, /compatibleProductIds: \[\]/);
+  }
+
+  assert.doesNotMatch(catalog, /\b(?:priceLabel|cardPriceLabel|gallery|bestFor|specs):/);
+  assert.match(catalog, /validateConferenceCatalog\(conferenceSystemCatalog\)/);
+  assert.match(route, /conferenceSystemCatalog\.map\(\(product\) => \(\{ slug: product\.slug \}\)\)/);
+  assert.match(route, /path: `\/conference-system\/\$\{slug\}`/);
+  assert.match(landing, /title=\{product\.name\}/);
+  assert.match(landing, /product\.price\.displayLabel/);
+  assert.match(detail, /product\.images\.find/);
+  assert.match(detail, /product\.specifications\.map/);
+});
+
+test("Conference normalized prices preserve all 12 visible amounts", () => {
+  const catalog = read("app/conference-system/catalog.ts");
+  const expectedPrices = [
+    [18500, "৳18,500"],
+    [145000, "৳145,000"],
+    [72500, "৳72,500"],
+    [64500, "৳64,500"],
+    [54500, "৳54,500"],
+    [21500, "৳21,500"],
+    [19500, "৳19,500"],
+    [34500, "৳34,500"],
+    [23500, "৳23,500"],
+    [24500, "৳24,500"],
+    [36500, "৳36,500"],
+    [42000, "Tk 42,000"],
+  ];
+  const actualPrices = [...catalog.matchAll(/price: \{ type: "fixed", amount: (\d+), currency: "BDT", displayLabel: "([^"]+)" \}/g)]
+    .map((match) => [Number(match[1]), match[2]]);
+
+  assert.deepEqual(actualPrices, expectedPrices);
+});
+
 test("LED product details render one Featured Products dataset", () => {
   const source = read("components/products/DisplayProductDetailPage.tsx");
   const featuredSection = source.match(/<section className="mt-6">([\s\S]*?)<MobilePostFeaturedCta/)?.[1];

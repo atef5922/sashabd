@@ -3,7 +3,11 @@ import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site";
 import { buildProductMetadata, ensureMetaDescription } from "@/lib/seo";
 import ConferenceProductDetailPage from "../ConferenceProductDetailPage";
-import { conferenceSystemCatalog, getConferenceProductBySlug } from "../catalog";
+import {
+  conferenceSystemCatalog,
+  getConferenceProductBySlug,
+  getConferenceProductPrimaryImage,
+} from "../catalog";
 
 export const dynamicParams = false;
 
@@ -15,14 +19,14 @@ export async function generateMetadata(
   if (!product) return { title: "Conference System" };
 
   return buildProductMetadata({
-    title: product.title,
+    title: product.name,
     description: ensureMetaDescription(
-      product.subtitle,
+      product.shortDescription,
       "Conference system price, specifications, BOQ support, installation, and after-sales service in Bangladesh."
     ),
     path: `/conference-system/${slug}`,
-    image: product.image,
-    openGraphTitle: `${product.title} | Conference System`,
+    image: getConferenceProductPrimaryImage(product).src,
+    openGraphTitle: `${product.name} | Conference System`,
   });
 }
 
@@ -47,7 +51,7 @@ export default async function ConferenceProductPage(
   }
 
   const wa = `https://wa.me/${siteConfig.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(
-    `Hello Sasha Corporation, I need quotation for ${product.title}.`
+    `Hello Sasha Corporation, I need quotation for ${product.name}.`
   )}`;
 
   return (

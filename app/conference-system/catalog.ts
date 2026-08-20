@@ -1,19 +1,67 @@
 const CONFERENCE_IMAGE_BASE = "/images/Conference%20system";
 
+export const CONFERENCE_SYSTEM_CATEGORIES = ["audio", "video"] as const;
+export const CONFERENCE_CONNECTIONS = ["wired", "wireless"] as const;
+export const CONFERENCE_PRODUCT_TYPES = [
+  "chairman-unit",
+  "delegate-unit",
+  "control-unit",
+  "dsp",
+  "amplifier",
+  "camera",
+  "video-bar",
+  "speakerphone",
+  "package",
+  "accessory",
+  "microphone",
+  "charger",
+  "access-point",
+  "processor",
+  "other",
+] as const;
+export const CONFERENCE_AVAILABILITIES = ["in-stock", "project-order", "contact"] as const;
+
+export type ConferenceSystemCategory = (typeof CONFERENCE_SYSTEM_CATEGORIES)[number];
+export type ConferenceConnection = (typeof CONFERENCE_CONNECTIONS)[number];
+export type ConferenceProductType = (typeof CONFERENCE_PRODUCT_TYPES)[number];
+export type ConferenceAvailability = (typeof CONFERENCE_AVAILABILITIES)[number];
+
+export type ConferencePrice =
+  | { type: "fixed"; amount: number; currency: "BDT"; displayLabel: string }
+  | { type: "range"; min: number; max: number; currency: "BDT"; displayLabel: string }
+  | { type: "request"; currency: "BDT"; displayLabel: string };
+
+export type ConferenceProductImage = {
+  src: string;
+  alt: string;
+  primary?: boolean;
+};
+
 export type ConferenceProduct = {
+  id: string;
   slug: string;
-  title: string;
-  subtitle: string;
-  image: string;
-  gallery: string[];
-  priceLabel: string;
-  cardPriceLabel: string;
+  name: string;
+  model?: string;
+  brand?: { name: string; slug: string };
+  systemCategory?: ConferenceSystemCategory;
+  connection?: ConferenceConnection;
+  productTypes: ConferenceProductType[];
+  price: ConferencePrice;
+  availability?: ConferenceAvailability;
+  shortDescription: string;
+  description: string;
+  keyFeatures: string[];
+  specifications: { key: string; value: string }[];
+  applications: string[];
+  participantRange?: { min?: number; max?: number };
+  compatibleProductIds: string[];
+  images: ConferenceProductImage[];
+  datasheet?: string;
+  warranty?: string;
+  featured?: boolean;
   badge: string;
   tags: string[];
-  keyFeatures: string[];
-  bestFor: string[];
-  specs: { k: string; v: string }[];
-  description: string;
+  legacy?: { oldSlug?: string };
 };
 
 function conferenceImage(fileName: string): string {
@@ -36,13 +84,18 @@ const lcm6010Back = conferenceImage("SPON LCM-6010 Digital Conference System Cen
 
 export const conferenceSystemCatalog: ConferenceProduct[] = [
   {
+    id: "gen-5301p13-conference-microphone-unit",
     slug: "gen-5301p13-conference-microphone-unit",
-    title: "GEN-5301P13 Conference Microphone Unit",
-    subtitle: "Desktop gooseneck conference microphone unit for clean speech pickup in small and medium meeting rooms.",
-    image: conferenceImage("GEN-5301P13.webp"),
-    gallery: [conferenceImage("GEN-5301P13.webp")],
-    priceLabel: "18,500 BDT",
-    cardPriceLabel: "৳18,500",
+    name: "GEN-5301P13 Conference Microphone Unit",
+    model: "GEN-5301P13",
+    systemCategory: "audio",
+    productTypes: ["microphone"],
+    price: { type: "fixed", amount: 18500, currency: "BDT", displayLabel: "৳18,500" },
+    shortDescription: "Desktop gooseneck conference microphone unit for clean speech pickup in small and medium meeting rooms.",
+    images: [
+      { src: conferenceImage("GEN-5301P13.webp"), alt: "GEN-5301P13 Conference Microphone Unit", primary: true },
+    ],
+    compatibleProductIds: [],
     badge: "Microphone Unit",
     tags: ["Conference Mic", "Gooseneck", "Meeting Room"],
     keyFeatures: [
@@ -51,26 +104,32 @@ export const conferenceSystemCatalog: ConferenceProduct[] = [
       "Simple meeting-room operation with stable table placement",
       "Suitable for boardroom, training, and seminar discussion setups",
     ],
-    bestFor: ["Boardroom", "Training Room", "Seminar Hall"],
-    specs: [
-      { k: "Model", v: "GEN-5301P13" },
-      { k: "Product Type", v: "Conference microphone unit" },
-      { k: "Microphone Style", v: "Desktop gooseneck" },
-      { k: "Application", v: "Meeting room, boardroom, seminar discussion" },
-      { k: "Installation", v: "Tabletop conference setup" },
-      { k: "Quotation", v: "Available based on system quantity and project scope" },
+    applications: ["Boardroom", "Training Room", "Seminar Hall"],
+    specifications: [
+      { key: "Model", value: "GEN-5301P13" },
+      { key: "Product Type", value: "Conference microphone unit" },
+      { key: "Microphone Style", value: "Desktop gooseneck" },
+      { key: "Application", value: "Meeting room, boardroom, seminar discussion" },
+      { key: "Installation", value: "Tabletop conference setup" },
+      { key: "Quotation", value: "Available based on system quantity and project scope" },
     ],
     description:
       "The GEN-5301P13 Conference Microphone Unit is a practical tabletop microphone for meeting rooms where clear speaker pickup and simple operation are important. It can be planned for boardrooms, training rooms, seminar halls, and office discussion spaces. Sasha Corporation can support product selection, quantity planning, cabling guidance, installation, and after-sales support for complete conference system projects in Bangladesh.",
   },
   {
+    id: "nac-720w-wireless-conference-system",
     slug: "nac-720w-wireless-conference-system",
-    title: "NAC-720W Wireless Conference System",
-    subtitle: "Wireless conference solution for flexible seating layouts and clean table arrangements without heavy microphone cabling.",
-    image: conferenceImage("NAC-720W.webp"),
-    gallery: [conferenceImage("NAC-720W.webp")],
-    priceLabel: "145,000 BDT",
-    cardPriceLabel: "৳145,000",
+    name: "NAC-720W Wireless Conference System",
+    model: "NAC-720W",
+    systemCategory: "audio",
+    connection: "wireless",
+    productTypes: ["other"],
+    price: { type: "fixed", amount: 145000, currency: "BDT", displayLabel: "৳145,000" },
+    shortDescription: "Wireless conference solution for flexible seating layouts and clean table arrangements without heavy microphone cabling.",
+    images: [
+      { src: conferenceImage("NAC-720W.webp"), alt: "NAC-720W Wireless Conference System", primary: true },
+    ],
+    compatibleProductIds: [],
     badge: "Wireless System",
     tags: ["Wireless", "Conference", "Flexible Setup"],
     keyFeatures: [
@@ -79,26 +138,32 @@ export const conferenceSystemCatalog: ConferenceProduct[] = [
       "Useful for corporate, hotel, and council meeting environments",
       "Project-based setup with microphone quantity and coverage planning",
     ],
-    bestFor: ["Corporate Meeting", "Council Room", "Hotel Conference"],
-    specs: [
-      { k: "Model", v: "NAC-720W" },
-      { k: "Product Type", v: "Wireless conference system" },
-      { k: "Connection", v: "Wireless conference microphone workflow" },
-      { k: "Room Planning", v: "Flexible seating and table arrangement" },
-      { k: "Support", v: "BOQ, installation, testing, and commissioning" },
-      { k: "Quotation", v: "Project price on request" },
+    applications: ["Corporate Meeting", "Council Room", "Hotel Conference"],
+    specifications: [
+      { key: "Model", value: "NAC-720W" },
+      { key: "Product Type", value: "Wireless conference system" },
+      { key: "Connection", value: "Wireless conference microphone workflow" },
+      { key: "Room Planning", value: "Flexible seating and table arrangement" },
+      { key: "Support", value: "BOQ, installation, testing, and commissioning" },
+      { key: "Quotation", value: "Project price on request" },
     ],
     description:
       "The NAC-720W Wireless Conference System is suitable for meeting rooms where cable-free table setup and flexible seating are preferred. It helps simplify conference room planning for organizations that change seating positions, host regular meetings, or need a cleaner tabletop appearance. Final configuration depends on microphone quantity, room size, control requirements, and installation scope.",
   },
   {
+    id: "spon-gen-5301p26-network-integrated-amplifier",
     slug: "spon-gen-5301p26-network-integrated-amplifier",
-    title: "SPON GEN-5301P26 Network Integrated Amplifier",
-    subtitle: "Network integrated amplifier for conference audio routing, room sound reinforcement, and system integration.",
-    image: conferenceImage("SPON GEN-5301P26 Network Integrated Amplifier.webp"),
-    gallery: [conferenceImage("SPON GEN-5301P26 Network Integrated Amplifier.webp")],
-    priceLabel: "72,500 BDT",
-    cardPriceLabel: "৳72,500",
+    name: "SPON GEN-5301P26 Network Integrated Amplifier",
+    model: "GEN-5301P26",
+    brand: { name: "SPON", slug: "spon" },
+    systemCategory: "audio",
+    productTypes: ["amplifier"],
+    price: { type: "fixed", amount: 72500, currency: "BDT", displayLabel: "৳72,500" },
+    shortDescription: "Network integrated amplifier for conference audio routing, room sound reinforcement, and system integration.",
+    images: [
+      { src: conferenceImage("SPON GEN-5301P26 Network Integrated Amplifier.webp"), alt: "SPON GEN-5301P26 Network Integrated Amplifier", primary: true },
+    ],
+    compatibleProductIds: [],
     badge: "Amplifier",
     tags: ["SPON", "Network Audio", "Amplifier"],
     keyFeatures: [
@@ -107,26 +172,33 @@ export const conferenceSystemCatalog: ConferenceProduct[] = [
       "Useful with conference microphones, speakers, and control systems",
       "Suitable for project-based audio integration",
     ],
-    bestFor: ["Conference Room", "Control Room", "Training Venue"],
-    specs: [
-      { k: "Brand", v: "SPON" },
-      { k: "Model", v: "GEN-5301P26" },
-      { k: "Product Type", v: "Network integrated amplifier" },
-      { k: "Use Case", v: "Conference audio reinforcement and room integration" },
-      { k: "System Role", v: "Amplification and network audio support" },
-      { k: "Quotation", v: "Project price on request" },
+    applications: ["Conference Room", "Control Room", "Training Venue"],
+    specifications: [
+      { key: "Brand", value: "SPON" },
+      { key: "Model", value: "GEN-5301P26" },
+      { key: "Product Type", value: "Network integrated amplifier" },
+      { key: "Use Case", value: "Conference audio reinforcement and room integration" },
+      { key: "System Role", value: "Amplification and network audio support" },
+      { key: "Quotation", value: "Project price on request" },
     ],
     description:
       "The SPON GEN-5301P26 Network Integrated Amplifier is positioned for conference rooms, control rooms, and training venues where microphone audio needs stable reinforcement and integration with a wider room audio system. It can be included in a complete conference BOQ with microphones, speakers, processors, and control equipment.",
   },
   {
+    id: "spon-sap-f88e-8x8-digital-audio-processor-dsp",
     slug: "spon-sap-f88e-8x8-digital-audio-processor-dsp",
-    title: "SPON SAP-F88E 8x8 Digital Audio Processor with DSP",
-    subtitle: "8-input and 8-output digital audio processor with DSP for conference rooms, training halls, and AV integration.",
-    image: sapF88eMain,
-    gallery: [sapF88eMain, sapF88eAlt],
-    priceLabel: "64,500 BDT",
-    cardPriceLabel: "৳64,500",
+    name: "SPON SAP-F88E 8x8 Digital Audio Processor with DSP",
+    model: "SAP-F88E",
+    brand: { name: "SPON", slug: "spon" },
+    systemCategory: "audio",
+    productTypes: ["dsp"],
+    price: { type: "fixed", amount: 64500, currency: "BDT", displayLabel: "৳64,500" },
+    shortDescription: "8-input and 8-output digital audio processor with DSP for conference rooms, training halls, and AV integration.",
+    images: [
+      { src: sapF88eMain, alt: "SPON SAP-F88E 8x8 Digital Audio Processor with DSP", primary: true },
+      { src: sapF88eAlt, alt: "SPON SAP-F88E Digital Audio Processor alternate view" },
+    ],
+    compatibleProductIds: [],
     badge: "DSP Processor",
     tags: ["SPON", "DSP", "8x8 Audio"],
     keyFeatures: [
@@ -135,26 +207,33 @@ export const conferenceSystemCatalog: ConferenceProduct[] = [
       "Useful for feedback control, routing, and room audio balancing",
       "Designed for professional conference and training environments",
     ],
-    bestFor: ["Conference Hall", "Government Office", "University"],
-    specs: [
-      { k: "Brand", v: "SPON" },
-      { k: "Model", v: "SAP-F88E" },
-      { k: "Product Type", v: "Digital audio processor with DSP" },
-      { k: "Input / Output", v: "8 x 8 audio processing class" },
-      { k: "Application", v: "Conference room DSP, AV routing, audio tuning" },
-      { k: "Quotation", v: "Available after project requirement review" },
+    applications: ["Conference Hall", "Government Office", "University"],
+    specifications: [
+      { key: "Brand", value: "SPON" },
+      { key: "Model", value: "SAP-F88E" },
+      { key: "Product Type", value: "Digital audio processor with DSP" },
+      { key: "Input / Output", value: "8 x 8 audio processing class" },
+      { key: "Application", value: "Conference room DSP, AV routing, audio tuning" },
+      { key: "Quotation", value: "Available after project requirement review" },
     ],
     description:
       "The SPON SAP-F88E 8x8 Digital Audio Processor with DSP is used when a conference room needs cleaner microphone management, routing flexibility, and tuned speaker output. It is useful for meeting rooms, boardrooms, training halls, and auditoriums where speech clarity and stable audio behavior are important. Sasha Corporation can include this processor in a complete conference AV design with installation and commissioning support.",
   },
   {
+    id: "spon-lcm-6010-digital-conference-system-central-unit",
     slug: "spon-lcm-6010-digital-conference-system-central-unit",
-    title: "SPON LCM-6010 Digital Conference System Central Unit",
-    subtitle: "Central control unit for SPON digital conference systems with chairman and delegate microphone management.",
-    image: lcm6010Front,
-    gallery: [lcm6010Front, lcm6010Back],
-    priceLabel: "54,500 BDT",
-    cardPriceLabel: "৳54,500",
+    name: "SPON LCM-6010 Digital Conference System Central Unit",
+    model: "LCM-6010",
+    brand: { name: "SPON", slug: "spon" },
+    systemCategory: "audio",
+    productTypes: ["control-unit"],
+    price: { type: "fixed", amount: 54500, currency: "BDT", displayLabel: "৳54,500" },
+    shortDescription: "Central control unit for SPON digital conference systems with chairman and delegate microphone management.",
+    images: [
+      { src: lcm6010Front, alt: "SPON LCM-6010 Digital Conference System Central Unit", primary: true },
+      { src: lcm6010Back, alt: "SPON LCM-6010 Digital Conference System Central Unit back" },
+    ],
+    compatibleProductIds: [],
     badge: "Central Unit",
     tags: ["SPON", "Central Unit", "Digital Conference"],
     keyFeatures: [
@@ -163,26 +242,33 @@ export const conferenceSystemCatalog: ConferenceProduct[] = [
       "Front and rear panel connectivity for system installation",
       "Suitable for structured meeting and discussion environments",
     ],
-    bestFor: ["Boardroom", "Council Chamber", "Seminar Hall"],
-    specs: [
-      { k: "Brand", v: "SPON" },
-      { k: "Model", v: "LCM-6010" },
-      { k: "Product Type", v: "Digital conference system central unit" },
-      { k: "System Role", v: "Chairman/delegate unit control and audio management" },
-      { k: "Installation", v: "Rack/table equipment setup based on project design" },
-      { k: "Quotation", v: "Project price on request" },
+    applications: ["Boardroom", "Council Chamber", "Seminar Hall"],
+    specifications: [
+      { key: "Brand", value: "SPON" },
+      { key: "Model", value: "LCM-6010" },
+      { key: "Product Type", value: "Digital conference system central unit" },
+      { key: "System Role", value: "Chairman/delegate unit control and audio management" },
+      { key: "Installation", value: "Rack/table equipment setup based on project design" },
+      { key: "Quotation", value: "Project price on request" },
     ],
     description:
       "The SPON LCM-6010 Digital Conference System Central Unit is the control point for a structured digital conference microphone setup. It is suitable for meeting rooms that need chairman and delegate units, clear speaking order, and professional meeting audio management. The final BOQ depends on the number of microphones, cable routing, table layout, and integration with speakers or recording equipment.",
   },
   {
+    id: "spon-lcm-6013cv-l-digital-conference-chairman-unit",
     slug: "spon-lcm-6013cv-l-digital-conference-chairman-unit",
-    title: "SPON LCM-6013CV-L Digital Conference Chairman Unit",
-    subtitle: "Chairman microphone unit for SPON digital conference systems with priority-style meeting control planning.",
-    image: lcm6013cvMain,
-    gallery: [lcm6013cvMain, lcm6013cvSide],
-    priceLabel: "21,500 BDT",
-    cardPriceLabel: "৳21,500",
+    name: "SPON LCM-6013CV-L Digital Conference Chairman Unit",
+    model: "LCM-6013CV-L",
+    brand: { name: "SPON", slug: "spon" },
+    systemCategory: "audio",
+    productTypes: ["chairman-unit"],
+    price: { type: "fixed", amount: 21500, currency: "BDT", displayLabel: "৳21,500" },
+    shortDescription: "Chairman microphone unit for SPON digital conference systems with priority-style meeting control planning.",
+    images: [
+      { src: lcm6013cvMain, alt: "SPON LCM-6013CV-L Digital Conference Chairman Unit", primary: true },
+      { src: lcm6013cvSide, alt: "SPON LCM-6013CV-L Digital Conference Chairman Unit side view" },
+    ],
+    compatibleProductIds: [],
     badge: "Chairman Unit",
     tags: ["SPON", "Chairman Unit", "Digital Mic"],
     keyFeatures: [
@@ -191,26 +277,33 @@ export const conferenceSystemCatalog: ConferenceProduct[] = [
       "Designed for SPON digital conference system integration",
       "Useful for boardrooms, council meetings, and seminar tables",
     ],
-    bestFor: ["Chairperson Desk", "Boardroom", "Council Chamber"],
-    specs: [
-      { k: "Brand", v: "SPON" },
-      { k: "Model", v: "LCM-6013CV-L" },
-      { k: "Product Type", v: "Digital conference chairman unit" },
-      { k: "Microphone Style", v: "Desktop gooseneck conference microphone" },
-      { k: "System Compatibility", v: "SPON digital conference system planning" },
-      { k: "Quotation", v: "Based on system quantity and controller selection" },
+    applications: ["Chairperson Desk", "Boardroom", "Council Chamber"],
+    specifications: [
+      { key: "Brand", value: "SPON" },
+      { key: "Model", value: "LCM-6013CV-L" },
+      { key: "Product Type", value: "Digital conference chairman unit" },
+      { key: "Microphone Style", value: "Desktop gooseneck conference microphone" },
+      { key: "System Compatibility", value: "SPON digital conference system planning" },
+      { key: "Quotation", value: "Based on system quantity and controller selection" },
     ],
     description:
       "The SPON LCM-6013CV-L Digital Conference Chairman Unit is planned for the main speaker or chairperson position in a conference system. It helps organize discussion flow alongside delegate units and a central controller. It is a good fit for boardrooms, government meetings, committees, and institutional seminar rooms.",
   },
   {
+    id: "spon-lcm-6013dv-l-digital-conference-delegate-unit",
     slug: "spon-lcm-6013dv-l-digital-conference-delegate-unit",
-    title: "SPON LCM-6013DV-L Digital Conference Delegate Unit",
-    subtitle: "Delegate microphone unit for SPON digital conference systems in boardrooms, meeting rooms, and seminar halls.",
-    image: lcm6013dvMain,
-    gallery: [lcm6013dvMain, lcm6013dvFront],
-    priceLabel: "19,500 BDT",
-    cardPriceLabel: "৳19,500",
+    name: "SPON LCM-6013DV-L Digital Conference Delegate Unit",
+    model: "LCM-6013DV-L",
+    brand: { name: "SPON", slug: "spon" },
+    systemCategory: "audio",
+    productTypes: ["delegate-unit"],
+    price: { type: "fixed", amount: 19500, currency: "BDT", displayLabel: "৳19,500" },
+    shortDescription: "Delegate microphone unit for SPON digital conference systems in boardrooms, meeting rooms, and seminar halls.",
+    images: [
+      { src: lcm6013dvMain, alt: "SPON LCM-6013DV-L Digital Conference Delegate Unit", primary: true },
+      { src: lcm6013dvFront, alt: "SPON LCM-6013DV-L Digital Conference Delegate Unit front view" },
+    ],
+    compatibleProductIds: [],
     badge: "Delegate Unit",
     tags: ["SPON", "Delegate Unit", "Conference Mic"],
     keyFeatures: [
@@ -219,26 +312,34 @@ export const conferenceSystemCatalog: ConferenceProduct[] = [
       "Works as part of a digital chairman/delegate conference setup",
       "Suitable for scalable meeting room microphone planning",
     ],
-    bestFor: ["Participant Table", "Meeting Room", "Training Venue"],
-    specs: [
-      { k: "Brand", v: "SPON" },
-      { k: "Model", v: "LCM-6013DV-L" },
-      { k: "Product Type", v: "Digital conference delegate unit" },
-      { k: "Microphone Style", v: "Desktop gooseneck conference microphone" },
-      { k: "System Compatibility", v: "SPON digital conference system planning" },
-      { k: "Quotation", v: "Based on delegate unit quantity and installation scope" },
+    applications: ["Participant Table", "Meeting Room", "Training Venue"],
+    specifications: [
+      { key: "Brand", value: "SPON" },
+      { key: "Model", value: "LCM-6013DV-L" },
+      { key: "Product Type", value: "Digital conference delegate unit" },
+      { key: "Microphone Style", value: "Desktop gooseneck conference microphone" },
+      { key: "System Compatibility", value: "SPON digital conference system planning" },
+      { key: "Quotation", value: "Based on delegate unit quantity and installation scope" },
     ],
     description:
       "The SPON LCM-6013DV-L Digital Conference Delegate Unit gives each participant a dedicated microphone point for organized meetings. It can be paired with a chairman unit and central controller to build a complete conference table system. Sasha Corporation can help plan the right number of delegate units, cabling, controller selection, and installation layout.",
   },
   {
+    id: "spon-lcm-6015p-12-port-wireless-microphone-charger",
     slug: "spon-lcm-6015p-12-port-wireless-microphone-charger",
-    title: "SPON LCM-6015P 12-Port Wireless Microphone Charger",
-    subtitle: "12-port charging unit for wireless conference microphone systems and delegate unit battery management.",
-    image: lcm6015pMain,
-    gallery: [lcm6015pMain, lcm6015pPerspective],
-    priceLabel: "34,500 BDT",
-    cardPriceLabel: "৳34,500",
+    name: "SPON LCM-6015P 12-Port Wireless Microphone Charger",
+    model: "LCM-6015P",
+    brand: { name: "SPON", slug: "spon" },
+    systemCategory: "audio",
+    connection: "wireless",
+    productTypes: ["charger"],
+    price: { type: "fixed", amount: 34500, currency: "BDT", displayLabel: "৳34,500" },
+    shortDescription: "12-port charging unit for wireless conference microphone systems and delegate unit battery management.",
+    images: [
+      { src: lcm6015pMain, alt: "SPON LCM-6015P 12-Port Wireless Microphone Charger", primary: true },
+      { src: lcm6015pPerspective, alt: "SPON LCM-6015P 12-Port Wireless Microphone Charger perspective view" },
+    ],
+    compatibleProductIds: [],
     badge: "Charger",
     tags: ["SPON", "12-Port", "Wireless Mic"],
     keyFeatures: [
@@ -247,26 +348,32 @@ export const conferenceSystemCatalog: ConferenceProduct[] = [
       "Useful for venues with multiple wireless microphone devices",
       "Supports organized charging and storage workflow",
     ],
-    bestFor: ["Wireless Conference", "Training Center", "Meeting Venue"],
-    specs: [
-      { k: "Brand", v: "SPON" },
-      { k: "Model", v: "LCM-6015P" },
-      { k: "Product Type", v: "12-port wireless microphone charger" },
-      { k: "Charging Capacity", v: "Up to 12 compatible wireless microphone units" },
-      { k: "Application", v: "Wireless conference microphone charging workflow" },
-      { k: "Quotation", v: "Available with wireless system package" },
+    applications: ["Wireless Conference", "Training Center", "Meeting Venue"],
+    specifications: [
+      { key: "Brand", value: "SPON" },
+      { key: "Model", value: "LCM-6015P" },
+      { key: "Product Type", value: "12-port wireless microphone charger" },
+      { key: "Charging Capacity", value: "Up to 12 compatible wireless microphone units" },
+      { key: "Application", value: "Wireless conference microphone charging workflow" },
+      { key: "Quotation", value: "Available with wireless system package" },
     ],
     description:
       "The SPON LCM-6015P 12-Port Wireless Microphone Charger is useful for conference venues that use multiple wireless microphones or delegate units. It keeps the equipment organized and ready before meetings, training sessions, and events. It is usually planned as part of a complete wireless conference system package.",
   },
   {
+    id: "spon-lcs-5251cd-digital-conference-microphone-system",
     slug: "spon-lcs-5251cd-digital-conference-microphone-system",
-    title: "SPON LCS-5251CD Digital Conference Microphone System",
-    subtitle: "Digital conference microphone system for professional meeting rooms requiring organized speech pickup.",
-    image: conferenceImage("SPON LCS-5251CD Digital Conference Microphone System.webp"),
-    gallery: [conferenceImage("SPON LCS-5251CD Digital Conference Microphone System.webp")],
-    priceLabel: "23,500 BDT",
-    cardPriceLabel: "৳23,500",
+    name: "SPON LCS-5251CD Digital Conference Microphone System",
+    model: "LCS-5251CD",
+    brand: { name: "SPON", slug: "spon" },
+    systemCategory: "audio",
+    productTypes: ["microphone"],
+    price: { type: "fixed", amount: 23500, currency: "BDT", displayLabel: "৳23,500" },
+    shortDescription: "Digital conference microphone system for professional meeting rooms requiring organized speech pickup.",
+    images: [
+      { src: conferenceImage("SPON LCS-5251CD Digital Conference Microphone System.webp"), alt: "SPON LCS-5251CD Digital Conference Microphone System", primary: true },
+    ],
+    compatibleProductIds: [],
     badge: "Digital System",
     tags: ["SPON", "Digital Conference", "Microphone System"],
     keyFeatures: [
@@ -275,26 +382,35 @@ export const conferenceSystemCatalog: ConferenceProduct[] = [
       "Designed for clear voice pickup and organized table workflow",
       "Suitable for corporate, institutional, and government meeting rooms",
     ],
-    bestFor: ["Boardroom", "Conference Room", "Seminar Room"],
-    specs: [
-      { k: "Brand", v: "SPON" },
-      { k: "Model", v: "LCS-5251CD" },
-      { k: "Product Type", v: "Digital conference microphone system" },
-      { k: "Application", v: "Professional discussion and meeting audio" },
-      { k: "Planning", v: "Chairman/delegate quantity depends on table layout" },
-      { k: "Quotation", v: "Project price on request" },
+    applications: ["Boardroom", "Conference Room", "Seminar Room"],
+    specifications: [
+      { key: "Brand", value: "SPON" },
+      { key: "Model", value: "LCS-5251CD" },
+      { key: "Product Type", value: "Digital conference microphone system" },
+      { key: "Application", value: "Professional discussion and meeting audio" },
+      { key: "Planning", value: "Chairman/delegate quantity depends on table layout" },
+      { key: "Quotation", value: "Project price on request" },
     ],
     description:
       "The SPON LCS-5251CD Digital Conference Microphone System is suitable for offices, institutions, government rooms, and conference venues that need organized speech pickup. It can be planned as a full chairman/delegate setup with cabling, control, speaker output, and installation support.",
   },
   {
+    id: "spon-lcs-5252d-wireless-conference-delegate-unit",
     slug: "spon-lcs-5252d-wireless-conference-delegate-unit",
-    title: "SPON LCS-5252D Wireless Conference Delegate Unit",
-    subtitle: "Wireless digital conference delegate unit with touch-screen style control for modern meeting rooms.",
-    image: lcs5252dMain,
-    gallery: [lcs5252dMain, lcs5252dSide, lcs5252dBack],
-    priceLabel: "24,500 BDT",
-    cardPriceLabel: "৳24,500",
+    name: "SPON LCS-5252D Wireless Conference Delegate Unit",
+    model: "LCS-5252D",
+    brand: { name: "SPON", slug: "spon" },
+    systemCategory: "audio",
+    connection: "wireless",
+    productTypes: ["delegate-unit"],
+    price: { type: "fixed", amount: 24500, currency: "BDT", displayLabel: "৳24,500" },
+    shortDescription: "Wireless digital conference delegate unit with touch-screen style control for modern meeting rooms.",
+    images: [
+      { src: lcs5252dMain, alt: "SPON LCS-5252D Wireless Conference Delegate Unit", primary: true },
+      { src: lcs5252dSide, alt: "SPON LCS-5252D Wireless Conference Delegate Unit side view" },
+      { src: lcs5252dBack, alt: "SPON LCS-5252D Wireless Conference Delegate Unit back view" },
+    ],
+    compatibleProductIds: [],
     badge: "Wireless Delegate",
     tags: ["SPON", "Wireless", "Delegate Unit", "Touch Screen"],
     keyFeatures: [
@@ -304,28 +420,35 @@ export const conferenceSystemCatalog: ConferenceProduct[] = [
       "Useful for attendance, voting, and structured discussion workflows",
       "Designed for modern boardroom and council chamber environments",
     ],
-    bestFor: ["Boardroom", "Council Chamber", "Executive Meeting"],
-    specs: [
-      { k: "Brand", v: "SPON" },
-      { k: "Model", v: "LCS-5252D" },
-      { k: "Product Type", v: "Wireless digital conference delegate unit" },
-      { k: "Display", v: "Touch-screen style control interface" },
-      { k: "Communication", v: "Wireless conference operation" },
-      { k: "Functions", v: "Discussion, attendance, voting workflow support" },
-      { k: "Recommended Use", v: "Boardroom, council chamber, executive meeting room" },
-      { k: "Price", v: "24,500 BDT" },
+    applications: ["Boardroom", "Council Chamber", "Executive Meeting"],
+    specifications: [
+      { key: "Brand", value: "SPON" },
+      { key: "Model", value: "LCS-5252D" },
+      { key: "Product Type", value: "Wireless digital conference delegate unit" },
+      { key: "Display", value: "Touch-screen style control interface" },
+      { key: "Communication", value: "Wireless conference operation" },
+      { key: "Functions", value: "Discussion, attendance, voting workflow support" },
+      { key: "Recommended Use", value: "Boardroom, council chamber, executive meeting room" },
+      { key: "Price", value: "24,500 BDT" },
     ],
     description:
       "The SPON LCS-5252D Wireless Conference Delegate Unit is a premium tabletop delegate station for modern conference rooms. It is useful when a meeting room needs a cable-light layout, participant microphone control, attendance or voting workflow support, and a professional appearance on the table. The product can be planned with matching access point, charging unit, chairman unit, and installation support based on the number of participants and room layout.",
   },
   {
+    id: "spon-lcs-5301z-wireless-digital-conference-access-point",
     slug: "spon-lcs-5301z-wireless-digital-conference-access-point",
-    title: "SPON LCS-5301Z Wireless Digital Conference Access Point",
-    subtitle: "Wireless conference access point for connecting compatible SPON wireless chairman and delegate units.",
-    image: conferenceImage("SPON LCS-5301Z Wireless Digital Conference Access Point.webp"),
-    gallery: [conferenceImage("SPON LCS-5301Z Wireless Digital Conference Access Point.webp")],
-    priceLabel: "36,500 BDT",
-    cardPriceLabel: "৳36,500",
+    name: "SPON LCS-5301Z Wireless Digital Conference Access Point",
+    model: "LCS-5301Z",
+    brand: { name: "SPON", slug: "spon" },
+    systemCategory: "audio",
+    connection: "wireless",
+    productTypes: ["access-point"],
+    price: { type: "fixed", amount: 36500, currency: "BDT", displayLabel: "৳36,500" },
+    shortDescription: "Wireless conference access point for connecting compatible SPON wireless chairman and delegate units.",
+    images: [
+      { src: conferenceImage("SPON LCS-5301Z Wireless Digital Conference Access Point.webp"), alt: "SPON LCS-5301Z Wireless Digital Conference Access Point", primary: true },
+    ],
+    compatibleProductIds: [],
     badge: "Access Point",
     tags: ["SPON", "Wireless", "Access Point"],
     keyFeatures: [
@@ -334,26 +457,32 @@ export const conferenceSystemCatalog: ConferenceProduct[] = [
       "Useful for cable-light meeting room deployments",
       "Planned based on room size, microphone count, and coverage requirement",
     ],
-    bestFor: ["Wireless Boardroom", "Council Room", "Meeting Hall"],
-    specs: [
-      { k: "Brand", v: "SPON" },
-      { k: "Model", v: "LCS-5301Z" },
-      { k: "Product Type", v: "Wireless digital conference access point" },
-      { k: "Application", v: "Wireless chairman/delegate conference system connectivity" },
-      { k: "Planning", v: "Coverage depends on room size and unit quantity" },
-      { k: "Quotation", v: "Project price on request" },
+    applications: ["Wireless Boardroom", "Council Room", "Meeting Hall"],
+    specifications: [
+      { key: "Brand", value: "SPON" },
+      { key: "Model", value: "LCS-5301Z" },
+      { key: "Product Type", value: "Wireless digital conference access point" },
+      { key: "Application", value: "Wireless chairman/delegate conference system connectivity" },
+      { key: "Planning", value: "Coverage depends on room size and unit quantity" },
+      { key: "Quotation", value: "Project price on request" },
     ],
     description:
       "The SPON LCS-5301Z Wireless Digital Conference Access Point is used in wireless conference systems to support communication with compatible chairman and delegate units. It should be selected as part of a full wireless conference design, considering room size, seating layout, microphone quantity, and expected operating workflow.",
   },
   {
+    id: "huidu-hd-vp950-conference-video-processor",
     slug: "huidu-hd-vp950-conference-video-processor",
-    title: "Huidu HD-VP950 Conference Video Processor",
-    subtitle: "Conference and event display processor for meeting-room LED walls, presentation switching, and cleaner scaling in professional AV environments.",
-    image: "/images/controller/Huidu-HD-VP620-LED-Video-Processor.webp",
-    gallery: ["/images/controller/Huidu-HD-VP620-LED-Video-Processor.webp"],
-    priceLabel: "42,000 BDT",
-    cardPriceLabel: "Tk 42,000",
+    name: "Huidu HD-VP950 Conference Video Processor",
+    model: "HD-VP950",
+    brand: { name: "Huidu", slug: "huidu" },
+    systemCategory: "video",
+    productTypes: ["processor"],
+    price: { type: "fixed", amount: 42000, currency: "BDT", displayLabel: "Tk 42,000" },
+    shortDescription: "Conference and event display processor for meeting-room LED walls, presentation switching, and cleaner scaling in professional AV environments.",
+    images: [
+      { src: "/images/controller/Huidu-HD-VP620-LED-Video-Processor.webp", alt: "Huidu HD-VP950 Conference Video Processor", primary: true },
+    ],
+    compatibleProductIds: [],
     badge: "Video Processor",
     tags: ["Conference AV", "Presentation Switcher", "LED Processor"],
     keyFeatures: [
@@ -362,21 +491,116 @@ export const conferenceSystemCatalog: ConferenceProduct[] = [
       "Cleaner scaling support for sharper text, slides, and meeting-room content display",
       "Practical fit for boardroom, seminar hall, and event-stage AV integration",
     ],
-    bestFor: ["Conference Hall", "Boardroom AV", "Seminar Stage"],
-    specs: [
-      { k: "Model", v: "HD-VP950" },
-      { k: "Product Type", v: "Conference display video processor" },
-      { k: "Processing Role", v: "Video switching, scaling, and LED display output workflow" },
-      { k: "Input Support", v: "HDMI / DVI / VGA / USB media (workflow dependent)" },
-      { k: "Output Planning", v: "Gigabit Ethernet based LED screen loading support" },
-      { k: "Application", v: "Conference LED wall, seminar display, event presentation screen" },
-      { k: "Quotation", v: "Available based on screen size, controller need, and project scope" },
+    applications: ["Conference Hall", "Boardroom AV", "Seminar Stage"],
+    specifications: [
+      { key: "Model", value: "HD-VP950" },
+      { key: "Product Type", value: "Conference display video processor" },
+      { key: "Processing Role", value: "Video switching, scaling, and LED display output workflow" },
+      { key: "Input Support", value: "HDMI / DVI / VGA / USB media (workflow dependent)" },
+      { key: "Output Planning", value: "Gigabit Ethernet based LED screen loading support" },
+      { key: "Application", value: "Conference LED wall, seminar display, event presentation screen" },
+      { key: "Quotation", value: "Available based on screen size, controller need, and project scope" },
     ],
     description:
       "The Huidu HD-VP950 Conference Video Processor is suitable for conference rooms, seminar halls, and event spaces where presentation content, live switching, and cleaner display scaling are important. It can be planned with LED walls, meeting-room AV systems, speakers, processors, and control equipment to create a more organized conference presentation workflow in Bangladesh.",
   },
 ];
 
+export function getConferenceProducts(): readonly ConferenceProduct[] {
+  return conferenceSystemCatalog;
+}
+
 export function getConferenceProductBySlug(slug: string): ConferenceProduct | undefined {
   return conferenceSystemCatalog.find((product) => product.slug === slug);
+}
+
+export function getConferenceProductsByBrand(brandSlug: string): ConferenceProduct[] {
+  return conferenceSystemCatalog.filter((product) => product.brand?.slug === brandSlug);
+}
+
+export function getConferenceProductsBySystemCategory(category: ConferenceSystemCategory): ConferenceProduct[] {
+  return conferenceSystemCatalog.filter((product) => product.systemCategory === category);
+}
+
+export function getConferenceProductsByConnection(connection: ConferenceConnection): ConferenceProduct[] {
+  return conferenceSystemCatalog.filter((product) => product.connection === connection);
+}
+
+export function getConferenceProductsByType(productType: ConferenceProductType): ConferenceProduct[] {
+  return conferenceSystemCatalog.filter((product) => product.productTypes.includes(productType));
+}
+
+export function getConferenceProductPrimaryImage(product: ConferenceProduct): ConferenceProductImage {
+  return product.images.find((image) => image.primary) ?? product.images[0];
+}
+
+export function getConferenceProductPriceLabel(product: ConferenceProduct): string {
+  return product.price.displayLabel;
+}
+
+export function validateConferenceCatalog(products: readonly ConferenceProduct[]): string[] {
+  const errors: string[] = [];
+  const ids = new Set<string>();
+  const slugs = new Set<string>();
+  const validCategories = new Set<string>(CONFERENCE_SYSTEM_CATEGORIES);
+  const validConnections = new Set<string>(CONFERENCE_CONNECTIONS);
+  const validTypes = new Set<string>(CONFERENCE_PRODUCT_TYPES);
+  const validAvailabilities = new Set<string>(CONFERENCE_AVAILABILITIES);
+
+  for (const product of products) {
+    const reference = product.slug || product.id || "unknown product";
+
+    if (!product.id.trim()) errors.push(`${reference}: missing id`);
+    else if (ids.has(product.id)) errors.push(`${reference}: duplicate id ${product.id}`);
+    ids.add(product.id);
+
+    if (!product.slug.trim()) errors.push(`${reference}: missing slug`);
+    else if (slugs.has(product.slug)) errors.push(`${reference}: duplicate slug ${product.slug}`);
+    slugs.add(product.slug);
+
+    if (!product.name.trim()) errors.push(`${reference}: missing name`);
+    if (!product.shortDescription.trim()) errors.push(`${reference}: missing short description`);
+    if (!product.description.trim()) errors.push(`${reference}: missing description`);
+    if (!product.images.length) errors.push(`${reference}: missing images`);
+    if (product.images.some((image) => !image.src.trim() || !image.alt.trim())) {
+      errors.push(`${reference}: image src and alt must be non-empty`);
+    }
+    if (product.images.filter((image) => image.primary).length > 1) {
+      errors.push(`${reference}: multiple primary images`);
+    }
+
+    if (product.brand && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(product.brand.slug)) {
+      errors.push(`${reference}: invalid brand slug ${product.brand.slug}`);
+    }
+    if (product.systemCategory && !validCategories.has(product.systemCategory)) {
+      errors.push(`${reference}: invalid system category ${product.systemCategory}`);
+    }
+    if (product.connection && !validConnections.has(product.connection)) {
+      errors.push(`${reference}: invalid connection ${product.connection}`);
+    }
+    if (!product.productTypes.length || product.productTypes.some((type) => !validTypes.has(type))) {
+      errors.push(`${reference}: invalid product type`);
+    }
+    if (product.availability && !validAvailabilities.has(product.availability)) {
+      errors.push(`${reference}: invalid availability ${product.availability}`);
+    }
+
+    if (product.price.currency !== "BDT" || !product.price.displayLabel.trim()) {
+      errors.push(`${reference}: invalid price currency or display label`);
+    } else if (product.price.type === "fixed" && (!Number.isFinite(product.price.amount) || product.price.amount < 0)) {
+      errors.push(`${reference}: invalid fixed price`);
+    } else if (
+      product.price.type === "range" &&
+      (!Number.isFinite(product.price.min) || !Number.isFinite(product.price.max) || product.price.min > product.price.max)
+    ) {
+      errors.push(`${reference}: invalid price range`);
+    }
+  }
+
+  return errors;
+}
+
+const conferenceCatalogErrors = validateConferenceCatalog(conferenceSystemCatalog);
+if (conferenceCatalogErrors.length) {
+  throw new Error(`Invalid Conference product catalog:\n${conferenceCatalogErrors.join("\n")}`);
 }
