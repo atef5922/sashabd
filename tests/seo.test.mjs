@@ -181,6 +181,41 @@ test("LED display products use one responsive card render path", () => {
   assert.match(productGrid, /desktopPagedProductIds\.has\(product\.id\)/);
 });
 
+test("Conference System renders one responsive semantic content set", () => {
+  const source = read("app/conference-system/page.tsx");
+  const listing = sectionBetween(source, '<section className="mt-4" aria-labelledby="conference-products-heading">', '<section className={sectionClass} style={sectionStyle} aria-labelledby="what-is-conference-system">');
+
+  assert.equal(occurrences(listing, "conferenceSystemCatalog.map((product) => renderConferenceProductCard(product))"), 1);
+  assert.equal(occurrences(source, "mobileProductRows"), 0);
+  assert.equal(occurrences(source, "<FaqAccordion"), 1);
+  assert.equal(occurrences(source, '\"@type\": \"FAQPage\"'), 1);
+  assert.equal(occurrences(source, '<section id="conference-system-price"'), 1);
+  assert.equal(occurrences(source, '<h1 className='), 1);
+
+  for (const heading of [
+    "Conference System Products",
+    "What is a Conference System?",
+    "Key Components of a Conference System",
+    "Key Benefits of a Professional Conference System",
+    "Conference System Applications",
+    "Conference System Packages by Room Size",
+    "Types of Conference Systems",
+    "Conference System Price in Bangladesh",
+    "Wired vs Wireless Conference System",
+    "How to Choose the Right Conference System in Bangladesh",
+    "Why Choose Sasha Corporation for Conference Systems in Bangladesh?",
+    "Brands We Work With",
+    "Conference System FAQ",
+  ]) {
+    const escaped = heading.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    assert.equal(
+      (source.match(new RegExp(`<h2[^>]*>\\s*${escaped}\\s*</h2>`, "g")) ?? []).length,
+      1,
+      `${heading} must render from one H2 source`,
+    );
+  }
+});
+
 test("LED product details render one Featured Products dataset", () => {
   const source = read("components/products/DisplayProductDetailPage.tsx");
   const featuredSection = source.match(/<section className="mt-6">([\s\S]*?)<MobilePostFeaturedCta/)?.[1];
