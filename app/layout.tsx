@@ -12,6 +12,10 @@ import { GA_ID } from "@/lib/gtag";
 import GaPageview from "@/components/analytics/GaPageview";
 import { BRAND_NAME } from "@/lib/brand";
 import { isVercelStagingBuild } from "@/lib/deployment";
+import {
+  conferenceBrandsHubLink,
+  conferenceNavigationGroups,
+} from "@/app/conference-system/navigation";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -146,7 +150,10 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning className={`${roboto.variable} ${notoSansBengali.variable}`}>
         {GA_ID ? <GaPageview /> : null}
-        <Header />
+        <Header
+          conferenceNavigationGroups={conferenceNavigationGroups}
+          conferenceBrandsHubLink={conferenceBrandsHubLink}
+        />
         <main id="main-content" className="pb-12 pt-2 md:pb-0">
           {children}
         </main>

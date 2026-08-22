@@ -14,6 +14,7 @@ import {
   conferenceCategoryConfigs,
   getConferenceCategoryBySlug,
   getConferenceCategoryProducts,
+  isConferenceCategoryIndexable,
 } from "../taxonomy";
 
 export const dynamicParams = false;
@@ -38,17 +39,17 @@ export async function generateMetadata(
 
   const category = getConferenceCategoryBySlug(slug);
   if (!category) return { title: "Conference System" };
-  const hasProducts = getConferenceCategoryProducts(category).length > 0;
+  const indexable = isConferenceCategoryIndexable(category);
   const metadata = buildProductMetadata({
     title: category.seo.title,
     description: category.seo.description,
     path: `/conference-system/${category.slug}/`,
     openGraphTitle: category.seo.title,
     openGraphType: "website",
-    index: hasProducts,
+    index: indexable,
   });
 
-  return hasProducts ? metadata : { ...metadata, robots: { index: false, follow: true } };
+  return indexable ? metadata : { ...metadata, robots: { index: false, follow: true } };
 }
 
 export async function generateStaticParams() {
@@ -91,8 +92,7 @@ export default async function ConferenceProductPage(
   return (
     <ConferenceCollectionPage
       routeKind="category"
-      title={category.label}
-      description={category.description}
+      category={category}
       products={products}
       breadcrumbs={[
         homeBreadcrumb(),

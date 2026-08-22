@@ -1,8 +1,15 @@
 import {
   conferenceSystemCatalog,
   type ConferenceProduct,
+  type ConferenceProductType,
   validateConferenceCatalog,
 } from "./catalog";
+import {
+  conferenceBrandPageContent,
+  conferenceCategoryPageContent,
+  type ConferenceBrandPageContent,
+  type ConferenceCategoryPageContent,
+} from "./collectionContent";
 
 export type ConferenceCategoryGroup = "system" | "connection" | "component" | "package";
 
@@ -280,6 +287,27 @@ export function hasConferenceCategoryProducts(category: ConferenceCategoryConfig
   return getConferenceCategoryProductCount(category) > 0;
 }
 
+export function getConferenceCategoryPageContent(category: ConferenceCategoryConfig): ConferenceCategoryPageContent {
+  return conferenceCategoryPageContent[category.slug];
+}
+
+export function getConferenceRelatedCategories(category: ConferenceCategoryConfig): ConferenceCategoryConfig[] {
+  const content = getConferenceCategoryPageContent(category);
+  return content.relatedCategorySlugs
+    .map((slug) => getConferenceCategoryBySlug(slug))
+    .filter((item): item is ConferenceCategoryConfig => Boolean(item));
+}
+
+export function isConferenceCategoryIndexable(category: ConferenceCategoryConfig): boolean {
+  const content = getConferenceCategoryPageContent(category);
+  return (
+    hasConferenceCategoryProducts(category) &&
+    content.highlights.length >= 3 &&
+    content.buyerGuide.length >= 3 &&
+    content.faqs.length >= 3
+  );
+}
+
 export function getConferenceBrands(): readonly ConferenceBrandConfig[] {
   return conferenceBrandConfigs;
 }
@@ -298,6 +326,48 @@ export function getConferenceBrandProductCount(brand: ConferenceBrandConfig): nu
 
 export function hasConferenceBrandProducts(brand: ConferenceBrandConfig): boolean {
   return getConferenceBrandProductCount(brand) > 0;
+}
+
+export function getConferenceBrandPageContent(brand: ConferenceBrandConfig): ConferenceBrandPageContent | undefined {
+  return conferenceBrandPageContent[brand.slug];
+}
+
+export function getConferenceBrandsForProducts(products: readonly ConferenceProduct[]): ConferenceBrandConfig[] {
+  const representedSlugs = new Set(products.map((product) => product.brand?.slug).filter(Boolean));
+  return conferenceBrandConfigs.filter((brand) => representedSlugs.has(brand.slug));
+}
+
+export function getConferenceCategoriesForProducts(products: readonly ConferenceProduct[]): ConferenceCategoryConfig[] {
+  if (!products.length) return [];
+  const productIds = new Set(products.map((product) => product.id));
+  return conferenceCategoryConfigs.filter((category) =>
+    conferenceSystemCatalog.some((product) => productIds.has(product.id) && category.matchProduct(product))
+  );
+}
+
+export function getConferenceProductTypes(products: readonly ConferenceProduct[]): ConferenceProductType[] {
+  return [...new Set(products.flatMap((product) => product.productTypes))];
+}
+
+export function getConferenceApplications(products: readonly ConferenceProduct[]): string[] {
+  return [...new Set(products.flatMap((product) => product.applications))];
+}
+
+export function isConferenceBrandIndexable(brand: ConferenceBrandConfig): boolean {
+  const products = getConferenceBrandProducts(brand);
+  const content = getConferenceBrandPageContent(brand);
+  const representedTypes = getConferenceProductTypes(products);
+  const representedCategories = getConferenceCategoriesForProducts(products);
+
+  return Boolean(
+    products.length &&
+    content &&
+    content.highlights.length >= 3 &&
+    content.buyerGuide.length >= 3 &&
+    content.faqs.length >= 3 &&
+    representedTypes.length >= 2 &&
+    representedCategories.length >= 2
+  );
 }
 
 function findDuplicates(values: readonly string[]): string[] {
@@ -325,6 +395,27 @@ export function validateConferenceTaxonomy(): string[] {
   }
   for (const duplicate of findDuplicates(brandSlugs)) {
     errors.push(`duplicate brand slug ${duplicate}`);
+  }
+
+  const categorySlugSet = new Set(categorySlugs);
+  for (const category of conferenceCategoryConfigs) {
+    const content = conferenceCategoryPageContent[category.slug];
+    if (!content) {
+      errors.push(`missing page content for category ${category.slug}`);
+      continue;
+    }
+    if (content.relatedCategorySlugs.includes(category.slug)) {
+      errors.push(`category ${category.slug} cannot relate to itself`);
+    }
+    for (const relatedSlug of content.relatedCategorySlugs) {
+      if (!categorySlugSet.has(relatedSlug)) errors.push(`unknown related category slug ${relatedSlug}`);
+    }
+  }
+
+  for (const brand of conferenceBrandConfigs) {
+    if (hasConferenceBrandProducts(brand) && !conferenceBrandPageContent[brand.slug]) {
+      errors.push(`missing page content for populated brand ${brand.slug}`);
+    }
   }
 
   errors.push(...validateConferenceCatalog(conferenceSystemCatalog, RESERVED_CONFERENCE_PRODUCT_SLUGS));

@@ -630,6 +630,10 @@ label {
   will-change: transform;
 }
 
+[data-conference-product-grid] .product-card-image-frame img {
+  object-fit: contain !important;
+}
+
 .group:hover .product-card-image-frame img,
 .product-card-image-frame:hover img {
   transform: scale(1.03) !important;
@@ -650,6 +654,10 @@ label {
 @media (min-width: 1024px) {
   .grid:has(> .group .product-card-image-frame) {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .grid[data-conference-product-grid="single"]:has(> .group .product-card-image-frame) {
+    grid-template-columns: minmax(0, 1fr) !important;
   }
 }
 

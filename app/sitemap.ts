@@ -18,8 +18,8 @@ import { conferenceSystemCatalog } from "./conference-system/catalog";
 import {
   conferenceBrandConfigs,
   conferenceCategoryConfigs,
-  hasConferenceBrandProducts,
-  hasConferenceCategoryProducts,
+  isConferenceBrandIndexable,
+  isConferenceCategoryIndexable,
 } from "./conference-system/taxonomy";
 
 export const dynamic = "force-static";
@@ -122,13 +122,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.62,
     })),
-    ...conferenceCategoryConfigs.filter(hasConferenceCategoryProducts).map((category) => ({
+    ...conferenceCategoryConfigs.filter(isConferenceCategoryIndexable).map((category) => ({
       url: abs(`/conference-system/${category.slug}/`),
       lastModified: now,
       changeFrequency: "monthly" as const,
       priority: 0.64,
     })),
-    ...conferenceBrandConfigs.filter(hasConferenceBrandProducts).map((brand) => ({
+    ...conferenceBrandConfigs.filter(isConferenceBrandIndexable).map((brand) => ({
       url: abs(`/conference-system/brands/${brand.slug}/`),
       lastModified: now,
       changeFrequency: "monthly" as const,

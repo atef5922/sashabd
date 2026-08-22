@@ -7,6 +7,7 @@ import {
   conferenceBrandConfigs,
   getConferenceBrandBySlug,
   getConferenceBrandProducts,
+  isConferenceBrandIndexable,
 } from "../../taxonomy";
 
 export const dynamicParams = false;
@@ -22,17 +23,17 @@ export async function generateMetadata(
   const brand = getConferenceBrandBySlug(brandSlug);
   if (!brand) return { title: "Conference System Brands" };
 
-  const hasProducts = getConferenceBrandProducts(brand).length > 0;
+  const indexable = isConferenceBrandIndexable(brand);
   const metadata = buildProductMetadata({
     title: brand.seo.title,
     description: brand.seo.description,
     path: `/conference-system/brands/${brand.slug}/`,
     openGraphTitle: brand.seo.title,
     openGraphType: "website",
-    index: hasProducts,
+    index: indexable,
   });
 
-  return hasProducts ? metadata : { ...metadata, robots: { index: false, follow: true } };
+  return indexable ? metadata : { ...metadata, robots: { index: false, follow: true } };
 }
 
 export default async function ConferenceBrandPage(
@@ -45,8 +46,7 @@ export default async function ConferenceBrandPage(
   return (
     <ConferenceCollectionPage
       routeKind="brand"
-      title={`${brand.name} Conference System`}
-      description={brand.description}
+      brand={brand}
       products={getConferenceBrandProducts(brand)}
       breadcrumbs={[
         homeBreadcrumb(),

@@ -4,12 +4,17 @@ import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { siteConfig } from "../../lib/site";
 import { BRAND_NAME } from "@/lib/brand";
+import type {
+  ConferenceNavigationGroup,
+  ConferenceNavigationItem,
+} from "@/app/conference-system/navigation";
 
 type NavItem =
   | { type: "link"; href: string; label: string }
+  | { type: "conference"; href: string; label: string }
   | {
       type: "dropdown";
       href: string;
@@ -85,7 +90,7 @@ const nav: NavItem[] = [
     ],
   },
   { type: "link", href: "/pa-system/", label: "PA System" },
-  { type: "link", href: "/conference-system/", label: "Conference System" },
+  { type: "conference", href: "/conference-system/", label: "Conference System" },
   { type: "link", href: "/turnstile-gate/", label: "Turnstile Gate" },
   {
     type: "dropdown",
@@ -122,13 +127,381 @@ const HeaderSearch = dynamic(() => import("./HeaderSearch"), {
     <div className="h-[2.35rem] w-full max-w-[320px] rounded-2xl bg-slate-100 lg:max-w-[440px] xl:max-w-[500px]" />
   ),
 });
-export default function Header() {
+
+/* ---------------------------------------------------------------------------
+ * Header submenu design system
+ * One card, one panel shell, one section heading — shared by the LED display,
+ * About, and Conference menus. Structure stays muted; the Sasha orange is
+ * reserved for interaction and for the page you are on.
+ * ------------------------------------------------------------------------ */
+
+const MENU_PANEL_CLASS = cn(
+  "rounded-xl border border-slate-200/90 bg-white text-slate-900",
+  "shadow-[0_4px_6px_-4px_rgba(15,23,42,0.08),0_20px_40px_-24px_rgba(15,23,42,0.55)]",
+);
+
+const MENU_SECTION_HEADING_CLASS =
+  "flex items-center gap-1.5 whitespace-nowrap border-b border-slate-100 px-3 pb-2 text-[10px] font-extrabold uppercase leading-4 tracking-[0.16em] text-slate-400";
+
+/** Section glyphs: 24px grid, stroked, sized down to 12px beside the muted caps label. */
+const CONFERENCE_SECTION_ICONS: Record<ConferenceNavigationGroup["id"], React.ReactNode> = {
+  system: (
+    <>
+      <rect x="9" y="2.5" width="6" height="11" rx="3" />
+      <path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v4M8.5 21.5h7" />
+    </>
+  ),
+  component: (
+    <>
+      <rect x="3.5" y="3.5" width="7" height="7" rx="1.6" />
+      <rect x="13.5" y="3.5" width="7" height="7" rx="1.6" />
+      <rect x="3.5" y="13.5" width="7" height="7" rx="1.6" />
+      <rect x="13.5" y="13.5" width="7" height="7" rx="1.6" />
+    </>
+  ),
+  brand: (
+    <>
+      <path d="M3.5 11.2V4.9a1.4 1.4 0 0 1 1.4-1.4h6.3a1.4 1.4 0 0 1 1 .4l8 8a1.4 1.4 0 0 1 0 2l-6.3 6.3a1.4 1.4 0 0 1-2 0l-8-8a1.4 1.4 0 0 1-.4-1Z" />
+      <path d="M7.8 7.8h.01" />
+    </>
+  ),
+  package: (
+    <>
+      <path d="M12 3.2 20.3 7.6v8.8L12 20.8 3.7 16.4V7.6L12 3.2Z" />
+      <path d="m3.7 7.6 8.3 4.4 8.3-4.4M12 12v8.8" />
+    </>
+  ),
+};
+
+function MenuSectionHeading({
+  id,
+  icon,
+  children,
+}: {
+  id: string;
+  icon: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  return (
+    <p id={id} className={MENU_SECTION_HEADING_CLASS}>
+      <svg
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        className="h-3 w-3 shrink-0 fill-none stroke-[#FD6900]"
+        strokeWidth="1.9"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        {icon}
+      </svg>
+      {children}
+    </p>
+  );
+}
+
+const MENU_CARD_CLASS = cn(
+  "group/item relative flex items-center gap-2 rounded-lg py-2 pl-3 pr-2.5 text-[13.5px] font-semibold leading-5 transition-colors duration-200",
+  "before:absolute before:inset-y-1.5 before:left-0 before:w-[3px] before:rounded-full before:bg-[#FD6900] before:transition-opacity before:duration-200",
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FD6900]/45",
+);
+
+const MENU_CARD_RESTING_CLASS = cn(
+  "text-slate-600 before:opacity-0",
+  "hover:bg-orange-50/80 hover:text-[#C2410C] hover:before:opacity-100",
+  "focus-visible:bg-orange-50/80 focus-visible:text-[#C2410C] focus-visible:before:opacity-100",
+);
+
+const MENU_CARD_CURRENT_CLASS = "bg-orange-50 text-[#C2410C] before:opacity-100";
+
+function menuCardClass(isCurrent: boolean) {
+  return cn(MENU_CARD_CLASS, isCurrent ? MENU_CARD_CURRENT_CLASS : MENU_CARD_RESTING_CLASS);
+}
+
+function MenuCardChevron({ isCurrent }: { isCurrent: boolean }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={cn(
+        "ml-auto shrink-0 transition duration-200 group-hover/item:translate-x-0.5",
+        isCurrent ? "text-[#FD6900]" : "text-slate-300 group-hover/item:text-[#FD6900]",
+      )}
+    >
+      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-none">
+        <path d="m9 6 6 6-6 6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </span>
+  );
+}
+
+/** Desktop column order puts the denser Brand list beside System/Components so Package can close the row as a CTA. */
+const CONFERENCE_MENU_COLUMN_ORDER = ["system", "component", "brand"] as const;
+
+function ConferenceDesktopNavItem({
+  href,
+  label,
+  active,
+  isScrolled,
+  onNavigate,
+  navigationGroups,
+  brandsHubLink,
+  isItemCurrent,
+}: {
+  href: string;
+  label: string;
+  active: boolean;
+  isScrolled: boolean;
+  onNavigate: (event: React.MouseEvent) => void;
+  navigationGroups: readonly ConferenceNavigationGroup[];
+  brandsHubLink: ConferenceNavigationItem;
+  isItemCurrent: (href: string) => boolean;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const panelId = "conference-desktop-mega-menu";
+
+  const groupsById = useMemo(() => {
+    const map = new Map<ConferenceNavigationGroup["id"], ConferenceNavigationGroup>();
+    for (const group of navigationGroups) map.set(group.id, group);
+    return map;
+  }, [navigationGroups]);
+
+  const linkColumns = useMemo(
+    () =>
+      CONFERENCE_MENU_COLUMN_ORDER.map((id) => groupsById.get(id)).filter(
+        (group): group is ConferenceNavigationGroup => Boolean(group),
+      ),
+    [groupsById],
+  );
+
+  const packageGroup = groupsById.get("package");
+  const packageItem = packageGroup?.items[0];
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const closeOnOutsidePointer = (event: PointerEvent) => {
+      if (!wrapperRef.current?.contains(event.target as Node)) setIsOpen(false);
+    };
+    document.addEventListener("pointerdown", closeOnOutsidePointer);
+    return () => document.removeEventListener("pointerdown", closeOnOutsidePointer);
+  }, [isOpen]);
+
+  const closeAndNavigate = (event: React.MouseEvent) => {
+    setIsOpen(false);
+    onNavigate(event);
+  };
+
+  return (
+    <div
+      ref={wrapperRef}
+      className="relative"
+      data-conference-desktop-nav
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+      onFocusCapture={(event) => {
+        const focusedElement = event.target as HTMLElement;
+        if (focusedElement !== triggerRef.current) setIsOpen(true);
+      }}
+      onBlurCapture={() => {
+        window.requestAnimationFrame(() => {
+          if (!wrapperRef.current?.contains(document.activeElement)) setIsOpen(false);
+        });
+      }}
+      onKeyDown={(event) => {
+        if (event.key !== "Escape") return;
+        event.preventDefault();
+        setIsOpen(false);
+        triggerRef.current?.focus();
+      }}
+    >
+      <div
+        className={cn(
+          "inline-flex overflow-hidden rounded-lg transition",
+          active
+            ? "bg-[#FD6900] text-white"
+            : isScrolled
+              ? "text-slate-100 hover:bg-white/10"
+              : "text-black hover:bg-slate-100",
+        )}
+      >
+        <Link
+          prefetch={false}
+          href={href}
+          onClick={closeAndNavigate}
+          onFocus={() => setIsOpen(true)}
+          className="inline-flex min-h-9 items-center px-2.5 py-2 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-300"
+        >
+          {label}
+        </Link>
+        <button
+          ref={triggerRef}
+          type="button"
+          aria-label={`${isOpen ? "Close" : "Open"} Conference System menu`}
+          aria-expanded={isOpen}
+          aria-controls={panelId}
+          onClick={() => setIsOpen((value) => !value)}
+          className={cn(
+            "inline-flex min-h-9 w-7 items-center justify-center border-l text-xs transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-300",
+            active ? "border-white/25" : isScrolled ? "border-white/15" : "border-slate-200",
+          )}
+        >
+          <svg
+            viewBox="0 0 20 20"
+            className={cn("h-3.5 w-3.5 transition-transform", isOpen && "rotate-180")}
+            fill="none"
+            aria-hidden="true"
+          >
+            <path d="m5 7.5 5 5 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      </div>
+
+      {isOpen ? (
+        <div
+          id={panelId}
+          className="fixed left-1/2 top-14 z-[90] w-[min(660px,calc(100vw-2rem))] -translate-x-1/2 pt-4 lg:w-[min(872px,calc(100vw-3rem))]"
+        >
+          <nav aria-label="Conference System navigation" className={cn(MENU_PANEL_CLASS, "p-3")}>
+            <div
+              className={cn(
+                "grid grid-cols-2 gap-x-3 gap-y-5 lg:gap-y-0",
+                packageItem ? "lg:grid-cols-[1.15fr_0.95fr_0.82fr_1.08fr]" : "lg:grid-cols-3",
+              )}
+            >
+              {linkColumns.map((group) => (
+                <section
+                  key={group.id}
+                  aria-labelledby={`conference-desktop-group-${group.id}`}
+                  className="flex min-w-0 flex-col"
+                >
+                  <MenuSectionHeading
+                    id={`conference-desktop-group-${group.id}`}
+                    icon={CONFERENCE_SECTION_ICONS[group.id]}
+                  >
+                    {group.title}
+                  </MenuSectionHeading>
+                  <ul className="mt-1.5 space-y-0.5">
+                    {group.items.map((item) => (
+                      <li key={item.href}>
+                        <Link
+                          prefetch={false}
+                          href={item.href}
+                          aria-current={isItemCurrent(item.href) ? "page" : undefined}
+                          onClick={() => setIsOpen(false)}
+                          className={menuCardClass(isItemCurrent(item.href))}
+                        >
+                          {item.label}
+                          <MenuCardChevron isCurrent={isItemCurrent(item.href)} />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                  {group.id === "brand" ? (
+                    <div className="mt-1.5 border-t border-slate-100 pt-1.5">
+                      <Link
+                        prefetch={false}
+                        href={brandsHubLink.href}
+                        aria-current={isItemCurrent(brandsHubLink.href) ? "page" : undefined}
+                        onClick={() => setIsOpen(false)}
+                        className={cn(
+                          "group/hub flex items-center gap-1.5 whitespace-nowrap rounded-lg py-1.5 pl-3 pr-2.5 text-[11.5px] font-extrabold uppercase leading-4 tracking-[0.05em] text-[#C2410C] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FD6900]/45",
+                          isItemCurrent(brandsHubLink.href) ? "bg-orange-50" : "hover:bg-orange-50/80 focus-visible:bg-orange-50/80",
+                        )}
+                      >
+                        {brandsHubLink.label}
+                        <span
+                          aria-hidden="true"
+                          className="ml-auto text-[#FD6900] transition-transform duration-200 group-hover/hub:translate-x-0.5"
+                        >
+                          {"\u2192"}
+                        </span>
+                      </Link>
+                    </div>
+                  ) : null}
+                </section>
+              ))}
+
+              {packageGroup && packageItem ? (
+                <section
+                  aria-labelledby={`conference-desktop-group-${packageGroup.id}`}
+                  className="flex min-w-0 flex-col"
+                >
+                  <MenuSectionHeading
+                    id={`conference-desktop-group-${packageGroup.id}`}
+                    icon={CONFERENCE_SECTION_ICONS[packageGroup.id]}
+                  >
+                    {packageGroup.title}
+                  </MenuSectionHeading>
+                  <Link
+                    prefetch={false}
+                    href={packageItem.href}
+                    aria-label={packageItem.label}
+                    aria-current={isItemCurrent(packageItem.href) ? "page" : undefined}
+                    onClick={() => setIsOpen(false)}
+                    className={cn(
+                      "group/package mt-1.5 flex flex-1 flex-col rounded-lg border p-3 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FD6900]/45",
+                      isItemCurrent(packageItem.href)
+                        ? "border-[#FD6900]/40 bg-orange-50"
+                        : "border-slate-200/90 bg-slate-50/70 hover:border-[#FD6900]/35 hover:bg-orange-50/70 focus-visible:border-[#FD6900]/35 focus-visible:bg-orange-50/70",
+                    )}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white text-[#FD6900] shadow-[0_1px_2px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/80 transition-colors duration-200 group-hover/package:ring-[#FD6900]/30"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="h-4 w-4 fill-none stroke-current"
+                        strokeWidth="1.7"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M9 4.5H7.6A1.6 1.6 0 0 0 6 6.1v13A1.6 1.6 0 0 0 7.6 20.7h8.8a1.6 1.6 0 0 0 1.6-1.6v-13A1.6 1.6 0 0 0 16.4 4.5H15" />
+                        <rect x="9" y="2.6" width="6" height="3.8" rx="1.1" />
+                        <path d="m9.6 13.2 1.9 1.9 3.5-3.6" />
+                      </svg>
+                    </span>
+                    <span className="mt-2.5 block text-[13.5px] font-bold leading-5 text-slate-800">
+                      {packageItem.label}
+                    </span>
+                    <span className="mt-1.5 block text-[12px] leading-[1.5] text-slate-500">
+                      Plan a complete room-based conference system.
+                    </span>
+                    <span className="mt-auto flex items-center gap-1 pt-3 text-[11.5px] font-extrabold uppercase leading-4 tracking-[0.06em] text-[#C2410C]">
+                      Explore Packages
+                      <span
+                        aria-hidden="true"
+                        className="text-[#FD6900] transition-transform duration-200 group-hover/package:translate-x-0.5"
+                      >
+                        {"\u2192"}
+                      </span>
+                    </span>
+                  </Link>
+                </section>
+              ) : null}
+            </div>
+          </nav>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+export default function Header({
+  conferenceNavigationGroups,
+  conferenceBrandsHubLink,
+}: {
+  conferenceNavigationGroups: readonly ConferenceNavigationGroup[];
+  conferenceBrandsHubLink: ConferenceNavigationItem;
+}) {
   const pathname = usePathname();
   const router = useRouter();
+  const useConferenceTabletHeader = pathname.startsWith("/conference-system");
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
+  const [mobileConferenceOpen, setMobileConferenceOpen] = useState(false);
   const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
 
   const normalizePath = (value: string) => {
@@ -197,6 +570,16 @@ export default function Header() {
     };
   }, [pathname]);
 
+  /** Exact-match current page, so a brand page never also lights up the "View All Brands" hub. */
+  const isMenuItemCurrent = useMemo(() => {
+    const normalize = (value: string) => {
+      const trimmed = value.split("?")[0].replace(/\/+$/, "");
+      return trimmed === "" ? "/" : trimmed;
+    };
+    const currentPath = normalize(pathname);
+    return (href: string) => normalize(href) === currentPath;
+  }, [pathname]);
+
   const activeDropdownItemHref = useMemo(() => {
     return (href: string, parentHref: string) => {
       const normalize = (value: string) => {
@@ -242,10 +625,29 @@ export default function Header() {
     const timer = window.setTimeout(() => {
       setOpen(false);
       setMobileProductsOpen(false);
+      setMobileConferenceOpen(false);
       setMobileAboutOpen(false);
     }, 0);
     return () => window.clearTimeout(timer);
   }, [pathname]);
+
+  useEffect(() => {
+    if (!open) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      if (mobileConferenceOpen) {
+        setMobileConferenceOpen(false);
+      } else if (mobileProductsOpen) {
+        setMobileProductsOpen(false);
+      } else if (mobileAboutOpen) {
+        setMobileAboutOpen(false);
+      } else {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [mobileAboutOpen, mobileConferenceOpen, mobileProductsOpen, open]);
 
   return (
     <header
@@ -267,11 +669,11 @@ export default function Header() {
           </div>
         </Link>
 
-        <div className="min-w-0 flex-1 md:hidden">
+        <div className={cn("min-w-0 flex-1", useConferenceTabletHeader ? "lg:hidden" : "md:hidden")}>
           <HeaderSearch isScrolled={isScrolled} inputId="header-search-mobile" className="max-w-none" />
         </div>
 
-        <div className="hidden md:flex flex-1 items-center px-4">
+        <div className={cn("hidden min-w-0 flex-1 items-center px-4", useConferenceTabletHeader ? "lg:flex" : "md:flex")}>
           <HeaderSearch isScrolled={isScrolled} inputId="header-search-desktop" />
         </div>
 
@@ -279,7 +681,8 @@ export default function Header() {
           href={`tel:${siteConfig.phone}`}
           aria-label="Call now"
           className={cn(
-            "inline-flex h-[2.35rem] w-[2.35rem] shrink-0 items-center justify-center rounded-full border shadow-sm transition md:hidden",
+            "inline-flex h-[2.35rem] w-[2.35rem] shrink-0 items-center justify-center rounded-full border shadow-sm transition",
+            useConferenceTabletHeader ? "lg:hidden" : "md:hidden",
             isScrolled
               ? "border-cyan-400/50 bg-white/10 text-white"
               : "border-cyan-300/80 bg-white text-slate-900"
@@ -297,8 +700,24 @@ export default function Header() {
         </a>
 
         {/* DESKTOP NAV */}
-        <nav className="ml-auto hidden items-center gap-1 md:flex">
+        <nav className={cn("ml-auto hidden items-center gap-1", useConferenceTabletHeader ? "lg:flex" : "md:flex")}>
           {nav.map((item) => {
+            if (item.type === "conference") {
+              return (
+                <ConferenceDesktopNavItem
+                  key={item.href}
+                  href={item.href}
+                  label={item.label}
+                  active={activeHref(item.href)}
+                  isScrolled={isScrolled}
+                  onNavigate={handleNavClick(item.href)}
+                  navigationGroups={conferenceNavigationGroups}
+                  brandsHubLink={conferenceBrandsHubLink}
+                  isItemCurrent={isMenuItemCurrent}
+                />
+              );
+            }
+
             // normal link
             if (item.type === "link") {
               return (
@@ -322,22 +741,12 @@ export default function Header() {
               );
             }
 
-            // hover dropdown (mega menu)
-            const isLedDropdown = item.href === "/led-display/";
-            const isAccessoriesDropdown = item.href === "/led-display/accessories/";
-            const isControlSystemsDropdown = item.href === "/control-systems";
+            // hover dropdown
             const isAboutDropdown = item.href === "/about/";
-            const isCompactDropdown =
-              isLedDropdown || isAccessoriesDropdown || isControlSystemsDropdown || isAboutDropdown;
-            const isEnhancedDropdown =
-              isLedDropdown || isAccessoriesDropdown || isControlSystemsDropdown || isAboutDropdown;
             const dropdownActiveClass = isScrolled ? "bg-[#FD6900] text-white" : "bg-slate-900 text-white";
-            const dropdownItemActiveClass = isAboutDropdown
-              ? "border-[#FD6900] bg-[#FD6900] text-white shadow-sm"
-              : "border-slate-900 bg-slate-900 text-white shadow-sm";
             return (
               <div key={item.href} className="relative group">
-                {/* Products button */}
+                {/* Trigger */}
                 <Link prefetch={false} href={item.href}
                   onClick={handleNavClick(item.href)}
                   className={cn(
@@ -350,136 +759,44 @@ export default function Header() {
                   )}
                 >
                   {item.label}
-                  <span className="text-[10px]">{"\u25BE"}</span>
+                  <span className="text-[10px]">{"▾"}</span>
                 </Link>
 
-                {/* Hover bridge: products to dropdown */}
+                {/* Hover bridge: trigger to dropdown */}
                 <div className="absolute left-0 top-full h-3 w-56" />
 
                 {/* Dropdown */}
                 <div
                   className={cn(
-                    "absolute left-0 top-full z-50 mt-3 rounded-2xl border shadow-[0_24px_60px_rgba(15,23,42,0.16)] backdrop-blur",
-                    isScrolled ? "border-slate-700/80 bg-[#0b1220]/95" : "border-slate-200/80 bg-white/95",
-                    isAboutDropdown ? "w-[260px] p-1.5" : isCompactDropdown ? "w-[300px] p-2" : "w-[520px] p-3",
-                    isEnhancedDropdown
-                      ? cn(
-                          "overflow-hidden backdrop-blur-0 shadow-[0_28px_80px_rgba(15,23,42,0.20)] opacity-0 invisible translate-y-2.5 scale-[0.985] will-change-transform transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:scale-100",
-                          isScrolled ? "border-slate-700/80 bg-[#0b1220]" : "border-slate-300/80 bg-white"
-                        )
-                      : "opacity-0 invisible translate-y-2 transition-all duration-200 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0"
+                    "absolute left-0 top-full z-50 mt-3 p-2",
+                    MENU_PANEL_CLASS,
+                    isAboutDropdown ? "w-[264px]" : "w-[306px]",
+                    "invisible translate-y-1 opacity-0 transition duration-200 ease-out",
+                    "group-hover:visible group-hover:translate-y-0 group-hover:opacity-100",
+                    "group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100",
                   )}
                 >
-                  {isEnhancedDropdown && !isScrolled ? (
-                    <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-cyan-300/35 via-sky-300/20 to-indigo-300/35" />
-                  ) : null}
-                  <div className={cn("grid gap-3", item.groups.length > 1 && "md:grid-cols-2")}>
-                    {item.groups.map((g) => (
-                      <div
-                        key={g.title}
-                        className={cn(
-                          "rounded-xl border border-slate-200/70 bg-slate-50/70 p-3",
-                          isCompactDropdown && "border-0 bg-transparent p-0",
-                          isEnhancedDropdown && !isCompactDropdown && "relative border-slate-200 bg-white/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]"
-                        )}
-                      >
-                        {!isCompactDropdown ? <div className="text-[11px] font-bold uppercase tracking-wide text-slate-700">{g.title}</div> : null}
-
-                        <div className={cn("space-y-1", !isCompactDropdown && "mt-2")}>
-                          {(isAccessoriesDropdown
-                            ? g.items.filter((x) => x.label !== "View All Accessories")
-                            : g.items
-                          ).map((x, idx) => (
-                            <Link key={`${x.href}-${idx}`}
+                  {item.groups.map((g) => (
+                    <ul key={g.title} className="space-y-0.5">
+                      {g.items.map((x) => {
+                        const isCurrent = activeDropdownItemHref(x.href, item.href);
+                        return (
+                          <li key={x.href}>
+                            <Link
                               prefetch={false}
                               href={x.href}
+                              aria-current={isCurrent ? "page" : undefined}
                               onClick={handleNavClick(x.href)}
-                              style={
-                                isEnhancedDropdown
-                                  ? { transitionDelay: `${idx * 45}ms` }
-                                  : undefined
-                              }
-                              className={cn(
-                                "block rounded-xl border px-3 py-2 text-sm transition",
-                                isCompactDropdown && "rounded-lg px-2.5 py-1.5",
-                                isAboutDropdown && "px-2 py-1",
-                                isCompactDropdown
-                                  ? activeDropdownItemHref(x.href, item.href)
-                                    ? "border-transparent bg-transparent text-[#FD6900]"
-                                    : isScrolled
-                                    ? "border-transparent bg-transparent text-slate-100 hover:-translate-y-0.5 hover:bg-white/10"
-                                    : "border-transparent bg-transparent text-slate-800 hover:-translate-y-0.5 hover:bg-slate-50"
-                                  : activeDropdownItemHref(x.href, item.href)
-                                  ? dropdownItemActiveClass
-                                  : "border-slate-200 bg-white text-slate-800 hover:border-slate-300 hover:bg-slate-50",
-                                isEnhancedDropdown &&
-                                  "group/item relative overflow-hidden transition-all duration-300 ease-out hover:-translate-y-0.5 hover:scale-[1.01] hover:border-sky-300/70 hover:shadow-[0_12px_28px_rgba(15,23,42,0.14)] before:pointer-events-none before:absolute before:inset-0 before:bg-gradient-to-r before:from-cyan-400/0 before:via-cyan-400/8 before:to-blue-500/0 before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100"
-                              )}
+                              className={menuCardClass(isCurrent)}
                             >
-                              <div className="flex items-center justify-between gap-3">
-                                <div
-                                  className={cn(
-                                    "font-semibold transition-all duration-300",
-                                    isEnhancedDropdown &&
-                                      !activeDropdownItemHref(x.href, item.href) &&
-                                      "bg-gradient-to-r from-cyan-600 via-sky-600 to-indigo-600 bg-clip-text group-hover/item:text-transparent"
-                                  )}
-                                >
-                                  {x.label}
-                                </div>
-                                <span
-                                  aria-hidden="true"
-                                  className={cn(
-                                    "shrink-0 transition-transform duration-300 group-hover/item:translate-x-0.5",
-                                    activeDropdownItemHref(x.href, item.href)
-                                      ? isCompactDropdown
-                                        ? "text-[#FD6900]"
-                                        : "text-white/85"
-                                      : isScrolled && isCompactDropdown
-                                        ? "text-slate-400"
-                                        : "text-slate-400"
-                                  )}
-                                >
-                                  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-none">
-                                    <path d="m9 6 6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                  </svg>
-                                </span>
-                              </div>
-                              {!isCompactDropdown && x.desc ? (
-                                <div
-                                  className={cn(
-                                    "text-xs",
-                                    activeDropdownItemHref(x.href, item.href)
-                                      ? "text-white/80"
-                                      : "text-slate-500"
-                                  )}
-                                >
-                                  {x.desc}
-                                </div>
-                              ) : null}
+                              {x.label}
+                              <MenuCardChevron isCurrent={isCurrent} />
                             </Link>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {!isLedDropdown && !isAccessoriesDropdown && !isControlSystemsDropdown && !isAboutDropdown ? (
-                    <div className="mt-3 flex gap-2">
-                      <Link prefetch={false} href={item.href}
-                        onClick={handleNavClick(item.href)}
-                        className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
-                      >
-                         All Products -&gt;
-                      </Link>
-                      <Link prefetch={false} href="/contact/"
-                        onClick={handleNavClick("/contact")}
-                        className="rounded-xl border bg-white px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50"
-                      >
-                        Request Price
-                      </Link>
-                    </div>
-                  ) : null}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  ))}
                 </div>
               </div>
             );
@@ -497,13 +814,16 @@ export default function Header() {
         {/* MOBILE MENU BUTTON */}
         <button
           className={cn(
-            "inline-flex h-[2.35rem] w-[2.35rem] shrink-0 items-center justify-center rounded-full border text-[18px] leading-none shadow-sm md:hidden",
+            "inline-flex h-[2.35rem] w-[2.35rem] shrink-0 items-center justify-center rounded-full border text-[18px] leading-none shadow-sm",
+            useConferenceTabletHeader ? "lg:hidden" : "md:hidden",
             isScrolled
               ? "border-cyan-400/50 bg-white/10 text-white"
               : "border-cyan-300/80 bg-white text-slate-900"
           )}
           onClick={() => setOpen((v) => !v)}
           aria-label="Toggle menu"
+          aria-expanded={open}
+          aria-controls="mobile-site-navigation"
         >
           {open ? "\u2715" : "\u2630"}
         </button>
@@ -511,7 +831,7 @@ export default function Header() {
 
       {/* MOBILE NAV */}
       {open && (
-        <div className="border-t bg-white md:hidden">
+        <div id="mobile-site-navigation" className={cn("border-t bg-white", useConferenceTabletHeader ? "lg:hidden" : "md:hidden")}>
           <div className="mx-auto max-h-[calc(100svh-72px)] max-w-7xl overflow-y-auto overscroll-contain px-4 pb-24 pt-3">
             <div className="flex flex-col gap-2">
               {/* Home */}
@@ -532,11 +852,18 @@ export default function Header() {
 
               {/* Products accordion */}
               <button
-                onClick={() => setMobileProductsOpen((v) => !v)}
+                type="button"
+                aria-expanded={mobileProductsOpen}
+                aria-controls="mobile-led-navigation"
+                onClick={() => {
+                  setMobileProductsOpen((v) => !v);
+                  setMobileConferenceOpen(false);
+                  setMobileAboutOpen(false);
+                }}
                 className={cn(
                   "flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium",
                   activeHref("/led-display")
-                    ? "bg-[#C84B00] text-white"
+                    ? "bg-[#FD6900] text-white"
                     : "bg-slate-50 text-slate-700"
                 )}
               >
@@ -544,7 +871,7 @@ export default function Header() {
               </button>
 
               {mobileProductsOpen && (
-                <div className="rounded-lg border bg-white p-2">
+                <div id="mobile-led-navigation" className="rounded-lg border bg-white p-2">
                   {[
                     { href: "/led-display/", label: "LED Display" },
                     { href: "/led-display/indoor-led/", label: "Indoor LED Display" },
@@ -560,6 +887,7 @@ export default function Header() {
 	                    <Link key={x.href}
 	                      prefetch={false}
 	                      href={x.href}
+                      aria-current={activeDropdownItemHref(x.href, "/led-display/") ? "page" : undefined}
                       onClick={(e) => {
                         handleNavClick(x.href, { closeMobile: true })(e);
                         setOpen(false);
@@ -567,13 +895,13 @@ export default function Header() {
                       className={cn(
                         "relative block rounded-lg px-3 py-2 text-sm transition",
                         activeDropdownItemHref(x.href, "/led-display/")
-                          ? "bg-[#FFF3EB] pl-5 font-semibold text-[#C84B00]"
+                          ? "bg-orange-50 pl-5 font-semibold text-[#C2410C]"
                           : "text-slate-700 hover:bg-slate-50"
                       )}
                     >
                       {activeDropdownItemHref(x.href, "/led-display/") ? (
                         <span
-                          className="absolute left-2 top-1/2 h-4 w-1 -translate-y-1/2 rounded-full bg-[#F56605]"
+                          className="absolute left-2 top-1/2 h-4 w-1 -translate-y-1/2 rounded-full bg-[#FD6900]"
                           aria-hidden="true"
                         />
                       ) : null}
@@ -610,22 +938,101 @@ export default function Header() {
                 PA System
               </Link>
 
-	              <Link
-	                prefetch={false}
-	                href="/conference-system/"
-                onClick={(e) => {
-                  handleNavClick("/conference-system/", { closeMobile: true })(e);
-                  setOpen(false);
+              <button
+                type="button"
+                aria-expanded={mobileConferenceOpen}
+                aria-controls="mobile-conference-navigation"
+                onClick={() => {
+                  setMobileConferenceOpen((value) => !value);
+                  setMobileProductsOpen(false);
+                  setMobileAboutOpen(false);
                 }}
                 className={cn(
-                  "rounded-lg px-3 py-2 text-sm font-medium",
+                  "flex min-h-11 w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400",
                   activeHref("/conference-system/")
-                    ? "bg-slate-900 text-white"
+                    ? "bg-[#FD6900] text-white"
                     : "bg-slate-50 text-slate-700"
                 )}
               >
                 Conference System
-              </Link>
+                <svg viewBox="0 0 20 20" className={cn("h-4 w-4 transition-transform", mobileConferenceOpen && "rotate-180")} fill="none" aria-hidden="true">
+                  <path d="m5 7.5 5 5 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+
+              {mobileConferenceOpen ? (
+                <div id="mobile-conference-navigation" className="rounded-xl border border-slate-200 bg-white p-2 shadow-sm">
+                  <Link
+                    prefetch={false}
+                    href="/conference-system/"
+                    onClick={(event) => {
+                      handleNavClick("/conference-system/", { closeMobile: true })(event);
+                      setMobileConferenceOpen(false);
+                      setOpen(false);
+                    }}
+                    className="flex min-h-11 items-center rounded-lg bg-slate-950 px-3 py-2 text-sm font-bold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
+                  >
+                    All Conference Systems
+                  </Link>
+
+                  <div className="mt-2 space-y-3">
+                    {conferenceNavigationGroups.map((group) => (
+                      <section key={group.id} aria-labelledby={`conference-mobile-group-${group.id}`}>
+                        <MenuSectionHeading
+                          id={`conference-mobile-group-${group.id}`}
+                          icon={CONFERENCE_SECTION_ICONS[group.id]}
+                        >
+                          {group.title}
+                        </MenuSectionHeading>
+                        <ul className="space-y-0.5">
+                          {group.items.map((item) => (
+                            <li key={item.href}>
+                              <Link
+                                prefetch={false}
+                                href={item.href}
+                                aria-current={activeDropdownItemHref(item.href, "/conference-system/") ? "page" : undefined}
+                                onClick={(event) => {
+                                  handleNavClick(item.href, { closeMobile: true })(event);
+                                  setMobileConferenceOpen(false);
+                                  setOpen(false);
+                                }}
+                                className={cn(
+                                  "relative flex min-h-11 items-center rounded-lg px-3 py-2 text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400",
+                                  activeDropdownItemHref(item.href, "/conference-system/")
+                                    ? "bg-orange-50 pl-5 font-semibold text-[#C2410C]"
+                                    : "text-slate-700 hover:bg-slate-50",
+                                )}
+                              >
+                                {activeDropdownItemHref(item.href, "/conference-system/") ? (
+                                  <span
+                                    className="absolute left-2 top-1/2 h-4 w-1 -translate-y-1/2 rounded-full bg-[#FD6900]"
+                                    aria-hidden="true"
+                                  />
+                                ) : null}
+                                {item.shortLabel ?? item.label}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                        {group.id === "brand" ? (
+                          <Link
+                            prefetch={false}
+                            href={conferenceBrandsHubLink.href}
+                            onClick={(event) => {
+                              handleNavClick(conferenceBrandsHubLink.href, { closeMobile: true })(event);
+                              setMobileConferenceOpen(false);
+                              setOpen(false);
+                            }}
+                            className="mt-1 flex min-h-11 items-center rounded-lg px-3 py-2 text-sm font-extrabold text-orange-700 hover:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
+                          >
+                            {conferenceBrandsHubLink.label} <span aria-hidden="true" className="ml-1">{"\u2192"}</span>
+                          </Link>
+                        ) : null}
+                      </section>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
 
 	              <Link
 	                prefetch={false}
@@ -646,7 +1053,14 @@ export default function Header() {
 
               {/* About accordion */}
               <button
-                onClick={() => setMobileAboutOpen((v) => !v)}
+                type="button"
+                aria-expanded={mobileAboutOpen}
+                aria-controls="mobile-about-navigation"
+                onClick={() => {
+                  setMobileAboutOpen((v) => !v);
+                  setMobileProductsOpen(false);
+                  setMobileConferenceOpen(false);
+                }}
                 className={cn(
                   "flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium",
                   activeHref("/about")
@@ -658,7 +1072,7 @@ export default function Header() {
               </button>
 
               {mobileAboutOpen && (
-                <div className="rounded-lg border bg-white p-2">
+                <div id="mobile-about-navigation" className="rounded-lg border bg-white p-2">
                   <div className="px-2 py-1 text-xs font-bold text-slate-900">
                     About
                   </div>
@@ -669,6 +1083,7 @@ export default function Header() {
 	                    <Link key={x.href}
 	                      prefetch={false}
 	                      href={x.href}
+                      aria-current={activeDropdownItemHref(x.href, "/about") ? "page" : undefined}
                       onClick={(e) => {
                         handleNavClick(x.href, { closeMobile: true })(e);
                         setOpen(false);
@@ -676,13 +1091,13 @@ export default function Header() {
                       className={cn(
                         "relative block rounded-lg px-3 py-2 text-sm transition",
                         activeDropdownItemHref(x.href, "/about")
-                          ? "bg-[#FFF3EB] pl-5 font-semibold text-[#C84B00]"
+                          ? "bg-orange-50 pl-5 font-semibold text-[#C2410C]"
                           : "text-slate-700 hover:bg-slate-50"
                       )}
                     >
                       {activeDropdownItemHref(x.href, "/about") ? (
                         <span
-                          className="absolute left-2 top-1/2 h-4 w-1 -translate-y-1/2 rounded-full bg-[#F56605]"
+                          className="absolute left-2 top-1/2 h-4 w-1 -translate-y-1/2 rounded-full bg-[#FD6900]"
                           aria-hidden="true"
                         />
                       ) : null}
