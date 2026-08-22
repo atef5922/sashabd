@@ -217,6 +217,20 @@ function menuCardClass(isCurrent: boolean) {
   return cn(MENU_CARD_CLASS, isCurrent ? MENU_CARD_CURRENT_CLASS : MENU_CARD_RESTING_CLASS);
 }
 
+/** The caret on a nav trigger: one glyph for the LED display, About, and Conference menus. */
+function MenuTriggerChevron({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 20 20"
+      aria-hidden="true"
+      fill="none"
+      className={cn("h-3.5 w-3.5 shrink-0 transition-transform duration-200", className)}
+    >
+      <path d="m5 7.5 5 5 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function MenuCardChevron({ isCurrent }: { isCurrent: boolean }) {
   return (
     <span
@@ -329,7 +343,7 @@ function ConferenceDesktopNavItem({
           href={href}
           onClick={closeAndNavigate}
           onFocus={() => setIsOpen(true)}
-          className="inline-flex min-h-9 items-center px-2.5 py-2 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-300"
+          className="inline-flex min-h-9 items-center whitespace-nowrap py-2 pl-2 pr-0 text-sm xl:pl-3 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-300"
         >
           {label}
         </Link>
@@ -340,19 +354,9 @@ function ConferenceDesktopNavItem({
           aria-expanded={isOpen}
           aria-controls={panelId}
           onClick={() => setIsOpen((value) => !value)}
-          className={cn(
-            "inline-flex min-h-9 w-7 items-center justify-center border-l text-xs transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-300",
-            active ? "border-white/25" : isScrolled ? "border-white/15" : "border-slate-200",
-          )}
+          className="inline-flex min-h-9 items-center justify-center py-2 pl-1 pr-2 text-xs xl:pr-3 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-300"
         >
-          <svg
-            viewBox="0 0 20 20"
-            className={cn("h-3.5 w-3.5 transition-transform", isOpen && "rotate-180")}
-            fill="none"
-            aria-hidden="true"
-          >
-            <path d="m5 7.5 5 5 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <MenuTriggerChevron className={isOpen ? "rotate-180" : undefined} />
         </button>
       </div>
 
@@ -700,7 +704,7 @@ export default function Header({
         </a>
 
         {/* DESKTOP NAV */}
-        <nav className={cn("ml-auto hidden items-center gap-1", useConferenceTabletHeader ? "lg:flex" : "md:flex")}>
+        <nav className={cn("ml-auto hidden items-center gap-0.5 xl:gap-1", useConferenceTabletHeader ? "lg:flex" : "md:flex")}>
           {nav.map((item) => {
             if (item.type === "conference") {
               return (
@@ -726,7 +730,7 @@ export default function Header({
                   href={item.href}
                   onClick={handleNavClick(item.href)}
                   className={cn(
-                    "rounded-lg px-3 py-2 text-sm font-medium transition",
+                    "whitespace-nowrap rounded-lg px-2 py-2 text-sm font-medium transition xl:px-3",
                     activeHref(item.href)
                       ? isScrolled
                         ? "bg-[#FD6900] text-white"
@@ -750,7 +754,7 @@ export default function Header({
                 <Link prefetch={false} href={item.href}
                   onClick={handleNavClick(item.href)}
                   className={cn(
-                    "inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition",
+                    "inline-flex items-center gap-1 whitespace-nowrap rounded-lg px-2 py-2 text-sm font-medium transition xl:px-3",
                     activeHref(item.href)
                       ? dropdownActiveClass
                       : isScrolled
@@ -759,7 +763,7 @@ export default function Header({
                   )}
                 >
                   {item.label}
-                  <span className="text-[10px]">{"▾"}</span>
+                  <MenuTriggerChevron className="group-hover:rotate-180 group-focus-within:rotate-180" />
                 </Link>
 
                 {/* Hover bridge: trigger to dropdown */}
@@ -805,7 +809,7 @@ export default function Header({
           <a
             href={`tel:${siteConfig.phone}`}
             aria-label="Call now"
-            className="shine-button ml-2 inline-flex min-w-[150px] items-center justify-center rounded-lg bg-gradient-to-r from-[#f58529] via-[#dd2a7b] to-[#8134af] px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110"
+            className="shine-button ml-1.5 inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-lg bg-gradient-to-r from-[#f58529] via-[#dd2a7b] to-[#8134af] px-3 py-2 xl:ml-2 xl:min-w-[150px] xl:px-4 text-sm font-semibold text-white transition hover:brightness-110"
           >
             {siteConfig.phone}
           </a>
