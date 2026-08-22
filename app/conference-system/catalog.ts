@@ -1,3 +1,6 @@
+import { boschConferenceProducts, cmxConferenceProducts } from "./catalog.brands";
+import { toaConferenceProducts } from "./catalog.toa";
+
 const CONFERENCE_IMAGE_BASE = "/images/Conference%20system";
 
 export const CONFERENCE_SYSTEM_CATEGORIES = ["audio", "video"] as const;
@@ -82,7 +85,7 @@ const lcm6015pPerspective = conferenceImage("SPON LCM-6015P 12-Port Wireless Mic
 const lcm6010Front = conferenceImage("SPON LCM-6010 Digital Conference System Central Unit front.png");
 const lcm6010Back = conferenceImage("SPON LCM-6010 Digital Conference System Central Unit back.png");
 
-export const conferenceSystemCatalog: ConferenceProduct[] = [
+const coreConferenceProducts: ConferenceProduct[] = [
   {
     id: "gen-5301p13-conference-microphone-unit",
     slug: "gen-5301p13-conference-microphone-unit",
@@ -504,6 +507,17 @@ export const conferenceSystemCatalog: ConferenceProduct[] = [
     description:
       "The Huidu HD-VP950 Conference Video Processor is suitable for conference rooms, seminar halls, and event spaces where presentation content, live switching, and cleaner display scaling are important. It can be planned with LED walls, meeting-room AV systems, speakers, processors, and control equipment to create a more organized conference presentation workflow in Bangladesh.",
   },
+];
+
+/**
+ * Full public Conference catalog: the original core products plus the
+ * brand ranges photographed for Bosch, CMX, and TOA.
+ */
+export const conferenceSystemCatalog: ConferenceProduct[] = [
+  ...coreConferenceProducts,
+  ...boschConferenceProducts,
+  ...cmxConferenceProducts,
+  ...toaConferenceProducts,
 ];
 
 export function getConferenceProducts(): readonly ConferenceProduct[] {

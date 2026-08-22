@@ -334,7 +334,8 @@ test("Conference System renders one responsive semantic content set", () => {
   const source = read("app/conference-system/page.tsx");
   const listing = sectionBetween(source, '<section className="mt-4" aria-labelledby="conference-products-heading">', '<section className={sectionClass} style={sectionStyle} aria-labelledby="what-is-conference-system">');
 
-  assert.equal(occurrences(listing, "conferenceSystemCatalog.map((product) => renderConferenceProductCard(product))"), 1);
+  assert.equal(occurrences(listing, "<ConferenceProductExplorer"), 1);
+  assert.equal(occurrences(source, "renderConferenceProductCard"), 0, "card rendering lives in the explorer only");
   assert.equal(occurrences(source, "mobileProductRows"), 0);
   assert.equal(occurrences(source, "<FaqAccordion"), 1);
   assert.equal(occurrences(source, '\"@type\": \"FAQPage\"'), 1);
@@ -409,8 +410,9 @@ test("Conference catalog is normalized, complete, and route-stable", () => {
   assert.match(catalog, /validateConferenceCatalog\(conferenceSystemCatalog\)/);
   assert.match(route, /conferenceSystemCatalog\.map\(\(product\) => \(\{ slug: product\.slug \}\)\)/);
   assert.match(route, /path: `\/conference-system\/\$\{slug\}`/);
-  assert.match(landing, /title=\{product\.name\}/);
-  assert.match(landing, /product\.price\.displayLabel/);
+  const explorer = read("app/conference-system/ConferenceProductExplorer.tsx");
+  assert.match(explorer, /title=\{product\.name\}/);
+  assert.match(landing, /priceLabel: product\.price\.displayLabel/);
   assert.match(detail, /product\.images\.find/);
   assert.match(detail, /product\.specifications\.map/);
 });
@@ -569,10 +571,131 @@ test("Conference category and populated-brand content is unique and complete", (
   assert.equal((categorySource.match(/buyerGuide: \[/g) ?? []).length, 10);
   assert.equal((categorySource.match(/relatedCategorySlugs: \[/g) ?? []).length, 10);
   assert.equal((categorySource.match(/faqs: \[/g) ?? []).length, 10);
-  assert.equal(brandHeroTitles.length, 2);
-  assert.equal(new Set(brandHeroTitles).size, 2);
-  assert.match(brandSource, /^  spon: \{$/m);
-  assert.match(brandSource, /^  huidu: \{$/m);
+  assert.equal(brandHeroTitles.length, 5);
+  assert.equal(new Set(brandHeroTitles).size, 5, "brand hero titles must be unique");
+  for (const brand of ["bosch", "toa", "cmx", "spon", "huidu"]) {
+    assert.match(brandSource, new RegExp(`^  ${brand}: \\{$`, "m"), `${brand} needs brand page content`);
+  }
+  // Honeywell has no verified conference products, so it must not claim brand content.
+  assert.doesNotMatch(brandSource, /^  honeywell: \{$/m);
+});
+
+test("Conference brand catalogs are unique, conference-only, and image-backed", () => {
+  const bosch = read("app/conference-system/catalog.brands.ts");
+  const toa = read("app/conference-system/catalog.toa.ts");
+  const core = read("app/conference-system/catalog.ts");
+  const all = `${core}\n${bosch}\n${toa}`;
+
+  const ids = [...all.matchAll(/^    id: "([^"]+)",$/gm)].map((m) => m[1]);
+  const slugs = [...all.matchAll(/^    slug: "([^"]+)",$/gm)].map((m) => m[1]);
+  const names = [...all.matchAll(/^    name: "([^"]+)",$/gm)].map((m) => m[1]);
+  const shortDescriptions = [...all.matchAll(/shortDescription:\s*\n?\s*"([^"]{40,})"/g)].map((m) => m[1]);
+  const descriptions = [...all.matchAll(/^    description:\s*\n?\s*"([^"]{60,})"/gm)].map((m) => m[1]);
+
+  assert.equal(ids.length, 55, "catalog must expose every verified conference product");
+  assert.equal(new Set(ids).size, ids.length, "product ids must be unique");
+  assert.equal(new Set(slugs).size, slugs.length, "product slugs must be unique");
+  assert.equal(new Set(names).size, names.length, "product names must be unique");
+  assert.equal(new Set(shortDescriptions).size, shortDescriptions.length, "short descriptions must be unique for SEO");
+  assert.equal(new Set(descriptions).size, descriptions.length, "descriptions must be unique for SEO");
+  assert.equal(descriptions.length, ids.length, "every product needs its own description");
+
+  // The merged export keeps the original core products first so their slugs stay stable.
+  assert.match(core, /const coreConferenceProducts: ConferenceProduct\[\] = \[/);
+  assert.match(
+    core,
+    /export const conferenceSystemCatalog: ConferenceProduct\[\] = \[\s*\.\.\.coreConferenceProducts,\s*\.\.\.boschConferenceProducts,\s*\.\.\.cmxConferenceProducts,\s*\.\.\.toaConferenceProducts,\s*\];/,
+  );
+
+  // PA equipment must not leak into the Conference category.
+  for (const paTerm of ["Ceiling Loudspeaker", "Horn Loudspeaker", "Column Loudspeaker", "Mixer Amplifier", "PAVA"]) {
+    assert.ok(!bosch.includes(paTerm), `Bosch conference catalog must not list ${paTerm}`);
+    assert.ok(!toa.includes(paTerm), `TOA conference catalog must not list ${paTerm}`);
+  }
+  assert.ok(!all.includes("honeywell"), "Honeywell has no verified conference products");
+
+  // Every brand image reference resolves to a file that is actually on disk.
+  const dirMap = { bosch: "bosch_products", cmx: "cmx_products", toa: "toa_products" };
+  const refs = [...`${bosch}\n${toa}`.matchAll(/(bosch|cmx|toa)Image\("([^"]+)"\)/g)];
+  assert.equal(refs.length, 43, "each brand product carries one primary image");
+  for (const [, brand, file] of refs) {
+    const relative = path.join("public/images/conference_system_products", dirMap[brand], file);
+    assert.ok(statSync(path.join(root, relative)).isFile(), `${relative} must exist`);
+  }
+});
+
+test("Conference product explorer filters by category and brand with paged results", () => {
+  const explorer = read("app/conference-system/ConferenceProductExplorer.tsx");
+  const landing = read("app/conference-system/page.tsx");
+
+  assert.match(explorer, /^"use client";/);
+  assert.match(explorer, /export const CONFERENCE_PRODUCTS_PER_BRAND = 3;/);
+  assert.match(explorer, /function balancedByBrand\(/);
+  assert.match(explorer, /product\.categorySlugs\.includes\(category\)/);
+  assert.match(explorer, /product\.brandSlug === brand/);
+  assert.match(explorer, /aria-pressed=\{/);
+  assert.match(explorer, /aria-live="polite"/);
+
+  // Numbered pagination, not an incremental "show more" button.
+  assert.match(explorer, /function paginationRange\(current: number, total: number\)/);
+  assert.match(explorer, /aria-label="Conference product pages"/);
+  assert.match(explorer, /aria-current=\{entry === safePage \? "page" : undefined\}/);
+  assert.match(explorer, /Page \{safePage\} of \{totalPages\}/);
+  assert.ok(!explorer.includes("Show more"), "incremental show-more paging must be gone");
+  assert.ok(!explorer.includes("CONFERENCE_PAGE_SIZE"), "incremental page-size constant must be gone");
+
+  // The facet rail is actually navigable: arrows on desktop, drag anywhere.
+  assert.match(explorer, /aria-label="Scroll filters left"/);
+  assert.match(explorer, /aria-label="Scroll filters right"/);
+  assert.match(explorer, /rail\.scrollBy\(\{ left: direction \*/);
+  assert.match(explorer, /onPointerDown=\{onPointerDown\}/);
+  assert.match(explorer, /rail\.scrollLeft = dragState\.current\.startScroll - delta/);
+
+  // Arrows stay inside the rail bounds and only render when that direction can scroll.
+  assert.match(explorer, /\$\{arrowClass\} left-0/);
+  assert.match(explorer, /\$\{arrowClass\} right-0/);
+  assert.ok(!/\$\{arrowClass\} -(?:left|right)-/.test(explorer), "arrows must not hang outside the container");
+  assert.match(explorer, /canScrollLeft \? \(/);
+  assert.match(explorer, /canScrollRight \? \(/);
+
+  // A masked edge fades chips under the arrow instead of chopping them.
+  assert.match(explorer, /const railMask = \(\(\) => \{/);
+  assert.match(explorer, /maskImage: railMask, WebkitMaskImage: railMask/);
+  assert.match(explorer, /paddingRight: canScrollRight \? FADE - 16 : 0/);
+  assert.ok(!explorer.includes("disabled:opacity-0"), "invisible-but-spacing arrows must be gone");
+
+  // Facet chips show the label only - no product counts.
+  assert.ok(!explorer.includes("{facet.count}"), "filter chips must not render product counts");
+  assert.ok(!explorer.includes("countClass"), "count styling helper must be gone");
+
+  // Facets are derived from the taxonomy and only offered when they have stock.
+  assert.match(landing, /conferenceCategoryConfigs\s*\.map\(\(category\) => \(\{/);
+  assert.match(landing, /conferenceBrandConfigs\s*\.map\(\(brand\) => \(\{/);
+  assert.equal(occurrences(landing, ".filter((facet) => facet.count > 0)"), 2);
+  assert.match(landing, /categorySlugs: conferenceCategoryConfigs/);
+});
+
+test("Conference landing links every brand badge to its brand route", () => {
+  const landing = read("app/conference-system/page.tsx");
+  const badgeSection = sectionBetween(
+    landing,
+    '<section className="mt-4" aria-labelledby="conference-brand-badges-heading">',
+    '<section className="mt-4" aria-labelledby="conference-products-heading">',
+  );
+
+  // The badge row sits directly after the H1 intro card and before the product grid.
+  assert.ok(
+    landing.indexOf("conference-brand-badges-heading") < landing.indexOf("conference-products-heading"),
+    "brand badges must come before the product listing",
+  );
+  assert.equal(occurrences(landing, 'id="conference-brand-badges-heading"'), 1);
+  assert.match(badgeSection, /Shop Conference Systems by Brand/);
+
+  // Every badge is a real link into the brand taxonomy, plus the hub link.
+  assert.match(badgeSection, /conferenceExplorerBrands\.map\(\(brand\) => \(/);
+  assert.match(badgeSection, /href=\{`\/conference-system\/brands\/\$\{brand\.slug\}\/`\}/);
+  assert.match(badgeSection, /href="\/conference-system\/brands\/"/);
+  assert.match(badgeSection, /View All Brands/);
 });
 
 test("Conference collection templates stay normalized, adaptive, and single-DOM", () => {
