@@ -5,12 +5,12 @@ import type { ReactNode } from "react";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
 import MobileIntroText from "@/components/common/MobileIntroText";
-import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
-import ProductGridCard from "@/components/products/ProductGridCard";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { normalizeDisplayedPriceText } from "@/lib/price";
 import { socialImageUrl } from "@/lib/seo";
 import { conferenceSystemCatalog, getConferenceProductPrimaryImage } from "./catalog";
+import { conferenceBrandConfigs, conferenceCategoryConfigs } from "./taxonomy";
+import ConferenceProductExplorer, { type ConferenceExplorerProduct } from "./ConferenceProductExplorer";
 
 const BRAND = { maroon: "#FF6A00", maroonDark: "#E45700" };
 const PAGE_TITLE = "Conference system price in bangladesh 2026";
@@ -1122,40 +1122,44 @@ export default function ConferenceSystemPage() {
       acceptedAnswer: { "@type": "Answer", text: item.a },
     })),
   };
-  const renderConferenceProductCard = (product: (typeof conferenceSystemCatalog)[number]) => {
+  // Facets for the product explorer: taxonomy categories and brands that actually have stock.
+  const conferenceExplorerProducts: ConferenceExplorerProduct[] = conferenceSystemCatalog.map((product) => {
     const primaryImage = getConferenceProductPrimaryImage(product);
+    return {
+      slug: product.slug,
+      name: product.name,
+      badge: product.badge,
+      priceLabel: product.price.displayLabel,
+      keyFeatures: product.keyFeatures,
+      applications: product.applications,
+      brandSlug: product.brand?.slug ?? null,
+      brandName: product.brand?.name ?? null,
+      categorySlugs: conferenceCategoryConfigs
+        .filter((category) => category.matchProduct(product))
+        .map((category) => category.slug),
+      image: { src: primaryImage.src, alt: primaryImage.alt },
+    };
+  });
 
-    return (
-      <ProductGridCard
-        key={product.slug}
-        href={`/conference-system/${product.slug}/`}
-        title={product.name}
-        image={
-          <Image
-            src={primaryImage.src}
-            alt={primaryImage.alt}
-            fill
-            sizes="(max-width: 1024px) 100vw, 33vw"
-            className="object-cover object-center transition duration-300 group-hover:scale-[1.03]"
-          />
-        }
-        imageContainerClassName="bg-slate-100"
-        borderColor={`${BRAND.maroon}12`}
-        topLeftBadge={{ text: product.badge, tone: "light" }}
-        topRightBadge={{ text: "Conference", tone: "dark" }}
-        metaLines={[{ text: product.price.displayLabel, className: "mt-1 text-sm font-semibold text-sky-700" }]}
-        bullets={product.keyFeatures}
-        chips={product.applications}
-        accentColor={BRAND.maroon}
-        contactHref="/contact/"
-        compactMobile
-        viewDetailsLabel="View details ->"
-      />
-    );
-  };
+  const conferenceExplorerCategories = conferenceCategoryConfigs
+    .map((category) => ({
+      slug: category.slug,
+      label: category.shortLabel ?? category.label,
+      count: conferenceSystemCatalog.filter(category.matchProduct).length,
+    }))
+    .filter((facet) => facet.count > 0);
+
+  const conferenceExplorerBrands = conferenceBrandConfigs
+    .map((brand) => ({
+      slug: brand.slug,
+      label: brand.name,
+      count: conferenceSystemCatalog.filter((product) => product.brand?.slug === brand.slug).length,
+    }))
+    .filter((facet) => facet.count > 0);
+
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 pb-10 pt-0 md:px-6">
+    <div className="mx-auto w-full max-w-7xl px-4 pb-10 pt-0 md:px-6" data-conference-route-kind="hub">
       <Breadcrumbs
         items={[homeBreadcrumb(), { href: "/conference-system/", label: "Conference System", current: true }]}
         className="mb-4 pt-3 text-sm text-slate-600"
@@ -1189,26 +1193,69 @@ export default function ConferenceSystemPage() {
         </MobileIntroText>
       </section>
 
+      <section className="mt-4" aria-labelledby="conference-brand-badges-heading">
+        <div className="rounded-2xl border bg-white p-4 shadow-sm md:p-5" style={sectionStyle}>
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 id="conference-brand-badges-heading" className="text-lg font-extrabold text-slate-950 md:text-xl">
+                Shop Conference Systems by Brand
+              </h2>
+              <p className="mt-1 text-sm text-slate-600">
+                Browse the verified Bosch, TOA, SPON and CMX conference ranges we supply and support in Bangladesh.
+              </p>
+            </div>
+            <Link
+              prefetch={false}
+              href="/conference-system/brands/"
+              className="inline-flex shrink-0 items-center gap-1 self-start text-[12.5px] font-extrabold uppercase tracking-[0.05em] text-[#C2410C] transition-colors hover:text-[#FD6900] sm:self-auto"
+            >
+              View All Brands
+              <span aria-hidden="true" className="text-[#FD6900]">
+                {"→"}
+              </span>
+            </Link>
+          </div>
+
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {conferenceExplorerBrands.map((brand) => (
+              <li key={brand.slug}>
+                <Link
+                  prefetch={false}
+                  href={`/conference-system/brands/${brand.slug}/`}
+                  className="group/brand inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-[13px] font-bold text-slate-700 shadow-sm transition-colors duration-200 hover:border-[#FD6900]/45 hover:bg-orange-50/70 hover:text-[#C2410C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FD6900]/45"
+                >
+                  {brand.label}
+                  <span
+                    aria-hidden="true"
+                    className="text-slate-300 transition-all duration-200 group-hover/brand:translate-x-0.5 group-hover/brand:text-[#FD6900]"
+                  >
+                    {"→"}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       <section className="mt-4" aria-labelledby="conference-products-heading">
         <div className="mb-4 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h2 id="conference-products-heading" className="text-xl font-extrabold text-slate-950">
               Conference System Products
             </h2>
-            <p className="hidden text-sm text-slate-600 md:block">SPON conference microphones, control units, DSP, access point, and accessories.</p>
+            <p className="hidden text-sm text-slate-600 md:block">
+              Bosch, TOA, SPON and CMX chairman units, delegate units, control units, DSP, amplifiers and accessories.
+            </p>
           </div>
-          <p className="text-xs font-bold uppercase tracking-wide" style={{ color: BRAND.maroon }}>
-            {conferenceSystemCatalog.length} products
-          </p>
         </div>
 
-        <ResponsiveProductCarousel
-          className="product-grid-3"
-          desktopClassName="md:grid-cols-2 lg:grid-cols-3"
-          mobileGapClassName="gap-[10px]"
-        >
-          {conferenceSystemCatalog.map((product) => renderConferenceProductCard(product))}
-        </ResponsiveProductCarousel>
+        <ConferenceProductExplorer
+          products={conferenceExplorerProducts}
+          categories={conferenceExplorerCategories}
+          brands={conferenceExplorerBrands}
+          accentColor={BRAND.maroon}
+        />
       </section>
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="what-is-conference-system">

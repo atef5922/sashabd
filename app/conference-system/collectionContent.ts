@@ -266,6 +266,72 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
 };
 
 export const conferenceBrandPageContent: Readonly<Record<string, ConferenceBrandPageContent>> = {
+  bosch: {
+    heroTitle: "Bosch Conference System Price in Bangladesh",
+    intro:
+      "The verified Bosch Conference catalog covers the analogue CCS 900 Ultra range and the digital CCS 1000 D platform, including control units, a recording control unit, and chairman and delegate discussion positions. Bosch PA amplifiers and loudspeakers are listed separately under PA System.",
+    highlights: [
+      { title: "Two discussion platforms", description: "CCS 900 Ultra covers plug-and-play analogue rooms; CCS 1000 D adds browser-based digital configuration and speaker queueing." },
+      { title: "Recording without extra hardware", description: "The CCSD-CURD control unit captures meeting audio to USB storage, removing the separate recorder a minute-taking room would otherwise need." },
+      { title: "Single-cable daisy chain", description: "Audio, control data, and power share one cable to each discussion device, which keeps table dressing manageable in large rooms." },
+    ],
+    buyerGuideTitle: "Planning a Bosch Conference System",
+    buyerGuideIntro: "Decide between the analogue and digital platforms first, because that choice sets the control unit and every table position after it.",
+    buyerGuide: [
+      { title: "Choose analogue or digital", description: "CCS 900 Ultra suits fixed rooms that need speed of commissioning; CCS 1000 D suits rooms needing configurable discussion modes and camera triggers." },
+      { title: "Fix the chairman-to-delegate split", description: "Confirm how many priority positions the meeting protocol requires before counting delegate units." },
+      { title: "Decide on recording at design stage", description: "Choosing CCSD-CURD later means replacing a working control unit, so confirm the archiving requirement before purchase." },
+    ],
+    faqs: [
+      { q: "What is the difference between CCS 900 Ultra and CCS 1000 D?", a: "CCS 900 Ultra is an analogue discussion range commissioned without configuration software. CCS 1000 D is digital, configured from a web browser, and adds request-to-speak queueing and camera-control triggers." },
+      { q: "Do I need the CCSD-CURD instead of the CCSD-CU?", a: "Only if the meeting audio has to be recorded. The CCSD-CURD adds onboard capture to USB storage; otherwise the two control units manage discussion identically." },
+      { q: "Are Bosch PA products part of this Conference range?", a: "No. Bosch mixer amplifiers, ceiling loudspeakers, and call stations are PA System products and are listed under that category, not here." },
+    ],
+  },
+  toa: {
+    heroTitle: "TOA Conference System Price in Bangladesh",
+    intro:
+      "The verified TOA Conference catalog spans the TS-680, TS-690, TS-780, TS-790, TS-800, and TS-900 discussion ranges, covering central units, chairman and delegate stations, an expansion unit, and factory extension cords. TOA PA amplifiers and loudspeakers are listed under PA System.",
+    highlights: [
+      { title: "A platform for each room size", description: "TS-690 and TS-820 suit compact rooms, TS-780 and TS-790 cover mid-size halls, and TS-900 is TOA's provision for large formal chambers." },
+      { title: "Defined expansion route", description: "The TS-918 expansion unit extends a TS-910 chamber without replacing the central unit, which protects the original specification as seating grows." },
+      { title: "Local service depth", description: "TOA has been supported in Bangladesh long enough that spares and repair knowledge exist in-country, which matters for a ten-year installation." },
+    ],
+    buyerGuideTitle: "Planning a TOA Conference System",
+    buyerGuideIntro: "Size the platform against realistic growth, not just today's seating — outgrowing a central unit is the most expensive mistake in a conference fit-out.",
+    buyerGuide: [
+      { title: "Match the series to the room", description: "Confirm the station count the central unit supports before selecting between the TS-690, TS-780, TS-790, and TS-900 platforms." },
+      { title: "Check microphone stem length", description: "Deep tables and tiered desks need the long-stem L variants; standard stems leave the capsule too far from the speaker." },
+      { title: "Schedule the extension cords", description: "Work the YR-780, YR-790, and YR-790-3 quantities out from the table drawing so short links and long rack runs are ordered correctly." },
+    ],
+    faqs: [
+      { q: "Which TOA conference platform suits a large council chamber?", a: "The TS-900 range. Its TS-910 central unit supports formal speaker-queue procedure and expands through the TS-918 unit as member positions increase." },
+      { q: "What does the L suffix mean on TOA station models?", a: "It indicates a long gooseneck microphone. Models such as TS-691L, TS-692L, and TS-792L are specified where participants sit back from the table edge." },
+      { q: "Can I extend an existing TOA conference room?", a: "Usually yes. Confirm which central unit is installed first, then additional stations from the same series can be added to the chain." },
+    ],
+  },
+  cmx: {
+    heroTitle: "CMX Conference System Price in Bangladesh",
+    intro:
+      "The verified CMX Conference catalog covers wired digital discussion across the CS, US, and WS ranges, wireless platforms using Wi-Fi, UHF, and infrared, and MC-series paperless conference hosts and management servers for document-driven meetings.",
+    highlights: [
+      { title: "Wired, wireless, and infrared", description: "CMX covers all three carriers, so a room can be specified around cabling constraints, radio congestion, or session confidentiality." },
+      { title: "Paperless meeting platform", description: "The MC-5800E server and MC-5802ABC and MC-5803 hosts distribute agendas and papers to seat terminals instead of printed packs." },
+      { title: "Table units at three tiers", description: "Compact, standard, and executive WS units share one controller, so a room can mix tiers between the head table and the sides." },
+    ],
+    buyerGuideTitle: "Planning a CMX Conference System",
+    buyerGuideIntro: "The carrier decision comes first — cable, radio, or infrared — because it determines the controller and every table position that follows.",
+    buyerGuide: [
+      { title: "Decide the carrier honestly", description: "Wired is the most predictable; Wi-Fi and UHF free the table layout; infrared keeps discussion audio inside the room for closed sessions." },
+      { title: "Survey before choosing wireless", description: "Infrared needs line of sight and radiator placement; UHF needs a frequency check against existing wireless microphones on site." },
+      { title: "Plan paperless with IT", description: "MC-series deployments touch the network as much as the AV rack, so involve the IT team at design stage rather than at commissioning." },
+    ],
+    faqs: [
+      { q: "Which CMX system suits a confidential closed session?", a: "The S800MC infrared controller. Infrared does not pass through walls, so discussion audio stays acoustically contained in a way no radio system can guarantee." },
+      { q: "What is the difference between the WS-257, WS-259, and WS-261 units?", a: "They are the compact, standard, and executive tiers of the same WS table range. All three work with the same controller and differ in footprint, build, and finish." },
+      { q: "Do CMX paperless systems replace the discussion audio?", a: "No. The MC-series hosts and servers handle agendas and documents alongside the discussion system rather than replacing the microphones and controller." },
+    ],
+  },
   spon: {
     heroTitle: "SPON Conference System Price in Bangladesh",
     intro:

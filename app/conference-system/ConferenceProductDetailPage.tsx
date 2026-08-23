@@ -6,12 +6,21 @@ import { useMemo, useState } from "react";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { normalizeDisplayedPriceText } from "@/lib/price";
-import type { ConferenceProduct } from "./catalog";
+import {
+  getConferenceProductPriceNote,
+  getConferenceProductSpecifications,
+  type ConferenceProduct,
+} from "./catalog";
+
+type ConferenceContextLink = { href: string; label: string };
 
 type ConferenceProductDetailPageProps = {
   product: ConferenceProduct;
   relatedProducts: ConferenceProduct[];
   wa: string;
+  categoryLinks?: ConferenceContextLink[];
+  brandLink?: ConferenceContextLink | null;
+  compatibleProducts?: ConferenceProduct[];
 };
 
 const BRAND = {
@@ -23,11 +32,16 @@ export default function ConferenceProductDetailPage({
   product,
   relatedProducts,
   wa,
+  categoryLinks = [],
+  brandLink = null,
+  compatibleProducts = [],
 }: ConferenceProductDetailPageProps) {
   const [activeImage, setActiveImage] = useState(
     product.images.find((image) => image.primary)?.src ?? product.images[0].src
   );
-  const [activeTab, setActiveTab] = useState<"spec" | "description">("spec");
+
+  const specifications = useMemo(() => getConferenceProductSpecifications(product), [product]);
+  const priceNote = useMemo(() => getConferenceProductPriceNote(product), [product]);
 
   const visibleGallery = useMemo(() => {
     const seen = new Set<string>();
@@ -97,6 +111,7 @@ export default function ConferenceProductDetailPage({
 
           <h1 className="mt-3 text-2xl font-bold leading-tight text-slate-900 md:text-3xl">{product.name}</h1>
           <p className="mt-2 text-sm font-semibold text-sky-700">Price: {normalizeDisplayedPriceText(product.price.displayLabel)}</p>
+          {priceNote ? <p className="mt-1 text-xs leading-5 text-slate-500">{priceNote}</p> : null}
           <p className="mt-2 text-sm leading-7 text-slate-700">{product.shortDescription}</p>
 
           <h2 className="mt-4 text-sm font-bold text-slate-900">Key Features</h2>
@@ -161,57 +176,84 @@ export default function ConferenceProductDetailPage({
         </div>
 
         <div className="rounded-2xl border bg-white p-4" style={{ borderColor: "rgba(15,23,42,0.1)" }}>
-          <div className="mb-2 border-b border-slate-200">
-            <div className="flex items-center gap-5 text-sm font-bold">
-              <button
-                type="button"
-                onClick={() => setActiveTab("spec")}
-                className="border-b-2 pb-2"
-                style={{
-                  borderColor: activeTab === "spec" ? BRAND.maroon : "transparent",
-                  color: activeTab === "spec" ? BRAND.maroon : "#334155",
-                }}
-              >
-                Specifications
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab("description")}
-                className="border-b-2 pb-2"
-                style={{
-                  borderColor: activeTab === "description" ? BRAND.maroon : "transparent",
-                  color: activeTab === "description" ? BRAND.maroon : "#475569",
-                }}
-              >
-                Description
-              </button>
-            </div>
-          </div>
-
-          {activeTab === "spec" ? (
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="border-b border-slate-200 text-slate-700">
-                    <th className="py-2 text-left font-bold uppercase tracking-wide">Parameter</th>
-                    <th className="py-2 text-right font-bold uppercase tracking-wide">Specification</th>
+          <h2 className="border-b border-slate-200 pb-2 text-base font-bold text-slate-900">Specifications</h2>
+          <div className="mt-2 overflow-x-auto">
+            <table className="w-full text-xs">
+              <caption className="sr-only">{`${product.name} specifications`}</caption>
+              <thead>
+                <tr className="border-b border-slate-200 text-slate-700">
+                  <th scope="col" className="py-2 text-left font-bold uppercase tracking-wide">Parameter</th>
+                  <th scope="col" className="py-2 text-right font-bold uppercase tracking-wide">Specification</th>
+                </tr>
+              </thead>
+              <tbody>
+                {specifications.map((spec) => (
+                  <tr key={`${spec.key}-${spec.value}`} className="border-b border-slate-100 last:border-b-0">
+                    <th scope="row" className="py-2 pr-4 text-left font-semibold text-slate-900">{spec.key}</th>
+                    <td className="py-2 text-right text-slate-700">{spec.value}</td>
                   </tr>
-                </thead>
-                <tbody>
-                  {product.specifications.map((spec) => (
-                    <tr key={`${spec.key}-${spec.value}`} className="border-b border-slate-100 last:border-b-0">
-                      <td className="py-2 pr-4 font-semibold text-slate-900">{spec.key}</td>
-                      <td className="py-2 text-right text-slate-700">{spec.value}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : null}
-
-          {activeTab === "description" ? <p className="text-xs leading-7 text-slate-700">{product.description}</p> : null}
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
+
+      {compatibleProducts.length || categoryLinks.length || brandLink ? (
+        <section className="mt-4 rounded-2xl border bg-white p-4" style={{ borderColor: "rgba(15,23,42,0.1)" }}>
+          <h2 className="text-base font-bold text-slate-900">System Compatibility &amp; Planning</h2>
+
+          {compatibleProducts.length ? (
+            <>
+              <p className="sr-only">{`Units commonly specified with the ${product.name}`}</p>
+              <ul className="mt-3 flex flex-wrap gap-2">
+                {compatibleProducts.map((item) => (
+                  <li key={item.slug}>
+                    <Link
+                      prefetch={false}
+                      href={`/conference-system/${item.slug}/`}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 transition-colors hover:border-[#FD6900]/45 hover:bg-orange-50/70 hover:text-[#C2410C]"
+                    >
+                      {item.name}
+                      <span aria-hidden="true" className="text-[#FD6900]">{"→"}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+
+          {categoryLinks.length || brandLink ? (
+            <div className="mt-4 border-t border-slate-100 pt-3">
+              <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400">Browse related ranges</p>
+              <ul className="mt-2 flex flex-wrap gap-2">
+                {categoryLinks.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      prefetch={false}
+                      href={link.href}
+                      className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-700 transition-colors hover:bg-orange-50 hover:text-[#C2410C]"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+                {brandLink ? (
+                  <li>
+                    <Link
+                      prefetch={false}
+                      href={brandLink.href}
+                      className="inline-flex items-center rounded-full bg-slate-100 px-3 py-1.5 text-xs font-bold text-slate-700 transition-colors hover:bg-orange-50 hover:text-[#C2410C]"
+                    >
+                      {brandLink.label}
+                    </Link>
+                  </li>
+                ) : null}
+              </ul>
+            </div>
+          ) : null}
+        </section>
+      ) : null}
 
       {relatedProducts.length ? (
         <section className="mt-6 rounded-2xl border bg-white p-4" style={{ borderColor: "rgba(15,23,42,0.1)" }}>
