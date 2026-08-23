@@ -166,6 +166,50 @@ const wirelessPoints = [
   "Requires charging and wireless planning",
 ] as const;
 
+const audioConferenceHighlights = [
+  {
+    title: "Chairman & Delegate Control",
+    desc: "Dedicated chairman and delegate units help manage who speaks and keep formal meetings organized.",
+  },
+  {
+    title: "Clear Speech Pickup",
+    desc: "Wired or wireless microphones with DSP processing reduce noise and improve voice clarity.",
+  },
+  {
+    title: "Boardroom & Hall Ready",
+    desc: "Suited to boardrooms, government offices, training rooms and conference halls that need structured discussion.",
+  },
+] as const;
+
+const videoConferenceHighlights = [
+  {
+    title: "Presentation & Display Support",
+    desc: "Video processing and display integration help share presentations clearly during in-room meetings.",
+  },
+  {
+    title: "Paperless & Hybrid Ready",
+    desc: "Supports paperless digital conferencing and works alongside meeting audio for hybrid collaboration.",
+  },
+  {
+    title: "Pairs With Audio Systems",
+    desc: "Combines with chairman & delegate mics, control units and speakers for a complete meeting room setup.",
+  },
+] as const;
+
+const audioSystemComparisonPoints = [
+  "Microphone, chairman & delegate control",
+  "DSP processing and speaker output",
+  "Best for formal, discussion-based meetings",
+  "Works as a standalone room setup",
+] as const;
+
+const videoSystemComparisonPoints = [
+  "Video processing and display integration",
+  "Paperless and hybrid meeting support",
+  "Best for presentation-based meetings",
+  "Usually combined with an audio system",
+] as const;
+
 type ConferenceComponentIcon =
   | "chairman"
   | "delegate"
@@ -1281,6 +1325,237 @@ export default function ConferenceSystemPage() {
         </div>
       </section>
 
+      <section id="conference-system-price" className={`${sectionClass} scroll-mt-24`} style={sectionStyle} aria-labelledby="conference-system-price-heading">
+        <h2 id="conference-system-price-heading" className="text-2xl font-extrabold tracking-tight text-slate-950">
+          Conference System Price in Bangladesh
+        </h2>
+        <p className="mt-4 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
+          Conference system price in Bangladesh varies by product model, microphone quantity, system type, brand,
+          control unit, processor, speaker coverage, installation complexity, and service support. The table below
+          lists Sasha Corporation conference system products with direct product links for easier comparison.
+        </p>
+        <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200">
+          <table className="w-full border-collapse text-left text-sm">
+            <thead className="hidden bg-slate-50 text-slate-950 md:table-header-group">
+              <tr>
+                <th className="w-[42%] border-r border-slate-200 px-4 py-3 font-extrabold">Product Name</th>
+                <th className="w-[18%] border-r border-slate-200 px-4 py-3 font-extrabold">Product Type</th>
+                <th className="w-[24%] border-r border-slate-200 px-4 py-3 font-extrabold">Best For</th>
+                <th className="w-[16%] px-4 py-3 text-right font-extrabold">Price</th>
+              </tr>
+            </thead>
+            <tbody className="block divide-y divide-slate-200 md:table-row-group">
+              {conferencePriceTableProducts.map((product) => (
+                <tr key={product.slug} className="block align-top md:table-row">
+                  <td className="block px-4 py-4 md:table-cell md:border-r md:border-slate-200 md:py-3">
+                    <Link
+                      href={`/conference-system/${product.slug}/`}
+                      className="block break-words font-extrabold leading-6 text-slate-950 underline-offset-4 transition hover:text-orange-600 hover:underline"
+                    >
+                      {product.name}
+                    </Link>
+                    <p className="mt-1 text-xs leading-5 text-slate-500">{product.shortDescription}</p>
+                    <div className="mt-3 grid gap-2 md:hidden">
+                      <div className="flex items-start justify-between gap-4 rounded-xl bg-slate-50 px-3 py-2">
+                        <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">Type</span>
+                        <span className="text-right text-xs font-bold text-slate-800">{product.badge}</span>
+                      </div>
+                      <div className="rounded-xl bg-slate-50 px-3 py-2">
+                        <span className="block text-xs font-extrabold uppercase tracking-wide text-slate-500">Best For</span>
+                        <span className="mt-1 block text-xs leading-5 text-slate-700">{product.applications.join(", ")}</span>
+                      </div>
+                      <div className="flex items-center justify-between gap-4 rounded-xl bg-orange-50 px-3 py-2">
+                        <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">Price</span>
+                        <span className="text-right text-sm font-extrabold text-slate-950">{normalizeDisplayedPriceText(product.price.displayLabel)}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="hidden px-4 py-3 font-semibold text-slate-800 md:table-cell md:border-r md:border-slate-200">{product.badge}</td>
+                  <td className="hidden px-4 py-3 text-slate-700 md:table-cell md:border-r md:border-slate-200">{product.applications.join(", ")}</td>
+                  <td className="hidden px-4 py-3 text-right font-bold text-slate-900 md:table-cell">
+                    {normalizeDisplayedPriceText(product.price.displayLabel)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="mt-5 rounded-2xl border border-orange-100 bg-orange-50/60 p-4 text-sm leading-7 text-slate-700">
+          Product prices help estimate equipment cost, but final conference system price in Bangladesh depends on room
+          size, number of microphones, brand, control unit, audio processor, speaker setup, installation complexity, and
+          after-sales support.
+        </p>
+      </section>
+
+      <section className={sectionClass} style={sectionStyle} aria-labelledby="types-of-conference-systems">
+        <h2 id="types-of-conference-systems" className="text-2xl font-extrabold tracking-tight text-slate-950">
+          Types of Conference Systems
+        </h2>
+        <MobileIntroText
+          teaser="Choose the right conference system type based on room use, table layout, installation style and meeting workflow."
+          className="mt-3 md:hidden"
+          singleDom
+        >
+          <p className="text-sm leading-7 text-slate-600 text-justify">
+            Choose the right conference system type based on room use, table layout, installation style and meeting workflow.
+          </p>
+        </MobileIntroText>
+        <div className="mt-6">
+          <ResponsiveCardGrid
+            desktopClassName="md:grid-cols-2 lg:grid-cols-3"
+            items={systemTypes.map((item) => ({ title: item.title, desc: item.desc }))}
+          />
+        </div>
+      </section>
+
+      <section className={sectionClass} style={sectionStyle} aria-labelledby="audio-conference-system">
+        <div className="max-w-5xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.maroon }}>
+            Audio Meeting Solution
+          </p>
+          <h2 id="audio-conference-system" className="mt-3 text-2xl font-extrabold tracking-tight text-slate-950">
+            Audio Conference System
+          </h2>
+          <MobileIntroText
+            teaser="An audio conference system focuses on clear speech pickup, chairman & delegate control and organized meeting discussion."
+            className="mt-4"
+            singleDom
+          >
+            <p className="text-sm leading-7 text-slate-700 text-justify md:text-base md:leading-8">
+              An audio conference system is built around microphones, chairman and delegate units, a central control
+              unit, DSP audio processing, amplifiers and speakers to keep every voice clear during a meeting. It is
+              the standard audio setup for boardrooms, government meeting rooms, training centers and conference
+              halls where structured discussion and speech clarity matter most.
+            </p>
+          </MobileIntroText>
+        </div>
+
+        <div className="mt-6">
+          <ResponsiveCardGrid
+            desktopClassName="md:grid-cols-3"
+            items={audioConferenceHighlights.map((item) => ({ title: item.title, desc: item.desc }))}
+          />
+        </div>
+
+        <div className="mt-6 rounded-2xl border border-orange-100 bg-orange-50/50 p-5 md:p-6">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-3xl">
+              <h3 className="text-xl font-extrabold text-slate-950">Need Help Selecting an Audio Conference System?</h3>
+              <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
+                Sasha Corporation can recommend the right chairman & delegate mics, control unit, DSP and
+                amplifier combination based on your room size and meeting workflow.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/contact/"
+                className={ctaClass}
+                style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+              >
+                Get Free Quotation
+              </Link>
+              <Link
+                prefetch={false}
+                href="/conference-system/audio-conference-system/"
+                className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
+              >
+                View Audio Conference System Price -&gt;
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className={sectionClass} style={sectionStyle} aria-labelledby="video-conference-system">
+        <div className="max-w-5xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.maroon }}>
+            Video & Hybrid Meeting Solution
+          </p>
+          <h2 id="video-conference-system" className="mt-3 text-2xl font-extrabold tracking-tight text-slate-950">
+            Video Conference System
+          </h2>
+          <MobileIntroText
+            teaser="A video conference system adds presentation, display and paperless conferencing support alongside meeting room audio."
+            className="mt-4"
+            singleDom
+          >
+            <p className="text-sm leading-7 text-slate-700 text-justify md:text-base md:leading-8">
+              A video conference system adds presentation and video processing, display integration and paperless
+              digital conferencing support alongside the meeting audio setup. It helps in-room and remote
+              participants collaborate during hybrid meetings, and is typically planned together with an audio
+              conference system rather than as a replacement for one.
+            </p>
+          </MobileIntroText>
+        </div>
+
+        <div className="mt-6">
+          <ResponsiveCardGrid
+            desktopClassName="md:grid-cols-3"
+            items={videoConferenceHighlights.map((item) => ({ title: item.title, desc: item.desc }))}
+          />
+        </div>
+
+        <div className="mt-6 rounded-2xl border border-orange-100 bg-orange-50/50 p-5 md:p-6">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-3xl">
+              <h3 className="text-xl font-extrabold text-slate-950">Need Help Planning a Video Conference System?</h3>
+              <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
+                Sasha Corporation can help plan video processing, display integration and paperless conferencing
+                equipment alongside your meeting room audio setup.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/contact/"
+                className={ctaClass}
+                style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+              >
+                Get Free Quotation
+              </Link>
+              <Link
+                prefetch={false}
+                href="/conference-system/video-conference-system/"
+                className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
+              >
+                View Video Conference System Price -&gt;
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className={sectionClass} style={sectionStyle} aria-labelledby="audio-vs-video-conference-systems">
+        <h2 id="audio-vs-video-conference-systems" className="text-2xl font-extrabold tracking-tight text-slate-950">
+          Audio vs Video Conference Systems
+        </h2>
+        <MobileIntroText
+          teaser="Audio and video conference systems solve different parts of the meeting workflow and are often combined together."
+          className="mt-3 md:hidden"
+          singleDom
+        >
+          <p className="text-sm leading-7 text-slate-600 text-justify">
+            Audio and video conference systems solve different parts of the meeting workflow and are often combined together.
+          </p>
+        </MobileIntroText>
+        <div className="mt-6">
+          <ResponsiveCardGrid
+            desktopClassName="md:grid-cols-2"
+            items={[
+              {
+                title: "Audio Conference System",
+                desc: "Best for structured discussion, chairman & delegate control and clear speech pickup in boardrooms and meeting halls.",
+                bullets: audioSystemComparisonPoints,
+              },
+              {
+                title: "Video Conference System",
+                desc: "Best for presentation sharing, display integration and hybrid meetings where remote participants join the discussion.",
+                bullets: videoSystemComparisonPoints,
+              },
+            ]}
+          />
+        </div>
+      </section>
+
       <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-components">
         <div className="max-w-5xl">
           <p className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.maroon }}>
@@ -1497,89 +1772,6 @@ export default function ConferenceSystemPage() {
             </article>
           ))}
         </div>
-      </section>
-
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="types-of-conference-systems">
-        <h2 id="types-of-conference-systems" className="text-2xl font-extrabold tracking-tight text-slate-950">
-          Types of Conference Systems
-        </h2>
-        <MobileIntroText
-          teaser="Choose the right conference system type based on room use, table layout, installation style and meeting workflow."
-          className="mt-3 md:hidden"
-          singleDom
-        >
-          <p className="text-sm leading-7 text-slate-600 text-justify">
-            Choose the right conference system type based on room use, table layout, installation style and meeting workflow.
-          </p>
-        </MobileIntroText>
-        <div className="mt-6">
-          <ResponsiveCardGrid
-            desktopClassName="md:grid-cols-2 lg:grid-cols-3"
-            items={systemTypes.map((item) => ({ title: item.title, desc: item.desc }))}
-          />
-        </div>
-      </section>
-
-      <section id="conference-system-price" className={`${sectionClass} scroll-mt-24`} style={sectionStyle} aria-labelledby="conference-system-price-heading">
-        <h2 id="conference-system-price-heading" className="text-2xl font-extrabold tracking-tight text-slate-950">
-          Conference System Price in Bangladesh
-        </h2>
-        <p className="mt-4 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-          Conference system price in Bangladesh varies by product model, microphone quantity, system type, brand,
-          control unit, processor, speaker coverage, installation complexity, and service support. The table below
-          lists Sasha Corporation conference system products with direct product links for easier comparison.
-        </p>
-        <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200">
-          <table className="w-full border-collapse text-left text-sm">
-            <thead className="hidden bg-slate-50 text-slate-950 md:table-header-group">
-              <tr>
-                <th className="w-[42%] border-r border-slate-200 px-4 py-3 font-extrabold">Product Name</th>
-                <th className="w-[18%] border-r border-slate-200 px-4 py-3 font-extrabold">Product Type</th>
-                <th className="w-[24%] border-r border-slate-200 px-4 py-3 font-extrabold">Best For</th>
-                <th className="w-[16%] px-4 py-3 text-right font-extrabold">Price</th>
-              </tr>
-            </thead>
-            <tbody className="block divide-y divide-slate-200 md:table-row-group">
-              {conferencePriceTableProducts.map((product) => (
-                <tr key={product.slug} className="block align-top md:table-row">
-                  <td className="block px-4 py-4 md:table-cell md:border-r md:border-slate-200 md:py-3">
-                    <Link
-                      href={`/conference-system/${product.slug}/`}
-                      className="block break-words font-extrabold leading-6 text-slate-950 underline-offset-4 transition hover:text-orange-600 hover:underline"
-                    >
-                      {product.name}
-                    </Link>
-                    <p className="mt-1 text-xs leading-5 text-slate-500">{product.shortDescription}</p>
-                    <div className="mt-3 grid gap-2 md:hidden">
-                      <div className="flex items-start justify-between gap-4 rounded-xl bg-slate-50 px-3 py-2">
-                        <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">Type</span>
-                        <span className="text-right text-xs font-bold text-slate-800">{product.badge}</span>
-                      </div>
-                      <div className="rounded-xl bg-slate-50 px-3 py-2">
-                        <span className="block text-xs font-extrabold uppercase tracking-wide text-slate-500">Best For</span>
-                        <span className="mt-1 block text-xs leading-5 text-slate-700">{product.applications.join(", ")}</span>
-                      </div>
-                      <div className="flex items-center justify-between gap-4 rounded-xl bg-orange-50 px-3 py-2">
-                        <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">Price</span>
-                        <span className="text-right text-sm font-extrabold text-slate-950">{normalizeDisplayedPriceText(product.price.displayLabel)}</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="hidden px-4 py-3 font-semibold text-slate-800 md:table-cell md:border-r md:border-slate-200">{product.badge}</td>
-                  <td className="hidden px-4 py-3 text-slate-700 md:table-cell md:border-r md:border-slate-200">{product.applications.join(", ")}</td>
-                  <td className="hidden px-4 py-3 text-right font-bold text-slate-900 md:table-cell">
-                    {normalizeDisplayedPriceText(product.price.displayLabel)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <p className="mt-5 rounded-2xl border border-orange-100 bg-orange-50/60 p-4 text-sm leading-7 text-slate-700">
-          Product prices help estimate equipment cost, but final conference system price in Bangladesh depends on room
-          size, number of microphones, brand, control unit, audio processor, speaker setup, installation complexity, and
-          after-sales support.
-        </p>
       </section>
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="wired-vs-wireless-conference-system">
