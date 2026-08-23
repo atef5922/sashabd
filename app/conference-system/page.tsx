@@ -184,18 +184,11 @@ const wirelessPoints = [
   "Requires charging and wireless planning",
 ] as const;
 
-const audioSystemComparisonPoints = [
-  "Primary purpose: in-room discussion",
-  "Core equipment: controller + chairman/delegate microphones",
-  "Typical use: boardroom, council chamber, meeting room",
-  "Network dependency: usually lower",
-] as const;
-
-const videoSystemComparisonPoints = [
-  "Primary purpose: presentation, display & hybrid support",
-  "Core equipment: video/display processor + paperless conferencing",
-  "Typical use: hybrid meetings, presentation-heavy rooms",
-  "Network dependency: usually higher",
+const audioVsVideoComparisonRows = [
+  ["Primary purpose", "In-room discussion", "Presentation, display & hybrid support"],
+  ["Core equipment", "Controller + chairman/delegate microphones", "Video/display processor + paperless conferencing"],
+  ["Best for", "Boardroom, council chamber, meeting room", "Hybrid meetings, presentation-heavy rooms"],
+  ["Network dependency", "Usually lower", "Usually higher"],
 ] as const;
 
 type ConferenceComponentIcon =
@@ -317,30 +310,12 @@ const chooseSashaCards = [
 ] as const;
 
 const conferenceSupportProcessSteps = [
-  {
-    title: "Site Survey & Consultation",
-    desc: "We review room size, seating layout, and meeting requirements to recommend the right conference system.",
-  },
-  {
-    title: "Product Selection",
-    desc: "Chairman units, delegate units, control units, DSP, amplifiers, and speakers are matched to your project scope.",
-  },
-  {
-    title: "BOQ Preparation",
-    desc: "A clear bill of quantities is prepared with product list, accessories, and installation details for approval.",
-  },
-  {
-    title: "Installation & Configuration",
-    desc: "Our team handles cable planning, mounting, wiring, and on-site system configuration.",
-  },
-  {
-    title: "Audio Testing",
-    desc: "Every microphone, speaker, and control unit is tested for clear pickup and stable performance before handover.",
-  },
-  {
-    title: "After-Sales Support",
-    desc: "We provide ongoing technical support, troubleshooting, and guidance for future system expansion.",
-  },
+  "Site Survey",
+  "System Design",
+  "BOQ",
+  "Installation",
+  "Testing",
+  "Support",
 ] as const;
 
 type ConferenceBenefitIcon =
@@ -607,7 +582,7 @@ const conferencePriceTableProducts = PRICE_TABLE_BRAND_ORDER.flatMap((slug) =>
 const conferenceFaqs = [
   {
     q: "What is the price of a conference system in Bangladesh?",
-    a: "Conference system price in Bangladesh depends on room size, number of microphones, wired or wireless setup, control unit, DSP processor, speaker system, and installation requirements. Basic systems may start from around Tk 80,000, while larger digital conference systems require custom quotation.",
+    a: "Conference system cost depends on participant count, system type, controller, microphone units, audio equipment, and installation requirements. Check the product price table above or request a BOQ for an exact estimate.",
   },
   {
     q: "Which conference system brands are available?",
@@ -1019,6 +994,25 @@ export default function ConferenceSystemPage() {
             </p>
           </div>
         </MobileIntroText>
+
+        <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <Link
+            href="/contact/"
+            className={ctaClass}
+            style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+          >
+            Get a Free BOQ
+          </Link>
+          <a
+            href="#conference-products-heading"
+            className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
+          >
+            Browse Conference Systems
+          </a>
+        </div>
+        <p className="mt-3 text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
+          {conferenceExplorerProducts.length} verified products &middot; {conferenceExplorerBrands.length} trusted brands
+        </p>
       </section>
 
       <section className="mt-4" aria-labelledby="conference-brand-badges-heading">
@@ -1251,6 +1245,10 @@ export default function ConferenceSystemPage() {
             items={systemTypes.map((item) => ({ title: item.title, desc: item.desc }))}
           />
         </div>
+        <p className="mt-5 text-sm leading-7 text-slate-600">
+          These types describe connection architecture — wired, wireless, digital, or network-based. Meeting mode is
+          a separate choice: audio-only or video-enabled collaboration, covered next.
+        </p>
       </section>
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="choose-your-conference-system">
@@ -1303,22 +1301,33 @@ export default function ConferenceSystemPage() {
           </div>
         </div>
 
-        <div className="mt-6">
-          <ResponsiveCardGrid
-            desktopClassName="md:grid-cols-2"
-            items={[
-              {
-                title: "Audio Conference System",
-                desc: "Best for structured, in-room discussion with chairman & delegate control.",
-                bullets: audioSystemComparisonPoints,
-              },
-              {
-                title: "Video Conference System",
-                desc: "Best for presentation-heavy and hybrid meetings with remote participants.",
-                bullets: videoSystemComparisonPoints,
-              },
-            ]}
-          />
+        <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200">
+          <table className="w-full border-collapse text-left text-sm">
+            <thead className="hidden bg-slate-50 text-slate-950 md:table-header-group">
+              <tr>
+                <th className="w-[24%] border-r border-slate-200 px-4 py-3 font-extrabold">Feature</th>
+                <th className="w-[38%] border-r border-slate-200 px-4 py-3 font-extrabold">Audio Conference</th>
+                <th className="w-[38%] px-4 py-3 font-extrabold">Video Conference</th>
+              </tr>
+            </thead>
+            <tbody className="block divide-y divide-slate-200 md:table-row-group">
+              {audioVsVideoComparisonRows.map((row) => (
+                <tr key={row[0]} className="block md:table-row">
+                  <td className="block px-4 py-4 font-extrabold text-slate-950 md:table-cell md:border-r md:border-slate-200 md:py-3">
+                    {row[0]}
+                  </td>
+                  <td className="block px-4 py-0 pb-4 text-slate-700 md:table-cell md:border-r md:border-slate-200 md:px-4 md:py-3">
+                    <div className="text-xs font-extrabold uppercase tracking-wide text-slate-500 md:hidden">Audio Conference</div>
+                    <div className="mt-1 md:mt-0">{row[1]}</div>
+                  </td>
+                  <td className="block px-4 py-0 pb-4 text-slate-700 md:table-cell md:px-4 md:py-3">
+                    <div className="text-xs font-extrabold uppercase tracking-wide text-slate-500 md:hidden">Video Conference</div>
+                    <div className="mt-1 md:mt-0">{row[2]}</div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -1386,11 +1395,9 @@ export default function ConferenceSystemPage() {
             singleDom
           >
             <p className="text-sm leading-7 text-slate-700 text-justify md:text-base md:leading-8">
-              A professional conference system improves voice clarity, meeting control, and communication quality in
-              boardrooms, offices, training rooms, government meeting rooms, and conference halls. With the right
-              chairman & delegate mics, wired conference system or wireless conference system, and proper conference
-              system installation in Bangladesh, organizations can create a more productive and professional meeting
-              environment.
+              A well-designed conference system improves speech clarity, meeting control, and scalability while
+              supporting different room layouts and integration needs, from small boardrooms to large conference
+              halls.
             </p>
           </MobileIntroText>
         </div>
@@ -1659,17 +1666,21 @@ export default function ConferenceSystemPage() {
 
         <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
           <h3 className="text-lg font-extrabold text-slate-950">
-            Complete Conference System Support from Planning to Installation
+            Our Conference System Process
           </h3>
-          <p className="mt-3 text-sm leading-7 text-slate-600 md:text-base md:leading-8">
-            Every conference system project moves through the same six stages, from the first site visit to
-            after-sales support, so nothing is missed between planning and handover.
-          </p>
-          <div className="mt-5">
-            <ResponsiveCardGrid
-              desktopClassName="md:grid-cols-3 xl:grid-cols-6"
-              items={conferenceSupportProcessSteps.map((item) => ({ title: item.title, desc: item.desc }))}
-            />
+          <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-3">
+            {conferenceSupportProcessSteps.map((step, index) => (
+              <span key={step} className="flex items-center gap-2">
+                <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-extrabold text-slate-900">
+                  {step}
+                </span>
+                {index < conferenceSupportProcessSteps.length - 1 ? (
+                  <span aria-hidden="true" className="text-slate-300">
+                    {"→"}
+                  </span>
+                ) : null}
+              </span>
+            ))}
           </div>
         </div>
 
