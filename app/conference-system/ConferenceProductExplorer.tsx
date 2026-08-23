@@ -327,7 +327,7 @@ export default function ConferenceProductExplorer({
           desktopClassName="md:grid-cols-2 lg:grid-cols-3"
           mobileGapClassName="gap-[10px]"
         >
-          {shown.map((product) => (
+          {shown.map((product, index) => (
             <ProductGridCard
               key={product.slug}
               href={`/conference-system/${product.slug}/`}
@@ -339,6 +339,7 @@ export default function ConferenceProductExplorer({
                   fill
                   sizes="(max-width: 1024px) 100vw, 33vw"
                   className="object-cover object-center transition duration-300 group-hover:scale-[1.03]"
+                  priority={index === 0}
                 />
               }
               imageContainerClassName="bg-slate-100"
@@ -364,13 +365,9 @@ export default function ConferenceProductExplorer({
       {totalPages > 1 ? (
         <nav
           aria-label="Conference product pages"
-          className="mt-6 flex flex-col items-center gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:justify-between"
+          className="mt-6 flex flex-col items-center gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:justify-center"
         >
-          <p className="order-2 text-[12.5px] font-semibold text-slate-500 sm:order-1">
-            Page {safePage} of {totalPages}
-          </p>
-
-          <div className="order-1 flex items-center gap-1.5 sm:order-2">
+          <div className="flex items-center gap-1.5">
             <button
               type="button"
               onClick={() => goToPage(safePage - 1)}

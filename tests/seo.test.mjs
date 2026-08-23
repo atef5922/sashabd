@@ -350,11 +350,11 @@ test("Conference System renders one responsive semantic content set", () => {
     "Audio Conference System",
     "Video Conference System",
     "Audio vs Video Conference Systems",
+    "Wired vs Wireless Conference System",
     "Key Components of a Conference System",
     "Key Benefits of a Professional Conference System",
     "Conference System Applications",
     "Conference System Packages by Room Size",
-    "Wired vs Wireless Conference System",
     "How to Choose the Right Conference System in Bangladesh",
     "Why Choose Sasha Corporation for Conference Systems in Bangladesh?",
     "Brands We Work With",
@@ -661,7 +661,7 @@ test("Conference product explorer filters by category and brand with paged resul
   assert.match(explorer, /function paginationRange\(current: number, total: number\)/);
   assert.match(explorer, /aria-label="Conference product pages"/);
   assert.match(explorer, /aria-current=\{entry === safePage \? "page" : undefined\}/);
-  assert.match(explorer, /Page \{safePage\} of \{totalPages\}/);
+  assert.ok(!explorer.includes("Page {safePage} of {totalPages}"), "redundant page-count text must be gone");
   assert.ok(!explorer.includes("Show more"), "incremental show-more paging must be gone");
   assert.ok(!explorer.includes("CONFERENCE_PAGE_SIZE"), "incremental page-size constant must be gone");
 

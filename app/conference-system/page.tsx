@@ -13,7 +13,7 @@ import { conferenceBrandConfigs, conferenceCategoryConfigs } from "./taxonomy";
 import ConferenceProductExplorer, { type ConferenceExplorerProduct } from "./ConferenceProductExplorer";
 
 const BRAND = { maroon: "#FF6A00", maroonDark: "#E45700" };
-const PAGE_TITLE = "Conference system price in bangladesh 2026";
+const PAGE_TITLE = "Conference System Price in Bangladesh 2026";
 
 const ctaClass =
   "inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md";
@@ -396,13 +396,31 @@ const chooseSashaCards = [
   },
 ] as const;
 
-const chooseSashaSupportStrip = [
-  "Site Survey & Consultation",
-  "Product Selection",
-  "BOQ Preparation",
-  "Installation & Configuration",
-  "Audio Testing",
-  "After-Sales Support",
+const conferenceSupportProcessSteps = [
+  {
+    title: "Site Survey & Consultation",
+    desc: "We review room size, seating layout, and meeting requirements to recommend the right conference system.",
+  },
+  {
+    title: "Product Selection",
+    desc: "Chairman units, delegate units, control units, DSP, amplifiers, and speakers are matched to your project scope.",
+  },
+  {
+    title: "BOQ Preparation",
+    desc: "A clear bill of quantities is prepared with product list, accessories, and installation details for approval.",
+  },
+  {
+    title: "Installation & Configuration",
+    desc: "Our team handles cable planning, mounting, wiring, and on-site system configuration.",
+  },
+  {
+    title: "Audio Testing",
+    desc: "Every microphone, speaker, and control unit is tested for clear pickup and stable performance before handover.",
+  },
+  {
+    title: "After-Sales Support",
+    desc: "We provide ongoing technical support, troubleshooting, and guidance for future system expansion.",
+  },
 ] as const;
 
 type ConferenceBenefitIcon =
@@ -614,9 +632,9 @@ type ConferenceBrandCard = {
   category: string;
   description: string;
   badge: string;
-  logoSrc: string;
-  logoWidth: number;
-  logoHeight: number;
+  logoSrc?: string;
+  logoWidth?: number;
+  logoHeight?: number;
   url: string;
 };
 
@@ -644,15 +662,20 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
     url: "https://www.toa.eu/public-address-systems",
   },
   {
-    title: "DSPPA",
-    category: "IP Audio, PA & Conference Solutions",
+    title: "SPON",
+    category: "Digital Conference Microphone & Control Systems",
     description:
-      "DSPPA specializes in public address systems, IP audio solutions, conference systems, and background music systems. Their products support both small installations and large multi-zone communication networks.",
-    badge: "IP Audio Expert",
-    logoSrc: "/images/brands/audio/dsppa-logo.png",
-    logoWidth: 118,
-    logoHeight: 24,
-    url: "https://www.dsppatech.com/",
+      "SPON specializes in digital and wireless conference microphone systems, including chairman and delegate units, central control units, DSP audio processors, and amplifiers. Their products are widely used in boardrooms, government offices, and institutional meeting rooms in Bangladesh.",
+    badge: "Conference System Specialist",
+    url: "/conference-system/brands/spon/",
+  },
+  {
+    title: "CMX",
+    category: "Wireless & Digital Discussion Systems",
+    description:
+      "CMX offers a wide range of wired and wireless conference discussion systems, including chairman and delegate units, digital controllers, and paperless conference management solutions for boardrooms, council chambers, and large meeting halls.",
+    badge: "Discussion System Specialist",
+    url: "/conference-system/brands/cmx/",
   },
 ];
 
@@ -660,26 +683,19 @@ const ConferenceBrandTitleBox = ({
   brand,
 }: {
   brand: Pick<ConferenceBrandCard, "title" | "logoSrc" | "logoWidth" | "logoHeight" | "url">;
-}) => (
-  <div>
-    <div
-      className="flex min-h-12 w-full items-center rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 transition-colors duration-200 hover:border-orange-200 hover:bg-orange-50/40"
-      aria-label={`${brand.title} brand logo space`}
-    >
-      <a
-        href={brand.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group/brand flex w-full items-center justify-center gap-2.5 text-slate-950"
-        aria-label={`Visit ${brand.title} official website`}
-      >
-        <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-50 text-orange-600 ring-1 ring-orange-100">
-          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M12 3 5 6v5c0 4.6 2.9 8.4 7 10 4.1-1.6 7-5.4 7-10V6l-7-3Z" />
-            <path d="m9 12 2 2 4-5" />
-          </svg>
-        </span>
-        <span className="flex h-9 items-center md:h-10">
+}) => {
+  const isInternal = brand.url.startsWith("/");
+
+  const content = (
+    <>
+      <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-50 text-orange-600 ring-1 ring-orange-100">
+        <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M12 3 5 6v5c0 4.6 2.9 8.4 7 10 4.1-1.6 7-5.4 7-10V6l-7-3Z" />
+          <path d="m9 12 2 2 4-5" />
+        </svg>
+      </span>
+      <span className="flex h-9 items-center md:h-10">
+        {brand.logoSrc ? (
           <Image
             src={brand.logoSrc}
             alt={`${brand.title} logo`}
@@ -687,11 +703,43 @@ const ConferenceBrandTitleBox = ({
             height={brand.logoHeight}
             className="h-auto max-h-6 w-auto object-contain md:max-h-7"
           />
-        </span>
-      </a>
+        ) : (
+          <span className="text-base font-extrabold tracking-tight text-slate-950">{brand.title}</span>
+        )}
+      </span>
+    </>
+  );
+
+  return (
+    <div>
+      <div
+        className="flex min-h-12 w-full items-center rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 transition-colors duration-200 hover:border-orange-200 hover:bg-orange-50/40"
+        aria-label={`${brand.title} brand logo space`}
+      >
+        {isInternal ? (
+          <Link
+            prefetch={false}
+            href={brand.url}
+            className="group/brand flex w-full items-center justify-center gap-2.5 text-slate-950"
+            aria-label={`Browse ${brand.title} conference systems`}
+          >
+            {content}
+          </Link>
+        ) : (
+          <a
+            href={brand.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group/brand flex w-full items-center justify-center gap-2.5 text-slate-950"
+            aria-label={`Visit ${brand.title} official website`}
+          >
+            {content}
+          </a>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const conferencePriceTableProducts = conferenceSystemCatalog.slice(0, 8);
 
@@ -1556,6 +1604,56 @@ export default function ConferenceSystemPage() {
         </div>
       </section>
 
+      <section className={sectionClass} style={sectionStyle} aria-labelledby="wired-vs-wireless-conference-system">
+        <h2 id="wired-vs-wireless-conference-system" className="text-2xl font-extrabold tracking-tight text-slate-950">
+          Wired vs Wireless Conference System
+        </h2>
+        <MobileIntroText
+          teaser="Both wired and wireless systems work well when matched to the room layout, usage pattern and maintenance preference."
+          className="mt-3 md:hidden"
+          singleDom
+        >
+          <p className="text-sm leading-7 text-slate-600 text-justify">
+            Both wired and wireless systems work well when matched to the room layout, usage pattern and maintenance preference.
+          </p>
+        </MobileIntroText>
+        <div className="mt-6">
+          <ResponsiveCardGrid
+            desktopClassName="md:grid-cols-2"
+            items={[
+              {
+                title: "Wired Conference System",
+                desc: "Best for permanent rooms where stable connection, fixed microphone points and lower maintenance are important.",
+                bullets: wiredPoints,
+              },
+              {
+                title: "Wireless Conference System",
+                desc: "Best for flexible rooms where clean tables, reconfiguration and mobility are important.",
+                bullets: wirelessPoints,
+              },
+            ]}
+          />
+        </div>
+        <div className="mt-5 flex flex-wrap items-center gap-4">
+          <Link
+            prefetch={false}
+            href="/conference-system/wired-conference-system/"
+            className="inline-flex items-center gap-1 text-[12.5px] font-extrabold uppercase tracking-[0.05em] text-[#C2410C] transition-colors hover:text-[#FD6900]"
+          >
+            View Wired Conference System Price
+            <span aria-hidden="true" className="text-[#FD6900]">{"→"}</span>
+          </Link>
+          <Link
+            prefetch={false}
+            href="/conference-system/wireless-conference-system/"
+            className="inline-flex items-center gap-1 text-[12.5px] font-extrabold uppercase tracking-[0.05em] text-[#C2410C] transition-colors hover:text-[#FD6900]"
+          >
+            View Wireless Conference System Price
+            <span aria-hidden="true" className="text-[#FD6900]">{"→"}</span>
+          </Link>
+        </div>
+      </section>
+
       <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-components">
         <div className="max-w-5xl">
           <p className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.maroon }}>
@@ -1774,38 +1872,6 @@ export default function ConferenceSystemPage() {
         </div>
       </section>
 
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="wired-vs-wireless-conference-system">
-        <h2 id="wired-vs-wireless-conference-system" className="text-2xl font-extrabold tracking-tight text-slate-950">
-          Wired vs Wireless Conference System
-        </h2>
-        <MobileIntroText
-          teaser="Both wired and wireless systems work well when matched to the room layout, usage pattern and maintenance preference."
-          className="mt-3 md:hidden"
-          singleDom
-        >
-          <p className="text-sm leading-7 text-slate-600 text-justify">
-            Both wired and wireless systems work well when matched to the room layout, usage pattern and maintenance preference.
-          </p>
-        </MobileIntroText>
-        <div className="mt-6">
-          <ResponsiveCardGrid
-            desktopClassName="md:grid-cols-2"
-            items={[
-              {
-                title: "Wired Conference System",
-                desc: "Best for permanent rooms where stable connection, fixed microphone points and lower maintenance are important.",
-                bullets: wiredPoints,
-              },
-              {
-                title: "Wireless Conference System",
-                desc: "Best for flexible rooms where clean tables, reconfiguration and mobility are important.",
-                bullets: wirelessPoints,
-              },
-            ]}
-          />
-        </div>
-      </section>
-
       <section className={sectionClass} style={sectionStyle} aria-labelledby="choose-right-conference-system">
         <div className="max-w-5xl">
           <p className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.maroon }}>
@@ -1943,23 +2009,18 @@ export default function ConferenceSystemPage() {
         </div>
 
         <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h3 className="text-lg font-extrabold text-slate-950">
-              Complete Conference System Support from Planning to Installation
-            </h3>
-            <p className="text-sm leading-7 text-slate-600">
-              Real certificates, project photos, and client references can be added here when available.
-            </p>
-          </div>
-          <div className="-mx-0.5 mt-5 flex snap-x snap-mandatory gap-2 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid sm:grid-cols-2 sm:snap-none sm:overflow-visible sm:px-0 sm:pb-0 xl:grid-cols-6">
-            {chooseSashaSupportStrip.map((item, index) => (
-              <div
-                key={item}
-                className={`min-w-[170px] shrink-0 snap-start rounded-xl border px-4 py-3 text-center text-sm font-extrabold text-slate-900 sm:min-w-0 sm:snap-none sm:border-slate-200 sm:bg-slate-50/70 ${getParityClassName(index)}`}
-              >
-                {item}
-              </div>
-            ))}
+          <h3 className="text-lg font-extrabold text-slate-950">
+            Complete Conference System Support from Planning to Installation
+          </h3>
+          <p className="mt-3 text-sm leading-7 text-slate-600 md:text-base md:leading-8">
+            Every conference system project moves through the same six stages, from the first site visit to
+            after-sales support, so nothing is missed between planning and handover.
+          </p>
+          <div className="mt-5">
+            <ResponsiveCardGrid
+              desktopClassName="md:grid-cols-3 xl:grid-cols-6"
+              items={conferenceSupportProcessSteps.map((item) => ({ title: item.title, desc: item.desc }))}
+            />
           </div>
         </div>
 
@@ -1998,15 +2059,15 @@ export default function ConferenceSystemPage() {
             Brands We Work With
           </h2>
           <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-            Sasha Corporation is an authorized distributor of Bosch, TOA, and DSPPA audio solutions in Bangladesh. We
-            supply genuine public address (PA) systems, conference systems, voice evacuation systems, amplifiers,
-            speakers, and IP audio solutions with professional consultation, installation support, and after-sales
-            service. Depending on project requirements, coverage area, and budget, our team helps clients select the most
-            suitable communication and paging solution for offices, educational institutions, hospitals, factories,
-            commercial buildings, and government organizations.
+            Sasha Corporation supplies and supports Bosch, TOA, SPON, and CMX conference systems in Bangladesh. We
+            offer genuine conference microphones, chairman and delegate units, control units, DSP processors,
+            amplifiers, and wireless conference equipment with professional consultation, installation support, and
+            after-sales service. Depending on room size, participant capacity, and budget, our team helps clients
+            select the most suitable conference system for boardrooms, government offices, institutions, and
+            commercial projects.
           </p>
         </div>
-        <div className="-mx-0.5 mt-8 flex snap-x snap-mandatory items-stretch gap-3 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:snap-none md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3">
+        <div className="-mx-0.5 mt-8 flex snap-x snap-mandatory items-stretch gap-3 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:snap-none md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-4">
           {conferenceBrandCards.map((brand, index) => (
             <article
               key={brand.title}
