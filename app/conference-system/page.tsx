@@ -9,7 +9,7 @@ import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { normalizeDisplayedPriceText } from "@/lib/price";
 import { socialImageUrl } from "@/lib/seo";
 import { conferenceSystemCatalog, getConferenceProductPrimaryImage } from "./catalog";
-import { conferenceBrandConfigs, conferenceCategoryConfigs } from "./taxonomy";
+import { conferenceBrandConfigs, conferenceCategoryConfigs, hasConferenceBrandProducts } from "./taxonomy";
 import ConferenceProductExplorer, { type ConferenceExplorerProduct } from "./ConferenceProductExplorer";
 
 const BRAND = { maroon: "#FF6A00", maroonDark: "#E45700" };
@@ -72,12 +72,30 @@ const ResponsiveCardGrid = ({
 );
 
 const applicationCards = [
-  "Corporate Boardroom",
-  "Government Meeting Room",
-  "Educational Institution",
-  "Hotel & Convention Center",
-  "Training Center",
-  "House of Worship / Auditorium",
+  {
+    title: "Corporate Boardroom",
+    desc: "Chairman and delegate microphones keep executive discussions organized around the table, with hybrid meeting integration where the room setup supports it.",
+  },
+  {
+    title: "Government Meeting Room",
+    desc: "Chairman priority control and delegate management support formal proceedings, with meeting recording available on supported systems.",
+  },
+  {
+    title: "Educational Institution",
+    desc: "Lecture halls and faculty meeting rooms use conference microphones for clear presenter audio and structured discussion among staff.",
+  },
+  {
+    title: "Hotel & Convention Center",
+    desc: "Wireless and portable conference units allow quick setup and reconfiguration for banquet halls and convention spaces booked for different events.",
+  },
+  {
+    title: "Training Center",
+    desc: "Flexible seating and instructor-to-participant microphone setups support hands-on training sessions and workshop-style delivery.",
+  },
+  {
+    title: "House of Worship / Auditorium",
+    desc: "PA integration, DSP processing, and amplification extend clear voice coverage across larger halls and auditoriums.",
+  },
 ] as const;
 
 const packageCards = [
@@ -166,61 +184,27 @@ const wirelessPoints = [
   "Requires charging and wireless planning",
 ] as const;
 
-const audioConferenceHighlights = [
-  {
-    title: "Chairman & Delegate Control",
-    desc: "Dedicated chairman and delegate units help manage who speaks and keep formal meetings organized.",
-  },
-  {
-    title: "Clear Speech Pickup",
-    desc: "Wired or wireless microphones with DSP processing reduce noise and improve voice clarity.",
-  },
-  {
-    title: "Boardroom & Hall Ready",
-    desc: "Suited to boardrooms, government offices, training rooms and conference halls that need structured discussion.",
-  },
-] as const;
-
-const videoConferenceHighlights = [
-  {
-    title: "Presentation & Display Support",
-    desc: "Video processing and display integration help share presentations clearly during in-room meetings.",
-  },
-  {
-    title: "Paperless & Hybrid Ready",
-    desc: "Supports paperless digital conferencing and works alongside meeting audio for hybrid collaboration.",
-  },
-  {
-    title: "Pairs With Audio Systems",
-    desc: "Combines with chairman & delegate mics, control units and speakers for a complete meeting room setup.",
-  },
-] as const;
-
 const audioSystemComparisonPoints = [
-  "Microphone, chairman & delegate control",
-  "DSP processing and speaker output",
-  "Best for formal, discussion-based meetings",
-  "Works as a standalone room setup",
+  "Primary purpose: in-room discussion",
+  "Core equipment: controller + chairman/delegate microphones",
+  "Typical use: boardroom, council chamber, meeting room",
+  "Network dependency: usually lower",
 ] as const;
 
 const videoSystemComparisonPoints = [
-  "Video processing and display integration",
-  "Paperless and hybrid meeting support",
-  "Best for presentation-based meetings",
-  "Usually combined with an audio system",
+  "Primary purpose: presentation, display & hybrid support",
+  "Core equipment: video/display processor + paperless conferencing",
+  "Typical use: hybrid meetings, presentation-heavy rooms",
+  "Network dependency: usually higher",
 ] as const;
 
 type ConferenceComponentIcon =
   | "chairman"
   | "delegate"
   | "control"
-  | "cable"
   | "processor"
   | "speaker"
-  | "amplifier"
-  | "camera"
-  | "recording"
-  | "software";
+  | "camera";
 
 const conferenceComponentCards = [
   {
@@ -245,13 +229,6 @@ const conferenceComponentCards = [
     features: ["System power management", "Multiple microphone support", "Stable audio distribution"],
   },
   {
-    title: "Extension Cable",
-    icon: "cable" as const,
-    description:
-      "Extension cables connect conference units across meeting tables and ensure stable signal transmission for larger room installations.",
-    features: ["Long distance connectivity", "Stable signal transfer", "Clean table setup"],
-  },
-  {
     title: "Digital Audio Processor",
     icon: "processor" as const,
     description:
@@ -259,58 +236,34 @@ const conferenceComponentCards = [
     features: ["Noise reduction", "Echo cancellation", "Feedback control"],
   },
   {
-    title: "Speakers",
+    title: "Amplifier & Speakers",
     icon: "speaker" as const,
     description:
-      "Ceiling, wall, or column conference speaker options distribute clear sound evenly across meeting rooms, boardrooms, and conference halls.",
-    features: ["Even sound coverage", "Clear speech output", "Room-size based selection"],
+      "Amplifiers and ceiling, wall, or column speakers work together to deliver clear, evenly distributed sound across the meeting room or conference hall.",
+    features: ["Room-size based speaker selection", "Stable, balanced amplifier output", "Suitable for PA integration"],
   },
   {
-    title: "Amplifier",
-    icon: "amplifier" as const,
-    description:
-      "An amplifier drives the speaker system and ensures powerful, balanced audio output for small to large conference spaces.",
-    features: ["Stable sound output", "Speaker power support", "Suitable for PA integration"],
-  },
-  {
-    title: "PTZ Camera Optional",
+    title: "Optional Video, Recording & Software",
     icon: "camera" as const,
     description:
-      "A PTZ camera for conference use can be integrated with the conference system for video meetings, speaker tracking, and online conferencing.",
-    features: ["Video conferencing support", "Speaker tracking option", "Full HD or 4K support"],
-  },
-  {
-    title: "Recording & Streaming",
-    icon: "recording" as const,
-    description:
-      "Recording and streaming devices help save meetings, broadcast sessions, and support hybrid conference requirements.",
-    features: ["Meeting recording", "Live streaming support", "Hybrid meeting ready"],
-  },
-  {
-    title: "Conference Software",
-    icon: "software" as const,
-    description:
-      "Conference management software helps monitor devices, manage meetings, control voting, attendance, and advanced discussion features.",
-    features: ["Meeting management", "Device monitoring", "Voting and attendance support"],
+      "A PTZ camera, recording device, or conference management software can be added for video meetings, session recording, and voting or attendance features where supported.",
+    features: ["Video conferencing and speaker tracking", "Meeting recording and streaming", "Voting and attendance support"],
   },
 ] as const;
 
 type ChooseSashaIcon =
   | "consultation"
-  | "microphone"
-  | "wired"
   | "boq"
   | "installation"
   | "dsp"
-  | "price"
   | "support";
 
 const chooseSashaCards = [
   {
-    title: "Room-Based Solution Design",
+    title: "System Design",
     icon: "consultation" as const,
     description:
-      "Every meeting room is different. Sasha Corporation recommends conference systems based on room size, seating layout, participant capacity, acoustic condition, and usage type. This helps you get the right boardroom conference system instead of buying unnecessary equipment.",
+      "Sasha plans conference systems around your room size, seating layout, participant capacity, and acoustic condition, so you get the right setup instead of unnecessary equipment.",
     bullets: [
       "Room size and seating layout analysis",
       "Microphone quantity planning",
@@ -318,32 +271,10 @@ const chooseSashaCards = [
     ],
   },
   {
-    title: "Chairman & Delegate Mic Planning",
-    icon: "microphone" as const,
-    description:
-      "For formal meetings, chairman & delegate mics are important for proper meeting control. Sasha Corporation helps select the right chairman unit, delegate microphones, and central control unit for boardrooms, council rooms, committee meetings, and government meeting rooms.",
-    bullets: [
-      "Chairman priority control support",
-      "Delegate microphone quantity planning",
-      "Suitable for formal meeting rooms",
-    ],
-  },
-  {
-    title: "Wired & Wireless System Options",
-    icon: "wired" as const,
-    description:
-      "Sasha Corporation supplies both wired conference systems and wireless conference systems. Wired systems are suitable for permanent boardrooms and fixed meeting rooms, while wireless systems are ideal for flexible spaces, hotels, training rooms, and multipurpose venues.",
-    bullets: [
-      "Wired conference system for stable setup",
-      "Wireless conference system for flexible layout",
-      "Product selection based on room usage",
-    ],
-  },
-  {
-    title: "Proper Conference System BOQ",
+    title: "BOQ & Tender Support",
     icon: "boq" as const,
     description:
-      "A successful conference system project needs a clear BOQ. Sasha Corporation prepares project-based conference system BOQ with microphone units, control unit, DSP audio processor, amplifier, speakers, cables, rack, installation, and testing requirements.",
+      "Sasha prepares a project-based BOQ covering microphone units, control unit, DSP, amplifier, speakers, cabling, installation, and testing — useful for corporate and government tender projects.",
     bullets: [
       "Product and quantity breakdown",
       "Installation and accessories included",
@@ -351,10 +282,10 @@ const chooseSashaCards = [
     ],
   },
   {
-    title: "Professional Installation Support",
+    title: "Installation & Testing",
     icon: "installation" as const,
     description:
-      "Conference system installation in Bangladesh requires proper cable planning, microphone placement, controller configuration, DSP tuning, and audio testing. Sasha Corporation provides installation support to ensure clear voice pickup and reliable long-term performance.",
+      "Sasha handles cable planning, microphone placement, controller configuration, DSP tuning, and audio testing to ensure clear pickup and reliable long-term performance.",
     bullets: [
       "Cable and microphone placement planning",
       "System configuration and testing",
@@ -362,32 +293,21 @@ const chooseSashaCards = [
     ],
   },
   {
-    title: "DSP, PA & AV Integration",
+    title: "AV Integration",
     icon: "dsp" as const,
     description:
-      "A complete meeting room audio solution may need DSP processor, PA speakers, amplifier, camera, projector, interactive display, or online meeting integration. Sasha Corporation helps integrate conference microphone systems with the required audio and AV equipment.",
+      "Sasha helps integrate conference microphone systems with DSP processing, PA speakers, amplifiers, and other AV equipment where the project requires it.",
     bullets: [
       "DSP audio processor support",
       "PA system and speaker integration",
-      "Hybrid meeting and AV compatibility",
-    ],
-  },
-  {
-    title: "Transparent Price Guidance",
-    icon: "price" as const,
-    description:
-      "Conference system price in Bangladesh depends on microphone quantity, wired or wireless system type, control unit, DSP requirement, speaker coverage, installation scope, and brand selection. Sasha Corporation helps clients understand the cost clearly before finalizing the project.",
-    bullets: [
-      "Clear product and project cost guidance",
-      "Budget-based solution recommendation",
-      "No unnecessary equipment suggestion",
+      "AV equipment integration where needed",
     ],
   },
   {
     title: "After-Sales Technical Support",
     icon: "support" as const,
     description:
-      "After installation, technical support is important for smooth meeting operation. Sasha Corporation provides after-sales guidance for system operation, microphone usage, troubleshooting, maintenance, and future expansion requirements.",
+      "After installation, Sasha provides after-sales guidance for system operation, microphone usage, troubleshooting, maintenance, and future expansion.",
     bullets: [
       "User guidance after installation",
       "Technical troubleshooting support",
@@ -426,193 +346,121 @@ const conferenceSupportProcessSteps = [
 type ConferenceBenefitIcon =
   | "voice"
   | "control"
-  | "boardroom"
   | "hybrid"
   | "scale"
-  | "wireless"
-  | "productivity"
-  | "support";
+  | "productivity";
 
 const conferenceBenefits = [
   {
-    title: "Clear Voice Communication",
+    title: "Clear Speech",
     icon: "voice" as const,
     description:
-      "A conference microphone system ensures clear voice pickup from every participant, whether the meeting is held in a small boardroom or a large conference hall. Chairman & delegate mics help reduce unclear speech, table noise, and background sound during important discussions.",
+      "Chairman and delegate microphones with DSP processing give every participant clear speech pickup, reducing table noise and echo in both small boardrooms and large conference halls.",
     bullets: ["Clear speech pickup from each seat", "Reduced noise and echo", "Better listening experience"],
   },
   {
-    title: "Better Meeting Control",
+    title: "Controlled Discussion",
     icon: "control" as const,
     description:
-      "A chairman and delegate microphone system helps control who can speak during a meeting. The chairman unit can manage delegate mics, reduce interruptions, and keep formal meetings more organized.",
+      "Chairman and delegate architecture lets the chairman manage delegate microphones, reduce interruptions, and keep multi-participant meetings organized.",
     bullets: ["Chairman priority control", "Delegate microphone management", "Organized discussion flow"],
   },
   {
-    title: "Professional Boardroom Setup",
-    icon: "boardroom" as const,
-    description:
-      "A properly installed boardroom conference system creates a modern and professional meeting environment. Wired or wireless microphones, DSP audio processing, and speaker integration help deliver a clean and premium meeting experience.",
-    bullets: ["Premium meeting room appearance", "Clean table setup", "Professional audio quality"],
-  },
-  {
-    title: "Supports Hybrid & Online Meetings",
-    icon: "hybrid" as const,
-    description:
-      "Modern conference microphone systems can be integrated with Zoom, Google Meet, Microsoft Teams, and other online meeting platforms. This helps both in-room and remote participants hear each other clearly during hybrid meetings.",
-    bullets: ["Supports online meeting platforms", "Clear audio for remote participants", "Better hybrid communication"],
-  },
-  {
-    title: "Suitable for Different Room Sizes",
+    title: "Scalable Participation",
     icon: "scale" as const,
     description:
-      "Conference systems can be designed according to room size, seating layout, and participant capacity. A small meeting room may need a compact setup, while a large conference hall may require a scalable digital system with DSP, amplifier, and speakers.",
+      "Systems can be sized to the room and participant count, from a compact setup for a small meeting room to a scalable digital system with DSP and amplification for a large hall.",
     bullets: ["Suitable for small to large rooms", "Custom setup by participant count", "Easy future expansion"],
   },
   {
-    title: "Wired & Wireless Flexibility",
-    icon: "wireless" as const,
+    title: "Recording & AV Integration",
+    icon: "hybrid" as const,
     description:
-      "Organizations can choose wired or wireless conference systems based on room type and usage. A wired conference system is ideal for permanent boardrooms, while a wireless conference system works well for flexible meeting spaces, hotels, and multipurpose rooms.",
-    bullets: ["Wired system for permanent setup", "Wireless system for flexible rooms", "Solution based on project needs"],
+      "Selected digital control units support meeting recording and speaker-camera triggers, and the system can connect with PA, DSP, and display equipment where the project requires it.",
+    bullets: ["Recording on supported control units", "Camera-trigger support on select systems", "PA and AV integration where needed"],
   },
   {
-    title: "Improved Productivity & Decision Making",
+    title: "Professional Meeting Experience",
     icon: "productivity" as const,
     description:
-      "When every participant can speak and listen clearly, meetings become more focused, faster, and more productive. A professional meeting room audio solution reduces communication gaps and helps teams make better decisions.",
-    bullets: ["Faster discussion process", "Less communication gap", "Better decision-making support"],
-  },
-  {
-    title: "Complete Installation & Support",
-    icon: "support" as const,
-    description:
-      "A complete conference system project requires proper product selection, BOQ preparation, cable planning, installation, configuration, and testing. Sasha Corporation provides conference system installation in Bangladesh with technical support for offices, institutions, and commercial projects.",
-    bullets: ["BOQ and product selection support", "Installation and configuration", "After-sales technical support"],
+      "Clear audio and organized discussion reduce communication gaps, helping every participant follow the meeting and contribute without repeated interruptions.",
+    bullets: ["Faster discussion process", "Less communication gap", "More usable meeting room"],
   },
 ] as const;
 
 type ConferenceGuideIcon =
   | "room"
-  | "users"
-  | "microphone"
   | "wired"
+  | "microphone"
   | "dsp"
   | "hybrid"
-  | "integration"
-  | "warranty"
-  | "boq"
-  | "support";
+  | "warranty";
 
 const conferenceGuideCards = [
   {
-    title: "Start with Room Size and Seating Layout",
+    title: "Room Size & Participant Count",
     icon: "room" as const,
     description:
-      "The first step in how to choose conference system options is understanding your meeting room size and seating arrangement. A small boardroom may need a compact conference microphone system, while a large conference hall may require more delegate microphones, DSP audio processing, and speaker coverage.",
+      "System size depends on room layout and participant count. A small boardroom may need a compact setup, while a large hall needs more microphones, DSP, and speaker coverage — see the room-size packages below for typical configurations.",
     bullets: [
-      "Check room length, width and seating layout",
-      "Calculate microphone quantity by participant count",
-      "Plan speaker placement for clear voice coverage",
+      "6-12 participants: small boardroom setup",
+      "12-30 participants: medium conference room system",
+      "30+ participants: digital system with expansion support",
     ],
   },
   {
-    title: "Decide the Number of Participants",
-    icon: "users" as const,
-    description:
-      "Participant capacity directly affects conference system price in Bangladesh. For 6-12 participants, a basic chairman & delegate mic setup may be enough. For 20-50 participants or more, a scalable digital conference system with central control is usually recommended.",
-    bullets: [
-      "6-12 users: small boardroom setup",
-      "12-30 users: medium conference room system",
-      "30+ users: digital system with expansion support",
-    ],
-  },
-  {
-    title: "Choose Chairman & Delegate Mics",
-    icon: "microphone" as const,
-    description:
-      "Chairman & delegate mics are essential for formal meetings, boardrooms, council rooms, government offices, and committee discussions. The chairman unit helps control delegate microphones, reduce interruptions, and manage the meeting flow professionally.",
-    bullets: [
-      "Chairman priority control",
-      "Delegate microphone management",
-      "Ideal for formal meeting environments",
-    ],
-  },
-  {
-    title: "Select Wired or Wireless Conference System",
+    title: "System Architecture",
     icon: "wired" as const,
     description:
-      "A wired conference system is best for permanent boardrooms, government meeting rooms, and fixed conference setups. A wireless conference system is better for flexible seating layouts, hotels, training rooms, and multipurpose spaces where clean table setup is important.",
+      "Choose a wired conference system for a permanent room, or a wireless conference system for flexible seating — see Wired vs Wireless above for the full comparison.",
     bullets: [
-      "Wired system for stable permanent setup",
-      "Wireless system for flexible room use",
-      "Choose based on layout, mobility and budget",
+      "Wired for permanent, fixed setups",
+      "Wireless for flexible or multipurpose rooms",
+      "Choice affects installation and budget",
     ],
   },
   {
-    title: "Check Audio Quality and DSP Requirement",
+    title: "Controller & Microphone Compatibility",
+    icon: "microphone" as const,
+    description:
+      "Chairman, delegate, and controller units must belong to the same compatible system family. Mixing brands or models without verifying compatibility is the most common planning mistake.",
+    bullets: [
+      "Confirm the controller before selecting units",
+      "Do not mix incompatible product families",
+      "Ask Sasha to verify compatibility before ordering",
+    ],
+  },
+  {
+    title: "Audio & DSP Requirements",
     icon: "dsp" as const,
     description:
-      "Clear audio is one of the most important factors when choosing a meeting room audio solution. Rooms with glass walls, high ceilings, or echo problems may need a DSP audio processor, amplifier, and proper speaker planning for better sound clarity.",
+      "Rooms with glass walls, high ceilings, or echo problems benefit from a DSP audio processor, amplifier, and properly planned speakers for clearer sound.",
     bullets: [
       "Reduces echo and unwanted noise",
-      "Improves speech clarity",
+      "Amplifier and speaker sizing by room",
       "Recommended for medium and large rooms",
     ],
   },
   {
-    title: "Consider Online and Hybrid Meeting Support",
+    title: "Hybrid Meeting Requirements",
     icon: "hybrid" as const,
     description:
-      "Modern office conference systems often need integration with Zoom, Google Meet, Microsoft Teams, or video conferencing equipment. A properly planned conference room microphone setup helps both in-room and remote participants hear clearly during hybrid meetings.",
+      "Rooms that need to include remote participants may require video and display equipment alongside the audio system — see Choose Your Conference System above for audio vs video options.",
     bullets: [
-      "Supports online meeting platforms",
-      "Better audio for remote participants",
-      "Useful for hybrid board meetings",
+      "Relevant for hybrid and remote meetings",
+      "Plan video equipment alongside audio",
+      "Not required for in-room-only meetings",
     ],
   },
   {
-    title: "Plan Integration with PA, Speaker and AV System",
-    icon: "integration" as const,
-    description:
-      "A professional conference system may need to connect with PA speakers, amplifiers, cameras, projectors, interactive displays, or recording systems. Proper integration ensures smooth operation in boardrooms, training centers, auditoriums, and conference halls.",
-    bullets: [
-      "PA and speaker integration",
-      "Camera and display support",
-      "Suitable for complete AV rooms",
-    ],
-  },
-  {
-    title: "Compare Product Quality, Brand and Warranty",
+    title: "Budget, Warranty & Support",
     icon: "warranty" as const,
     description:
-      "Do not choose a conference microphone system only by low price. Check product quality, microphone pickup, build quality, controller capacity, warranty, spare parts availability, and after-sales support before finalizing any conference system BOQ.",
+      "Total conference system cost covers the full setup, not just microphone price — factor in the controller, DSP, amplifier, speakers, installation, warranty, and after-sales support.",
     bullets: [
-      "Check product quality and warranty",
-      "Verify controller and microphone compatibility",
-      "Ensure spare parts and service support",
-    ],
-  },
-  {
-    title: "Prepare a Proper Conference System BOQ",
-    icon: "boq" as const,
-    description:
-      "A complete conference system BOQ should include chairman unit, delegate units, central control unit, DSP processor, amplifier, speakers, cables, rack, installation, testing, and user training. This is especially important for corporate, institutional, and government tender projects.",
-    bullets: [
-      "Product list with required quantity",
-      "Installation and accessory details",
-      "Clear budget and project scope",
-    ],
-  },
-  {
-    title: "Check Installation and After-Sales Support",
-    icon: "support" as const,
-    description:
-      "Conference system installation in Bangladesh requires proper cable planning, microphone placement, configuration, testing, and user training. Choosing a supplier with installation support helps avoid audio problems, connection issues, and long-term maintenance difficulties.",
-    bullets: [
-      "Professional installation and testing",
-      "User training after setup",
-      "Long-term technical support",
+      "Compare total system cost, not just mic price",
+      "Check warranty and spare-parts availability",
+      "Confirm after-sales support before ordering",
     ],
   },
 ] as const;
@@ -628,6 +476,7 @@ const conferenceSelectionGuideRows = [
 ] as const;
 
 type ConferenceBrandCard = {
+  slug: string;
   title: string;
   category: string;
   description: string;
@@ -640,6 +489,7 @@ type ConferenceBrandCard = {
 
 const conferenceBrandCards: ConferenceBrandCard[] = [
   {
+    slug: "bosch",
     title: "Bosch",
     category: "Professional Conference & Voice Communication Systems",
     description:
@@ -651,6 +501,7 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
     url: "https://www.bosch.com/",
   },
   {
+    slug: "toa",
     title: "TOA",
     category: "Public Address & Meeting Audio Systems",
     description:
@@ -662,6 +513,7 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
     url: "https://www.toa.eu/public-address-systems",
   },
   {
+    slug: "spon",
     title: "SPON",
     category: "Digital Conference Microphone & Control Systems",
     description:
@@ -670,6 +522,7 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
     url: "/conference-system/brands/spon/",
   },
   {
+    slug: "cmx",
     title: "CMX",
     category: "Wireless & Digital Discussion Systems",
     description:
@@ -678,6 +531,11 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
     url: "/conference-system/brands/cmx/",
   },
 ];
+
+const verifiedConferenceBrandCards = conferenceBrandCards.filter((card) => {
+  const brand = conferenceBrandConfigs.find((entry) => entry.slug === card.slug);
+  return brand ? hasConferenceBrandProducts(brand) : false;
+});
 
 const ConferenceBrandTitleBox = ({
   brand,
@@ -741,7 +599,10 @@ const ConferenceBrandTitleBox = ({
   );
 };
 
-const conferencePriceTableProducts = conferenceSystemCatalog.slice(0, 8);
+const PRICE_TABLE_BRAND_ORDER = ["cmx", "toa", "bosch", "spon"] as const;
+const conferencePriceTableProducts = PRICE_TABLE_BRAND_ORDER.flatMap((slug) =>
+  conferenceSystemCatalog.filter((product) => product.brand?.slug === slug).slice(0, 2),
+);
 
 const conferenceFaqs = [
   {
@@ -749,8 +610,8 @@ const conferenceFaqs = [
     a: "Conference system price in Bangladesh depends on room size, number of microphones, wired or wireless setup, control unit, DSP processor, speaker system, and installation requirements. Basic systems may start from around Tk 80,000, while larger digital conference systems require custom quotation.",
   },
   {
-    q: "Which conference system is best for a boardroom?",
-    a: "For boardrooms, a digital or wireless conference system with chairman unit, delegate units, control unit, and clear audio pickup is recommended.",
+    q: "Which conference system brands are available?",
+    a: "Sasha Corporation supplies conference systems from Bosch, TOA, SPON, and CMX, covering chairman and delegate units, control units, DSP, amplifiers, and wireless equipment across different budgets and room sizes.",
   },
   {
     q: "What is the difference between chairman unit and delegate unit?",
@@ -821,15 +682,6 @@ function ConferenceComponentIconSvg({ icon }: { icon: ConferenceComponentIcon })
           <circle cx="16" cy="14" r="1.5" />
         </svg>
       );
-    case "cable":
-      return (
-        <svg {...commonProps}>
-          <path d="M7 7h5a5 5 0 0 1 5 5v1" />
-          <path d="M6 4h3v6H6z" />
-          <path d="M15 14h3v6h-3z" />
-          <path d="M9 19h4" />
-        </svg>
-      );
     case "processor":
       return (
         <svg {...commonProps}>
@@ -848,15 +700,6 @@ function ConferenceComponentIconSvg({ icon }: { icon: ConferenceComponentIcon })
           <path d="M18.5 7a7.5 7.5 0 0 1 0 10" />
         </svg>
       );
-    case "amplifier":
-      return (
-        <svg {...commonProps}>
-          <rect x="3.5" y="6" width="17" height="12" rx="2" />
-          <path d="M7 10h5" />
-          <path d="M7 14h3" />
-          <circle cx="16.5" cy="12" r="2.5" />
-        </svg>
-      );
     case "camera":
       return (
         <svg {...commonProps}>
@@ -864,26 +707,6 @@ function ConferenceComponentIconSvg({ icon }: { icon: ConferenceComponentIcon })
           <path d="M15 10l5-3v10l-5-3" />
           <path d="M8 19h8" />
           <path d="M12 15v4" />
-        </svg>
-      );
-    case "recording":
-      return (
-        <svg {...commonProps}>
-          <rect x="4" y="5" width="16" height="14" rx="2" />
-          <circle cx="10" cy="12" r="2.5" />
-          <path d="M15 10.5h2" />
-          <path d="M15 13.5h2" />
-        </svg>
-      );
-    case "software":
-      return (
-        <svg {...commonProps}>
-          <rect x="3" y="4" width="18" height="13" rx="2" />
-          <path d="M8 21h8" />
-          <path d="M12 17v4" />
-          <path d="M7 9h4" />
-          <path d="M7 13h7" />
-          <path d="M16 9h1" />
         </svg>
       );
   }
@@ -923,15 +746,6 @@ function ConferenceBenefitIconSvg({ icon }: { icon: ConferenceBenefitIcon }) {
           <circle cx="14" cy="17" r="2" />
         </svg>
       );
-    case "boardroom":
-      return (
-        <svg {...commonProps}>
-          <rect x="3" y="5" width="18" height="10" rx="2" />
-          <path d="M8 19h8" />
-          <path d="M12 15v4" />
-          <path d="M7 9h10" />
-        </svg>
-      );
     case "hybrid":
       return (
         <svg {...commonProps}>
@@ -949,28 +763,12 @@ function ConferenceBenefitIconSvg({ icon }: { icon: ConferenceBenefitIcon }) {
           <path d="M22 19V3" />
         </svg>
       );
-    case "wireless":
-      return (
-        <svg {...commonProps}>
-          <path d="M12 18h.01" />
-          <path d="M8.5 14.5a5 5 0 0 1 7 0" />
-          <path d="M5 11a10 10 0 0 1 14 0" />
-          <path d="M1.5 7.5a15 15 0 0 1 21 0" />
-        </svg>
-      );
     case "productivity":
       return (
         <svg {...commonProps}>
           <path d="M4 19h16" />
           <path d="M7 15l3-3 2 2 5-6" />
           <path d="M17 8h2v2" />
-        </svg>
-      );
-    case "support":
-      return (
-        <svg {...commonProps}>
-          <path d="M12 21s-6-3.6-6-9V5l6-2 6 2v7c0 5.4-6 9-6 9Z" />
-          <path d="M9.5 12.5 11 14l3.5-4" />
         </svg>
       );
   }
@@ -997,15 +795,6 @@ function ConferenceGuideIconSvg({ icon }: { icon: ConferenceGuideIcon }) {
           <path d="M9 11h6" />
         </svg>
       );
-    case "users":
-      return (
-        <svg {...commonProps}>
-          <circle cx="9" cy="8" r="2.5" />
-          <circle cx="16" cy="9" r="2" />
-          <path d="M4.5 18a4.5 4.5 0 0 1 9 0" />
-          <path d="M13 18a3.5 3.5 0 0 1 7 0" />
-        </svg>
-      );
     case "microphone":
       return (
         <svg {...commonProps}>
@@ -1042,39 +831,11 @@ function ConferenceGuideIconSvg({ icon }: { icon: ConferenceGuideIcon }) {
           <path d="M8 19h6" />
         </svg>
       );
-    case "integration":
-      return (
-        <svg {...commonProps}>
-          <path d="M7 7h4v4H7z" />
-          <path d="M13 13h4v4h-4z" />
-          <path d="M11 9h2a2 2 0 0 1 2 2v2" />
-          <path d="M9 11v2a2 2 0 0 0 2 2h2" />
-        </svg>
-      );
     case "warranty":
       return (
         <svg {...commonProps}>
           <path d="M12 21s-6-3.6-6-9V5l6-2 6 2v7c0 5.4-6 9-6 9Z" />
           <path d="M9.5 12.5 11 14l3.5-4" />
-        </svg>
-      );
-    case "boq":
-      return (
-        <svg {...commonProps}>
-          <path d="M7 3h8l3 3v15H6V3h1" />
-          <path d="M14 3v4h4" />
-          <path d="M9 11h6" />
-          <path d="M9 15h6" />
-        </svg>
-      );
-    case "support":
-      return (
-        <svg {...commonProps}>
-          <path d="M12 4a7 7 0 0 0-7 7v3" />
-          <path d="M19 14v-3a7 7 0 0 0-7-7" />
-          <rect x="3" y="13" width="4" height="6" rx="2" />
-          <rect x="17" y="13" width="4" height="6" rx="2" />
-          <path d="M12 18h3" />
         </svg>
       );
   }
@@ -1101,24 +862,6 @@ function ChooseSashaIconSvg({ icon }: { icon: ChooseSashaIcon }) {
           <path d="M8 13h5" />
         </svg>
       );
-    case "microphone":
-      return (
-        <svg {...commonProps}>
-          <rect x="9" y="3" width="6" height="10" rx="3" />
-          <path d="M5 11a7 7 0 0 0 14 0" />
-          <path d="M12 18v3" />
-          <path d="M8 21h8" />
-        </svg>
-      );
-    case "wired":
-      return (
-        <svg {...commonProps}>
-          <path d="M7 7h6a4 4 0 0 1 4 4v2" />
-          <path d="M17 13h3v4h-3z" />
-          <path d="M4 5h3v4H4z" />
-          <path d="M10 17h4" />
-        </svg>
-      );
     case "boq":
       return (
         <svg {...commonProps}>
@@ -1143,13 +886,6 @@ function ChooseSashaIconSvg({ icon }: { icon: ChooseSashaIcon }) {
           <path d="M8 14h3" />
           <circle cx="15.5" cy="10.5" r="1.5" />
           <circle cx="15.5" cy="15.5" r="1.5" />
-        </svg>
-      );
-    case "price":
-      return (
-        <svg {...commonProps}>
-          <path d="M12 3v18" />
-          <path d="M16 7.5c0-1.7-1.8-3-4-3s-4 1.3-4 3 1.4 2.5 4 3 4 1.3 4 3-1.8 3-4 3-4-1.3-4-3" />
         </svg>
       );
     case "support":
@@ -1386,9 +1122,10 @@ export default function ConferenceSystemPage() {
           <table className="w-full border-collapse text-left text-sm">
             <thead className="hidden bg-slate-50 text-slate-950 md:table-header-group">
               <tr>
-                <th className="w-[42%] border-r border-slate-200 px-4 py-3 font-extrabold">Product Name</th>
-                <th className="w-[18%] border-r border-slate-200 px-4 py-3 font-extrabold">Product Type</th>
-                <th className="w-[24%] border-r border-slate-200 px-4 py-3 font-extrabold">Best For</th>
+                <th className="w-[34%] border-r border-slate-200 px-4 py-3 font-extrabold">Product Name</th>
+                <th className="w-[12%] border-r border-slate-200 px-4 py-3 font-extrabold">Brand</th>
+                <th className="w-[16%] border-r border-slate-200 px-4 py-3 font-extrabold">Product Type</th>
+                <th className="w-[22%] border-r border-slate-200 px-4 py-3 font-extrabold">Best For</th>
                 <th className="w-[16%] px-4 py-3 text-right font-extrabold">Price</th>
               </tr>
             </thead>
@@ -1405,6 +1142,10 @@ export default function ConferenceSystemPage() {
                     <p className="mt-1 text-xs leading-5 text-slate-500">{product.shortDescription}</p>
                     <div className="mt-3 grid gap-2 md:hidden">
                       <div className="flex items-start justify-between gap-4 rounded-xl bg-slate-50 px-3 py-2">
+                        <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">Brand</span>
+                        <span className="text-right text-xs font-bold text-slate-800">{product.brand?.name ?? "Sasha"}</span>
+                      </div>
+                      <div className="flex items-start justify-between gap-4 rounded-xl bg-slate-50 px-3 py-2">
                         <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">Type</span>
                         <span className="text-right text-xs font-bold text-slate-800">{product.badge}</span>
                       </div>
@@ -1418,6 +1159,7 @@ export default function ConferenceSystemPage() {
                       </div>
                     </div>
                   </td>
+                  <td className="hidden px-4 py-3 font-semibold text-slate-800 md:table-cell md:border-r md:border-slate-200">{product.brand?.name ?? "Sasha"}</td>
                   <td className="hidden px-4 py-3 font-semibold text-slate-800 md:table-cell md:border-r md:border-slate-200">{product.badge}</td>
                   <td className="hidden px-4 py-3 text-slate-700 md:table-cell md:border-r md:border-slate-200">{product.applications.join(", ")}</td>
                   <td className="hidden px-4 py-3 text-right font-bold text-slate-900 md:table-cell">
@@ -1433,6 +1175,61 @@ export default function ConferenceSystemPage() {
           size, number of microphones, brand, control unit, audio processor, speaker setup, installation complexity, and
           after-sales support.
         </p>
+      </section>
+
+      <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-components">
+        <div className="max-w-5xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.maroon }}>
+            Conference system equipment
+          </p>
+          <h2 id="conference-system-components" className="mt-3 text-2xl font-extrabold tracking-tight text-slate-950">
+            Key Components of a Conference System
+          </h2>
+          <MobileIntroText
+            teaser="The right component mix keeps speech clear, discussion organized and room-wide communication stable."
+            className="mt-4"
+            singleDom
+          >
+            <p className="text-sm leading-7 text-slate-700 text-justify md:text-base md:leading-8">
+              A conference system connects chairman and delegate microphones, a central controller, audio processing,
+              amplification and speakers, plus cables and optional video, recording, or software add-ons, into one
+              working meeting room setup.
+            </p>
+          </MobileIntroText>
+        </div>
+
+        <div className="mt-6">
+          <ResponsiveCardGrid
+            desktopClassName="md:grid-cols-2 lg:grid-cols-3"
+            items={conferenceComponentCards.map((item) => ({
+              title: item.title,
+              desc: item.description,
+              bullets: item.features,
+              icon: <ConferenceComponentIconSvg icon={item.icon} />,
+            }))}
+          />
+        </div>
+
+        <div className="mt-6 rounded-2xl border border-orange-100 bg-orange-50/50 p-5 md:p-6">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div className="max-w-3xl">
+              <h3 className="text-xl font-extrabold text-slate-950">
+                Need help choosing the right conference system components?
+              </h3>
+              <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
+                Sasha Corporation can recommend chairman units, delegate units, central control units, audio processors,
+                conference speaker options, and PTZ camera integration based on your room size and installation scope.
+              </p>
+            </div>
+            <Link
+              href="/contact/"
+              className={ctaClass}
+              style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
+            >
+              Get Expert Consultation
+            </Link>
+          </div>
+        </div>
       </section>
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="types-of-conference-systems">
@@ -1456,147 +1253,68 @@ export default function ConferenceSystemPage() {
         </div>
       </section>
 
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="audio-conference-system">
-        <div className="max-w-5xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.maroon }}>
-            Audio Meeting Solution
-          </p>
-          <h2 id="audio-conference-system" className="mt-3 text-2xl font-extrabold tracking-tight text-slate-950">
-            Audio Conference System
-          </h2>
-          <MobileIntroText
-            teaser="An audio conference system focuses on clear speech pickup, chairman & delegate control and organized meeting discussion."
-            className="mt-4"
-            singleDom
-          >
-            <p className="text-sm leading-7 text-slate-700 text-justify md:text-base md:leading-8">
-              An audio conference system is built around microphones, chairman and delegate units, a central control
-              unit, DSP audio processing, amplifiers and speakers to keep every voice clear during a meeting. It is
-              the standard audio setup for boardrooms, government meeting rooms, training centers and conference
-              halls where structured discussion and speech clarity matter most.
-            </p>
-          </MobileIntroText>
-        </div>
-
-        <div className="mt-6">
-          <ResponsiveCardGrid
-            desktopClassName="md:grid-cols-3"
-            items={audioConferenceHighlights.map((item) => ({ title: item.title, desc: item.desc }))}
-          />
-        </div>
-
-        <div className="mt-6 rounded-2xl border border-orange-100 bg-orange-50/50 p-5 md:p-6">
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-3xl">
-              <h3 className="text-xl font-extrabold text-slate-950">Need Help Selecting an Audio Conference System?</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-                Sasha Corporation can recommend the right chairman & delegate mics, control unit, DSP and
-                amplifier combination based on your room size and meeting workflow.
-              </p>
-            </div>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/contact/"
-                className={ctaClass}
-                style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-              >
-                Get Free Quotation
-              </Link>
-              <Link
-                prefetch={false}
-                href="/conference-system/audio-conference-system/"
-                className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
-              >
-                View Audio Conference System Price -&gt;
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="video-conference-system">
-        <div className="max-w-5xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.maroon }}>
-            Video & Hybrid Meeting Solution
-          </p>
-          <h2 id="video-conference-system" className="mt-3 text-2xl font-extrabold tracking-tight text-slate-950">
-            Video Conference System
-          </h2>
-          <MobileIntroText
-            teaser="A video conference system adds presentation, display and paperless conferencing support alongside meeting room audio."
-            className="mt-4"
-            singleDom
-          >
-            <p className="text-sm leading-7 text-slate-700 text-justify md:text-base md:leading-8">
-              A video conference system adds presentation and video processing, display integration and paperless
-              digital conferencing support alongside the meeting audio setup. It helps in-room and remote
-              participants collaborate during hybrid meetings, and is typically planned together with an audio
-              conference system rather than as a replacement for one.
-            </p>
-          </MobileIntroText>
-        </div>
-
-        <div className="mt-6">
-          <ResponsiveCardGrid
-            desktopClassName="md:grid-cols-3"
-            items={videoConferenceHighlights.map((item) => ({ title: item.title, desc: item.desc }))}
-          />
-        </div>
-
-        <div className="mt-6 rounded-2xl border border-orange-100 bg-orange-50/50 p-5 md:p-6">
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-3xl">
-              <h3 className="text-xl font-extrabold text-slate-950">Need Help Planning a Video Conference System?</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-                Sasha Corporation can help plan video processing, display integration and paperless conferencing
-                equipment alongside your meeting room audio setup.
-              </p>
-            </div>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/contact/"
-                className={ctaClass}
-                style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-              >
-                Get Free Quotation
-              </Link>
-              <Link
-                prefetch={false}
-                href="/conference-system/video-conference-system/"
-                className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
-              >
-                View Video Conference System Price -&gt;
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="audio-vs-video-conference-systems">
-        <h2 id="audio-vs-video-conference-systems" className="text-2xl font-extrabold tracking-tight text-slate-950">
-          Audio vs Video Conference Systems
+      <section className={sectionClass} style={sectionStyle} aria-labelledby="choose-your-conference-system">
+        <h2 id="choose-your-conference-system" className="text-2xl font-extrabold tracking-tight text-slate-950">
+          Choose Your Conference System
         </h2>
         <MobileIntroText
-          teaser="Audio and video conference systems solve different parts of the meeting workflow and are often combined together."
+          teaser="Audio and video conference systems solve different parts of the meeting workflow and are often combined for hybrid rooms."
           className="mt-3 md:hidden"
           singleDom
         >
           <p className="text-sm leading-7 text-slate-600 text-justify">
-            Audio and video conference systems solve different parts of the meeting workflow and are often combined together.
+            Audio and video conference systems solve different parts of the meeting workflow and are often combined for hybrid rooms.
           </p>
         </MobileIntroText>
+
+        <div className="mt-6 grid gap-6 md:grid-cols-2">
+          <div>
+            <h3 className="text-lg font-extrabold text-slate-950">Audio Conference System</h3>
+            <p className="mt-2 text-sm leading-7 text-slate-700 text-justify">
+              An audio conference system uses chairman and delegate microphones with a central controller to
+              organize in-room discussion and keep every speaker clear. It is the standard setup for boardrooms,
+              government meeting rooms, and training centers where structured, in-person discussion matters most.
+            </p>
+            <Link
+              prefetch={false}
+              href="/conference-system/audio-conference-system/"
+              className="mt-3 inline-flex items-center gap-1 text-[12.5px] font-extrabold uppercase tracking-[0.05em] text-[#C2410C] transition-colors hover:text-[#FD6900]"
+            >
+              Explore Audio Conference Systems
+              <span aria-hidden="true" className="text-[#FD6900]">{"→"}</span>
+            </Link>
+          </div>
+          <div>
+            <h3 className="text-lg font-extrabold text-slate-950">Video Conference System</h3>
+            <p className="mt-2 text-sm leading-7 text-slate-700 text-justify">
+              A video conference system extends meeting audio with camera, display, and video processing equipment
+              to support hybrid and remote collaboration. Sasha&apos;s current video conference range focuses on
+              presentation processing, display integration, and paperless conferencing equipment that pairs with
+              your existing audio setup.
+            </p>
+            <Link
+              prefetch={false}
+              href="/conference-system/video-conference-system/"
+              className="mt-3 inline-flex items-center gap-1 text-[12.5px] font-extrabold uppercase tracking-[0.05em] text-[#C2410C] transition-colors hover:text-[#FD6900]"
+            >
+              Explore Video Conference Systems
+              <span aria-hidden="true" className="text-[#FD6900]">{"→"}</span>
+            </Link>
+          </div>
+        </div>
+
         <div className="mt-6">
           <ResponsiveCardGrid
             desktopClassName="md:grid-cols-2"
             items={[
               {
                 title: "Audio Conference System",
-                desc: "Best for structured discussion, chairman & delegate control and clear speech pickup in boardrooms and meeting halls.",
+                desc: "Best for structured, in-room discussion with chairman & delegate control.",
                 bullets: audioSystemComparisonPoints,
               },
               {
                 title: "Video Conference System",
-                desc: "Best for presentation sharing, display integration and hybrid meetings where remote participants join the discussion.",
+                desc: "Best for presentation-heavy and hybrid meetings with remote participants.",
                 bullets: videoSystemComparisonPoints,
               },
             ]}
@@ -1654,72 +1372,6 @@ export default function ConferenceSystemPage() {
         </div>
       </section>
 
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-components">
-        <div className="max-w-5xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.maroon }}>
-            Conference system equipment
-          </p>
-          <h2 id="conference-system-components" className="mt-3 text-2xl font-extrabold tracking-tight text-slate-950">
-            Key Components of a Conference System
-          </h2>
-          <MobileIntroText
-            teaser="The right component mix keeps speech clear, discussion organized and room-wide communication stable."
-            className="mt-4"
-            singleDom
-          >
-            <p className="text-sm leading-7 text-slate-700 text-justify md:text-base md:leading-8">
-              A professional conference system is built with multiple connected components that work together to deliver
-              clear audio, smooth meeting control, and reliable communication. From chairman and delegate microphones to
-              control units, speakers, cables, and optional video conferencing devices, each component plays an important
-              role in creating an efficient meeting room or conference hall setup. These conference system components help
-              plan the right conference system equipment, meeting room audio system, and conference system installation in
-              Bangladesh.
-            </p>
-          </MobileIntroText>
-        </div>
-
-        <div className="mt-6">
-          <ResponsiveCardGrid
-            desktopClassName="md:grid-cols-2 lg:grid-cols-4"
-            items={conferenceComponentCards.map((item) => ({
-              title: item.title,
-              desc: item.description,
-              bullets: item.features,
-              icon: <ConferenceComponentIconSvg icon={item.icon} />,
-            }))}
-          />
-        </div>
-
-        <div className="mt-6 rounded-2xl border border-orange-100 bg-orange-50/50 p-5 md:p-6">
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-3xl">
-              <h3 className="text-xl font-extrabold text-slate-950">
-                Need help choosing the right conference system components?
-              </h3>
-              <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-                Sasha Corporation can recommend chairman units, delegate units, central control units, audio processors,
-                conference speaker options, and PTZ camera integration based on your room size and installation scope.
-              </p>
-            </div>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/contact/"
-                className={ctaClass}
-                style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-              >
-                Get Expert Consultation
-              </Link>
-              <Link
-                href="/contact/"
-                className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
-              >
-                Contact Sasha Corporation
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-benefits">
         <div className="max-w-5xl">
           <p className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.maroon }}>
@@ -1745,7 +1397,7 @@ export default function ConferenceSystemPage() {
 
         <div className="mt-6">
           <ResponsiveCardGrid
-            desktopClassName="md:grid-cols-2 xl:grid-cols-4"
+            desktopClassName="md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
             items={conferenceBenefits.map((item) => ({
               title: item.title,
               desc: item.description,
@@ -1799,10 +1451,7 @@ export default function ConferenceSystemPage() {
         <div className="mt-6">
           <ResponsiveCardGrid
             desktopClassName="md:grid-cols-2 lg:grid-cols-3"
-            items={applicationCards.map((item) => ({
-              title: item,
-              desc: "Planned conference audio setup for clear speech pickup, controlled discussion, and reliable meeting room communication.",
-            }))}
+            items={applicationCards.map((item) => ({ title: item.title, desc: item.desc }))}
           />
         </div>
       </section>
@@ -1998,7 +1647,7 @@ export default function ConferenceSystemPage() {
         </div>
         <div className="mt-6">
           <ResponsiveCardGrid
-            desktopClassName="md:grid-cols-2 xl:grid-cols-4"
+            desktopClassName="md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
             items={chooseSashaCards.map((item) => ({
               title: item.title,
               desc: item.description,
@@ -2068,7 +1717,7 @@ export default function ConferenceSystemPage() {
           </p>
         </div>
         <div className="-mx-0.5 mt-8 flex snap-x snap-mandatory items-stretch gap-3 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:snap-none md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-4">
-          {conferenceBrandCards.map((brand, index) => (
+          {verifiedConferenceBrandCards.map((brand, index) => (
             <article
               key={brand.title}
               className={`flex h-full w-[89%] shrink-0 snap-start flex-col rounded-[14px] border p-4 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md md:w-auto md:rounded-2xl md:border-slate-200 md:bg-white md:p-6 md:snap-none ${getParityClassName(index)}`}

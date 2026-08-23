@@ -87,3 +87,7 @@
 /blog/best-led-video-wall-solutions-for-corporate-offices          /blog/best-corporate-office-led-video-wall/         301
 /blog/best-led-video-wall-solutions-for-corporate-offices/         /blog/best-corporate-office-led-video-wall/         301
 /blog/best-led-video-wall-solutions-for-corporate-offices/*        /blog/best-corporate-office-led-video-wall/:splat/  301
+
+/conference-system/huidu-hd-vp950-conference-video-processor          /conference-system/video-conference-system/  301
+/conference-system/huidu-hd-vp950-conference-video-processor/         /conference-system/video-conference-system/  301
+/conference-system/huidu-hd-vp950-conference-video-processor/*        /conference-system/video-conference-system/  301

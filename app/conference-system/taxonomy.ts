@@ -79,7 +79,7 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     label: "Wired Conference System",
     shortLabel: "Wired",
     group: "connection",
-    description: "Verified wired conference system products will appear here when connection data is available in the normalized catalog.",
+    description: "Verified wired conference system products, including chairman units, delegate units, and control units.",
     seo: {
       title: "Wired Conference System in Bangladesh",
       description: "Explore verified wired conference system products and project options for permanent boardroom and meeting-room installations in Bangladesh.",
@@ -177,7 +177,7 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     label: "Complete Conference Package",
     shortLabel: "Complete Package",
     group: "package",
-    description: "Verified complete conference packages will appear here when package products are available in the normalized catalog.",
+    description: "Verified complete conference system packages bundling discussion, control, and installation requirements.",
     seo: {
       title: "Complete Conference System Package in Bangladesh",
       description: "Explore verified complete conference system packages for meeting-room equipment, installation planning, and project support in Bangladesh.",
@@ -192,7 +192,7 @@ export const conferenceBrandConfigs: readonly ConferenceBrandConfig[] = [
     id: "brand-bosch",
     slug: "bosch",
     name: "Bosch",
-    description: "Verified Bosch Conference products will appear here when they are migrated into the dedicated Conference catalog.",
+    description: "Verified Bosch conference discussion units, control units, and recording control equipment from the CCS 900 Ultra and CCS 1000 D ranges.",
     featured: true,
     order: 10,
     seo: {
@@ -204,24 +204,12 @@ export const conferenceBrandConfigs: readonly ConferenceBrandConfig[] = [
     id: "brand-toa",
     slug: "toa",
     name: "TOA",
-    description: "Verified TOA Conference products will appear here when they are migrated into the dedicated Conference catalog.",
+    description: "Verified TOA conference chairman, delegate, and central units across the TS-680, TS-690, TS-780, TS-790, TS-800, and TS-900 discussion ranges.",
     featured: true,
     order: 20,
     seo: {
       title: "TOA Conference System in Bangladesh",
       description: "Browse verified TOA conference system products, specifications, pricing, and project support when available in the dedicated catalog.",
-    },
-  },
-  {
-    id: "brand-honeywell",
-    slug: "honeywell",
-    name: "Honeywell",
-    description: "Verified Honeywell Conference products will appear here when they are added to the dedicated Conference catalog.",
-    featured: true,
-    order: 30,
-    seo: {
-      title: "Honeywell Conference System in Bangladesh",
-      description: "Browse verified Honeywell conference system products, specifications, pricing, and project support when available in the dedicated catalog.",
     },
   },
   {
@@ -240,24 +228,12 @@ export const conferenceBrandConfigs: readonly ConferenceBrandConfig[] = [
     id: "brand-cmx",
     slug: "cmx",
     name: "CMX",
-    description: "Verified CMX Conference products will appear here when they are added to the dedicated Conference catalog.",
+    description: "Verified CMX wired, wireless, and infrared conference discussion units, controllers, and paperless conference management systems.",
     featured: true,
     order: 50,
     seo: {
       title: "CMX Conference System in Bangladesh",
       description: "Browse verified CMX conference system products, specifications, pricing, and project support when available in the dedicated catalog.",
-    },
-  },
-  {
-    id: "brand-huidu",
-    slug: "huidu",
-    name: "Huidu",
-    description: "Verified Huidu video processing products currently represented in the dedicated Conference catalog.",
-    featured: false,
-    order: 60,
-    seo: {
-      title: "Huidu Conference Video Products in Bangladesh",
-      description: "Browse verified Huidu conference video processing products for presentation switching, scaling, and meeting-room display integration.",
     },
   },
 ];
