@@ -80,7 +80,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
   "wired-conference-system": {
     heroTitle: "Wired Conference System Price in Bangladesh",
     intro:
-      "Wired conference systems are generally planned for permanent meeting rooms where structured physical connectivity and fixed seating are preferred. The current dedicated catalog has no safely verified wired products, so no products are inferred from titles or specifications.",
+      "Wired conference systems are generally planned for permanent meeting rooms where structured physical connectivity and fixed seating are preferred. Verified wired conference products, including chairman units, delegate units, and control units, are listed below.",
     highlights: [
       { title: "Permanent room planning", description: "Wired systems suit fixed boardrooms and formal meeting spaces where table and cable routes can be designed in advance." },
       { title: "Structured connectivity", description: "Controller location, table entry points, cable protection, and service access should be included in the installation plan." },
@@ -96,7 +96,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
     relatedCategorySlugs: ["audio-conference-system", "wireless-conference-system", "chairman-unit", "delegate-unit", "control-unit"],
     faqs: [
       { q: "When is a wired conference system suitable?", a: "It is generally suitable for permanent boardrooms, government-style meeting rooms, councils, and other spaces with fixed seating and planned cable routes." },
-      { q: "Are wired products currently listed here?", a: "No safely verified wired products are currently classified in the dedicated Conference catalog. This page remains noindex until verified products are available." },
+      { q: "Are wired products currently listed here?", a: "Yes. Verified wired conference products, including chairman units, delegate units, and control units, are listed directly on this page." },
       { q: "What should a wired conference BOQ include?", a: "The BOQ should consider compatible microphones, controller, cables, connectors, table or floor routing, rack equipment, installation, testing, and future service access." },
     ],
     emptyMessage: "No dedicated products are currently verified as wired. Contact Sasha for project consultation and current availability without assuming catalog classification.",
@@ -104,7 +104,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
   "wireless-conference-system": {
     heroTitle: "Wireless Conference System Price in Bangladesh",
     intro:
-      "Wireless conference systems reduce table cabling and support rooms where seating layouts change. Verified wireless delegate units, access equipment, charging products, and systems are listed directly from the normalized catalog.",
+      "Wireless conference systems reduce table cabling and support rooms where seating layouts change. Verified wireless delegate units, access equipment, charging products, and systems are listed directly below.",
     highlights: [
       { title: "Flexible seating", description: "Wireless operation can support reconfigured tables, multipurpose rooms, and venues where fixed microphone cabling is impractical." },
       { title: "Cleaner tabletop layout", description: "Fewer table cables can simplify room presentation while charging and storage still require planning." },
@@ -242,7 +242,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
   "complete-package": {
     heroTitle: "Complete Conference System Package in Bangladesh",
     intro:
-      "A complete conference package combines the discussion, control, processing, amplification, speaker, cabling, and installation requirements for a specific room. No verified package products currently exist in the dedicated catalog, so this page does not display fabricated bundles.",
+      "A complete conference package combines the discussion, control, processing, amplification, speaker, cabling, and installation requirements for a specific room. Verified complete package products are listed below.",
     highlights: [
       { title: "Complete signal chain", description: "A package may need chairman and delegate positions, controller, processing, amplification, speakers, and supporting accessories." },
       { title: "Room-size planning", description: "Participant count, seating, acoustics, and installation conditions determine the appropriate equipment mix." },
@@ -258,7 +258,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
     relatedCategorySlugs: ["audio-conference-system", "video-conference-system", "wired-conference-system", "wireless-conference-system", "control-unit"],
     faqs: [
       { q: "What is included in a complete conference package?", a: "The contents depend on the room, but may include compatible chairman and delegate units, controller, DSP, amplifier, speakers, cabling, accessories, installation, testing, and handover." },
-      { q: "Are complete package products currently listed?", a: "No verified package products are currently present in the dedicated Conference catalog. This page remains noindex and does not show a fabricated bundle." },
+      { q: "Are complete package products currently listed?", a: "Yes. Verified complete conference package products are listed directly on this page." },
       { q: "How is a conference-system BOQ prepared?", a: "It starts with room size, seating, participant workflow, audio and video needs, infrastructure, verified product compatibility, installation, and commissioning requirements." },
     ],
     emptyMessage: "No verified complete package is currently listed. Sasha can review the room and prepare a project-specific quotation using available verified equipment.",
@@ -335,7 +335,7 @@ export const conferenceBrandPageContent: Readonly<Record<string, ConferenceBrand
   spon: {
     heroTitle: "SPON Conference System Price in Bangladesh",
     intro:
-      "The verified SPON Conference catalog currently covers chairman and delegate units, a control unit, DSP, amplification, microphones, wireless access equipment, and charging products. Product coverage and counts come directly from the normalized catalog.",
+      "The verified SPON Conference catalog currently covers chairman and delegate units, a control unit, DSP, amplification, microphones, wireless access equipment, and charging products.",
     highlights: [
       { title: "Discussion components", description: "Verified SPON chairman, delegate, microphone, and central-control products support structured meeting-system planning." },
       { title: "Audio processing and power", description: "The current catalog includes verified SPON DSP and amplifier products for wider room-audio integration." },
@@ -349,31 +349,9 @@ export const conferenceBrandPageContent: Readonly<Record<string, ConferenceBrand
       { title: "Complete the room audio plan", description: "Review DSP, amplification, speakers, cabling, installation, and commissioning requirements." },
     ],
     faqs: [
-      { q: "Which SPON Conference products are currently listed?", a: "The normalized catalog currently includes verified SPON microphones, chairman and delegate units, a control unit, DSP, amplifier, wireless access equipment, and a charger." },
+      { q: "Which SPON Conference products are currently listed?", a: "Sasha currently lists verified SPON microphones, chairman and delegate units, a control unit, DSP, amplifier, wireless access equipment, and a charger." },
       { q: "Can all SPON Conference products be combined automatically?", a: "No. Model family, controller, connection, charging, and accessory compatibility must still be verified for the intended system." },
       { q: "Can Sasha prepare a SPON Conference quotation?", a: "Yes. Sasha can review the room, participant layout, verified product requirements, installation scope, and BOQ before preparing a quotation." },
-    ],
-  },
-  huidu: {
-    heroTitle: "Huidu Conference Video Product Price in Bangladesh",
-    intro:
-      "The dedicated Conference catalog currently contains one verified Huidu video processor for presentation switching, scaling, and meeting-room display integration. This page intentionally reflects that limited verified scope.",
-    highlights: [
-      { title: "Verified video coverage", description: "Current Conference coverage is limited to one normalized video-processing product." },
-      { title: "Presentation workflow", description: "The listed product is positioned for switching, scaling, and LED display output planning in meeting and presentation spaces." },
-      { title: "Project-specific integration", description: "Inputs, outputs, screen loading, and wider AV compatibility must be checked for the actual project." },
-    ],
-    buyerGuideTitle: "Planning with the Current Huidu Product",
-    buyerGuideIntro: "Treat the current page as a focused product collection rather than a complete Huidu conference-system range.",
-    buyerGuide: [
-      { title: "Define display requirements", description: "Confirm the LED wall or display resolution, source devices, and presentation workflow." },
-      { title: "Verify signal compatibility", description: "Check documented inputs, outputs, scaling, and screen-loading requirements before selection." },
-      { title: "Coordinate the wider AV system", description: "Plan audio, presentation control, cabling, installation, and commissioning around the complete room." },
-    ],
-    faqs: [
-      { q: "How many Huidu Conference products are currently verified?", a: "The dedicated normalized Conference catalog currently contains one Huidu video processor." },
-      { q: "Does this page represent a complete Huidu conference range?", a: "No. It reflects only the verified Huidu product currently present in the dedicated Conference catalog." },
-      { q: "What should be checked before selecting the listed processor?", a: "Verify source inputs, display outputs, scaling, screen-loading requirements, cabling, and compatibility with the planned AV workflow." },
     ],
   },
 };

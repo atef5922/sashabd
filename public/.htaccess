@@ -107,6 +107,9 @@ AddDefaultCharset UTF-8
   RewriteRule ^blog/led-display-vs-lcd-video-wall/?$ /blog/led-vs-lcd-video-wall/ [R=301,L]
   RewriteRule ^blog/best-led-video-wall-solutions-for-corporate-offices/?$ /blog/best-corporate-office-led-video-wall/ [R=301,L]
 
+  # Huidu brand and its one conference video processor removed from Conference System
+  RewriteRule ^conference-system/huidu-hd-vp950-conference-video-processor/?$ /conference-system/video-conference-system/ [R=301,L]
+
   # Services slug change
   RewriteRule ^services/?$ /services-support/ [R=301,L]
 

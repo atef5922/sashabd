@@ -160,7 +160,7 @@ test("Conference navigation exposes one accessible desktop mega menu and mobile 
     "conference-amplifier",
     "complete-package",
   ];
-  const expectedBrandRoutes = ["bosch", "toa", "honeywell", "spon", "cmx"];
+  const expectedBrandRoutes = ["bosch", "toa", "spon", "cmx"];
 
   assert.equal(occurrences(navRegistry, 'label: "Conference System"'), 1);
   assert.match(navRegistry, /type: "conference", href: "\/conference-system\/"/);
@@ -192,7 +192,7 @@ test("Conference navigation exposes one accessible desktop mega menu and mobile 
     assert.match(taxonomy, new RegExp(`slug: "${slug}"`));
   }
   const brandRegistry = sectionBetween(taxonomy, "export const conferenceBrandConfigs", "export const RESERVED_CONFERENCE_PRODUCT_SLUGS");
-  assert.equal((brandRegistry.match(/featured: true/g) ?? []).length, 5);
+  assert.equal((brandRegistry.match(/featured: true/g) ?? []).length, 4);
   assert.match(navigation, /href: "\/conference-system\/brands\/"/);
   assert.match(layout, /conferenceNavigationGroups=\{conferenceNavigationGroups\}/);
   assert.match(layout, /conferenceBrandsHubLink=\{conferenceBrandsHubLink\}/);
@@ -346,12 +346,10 @@ test("Conference System renders one responsive semantic content set", () => {
     "Conference System Products",
     "What is a Conference System?",
     "Conference System Price in Bangladesh",
-    "Types of Conference Systems",
-    "Audio Conference System",
-    "Video Conference System",
-    "Audio vs Video Conference Systems",
-    "Wired vs Wireless Conference System",
     "Key Components of a Conference System",
+    "Types of Conference Systems",
+    "Choose Your Conference System",
+    "Wired vs Wireless Conference System",
     "Key Benefits of a Professional Conference System",
     "Conference System Applications",
     "Conference System Packages by Room Size",
@@ -386,15 +384,14 @@ test("Conference catalog is normalized, complete, and route-stable", () => {
     "spon-lcs-5251cd-digital-conference-microphone-system",
     "spon-lcs-5252d-wireless-conference-delegate-unit",
     "spon-lcs-5301z-wireless-digital-conference-access-point",
-    "huidu-hd-vp950-conference-video-processor",
   ];
   const ids = [...catalog.matchAll(/^    id: "([^"]+)",$/gm)].map((match) => match[1]);
   const slugs = [...catalog.matchAll(/^    slug: "([^"]+)",$/gm)].map((match) => match[1]);
   const productBlocks = catalog.split(/\n  \{\n    id: /).slice(1);
 
-  assert.equal(productBlocks.length, 12);
-  assert.equal(new Set(ids).size, 12, "Conference product IDs must be unique");
-  assert.equal(new Set(slugs).size, 12, "Conference product slugs must be unique");
+  assert.equal(productBlocks.length, 11);
+  assert.equal(new Set(ids).size, 11, "Conference product IDs must be unique");
+  assert.equal(new Set(slugs).size, 11, "Conference product slugs must be unique");
   // The set of public URLs is fixed. Their order inside the file is an editorial
   // choice that drives listing order, so it is deliberately not asserted here.
   assert.deepEqual([...slugs].sort(), [...expectedSlugs].sort(), "existing public Conference slugs must not change");
@@ -423,7 +420,7 @@ test("Conference catalog is normalized, complete, and route-stable", () => {
   assert.match(detail, /\{specifications\.map\(\(spec\) => \(/);
 });
 
-test("Conference normalized prices preserve all 12 visible amounts", () => {
+test("Conference normalized prices preserve all 11 visible amounts", () => {
   const catalog = read("app/conference-system/catalog.ts");
   const expectedPrices = [
     [18500, "৳18,500"],
@@ -437,7 +434,6 @@ test("Conference normalized prices preserve all 12 visible amounts", () => {
     [23500, "৳23,500"],
     [24500, "৳24,500"],
     [36500, "৳36,500"],
-    [42000, "Tk 42,000"],
   ];
   const actualPrices = [...catalog.matchAll(/price: \{ type: "fixed", amount: (\d+), currency: "BDT", displayLabel: "([^"]+)" \}/g)]
     .map((match) => [Number(match[1]), match[2]]);
@@ -482,7 +478,7 @@ test("Conference taxonomy registries are unique and collision-protected", () => 
     "conference-amplifier",
     "complete-package",
   ]);
-  assert.deepEqual(brandSlugs, ["bosch", "toa", "honeywell", "spon", "cmx", "huidu"]);
+  assert.deepEqual(brandSlugs, ["bosch", "toa", "spon", "cmx"]);
   assert.match(taxonomy, /RESERVED_CONFERENCE_PRODUCT_SLUGS = \[[\s\S]*\.\.\.conferenceCategoryConfigs\.map/);
   assert.match(taxonomy, /"brands",/);
   assert.match(taxonomy, /validateConferenceCatalog\(conferenceSystemCatalog, RESERVED_CONFERENCE_PRODUCT_SLUGS\)/);
@@ -511,7 +507,6 @@ test("Conference taxonomy matches only normalized catalog fields", () => {
   assert.match(taxonomy, /product\.brand\?\.slug === brand\.slug/);
 
   const representativeMappings = [
-    ["huidu-hd-vp950-conference-video-processor", 'systemCategory: "video"', 'productTypes: ["processor"]'],
     ["spon-lcm-6013cv-l-digital-conference-chairman-unit", 'systemCategory: "audio"', 'productTypes: ["chairman-unit"]'],
     ["spon-lcm-6013dv-l-digital-conference-delegate-unit", 'systemCategory: "audio"', 'productTypes: ["delegate-unit"]'],
     ["spon-lcm-6010-digital-conference-system-central-unit", 'systemCategory: "audio"', 'productTypes: ["control-unit"]'],
@@ -586,13 +581,14 @@ test("Conference category and populated-brand content is unique and complete", (
   assert.equal((categorySource.match(/buyerGuide: \[/g) ?? []).length, 10);
   assert.equal((categorySource.match(/relatedCategorySlugs: \[/g) ?? []).length, 10);
   assert.equal((categorySource.match(/faqs: \[/g) ?? []).length, 10);
-  assert.equal(brandHeroTitles.length, 5);
-  assert.equal(new Set(brandHeroTitles).size, 5, "brand hero titles must be unique");
-  for (const brand of ["bosch", "toa", "cmx", "spon", "huidu"]) {
+  assert.equal(brandHeroTitles.length, 4);
+  assert.equal(new Set(brandHeroTitles).size, 4, "brand hero titles must be unique");
+  for (const brand of ["bosch", "toa", "cmx", "spon"]) {
     assert.match(brandSource, new RegExp(`^  ${brand}: \\{$`, "m"), `${brand} needs brand page content`);
   }
-  // Honeywell has no verified conference products, so it must not claim brand content.
+  // Honeywell and Huidu have no verified conference products/brand, so they must not claim brand content.
   assert.doesNotMatch(brandSource, /^  honeywell: \{$/m);
+  assert.doesNotMatch(brandSource, /^  huidu: \{$/m);
 });
 
 test("Conference brand catalogs are unique, conference-only, and image-backed", () => {
@@ -607,7 +603,7 @@ test("Conference brand catalogs are unique, conference-only, and image-backed", 
   const shortDescriptions = [...all.matchAll(/shortDescription:\s*\n?\s*"([^"]{40,})"/g)].map((m) => m[1]);
   const descriptions = [...all.matchAll(/^    description:\s*\n?\s*"([^"]{60,})"/gm)].map((m) => m[1]);
 
-  assert.equal(ids.length, 55, "catalog must expose every verified conference product");
+  assert.equal(ids.length, 54, "catalog must expose every verified conference product");
   assert.equal(new Set(ids).size, ids.length, "product ids must be unique");
   assert.equal(new Set(slugs).size, slugs.length, "product slugs must be unique");
   assert.equal(new Set(names).size, names.length, "product names must be unique");
@@ -776,7 +772,7 @@ test("Conference specifications stay classified, consistent, and complete", () =
   // Every core product now carries the rows the brand ranges already had.
   const core = sectionBetween(catalog, "const coreConferenceProducts", "export const conferenceSystemCatalog");
   const coreBlocks = core.split(/\n  \{\n    id: /).slice(1);
-  assert.equal(coreBlocks.length, 12);
+  assert.equal(coreBlocks.length, 11);
   for (const block of coreBlocks) {
     assert.match(block, /availability: "project-order"/, "core products need an availability");
     assert.match(block, /\{ key: "Series", value: "[^"]+" \}/, "core products need a Series row");

@@ -335,9 +335,9 @@ function CategoryTemplate({ category, products, breadcrumbs }: Omit<CategoryColl
       {products.length ? (
         <section id="products" className="mt-10 scroll-mt-24">
           <SectionHeading
-            eyebrow="Normalized catalog"
+            eyebrow="Verified products"
             title="Matching Products"
-            description="Every product below is selected through normalized taxonomy fields and keeps its existing public URL."
+            description="Every product below is matched to this category and links to its own product page."
           />
           <ProductGrid products={products} />
         </section>
@@ -356,7 +356,7 @@ function CategoryTemplate({ category, products, breadcrumbs }: Omit<CategoryColl
 
       {relevantBrands.length ? (
         <section className="mt-10 rounded-3xl border border-slate-200 bg-white p-5 md:p-7">
-          <SectionHeading eyebrow="Catalog-derived" title="Available Brands" description="Only verified brands represented by the matching products are shown." />
+          <SectionHeading eyebrow="Shop by brand" title="Available Brands" description="Only verified brands represented by the matching products are shown." />
           <div className="mt-5 flex flex-wrap gap-3">
             {relevantBrands.map((brand) => (
               <Link key={brand.id} href={`/conference-system/brands/${brand.slug}/`} className="inline-flex min-h-11 items-center rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-extrabold text-slate-900 transition hover:border-orange-300 hover:text-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50">
@@ -409,7 +409,7 @@ function BrandTemplate({ brand, products, breadcrumbs }: Omit<BrandCollectionPro
           </section>
 
           <section id="products" className="mt-10 scroll-mt-24">
-            <SectionHeading eyebrow="Normalized catalog" title={`${brand.name} Products`} description="Only products with a verified matching brand field are included." />
+            <SectionHeading eyebrow="Verified products" title={`${brand.name} Products`} description={`Only verified ${brand.name} products are included.`} />
             <ProductGrid products={products} />
           </section>
 
