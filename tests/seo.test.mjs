@@ -790,7 +790,7 @@ test("Conference landing links every brand badge to its brand route", () => {
 
   // The badge row sits directly after the H1 intro card and before the product grid.
   assert.ok(
-    landing.indexOf("conference-brand-badges-heading") < landing.indexOf("conference-products-heading"),
+    landing.indexOf('id="conference-brand-badges-heading"') < landing.indexOf('id="conference-products-heading"'),
     "brand badges must come before the product listing",
   );
   assert.equal(occurrences(landing, 'id="conference-brand-badges-heading"'), 1);
