@@ -392,7 +392,9 @@ test("Conference catalog is normalized, complete, and route-stable", () => {
   assert.equal(productBlocks.length, 12);
   assert.equal(new Set(ids).size, 12, "Conference product IDs must be unique");
   assert.equal(new Set(slugs).size, 12, "Conference product slugs must be unique");
-  assert.deepEqual(slugs, expectedSlugs, "existing public Conference slugs must not change");
+  // The set of public URLs is fixed. Their order inside the file is an editorial
+  // choice that drives listing order, so it is deliberately not asserted here.
+  assert.deepEqual([...slugs].sort(), [...expectedSlugs].sort(), "existing public Conference slugs must not change");
 
   for (const block of productBlocks) {
     assert.match(block, /^"[^"]+",\n    slug: "[^"]+",\n    name: "[^"]+",/);
@@ -403,7 +405,8 @@ test("Conference catalog is normalized, complete, and route-stable", () => {
     assert.match(block, /images: \[[\s\S]*?src: [^,]+, alt: "[^"]+", primary: true/);
     assert.match(block, /applications: \[[^\]]+\]/);
     assert.match(block, /specifications: \[[\s\S]*?\{ key: "[^"]+", value: "[^"]+" \}/);
-    assert.match(block, /compatibleProductIds: \[\]/);
+    // Every core product links to the units it is actually specified with.
+    assert.match(block, /compatibleProductIds: \["[a-z0-9-]+"(?:, "[a-z0-9-]+")*\]/);
   }
 
   assert.doesNotMatch(catalog, /\b(?:priceLabel|cardPriceLabel|gallery|bestFor|specs):/);
@@ -414,7 +417,7 @@ test("Conference catalog is normalized, complete, and route-stable", () => {
   assert.match(explorer, /title=\{product\.name\}/);
   assert.match(landing, /priceLabel: product\.price\.displayLabel/);
   assert.match(detail, /product\.images\.find/);
-  assert.match(detail, /product\.specifications\.map/);
+  assert.match(detail, /\{specifications\.map\(\(spec\) => \(/);
 });
 
 test("Conference normalized prices preserve all 12 visible amounts", () => {
@@ -436,7 +439,10 @@ test("Conference normalized prices preserve all 12 visible amounts", () => {
   const actualPrices = [...catalog.matchAll(/price: \{ type: "fixed", amount: (\d+), currency: "BDT", displayLabel: "([^"]+)" \}/g)]
     .map((match) => [Number(match[1]), match[2]]);
 
-  assert.deepEqual(actualPrices, expectedPrices);
+  // Every published amount must survive; the order they sit in the file may change.
+  const key = (entry) => `${entry[0]}|${entry[1]}`;
+  assert.deepEqual(actualPrices.map(key).sort(), expectedPrices.map(key).sort());
+  assert.equal(actualPrices.length, expectedPrices.length);
 });
 
 test("Conference taxonomy registries are unique and collision-protected", () => {
@@ -519,10 +525,16 @@ test("Conference taxonomy matches only normalized catalog fields", () => {
     assert.ok(block.includes(fieldB), `${slug} must include ${fieldB}`);
   }
 
+  // Both are SPON products: their source images ship as SPON-GEN-5301P26 and
+  // SPON-NAC-720W, and GEN-5301P26 from the same model family is already SPON.
   for (const slug of ["gen-5301p13-conference-microphone-unit", "nac-720w-wireless-conference-system"]) {
     const start = catalog.indexOf(`slug: "${slug}"`);
     const end = catalog.indexOf("\n  {", start);
-    assert.doesNotMatch(catalog.slice(start, end), /^    brand:/m, `${slug} must remain unbranded`);
+    assert.match(
+      catalog.slice(start, end),
+      /^    brand: \{ name: "SPON", slug: "spon" \},$/m,
+      `${slug} must carry its verified SPON brand`,
+    );
   }
 });
 
@@ -631,6 +643,12 @@ test("Conference product explorer filters by category and brand with paged resul
   assert.match(explorer, /^"use client";/);
   assert.match(explorer, /export const CONFERENCE_PRODUCTS_PER_BRAND = 3;/);
   assert.match(explorer, /function balancedByBrand\(/);
+
+  // Page one leads with the headline brands in order; unbranded stock follows later.
+  assert.match(explorer, /export const CONFERENCE_BRAND_ORDER = \["cmx", "toa", "bosch", "spon"\] as const;/);
+  assert.match(explorer, /const pageSize = CONFERENCE_PRODUCTS_PER_BRAND \* CONFERENCE_BRAND_ORDER\.length;/);
+  assert.match(explorer, /return slug \? CONFERENCE_BRAND_ORDER\.length : CONFERENCE_BRAND_ORDER\.length \+ 1;/);
+  assert.match(explorer, /if \(rank\(slug\) < CONFERENCE_BRAND_ORDER\.length\)/);
   assert.match(explorer, /product\.categorySlugs\.includes\(category\)/);
   assert.match(explorer, /product\.brandSlug === brand/);
   assert.match(explorer, /aria-pressed=\{/);
@@ -673,6 +691,94 @@ test("Conference product explorer filters by category and brand with paged resul
   assert.match(landing, /conferenceBrandConfigs\s*\.map\(\(brand\) => \(\{/);
   assert.equal(occurrences(landing, ".filter((facet) => facet.count > 0)"), 2);
   assert.match(landing, /categorySlugs: conferenceCategoryConfigs/);
+});
+
+test("Conference product pages emit Product schema and relevance-ranked internal links", () => {
+  const route = read("app/conference-system/[slug]/page.tsx");
+  const detail = read("app/conference-system/ConferenceProductDetailPage.tsx");
+  const catalog = read("app/conference-system/catalog.ts");
+
+  // Product / Offer / Brand structured data, priced exactly as the catalog holds it.
+  assert.match(route, /function buildProductJsonLd\(/);
+  assert.match(route, /"@type": "Product"/);
+  assert.match(route, /"@type": "Brand", name: product\.brand\.name/);
+  assert.match(route, /product\.price\.type === "fixed"/);
+  assert.match(route, /"@type": "AggregateOffer"/);
+  assert.match(route, /lowPrice: product\.price\.min/);
+  assert.match(route, /highPrice: product\.price\.max/);
+  assert.match(route, /additionalProperty: getConferenceProductSpecifications\(product\)\.map/);
+  assert.match(route, /type="application\/ld\+json"/);
+  // No invented review signals.
+  assert.ok(!route.includes("AggregateRating"), "ratings must not be fabricated");
+  assert.ok(!route.includes("reviewCount"), "review counts must not be fabricated");
+
+  // Related products are ranked, not the first three of the catalog.
+  assert.match(route, /for \(const id of current\.compatibleProductIds\)/);
+  assert.match(route, /product\.brand\?\.slug === current\.brand\.slug/);
+  assert.match(route, /product\.productTypes\.some\(\(type\) => current\.productTypes\.includes\(type\)\)/);
+  assert.ok(
+    !/function getRelatedProducts[\s\S]{0,200}\.slice\(0, 3\);\n\}/.test(route),
+    "related products must not be a flat catalog slice",
+  );
+
+  // Commercial qualifier in the title tag, capped to the SERP limit.
+  assert.match(route, /const SERP_TITLE_LIMIT = 60;/);
+  assert.match(route, /" Price in Bangladesh", " Price in BD", " Price"/);
+  assert.match(route, /title: conferenceProductSeoTitle\(product\.name\)/);
+
+  // Specifications are a real heading, always rendered - not hidden behind a tab.
+  assert.match(detail, /<h2 className="border-b border-slate-200 pb-2 text-base font-bold text-slate-900">Specifications<\/h2>/);
+  assert.ok(!detail.includes('useState<"spec" | "description">'), "specification tab state must be gone");
+  assert.equal(occurrences(detail, "{product.description}"), 1, "description must not be duplicated on the same page");
+
+  // Compatibility block gives each product its own internal links, with no templated prose.
+  assert.match(detail, /System Compatibility/);
+  assert.match(detail, /compatibleProducts\.map\(\(item\) => \(/);
+  assert.ok(
+    !detail.includes("avoids the compatibility gaps"),
+    "the templated compatibility sentence must not be repeated across product pages",
+  );
+
+  // One normalized specification list feeds both the table and the schema.
+  assert.match(catalog, /export function getConferenceProductSpecifications\(/);
+  assert.match(catalog, /const COMMERCIAL_SPEC_KEYS = new Set\(\["Price Basis", "Quotation", "Price", "Support"\]\)/);
+  assert.match(catalog, /const SPEC_KEY_ALIASES: Readonly<Record<string, string>>/);
+  assert.match(detail, /getConferenceProductSpecifications\(product\)/);
+  assert.match(detail, /\{specifications\.map\(\(spec\) => \(/);
+  assert.match(detail, /getConferenceProductPriceNote\(product\)/);
+
+  // Schema identifiers stay honest: slug as sku, model as mpn only when it is one model.
+  assert.match(route, /sku: product\.slug/);
+  assert.match(route, /product\.model && !\/\[\/\\s\]\/\.test\(product\.model\)/);
+  assert.ok(!route.includes("offerCount"), "a single listing must not claim an offer count");
+  assert.match(route, /compatibleProducts=\{product\.compatibleProductIds/);
+  assert.match(route, /categoryLinks=\{conferenceCategoryConfigs/);
+  assert.match(route, /brandLink=\{/);
+});
+
+test("Conference specifications stay classified, consistent, and complete", () => {
+  const catalog = read("app/conference-system/catalog.ts");
+
+  // Connection is a classification with exactly two allowed values; anything that
+  // describes what a unit connects to is re-keyed to Compatibility.
+  assert.match(catalog, /const CONNECTION_VALUES = new Set<string>\(Object\.values\(CONNECTION_LABELS\)\)/);
+  assert.match(catalog, /const isConnectionProse = spec\.key === "Connection" && !CONNECTION_VALUES\.has\(spec\.value\)/);
+  assert.match(catalog, /push\(isConnectionProse \? "Compatibility" : spec\.key, spec\.value\)/);
+
+  // Canonical rows are derived from typed fields, so they cannot drift per product.
+  for (const derived of ["Brand", "Model", "Connection", "System Category", "Availability"]) {
+    assert.ok(catalog.includes(`push("${derived}"`), `${derived} must be derived from a typed field`);
+  }
+
+  // Every core product now carries the rows the brand ranges already had.
+  const core = sectionBetween(catalog, "const coreConferenceProducts", "export const conferenceSystemCatalog");
+  const coreBlocks = core.split(/\n  \{\n    id: /).slice(1);
+  assert.equal(coreBlocks.length, 12);
+  for (const block of coreBlocks) {
+    assert.match(block, /availability: "project-order"/, "core products need an availability");
+    assert.match(block, /\{ key: "Series", value: "[^"]+" \}/, "core products need a Series row");
+    assert.match(block, /\{ key: "Installation", value: "[^"]+" \}/, "core products need an Installation row");
+  }
 });
 
 test("Conference landing links every brand badge to its brand route", () => {

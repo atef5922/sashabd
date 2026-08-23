@@ -23,26 +23,44 @@ export type ConferenceExplorerFacet = { slug: string; label: string; count: numb
 /** Products shown per brand on the opening page. */
 export const CONFERENCE_PRODUCTS_PER_BRAND = 3;
 
+/**
+ * Brands that lead the opening page, in the order they appear. Anything outside
+ * this list — smaller brands, and products with no verified brand — follows on
+ * the later pages rather than taking a slot above the fold.
+ */
+export const CONFERENCE_BRAND_ORDER = ["cmx", "toa", "bosch", "spon"] as const;
+
 const ALL = "all";
 
 /**
- * Opening page interleaves the first N products of each brand so every brand is
- * represented above the fold, then falls back to catalogue order.
+ * Opening page leads with the first N products of each headline brand, in
+ * CONFERENCE_BRAND_ORDER. Their remaining products come next, then any other
+ * brand, and finally products with no verified brand.
  */
 function balancedByBrand(products: ConferenceExplorerProduct[], perBrand: number) {
   const byBrand = new Map<string, ConferenceExplorerProduct[]>();
   for (const product of products) {
-    const key = product.brandSlug ?? "other";
+    const key = product.brandSlug ?? "";
     const bucket = byBrand.get(key);
     if (bucket) bucket.push(product);
     else byBrand.set(key, [product]);
   }
 
+  const rank = (slug: string) => {
+    const index = CONFERENCE_BRAND_ORDER.indexOf(slug as (typeof CONFERENCE_BRAND_ORDER)[number]);
+    if (index >= 0) return index;
+    return slug ? CONFERENCE_BRAND_ORDER.length : CONFERENCE_BRAND_ORDER.length + 1;
+  };
+
   const lead: ConferenceExplorerProduct[] = [];
   const rest: ConferenceExplorerProduct[] = [];
-  for (const bucket of byBrand.values()) {
-    lead.push(...bucket.slice(0, perBrand));
-    rest.push(...bucket.slice(perBrand));
+  for (const [slug, bucket] of [...byBrand].sort((a, b) => rank(a[0]) - rank(b[0]))) {
+    if (rank(slug) < CONFERENCE_BRAND_ORDER.length) {
+      lead.push(...bucket.slice(0, perBrand));
+      rest.push(...bucket.slice(perBrand));
+    } else {
+      rest.push(...bucket);
+    }
   }
   return [...lead, ...rest];
 }
@@ -86,7 +104,9 @@ export default function ConferenceProductExplorer({
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
-  const pageSize = CONFERENCE_PRODUCTS_PER_BRAND * Math.max(brands.length, 1);
+  // One page holds a full round of the headline brands, so page 1 is exactly
+  // three products each from CMX, TOA, Bosch and SPON.
+  const pageSize = CONFERENCE_PRODUCTS_PER_BRAND * CONFERENCE_BRAND_ORDER.length;
 
   const filtered = useMemo(() => {
     const matches = products.filter(
@@ -168,6 +188,7 @@ export default function ConferenceProductExplorer({
   const chipClass = (isActive: boolean) =>
     [
       "inline-flex h-9 shrink-0 select-none items-center justify-center whitespace-nowrap rounded-full border px-4 text-[13px] font-bold leading-none transition-colors duration-200",
+      "cursor-pointer",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FD6900]/45",
       isActive
         ? "border-[#FD6900] bg-[#FD6900] text-white shadow-sm"
@@ -179,7 +200,7 @@ export default function ConferenceProductExplorer({
    * chip fades out under them instead of being chopped in half.
    */
   const arrowClass =
-    "absolute top-1/2 z-20 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white text-slate-500 ring-1 ring-slate-200/90 shadow-[0_1px_2px_rgba(15,23,42,0.06),0_6px_16px_-6px_rgba(15,23,42,0.35)] transition duration-200 hover:text-[#C2410C] hover:ring-[#FD6900]/45 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FD6900]/45 md:inline-flex";
+    "absolute top-1/2 z-20 hidden h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white text-slate-500 ring-1 ring-slate-200/90 shadow-[0_1px_2px_rgba(15,23,42,0.06),0_6px_16px_-6px_rgba(15,23,42,0.35)] transition duration-200 hover:text-[#C2410C] hover:ring-[#FD6900]/45 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FD6900]/45 md:inline-flex";
 
   /** Fades the scrollable edges to transparent — works on any page background. */
   const FADE = 56;
@@ -195,6 +216,7 @@ export default function ConferenceProductExplorer({
   const pageButtonClass = (isActive: boolean) =>
     [
       "inline-flex h-9 min-w-9 items-center justify-center rounded-lg border px-3 text-[13px] font-extrabold transition-colors duration-200",
+      "cursor-pointer",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FD6900]/45",
       isActive
         ? "border-[#FD6900] bg-[#FD6900] text-white shadow-sm"
@@ -202,7 +224,7 @@ export default function ConferenceProductExplorer({
     ].join(" ");
 
   const stepClass =
-    "inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-[13px] font-bold text-slate-600 transition-colors duration-200 hover:border-[#FD6900]/40 hover:bg-orange-50/70 hover:text-[#C2410C] disabled:cursor-not-allowed disabled:border-slate-100 disabled:bg-slate-50 disabled:text-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FD6900]/45";
+    "inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-[13px] font-bold text-slate-600 transition-colors duration-200 hover:border-[#FD6900]/40 hover:bg-orange-50/70 hover:text-[#C2410C] disabled:cursor-not-allowed disabled:border-slate-100 disabled:bg-slate-50 disabled:text-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FD6900]/45";
 
   return (
     <div data-conference-product-explorer>

@@ -5,6 +5,7 @@ import FaqAccordion from "@/components/common/FaqAccordion";
 import ProductGridCard from "@/components/products/ProductGridCard";
 import type { BreadcrumbItem } from "@/lib/breadcrumbs";
 import { normalizeDisplayedPriceText } from "@/lib/price";
+import { absoluteUrl } from "@/lib/seo";
 import { getConferenceProductPrimaryImage, type ConferenceProduct, type ConferenceProductType } from "./catalog";
 import type { ConferenceCollectionFaq, ConferenceCollectionInfoItem } from "./collectionContent";
 import {
@@ -89,12 +90,33 @@ function InformationCards({ items }: { items: readonly ConferenceCollectionInfoI
   );
 }
 
+/**
+ * ItemList tells search engines this page is a product listing and in what order,
+ * which is what makes a collection eligible for list-style rich results.
+ */
+function ProductListJsonLd({ products }: { products: readonly ConferenceProduct[] }) {
+  if (!products.length) return null;
+  const json = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    numberOfItems: products.length,
+    itemListElement: products.map((product, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: absoluteUrl(`/conference-system/${product.slug}/`),
+      name: product.name,
+    })),
+  };
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(json) }} />;
+}
+
 function ProductGrid({ products }: { products: readonly ConferenceProduct[] }) {
   return (
     <div
       className={`mt-6 ${getGridClassName(products.length)}`}
       data-conference-product-grid={products.length === 1 ? "single" : "multiple"}
     >
+      <ProductListJsonLd products={products} />
       {products.map((product) => {
         const image = getConferenceProductPrimaryImage(product);
         const primaryType = product.productTypes[0];
@@ -115,7 +137,7 @@ function ProductGrid({ products }: { products: readonly ConferenceProduct[] }) {
             imageContainerClassName="bg-slate-50"
             topLeftBadge={{ text: primaryType ? productTypeLabels[primaryType] : product.badge, tone: "light" }}
             topRightBadge={product.brand ? { text: product.brand.name, tone: "dark" } : undefined}
-            metaLines={[{ text: product.price.displayLabel }]}
+            metaLines={[{ text: product.price.displayLabel, className: "mt-1 text-xs font-semibold text-sky-700" }]}
             bullets={product.keyFeatures}
             chips={product.applications}
             viewDetailsLabel="View details ->"

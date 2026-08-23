@@ -122,6 +122,53 @@ export default function ConferenceBrandsPage() {
         </div>
       </section>
 
+      <section className="mt-10 rounded-3xl border border-slate-200 bg-white p-5 md:p-7">
+        <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-orange-600">Choosing a brand</p>
+        <h2 className="mt-2 text-2xl font-extrabold text-slate-950">How the Conference Brands Differ</h2>
+        <div className="mt-5 grid gap-5 md:grid-cols-2">
+          <article>
+            <h3 className="text-base font-extrabold text-slate-900">Bosch — CCS 900 Ultra and CCS 1000 D</h3>
+            <p className="mt-2 text-sm leading-7 text-slate-700">
+              Bosch splits its range in two. CCS 900 Ultra is analogue and commissions without configuration software,
+              which suits fixed boardrooms that value speed of installation. CCS 1000 D is digital, set up from a web
+              browser, and adds request-to-speak queueing plus camera-control triggers. The CCSD-CURD variant records the
+              meeting to USB storage, which matters where the audio record forms part of the minutes.
+            </p>
+          </article>
+          <article>
+            <h3 className="text-base font-extrabold text-slate-900">TOA — TS-680 through TS-900</h3>
+            <p className="mt-2 text-sm leading-7 text-slate-700">
+              TOA offers the widest ladder of room sizes, from the compact TS-820 up to the TS-900 range for formal
+              chambers. Its practical advantage in Bangladesh is service depth: the brand has been supported here long
+              enough that spares and repair knowledge exist in-country. The TS-918 expansion unit gives a defined route
+              to add member positions later without replacing the central unit.
+            </p>
+          </article>
+          <article>
+            <h3 className="text-base font-extrabold text-slate-900">CMX — wired, wireless, infrared and paperless</h3>
+            <p className="mt-2 text-sm leading-7 text-slate-700">
+              CMX is the broadest range on carrier choice. The WS and US series cover wired digital discussion, the 5G
+              and UHF series free the table from cabling, and the S800MC uses infrared so discussion audio cannot pass
+              through walls during closed sessions. The MC series adds paperless meeting hosts that distribute agendas
+              and papers to seat terminals instead of printed packs.
+            </p>
+          </article>
+          <article>
+            <h3 className="text-base font-extrabold text-slate-900">SPON — networked conference audio</h3>
+            <p className="mt-2 text-sm leading-7 text-slate-700">
+              SPON covers the discussion chain together with the wider room audio: chairman and delegate units, a central
+              control unit, DSP, network amplification, wireless access points, and charging. That makes it a practical
+              choice where the conference system has to integrate with building paging rather than stand alone.
+            </p>
+          </article>
+        </div>
+        <p className="mt-5 text-sm leading-7 text-slate-600">
+          Across all four brands the deciding questions are the same: how many positions the room needs today and after
+          expansion, whether the table can take cable, whether sessions must stay acoustically contained, and whether the
+          audio record has to be archived. Sasha Corporation can work through those with you before a BOQ is prepared.
+        </p>
+      </section>
+
       <section className="mt-10 rounded-3xl bg-slate-950 p-6 text-white md:p-8">
         <div className="grid gap-5 md:grid-cols-[1fr_auto] md:items-center">
           <div>

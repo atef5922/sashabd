@@ -612,6 +612,16 @@ label {
   background: #ffffff !important;
 }
 
+[data-conference-route-kind] :where(a[href], button:not(:disabled), [role="button"]:not([aria-disabled="true"])),
+[data-conference-product-explorer] :where(a[href], button:not(:disabled), [role="button"]:not([aria-disabled="true"])) {
+  cursor: pointer !important;
+}
+
+[data-conference-route-kind] :where(button:disabled, [aria-disabled="true"]),
+[data-conference-product-explorer] :where(button:disabled, [aria-disabled="true"]) {
+  cursor: not-allowed !important;
+}
+
 .product-price {
   font-size: 16px;
   font-weight: 700;
