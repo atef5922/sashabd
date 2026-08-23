@@ -1010,9 +1010,6 @@ export default function ConferenceSystemPage() {
             Browse Conference Systems
           </a>
         </div>
-        <p className="mt-3 text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
-          {conferenceExplorerProducts.length} verified products &middot; {conferenceExplorerBrands.length} trusted brands
-        </p>
       </section>
 
       <section className="mt-4" aria-labelledby="conference-brand-badges-heading">
