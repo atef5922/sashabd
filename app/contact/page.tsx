@@ -8,17 +8,18 @@ import { socialImageUrl } from "@/lib/seo";
 import { BRAND_NAME } from "@/lib/brand";
 import ContactForm from "./ContactForm";
 import EmailReveal from "@/components/common/EmailReveal";
+import { conferenceSystemCatalog } from "@/app/conference-system/catalog";
 
 
 export const metadata: Metadata = {
   title: { absolute: "Contact Us for Quotation | Sasha Corporation" },
   description:
-    "Contact Sasha Corporation for quotation, site survey and project consultation for indoor, outdoor, rental display solutions, PA sound system and turnstile gate.",
+    "Contact Sasha Corporation for conference systems, LED displays, PA sound systems and turnstile project quotation, site survey, installation and support in Bangladesh.",
   alternates: { canonical: "/contact/" },
   openGraph: {
     title: "Contact Us for Quotation",
     description:
-      "Reach Sasha Corporation for LED display project quotation, consultation and support.",
+      "Reach Sasha Corporation for conference system, LED display, PA sound and turnstile project quotation, consultation and support.",
     url: "/contact/",
     type: "website",
     images: [
@@ -34,13 +35,18 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Contact Us for Quotation",
     description:
-      "Reach Sasha Corporation for LED display project quotation, consultation and support.",
+      "Reach Sasha Corporation for conference system, LED display, PA sound and turnstile project quotation, consultation and support.",
     images: [socialImageUrl()],
   },
 };
 
 const MAROON = "#FF6A00";
 const MAROON_DARK = "#E45700";
+const conferenceQuoteProducts = conferenceSystemCatalog.map((product) => ({
+  slug: product.slug,
+  name: product.name,
+  model: product.model,
+}));
 
 function SectionTitle({
   title,
@@ -110,7 +116,7 @@ export default function AboutPage() {
             </div>
 
             <MobileIntroText
-              teaser={`${BRAND_NAME} provides LED display sales, installation and support across Bangladesh for indoor and outdoor signage, events, retail and corporate solutions.`}
+              teaser={`${BRAND_NAME} provides conference systems, LED displays, PA sound systems and turnstile project consultation, supply, installation and support across Bangladesh.`}
               className="mt-1"
               teaserClassName="w-full text-[14px] leading-6 text-slate-600"
               expandedClassName="text-sm leading-7 text-slate-600"
@@ -118,8 +124,9 @@ export default function AboutPage() {
               buttonClassName="text-[13px]"
             >
               <p className="mt-1 w-full text-base leading-7 text-slate-600 text-justify">
-                {BRAND_NAME} provides LED display sales, installation and support across Bangladesh-indoor/outdoor
-                screens for signage, events, retail and corporate solutions. Based on your requirements, our skilled team will contact you as soon as possible.
+                {BRAND_NAME} provides conference systems, LED displays, PA sound systems and turnstile solutions for
+                corporate, government, education, hospitality and event projects across Bangladesh. Share the product,
+                quantity and project scope so our team can prepare the relevant quotation.
               </p>
             </MobileIntroText>
           </div>
@@ -130,7 +137,7 @@ export default function AboutPage() {
           <SectionTitle
             icon="📍"
             title="Contact & Location"
- desc="For quotation, site survey or support-reach us anytime. Share your location, indoor/outdoor and approximate size for faster guidance."
+            desc="For quotation, site survey or support, share your solution type, location, quantity, room or display size and expected timeline for faster guidance."
           />
 
           <div className="mt-6 grid gap-3 lg:mt-8 lg:grid-cols-3 lg:gap-8">
@@ -172,7 +179,7 @@ export default function AboutPage() {
               </span>
             </div>
 
-            <ContactForm maroon={MAROON} maroonDark={MAROON_DARK} />
+            <ContactForm maroon={MAROON} maroonDark={MAROON_DARK} conferenceProducts={conferenceQuoteProducts} />
           </div>
 
           <div className="mt-6 grid grid-cols-2 gap-2 md:mt-8 md:flex md:flex-wrap md:gap-3">
@@ -236,10 +243,10 @@ export default function AboutPage() {
         <section className="mt-8 rounded-[24px] bg-slate-50 p-4 md:rounded-3xl md:p-10">
           <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
             <div className="min-w-0">
- <h3 className="text-2xl font-bold text-slate-900">Let&apos;s build your LED display project</h3>
+ <h3 className="text-2xl font-bold text-slate-900">Let&apos;s plan your technology project</h3>
               <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600 text-justify">
- Share your location and screen size-we&apos;ll suggest the best setup and send a quotation with clear scope and
-                timeline.
+ Share the solution type, product or model, quantity, location and installation needs. We&apos;ll review the scope and
+                prepare a relevant quotation.
               </p>
             </div>
 

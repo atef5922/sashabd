@@ -2,7 +2,6 @@ import Link from "next/link";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
 import type { BreadcrumbItem } from "@/lib/breadcrumbs";
-import { normalizeDisplayedPriceText } from "@/lib/price";
 import { absoluteUrl } from "@/lib/seo";
 import {
   CONFERENCE_PRODUCT_TYPE_LABELS,
@@ -10,6 +9,7 @@ import {
   getConferenceProductAvailabilityLabel,
   getConferenceProductCardPrice,
   getConferenceProductCardSpecs,
+  getConferenceProductPricePresentation,
   getConferenceProductPrimaryImage,
   type ConferenceProduct,
 } from "./catalog";
@@ -136,24 +136,27 @@ function PriceTable({ title, products }: { title: string; products: readonly Con
   return (
     <section id="price-list" className="mt-10 scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-5 md:p-7">
       <SectionHeading
-        eyebrow="Verified pricing"
+        eyebrow="Catalog pricing"
         title={title}
-        description="Prices and labels come directly from the normalized Conference catalog. Final project cost may also include compatible equipment, cabling, installation, and commissioning."
+        description="Each row distinguishes fixed catalog price, indicative equipment range, and project quotation. Final project cost may also include compatible equipment, cabling, installation, and commissioning."
       />
       <div className="mt-5 overflow-x-auto rounded-2xl border border-slate-200">
-        <table className="min-w-[760px] w-full border-collapse text-left text-sm">
+        <table className="min-w-[900px] w-full border-collapse text-left text-sm">
+          <caption className="sr-only">Conference product catalog pricing and availability</caption>
           <thead className="bg-slate-950 text-white">
             <tr>
               <th scope="col" className="px-4 py-3 font-bold">Product</th>
               <th scope="col" className="px-4 py-3 font-bold">Brand</th>
               <th scope="col" className="px-4 py-3 font-bold">Model</th>
               <th scope="col" className="px-4 py-3 font-bold">Type</th>
+              <th scope="col" className="px-4 py-3 font-bold">Availability</th>
               <th scope="col" className="px-4 py-3 text-right font-bold">Price</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200">
-            {products.map((product) => (
-              <tr key={product.id} className="align-top hover:bg-orange-50/40">
+            {products.map((product) => {
+              const price = getConferenceProductPricePresentation(product);
+              return <tr key={product.id} className="align-top hover:bg-orange-50/40">
                 <th scope="row" className="px-4 py-3 font-bold text-slate-950">
                   <Link href={`/conference-system/${product.slug}/`} className="underline-offset-4 hover:text-orange-600 hover:underline">
                     {product.name}
@@ -164,11 +167,13 @@ function PriceTable({ title, products }: { title: string; products: readonly Con
                 <td className="px-4 py-3 text-slate-700">
                   {product.productTypes.map((type) => CONFERENCE_PRODUCT_TYPE_LABELS[type]).join(", ")}
                 </td>
+                <td className="px-4 py-3 text-slate-700">{getConferenceProductAvailabilityLabel(product)}</td>
                 <td className="px-4 py-3 text-right font-extrabold text-slate-950">
-                  {normalizeDisplayedPriceText(product.price.displayLabel)}
+                  {price.label}
+                  <span className="mt-1 block text-[11px] font-semibold text-slate-500">{price.basisLabel}</span>
                 </td>
-              </tr>
-            ))}
+              </tr>;
+            })}
           </tbody>
         </table>
       </div>
@@ -249,7 +254,7 @@ function FinalCta({ title, description }: { title: string; description: string }
           <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">{description}</p>
         </div>
         <div className="flex flex-col gap-3 sm:flex-row md:flex-col lg:flex-row">
-          <Link href="/contact/" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-orange-600 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300">
+          <Link href="/contact/?project=conference-system" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-orange-600 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300">
             Request a Quote
           </Link>
           <Link href="/conference-system/" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-600 px-5 py-3 text-sm font-extrabold text-white transition hover:border-slate-400 hover:bg-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300">
@@ -274,7 +279,7 @@ function Hero({ eyebrow, title, description, productCount, productsAnchor = true
         <h1 className="mt-5 text-3xl font-extrabold leading-tight tracking-tight text-slate-950 md:text-5xl">{title}</h1>
         <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-700 md:text-base md:leading-8">{description}</p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-          <Link href="/contact/" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-orange-600 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50">
+          <Link href="/contact/?project=conference-system" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-orange-600 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50">
             Request a Quote
           </Link>
           <Link href={productsAnchor && productCount ? "#products" : "/conference-system/"} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-extrabold text-slate-800 transition hover:border-orange-300 hover:text-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50">
@@ -292,7 +297,7 @@ function EmptyState({ title, message }: { title: string; message: string }) {
       <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-orange-700">Catalog status</p>
       <h2 className="mt-2 text-2xl font-extrabold text-slate-950">{title}</h2>
       <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-700">{message}</p>
-      <Link href="/contact/" className="mt-5 inline-flex min-h-11 items-center rounded-xl bg-slate-950 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500">
+      <Link href="/contact/?project=conference-system" className="mt-5 inline-flex min-h-11 items-center rounded-xl bg-slate-950 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500">
         Contact for Availability
       </Link>
     </section>

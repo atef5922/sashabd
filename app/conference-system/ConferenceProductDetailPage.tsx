@@ -2,10 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
-import { normalizeDisplayedPriceText } from "@/lib/price";
 import {
+  CONFERENCE_PRODUCT_TYPE_LABELS,
+  getConferenceConnectionLabel,
   getConferenceProductAvailabilityLabel,
   getConferenceProductPriceNote,
+  getConferenceProductPricePresentation,
   getConferenceProductSpecifications,
   type ConferenceProduct,
 } from "./catalog";
@@ -37,7 +39,23 @@ export default function ConferenceProductDetailPage({
 }: ConferenceProductDetailPageProps) {
   const specifications = getConferenceProductSpecifications(product);
   const priceNote = getConferenceProductPriceNote(product);
+  const price = getConferenceProductPricePresentation(product);
   const availabilityLabel = getConferenceProductAvailabilityLabel(product);
+  const quoteHref = `/contact/?project=conference-system&product=${product.slug}`;
+  const productFacts = [
+    { label: "Brand", value: product.brand?.name },
+    { label: "Model", value: product.model },
+    { label: "Product type", value: product.productTypes.map((type) => CONFERENCE_PRODUCT_TYPE_LABELS[type]).join(", ") },
+    { label: "Connection", value: product.connection ? getConferenceConnectionLabel(product.connection) : undefined },
+    { label: "System family", value: product.systemFamily },
+    { label: "Availability", value: availabilityLabel },
+    { label: "Warranty", value: product.warranty },
+  ].filter((item): item is { label: string; value: string } => Boolean(item.value));
+  const documents = [
+    { label: "Datasheet", href: product.datasheet },
+    { label: "Manual", href: product.manual },
+    { label: "Brochure", href: product.brochure },
+  ].filter((item): item is { label: string; href: string } => Boolean(item.href));
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-8 md:px-6" data-conference-route-kind="product">
@@ -65,11 +83,15 @@ export default function ConferenceProductDetailPage({
           </div>
 
           <h1 className="mt-3 text-2xl font-bold leading-tight text-slate-900 md:text-3xl">{product.name}</h1>
-          <p className="mt-2 text-sm font-semibold text-sky-700">Price: {normalizeDisplayedPriceText(product.price.displayLabel)}</p>
-          {priceNote ? <p className="mt-1 text-xs leading-5 text-slate-500">{priceNote}</p> : null}
-          <p className="mt-2 inline-flex w-fit rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-bold text-amber-800">
-            Availability: {availabilityLabel}
-          </p>
+          <div className="mt-4 rounded-2xl border border-sky-100 bg-sky-50/60 p-4" aria-label="Price and availability">
+            <p className="text-[11px] font-extrabold uppercase tracking-[0.12em] text-sky-800">{price.basisLabel}</p>
+            <p className="mt-1 text-2xl font-extrabold tracking-tight text-slate-950">{price.label}</p>
+            <p className="mt-2 text-xs leading-5 text-slate-600">{priceNote}</p>
+            <dl className="mt-3 flex flex-wrap gap-x-6 gap-y-2 border-t border-sky-100 pt-3 text-xs">
+              <div><dt className="font-semibold text-slate-500">Availability</dt><dd className="mt-0.5 font-extrabold text-slate-900">{availabilityLabel}</dd></div>
+              {price.updatedAt ? <div><dt className="font-semibold text-slate-500">Price last verified</dt><dd className="mt-0.5 font-extrabold text-slate-900"><time dateTime={price.updatedAt}>{price.updatedAt}</time></dd></div> : null}
+            </dl>
+          </div>
           <p className="mt-2 text-sm leading-7 text-slate-700">{product.shortDescription}</p>
 
           <h2 className="mt-4 text-sm font-bold text-slate-900">Key Features</h2>
@@ -93,7 +115,8 @@ export default function ConferenceProductDetailPage({
 
           <div className="mt-auto flex flex-wrap gap-2 pt-5">
             <Link
-              href="/contact/"
+              href={quoteHref}
+              aria-label={`Get quotation for ${product.name}`}
               className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
@@ -119,18 +142,14 @@ export default function ConferenceProductDetailPage({
           <h2 className="text-base font-bold text-slate-900">Product Overview</h2>
           <p className="mt-2 text-sm leading-7 text-slate-700">{product.description}</p>
 
-          <div className="mt-4 grid gap-3 sm:grid-cols-3">
-            {[
-              { k: "Category", v: "Conference System" },
-              { k: "Support", v: "BOQ + Installation" },
-              { k: "Availability", v: availabilityLabel },
-            ].map((item) => (
-              <div key={item.k} className="rounded-xl border bg-slate-50 p-3" style={{ borderColor: "rgba(15,23,42,0.08)" }}>
-                <div className="text-[11px] font-bold uppercase tracking-wide text-slate-500">{item.k}</div>
-                <div className="mt-1 text-sm font-extrabold text-slate-900">{item.v}</div>
+          <dl className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            {productFacts.map((item) => (
+              <div key={item.label} className="rounded-xl border bg-slate-50 p-3" style={{ borderColor: "rgba(15,23,42,0.08)" }}>
+                <dt className="text-[11px] font-bold uppercase tracking-wide text-slate-500">{item.label}</dt>
+                <dd className="mt-1 text-sm font-extrabold text-slate-900">{item.value}</dd>
               </div>
             ))}
-          </div>
+          </dl>
         </div>
 
         <div className="rounded-2xl border bg-white p-4" style={{ borderColor: "rgba(15,23,42,0.1)" }}>
@@ -156,6 +175,21 @@ export default function ConferenceProductDetailPage({
           </div>
         </div>
       </section>
+
+      {documents.length ? (
+        <section className="mt-4 rounded-2xl border bg-white p-4" style={{ borderColor: "rgba(15,23,42,0.1)" }}>
+          <h2 className="text-base font-bold text-slate-900">Official Product Documents</h2>
+          <ul className="mt-3 flex flex-wrap gap-2">
+            {documents.map((document) => (
+              <li key={document.label}>
+                <a href={document.href} target="_blank" rel="noreferrer" className="inline-flex min-h-10 items-center rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-extrabold text-slate-800 hover:border-orange-300 hover:text-orange-700">
+                  View {document.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       {compatibleProducts.length || categoryLinks.length || brandLink ? (
         <section className="mt-4 rounded-2xl border bg-white p-4" style={{ borderColor: "rgba(15,23,42,0.1)" }}>
@@ -245,7 +279,7 @@ export default function ConferenceProductDetailPage({
                 </div>
                 <div className="p-4">
                   <h3 className="text-sm font-extrabold leading-snug text-slate-900 line-clamp-2">{item.name}</h3>
-                  <p className="mt-1 text-xs font-semibold text-sky-700">Price: {normalizeDisplayedPriceText(item.price.displayLabel)}</p>
+                  <p className="mt-1 text-xs font-semibold text-sky-700">{getConferenceProductPricePresentation(item).label}</p>
                 </div>
               </Link>
             ))}
