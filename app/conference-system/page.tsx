@@ -16,6 +16,7 @@ import {
   getConferenceProductCardPrice,
   getConferenceProductCardSpecs,
   getConferenceProductPrimaryImage,
+  type ConferenceProductType,
 } from "./catalog";
 import { conferenceBrandConfigs, conferenceCategoryConfigs, hasConferenceBrandProducts } from "./taxonomy";
 import ConferenceProductExplorer, { type ConferenceExplorerProduct } from "./ConferenceProductExplorer";
@@ -1011,18 +1012,41 @@ export default function ConferenceSystemPage() {
     return {
       slug: product.slug,
       name: product.name,
+      model: product.model,
       brandSlug: product.brand?.slug ?? null,
       brandName: product.brand?.name,
+      productTypes: [...product.productTypes],
+      connection: product.connection ?? null,
+      meetingType: product.systemCategory ?? null,
       productTypeLabel: CONFERENCE_PRODUCT_TYPE_LABELS[product.productTypes[0]],
       connectionLabel: product.connection ? getConferenceConnectionLabel(product.connection) : undefined,
       systemFamily: product.systemFamily,
       keySpecs: getConferenceProductCardSpecs(product),
       price: getConferenceProductCardPrice(product),
+      priceValue:
+        product.price.type === "fixed"
+          ? { type: "fixed" as const, amount: product.price.amount }
+          : product.price.type === "range"
+            ? { type: "range" as const, min: product.price.min, max: product.price.max }
+            : { type: "request" as const },
       availabilityLabel: product.availability ? getConferenceProductAvailabilityLabel(product) : undefined,
       categorySlugs: conferenceCategoryConfigs
         .filter((category) => category.matchProduct(product))
         .map((category) => category.slug),
       image: { src: primaryImage.src, alt: primaryImage.alt },
+      searchText: [
+        product.name,
+        product.model,
+        product.brand?.name,
+        product.productTypes.map((type) => CONFERENCE_PRODUCT_TYPE_LABELS[type]).join(" "),
+        product.connection ? getConferenceConnectionLabel(product.connection) : undefined,
+        product.systemCategory,
+        product.systemFamily,
+        ...product.tags,
+        ...product.specifications.flatMap((specification) => [specification.key, specification.value]),
+      ]
+        .filter(Boolean)
+        .join(" "),
     };
   });
 
@@ -1039,6 +1063,16 @@ export default function ConferenceSystemPage() {
       slug: brand.slug,
       label: brand.name,
       count: conferenceSystemCatalog.filter((product) => product.brand?.slug === brand.slug).length,
+    }))
+    .filter((facet) => facet.count > 0);
+
+  const conferenceExplorerProductTypes = Object.entries(CONFERENCE_PRODUCT_TYPE_LABELS)
+    .map(([slug, label]) => ({
+      slug,
+      label,
+      count: conferenceSystemCatalog.filter((product) =>
+        product.productTypes.includes(slug as ConferenceProductType),
+      ).length,
     }))
     .filter((facet) => facet.count > 0);
 
@@ -1175,6 +1209,7 @@ export default function ConferenceSystemPage() {
           products={conferenceExplorerProducts}
           categories={conferenceExplorerCategories}
           brands={conferenceExplorerBrands}
+          productTypes={conferenceExplorerProductTypes}
         />
 
         <details className="mt-6 rounded-2xl border border-slate-200 bg-white shadow-sm">

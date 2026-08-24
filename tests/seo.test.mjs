@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 
 const root = process.cwd();
 const read = (file) => readFileSync(path.join(root, file), "utf8");
@@ -780,9 +781,10 @@ test("Conference brand catalogs are unique, conference-only, and image-backed", 
   }
 });
 
-test("Conference product explorer filters by category and brand with paged results", () => {
+test("Conference product explorer provides canonical search, multi-filter, sort, query state, and pagination", () => {
   const explorer = read("app/conference-system/ConferenceProductExplorer.tsx");
   const landing = read("app/conference-system/page.tsx");
+  const discovery = read("app/conference-system/conferenceDiscovery.ts");
 
   assert.match(explorer, /^"use client";/);
   assert.match(explorer, /export const CONFERENCE_PRODUCTS_PER_BRAND = 3;/);
@@ -790,12 +792,16 @@ test("Conference product explorer filters by category and brand with paged resul
 
   // Page one leads with the headline brands in order; unbranded stock follows later.
   assert.match(explorer, /export const CONFERENCE_BRAND_ORDER = \["cmx", "toa", "bosch", "spon"\] as const;/);
-  assert.match(explorer, /const pageSize = CONFERENCE_PRODUCTS_PER_BRAND \* CONFERENCE_BRAND_ORDER\.length;/);
-  assert.match(explorer, /return slug \? CONFERENCE_BRAND_ORDER\.length : CONFERENCE_BRAND_ORDER\.length \+ 1;/);
+  assert.match(explorer, /const PAGE_SIZE = CONFERENCE_PRODUCTS_PER_BRAND \* CONFERENCE_BRAND_ORDER\.length;/);
+  assert.match(explorer, /return index >= 0 \? index : slug \? CONFERENCE_BRAND_ORDER\.length : CONFERENCE_BRAND_ORDER\.length \+ 1;/);
   assert.match(explorer, /if \(rank\(slug\) < CONFERENCE_BRAND_ORDER\.length\)/);
-  assert.match(explorer, /product\.categorySlugs\.includes\(category\)/);
-  assert.match(explorer, /product\.brandSlug === brand/);
-  assert.match(explorer, /aria-pressed=\{/);
+  assert.match(explorer, /filterConferenceProducts\(recommendedProducts, state\)/);
+  assert.match(explorer, /sortConferenceProducts\(/);
+  assert.match(explorer, /Search products, models, brands or systems/);
+  assert.match(explorer, /type="checkbox"/);
+  assert.match(explorer, /Active filters/);
+  assert.match(explorer, /Remove \$\{filter\.label\} filter/);
+  assert.match(explorer, /No conference products match your current search and filters/);
   assert.match(explorer, /aria-live="polite"/);
 
   // Numbered pagination, not an incremental "show more" button.
@@ -806,35 +812,50 @@ test("Conference product explorer filters by category and brand with paged resul
   assert.ok(!explorer.includes("Show more"), "incremental show-more paging must be gone");
   assert.ok(!explorer.includes("CONFERENCE_PAGE_SIZE"), "incremental page-size constant must be gone");
 
-  // The facet rail is actually navigable: arrows on desktop, drag anywhere.
-  assert.match(explorer, /aria-label="Scroll filters left"/);
-  assert.match(explorer, /aria-label="Scroll filters right"/);
-  assert.match(explorer, /rail\.scrollBy\(\{ left: direction \*/);
-  assert.match(explorer, /onPointerDown=\{onPointerDown\}/);
-  assert.match(explorer, /rail\.scrollLeft = dragState\.current\.startScroll - delta/);
+  // Query state is validated, reversible and never changes the canonical route.
+  assert.match(discovery, /parseConferenceDiscoveryQuery/);
+  assert.match(discovery, /buildConferenceDiscoveryQuery/);
+  assert.match(explorer, /window\.addEventListener\("popstate", readLocation\)/);
+  assert.match(explorer, /"replaceState"/);
+  assert.ok(!landing.includes("?page="), "the server-rendered hub must not emit faceted query links");
 
-  // Arrows stay inside the rail bounds and only render when that direction can scroll.
-  assert.match(explorer, /\$\{arrowClass\} left-0/);
-  assert.match(explorer, /\$\{arrowClass\} right-0/);
-  assert.ok(!/\$\{arrowClass\} -(?:left|right)-/.test(explorer), "arrows must not hang outside the container");
-  assert.match(explorer, /canScrollLeft \? \(/);
-  assert.match(explorer, /canScrollRight \? \(/);
-
-  // A masked edge fades chips under the arrow instead of chopping them.
-  assert.match(explorer, /const railMask = \(\(\) => \{/);
-  assert.match(explorer, /maskImage: railMask, WebkitMaskImage: railMask/);
-  assert.match(explorer, /paddingRight: canScrollRight \? FADE - 16 : 0/);
-  assert.ok(!explorer.includes("disabled:opacity-0"), "invisible-but-spacing arrows must be gone");
-
-  // Facet chips show the label only - no product counts.
-  assert.ok(!explorer.includes("{facet.count}"), "filter chips must not render product counts");
-  assert.ok(!explorer.includes("countClass"), "count styling helper must be gone");
-
-  // Facets are derived from the taxonomy and only offered when they have stock.
+  // Facets are derived from canonical catalog fields and only offered when populated.
   assert.match(landing, /conferenceCategoryConfigs\s*\.map\(\(category\) => \(\{/);
   assert.match(landing, /conferenceBrandConfigs\s*\.map\(\(brand\) => \(\{/);
-  assert.equal(occurrences(landing, ".filter((facet) => facet.count > 0)"), 2);
+  assert.match(landing, /Object\.entries\(CONFERENCE_PRODUCT_TYPE_LABELS\)/);
+  assert.equal(occurrences(landing, ".filter((facet) => facet.count > 0)"), 3);
   assert.match(landing, /categorySlugs: conferenceCategoryConfigs/);
+});
+
+test("Conference discovery helpers implement deterministic search, filter, price, sort, and URL behavior", async () => {
+  const moduleUrl = pathToFileURL(path.join(root, "app/conference-system/conferenceDiscovery.ts")).href;
+  const discovery = await import(`${moduleUrl}?test=${Date.now()}`);
+  const products = [
+    { slug: "bosch-chair", name: "Bosch Chairman", model: "CCS-CU", brandName: "Bosch", productTypeLabel: "Chairman Unit", searchText: "Bosch CCS-CU Chairman wired", brandSlug: "bosch", productTypes: ["chairman-unit"], connection: "wired", meetingType: "audio", priceValue: { type: "fixed", amount: 72_500 } },
+    { slug: "toa-control", name: "TOA Controller", model: "TS-900", brandName: "TOA", productTypeLabel: "Control Unit", searchText: "TOA TS controller wired", brandSlug: "toa", productTypes: ["control-unit"], connection: "wired", meetingType: "audio", priceValue: { type: "range", min: 118_000, max: 165_000 } },
+    { slug: "cmx-wireless", name: "CMX Wireless Unit", searchText: "CMX wireless chairman", brandSlug: "cmx", productTypes: ["chairman-unit"], connection: "wireless", meetingType: "audio", priceValue: { type: "request" } },
+  ];
+  const state = { ...discovery.EMPTY_CONFERENCE_DISCOVERY_STATE };
+
+  assert.equal(discovery.filterConferenceProducts(products, { ...state, query: "bOsCh  chairman" }).length, 1);
+  assert.equal(discovery.filterConferenceProducts(products, { ...state, query: "CCS-CU" })[0].slug, "bosch-chair");
+  assert.equal(discovery.filterConferenceProducts([...products].reverse(), { ...state, query: "CCS-CU" })[0].slug, "bosch-chair", "exact model match receives deterministic priority");
+  assert.equal(discovery.filterConferenceProducts(products, { ...state, brands: ["bosch", "toa"], connections: ["wired"] }).length, 2, "OR within brand and AND across groups");
+  assert.equal(discovery.filterConferenceProducts(products, { ...state, brands: ["bosch"], productTypes: ["control-unit"] }).length, 0);
+  assert.equal(discovery.priceOverlapsBand(products[1].priceValue, "100k-200k"), true);
+  assert.equal(discovery.priceOverlapsBand(products[2].priceValue, "under-25k"), false, "request price is never numeric zero");
+  assert.deepEqual(discovery.sortConferenceProducts(products, "price-asc").map((item) => item.slug), ["bosch-chair", "toa-control", "cmx-wireless"]);
+  assert.deepEqual(discovery.sortConferenceProducts(products, "price-desc").map((item) => item.slug), ["toa-control", "bosch-chair", "cmx-wireless"]);
+  assert.deepEqual(discovery.sortConferenceProducts(products, "name-asc").map((item) => item.slug), ["bosch-chair", "cmx-wireless", "toa-control"]);
+  assert.deepEqual(discovery.sortConferenceProducts(products, "recommended").map((item) => item.slug), products.map((item) => item.slug));
+
+  const options = { brands: new Set(["bosch", "toa"]), productTypes: new Set(["chairman-unit"]), connections: new Set(["wired"]), meetingTypes: new Set(["audio"]) };
+  const parsed = discovery.parseConferenceDiscoveryQuery(new URLSearchParams("brand=bosch,invalid&type=chairman-unit&connection=random&page=3&sort=name-desc"), options);
+  assert.deepEqual(parsed.brands, ["bosch"]);
+  assert.deepEqual(parsed.connections, []);
+  assert.equal(parsed.page, 3);
+  assert.equal(parsed.sort, "name-desc");
+  assert.equal(discovery.buildConferenceDiscoveryQuery(parsed), "?brand=bosch&type=chairman-unit&sort=name-desc&page=3");
 });
 
 test("Conference product pages emit Product schema and relevance-ranked internal links", () => {
