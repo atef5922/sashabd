@@ -612,7 +612,7 @@ test("Conference cards use canonical structured pricing and one accessible actio
   assert.match(card, /product\.availabilityLabel \?/);
   assert.match(card, /product\.connectionLabel \?/);
   assert.match(card, /product\.systemFamily \?/);
-  assert.doesNotMatch(card, /Compare|wishlist|Limited Stock|Only \d+ left|discount/i);
+  assert.doesNotMatch(card, /wishlist|Limited Stock|Only \d+ left|discount/i);
 
   assert.match(explorer, /<ConferenceProductCard/);
   assert.match(collection, /<ConferenceProductCard/);
@@ -905,6 +905,89 @@ test("Conference landing keeps client discovery payload compact and defers below
   assert.doesNotMatch(explorerProps, /categories=/);
   assert.match(source, /contentVisibility: "auto" as const/);
   assert.match(source, /containIntrinsicSize: "auto 520px"/);
+});
+
+test("Conference comparison engine keeps selection accessible, bounded, persistent, and independent", () => {
+  const card = read("app/conference-system/ConferenceProductCard.tsx");
+  const explorer = read("app/conference-system/ConferenceProductExplorer.tsx");
+
+  assert.match(card, /aria-pressed=\{compareSelected\}/);
+  assert.match(card, /Added to Compare/);
+  assert.match(card, /onCompareToggle\(product\.slug\)/);
+  assert.match(explorer, /sasha-conference-compare/);
+  assert.match(explorer, /window\.sessionStorage/);
+  assert.match(explorer, /You can compare up to 3 products\./);
+  assert.match(explorer, /Compare \(\{selectedCompareProducts\.length\}\)/);
+  assert.match(explorer, /selectedCompareProducts\.length >= 2/);
+  assert.match(explorer, /\/conference-system\/compare\/\?products=/);
+  assert.doesNotMatch(explorer, /updateState\([^)]*compare/i, "comparison selection must remain independent of discovery state");
+});
+
+test("Conference comparison helpers sanitize URL state, enforce three products, and expose honest differences", async () => {
+  const moduleUrl = pathToFileURL(path.join(root, "app/conference-system/conferenceComparison.ts")).href;
+  const comparison = await import(`${moduleUrl}?test=${Date.now()}`);
+  const valid = new Set(["one", "two", "three", "four"]);
+
+  assert.deepEqual(comparison.sanitizeComparisonSlugs("one,two", valid), ["one", "two"]);
+  assert.deepEqual(comparison.sanitizeComparisonSlugs("one,two,three", valid), ["one", "two", "three"]);
+  assert.deepEqual(comparison.sanitizeComparisonSlugs("one,one,invalid,two", valid), ["one", "two"]);
+  assert.deepEqual(comparison.sanitizeComparisonSlugs("invalid", valid), []);
+  assert.deepEqual(comparison.sanitizeComparisonSlugs("one,two,three,four", valid), ["one", "two", "three"]);
+
+  let selection = [];
+  selection = comparison.toggleComparisonSelection(selection, "one").slugs;
+  selection = comparison.toggleComparisonSelection(selection, "two").slugs;
+  selection = comparison.toggleComparisonSelection(selection, "three").slugs;
+  const rejected = comparison.toggleComparisonSelection(selection, "four");
+  assert.deepEqual(selection, ["one", "two", "three"]);
+  assert.equal(rejected.limitReached, true);
+  assert.deepEqual(rejected.slugs, selection);
+  selection = comparison.toggleComparisonSelection(selection, "two").slugs;
+  assert.deepEqual(selection, ["one", "three"], "selected items can be removed");
+  selection = [];
+  assert.deepEqual(selection, [], "selection can be cleared");
+
+  const product = (overrides) => ({
+    slug: "one", name: "Product One", model: "ONE", brand: "Bosch", productTypes: ["Control Unit"],
+    productRole: "System controller", connection: "Wired", meetingType: "Audio", systemFamily: null,
+    participantCapacity: null, price: "৳10,000", priceType: "Exact", availability: "In stock", warranty: null,
+    specifications: [], compatibleProductSlugs: [], image: { src: "/one.webp", alt: "Product One" }, ...overrides,
+  });
+  const products = [
+    product({}),
+    product({ slug: "two", name: "Product Two", model: "TWO", price: "৳10,000 - ৳15,000", priceType: "Range", connection: null, specifications: [{ key: "Power Supply", value: "24V" }] }),
+    product({ slug: "three", name: "Product Three", model: "THREE", price: "Request quotation", priceType: "Request", productTypes: ["Delegate Unit"], specifications: [{ key: "Power Supply", value: "12V" }] }),
+  ];
+  const sections = comparison.buildComparisonSections(products, products);
+  const rows = sections.flatMap((section) => section.rows);
+  assert.deepEqual(rows.find((row) => row.id === "price").values, ["৳10,000", "৳10,000 - ৳15,000", "Request quotation"]);
+  assert.equal(rows.find((row) => row.id === "price").different, true);
+  assert.deepEqual(rows.find((row) => row.id === "connection").values, ["Wired", "Not specified", "Wired"], "partial missing values are disclosed");
+  assert.equal(rows.some((row) => row.id === "warranty"), false, "rows missing for every product are hidden");
+  assert.equal(rows.find((row) => row.label === "Power Supply").different, true);
+  assert.equal(comparison.comparisonHasDifferentProductTypes(products), true);
+  assert.equal(comparison.comparisonHasDifferentProductTypes([products[0], product({ slug: "four" })]), false);
+});
+
+test("Conference compare route is a noindex utility page with canonical URL and safe CTAs", () => {
+  const route = read("app/conference-system/compare/page.tsx");
+  const client = read("app/conference-system/compare/ConferenceCompareClient.tsx");
+  const sitemap = read("app/sitemap.ts");
+
+  assert.match(route, /alternates: \{ canonical: "\/conference-system\/compare\/" \}/);
+  assert.match(route, /robots: \{ index: false, follow: true \}/);
+  assert.match(route, /<h1[^>]*>Compare Conference Products<\/h1>/);
+  assert.match(route, /<Suspense/);
+  assert.doesNotMatch(sitemap, /abs\("\/conference-system\/compare\/"\)/);
+  assert.match(client, /useSearchParams\(\)/);
+  assert.match(client, /Highlight Differences/);
+  assert.match(client, /Different/);
+  assert.match(client, /This comparison includes different product types/);
+  assert.match(client, /overflow-x-auto/);
+  assert.match(client, /sticky left-0/);
+  assert.match(client, /Request Quotation/);
+  assert.match(client, /Talk to an Expert/);
+  assert.doesNotMatch(client, /best product|winner|cheapest/i);
 });
 
 test("Conference discovery helpers implement deterministic search, filter, price, sort, and URL behavior", async () => {
