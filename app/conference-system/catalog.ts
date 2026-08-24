@@ -1,5 +1,7 @@
 import { boschConferenceProducts, cmxConferenceProducts } from "./catalog.brands";
+import { newBoschConferenceProducts } from "./catalog.bosch";
 import { toaConferenceProducts } from "./catalog.toa";
+import { newSponConferenceProducts } from "./catalog.spon";
 import { formatBdtAmount, formatBdtRange } from "../../lib/price";
 
 const CONFERENCE_IMAGE_BASE = "/images/Conference%20system";
@@ -237,7 +239,7 @@ const coreConferenceProducts: ConferenceProduct[] = [
   {
     id: "spon-lcm-6013cv-l-digital-conference-chairman-unit",
     slug: "spon-lcm-6013cv-l-digital-conference-chairman-unit",
-    name: "SPON LCM-6013CV-L Digital Conference Chairman Unit",
+    name: "LCM-6013CV-L",
     model: "LCM-6013CV-L",
     brand: { name: "SPON", slug: "spon" },
     systemCategory: "audio",
@@ -245,33 +247,43 @@ const coreConferenceProducts: ConferenceProduct[] = [
     productTypes: ["chairman-unit"],
     price: { type: "fixed", amount: 21500, currency: "BDT", displayLabel: "৳21,500" },
     availability: "project-order",
-    shortDescription: "Chairman microphone unit for SPON digital conference systems with priority-style meeting control planning.",
+    shortDescription: "Conference microphone chairman unit with tri-band Wi-Fi 6, video tracking, chairman control, and a touch screen.",
     images: [
-      { src: lcm6013cvMain, alt: "SPON LCM-6013CV-L Digital Conference Chairman Unit", primary: true },
+      { src: "/images/conference_system_products/spon_products/LCM-6013CV-L.webp", alt: "SPON LCM-6013CV-L conference microphone chairman unit", primary: true },
+      { src: lcm6013cvMain, alt: "SPON LCM-6013CV-L Digital Conference Chairman Unit" },
       { src: lcm6013cvSide, alt: "SPON LCM-6013CV-L Digital Conference Chairman Unit side view" },
     ],
     compatibleProductIds: ["spon-lcm-6010-digital-conference-system-central-unit", "spon-lcm-6013dv-l-digital-conference-delegate-unit"],
     badge: "Chairman Unit",
-    tags: ["SPON", "Chairman Unit", "Digital Mic"],
+    tags: ["SPON", "Chairman Unit", "Wi-Fi 6", "Video Tracking"],
     keyFeatures: [
-      "Chairman unit for controlling meeting discussion flow",
-      "Desktop gooseneck microphone form factor",
-      "Designed for SPON digital conference system integration",
-      "Useful for boardrooms, council meetings, and seminar tables",
+      "Tri-band Wi-Fi 6",
+      "Video tracking",
+      "Chairman control",
+      "4.3-inch touch screen and speech status indicator",
     ],
     applications: ["Chairperson Desk", "Boardroom", "Council Chamber"],
     specifications: [
       { key: "Brand", value: "SPON" },
       { key: "Model", value: "LCM-6013CV-L" },
-      { key: "Product Type", value: "Digital conference chairman unit" },
+      { key: "Product Type", value: "Conference microphone chairman unit" },
       { key: "Series", value: "SPON LCM digital conference range" },
       { key: "Installation", value: "Tabletop at the chairperson position" },
-      { key: "Microphone Style", value: "Desktop gooseneck conference microphone" },
-      { key: "System Compatibility", value: "SPON digital conference system planning" },
-      { key: "Quotation", value: "Based on system quantity and controller selection" },
+      { key: "Power Supply", value: "Powered by conference central control unit, DC 24V" },
+      { key: "Power Consumption", value: "<=3 W" },
+      { key: "Audio Codec Formats", value: "MP3, PCM, ADPCM" },
+      { key: "Audio Sampling Rate and Bitrate", value: "8 kHz-48 kHz, 16-bit, 8 kbps-320 kbps" },
+      { key: "Signal-to-Noise Ratio", value: ">=83 dB" },
+      { key: "Display", value: "4-inch capacitive touch screen" },
+      { key: "Headphone Output", value: "3.5 mm stereo jack" },
+      { key: "Connectivity", value: "Cat6 network cable" },
+      { key: "Microphone", value: "Gooseneck microphone" },
+      { key: "Interfaces", value: "2 x RJ45 Ethernet ports for connection to the next microphone unit" },
+      { key: "Operating Temperature and Humidity", value: "0°C to +45°C, <=90% RH non-condensing" },
+      { key: "Product Dimensions", value: "168 x 103 x 289 mm" },
     ],
     description:
-      "The SPON LCM-6013CV-L Digital Conference Chairman Unit is planned for the main speaker or chairperson position in a conference system. It helps organize discussion flow alongside delegate units and a central controller. It is a good fit for boardrooms, government meetings, committees, and institutional seminar rooms.",
+      "The LCM-6013CV-L is a conference microphone chairman unit for structured discussion control in boardrooms, council rooms, and institutional meeting spaces. It combines chairman control, video tracking, tri-band Wi-Fi 6 capability, a speech status indicator, and a capacitive touch screen. Cat6 connectivity and dual RJ45 ports support connection within a compatible conference system, while the gooseneck microphone provides a dedicated chairperson speaking position.",
   },
   {
     id: "spon-lcm-6013dv-l-digital-conference-delegate-unit",
@@ -553,7 +565,9 @@ const coreConferenceProducts: ConferenceProduct[] = [
  */
 export const conferenceSystemCatalog: ConferenceProduct[] = [
   ...coreConferenceProducts,
+  ...newSponConferenceProducts,
   ...boschConferenceProducts,
+  ...newBoschConferenceProducts,
   ...cmxConferenceProducts,
   ...toaConferenceProducts,
 ];

@@ -355,6 +355,7 @@ test("Conference System renders one responsive semantic content set", () => {
     "Conference System Applications",
     "Conference System Packages by Room Size",
     "How to Choose the Right Conference System in Bangladesh",
+    "Our Conference System Installations",
     "Why Choose Sasha Corporation for Conference Systems in Bangladesh?",
     "Brands We Work With",
     "Conference System FAQ",
@@ -428,9 +429,23 @@ test("every Conference hub section heading has a consistent relevant icon", () =
 
   assert.match(source, /type ConferenceSectionIcon =/);
   assert.match(source, /function ConferenceSectionTitleIcon\(/);
-  assert.equal(occurrences(source, "<ConferenceSectionTitleIcon icon="), 16);
+  assert.equal(occurrences(source, "<ConferenceSectionTitleIcon icon="), 17);
   assert.match(source, /aria-hidden="true"/);
   assert.match(source, /bg-gradient-to-br from-orange-50 to-white/);
+});
+
+test("Conference installation projects use local images and the required section order", () => {
+  const pageSource = read("app/conference-system/page.tsx");
+  const projectData = read("app/conference-system/conferenceProjects.ts");
+  const chooseIndex = pageSource.indexOf('aria-labelledby="choose-right-conference-system"');
+  const projectsIndex = pageSource.indexOf('aria-labelledby="conference-system-installations"');
+  const whyIndex = pageSource.indexOf('aria-labelledby="why-choose-sasha"');
+
+  assert.ok(chooseIndex >= 0 && projectsIndex > chooseIndex && whyIndex > projectsIndex);
+  assert.equal((projectData.match(/conference_system_projects\/project[123]\.webp/g) ?? []).length, 3);
+  assert.equal(occurrences(pageSource, "Our Conference System Installations"), 1);
+  assert.match(pageSource, /href="\/projects\/"/);
+  assert.match(pageSource, /href="\/contact\/"/);
 });
 
 test("Conference brand showcase separates authorization trust from brand navigation", () => {
@@ -757,9 +772,11 @@ test("Conference category and populated-brand content is unique and complete", (
 
 test("Conference brand catalogs are unique, conference-only, and image-backed", () => {
   const bosch = read("app/conference-system/catalog.brands.ts");
+  const newBosch = read("app/conference-system/catalog.bosch.ts");
   const toa = read("app/conference-system/catalog.toa.ts");
+  const spon = read("app/conference-system/catalog.spon.ts");
   const core = read("app/conference-system/catalog.ts");
-  const all = `${core}\n${bosch}\n${toa}`;
+  const all = `${core}\n${bosch}\n${newBosch}\n${toa}\n${spon}`;
 
   const ids = [...all.matchAll(/^    id: "([^"]+)",$/gm)].map((m) => m[1]);
   const slugs = [...all.matchAll(/^    slug: "([^"]+)",$/gm)].map((m) => m[1]);
@@ -767,7 +784,7 @@ test("Conference brand catalogs are unique, conference-only, and image-backed", 
   const shortDescriptions = [...all.matchAll(/shortDescription:\s*\n?\s*"([^"]{40,})"/g)].map((m) => m[1]);
   const descriptions = [...all.matchAll(/^    description:\s*\n?\s*"([^"]{60,})"/gm)].map((m) => m[1]);
 
-  assert.equal(ids.length, 54, "catalog must expose every verified conference product");
+  assert.equal(ids.length, 69, "catalog must expose every verified conference product");
   assert.equal(new Set(ids).size, ids.length, "product ids must be unique");
   assert.equal(new Set(slugs).size, slugs.length, "product slugs must be unique");
   assert.equal(new Set(names).size, names.length, "product names must be unique");
@@ -779,8 +796,37 @@ test("Conference brand catalogs are unique, conference-only, and image-backed", 
   assert.match(core, /const coreConferenceProducts: ConferenceProduct\[\] = \[/);
   assert.match(
     core,
-    /export const conferenceSystemCatalog: ConferenceProduct\[\] = \[\s*\.\.\.coreConferenceProducts,\s*\.\.\.boschConferenceProducts,\s*\.\.\.cmxConferenceProducts,\s*\.\.\.toaConferenceProducts,\s*\];/,
+    /export const conferenceSystemCatalog: ConferenceProduct\[\] = \[\s*\.\.\.coreConferenceProducts,\s*\.\.\.newSponConferenceProducts,\s*\.\.\.boschConferenceProducts,\s*\.\.\.newBoschConferenceProducts,\s*\.\.\.cmxConferenceProducts,\s*\.\.\.toaConferenceProducts,\s*\];/,
   );
+
+  for (const model of ["CCSD-CL", "LBB 4116/05", "LBB 4116/10", "DCNM-WD", "DCNM-WCH05", "DCNM-HDMIC", "CCSE-CURA-IN", "DCNM-WLIION"]) {
+    assert.match(newBosch, new RegExp(`model: "${model.replaceAll("/", "\\/")}"`), `${model} must be present once`);
+  }
+  for (const excluded of ["LBB 4116/20", "Bosch CCS-900 Wired Ultro Discussion Conference System", "BOSCH CCS 1000 Ultro Discussion System"]) {
+    assert.ok(!newBosch.includes(excluded), `${excluded} must stay excluded until its data is unambiguous`);
+  }
+  for (const file of [
+    "Bosch CCSD-CL Discussion Chairman Unit.webp",
+    "bosch-lbb-4116-05-dcn-extension-cable-5m-in-bd.webp",
+    "bosch-lbb-411610-dcn-extension-cable-10m.webp",
+    "bosch-dcnm-wd-dicentis-wireless-discussion-device-min.webp",
+    "bosch-dcnm-wch05-dicentis-charger-for-5-batteries-min.webp",
+    "bosch-dcnm-hdmic-dicentis-wireless-microphone-min.webp",
+    "bosch-ccse-cura-control-unit-with-recorder-and-amplifier.webp",
+    "Bosch DCNM-WLIION Battery Pack for DCNM-WD.webp",
+  ]) {
+    const relative = path.join("public/images/conference_system_products/bosch_products", file);
+    assert.ok(statSync(path.join(root, relative)).isFile(), `${relative} must exist`);
+  }
+
+  for (const model of ["LCS-8004HTP/LCS-8008HTP/LCS-8016HTP", "LCS-2883A", "LCS-2870D", "LCS-2871D", "LCS-2871-20", "LCS-5203L", "LCM-6013DVW-L"]) {
+    assert.match(spon, new RegExp(`name: "${model.replaceAll("/", "\\/")}"`), `${model} must keep its supplied product name`);
+  }
+  assert.match(core, /name: "LCM-6013CV-L"/);
+  for (const file of ["LCS-800XHTP.webp", "LCS-2883A.webp", "LCS-2870D.webp", "LCS-2871D.webp", "2af217e477.webp", "LCS-5203L.webp", "LCM-6013DVW-L.webp", "LCM-6013CV-L.webp"]) {
+    const relative = path.join("public/images/conference_system_products/spon_products", file);
+    assert.ok(statSync(path.join(root, relative)).isFile(), `${relative} must exist`);
+  }
 
   // PA equipment must not leak into the Conference category.
   for (const paTerm of ["Ceiling Loudspeaker", "Horn Loudspeaker", "Column Loudspeaker", "Mixer Amplifier", "PAVA"]) {
@@ -850,6 +896,17 @@ test("Conference product explorer provides canonical search, multi-filter, sort,
   assert.match(landing, /categorySlugs: conferenceCategoryConfigs/);
 });
 
+test("Conference landing keeps client discovery payload compact and defers below-fold rendering", () => {
+  const source = read("app/conference-system/page.tsx");
+  const explorerProps = sectionBetween(source, "<ConferenceProductExplorer", "/>");
+  const searchIndex = sectionBetween(source, "searchText: [...new Set([", ".filter(Boolean)");
+
+  assert.doesNotMatch(searchIndex, /product\.specifications/);
+  assert.doesNotMatch(explorerProps, /categories=/);
+  assert.match(source, /contentVisibility: "auto" as const/);
+  assert.match(source, /containIntrinsicSize: "auto 520px"/);
+});
+
 test("Conference discovery helpers implement deterministic search, filter, price, sort, and URL behavior", async () => {
   const moduleUrl = pathToFileURL(path.join(root, "app/conference-system/conferenceDiscovery.ts")).href;
   const discovery = await import(`${moduleUrl}?test=${Date.now()}`);
@@ -862,6 +919,8 @@ test("Conference discovery helpers implement deterministic search, filter, price
 
   assert.equal(discovery.filterConferenceProducts(products, { ...state, query: "bOsCh  chairman" }).length, 1);
   assert.equal(discovery.filterConferenceProducts(products, { ...state, query: "CCS-CU" })[0].slug, "bosch-chair");
+  assert.equal(discovery.filterConferenceProducts(products, { ...state, query: "bosch" })[0].slug, "bosch-chair", "brand text is searchable");
+  assert.deepEqual(discovery.filterConferenceProducts(products, { ...state, query: "" }).map((item) => item.slug), products.map((item) => item.slug), "empty search preserves input order");
   assert.equal(discovery.filterConferenceProducts(products, { ...state, brands: ["bosch", "toa"], connections: ["wired"] }).length, 2, "OR within brand and AND across groups");
   assert.equal(discovery.filterConferenceProducts(products, { ...state, brands: ["bosch"], productTypes: ["control-unit"] }).length, 0);
   assert.equal(discovery.priceOverlapsBand(products[1].priceValue, "100k-200k"), true);
@@ -872,10 +931,18 @@ test("Conference discovery helpers implement deterministic search, filter, price
   assert.equal(discovery.priceOverlapsBand({ type: "range", min: 110_000, max: 150_000 }, "100k-200k"), true, "product fully inside selected range matches");
   assert.equal(discovery.priceOverlapsBand({ type: "range", min: 80_000, max: 250_000 }, "100k-200k"), true, "selected range fully inside product range matches");
   assert.equal(discovery.priceOverlapsBand({ type: "range", min: 201_000, max: 225_000 }, "100k-200k"), false, "non-overlapping range does not match");
+  assert.equal(discovery.priceOverlapsBand({ type: "range", min: 165_000, max: 225_000 }, "25k-50k"), false, "distant ranges do not overlap");
   assert.deepEqual(discovery.sortConferenceProducts(products, "price-asc").map((item) => item.slug), ["bosch-chair", "toa-control", "cmx-wireless"]);
   assert.deepEqual(discovery.sortConferenceProducts(products, "price-desc").map((item) => item.slug), ["toa-control", "bosch-chair", "cmx-wireless"]);
   assert.deepEqual(discovery.sortConferenceProducts(products, "name-asc").map((item) => item.slug), ["bosch-chair", "cmx-wireless", "toa-control"]);
+  assert.deepEqual(discovery.sortConferenceProducts(products, "name-desc").map((item) => item.slug), ["toa-control", "cmx-wireless", "bosch-chair"]);
   assert.deepEqual(discovery.sortConferenceProducts(products, "recommended").map((item) => item.slug), products.map((item) => item.slug));
+
+  const equalPriceProducts = [
+    { ...products[0], slug: "first", priceValue: { type: "fixed", amount: 50_000 } },
+    { ...products[0], slug: "second", priceValue: { type: "range", min: 50_000, max: 60_000 } },
+  ];
+  assert.deepEqual(discovery.sortConferenceProducts(equalPriceProducts, "price-asc").map((item) => item.slug), ["first", "second"], "equal numeric keys preserve canonical order");
 
   const options = { brands: new Set(["bosch", "toa"]), productTypes: new Set(["chairman-unit"]), connections: new Set(["wired"]), meetingTypes: new Set(["audio"]) };
   const parsed = discovery.parseConferenceDiscoveryQuery(new URLSearchParams("brand=bosch,invalid&type=chairman-unit&connection=random&page=3&sort=name-desc"), options);
@@ -884,6 +951,14 @@ test("Conference discovery helpers implement deterministic search, filter, price
   assert.equal(parsed.page, 3);
   assert.equal(parsed.sort, "name-desc");
   assert.equal(discovery.buildConferenceDiscoveryQuery(parsed), "?brand=bosch&type=chairman-unit&sort=name-desc&page=3");
+  const malformed = discovery.parseConferenceDiscoveryQuery(new URLSearchParams("page=-10&sort=random&brand=invalid"), options);
+  assert.equal(malformed.page, 1);
+  assert.equal(malformed.sort, "recommended");
+  assert.deepEqual(malformed.brands, []);
+  const paged = discovery.paginateConferenceProducts(products.slice(0, 2), 5, 12);
+  assert.equal(paged.page, 1, "stale pagination returns to page one");
+  assert.equal(paged.totalPages, 1);
+  assert.equal(paged.items.length, 2);
   assert.match(read("app/conference-system/ConferenceProductExplorer.tsx"), /updateState\(\{ \.\.\.state, \.\.\.patch, page: 1 \}/, "search, filter and sort changes reset pagination");
 });
 
