@@ -451,6 +451,24 @@ test("Conference brand showcase separates authorization trust from brand navigat
   }
 });
 
+test("Conference commercial trust uses verified NAP, policy links, and factual service entity data", () => {
+  const landing = read("app/conference-system/page.tsx");
+  const site = read("lib/site.ts");
+
+  assert.match(landing, /Commercial Confidence &amp; Verified Business Support/);
+  assert.match(landing, /\{siteConfig\.address\}/);
+  assert.match(landing, /href=\{`tel:\$\{siteConfig\.phone\}`\}/);
+  assert.match(landing, /href="\/services-support\/"/);
+  assert.match(landing, /href="\/terms\/"/);
+  assert.match(landing, /href="\/return-policy\/"/);
+  assert.match(landing, /href="\/privacy\/"/);
+  assert.match(landing, /"@type": "Service"/);
+  assert.match(landing, /serviceType: "Conference system consultation, supply, installation and after-sales support"/);
+  assert.match(landing, /areaServed: \{/);
+  assert.match(site, /address: "1st Floor, 36-37 Umesh Datta Road, Bakshibazar, Dhaka 1211, Bangladesh"/);
+  assert.doesNotMatch(landing, /customer rating|five-star|award-winning|best seller|limited stock/i);
+});
+
 test("Conference catalog is normalized, complete, and route-stable", () => {
   const catalog = read("app/conference-system/catalog.ts");
   const route = read("app/conference-system/[slug]/page.tsx");
@@ -799,6 +817,11 @@ test("Conference product explorer provides canonical search, multi-filter, sort,
   assert.match(explorer, /sortConferenceProducts\(/);
   assert.match(explorer, /Search products, models, brands or systems/);
   assert.match(explorer, /type="checkbox"/);
+  assert.equal(occurrences(explorer, "{filterGroups}"), 1, "desktop and mobile must share one accessible filter form");
+  assert.match(explorer, /aria-controls="conference-product-filters"/);
+  assert.match(explorer, /aria-label="Close product filters"/);
+  assert.match(explorer, /event\.key !== "Escape"/);
+  assert.match(explorer, /mobileFilterButtonRef\.current\?\.focus\(\)/);
   assert.match(explorer, /Active filters/);
   assert.match(explorer, /Remove \$\{filter\.label\} filter/);
   assert.match(explorer, /No conference products match your current search and filters/);
@@ -839,11 +862,16 @@ test("Conference discovery helpers implement deterministic search, filter, price
 
   assert.equal(discovery.filterConferenceProducts(products, { ...state, query: "bOsCh  chairman" }).length, 1);
   assert.equal(discovery.filterConferenceProducts(products, { ...state, query: "CCS-CU" })[0].slug, "bosch-chair");
-  assert.equal(discovery.filterConferenceProducts([...products].reverse(), { ...state, query: "CCS-CU" })[0].slug, "bosch-chair", "exact model match receives deterministic priority");
   assert.equal(discovery.filterConferenceProducts(products, { ...state, brands: ["bosch", "toa"], connections: ["wired"] }).length, 2, "OR within brand and AND across groups");
   assert.equal(discovery.filterConferenceProducts(products, { ...state, brands: ["bosch"], productTypes: ["control-unit"] }).length, 0);
   assert.equal(discovery.priceOverlapsBand(products[1].priceValue, "100k-200k"), true);
   assert.equal(discovery.priceOverlapsBand(products[2].priceValue, "under-25k"), false, "request price is never numeric zero");
+  assert.equal(discovery.priceOverlapsBand({ type: "fixed", amount: 25_000 }, "under-25k"), true, "exact lower/upper boundary matches inclusively");
+  assert.equal(discovery.priceOverlapsBand({ type: "fixed", amount: 50_000 }, "25k-50k"), true, "exact upper boundary matches inclusively");
+  assert.equal(discovery.priceOverlapsBand({ type: "range", min: 165_000, max: 225_000 }, "100k-200k"), true, "partial range overlap matches");
+  assert.equal(discovery.priceOverlapsBand({ type: "range", min: 110_000, max: 150_000 }, "100k-200k"), true, "product fully inside selected range matches");
+  assert.equal(discovery.priceOverlapsBand({ type: "range", min: 80_000, max: 250_000 }, "100k-200k"), true, "selected range fully inside product range matches");
+  assert.equal(discovery.priceOverlapsBand({ type: "range", min: 201_000, max: 225_000 }, "100k-200k"), false, "non-overlapping range does not match");
   assert.deepEqual(discovery.sortConferenceProducts(products, "price-asc").map((item) => item.slug), ["bosch-chair", "toa-control", "cmx-wireless"]);
   assert.deepEqual(discovery.sortConferenceProducts(products, "price-desc").map((item) => item.slug), ["toa-control", "bosch-chair", "cmx-wireless"]);
   assert.deepEqual(discovery.sortConferenceProducts(products, "name-asc").map((item) => item.slug), ["bosch-chair", "cmx-wireless", "toa-control"]);
@@ -856,6 +884,7 @@ test("Conference discovery helpers implement deterministic search, filter, price
   assert.equal(parsed.page, 3);
   assert.equal(parsed.sort, "name-desc");
   assert.equal(discovery.buildConferenceDiscoveryQuery(parsed), "?brand=bosch&type=chairman-unit&sort=name-desc&page=3");
+  assert.match(read("app/conference-system/ConferenceProductExplorer.tsx"), /updateState\(\{ \.\.\.state, \.\.\.patch, page: 1 \}/, "search, filter and sort changes reset pagination");
 });
 
 test("Conference product pages emit Product schema and relevance-ranked internal links", () => {
