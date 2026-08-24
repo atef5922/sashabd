@@ -394,7 +394,13 @@ export function validateConferenceTaxonomy(): string[] {
     }
   }
 
-  errors.push(...validateConferenceCatalog(conferenceSystemCatalog, RESERVED_CONFERENCE_PRODUCT_SLUGS));
+  errors.push(
+    ...validateConferenceCatalog(
+      conferenceSystemCatalog,
+      RESERVED_CONFERENCE_PRODUCT_SLUGS,
+      conferenceBrandConfigs,
+    ),
+  );
   return errors;
 }
 
