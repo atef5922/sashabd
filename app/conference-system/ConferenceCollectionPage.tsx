@@ -1,17 +1,19 @@
-import Image from "next/image";
 import Link from "next/link";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
-import ProductGridCard from "@/components/products/ProductGridCard";
 import type { BreadcrumbItem } from "@/lib/breadcrumbs";
 import { normalizeDisplayedPriceText } from "@/lib/price";
 import { absoluteUrl } from "@/lib/seo";
 import {
+  CONFERENCE_PRODUCT_TYPE_LABELS,
+  getConferenceConnectionLabel,
   getConferenceProductAvailabilityLabel,
+  getConferenceProductCardPrice,
+  getConferenceProductCardSpecs,
   getConferenceProductPrimaryImage,
   type ConferenceProduct,
-  type ConferenceProductType,
 } from "./catalog";
+import ConferenceProductCard from "./ConferenceProductCard";
 import type { ConferenceCollectionFaq, ConferenceCollectionInfoItem } from "./collectionContent";
 import {
   getConferenceApplications,
@@ -43,24 +45,6 @@ type BrandCollectionProps = {
 type ConferenceCollectionPageProps = CategoryCollectionProps | BrandCollectionProps;
 
 const ACCENT = "#FF6A00";
-
-const productTypeLabels: Record<ConferenceProductType, string> = {
-  "chairman-unit": "Chairman Unit",
-  "delegate-unit": "Delegate Unit",
-  "control-unit": "Control Unit",
-  dsp: "DSP",
-  amplifier: "Amplifier",
-  camera: "Camera",
-  "video-bar": "Video Bar",
-  speakerphone: "Speakerphone",
-  package: "Package",
-  accessory: "Accessory",
-  microphone: "Microphone",
-  charger: "Charger",
-  "access-point": "Access Point",
-  processor: "Processor",
-  other: "Conference System",
-};
 
 function getGridClassName(productCount: number): string {
   if (productCount === 1) return "grid max-w-2xl grid-cols-1 gap-5";
@@ -126,29 +110,20 @@ function ProductGrid({ products }: { products: readonly ConferenceProduct[] }) {
         const image = getConferenceProductPrimaryImage(product);
         const primaryType = product.productTypes[0];
         return (
-          <ProductGridCard
+          <ConferenceProductCard
             key={product.id}
-            href={`/conference-system/${product.slug}/`}
-            title={product.name}
-            image={
-              <Image
-                src={image.src}
-                alt={image.alt}
-                fill
-                sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                className="object-contain p-5 transition duration-300 group-hover:scale-[1.03]"
-              />
-            }
-            imageContainerClassName="bg-slate-50"
-            topLeftBadge={{ text: primaryType ? productTypeLabels[primaryType] : product.badge, tone: "light" }}
-            topRightBadge={product.brand ? { text: product.brand.name, tone: "dark" } : undefined}
-            metaLines={[
-              { text: product.price.displayLabel, className: "mt-1 text-xs font-semibold text-sky-700" },
-              { text: `Availability: ${getConferenceProductAvailabilityLabel(product)}`, className: "mt-1 text-xs font-semibold text-slate-600" },
-            ]}
-            bullets={product.keyFeatures}
-            chips={product.applications}
-            viewDetailsLabel="View details ->"
+            product={{
+              slug: product.slug,
+              name: product.name,
+              brandName: product.brand?.name,
+              productTypeLabel: primaryType ? CONFERENCE_PRODUCT_TYPE_LABELS[primaryType] : product.badge,
+              connectionLabel: product.connection ? getConferenceConnectionLabel(product.connection) : undefined,
+              systemFamily: product.systemFamily,
+              keySpecs: getConferenceProductCardSpecs(product),
+              price: getConferenceProductCardPrice(product),
+              availabilityLabel: product.availability ? getConferenceProductAvailabilityLabel(product) : undefined,
+              image: { src: image.src, alt: image.alt },
+            }}
           />
         );
       })}
@@ -187,7 +162,7 @@ function PriceTable({ title, products }: { title: string; products: readonly Con
                 <td className="px-4 py-3 text-slate-700">{product.brand?.name ?? "Not verified"}</td>
                 <td className="px-4 py-3 text-slate-700">{product.model ?? "Not verified"}</td>
                 <td className="px-4 py-3 text-slate-700">
-                  {product.productTypes.map((type) => productTypeLabels[type]).join(", ")}
+                  {product.productTypes.map((type) => CONFERENCE_PRODUCT_TYPE_LABELS[type]).join(", ")}
                 </td>
                 <td className="px-4 py-3 text-right font-extrabold text-slate-950">
                   {normalizeDisplayedPriceText(product.price.displayLabel)}
@@ -427,7 +402,7 @@ function BrandTemplate({ brand, products, breadcrumbs }: Omit<BrandCollectionPro
             <section className="mt-10 rounded-3xl border border-slate-200 bg-white p-5 md:p-7">
               <SectionHeading eyebrow="Product coverage" title="Available Product Types" />
               <ul className="mt-5 flex flex-wrap gap-2.5">
-                {productTypes.map((type) => <li key={type} className="rounded-full border border-orange-200 bg-orange-50 px-4 py-2 text-sm font-bold text-orange-800">{productTypeLabels[type]}</li>)}
+                {productTypes.map((type) => <li key={type} className="rounded-full border border-orange-200 bg-orange-50 px-4 py-2 text-sm font-bold text-orange-800">{CONFERENCE_PRODUCT_TYPE_LABELS[type]}</li>)}
               </ul>
             </section>
           ) : null}

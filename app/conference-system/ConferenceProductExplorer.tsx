@@ -1,22 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import ProductGridCard from "@/components/products/ProductGridCard";
 import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
+import ConferenceProductCard, { type ConferenceProductCardData } from "./ConferenceProductCard";
 
-export type ConferenceExplorerProduct = {
-  slug: string;
-  name: string;
-  badge: string;
-  priceLabel: string;
-  availabilityLabel: string;
-  keyFeatures: string[];
-  applications: string[];
+export type ConferenceExplorerProduct = ConferenceProductCardData & {
   brandSlug: string | null;
-  brandName: string | null;
   categorySlugs: string[];
-  image: { src: string; alt: string };
 };
 
 export type ConferenceExplorerFacet = { slug: string; label: string; count: number };
@@ -89,12 +79,10 @@ export default function ConferenceProductExplorer({
   products,
   categories,
   brands,
-  accentColor,
 }: {
   products: ConferenceExplorerProduct[];
   categories: ConferenceExplorerFacet[];
   brands: ConferenceExplorerFacet[];
-  accentColor: string;
 }) {
   const [category, setCategory] = useState<string>(ALL);
   const [brand, setBrand] = useState<string>(ALL);
@@ -329,34 +317,10 @@ export default function ConferenceProductExplorer({
           mobileGapClassName="gap-[10px]"
         >
           {shown.map((product, index) => (
-            <ProductGridCard
+            <ConferenceProductCard
               key={product.slug}
-              href={`/conference-system/${product.slug}/`}
-              title={product.name}
-              image={
-                <Image
-                  src={product.image.src}
-                  alt={product.image.alt}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 33vw"
-                  className="object-cover object-center transition duration-300 group-hover:scale-[1.03]"
-                  priority={index === 0}
-                />
-              }
-              imageContainerClassName="bg-slate-100"
-              borderColor={`${accentColor}12`}
-              topLeftBadge={{ text: product.badge, tone: "light" }}
-              topRightBadge={{ text: product.brandName ?? "Conference", tone: "dark" }}
-              metaLines={[
-                { text: product.priceLabel, className: "mt-1 text-sm font-semibold text-sky-700" },
-                { text: `Availability: ${product.availabilityLabel}`, className: "mt-1 text-xs font-semibold text-slate-600" },
-              ]}
-              bullets={product.keyFeatures}
-              chips={product.applications}
-              accentColor={accentColor}
-              contactHref="/contact/"
-              compactMobile
-              viewDetailsLabel="View details ->"
+              product={product}
+              priority={index === 0}
             />
           ))}
         </ResponsiveProductCarousel>

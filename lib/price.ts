@@ -6,6 +6,10 @@ function addTakaPrefix(value: string): string {
   return `${TAKA_SYMBOL}${value}`;
 }
 
+export function formatBdtAmount(amount: number): string {
+  return `${TAKA_SYMBOL}${amount.toLocaleString("en-BD", { maximumFractionDigits: 0 })}`;
+}
+
 export function formatBdtRange([min, max]: readonly [number, number]): string {
   return `${TAKA_SYMBOL}${min.toLocaleString("en-BD")} - ${TAKA_SYMBOL}${max.toLocaleString("en-BD")}`;
 }

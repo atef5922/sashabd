@@ -498,9 +498,9 @@ test("Conference catalog is normalized, complete, and route-stable", () => {
   assert.match(route, /conferenceSystemCatalog\.map\(\(product\) => \(\{ slug: product\.slug \}\)\)/);
   assert.match(route, /path: `\/conference-system\/\$\{slug\}`/);
   const explorer = read("app/conference-system/ConferenceProductExplorer.tsx");
-  assert.match(explorer, /title=\{product\.name\}/);
-  assert.match(landing, /priceLabel: product\.price\.displayLabel/);
-  assert.match(landing, /availabilityLabel: getConferenceProductAvailabilityLabel\(product\)/);
+  assert.match(explorer, /<ConferenceProductCard[\s\S]*?product=\{product\}/);
+  assert.match(landing, /price: getConferenceProductCardPrice\(product\)/);
+  assert.match(landing, /availabilityLabel: product\.availability \? getConferenceProductAvailabilityLabel\(product\) : undefined/);
   assert.match(gallery, /visibleImages\.find/);
   assert.match(detail, /\{specifications\.map\(\(spec\) => \(/);
 });
@@ -554,6 +554,36 @@ test("Conference canonical model supports future discovery without fabricating o
   assert.match(catalog, /inconsistent brand name/);
   assert.match(catalog, /invalid price update date/);
   assert.match(taxonomy, /conferenceBrandConfigs,\s*\),/);
+});
+
+test("Conference cards use canonical structured pricing and one accessible action hierarchy", () => {
+  const catalog = read("app/conference-system/catalog.ts");
+  const price = read("lib/price.ts");
+  const card = read("app/conference-system/ConferenceProductCard.tsx");
+  const explorer = read("app/conference-system/ConferenceProductExplorer.tsx");
+  const collection = read("app/conference-system/ConferenceCollectionPage.tsx");
+
+  assert.match(price, /export function formatBdtAmount\(amount: number\)/);
+  assert.match(catalog, /product\.price\.type === "fixed"[\s\S]*formatBdtAmount\(product\.price\.amount\)/);
+  assert.match(catalog, /product\.price\.type === "range"[\s\S]*formatBdtRange\(\[product\.price\.min, product\.price\.max\]\)/);
+  assert.match(catalog, /label: "Request Price", state: "request"/);
+  assert.match(catalog, /qualifier: "Indicative price"/);
+  assert.match(catalog, /export function getConferenceProductCardSpecs\(/);
+
+  assert.equal(occurrences(card, "View Details"), 1);
+  assert.equal(occurrences(card, "Request Quotation"), 1);
+  assert.ok(!card.includes('className="absolute inset-0 z-10"'));
+  assert.match(card, /aria-label=\{`View details for \$\{product\.name\}`\}/);
+  assert.match(card, /aria-label=\{`Request quotation for \$\{product\.name\}`\}/);
+  assert.match(card, /product\.availabilityLabel \?/);
+  assert.match(card, /product\.connectionLabel \?/);
+  assert.match(card, /product\.systemFamily \?/);
+  assert.doesNotMatch(card, /Compare|wishlist|Limited Stock|Only \d+ left|discount/i);
+
+  assert.match(explorer, /<ConferenceProductCard/);
+  assert.match(collection, /<ConferenceProductCard/);
+  assert.doesNotMatch(explorer, /<ProductGridCard/);
+  assert.doesNotMatch(collection, /<ProductGridCard/);
 });
 
 test("Conference taxonomy registries are unique and collision-protected", () => {
@@ -956,7 +986,8 @@ test("Conference collection templates stay normalized, adaptive, and single-DOM"
   assert.equal((productGrid.match(/products\.map\(\(product\)/g) ?? []).length, 1);
   assert.equal((priceTable.match(/products\.map\(\(product\)/g) ?? []).length, 1);
   assert.match(productGrid, /getConferenceProductPrimaryImage\(product\)/);
-  assert.match(productGrid, /href=\{`\/conference-system\/\$\{product\.slug\}\/`\}/);
+  assert.match(productGrid, /<ConferenceProductCard/);
+  assert.match(productGrid, /slug: product\.slug/);
   assert.match(priceTable, /product\.price\.displayLabel/);
   assert.match(priceTable, /normalizeDisplayedPriceText/);
   assert.doesNotMatch(collection, /const (?:wireless|audio|video|brand)Products\s*=/);
