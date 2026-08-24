@@ -998,7 +998,6 @@ export const metadata: Metadata = {
 export default function ConferenceSystemPage() {
   const catalogReport = getConferenceCatalogIntegrityReport();
   const publishedPriceCount = catalogReport.byPriceType.fixed + catalogReport.byPriceType.range;
-  const representedBrandCount = Object.keys(catalogReport.byBrand).filter((brand) => brand !== "unknown").length;
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -1237,20 +1236,6 @@ export default function ConferenceSystemPage() {
             ))}
           </ul>
         </nav>
-
-        <dl className="mb-4 grid grid-cols-2 gap-2 rounded-2xl border border-slate-200 bg-white p-3 sm:grid-cols-4" aria-label="Conference product catalog summary">
-          {[
-            { label: "Catalogued products", value: catalogReport.totalProducts },
-            { label: "Supported brands", value: representedBrandCount },
-            { label: "Products with price", value: publishedPriceCount },
-            { label: "Project quotation", value: catalogReport.byPriceType.request },
-          ].map((item) => (
-            <div key={item.label} className="rounded-xl bg-slate-50 px-3 py-3">
-              <dt className="text-[11px] font-bold uppercase tracking-wide text-slate-500">{item.label}</dt>
-              <dd className="mt-1 text-xl font-extrabold text-slate-950">{item.value}</dd>
-            </div>
-          ))}
-        </dl>
 
         <ConferenceProductExplorer
           products={conferenceExplorerProducts}
