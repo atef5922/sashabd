@@ -8,6 +8,7 @@ import {
   CONFERENCE_PRICE_BANDS,
   EMPTY_CONFERENCE_DISCOVERY_STATE,
   filterConferenceProducts,
+  paginateConferenceProducts,
   parseConferenceDiscoveryQuery,
   sortConferenceProducts,
   type ConferenceDiscoveryPrice,
@@ -78,7 +79,6 @@ export default function ConferenceProductExplorer({
   productTypes,
 }: {
   products: ConferenceExplorerProduct[];
-  categories: ConferenceExplorerFacet[];
   brands: ConferenceExplorerFacet[];
   productTypes: ConferenceExplorerFacet[];
 }) {
@@ -136,9 +136,10 @@ export default function ConferenceProductExplorer({
     () => sortConferenceProducts(filterConferenceProducts(recommendedProducts, state), state.sort),
     [recommendedProducts, state],
   );
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const safePage = state.page <= totalPages ? state.page : 1;
-  const shown = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+  const { page: safePage, totalPages, items: shown } = useMemo(
+    () => paginateConferenceProducts(filtered, state.page, PAGE_SIZE),
+    [filtered, state.page],
+  );
 
   useEffect(() => {
     if (!hydrated.current || state.page === safePage) return;

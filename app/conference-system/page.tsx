@@ -21,6 +21,7 @@ import {
 } from "./catalog";
 import { conferenceBrandConfigs, conferenceCategoryConfigs, hasConferenceBrandProducts } from "./taxonomy";
 import ConferenceProductExplorer, { type ConferenceExplorerProduct } from "./ConferenceProductExplorer";
+import { conferenceInstallationProjects } from "./conferenceProjects";
 
 const BRAND = { maroon: "#FF6A00", maroonDark: "#E45700" };
 const PAGE_TITLE = "Conference System Price in Bangladesh 2026";
@@ -31,7 +32,11 @@ const ctaClass =
 const sectionClass =
   "mt-4 rounded-3xl border bg-white p-[10px] shadow-sm md:p-8";
 
-const sectionStyle = { borderColor: `${BRAND.maroon}12` };
+const sectionStyle = {
+  borderColor: `${BRAND.maroon}12`,
+  contentVisibility: "auto" as const,
+  containIntrinsicSize: "auto 520px",
+};
 
 function getParityClassName(index: number) {
   return index % 2 === 0
@@ -904,6 +909,7 @@ type ConferenceSectionIcon =
   | "applications"
   | "packages"
   | "guide"
+  | "projects"
   | "service"
   | "faq";
 
@@ -932,6 +938,7 @@ function ConferenceSectionTitleIcon({ icon, compact = false }: { icon: Conferenc
     applications: <><path d="M4 20h16M6 20V8l6-4 6 4v12" /><path d="M9 12h6M9 16h6" /></>,
     packages: <><path d="M4 8l8-4 8 4-8 4-8-4Z" /><path d="M4 8v9l8 4 8-4V8M12 12v9" /></>,
     guide: <><path d="M5 4h10l4 4v12H5z" /><path d="M14 4v5h5M8 13h8M8 17h6" /></>,
+    projects: <><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 16 5-5 4 4 3-3 6 5" /><circle cx="16.5" cy="9" r="1.5" /></>,
     service: <><path d="M4 6h16v10H8l-4 4V6Z" /><path d="M8 10h8M8 13h5" /></>,
     faq: <><circle cx="12" cy="12" r="9" /><path d="M9.8 9a2.4 2.4 0 1 1 3.5 2.2c-.9.5-1.3 1.1-1.3 2" /><path d="M12 17h.01" /></>,
   };
@@ -1053,7 +1060,7 @@ export default function ConferenceSystemPage() {
         .filter((category) => category.matchProduct(product))
         .map((category) => category.slug),
       image: { src: primaryImage.src, alt: primaryImage.alt },
-      searchText: [
+      searchText: [...new Set([
         product.name,
         product.model,
         product.brand?.name,
@@ -1062,8 +1069,7 @@ export default function ConferenceSystemPage() {
         product.systemCategory,
         product.systemFamily,
         ...product.tags,
-        ...product.specifications.flatMap((specification) => [specification.key, specification.value]),
-      ]
+      ])]
         .filter(Boolean)
         .join(" "),
     };
@@ -1226,7 +1232,6 @@ export default function ConferenceSystemPage() {
 
         <ConferenceProductExplorer
           products={conferenceExplorerProducts}
-          categories={conferenceExplorerCategories}
           brands={conferenceExplorerBrands}
           productTypes={conferenceExplorerProductTypes}
         />
@@ -1811,6 +1816,51 @@ export default function ConferenceSystemPage() {
               </a>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-installations">
+        <div className="max-w-5xl">
+          <h2 id="conference-system-installations" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
+            <ConferenceSectionTitleIcon icon="projects" />
+            Our Conference System Installations
+          </h2>
+          <p className="mt-4 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
+            Explore some of our conference system projects delivered for meeting rooms, boardrooms, training facilities,
+            and conference halls in Bangladesh.
+          </p>
+        </div>
+
+        <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {conferenceInstallationProjects.map((project) => (
+            <article key={project.title} className="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+              <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
+                <Image src={project.image} alt={project.imageAlt} fill sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) 50vw, 33vw" className="object-cover" />
+              </div>
+              <div className="flex flex-1 flex-col p-4 md:p-5">
+                <h3 className="text-lg font-extrabold leading-snug text-slate-950">{project.title}</h3>
+                <dl className="mt-4 space-y-2 border-y border-slate-100 py-3 text-[13px] leading-5 text-slate-700">
+                  <div className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-2"><dt className="font-bold text-slate-500">Location</dt><dd>{project.location}</dd></div>
+                  <div className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-2"><dt className="font-bold text-slate-500">Brand / System</dt><dd>{project.brand}</dd></div>
+                  <div className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-2"><dt className="font-bold text-slate-500">Configuration</dt><dd>{project.configuration}</dd></div>
+                  <div className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-2"><dt className="font-bold text-slate-500">Scope</dt><dd>{project.scope}</dd></div>
+                </dl>
+                <p className="mt-3 text-sm leading-6 text-slate-700">{project.description}</p>
+                <Link href="/projects/" aria-label={`View projects related to ${project.title}`} className="mt-auto inline-flex min-h-11 items-center pt-4 text-sm font-extrabold text-orange-700 transition hover:text-orange-600 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45">
+                  View Project <span aria-hidden="true" className="ml-1">-&gt;</span>
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
+          <Link href="/projects/" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45">
+            View All Projects
+          </Link>
+          <Link href="/contact/" className={ctaClass} style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}>
+            Request a Quotation
+          </Link>
         </div>
       </section>
 

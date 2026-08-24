@@ -154,3 +154,15 @@ export function sortConferenceProducts<T extends ConferenceDiscoveryProduct>(
   });
   return indexed.map(({ product }) => product);
 }
+
+export function paginateConferenceProducts<T>(products: readonly T[], requestedPage: number, pageSize: number) {
+  const totalPages = Math.max(1, Math.ceil(products.length / pageSize));
+  const page = Number.isInteger(requestedPage) && requestedPage >= 1 && requestedPage <= totalPages
+    ? requestedPage
+    : 1;
+  return {
+    page,
+    totalPages,
+    items: products.slice((page - 1) * pageSize, page * pageSize),
+  };
+}
