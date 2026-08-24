@@ -10,6 +10,7 @@ export type ConferenceExplorerProduct = {
   name: string;
   badge: string;
   priceLabel: string;
+  availabilityLabel: string;
   keyFeatures: string[];
   applications: string[];
   brandSlug: string | null;
@@ -346,7 +347,10 @@ export default function ConferenceProductExplorer({
               borderColor={`${accentColor}12`}
               topLeftBadge={{ text: product.badge, tone: "light" }}
               topRightBadge={{ text: product.brandName ?? "Conference", tone: "dark" }}
-              metaLines={[{ text: product.priceLabel, className: "mt-1 text-sm font-semibold text-sky-700" }]}
+              metaLines={[
+                { text: product.priceLabel, className: "mt-1 text-sm font-semibold text-sky-700" },
+                { text: `Availability: ${product.availabilityLabel}`, className: "mt-1 text-xs font-semibold text-slate-600" },
+              ]}
               bullets={product.keyFeatures}
               chips={product.applications}
               accentColor={accentColor}

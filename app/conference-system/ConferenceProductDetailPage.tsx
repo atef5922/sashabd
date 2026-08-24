@@ -1,16 +1,15 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { normalizeDisplayedPriceText } from "@/lib/price";
 import {
+  getConferenceProductAvailabilityLabel,
   getConferenceProductPriceNote,
   getConferenceProductSpecifications,
   type ConferenceProduct,
 } from "./catalog";
+import ConferenceProductGallery from "./ConferenceProductGallery";
 
 type ConferenceContextLink = { href: string; label: string };
 
@@ -36,21 +35,9 @@ export default function ConferenceProductDetailPage({
   brandLink = null,
   compatibleProducts = [],
 }: ConferenceProductDetailPageProps) {
-  const [activeImage, setActiveImage] = useState(
-    product.images.find((image) => image.primary)?.src ?? product.images[0].src
-  );
-
-  const specifications = useMemo(() => getConferenceProductSpecifications(product), [product]);
-  const priceNote = useMemo(() => getConferenceProductPriceNote(product), [product]);
-
-  const visibleGallery = useMemo(() => {
-    const seen = new Set<string>();
-    return product.images.filter((image) => {
-      if (seen.has(image.src)) return false;
-      seen.add(image.src);
-      return true;
-    });
-  }, [product.images]);
+  const specifications = getConferenceProductSpecifications(product);
+  const priceNote = getConferenceProductPriceNote(product);
+  const availabilityLabel = getConferenceProductAvailabilityLabel(product);
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-8 md:px-6" data-conference-route-kind="product">
@@ -63,39 +50,7 @@ export default function ConferenceProductDetailPage({
       />
 
       <section className="grid gap-5 rounded-2xl border bg-white p-4 md:grid-cols-[minmax(0,1fr)_minmax(320px,0.9fr)]" style={{ borderColor: "rgba(15,23,42,0.1)" }}>
-        <div className="grid gap-3 sm:grid-cols-[84px_minmax(0,1fr)]">
-          <div className="order-2 flex gap-2 overflow-x-auto sm:order-1 sm:flex-col sm:overflow-visible">
-            {visibleGallery.map((image, index) => (
-              <button
-                key={image.src}
-                type="button"
-                onClick={() => setActiveImage(image.src)}
-                aria-label={`Show product image ${index + 1}`}
-                className="relative h-20 w-20 flex-none overflow-hidden rounded-xl border bg-white shadow-sm transition hover:-translate-y-0.5"
-                style={{ borderColor: activeImage === image.src ? BRAND.maroon : "rgba(15,23,42,0.12)" }}
-              >
-                <Image
-                  src={image.src}
-                  alt={`${image.alt} thumbnail ${index + 1}`}
-                  fill
-                  sizes="80px"
-                  className="object-contain p-2"
-                />
-              </button>
-            ))}
-          </div>
-
-          <div className="order-1 relative aspect-square overflow-hidden rounded-xl bg-white sm:order-2">
-            <Image
-              src={activeImage}
-              alt={product.name}
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-contain p-5 sm:p-8"
-            />
-          </div>
-        </div>
+        <ConferenceProductGallery productName={product.name} images={product.images} />
 
         <div className="flex flex-col">
           <div className="flex flex-wrap gap-2">
@@ -112,6 +67,9 @@ export default function ConferenceProductDetailPage({
           <h1 className="mt-3 text-2xl font-bold leading-tight text-slate-900 md:text-3xl">{product.name}</h1>
           <p className="mt-2 text-sm font-semibold text-sky-700">Price: {normalizeDisplayedPriceText(product.price.displayLabel)}</p>
           {priceNote ? <p className="mt-1 text-xs leading-5 text-slate-500">{priceNote}</p> : null}
+          <p className="mt-2 inline-flex w-fit rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-bold text-amber-800">
+            Availability: {availabilityLabel}
+          </p>
           <p className="mt-2 text-sm leading-7 text-slate-700">{product.shortDescription}</p>
 
           <h2 className="mt-4 text-sm font-bold text-slate-900">Key Features</h2>
@@ -165,7 +123,7 @@ export default function ConferenceProductDetailPage({
             {[
               { k: "Category", v: "Conference System" },
               { k: "Support", v: "BOQ + Installation" },
-              { k: "Availability", v: "Project quotation" },
+              { k: "Availability", v: availabilityLabel },
             ].map((item) => (
               <div key={item.k} className="rounded-xl border bg-slate-50 p-3" style={{ borderColor: "rgba(15,23,42,0.08)" }}>
                 <div className="text-[11px] font-bold uppercase tracking-wide text-slate-500">{item.k}</div>

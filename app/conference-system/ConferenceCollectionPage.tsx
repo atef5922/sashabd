@@ -6,7 +6,12 @@ import ProductGridCard from "@/components/products/ProductGridCard";
 import type { BreadcrumbItem } from "@/lib/breadcrumbs";
 import { normalizeDisplayedPriceText } from "@/lib/price";
 import { absoluteUrl } from "@/lib/seo";
-import { getConferenceProductPrimaryImage, type ConferenceProduct, type ConferenceProductType } from "./catalog";
+import {
+  getConferenceProductAvailabilityLabel,
+  getConferenceProductPrimaryImage,
+  type ConferenceProduct,
+  type ConferenceProductType,
+} from "./catalog";
 import type { ConferenceCollectionFaq, ConferenceCollectionInfoItem } from "./collectionContent";
 import {
   getConferenceApplications,
@@ -137,7 +142,10 @@ function ProductGrid({ products }: { products: readonly ConferenceProduct[] }) {
             imageContainerClassName="bg-slate-50"
             topLeftBadge={{ text: primaryType ? productTypeLabels[primaryType] : product.badge, tone: "light" }}
             topRightBadge={product.brand ? { text: product.brand.name, tone: "dark" } : undefined}
-            metaLines={[{ text: product.price.displayLabel, className: "mt-1 text-xs font-semibold text-sky-700" }]}
+            metaLines={[
+              { text: product.price.displayLabel, className: "mt-1 text-xs font-semibold text-sky-700" },
+              { text: `Availability: ${getConferenceProductAvailabilityLabel(product)}`, className: "mt-1 text-xs font-semibold text-slate-600" },
+            ]}
             bullets={product.keyFeatures}
             chips={product.applications}
             viewDetailsLabel="View details ->"

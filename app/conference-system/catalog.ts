@@ -598,6 +598,12 @@ const AVAILABILITY_LABELS: Readonly<Record<ConferenceAvailability, string>> = {
   contact: "Contact for availability",
 };
 
+export function getConferenceProductAvailabilityLabel(product: ConferenceProduct): string {
+  return product.availability
+    ? AVAILABILITY_LABELS[product.availability]
+    : AVAILABILITY_LABELS.contact;
+}
+
 /**
  * One normalized specification list, used by both the product page table and the
  * Product structured data so the two can never drift apart. Canonical rows come
@@ -629,7 +635,7 @@ export function getConferenceProductSpecifications(
     push(isConnectionProse ? "Compatibility" : spec.key, spec.value);
   }
   push("System Category", product.systemCategory ? SYSTEM_CATEGORY_LABELS[product.systemCategory] : undefined);
-  push("Availability", product.availability ? AVAILABILITY_LABELS[product.availability] : undefined);
+  push("Availability", getConferenceProductAvailabilityLabel(product));
 
   return rows;
 }
