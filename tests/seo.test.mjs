@@ -360,11 +360,76 @@ test("Conference System renders one responsive semantic content set", () => {
   ]) {
     const escaped = heading.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     assert.equal(
-      (source.match(new RegExp(`<h2[^>]*>\\s*${escaped}\\s*</h2>`, "g")) ?? []).length,
+      (source.match(new RegExp(`<h2[^>]*>[\\s\\S]*?${escaped}\\s*</h2>`, "g")) ?? []).length,
       1,
       `${heading} must render from one H2 source`,
     );
   }
+});
+
+test("Conference definition section stays concise with professional body alignment", () => {
+  const source = read("app/conference-system/page.tsx");
+  const section = sectionBetween(
+    source,
+    'aria-labelledby="what-is-conference-system"',
+    '<section id="conference-system-price"',
+  );
+
+  assert.ok(!section.includes("Meeting room audio solution"));
+  assert.ok(!section.includes('className="max-w-5xl"'));
+  assert.match(section, /<div className="w-full">/);
+  assert.match(section, /<h2 id="what-is-conference-system" className="flex items-center gap-3 text-2xl/);
+  assert.match(section, /className="mt-4 w-full"/);
+  assert.match(section, /desktopClassName="w-full"/);
+  assert.match(section, /<p className="w-full text-left text-sm leading-7 text-slate-700 md:text-base md:leading-8">/);
+  assert.ok(!section.includes("text-align-last"));
+});
+
+test("Conference definition and price descriptions share full-width professional typography", () => {
+  const source = read("app/conference-system/page.tsx");
+  const priceSection = sectionBetween(
+    source,
+    '<section id="conference-system-price"',
+    'aria-labelledby="conference-system-components"',
+  );
+
+  assert.match(
+    priceSection,
+    /<p className="mt-4 w-full text-left text-sm leading-7 text-slate-700 md:text-base md:leading-8">/,
+  );
+  assert.ok(!priceSection.includes("text-align-last"));
+});
+
+test("Conference sections avoid redundant eyebrow labels above descriptive H2 headings", () => {
+  const source = read("app/conference-system/page.tsx");
+
+  for (const redundantLabel of [
+    "Conference system equipment",
+    "Conference System Benefits",
+    "Buying Guide",
+    "Why Choose Us",
+  ]) {
+    assert.ok(!source.includes(redundantLabel), `${redundantLabel} eyebrow must be removed`);
+  }
+
+  for (const id of [
+    "conference-system-components",
+    "conference-system-benefits",
+    "choose-right-conference-system",
+    "why-choose-sasha",
+  ]) {
+    assert.match(source, new RegExp(`<h2 id="${id}" className="flex items-center gap-3 text-2xl`));
+  }
+});
+
+test("every Conference hub section heading has a consistent relevant icon", () => {
+  const source = read("app/conference-system/page.tsx");
+
+  assert.match(source, /type ConferenceSectionIcon =/);
+  assert.match(source, /function ConferenceSectionTitleIcon\(/);
+  assert.equal(occurrences(source, "<ConferenceSectionTitleIcon icon="), 16);
+  assert.match(source, /aria-hidden="true"/);
+  assert.match(source, /bg-gradient-to-br from-orange-50 to-white/);
 });
 
 test("Conference catalog is normalized, complete, and route-stable", () => {
@@ -372,6 +437,7 @@ test("Conference catalog is normalized, complete, and route-stable", () => {
   const route = read("app/conference-system/[slug]/page.tsx");
   const landing = read("app/conference-system/page.tsx");
   const detail = read("app/conference-system/ConferenceProductDetailPage.tsx");
+  const gallery = read("app/conference-system/ConferenceProductGallery.tsx");
   const expectedSlugs = [
     "gen-5301p13-conference-microphone-unit",
     "nac-720w-wireless-conference-system",
@@ -416,7 +482,8 @@ test("Conference catalog is normalized, complete, and route-stable", () => {
   const explorer = read("app/conference-system/ConferenceProductExplorer.tsx");
   assert.match(explorer, /title=\{product\.name\}/);
   assert.match(landing, /priceLabel: product\.price\.displayLabel/);
-  assert.match(detail, /product\.images\.find/);
+  assert.match(landing, /availabilityLabel: getConferenceProductAvailabilityLabel\(product\)/);
+  assert.match(gallery, /visibleImages\.find/);
   assert.match(detail, /\{specifications\.map\(\(spec\) => \(/);
 });
 
@@ -695,6 +762,7 @@ test("Conference product explorer filters by category and brand with paged resul
 test("Conference product pages emit Product schema and relevance-ranked internal links", () => {
   const route = read("app/conference-system/[slug]/page.tsx");
   const detail = read("app/conference-system/ConferenceProductDetailPage.tsx");
+  const gallery = read("app/conference-system/ConferenceProductGallery.tsx");
   const catalog = read("app/conference-system/catalog.ts");
 
   // Product / Offer / Brand structured data, priced exactly as the catalog holds it.
@@ -745,6 +813,12 @@ test("Conference product pages emit Product schema and relevance-ranked internal
   assert.match(detail, /getConferenceProductSpecifications\(product\)/);
   assert.match(detail, /\{specifications\.map\(\(spec\) => \(/);
   assert.match(detail, /getConferenceProductPriceNote\(product\)/);
+  assert.ok(!detail.startsWith('"use client";'), "the complete product page must remain a server component");
+  assert.match(detail, /<ConferenceProductGallery productName=\{product\.name\} images=\{product\.images\} \/>/);
+  assert.match(gallery, /^"use client";/);
+  assert.match(gallery, /aria-pressed=\{activeImage === image\.src\}/);
+  assert.match(gallery, /priority/);
+  assert.match(detail, /Availability: \{availabilityLabel\}/);
 
   // Schema identifiers stay honest: slug as sku, model as mpn only when it is one model.
   assert.match(route, /sku: product\.slug/);
@@ -801,6 +875,25 @@ test("Conference landing links every brand badge to its brand route", () => {
   assert.match(badgeSection, /href=\{`\/conference-system\/brands\/\$\{brand\.slug\}\/`\}/);
   assert.match(badgeSection, /href="\/conference-system\/brands\/"/);
   assert.match(badgeSection, /View All Brands/);
+});
+
+test("Conference landing exposes every category and product through server-rendered links", () => {
+  const landing = read("app/conference-system/page.tsx");
+
+  assert.match(landing, /aria-label="Conference system categories"/);
+  assert.match(landing, /conferenceExplorerCategories\.map\(\(category\) => \(/);
+  assert.match(landing, /href=\{`\/conference-system\/\$\{category\.slug\}\/`\}/);
+  assert.match(landing, /Browse the complete product directory/);
+  assert.match(landing, /conferenceSystemCatalog\.map\(\(product\) => \(/);
+  assert.match(landing, /href=\{`\/conference-system\/\$\{product\.slug\}\/`\}/);
+
+  // The same normalized catalog supplies a matching ItemList without creating
+  // pagination URLs or changing the canonical route architecture.
+  assert.match(landing, /const productListJsonLd = \{/);
+  assert.match(landing, /"@type": "ItemList"/);
+  assert.match(landing, /numberOfItems: conferenceSystemCatalog\.length/);
+  assert.match(landing, /JSON\.stringify\(productListJsonLd\)/);
+  assert.ok(!landing.includes("?page="), "the hub must not introduce ungoverned pagination URLs");
 });
 
 test("Conference collection templates stay normalized, adaptive, and single-DOM", () => {

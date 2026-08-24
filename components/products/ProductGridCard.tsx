@@ -31,7 +31,8 @@ function isListingMetaLine(text: string): boolean {
     /^price\s*:/i.test(normalized) ||
     /^pixel pitch\s*:/i.test(normalized) ||
     /^starting from/i.test(normalized) ||
-    /^on request/i.test(normalized)
+    /^on request/i.test(normalized) ||
+    /^availability\s*:/i.test(normalized)
   );
 }
 

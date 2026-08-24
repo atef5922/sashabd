@@ -7,8 +7,12 @@ import FaqAccordion from "@/components/common/FaqAccordion";
 import MobileIntroText from "@/components/common/MobileIntroText";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { normalizeDisplayedPriceText } from "@/lib/price";
-import { socialImageUrl } from "@/lib/seo";
-import { conferenceSystemCatalog, getConferenceProductPrimaryImage } from "./catalog";
+import { absoluteUrl, socialImageUrl } from "@/lib/seo";
+import {
+  conferenceSystemCatalog,
+  getConferenceProductAvailabilityLabel,
+  getConferenceProductPrimaryImage,
+} from "./catalog";
 import { conferenceBrandConfigs, conferenceCategoryConfigs, hasConferenceBrandProducts } from "./taxonomy";
 import ConferenceProductExplorer, { type ConferenceExplorerProduct } from "./ConferenceProductExplorer";
 
@@ -876,6 +880,61 @@ function ChooseSashaIconSvg({ icon }: { icon: ChooseSashaIcon }) {
   }
 }
 
+type ConferenceSectionIcon =
+  | "brand"
+  | "products"
+  | "info"
+  | "price"
+  | "components"
+  | "types"
+  | "audio-video"
+  | "compare"
+  | "benefits"
+  | "applications"
+  | "packages"
+  | "guide"
+  | "service"
+  | "faq";
+
+function ConferenceSectionTitleIcon({ icon, compact = false }: { icon: ConferenceSectionIcon; compact?: boolean }) {
+  const commonProps = {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.8,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    className: compact ? "h-4 w-4" : "h-5 w-5",
+    "aria-hidden": true,
+  };
+
+  const paths: Record<ConferenceSectionIcon, ReactNode> = {
+    brand: <><path d="M4 7h16v12H4z" /><path d="M8 7V5h8v2" /><path d="M8 12h8" /></>,
+    products: <><path d="M4 7l8-4 8 4-8 4-8-4Z" /><path d="M4 7v10l8 4 8-4V7" /><path d="M12 11v10" /></>,
+    info: <><circle cx="12" cy="12" r="9" /><path d="M12 11v6" /><path d="M12 7h.01" /></>,
+    price: <><path d="M7 4h10l3 3v10l-3 3H7l-3-3V7l3-3Z" /><path d="M9 9h4.5a2 2 0 0 1 0 4H10.5a2 2 0 0 0 0 4H15" /><path d="M12 7v2M12 17v2" /></>,
+    components: <><rect x="4" y="5" width="16" height="14" rx="2" /><path d="M8 10h8M8 14h3" /><circle cx="16" cy="14" r="1.5" /></>,
+    types: <><path d="M5 5h6v6H5zM13 5h6v6h-6zM5 13h6v6H5zM13 13h6v6h-6z" /></>,
+    "audio-video": <><rect x="3" y="6" width="12" height="10" rx="2" /><path d="M15 9l5-3v12l-5-3" /><path d="M7 19h6" /></>,
+    compare: <><path d="M7 4v16M17 4v16" /><path d="m4 8 3-3 3 3M14 16l3 3 3-3" /></>,
+    benefits: <><path d="m12 3 2.2 4.5 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L4.8 8.2l5-.7L12 3Z" /></>,
+    applications: <><path d="M4 20h16M6 20V8l6-4 6 4v12" /><path d="M9 12h6M9 16h6" /></>,
+    packages: <><path d="M4 8l8-4 8 4-8 4-8-4Z" /><path d="M4 8v9l8 4 8-4V8M12 12v9" /></>,
+    guide: <><path d="M5 4h10l4 4v12H5z" /><path d="M14 4v5h5M8 13h8M8 17h6" /></>,
+    service: <><path d="M4 6h16v10H8l-4 4V6Z" /><path d="M8 10h8M8 13h5" /></>,
+    faq: <><circle cx="12" cy="12" r="9" /><path d="M9.8 9a2.4 2.4 0 1 1 3.5 2.2c-.9.5-1.3 1.1-1.3 2" /><path d="M12 17h.01" /></>,
+  };
+
+  return (
+    <span
+      aria-hidden="true"
+      className={`${compact ? "h-8 w-8 rounded-lg" : "h-9 w-9 rounded-xl"} inline-flex shrink-0 items-center justify-center border border-orange-200 bg-gradient-to-br from-orange-50 to-white text-orange-600 shadow-sm`}
+    >
+      <svg {...commonProps}>{paths[icon]}</svg>
+    </span>
+  );
+}
+
 export const metadata: Metadata = {
   title: PAGE_TITLE,
   description:
@@ -925,6 +984,18 @@ export default function ConferenceSystemPage() {
       acceptedAnswer: { "@type": "Answer", text: item.a },
     })),
   };
+  const productListJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Conference System Products in Bangladesh",
+    numberOfItems: conferenceSystemCatalog.length,
+    itemListElement: conferenceSystemCatalog.map((product, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: absoluteUrl(`/conference-system/${product.slug}/`),
+      name: product.name,
+    })),
+  };
   // Facets for the product explorer: taxonomy categories and brands that actually have stock.
   const conferenceExplorerProducts: ConferenceExplorerProduct[] = conferenceSystemCatalog.map((product) => {
     const primaryImage = getConferenceProductPrimaryImage(product);
@@ -933,6 +1004,7 @@ export default function ConferenceSystemPage() {
       name: product.name,
       badge: product.badge,
       priceLabel: product.price.displayLabel,
+      availabilityLabel: getConferenceProductAvailabilityLabel(product),
       keyFeatures: product.keyFeatures,
       applications: product.applications,
       brandSlug: product.brand?.slug ?? null,
@@ -1016,7 +1088,8 @@ export default function ConferenceSystemPage() {
         <div className="rounded-2xl border bg-white p-4 shadow-sm md:p-5" style={sectionStyle}>
           <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h2 id="conference-brand-badges-heading" className="text-lg font-extrabold text-slate-950 md:text-xl">
+              <h2 id="conference-brand-badges-heading" className="flex items-center gap-3 text-lg font-extrabold text-slate-950 md:text-xl">
+                <ConferenceSectionTitleIcon icon="brand" compact />
                 Shop Conference Systems by Brand
               </h2>
               <p className="mt-1 text-sm text-slate-600">
@@ -1060,7 +1133,8 @@ export default function ConferenceSystemPage() {
       <section className="mt-4" aria-labelledby="conference-products-heading">
         <div className="mb-4 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h2 id="conference-products-heading" className="text-xl font-extrabold text-slate-950">
+            <h2 id="conference-products-heading" className="flex items-center gap-3 text-xl font-extrabold text-slate-950">
+              <ConferenceSectionTitleIcon icon="products" compact />
               Conference System Products
             </h2>
             <p className="hidden text-sm text-slate-600 md:block">
@@ -1069,28 +1143,72 @@ export default function ConferenceSystemPage() {
           </div>
         </div>
 
+        <nav aria-label="Conference system categories" className="mb-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <p className="text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Browse by system or component</p>
+          <ul className="mt-3 flex flex-wrap gap-2">
+            {conferenceExplorerCategories.map((category) => (
+              <li key={category.slug}>
+                <Link
+                  prefetch={false}
+                  href={`/conference-system/${category.slug}/`}
+                  className="inline-flex min-h-10 items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-[13px] font-bold text-slate-700 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40"
+                >
+                  {category.label}
+                  <span className="text-xs font-semibold text-slate-400">{category.count}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
         <ConferenceProductExplorer
           products={conferenceExplorerProducts}
           categories={conferenceExplorerCategories}
           brands={conferenceExplorerBrands}
           accentColor={BRAND.maroon}
         />
+
+        <details className="mt-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <summary className="cursor-pointer px-5 py-4 text-sm font-extrabold text-slate-900 marker:text-orange-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-500/40">
+            Browse the complete product directory ({conferenceSystemCatalog.length} products)
+          </summary>
+          <div className="border-t border-slate-200 px-5 py-5">
+            <p className="max-w-4xl text-sm leading-6 text-slate-600">
+              Every verified product in the Conference catalog is linked below. Displayed prices are indicative catalog
+              ranges; final availability and project cost depend on the selected system family, quantity, cabling, and
+              installation scope.
+            </p>
+            <ul className="mt-4 grid gap-x-6 gap-y-2 sm:grid-cols-2 lg:grid-cols-3">
+              {conferenceSystemCatalog.map((product) => (
+                <li key={product.slug}>
+                  <Link
+                    prefetch={false}
+                    href={`/conference-system/${product.slug}/`}
+                    className="inline-flex min-h-9 items-center text-sm font-semibold leading-5 text-slate-700 underline-offset-4 hover:text-orange-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40"
+                  >
+                    {product.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </details>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productListJsonLd) }} />
       </section>
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="what-is-conference-system">
-        <div className="max-w-5xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.maroon }}>
-            Meeting room audio solution
-          </p>
-          <h2 id="what-is-conference-system" className="mt-3 text-2xl font-extrabold tracking-tight text-slate-950">
+        <div className="w-full">
+          <h2 id="what-is-conference-system" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
+            <ConferenceSectionTitleIcon icon="info" />
             What is a Conference System?
           </h2>
           <MobileIntroText
             teaser="A conference system is a professional audio communication setup for organized meetings, clearer speech pickup and better discussion control."
-            className="mt-4"
+            className="mt-4 w-full"
+            desktopClassName="w-full"
             singleDom
           >
-            <p className="text-sm leading-7 text-slate-700 text-justify md:text-base md:leading-8">
+            <p className="w-full text-left text-sm leading-7 text-slate-700 md:text-base md:leading-8">
               A conference system is a professional audio communication solution used for meetings, boardrooms, seminar
               rooms, training centers, government offices, corporate offices, hotels, educational institutions, and
               conference halls. It includes chairman units, delegate units, a control unit, wireless microphones, DSP
@@ -1101,29 +1219,30 @@ export default function ConferenceSystemPage() {
       </section>
 
       <section id="conference-system-price" className={`${sectionClass} scroll-mt-24`} style={sectionStyle} aria-labelledby="conference-system-price-heading">
-        <h2 id="conference-system-price-heading" className="text-2xl font-extrabold tracking-tight text-slate-950">
+        <h2 id="conference-system-price-heading" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
+          <ConferenceSectionTitleIcon icon="price" />
           Conference System Price in Bangladesh
         </h2>
-        <p className="mt-4 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
+        <p className="mt-4 w-full text-left text-sm leading-7 text-slate-700 md:text-base md:leading-8">
           Conference system price in Bangladesh varies by product model, microphone quantity, system type, brand,
           control unit, processor, speaker coverage, installation complexity, and service support. The table below
           lists Sasha Corporation conference system products with direct product links for easier comparison.
         </p>
-        <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200">
+        <div className="mt-6 overflow-hidden rounded-2xl border border-orange-200/80 bg-white">
           <table className="w-full border-collapse text-left text-sm">
-            <thead className="hidden bg-slate-50 text-slate-950 md:table-header-group">
+            <thead className="hidden bg-gradient-to-r from-slate-900 via-slate-800 to-sky-800 text-white md:table-header-group">
               <tr>
-                <th className="w-[34%] border-r border-slate-200 px-4 py-3 font-extrabold">Product Name</th>
-                <th className="w-[12%] border-r border-slate-200 px-4 py-3 font-extrabold">Brand</th>
-                <th className="w-[16%] border-r border-slate-200 px-4 py-3 font-extrabold">Product Type</th>
-                <th className="w-[22%] border-r border-slate-200 px-4 py-3 font-extrabold">Best For</th>
+                <th className="w-[34%] border-r border-white/25 px-4 py-3.5 font-extrabold">Product Name</th>
+                <th className="w-[12%] border-r border-white/25 px-4 py-3.5 font-extrabold">Brand</th>
+                <th className="w-[16%] border-r border-white/25 px-4 py-3.5 font-extrabold">Product Type</th>
+                <th className="w-[22%] border-r border-white/25 px-4 py-3.5 font-extrabold">Best For</th>
                 <th className="w-[16%] px-4 py-3 text-right font-extrabold">Price</th>
               </tr>
             </thead>
             <tbody className="block divide-y divide-slate-200 md:table-row-group">
               {conferencePriceTableProducts.map((product) => (
-                <tr key={product.slug} className="block align-top md:table-row">
-                  <td className="block px-4 py-4 md:table-cell md:border-r md:border-slate-200 md:py-3">
+                <tr key={product.slug} className="block bg-white align-top transition-colors md:table-row md:even:bg-sky-50/45 md:hover:bg-orange-50/65">
+                  <td className="block border-l-4 border-orange-500 px-4 py-4 md:table-cell md:border-l-0 md:border-r md:border-slate-200 md:py-3">
                     <Link
                       href={`/conference-system/${product.slug}/`}
                       className="block break-words font-extrabold leading-6 text-slate-950 underline-offset-4 transition hover:text-orange-600 hover:underline"
@@ -1131,20 +1250,20 @@ export default function ConferenceSystemPage() {
                       {product.name}
                     </Link>
                     <p className="mt-1 text-xs leading-5 text-slate-500">{product.shortDescription}</p>
-                    <div className="mt-3 grid gap-2 md:hidden">
-                      <div className="flex items-start justify-between gap-4 rounded-xl bg-slate-50 px-3 py-2">
+                    <div className="mt-3 grid gap-3 md:hidden">
+                      <div className="flex items-start justify-between gap-4">
                         <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">Brand</span>
                         <span className="text-right text-xs font-bold text-slate-800">{product.brand?.name ?? "Sasha"}</span>
                       </div>
-                      <div className="flex items-start justify-between gap-4 rounded-xl bg-slate-50 px-3 py-2">
+                      <div className="flex items-start justify-between gap-4">
                         <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">Type</span>
                         <span className="text-right text-xs font-bold text-slate-800">{product.badge}</span>
                       </div>
-                      <div className="rounded-xl bg-slate-50 px-3 py-2">
+                      <div>
                         <span className="block text-xs font-extrabold uppercase tracking-wide text-slate-500">Best For</span>
                         <span className="mt-1 block text-xs leading-5 text-slate-700">{product.applications.join(", ")}</span>
                       </div>
-                      <div className="flex items-center justify-between gap-4 rounded-xl bg-orange-50 px-3 py-2">
+                      <div className="flex items-center justify-between gap-4">
                         <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">Price</span>
                         <span className="text-right text-sm font-extrabold text-slate-950">{normalizeDisplayedPriceText(product.price.displayLabel)}</span>
                       </div>
@@ -1153,8 +1272,10 @@ export default function ConferenceSystemPage() {
                   <td className="hidden px-4 py-3 font-semibold text-slate-800 md:table-cell md:border-r md:border-slate-200">{product.brand?.name ?? "Sasha"}</td>
                   <td className="hidden px-4 py-3 font-semibold text-slate-800 md:table-cell md:border-r md:border-slate-200">{product.badge}</td>
                   <td className="hidden px-4 py-3 text-slate-700 md:table-cell md:border-r md:border-slate-200">{product.applications.join(", ")}</td>
-                  <td className="hidden px-4 py-3 text-right font-bold text-slate-900 md:table-cell">
-                    {normalizeDisplayedPriceText(product.price.displayLabel)}
+                  <td className="hidden px-4 py-3 text-right md:table-cell">
+                    <span className="font-extrabold text-slate-800">
+                      {normalizeDisplayedPriceText(product.price.displayLabel)}
+                    </span>
                   </td>
                 </tr>
               ))}
@@ -1170,10 +1291,8 @@ export default function ConferenceSystemPage() {
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-components">
         <div className="max-w-5xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.maroon }}>
-            Conference system equipment
-          </p>
-          <h2 id="conference-system-components" className="mt-3 text-2xl font-extrabold tracking-tight text-slate-950">
+          <h2 id="conference-system-components" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
+            <ConferenceSectionTitleIcon icon="components" />
             Key Components of a Conference System
           </h2>
           <MobileIntroText
@@ -1224,7 +1343,8 @@ export default function ConferenceSystemPage() {
       </section>
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="types-of-conference-systems">
-        <h2 id="types-of-conference-systems" className="text-2xl font-extrabold tracking-tight text-slate-950">
+        <h2 id="types-of-conference-systems" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
+          <ConferenceSectionTitleIcon icon="types" />
           Types of Conference Systems
         </h2>
         <MobileIntroText
@@ -1249,7 +1369,8 @@ export default function ConferenceSystemPage() {
       </section>
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="choose-your-conference-system">
-        <h2 id="choose-your-conference-system" className="text-2xl font-extrabold tracking-tight text-slate-950">
+        <h2 id="choose-your-conference-system" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
+          <ConferenceSectionTitleIcon icon="audio-video" />
           Choose Your Conference System
         </h2>
         <MobileIntroText
@@ -1298,26 +1419,26 @@ export default function ConferenceSystemPage() {
           </div>
         </div>
 
-        <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200">
+        <div className="mt-6 overflow-hidden rounded-2xl border border-orange-200/80 bg-white">
           <table className="w-full border-collapse text-left text-sm">
-            <thead className="hidden bg-slate-50 text-slate-950 md:table-header-group">
+            <thead className="hidden bg-gradient-to-r from-slate-900 via-slate-800 to-sky-800 text-white md:table-header-group">
               <tr>
-                <th className="w-[24%] border-r border-slate-200 px-4 py-3 font-extrabold">Feature</th>
-                <th className="w-[38%] border-r border-slate-200 px-4 py-3 font-extrabold">Audio Conference</th>
-                <th className="w-[38%] px-4 py-3 font-extrabold">Video Conference</th>
+                <th className="w-[24%] border-r border-white/15 px-4 py-3.5 font-extrabold">Feature</th>
+                <th className="w-[38%] border-r border-white/15 px-4 py-3.5 font-extrabold">Audio Conference</th>
+                <th className="w-[38%] px-4 py-3.5 font-extrabold">Video Conference</th>
               </tr>
             </thead>
             <tbody className="block divide-y divide-slate-200 md:table-row-group">
               {audioVsVideoComparisonRows.map((row) => (
-                <tr key={row[0]} className="block md:table-row">
-                  <td className="block px-4 py-4 font-extrabold text-slate-950 md:table-cell md:border-r md:border-slate-200 md:py-3">
+                <tr key={row[0]} className="block bg-white transition-colors md:table-row md:even:bg-sky-50/45 md:hover:bg-orange-50/65">
+                  <td className="block border-l-4 border-orange-500 px-4 py-4 font-extrabold text-slate-950 md:table-cell md:border-l-0 md:border-r md:border-slate-200 md:py-3">
                     {row[0]}
                   </td>
-                  <td className="block px-4 py-0 pb-4 text-slate-700 md:table-cell md:border-r md:border-slate-200 md:px-4 md:py-3">
+                  <td className="block px-4 py-3 text-slate-700 md:table-cell md:border-r md:border-slate-200 md:px-4 md:py-3">
                     <div className="text-xs font-extrabold uppercase tracking-wide text-slate-500 md:hidden">Audio Conference</div>
                     <div className="mt-1 md:mt-0">{row[1]}</div>
                   </td>
-                  <td className="block px-4 py-0 pb-4 text-slate-700 md:table-cell md:px-4 md:py-3">
+                  <td className="block px-4 py-3 text-slate-700 md:table-cell md:px-4 md:py-3">
                     <div className="text-xs font-extrabold uppercase tracking-wide text-slate-500 md:hidden">Video Conference</div>
                     <div className="mt-1 md:mt-0">{row[2]}</div>
                   </td>
@@ -1329,7 +1450,8 @@ export default function ConferenceSystemPage() {
       </section>
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="wired-vs-wireless-conference-system">
-        <h2 id="wired-vs-wireless-conference-system" className="text-2xl font-extrabold tracking-tight text-slate-950">
+        <h2 id="wired-vs-wireless-conference-system" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
+          <ConferenceSectionTitleIcon icon="compare" />
           Wired vs Wireless Conference System
         </h2>
         <MobileIntroText
@@ -1380,10 +1502,8 @@ export default function ConferenceSystemPage() {
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-benefits">
         <div className="max-w-5xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.maroon }}>
-            Conference System Benefits
-          </p>
-          <h2 id="conference-system-benefits" className="mt-3 text-2xl font-extrabold tracking-tight text-slate-950">
+          <h2 id="conference-system-benefits" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
+            <ConferenceSectionTitleIcon icon="benefits" />
             Key Benefits of a Professional Conference System
           </h2>
           <MobileIntroText
@@ -1440,7 +1560,8 @@ export default function ConferenceSystemPage() {
       </section>
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-applications">
-        <h2 id="conference-system-applications" className="text-2xl font-extrabold tracking-tight text-slate-950">
+        <h2 id="conference-system-applications" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
+          <ConferenceSectionTitleIcon icon="applications" />
           Conference System Applications
         </h2>
         <MobileIntroText
@@ -1463,7 +1584,8 @@ export default function ConferenceSystemPage() {
       <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-packages">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div className="max-w-4xl">
-            <h2 id="conference-system-packages" className="text-2xl font-extrabold tracking-tight text-slate-950">
+            <h2 id="conference-system-packages" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
+              <ConferenceSectionTitleIcon icon="packages" />
               Conference System Packages by Room Size
             </h2>
             <MobileIntroText
@@ -1527,10 +1649,8 @@ export default function ConferenceSystemPage() {
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="choose-right-conference-system">
         <div className="max-w-5xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.maroon }}>
-            Buying Guide
-          </p>
-          <h2 id="choose-right-conference-system" className="mt-3 text-2xl font-extrabold tracking-tight text-slate-950">
+          <h2 id="choose-right-conference-system" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
+            <ConferenceSectionTitleIcon icon="guide" />
             How to Choose the Right Conference System in Bangladesh
           </h2>
           <MobileIntroText
@@ -1559,38 +1679,41 @@ export default function ConferenceSystemPage() {
           />
         </div>
 
-        <div className="mt-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <div className="border-b border-slate-200 px-5 py-4 md:px-6">
-            <h3 className="text-lg font-extrabold text-slate-950">Quick Selection Guide for Conference Systems</h3>
+        <div className="mt-6 overflow-hidden rounded-2xl border border-orange-200/80 bg-white">
+          <div className="border-b border-orange-200 bg-gradient-to-r from-orange-50 via-amber-50 to-sky-50 px-5 py-4 md:px-6">
+            <h3 className="flex items-center gap-3 text-lg font-extrabold text-slate-950">
+              <ConferenceSectionTitleIcon icon="guide" compact />
+              Quick Selection Guide for Conference Systems
+            </h3>
           </div>
           <div className="overflow-hidden">
             <table className="w-full border-collapse text-left text-sm">
-              <thead className="hidden bg-slate-50 text-slate-950 md:table-header-group">
+              <thead className="hidden bg-gradient-to-r from-slate-900 via-slate-800 to-sky-800 text-white md:table-header-group">
                 <tr>
-                  <th className="px-4 py-3 font-extrabold">Room Type</th>
-                  <th className="px-4 py-3 font-extrabold">Participants</th>
-                  <th className="px-4 py-3 font-extrabold">Recommended System</th>
-                  <th className="px-4 py-3 font-extrabold">Best Choice</th>
+                  <th className="border-r border-white/15 px-4 py-3.5 font-extrabold">Room Type</th>
+                  <th className="border-r border-white/15 px-4 py-3.5 font-extrabold">Participants</th>
+                  <th className="border-r border-white/15 px-4 py-3.5 font-extrabold">Recommended System</th>
+                  <th className="px-4 py-3.5 font-extrabold">Best Choice</th>
                 </tr>
               </thead>
               <tbody className="block divide-y divide-slate-200 md:table-row-group">
                 {conferenceSelectionGuideRows.map((row) => (
-                  <tr key={row[0]} className="block md:table-row">
-                    <td className="block px-4 py-4 md:table-cell md:py-3">
+                  <tr key={row[0]} className="block bg-white transition-colors md:table-row md:even:bg-sky-50/45 md:hover:bg-orange-50/65">
+                    <td className="block border-l-4 border-orange-500 px-4 py-4 md:table-cell md:border-l-0 md:border-r md:border-slate-200 md:py-3">
                       <div className="text-xs font-extrabold uppercase tracking-wide text-slate-500 md:hidden">Room Type</div>
                       <div className="font-extrabold text-slate-950">{row[0]}</div>
                     </td>
-                    <td className="block px-4 py-0 pb-4 md:table-cell md:px-4 md:py-3">
+                    <td className="block px-4 py-0 pb-4 md:table-cell md:border-r md:border-slate-200 md:px-4 md:py-3">
                       <div className="text-xs font-extrabold uppercase tracking-wide text-slate-500 md:hidden">Participants</div>
-                      <div className="mt-1 md:mt-0 text-slate-700">{row[1]}</div>
+                      <div className="mt-1 font-semibold text-slate-700 md:mt-0">{row[1]}</div>
                     </td>
-                    <td className="block px-4 py-0 pb-4 md:table-cell md:px-4 md:py-3">
+                    <td className="block px-4 py-0 pb-4 md:table-cell md:border-r md:border-slate-200 md:px-4 md:py-3">
                       <div className="text-xs font-extrabold uppercase tracking-wide text-slate-500 md:hidden">Recommended System</div>
                       <div className="mt-1 md:mt-0 text-slate-700">{row[2]}</div>
                     </td>
                     <td className="block px-4 py-0 pb-4 md:table-cell md:px-4 md:py-3">
                       <div className="text-xs font-extrabold uppercase tracking-wide text-slate-500 md:hidden">Best Choice</div>
-                      <div className="mt-1 md:mt-0 text-slate-700">{row[3]}</div>
+                      <div className="mt-1 font-semibold text-slate-700 md:mt-0">{row[3]}</div>
                     </td>
                   </tr>
                 ))}
@@ -1630,10 +1753,8 @@ export default function ConferenceSystemPage() {
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="why-choose-sasha">
         <div className="max-w-5xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: BRAND.maroon }}>
-            Why Choose Us
-          </p>
-          <h2 id="why-choose-sasha" className="mt-3 text-2xl font-extrabold tracking-tight text-slate-950">
+          <h2 id="why-choose-sasha" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
+            <ConferenceSectionTitleIcon icon="service" />
             Why Choose Sasha Corporation for Conference Systems in Bangladesh?
           </h2>
           <MobileIntroText
@@ -1712,16 +1833,15 @@ export default function ConferenceSystemPage() {
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-brand-showcase">
         <div className="text-center">
-          <h2 id="conference-brand-showcase" className="text-2xl font-extrabold tracking-tight text-slate-950">
+          <h2 id="conference-brand-showcase" className="flex items-center justify-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
+            <ConferenceSectionTitleIcon icon="brand" />
             Brands We Work With
           </h2>
           <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-            Sasha Corporation supplies and supports Bosch, TOA, SPON, and CMX conference systems in Bangladesh. We
-            offer genuine conference microphones, chairman and delegate units, control units, DSP processors,
-            amplifiers, and wireless conference equipment with professional consultation, installation support, and
-            after-sales service. Depending on room size, participant capacity, and budget, our team helps clients
-            select the most suitable conference system for boardrooms, government offices, institutions, and
-            commercial projects.
+            Sasha Corporation&apos;s verified Conference catalog currently includes Bosch, TOA, SPON, and CMX products.
+            The listed ranges cover conference microphones, chairman and delegate units, control units, DSP processors,
+            amplifiers, and wireless conference equipment. Product selection and project recommendations are based on
+            room size, participant capacity, compatible system families, installation scope, and confirmed availability.
           </p>
         </div>
         <div className="-mx-0.5 mt-8 flex snap-x snap-mandatory items-stretch gap-3 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:snap-none md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-4">
@@ -1748,7 +1868,8 @@ export default function ConferenceSystemPage() {
       <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-faq">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div className="max-w-4xl">
-            <h2 id="conference-system-faq" className="text-2xl font-extrabold tracking-tight text-slate-950">
+            <h2 id="conference-system-faq" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
+              <ConferenceSectionTitleIcon icon="faq" />
               Conference System FAQ
             </h2>
             <p className="mt-4 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
