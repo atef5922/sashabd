@@ -8,6 +8,8 @@ import ConferenceProductCard, { type ConferenceProductCardData } from "./Confere
 import { toggleComparisonSelection } from "./conferenceComparison";
 import {
   buildConferenceDiscoveryQuery,
+  CONFERENCE_MAX_CUSTOM_PRICE,
+  CONFERENCE_RESULT_LIMITS,
   CONFERENCE_PRICE_BANDS,
   EMPTY_CONFERENCE_DISCOVERY_STATE,
   filterConferenceProducts,
@@ -25,11 +27,13 @@ export type ConferenceExplorerProduct = ConferenceProductCardData & {
   productTypes: string[];
   connection: string | null;
   meetingType: string | null;
+  availability: string | null;
   priceValue: ConferenceDiscoveryPrice;
   categorySlugs: string[];
 };
 
 export type ConferenceExplorerFacet = { slug: string; label: string; count: number };
+type ConferenceFilterGroup = "brands" | "productTypes" | "connections" | "meetingTypes" | "availabilities" | "priceBands";
 export const CONFERENCE_PRODUCTS_PER_BRAND = 3;
 export const CONFERENCE_BRAND_ORDER = ["cmx", "toa", "bosch", "spon"] as const;
 const PAGE_SIZE = CONFERENCE_PRODUCTS_PER_BRAND * CONFERENCE_BRAND_ORDER.length;
@@ -101,6 +105,7 @@ export default function ConferenceProductExplorer({
     productTypes: new Set(productTypes.map((facet) => facet.slug)),
     connections: new Set(products.flatMap((product) => product.connection ? [product.connection] : [])),
     meetingTypes: new Set(products.flatMap((product) => product.meetingType ? [product.meetingType] : [])),
+    availabilities: new Set(products.flatMap((product) => product.availability ? [product.availability] : [])),
   }), [brands, productTypes, products]);
 
   const readLocation = useCallback(() => {
@@ -170,9 +175,12 @@ export default function ConferenceProductExplorer({
     [recommendedProducts, state],
   );
   const { page: safePage, totalPages, items: shown } = useMemo(
-    () => paginateConferenceProducts(filtered, state.page, PAGE_SIZE),
-    [filtered, state.page],
+    () => paginateConferenceProducts(filtered, state.page, state.pageSize),
+    [filtered, state.page, state.pageSize],
   );
+
+  const facetCount = (group: ConferenceFilterGroup, value: string) =>
+    filterConferenceProducts(recommendedProducts, { ...state, [group]: [value], page: 1 }).length;
 
   useEffect(() => {
     if (!hydrated.current || state.page === safePage) return;
@@ -189,21 +197,48 @@ export default function ConferenceProductExplorer({
     ...state.productTypes.map((value) => ({ group: "productTypes" as const, value, label: productTypes.find((item) => item.slug === value)?.label ?? value })),
     ...state.connections.map((value) => ({ group: "connections" as const, value, label: value[0].toUpperCase() + value.slice(1) })),
     ...state.meetingTypes.map((value) => ({ group: "meetingTypes" as const, value, label: `${value[0].toUpperCase() + value.slice(1)} Conference` })),
+    ...state.availabilities.map((value) => ({ group: "availabilities" as const, value, label: value === "in-stock" ? "In stock" : value === "project-order" ? "Project order" : "Contact for availability" })),
     ...state.priceBands.map((value) => ({ group: "priceBands" as const, value, label: CONFERENCE_PRICE_BANDS.find((item) => item.id === value)?.label ?? value })),
   ];
-  const activeCount = activeFilters.length;
+  const customPriceActive = state.minPrice !== null || state.maxPrice !== null;
+  const customPriceInvalid = state.minPrice !== null && state.maxPrice !== null && state.minPrice > state.maxPrice;
+  const customPriceLabel = customPriceActive
+    ? `${state.minPrice === null ? "Any" : `৳${state.minPrice.toLocaleString("en-BD")}`} – ${state.maxPrice === null ? "Any" : `৳${state.maxPrice.toLocaleString("en-BD")}`}`
+    : "";
+  const activeCount = activeFilters.length + (customPriceActive ? 1 : 0);
+
+  const changeCustomPrice = (field: "minPrice" | "maxPrice", rawValue: string) => {
+    const numericValue = rawValue === "" ? null : Number(rawValue);
+    const nextValue = numericValue !== null && Number.isSafeInteger(numericValue) && numericValue >= 0 && numericValue <= CONFERENCE_MAX_CUSTOM_PRICE
+      ? numericValue
+      : null;
+    changeFilters({
+      [field]: nextValue,
+      ...(nextValue !== null ? { priceBands: state.priceBands.filter((band) => band !== "request") } : {}),
+    }, "replace");
+  };
+
+  const toggleFilterValue = (group: ConferenceFilterGroup, value: string) => {
+    const nextValues = toggleValue(state[group], value);
+    if (group === "priceBands" && value === "request" && nextValues.includes("request")) {
+      changeFilters({ priceBands: nextValues, minPrice: null, maxPrice: null });
+      return;
+    }
+    changeFilters({ [group]: nextValues });
+  };
 
   const filterCheckbox = (
-    group: "brands" | "productTypes" | "connections" | "meetingTypes" | "priceBands",
+    group: ConferenceFilterGroup,
     value: string,
     label: string,
     count?: number,
   ) => (
-    <label key={`${group}-${value}`} className="flex min-h-10 cursor-pointer items-center gap-2 rounded-lg px-2 text-sm text-slate-700 hover:bg-orange-50">
+    <label key={`${group}-${value}`} className={`flex min-h-10 items-center gap-2 rounded-lg px-2 text-sm text-slate-700 ${count === 0 && !state[group].includes(value) ? "cursor-not-allowed opacity-50" : "cursor-pointer hover:bg-orange-50"}`}>
       <input
         type="checkbox"
         checked={state[group].includes(value)}
-        onChange={() => changeFilters({ [group]: toggleValue(state[group], value) })}
+        disabled={count === 0 && !state[group].includes(value)}
+        onChange={() => toggleFilterValue(group, value)}
         className="h-4 w-4 rounded border-slate-300 accent-[#FD6900] focus-visible:ring-2 focus-visible:ring-[#FD6900]/40"
       />
       <span className="flex-1 font-semibold">{label}</span>
@@ -213,15 +248,34 @@ export default function ConferenceProductExplorer({
 
   const filterGroups = (
     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-1">
-      <fieldset><legend className="mb-1 text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Brand</legend>{brands.map((facet) => filterCheckbox("brands", facet.slug, facet.label, facet.count))}</fieldset>
-      <fieldset><legend className="mb-1 text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Product Type</legend>{productTypes.map((facet) => filterCheckbox("productTypes", facet.slug, facet.label, facet.count))}</fieldset>
-      <fieldset><legend className="mb-1 text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Connection</legend>{["wired", "wireless", "hybrid"].filter((value) => options.connections.has(value)).map((value) => filterCheckbox("connections", value, value[0].toUpperCase() + value.slice(1), products.filter((product) => product.connection === value).length))}</fieldset>
-      <fieldset><legend className="mb-1 text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Meeting Type</legend>{["audio", "video", "hybrid"].filter((value) => options.meetingTypes.has(value)).map((value) => filterCheckbox("meetingTypes", value, value[0].toUpperCase() + value.slice(1), products.filter((product) => product.meetingType === value).length))}</fieldset>
-      <fieldset><legend className="mb-1 text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Price</legend>{CONFERENCE_PRICE_BANDS.map((band) => filterCheckbox("priceBands", band.id, band.label))}</fieldset>
+      <fieldset><legend className="mb-1 text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Brand</legend>{brands.map((facet) => filterCheckbox("brands", facet.slug, facet.label, facetCount("brands", facet.slug)))}</fieldset>
+      <fieldset><legend className="mb-1 text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Product Type</legend>{productTypes.map((facet) => filterCheckbox("productTypes", facet.slug, facet.label, facetCount("productTypes", facet.slug)))}</fieldset>
+      <fieldset><legend className="mb-1 text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Connection</legend>{["wired", "wireless", "hybrid"].filter((value) => options.connections.has(value)).map((value) => filterCheckbox("connections", value, value[0].toUpperCase() + value.slice(1), facetCount("connections", value)))}</fieldset>
+      <fieldset><legend className="mb-1 text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Conference Format</legend>{["audio", "video", "hybrid"].filter((value) => options.meetingTypes.has(value)).map((value) => filterCheckbox("meetingTypes", value, value[0].toUpperCase() + value.slice(1), facetCount("meetingTypes", value)))}</fieldset>
+      <fieldset><legend className="mb-1 text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Availability</legend>{[
+        ["in-stock", "In stock"],
+        ["project-order", "Project order"],
+        ["contact", "Contact for availability"],
+      ].filter(([value]) => options.availabilities.has(value)).map(([value, label]) => filterCheckbox("availabilities", value, label, facetCount("availabilities", value)))}</fieldset>
+      <fieldset>
+        <legend className="mb-1 text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Price</legend>
+        {CONFERENCE_PRICE_BANDS.map((band) => filterCheckbox("priceBands", band.id, band.label, facetCount("priceBands", band.id)))}
+        <div className="mt-3 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
+          <label className="text-xs font-bold text-slate-600">
+            Minimum (৳)
+            <input type="number" inputMode="numeric" min={0} max={CONFERENCE_MAX_CUSTOM_PRICE} step={1000} value={state.minPrice ?? ""} onChange={(event) => changeCustomPrice("minPrice", event.currentTarget.value)} placeholder="0" aria-describedby={customPriceInvalid ? "conference-price-range-error" : undefined} className="mt-1 h-10 w-full rounded-lg border border-slate-300 px-2.5 text-sm text-slate-900 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-500/20" />
+          </label>
+          <label className="text-xs font-bold text-slate-600">
+            Maximum (৳)
+            <input type="number" inputMode="numeric" min={0} max={CONFERENCE_MAX_CUSTOM_PRICE} step={1000} value={state.maxPrice ?? ""} onChange={(event) => changeCustomPrice("maxPrice", event.currentTarget.value)} placeholder="Any" aria-describedby={customPriceInvalid ? "conference-price-range-error" : undefined} className="mt-1 h-10 w-full rounded-lg border border-slate-300 px-2.5 text-sm text-slate-900 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-500/20" />
+          </label>
+        </div>
+        {customPriceInvalid ? <p id="conference-price-range-error" role="alert" className="mt-2 text-xs font-semibold text-red-700">Minimum price cannot exceed maximum price.</p> : <p className="mt-2 text-[11px] leading-4 text-slate-500">Custom range applies to published prices; Request Price remains separate.</p>}
+      </fieldset>
     </div>
   );
 
-  const clearAll = () => updateState(EMPTY_CONFERENCE_DISCOVERY_STATE);
+  const clearAll = () => updateState({ ...EMPTY_CONFERENCE_DISCOVERY_STATE, pageSize: state.pageSize });
   const selectedCompareProducts = products.filter((product) => compareSlugs.includes(product.slug));
   const toggleCompare = (slug: string) => {
     setCompareFeedback("");
@@ -248,8 +302,8 @@ export default function ConferenceProductExplorer({
     <div data-conference-product-explorer>
       <div ref={gridTopRef} className="scroll-mt-24" />
       <div className="mb-4 rounded-2xl border border-slate-200 bg-white p-4">
-        <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto_auto]">
-          <label className="relative block">
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-[minmax(0,1fr)_auto_auto_auto]">
+          <label className="relative block sm:col-span-2 xl:col-span-1">
             <span className="sr-only">Search conference products</span>
             <svg viewBox="0 0 24 24" aria-hidden="true" className="absolute left-3 top-3 h-5 w-5 fill-none text-slate-400"><circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2"/><path d="m16 16 4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
             <input type="search" value={state.query} onChange={(event) => changeFilters({ query: event.target.value }, "replace")} placeholder="Search products, models, brands or systems..." className="h-11 w-full rounded-xl border border-slate-300 bg-white pl-10 pr-10 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/20" />
@@ -257,6 +311,7 @@ export default function ConferenceProductExplorer({
           </label>
           <button ref={mobileFilterButtonRef} type="button" aria-expanded={mobileFiltersOpen} aria-controls="conference-product-filters" onClick={() => setMobileFiltersOpen((open) => !open)} className={`${buttonClass} lg:hidden`}>Filters{activeCount ? ` (${activeCount})` : ""}</button>
           <label className="flex items-center gap-2 text-sm font-bold text-slate-700"><span className="whitespace-nowrap">Sort by</span><select value={state.sort} onChange={(event) => changeFilters({ sort: event.target.value as ConferenceDiscoveryState["sort"] })} className="h-11 rounded-xl border border-slate-300 bg-white px-3 text-sm focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20">{SORT_OPTIONS.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
+          <label className="flex items-center gap-2 text-sm font-bold text-slate-700"><span className="whitespace-nowrap">Show</span><select value={state.pageSize} onChange={(event) => changeFilters({ pageSize: Number(event.target.value) as ConferenceDiscoveryState["pageSize"] })} className="h-11 rounded-xl border border-slate-300 bg-white px-3 text-sm focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20" aria-label={`Products per page; default ${PAGE_SIZE}`}>{CONFERENCE_RESULT_LIMITS.map((value) => <option key={value} value={value}>{value}</option>)}</select></label>
         </div>
       </div>
 
@@ -280,8 +335,8 @@ export default function ConferenceProductExplorer({
           </div>
         </aside>
         <div className="min-w-0">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3"><p className="text-sm font-extrabold text-slate-900" aria-live="polite">{filtered.length} Conference {filtered.length === 1 ? "Product" : "Products"}</p>{activeFilters.length || state.query ? <button type="button" onClick={clearAll} className="text-sm font-bold text-orange-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">Clear All</button> : null}</div>
-          {activeFilters.length ? <div className="mb-4 flex flex-wrap gap-2" aria-label="Active filters">{activeFilters.map((filter) => <button key={`${filter.group}-${filter.value}`} type="button" onClick={() => removeActive(filter.group, filter.value)} aria-label={`Remove ${filter.label} filter`} className="inline-flex min-h-9 items-center gap-1 rounded-full border border-orange-200 bg-orange-50 px-3 text-xs font-bold text-orange-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">{filter.label}<span aria-hidden="true">×</span></button>)}</div> : null}
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3"><p className="text-sm font-extrabold text-slate-900" aria-live="polite">{filtered.length ? `Showing ${(safePage - 1) * state.pageSize + 1}–${Math.min(safePage * state.pageSize, filtered.length)} of ${filtered.length}` : "0"} Conference {filtered.length === 1 ? "Product" : "Products"}</p>{activeCount || state.query ? <button type="button" onClick={clearAll} className="text-sm font-bold text-orange-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">Clear All</button> : null}</div>
+          {activeCount ? <div className="mb-4 flex flex-wrap gap-2" aria-label="Active filters">{activeFilters.map((filter) => <button key={`${filter.group}-${filter.value}`} type="button" onClick={() => removeActive(filter.group, filter.value)} aria-label={`Remove ${filter.label} filter`} className="inline-flex min-h-9 items-center gap-1 rounded-full border border-orange-200 bg-orange-50 px-3 text-xs font-bold text-orange-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">{filter.label}<span aria-hidden="true">×</span></button>)}{customPriceActive ? <button type="button" onClick={() => changeFilters({ minPrice: null, maxPrice: null })} aria-label="Remove custom price range filter" className="inline-flex min-h-9 items-center gap-1 rounded-full border border-orange-200 bg-orange-50 px-3 text-xs font-bold text-orange-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">{customPriceLabel}<span aria-hidden="true">×</span></button> : null}</div> : null}
           {shown.length ? <ResponsiveProductCarousel className="product-grid-3" desktopClassName="md:grid-cols-2 xl:grid-cols-3" mobileGapClassName="gap-[10px]">{shown.map((product, index) => <ConferenceProductCard key={product.slug} product={product} priority={index === 0} compareSelected={compareSlugs.includes(product.slug)} onCompareToggle={toggleCompare} />)}</ResponsiveProductCarousel> : <div className="rounded-2xl border border-slate-200 bg-white px-5 py-10 text-center"><h3 className="font-extrabold text-slate-950">No conference products found</h3><p className="mt-2 text-sm text-slate-600">No conference products match your current search and filters.</p><button type="button" onClick={clearAll} className={`${buttonClass} mt-5`}>Clear Search &amp; Filters</button></div>}
           {totalPages > 1 ? (
             <nav aria-label="Conference product pages" className="mt-6 flex flex-wrap items-center justify-center gap-1.5 border-t border-slate-100 pt-5">

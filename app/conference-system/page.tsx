@@ -6,16 +6,17 @@ import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
 import MobileIntroText from "@/components/common/MobileIntroText";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
-import { normalizeDisplayedPriceText } from "@/lib/price";
 import { absoluteUrl, socialImageUrl } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
 import {
   conferenceSystemCatalog,
   CONFERENCE_PRODUCT_TYPE_LABELS,
   getConferenceConnectionLabel,
+  getConferenceCatalogIntegrityReport,
   getConferenceProductAvailabilityLabel,
   getConferenceProductCardPrice,
   getConferenceProductCardSpecs,
+  getConferenceProductPricePresentation,
   getConferenceProductPrimaryImage,
   type ConferenceProductType,
 } from "./catalog";
@@ -596,7 +597,9 @@ const ConferenceBrandTitleBox = ({
 
 const PRICE_TABLE_BRAND_ORDER = ["cmx", "toa", "bosch", "spon"] as const;
 const conferencePriceTableProducts = PRICE_TABLE_BRAND_ORDER.flatMap((slug) =>
-  conferenceSystemCatalog.filter((product) => product.brand?.slug === slug).slice(0, 2),
+  conferenceSystemCatalog
+    .filter((product) => product.brand?.slug === slug && product.price.type !== "request")
+    .slice(0, 2),
 );
 
 const conferenceFaqs = [
@@ -993,6 +996,9 @@ export const metadata: Metadata = {
 };
 
 export default function ConferenceSystemPage() {
+  const catalogReport = getConferenceCatalogIntegrityReport();
+  const publishedPriceCount = catalogReport.byPriceType.fixed + catalogReport.byPriceType.range;
+  const representedBrandCount = Object.keys(catalogReport.byBrand).filter((brand) => brand !== "unknown").length;
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -1044,6 +1050,7 @@ export default function ConferenceSystemPage() {
       productTypes: [...product.productTypes],
       connection: product.connection ?? null,
       meetingType: product.systemCategory ?? null,
+      availability: product.availability ?? null,
       productTypeLabel: CONFERENCE_PRODUCT_TYPE_LABELS[product.productTypes[0]],
       connectionLabel: product.connection ? getConferenceConnectionLabel(product.connection) : undefined,
       systemFamily: product.systemFamily,
@@ -1069,6 +1076,7 @@ export default function ConferenceSystemPage() {
         product.systemCategory,
         product.systemFamily,
         ...product.tags,
+        ...product.applications,
       ])]
         .filter(Boolean)
         .join(" "),
@@ -1138,7 +1146,7 @@ export default function ConferenceSystemPage() {
 
         <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
           <Link
-            href="/contact/"
+            href="/contact/?project=conference-system"
             className={ctaClass}
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >
@@ -1230,6 +1238,20 @@ export default function ConferenceSystemPage() {
           </ul>
         </nav>
 
+        <dl className="mb-4 grid grid-cols-2 gap-2 rounded-2xl border border-slate-200 bg-white p-3 sm:grid-cols-4" aria-label="Conference product catalog summary">
+          {[
+            { label: "Catalogued products", value: catalogReport.totalProducts },
+            { label: "Supported brands", value: representedBrandCount },
+            { label: "Products with price", value: publishedPriceCount },
+            { label: "Project quotation", value: catalogReport.byPriceType.request },
+          ].map((item) => (
+            <div key={item.label} className="rounded-xl bg-slate-50 px-3 py-3">
+              <dt className="text-[11px] font-bold uppercase tracking-wide text-slate-500">{item.label}</dt>
+              <dd className="mt-1 text-xl font-extrabold text-slate-950">{item.value}</dd>
+            </div>
+          ))}
+        </dl>
+
         <ConferenceProductExplorer
           products={conferenceExplorerProducts}
           brands={conferenceExplorerBrands}
@@ -1242,9 +1264,9 @@ export default function ConferenceSystemPage() {
           </summary>
           <div className="border-t border-slate-200 px-5 py-5">
             <p className="max-w-4xl text-sm leading-6 text-slate-600">
-              Every verified product in the Conference catalog is linked below. Displayed prices are indicative catalog
-              ranges; final availability and project cost depend on the selected system family, quantity, cabling, and
-              installation scope.
+              Every product in the normalized Conference catalog is linked below. Each price is identified as a fixed
+              catalog price, indicative equipment range, or project quotation; final availability and project cost can
+              depend on quantity, compatible equipment, cabling and installation scope.
             </p>
             <ul className="mt-4 grid gap-x-6 gap-y-2 sm:grid-cols-2 lg:grid-cols-3">
               {conferenceSystemCatalog.map((product) => (
@@ -1298,18 +1320,21 @@ export default function ConferenceSystemPage() {
         </p>
         <div className="mt-6 overflow-hidden rounded-2xl border border-orange-200/80 bg-white">
           <table className="w-full border-collapse text-left text-sm">
+            <caption className="sr-only">Conference products with published fixed or indicative range prices</caption>
             <thead className="hidden bg-gradient-to-r from-slate-900 via-slate-800 to-sky-800 text-white md:table-header-group">
               <tr>
-                <th className="w-[34%] border-r border-white/25 px-4 py-3.5 font-extrabold">Product Name</th>
-                <th className="w-[12%] border-r border-white/25 px-4 py-3.5 font-extrabold">Brand</th>
-                <th className="w-[16%] border-r border-white/25 px-4 py-3.5 font-extrabold">Product Type</th>
-                <th className="w-[22%] border-r border-white/25 px-4 py-3.5 font-extrabold">Best For</th>
+                <th className="w-[30%] border-r border-white/25 px-4 py-3.5 font-extrabold">Product Name</th>
+                <th className="w-[10%] border-r border-white/25 px-4 py-3.5 font-extrabold">Brand</th>
+                <th className="w-[14%] border-r border-white/25 px-4 py-3.5 font-extrabold">Product Type</th>
+                <th className="w-[18%] border-r border-white/25 px-4 py-3.5 font-extrabold">Best For</th>
+                <th className="w-[14%] border-r border-white/25 px-4 py-3.5 font-extrabold">Availability</th>
                 <th className="w-[16%] px-4 py-3 text-right font-extrabold">Price</th>
               </tr>
             </thead>
             <tbody className="block divide-y divide-slate-200 md:table-row-group">
-              {conferencePriceTableProducts.map((product) => (
-                <tr key={product.slug} className="block bg-white align-top transition-colors md:table-row md:even:bg-sky-50/45 md:hover:bg-orange-50/65">
+              {conferencePriceTableProducts.map((product) => {
+                const price = getConferenceProductPricePresentation(product);
+                return <tr key={product.slug} className="block bg-white align-top transition-colors md:table-row md:even:bg-sky-50/45 md:hover:bg-orange-50/65">
                   <td className="block border-l-4 border-orange-500 px-4 py-4 md:table-cell md:border-l-0 md:border-r md:border-slate-200 md:py-3">
                     <Link
                       href={`/conference-system/${product.slug}/`}
@@ -1332,28 +1357,35 @@ export default function ConferenceSystemPage() {
                         <span className="mt-1 block text-xs leading-5 text-slate-700">{product.applications.join(", ")}</span>
                       </div>
                       <div className="flex items-center justify-between gap-4">
+                        <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">Availability</span>
+                        <span className="text-right text-xs font-bold text-slate-800">{getConferenceProductAvailabilityLabel(product)}</span>
+                      </div>
+                      <div className="flex items-center justify-between gap-4">
                         <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">Price</span>
-                        <span className="text-right text-sm font-extrabold text-slate-950">{normalizeDisplayedPriceText(product.price.displayLabel)}</span>
+                        <span className="text-right"><span className="block text-sm font-extrabold text-slate-950">{price.label}</span><span className="block text-[11px] font-semibold text-slate-500">{price.basisLabel}</span></span>
                       </div>
                     </div>
                   </td>
                   <td className="hidden px-4 py-3 font-semibold text-slate-800 md:table-cell md:border-r md:border-slate-200">{product.brand?.name ?? "Sasha"}</td>
                   <td className="hidden px-4 py-3 font-semibold text-slate-800 md:table-cell md:border-r md:border-slate-200">{product.badge}</td>
                   <td className="hidden px-4 py-3 text-slate-700 md:table-cell md:border-r md:border-slate-200">{product.applications.join(", ")}</td>
+                  <td className="hidden px-4 py-3 text-slate-700 md:table-cell md:border-r md:border-slate-200">{getConferenceProductAvailabilityLabel(product)}</td>
                   <td className="hidden px-4 py-3 text-right md:table-cell">
                     <span className="font-extrabold text-slate-800">
-                      {normalizeDisplayedPriceText(product.price.displayLabel)}
+                      {price.label}
                     </span>
+                    <span className="mt-1 block text-[11px] font-semibold text-slate-500">{price.basisLabel}</span>
                   </td>
-                </tr>
-              ))}
+                </tr>;
+              })}
             </tbody>
           </table>
         </div>
         <p className="mt-5 rounded-2xl border border-orange-100 bg-orange-50/60 p-4 text-sm leading-7 text-slate-700">
-          Product prices help estimate equipment cost, but final conference system price in Bangladesh depends on room
-          size, number of microphones, brand, control unit, audio processor, speaker setup, installation complexity, and
-          after-sales support.
+          This compact table shows representative fixed-price and indicative-range products from each supported brand.
+          Use the searchable catalog and Price filters above to review all <strong>{publishedPriceCount} products with
+          visible price guidance</strong> or the {catalogReport.byPriceType.request} Request Price products. Quotation items
+          are kept separate instead of being presented as zero-priced stock.
         </p>
       </section>
 
@@ -1400,7 +1432,7 @@ export default function ConferenceSystemPage() {
               </p>
             </div>
             <Link
-              href="/contact/"
+              href="/contact/?project=conference-system"
               className={ctaClass}
               style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
             >
@@ -1610,7 +1642,7 @@ export default function ConferenceSystemPage() {
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
               <Link
-                href="/contact/"
+                href="/contact/?project=conference-system"
                 className={ctaClass}
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
@@ -1668,7 +1700,7 @@ export default function ConferenceSystemPage() {
             </MobileIntroText>
           </div>
           <Link
-            href="/contact/"
+            href="/contact/?project=conference-system"
             className={ctaClass}
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >
@@ -1703,7 +1735,7 @@ export default function ConferenceSystemPage() {
               </dl>
               <div className="mt-auto pt-5">
                 <Link
-                  href="/contact/"
+                  href="/contact/?project=conference-system"
                   className="inline-flex w-full items-center justify-center rounded-xl border px-4 py-3 text-sm font-extrabold transition hover:-translate-y-0.5 hover:bg-orange-50"
                   style={{ borderColor: `${BRAND.maroon}35`, color: BRAND.maroon }}
                 >
@@ -1802,7 +1834,7 @@ export default function ConferenceSystemPage() {
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
               <Link
-                href="/contact/"
+                href="/contact/?project=conference-system"
                 className={ctaClass}
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
@@ -1858,7 +1890,7 @@ export default function ConferenceSystemPage() {
           <Link href="/projects/" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45">
             View All Projects
           </Link>
-          <Link href="/contact/" className={ctaClass} style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}>
+          <Link href="/contact/?project=conference-system" className={ctaClass} style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}>
             Request a Quotation
           </Link>
         </div>
@@ -1927,7 +1959,7 @@ export default function ConferenceSystemPage() {
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
               <Link
-                href="/contact/"
+                href="/contact/?project=conference-system"
                 className={ctaClass}
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
@@ -2011,7 +2043,7 @@ export default function ConferenceSystemPage() {
               <p className="mt-2 text-sm leading-6 text-slate-600">
                 Final quotation follows verified products, quantities, compatibility, installation and agreed project scope.
               </p>
-              <Link href="/contact/" className="mt-2 inline-flex text-sm font-bold text-sky-800 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40">Request a documented quotation</Link>
+              <Link href="/contact/?project=conference-system" className="mt-2 inline-flex text-sm font-bold text-sky-800 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40">Request a documented quotation</Link>
             </article>
             <article className="rounded-xl border border-slate-200 bg-white p-4">
               <h4 className="font-extrabold text-slate-950">Installation &amp; support</h4>
@@ -2050,7 +2082,7 @@ export default function ConferenceSystemPage() {
             </p>
           </div>
           <Link
-            href="/contact/"
+            href="/contact/?project=conference-system"
             className={ctaClass}
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >

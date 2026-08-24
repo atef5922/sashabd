@@ -712,29 +712,58 @@ export function getConferenceProductPrimaryImage(product: ConferenceProduct): Co
   return product.images.find((image) => image.primary) ?? product.images[0];
 }
 
-export function getConferenceProductPriceLabel(product: ConferenceProduct): string {
-  return product.price.displayLabel;
-}
-
 export type ConferenceCardPrice = {
   label: string;
   state: "exact" | "range" | "request";
   qualifier?: string;
 };
 
-/** Card pricing is formatted from canonical numeric fields, never a second UI price list. */
-export function getConferenceProductCardPrice(product: ConferenceProduct): ConferenceCardPrice {
+export type ConferencePricePresentation = ConferenceCardPrice & {
+  basisLabel: "Fixed catalog price" | "Indicative equipment range" | "Project quotation";
+  disclosure: string;
+  updatedAt?: string;
+};
+
+/** One canonical price presenter for cards, tables, collections and product pages. */
+export function getConferenceProductPricePresentation(product: ConferenceProduct): ConferencePricePresentation {
   if (product.price.type === "fixed") {
-    return { label: formatBdtAmount(product.price.amount), state: "exact" };
+    return {
+      label: formatBdtAmount(product.price.amount),
+      state: "exact",
+      qualifier: "Catalog price",
+      basisLabel: "Fixed catalog price",
+      disclosure: "Catalog price in BDT. Confirm current availability and any installation or project scope before ordering.",
+      updatedAt: product.price.updatedAt,
+    };
   }
   if (product.price.type === "range") {
     return {
       label: formatBdtRange([product.price.min, product.price.max]),
       state: "range",
-      qualifier: "Indicative price",
+      qualifier: "Indicative range",
+      basisLabel: "Indicative equipment range",
+      disclosure: "Planning range in BDT; final equipment and project cost depends on quantity, cabling and installation scope.",
+      updatedAt: product.price.updatedAt,
     };
   }
-  return { label: "Request Price", state: "request" };
+  return {
+    label: "Request Price",
+    state: "request",
+    qualifier: "Project quotation",
+    basisLabel: "Project quotation",
+    disclosure: "Current price is provided after confirming the model, quantity and project requirements.",
+    updatedAt: product.price.updatedAt,
+  };
+}
+
+export function getConferenceProductPriceLabel(product: ConferenceProduct): string {
+  return getConferenceProductPricePresentation(product).label;
+}
+
+/** Compact pricing data used by product cards. */
+export function getConferenceProductCardPrice(product: ConferenceProduct): ConferenceCardPrice {
+  const { label, state, qualifier } = getConferenceProductPricePresentation(product);
+  return { label, state, qualifier };
 }
 
 /**
@@ -789,7 +818,22 @@ const AVAILABILITY_LABELS: Readonly<Record<ConferenceAvailability, string>> = {
 export function getConferenceProductAvailabilityLabel(product: ConferenceProduct): string {
   return product.availability
     ? AVAILABILITY_LABELS[product.availability]
-    : AVAILABILITY_LABELS.contact;
+    : "Not verified";
+}
+
+const ROOM_SIZE_LABELS: Readonly<Record<ConferenceRoomSize, string>> = {
+  small: "Small room",
+  medium: "Medium room",
+  large: "Large room",
+  auditorium: "Auditorium",
+};
+
+function formatParticipantRange(range: ConferenceProduct["participantRange"]): string | undefined {
+  if (!range) return undefined;
+  if (range.min !== undefined && range.max !== undefined) return `${range.min}–${range.max} participants`;
+  if (range.min !== undefined) return `${range.min}+ participants`;
+  if (range.max !== undefined) return `Up to ${range.max} participants`;
+  return undefined;
 }
 
 /**
@@ -814,15 +858,20 @@ export function getConferenceProductSpecifications(
 
   push("Brand", product.brand?.name);
   push("Model", product.model);
+  push("Product Type", product.productTypes.map((type) => CONFERENCE_PRODUCT_TYPE_LABELS[type]).join(", "));
+  push("System Family", product.systemFamily);
   // Connection is a classification, so it always comes from the typed field and
   // reads Wired or Wireless. Catalog rows that describe *what it connects to* are
   // re-keyed to Compatibility, where that detail belongs.
   push("Connection", product.connection ? CONNECTION_LABELS[product.connection] : undefined);
+  push("Participant Capacity", formatParticipantRange(product.participantRange));
+  push("Room Size", product.roomSizes?.map((roomSize) => ROOM_SIZE_LABELS[roomSize]).join(", "));
   for (const spec of product.specifications) {
     const isConnectionProse = spec.key === "Connection" && !CONNECTION_VALUES.has(spec.value);
     push(isConnectionProse ? "Compatibility" : spec.key, spec.value);
   }
   push("System Category", product.systemCategory ? SYSTEM_CATEGORY_LABELS[product.systemCategory] : undefined);
+  push("Warranty", product.warranty);
   push("Availability", getConferenceProductAvailabilityLabel(product));
 
   return rows;
@@ -866,9 +915,17 @@ export function getConferenceProductCardSpecs(
     .map(({ spec }) => ({ label: spec.key, value: spec.value }));
 }
 
-/** The commercial note that used to sit inside the spec table, shown beside the price. */
-export function getConferenceProductPriceNote(product: ConferenceProduct): string | undefined {
-  return product.specifications.find((spec) => COMMERCIAL_SPEC_KEYS.has(spec.key))?.value;
+/** Verified catalog note when available; otherwise an honest price-state explanation. */
+export function getConferenceProductPriceNote(product: ConferenceProduct): string {
+  const fallback = getConferenceProductPricePresentation(product).disclosure;
+  if (product.price.type === "fixed") return fallback;
+  return product.specifications.find((spec) => COMMERCIAL_SPEC_KEYS.has(spec.key))?.value ?? fallback;
+}
+
+function isValidIsoCalendarDate(value: string): boolean {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const parsed = new Date(`${value}T00:00:00.000Z`);
+  return !Number.isNaN(parsed.valueOf()) && parsed.toISOString().slice(0, 10) === value;
 }
 
 export function validateConferenceCatalog(
@@ -941,7 +998,9 @@ export function validateConferenceCatalog(
     if (new Set(product.productTypes).size !== product.productTypes.length) {
       errors.push(`${reference}: duplicate product type`);
     }
-    if (product.availability && !validAvailabilities.has(product.availability)) {
+    if (!product.availability) {
+      errors.push(`${reference}: missing availability`);
+    } else if (!validAvailabilities.has(product.availability)) {
       errors.push(`${reference}: invalid availability ${product.availability}`);
     }
     if (product.systemFamily !== undefined && !product.systemFamily.trim()) {
@@ -971,15 +1030,15 @@ export function validateConferenceCatalog(
 
     if (product.price.currency !== "BDT" || !product.price.displayLabel.trim()) {
       errors.push(`${reference}: invalid price currency or display label`);
-    } else if (product.price.type === "fixed" && (!Number.isFinite(product.price.amount) || product.price.amount < 0)) {
+    } else if (product.price.type === "fixed" && (!Number.isFinite(product.price.amount) || product.price.amount <= 0)) {
       errors.push(`${reference}: invalid fixed price`);
     } else if (
       product.price.type === "range" &&
-      (!Number.isFinite(product.price.min) || !Number.isFinite(product.price.max) || product.price.min > product.price.max)
+      (!Number.isFinite(product.price.min) || !Number.isFinite(product.price.max) || product.price.min <= 0 || product.price.max <= 0 || product.price.min > product.price.max)
     ) {
       errors.push(`${reference}: invalid price range`);
     }
-    if (product.price.updatedAt && !/^\d{4}-\d{2}-\d{2}$/.test(product.price.updatedAt)) {
+    if (product.price.updatedAt && !isValidIsoCalendarDate(product.price.updatedAt)) {
       errors.push(`${reference}: invalid price update date`);
     }
   }

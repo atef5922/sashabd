@@ -6,6 +6,7 @@ import { BRAND_NAME } from "@/lib/brand";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import ConferenceCollectionPage from "../ConferenceCollectionPage";
 import ConferenceProductDetailPage from "../ConferenceProductDetailPage";
+import { buildConferenceProductOfferJsonLd } from "../conferenceProductSchema";
 import {
   conferenceSystemCatalog,
   getConferenceProductBySlug,
@@ -113,47 +114,14 @@ function getRelatedProducts(slug: string, limit = 3) {
 }
 
 /**
- * Product schema for rich results. Prices are declared exactly as the catalog
- * holds them: a fixed amount becomes an Offer, an indicative project range
- * becomes an AggregateOffer with low/high bounds. No ratings are emitted
- * because the site has no review data to support them.
+ * Product schema remains factual: only a positive fixed catalog price becomes
+ * an Offer. Indicative project ranges and request-price records stay visible in
+ * the page UI but are not misrepresented as sellable offers.
  */
 function buildProductJsonLd(product: (typeof conferenceSystemCatalog)[number]) {
   const url = absoluteUrl(`/conference-system/${product.slug}/`);
   const images = product.images.map((image) => socialImageUrl(image.src));
-  const availability =
-    product.availability === "in-stock"
-      ? "https://schema.org/InStock"
-      : "https://schema.org/PreOrder";
-
-  const seller = { "@type": "Organization", name: BRAND_NAME } as const;
-  const offers =
-    product.price.type === "fixed"
-      ? {
-          "@type": "Offer",
-          priceCurrency: product.price.currency,
-          price: product.price.amount,
-          availability,
-          url,
-          seller,
-        }
-      : product.price.type === "range"
-        ? {
-            "@type": "AggregateOffer",
-            priceCurrency: product.price.currency,
-            lowPrice: product.price.min,
-            highPrice: product.price.max,
-            availability,
-            url,
-            seller,
-          }
-        : {
-            "@type": "Offer",
-            priceCurrency: product.price.currency,
-            availability: "https://schema.org/PreOrder",
-            url,
-            seller,
-          };
+  const offer = buildConferenceProductOfferJsonLd(product.price, product.availability, url, BRAND_NAME);
 
   return {
     "@context": "https://schema.org",
@@ -162,10 +130,9 @@ function buildProductJsonLd(product: (typeof conferenceSystemCatalog)[number]) {
     description: product.shortDescription,
     image: images,
     url,
-    // The slug is the only stable per-listing identifier we own. Model numbers are
-    // published as mpn, and bundles carry two model numbers so they are not a SKU.
+    // The slug is Sasha's stable listing identifier. Manufacturer models remain
+    // visible as typed Product properties; no unverified MPN/GTIN is invented.
     sku: product.slug,
-    ...(product.model && !/[/\s]/.test(product.model) ? { mpn: product.model } : {}),
     ...(product.brand ? { brand: { "@type": "Brand", name: product.brand.name } } : {}),
     category: "Conference System",
     additionalProperty: getConferenceProductSpecifications(product).map((spec) => ({
@@ -173,7 +140,7 @@ function buildProductJsonLd(product: (typeof conferenceSystemCatalog)[number]) {
       name: spec.key,
       value: spec.value,
     })),
-    offers,
+    ...(offer ? { offers: offer } : {}),
   };
 }
 

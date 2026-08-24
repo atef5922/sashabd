@@ -18,7 +18,7 @@ export type ConferenceProductCardData = {
 export default function ConferenceProductCard({
   product,
   priority = false,
-  contactHref = "/contact/",
+  contactHref,
   compareSelected = false,
   onCompareToggle,
 }: {
@@ -29,6 +29,7 @@ export default function ConferenceProductCard({
   onCompareToggle?: (slug: string) => void;
 }) {
   const productHref = `/conference-system/${product.slug}/`;
+  const quotationHref = contactHref ?? `/contact/?project=conference-system&product=${product.slug}`;
 
   return (
     <article
@@ -135,7 +136,7 @@ export default function ConferenceProductCard({
             </Link>
             <Link
               prefetch={false}
-              href={contactHref}
+              href={quotationHref}
               aria-label={`Request quotation for ${product.name}`}
               className="inline-flex min-h-10 items-center justify-center rounded-xl bg-gradient-to-r from-sky-700 to-sky-600 px-3 py-2 text-center text-xs font-extrabold text-white transition hover:from-sky-600 hover:to-sky-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/60 focus-visible:ring-offset-2"
             >

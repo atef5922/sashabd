@@ -445,7 +445,7 @@ test("Conference installation projects use local images and the required section
   assert.equal((projectData.match(/conference_system_projects\/project[123]\.webp/g) ?? []).length, 3);
   assert.equal(occurrences(pageSource, "Our Conference System Installations"), 1);
   assert.match(pageSource, /href="\/projects\/"/);
-  assert.match(pageSource, /href="\/contact\/"/);
+  assert.match(pageSource, /href="\/contact\/\?project=conference-system"/);
 });
 
 test("Conference brand showcase separates authorization trust from brand navigation", () => {
@@ -600,8 +600,10 @@ test("Conference cards use canonical structured pricing and one accessible actio
   assert.match(price, /export function formatBdtAmount\(amount: number\)/);
   assert.match(catalog, /product\.price\.type === "fixed"[\s\S]*formatBdtAmount\(product\.price\.amount\)/);
   assert.match(catalog, /product\.price\.type === "range"[\s\S]*formatBdtRange\(\[product\.price\.min, product\.price\.max\]\)/);
-  assert.match(catalog, /label: "Request Price", state: "request"/);
-  assert.match(catalog, /qualifier: "Indicative price"/);
+  assert.match(catalog, /export function getConferenceProductPricePresentation\(/);
+  assert.match(catalog, /label: "Request Price"/);
+  assert.match(catalog, /qualifier: "Indicative range"/);
+  assert.match(catalog, /qualifier: "Project quotation"/);
   assert.match(catalog, /export function getConferenceProductCardSpecs\(/);
 
   assert.equal(occurrences(card, "View Details"), 1);
@@ -618,6 +620,29 @@ test("Conference cards use canonical structured pricing and one accessible actio
   assert.match(collection, /<ConferenceProductCard/);
   assert.doesNotMatch(explorer, /<ProductGridCard/);
   assert.doesNotMatch(collection, /<ProductGridCard/);
+});
+
+test("Conference price transparency uses one presenter and explicit commercial states", () => {
+  const catalog = read("app/conference-system/catalog.ts");
+  const landing = read("app/conference-system/page.tsx");
+  const detail = read("app/conference-system/ConferenceProductDetailPage.tsx");
+  const collection = read("app/conference-system/ConferenceCollectionPage.tsx");
+
+  assert.match(catalog, /basisLabel: "Fixed catalog price"/);
+  assert.match(catalog, /basisLabel: "Indicative equipment range"/);
+  assert.match(catalog, /basisLabel: "Project quotation"/);
+  assert.match(catalog, /Current price is provided after confirming the model, quantity and project requirements/);
+  assert.match(catalog, /product\.price\.updatedAt/);
+  assert.match(catalog, /isValidIsoCalendarDate/);
+  assert.match(catalog, /missing availability/);
+  assert.match(detail, /getConferenceProductPricePresentation\(product\)/);
+  assert.match(detail, /Price last verified/);
+  assert.match(collection, /getConferenceProductPricePresentation\(product\)/);
+  assert.match(landing, /getConferenceProductPricePresentation\(product\)/);
+  assert.doesNotMatch(`${landing}\n${detail}\n${collection}`, /normalizeDisplayedPriceText\(.*price\.displayLabel/);
+  assert.match(landing, /\.filter\(\(product\) => product\.brand\?\.slug === slug && product\.price\.type !== "request"\)[\s\S]{0,100}\.slice\(0, 2\)/);
+  assert.match(landing, /Products with price/);
+  assert.match(landing, /Project quotation/);
 });
 
 test("Conference taxonomy registries are unique and collision-protected", () => {
@@ -869,6 +894,14 @@ test("Conference product explorer provides canonical search, multi-filter, sort,
   assert.match(explorer, /event\.key !== "Escape"/);
   assert.match(explorer, /mobileFilterButtonRef\.current\?\.focus\(\)/);
   assert.match(explorer, /Active filters/);
+  assert.match(explorer, /Conference Format/);
+  assert.match(explorer, /Availability/);
+  assert.match(explorer, /Contact for availability/);
+  assert.match(explorer, /Minimum \(৳\)/);
+  assert.match(explorer, /Maximum \(৳\)/);
+  assert.match(explorer, /facetCount\("priceBands", band\.id\)/);
+  assert.match(explorer, /state\.pageSize/);
+  assert.match(explorer, /Showing \$\{\(safePage - 1\)/);
   assert.match(explorer, /Remove \$\{filter\.label\} filter/);
   assert.match(explorer, /No conference products match your current search and filters/);
   assert.match(explorer, /aria-live="polite"/);
@@ -902,6 +935,7 @@ test("Conference landing keeps client discovery payload compact and defers below
   const searchIndex = sectionBetween(source, "searchText: [...new Set([", ".filter(Boolean)");
 
   assert.doesNotMatch(searchIndex, /product\.specifications/);
+  assert.match(searchIndex, /\.\.\.product\.applications/);
   assert.doesNotMatch(explorerProps, /categories=/);
   assert.match(source, /contentVisibility: "auto" as const/);
   assert.match(source, /containIntrinsicSize: "auto 520px"/);
@@ -994,27 +1028,36 @@ test("Conference discovery helpers implement deterministic search, filter, price
   const moduleUrl = pathToFileURL(path.join(root, "app/conference-system/conferenceDiscovery.ts")).href;
   const discovery = await import(`${moduleUrl}?test=${Date.now()}`);
   const products = [
-    { slug: "bosch-chair", name: "Bosch Chairman", model: "CCS-CU", brandName: "Bosch", productTypeLabel: "Chairman Unit", searchText: "Bosch CCS-CU Chairman wired", brandSlug: "bosch", productTypes: ["chairman-unit"], connection: "wired", meetingType: "audio", priceValue: { type: "fixed", amount: 72_500 } },
-    { slug: "toa-control", name: "TOA Controller", model: "TS-900", brandName: "TOA", productTypeLabel: "Control Unit", searchText: "TOA TS controller wired", brandSlug: "toa", productTypes: ["control-unit"], connection: "wired", meetingType: "audio", priceValue: { type: "range", min: 118_000, max: 165_000 } },
-    { slug: "cmx-wireless", name: "CMX Wireless Unit", searchText: "CMX wireless chairman", brandSlug: "cmx", productTypes: ["chairman-unit"], connection: "wireless", meetingType: "audio", priceValue: { type: "request" } },
+    { slug: "bosch-chair", name: "Bosch Chairman", model: "CCS-CU", brandName: "Bosch", productTypeLabel: "Chairman Unit", searchText: "Bosch CCS-CU Chairman wired boardroom", brandSlug: "bosch", productTypes: ["chairman-unit"], connection: "wired", meetingType: "audio", availability: "project-order", priceValue: { type: "fixed", amount: 72_500 } },
+    { slug: "toa-control", name: "TOA Controller", model: "TS-900", brandName: "TOA", productTypeLabel: "Control Unit", searchText: "TOA TS controller wired training", brandSlug: "toa", productTypes: ["control-unit"], connection: "wired", meetingType: "audio", availability: "project-order", priceValue: { type: "range", min: 118_000, max: 165_000 } },
+    { slug: "cmx-wireless", name: "CMX Wireless Unit", searchText: "CMX wireless chairman", brandSlug: "cmx", productTypes: ["chairman-unit"], connection: "wireless", meetingType: "audio", availability: "contact", priceValue: { type: "request" } },
   ];
   const state = { ...discovery.EMPTY_CONFERENCE_DISCOVERY_STATE };
 
   assert.equal(discovery.filterConferenceProducts(products, { ...state, query: "bOsCh  chairman" }).length, 1);
   assert.equal(discovery.filterConferenceProducts(products, { ...state, query: "CCS-CU" })[0].slug, "bosch-chair");
+  assert.equal(discovery.filterConferenceProducts(products, { ...state, query: "CCSCU" })[0].slug, "bosch-chair", "model punctuation is optional in search");
+  assert.equal(discovery.filterConferenceProducts(products, { ...state, query: "boardroom" })[0].slug, "bosch-chair", "application intent is searchable");
   assert.equal(discovery.filterConferenceProducts(products, { ...state, query: "bosch" })[0].slug, "bosch-chair", "brand text is searchable");
   assert.deepEqual(discovery.filterConferenceProducts(products, { ...state, query: "" }).map((item) => item.slug), products.map((item) => item.slug), "empty search preserves input order");
   assert.equal(discovery.filterConferenceProducts(products, { ...state, brands: ["bosch", "toa"], connections: ["wired"] }).length, 2, "OR within brand and AND across groups");
   assert.equal(discovery.filterConferenceProducts(products, { ...state, brands: ["bosch"], productTypes: ["control-unit"] }).length, 0);
+  assert.equal(discovery.filterConferenceProducts(products, { ...state, availabilities: ["contact"] })[0].slug, "cmx-wireless");
   assert.equal(discovery.priceOverlapsBand(products[1].priceValue, "100k-200k"), true);
   assert.equal(discovery.priceOverlapsBand(products[2].priceValue, "under-25k"), false, "request price is never numeric zero");
-  assert.equal(discovery.priceOverlapsBand({ type: "fixed", amount: 25_000 }, "under-25k"), true, "exact lower/upper boundary matches inclusively");
-  assert.equal(discovery.priceOverlapsBand({ type: "fixed", amount: 50_000 }, "25k-50k"), true, "exact upper boundary matches inclusively");
+  assert.equal(discovery.priceOverlapsBand({ type: "fixed", amount: 25_000 }, "under-25k"), false, "exact boundary does not appear in adjacent bands");
+  assert.equal(discovery.priceOverlapsBand({ type: "fixed", amount: 25_000 }, "25k-50k"), true);
+  assert.equal(discovery.priceOverlapsBand({ type: "fixed", amount: 50_000 }, "25k-50k"), false);
+  assert.equal(discovery.priceOverlapsBand({ type: "fixed", amount: 50_000 }, "50k-100k"), true);
+  assert.equal(discovery.priceOverlapsBand(products[2].priceValue, "request"), true, "request-price products have their own nonnumeric filter");
   assert.equal(discovery.priceOverlapsBand({ type: "range", min: 165_000, max: 225_000 }, "100k-200k"), true, "partial range overlap matches");
   assert.equal(discovery.priceOverlapsBand({ type: "range", min: 110_000, max: 150_000 }, "100k-200k"), true, "product fully inside selected range matches");
   assert.equal(discovery.priceOverlapsBand({ type: "range", min: 80_000, max: 250_000 }, "100k-200k"), true, "selected range fully inside product range matches");
   assert.equal(discovery.priceOverlapsBand({ type: "range", min: 201_000, max: 225_000 }, "100k-200k"), false, "non-overlapping range does not match");
   assert.equal(discovery.priceOverlapsBand({ type: "range", min: 165_000, max: 225_000 }, "25k-50k"), false, "distant ranges do not overlap");
+  assert.equal(discovery.priceOverlapsCustomRange(products[0].priceValue, 70_000, 80_000), true);
+  assert.equal(discovery.priceOverlapsCustomRange(products[1].priceValue, 150_000, 180_000), true, "custom price uses range overlap semantics");
+  assert.equal(discovery.priceOverlapsCustomRange(products[2].priceValue, 0, 1_000_000), false, "request price is not numeric zero");
   assert.deepEqual(discovery.sortConferenceProducts(products, "price-asc").map((item) => item.slug), ["bosch-chair", "toa-control", "cmx-wireless"]);
   assert.deepEqual(discovery.sortConferenceProducts(products, "price-desc").map((item) => item.slug), ["toa-control", "bosch-chair", "cmx-wireless"]);
   assert.deepEqual(discovery.sortConferenceProducts(products, "name-asc").map((item) => item.slug), ["bosch-chair", "cmx-wireless", "toa-control"]);
@@ -1027,16 +1070,23 @@ test("Conference discovery helpers implement deterministic search, filter, price
   ];
   assert.deepEqual(discovery.sortConferenceProducts(equalPriceProducts, "price-asc").map((item) => item.slug), ["first", "second"], "equal numeric keys preserve canonical order");
 
-  const options = { brands: new Set(["bosch", "toa"]), productTypes: new Set(["chairman-unit"]), connections: new Set(["wired"]), meetingTypes: new Set(["audio"]) };
-  const parsed = discovery.parseConferenceDiscoveryQuery(new URLSearchParams("brand=bosch,invalid&type=chairman-unit&connection=random&page=3&sort=name-desc"), options);
+  const options = { brands: new Set(["bosch", "toa"]), productTypes: new Set(["chairman-unit"]), connections: new Set(["wired"]), meetingTypes: new Set(["audio"]), availabilities: new Set(["project-order", "contact"]) };
+  const parsed = discovery.parseConferenceDiscoveryQuery(new URLSearchParams("brand=bosch,invalid&type=chairman-unit&connection=random&availability=project-order&min_price=50000&max_price=200000&page=3&limit=24&sort=name-desc"), options);
   assert.deepEqual(parsed.brands, ["bosch"]);
   assert.deepEqual(parsed.connections, []);
   assert.equal(parsed.page, 3);
+  assert.equal(parsed.pageSize, 24);
+  assert.equal(parsed.minPrice, 50_000);
+  assert.equal(parsed.maxPrice, 200_000);
+  assert.deepEqual(parsed.availabilities, ["project-order"]);
   assert.equal(parsed.sort, "name-desc");
-  assert.equal(discovery.buildConferenceDiscoveryQuery(parsed), "?brand=bosch&type=chairman-unit&sort=name-desc&page=3");
-  const malformed = discovery.parseConferenceDiscoveryQuery(new URLSearchParams("page=-10&sort=random&brand=invalid"), options);
+  assert.equal(discovery.buildConferenceDiscoveryQuery(parsed), "?brand=bosch&type=chairman-unit&availability=project-order&min_price=50000&max_price=200000&sort=name-desc&page=3&limit=24");
+  const malformed = discovery.parseConferenceDiscoveryQuery(new URLSearchParams("page=3x&limit=99&sort=random&brand=invalid&min_price=200&max_price=100"), options);
   assert.equal(malformed.page, 1);
   assert.equal(malformed.sort, "recommended");
+  assert.equal(malformed.pageSize, 12);
+  assert.equal(malformed.minPrice, null);
+  assert.equal(malformed.maxPrice, null);
   assert.deepEqual(malformed.brands, []);
   const paged = discovery.paginateConferenceProducts(products.slice(0, 2), 5, 12);
   assert.equal(paged.page, 1, "stale pagination returns to page one");
@@ -1047,18 +1097,19 @@ test("Conference discovery helpers implement deterministic search, filter, price
 
 test("Conference product pages emit Product schema and relevance-ranked internal links", () => {
   const route = read("app/conference-system/[slug]/page.tsx");
+  const schemaHelper = read("app/conference-system/conferenceProductSchema.ts");
   const detail = read("app/conference-system/ConferenceProductDetailPage.tsx");
   const gallery = read("app/conference-system/ConferenceProductGallery.tsx");
   const catalog = read("app/conference-system/catalog.ts");
 
-  // Product / Offer / Brand structured data, priced exactly as the catalog holds it.
+  // Product / Offer / Brand structured data stays factual.
   assert.match(route, /function buildProductJsonLd\(/);
   assert.match(route, /"@type": "Product"/);
   assert.match(route, /"@type": "Brand", name: product\.brand\.name/);
-  assert.match(route, /product\.price\.type === "fixed"/);
-  assert.match(route, /"@type": "AggregateOffer"/);
-  assert.match(route, /lowPrice: product\.price\.min/);
-  assert.match(route, /highPrice: product\.price\.max/);
+  assert.match(route, /buildConferenceProductOfferJsonLd\(product\.price, product\.availability, url, BRAND_NAME\)/);
+  assert.match(route, /\.\.\.\(offer \? \{ offers: offer \} : \{\}\)/);
+  assert.match(schemaHelper, /price\.type !== "fixed"/);
+  assert.doesNotMatch(schemaHelper, /AggregateOffer|PreOrder|lowPrice|highPrice/);
   assert.match(route, /additionalProperty: getConferenceProductSpecifications\(product\)\.map/);
   assert.match(route, /type="application\/ld\+json"/);
   // No invented review signals.
@@ -1104,15 +1155,55 @@ test("Conference product pages emit Product schema and relevance-ranked internal
   assert.match(gallery, /^"use client";/);
   assert.match(gallery, /aria-pressed=\{activeImage === image\.src\}/);
   assert.match(gallery, /priority/);
-  assert.match(detail, /Availability: \{availabilityLabel\}/);
+  assert.match(detail, /aria-label="Price and availability"/);
+  assert.match(detail, /productFacts\.map/);
+  assert.match(detail, /Official Product Documents/);
 
-  // Schema identifiers stay honest: slug as sku, model as mpn only when it is one model.
+  // Schema identifiers stay honest: owned listing slug only, no inferred manufacturer identifier.
   assert.match(route, /sku: product\.slug/);
-  assert.match(route, /product\.model && !\/\[\/\\s\]\/\.test\(product\.model\)/);
+  assert.doesNotMatch(route, /\bmpn\s*:/);
+  assert.doesNotMatch(route, /\bgtin\w*\s*:/);
   assert.ok(!route.includes("offerCount"), "a single listing must not claim an offer count");
   assert.match(route, /compatibleProducts=\{product\.compatibleProductIds/);
   assert.match(route, /categoryLinks=\{conferenceCategoryConfigs/);
   assert.match(route, /brandLink=\{/);
+});
+
+test("Conference offer schema emits only valid fixed-price offers", async () => {
+  const moduleUrl = pathToFileURL(path.join(root, "app/conference-system/conferenceProductSchema.ts")).href;
+  const { buildConferenceProductOfferJsonLd } = await import(`${moduleUrl}?test=${Date.now()}`);
+  const fixed = { type: "fixed", amount: 72_500, currency: "BDT" };
+
+  const inStock = buildConferenceProductOfferJsonLd(fixed, "in-stock", "https://sashabd.com/conference-system/example/", "Sasha Corporation");
+  assert.equal(inStock.price, 72_500);
+  assert.equal(inStock.priceCurrency, "BDT");
+  assert.equal(inStock.availability, "https://schema.org/InStock");
+  assert.equal(inStock.seller.name, "Sasha Corporation");
+
+  const projectOrder = buildConferenceProductOfferJsonLd(fixed, "project-order", "https://sashabd.com/conference-system/example/", "Sasha Corporation");
+  assert.equal("availability" in projectOrder, false, "project order must not be asserted as preorder");
+  assert.equal(buildConferenceProductOfferJsonLd({ type: "range", min: 50_000, max: 75_000, currency: "BDT" }, "project-order", "https://sashabd.com/example/", "Sasha Corporation"), undefined);
+  assert.equal(buildConferenceProductOfferJsonLd({ type: "request", currency: "BDT" }, "contact", "https://sashabd.com/example/", "Sasha Corporation"), undefined);
+  assert.equal(buildConferenceProductOfferJsonLd({ type: "fixed", amount: 0, currency: "BDT" }, "in-stock", "https://sashabd.com/example/", "Sasha Corporation"), undefined);
+});
+
+test("Conference quotation links preserve validated product context", () => {
+  const card = read("app/conference-system/ConferenceProductCard.tsx");
+  const detail = read("app/conference-system/ConferenceProductDetailPage.tsx");
+  const compare = read("app/conference-system/compare/ConferenceCompareClient.tsx");
+  const contactForm = read("app/contact/ContactForm.tsx");
+  const contactPage = read("app/contact/page.tsx");
+
+  assert.match(card, /\/contact\/\?project=conference-system&product=\$\{product\.slug\}/);
+  assert.match(detail, /\/contact\/\?project=conference-system&product=\$\{product\.slug\}/);
+  assert.match(compare, /\/contact\/\?project=conference-system&products=\$\{encodeURIComponent\(selectedSlugs\.join\(","\)\)\}/);
+  assert.match(contactForm, /new Map\(conferenceProducts\.map\(\(product\) => \[product\.slug, product\]\)\)/);
+  assert.match(contactForm, /\.map\(\(slug\) => productBySlug\.get\(slug\)\)/);
+  assert.match(contactForm, /<option>Conference System<\/option>/);
+  assert.match(contactForm, /name="conference_product_slugs"/);
+  assert.match(contactForm, /Room size, participant count, quantity and installation requirements/);
+  assert.match(contactPage, /conferenceSystemCatalog\.map\(\(product\) => \(\{/);
+  assert.match(contactPage, /conferenceProducts=\{conferenceQuoteProducts\}/);
 });
 
 test("Conference specifications stay classified, consistent, and complete", () => {
@@ -1125,7 +1216,7 @@ test("Conference specifications stay classified, consistent, and complete", () =
   assert.match(catalog, /push\(isConnectionProse \? "Compatibility" : spec\.key, spec\.value\)/);
 
   // Canonical rows are derived from typed fields, so they cannot drift per product.
-  for (const derived of ["Brand", "Model", "Connection", "System Category", "Availability"]) {
+  for (const derived of ["Brand", "Model", "Product Type", "System Family", "Connection", "Participant Capacity", "Room Size", "System Category", "Warranty", "Availability"]) {
     assert.ok(catalog.includes(`push("${derived}"`), `${derived} must be derived from a typed field`);
   }
 
@@ -1196,8 +1287,9 @@ test("Conference collection templates stay normalized, adaptive, and single-DOM"
   assert.match(productGrid, /getConferenceProductPrimaryImage\(product\)/);
   assert.match(productGrid, /<ConferenceProductCard/);
   assert.match(productGrid, /slug: product\.slug/);
-  assert.match(priceTable, /product\.price\.displayLabel/);
-  assert.match(priceTable, /normalizeDisplayedPriceText/);
+  assert.match(priceTable, /getConferenceProductPricePresentation\(product\)/);
+  assert.match(priceTable, /getConferenceProductAvailabilityLabel\(product\)/);
+  assert.match(priceTable, /price\.basisLabel/);
   assert.doesNotMatch(collection, /const (?:wireless|audio|video|brand)Products\s*=/);
   assert.match(collection, /getConferenceBrandsForProducts\(products\)/);
   assert.match(collection, /getConferenceApplications\(products\)/);
@@ -1242,7 +1334,7 @@ test("Conference brands hub distinguishes featured, empty, and other verified br
   assert.match(hub, /Other Available Brands/);
   assert.match(hub, /getConferenceCategoryProductCount\(category\)/);
   assert.match(hub, /href="\/conference-system\/"/);
-  assert.match(hub, /href="\/contact\/"/);
+  assert.match(hub, /href="\/contact\/\?project=conference-system"/);
 });
 
 test("LED product details render one Featured Products dataset", () => {
