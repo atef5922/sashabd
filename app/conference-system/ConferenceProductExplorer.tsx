@@ -86,6 +86,7 @@ export default function ConferenceProductExplorer({
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const hydrated = useRef(false);
   const gridTopRef = useRef<HTMLDivElement>(null);
+  const mobileFilterButtonRef = useRef<HTMLButtonElement>(null);
 
   const options = useMemo(() => ({
     brands: new Set(brands.map((facet) => facet.slug)),
@@ -108,6 +109,17 @@ export default function ConferenceProductExplorer({
     };
   }, [readLocation]);
 
+  useEffect(() => {
+    if (!mobileFiltersOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setMobileFiltersOpen(false);
+      mobileFilterButtonRef.current?.focus();
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [mobileFiltersOpen]);
+
   const updateState = useCallback((next: ConferenceDiscoveryState, history: "push" | "replace" = "push") => {
     setState(next);
     if (!hydrated.current) return;
@@ -125,8 +137,18 @@ export default function ConferenceProductExplorer({
     [recommendedProducts, state],
   );
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const safePage = Math.min(state.page, totalPages);
+  const safePage = state.page <= totalPages ? state.page : 1;
   const shown = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
+  useEffect(() => {
+    if (!hydrated.current || state.page === safePage) return;
+    const normalized = { ...state, page: safePage };
+    window.history.replaceState(
+      {},
+      "",
+      `${window.location.pathname}${buildConferenceDiscoveryQuery(normalized)}${window.location.hash}`,
+    );
+  }, [safePage, state]);
 
   const activeFilters = [
     ...state.brands.map((value) => ({ group: "brands" as const, value, label: brands.find((item) => item.slug === value)?.label ?? value })),
@@ -188,14 +210,30 @@ export default function ConferenceProductExplorer({
             <input type="search" value={state.query} onChange={(event) => changeFilters({ query: event.target.value }, "replace")} placeholder="Search products, models, brands or systems..." className="h-11 w-full rounded-xl border border-slate-300 bg-white pl-10 pr-10 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/20" />
             {state.query ? <button type="button" aria-label="Clear product search" onClick={() => changeFilters({ query: "" })} className="absolute right-2 top-1.5 h-8 w-8 rounded-lg text-lg text-slate-500 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">×</button> : null}
           </label>
-          <button type="button" aria-expanded={mobileFiltersOpen} aria-controls="conference-mobile-filters" onClick={() => setMobileFiltersOpen((open) => !open)} className={`${buttonClass} lg:hidden`}>Filters{activeCount ? ` (${activeCount})` : ""}</button>
+          <button ref={mobileFilterButtonRef} type="button" aria-expanded={mobileFiltersOpen} aria-controls="conference-product-filters" onClick={() => setMobileFiltersOpen((open) => !open)} className={`${buttonClass} lg:hidden`}>Filters{activeCount ? ` (${activeCount})` : ""}</button>
           <label className="flex items-center gap-2 text-sm font-bold text-slate-700"><span className="whitespace-nowrap">Sort by</span><select value={state.sort} onChange={(event) => changeFilters({ sort: event.target.value as ConferenceDiscoveryState["sort"] })} className="h-11 rounded-xl border border-slate-300 bg-white px-3 text-sm focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20">{SORT_OPTIONS.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
         </div>
-        <div id="conference-mobile-filters" hidden={!mobileFiltersOpen} className="mt-4 border-t border-slate-200 pt-4 lg:hidden">{filterGroups}<div className="mt-4 grid grid-cols-2 gap-2"><button type="button" onClick={clearAll} className={buttonClass}>Clear All</button><button type="button" onClick={() => setMobileFiltersOpen(false)} className="min-h-10 rounded-xl bg-[#FD6900] px-3 text-sm font-extrabold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50">Show {filtered.length} Products</button></div></div>
       </div>
 
       <div className="grid gap-5 lg:grid-cols-[15rem_minmax(0,1fr)]">
-        <aside aria-label="Conference product filters" className="hidden self-start rounded-2xl border border-slate-200 bg-white p-4 lg:block"><div className="mb-4 flex items-center justify-between"><h3 className="font-extrabold text-slate-950">Filter Products</h3>{activeCount ? <button type="button" onClick={clearAll} className="text-xs font-bold text-orange-700 hover:underline">Clear All</button> : null}</div>{filterGroups}</aside>
+        <aside
+          id="conference-product-filters"
+          aria-label="Conference product filters"
+          className={`${mobileFiltersOpen ? "block" : "hidden"} self-start rounded-2xl border border-slate-200 bg-white p-4 lg:block`}
+        >
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <h3 className="font-extrabold text-slate-950">Filter Products</h3>
+            <div className="flex items-center gap-3">
+              {activeCount ? <button type="button" onClick={clearAll} className="text-xs font-bold text-orange-700 hover:underline">Clear All</button> : null}
+              <button type="button" aria-label="Close product filters" onClick={() => { setMobileFiltersOpen(false); mobileFilterButtonRef.current?.focus(); }} className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-xl text-slate-500 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40 lg:hidden">×</button>
+            </div>
+          </div>
+          {filterGroups}
+          <div className="mt-4 grid grid-cols-2 gap-2 lg:hidden">
+            <button type="button" onClick={clearAll} className={buttonClass}>Clear All</button>
+            <button type="button" onClick={() => { setMobileFiltersOpen(false); mobileFilterButtonRef.current?.focus(); }} className="min-h-10 rounded-xl bg-[#FD6900] px-3 text-sm font-extrabold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50">Show {filtered.length} Products</button>
+          </div>
+        </aside>
         <div className="min-w-0">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3"><p className="text-sm font-extrabold text-slate-900" aria-live="polite">{filtered.length} Conference {filtered.length === 1 ? "Product" : "Products"}</p>{activeFilters.length || state.query ? <button type="button" onClick={clearAll} className="text-sm font-bold text-orange-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">Clear All</button> : null}</div>
           {activeFilters.length ? <div className="mb-4 flex flex-wrap gap-2" aria-label="Active filters">{activeFilters.map((filter) => <button key={`${filter.group}-${filter.value}`} type="button" onClick={() => removeActive(filter.group, filter.value)} aria-label={`Remove ${filter.label} filter`} className="inline-flex min-h-9 items-center gap-1 rounded-full border border-orange-200 bg-orange-50 px-3 text-xs font-bold text-orange-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">{filter.label}<span aria-hidden="true">×</span></button>)}</div> : null}

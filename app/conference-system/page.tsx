@@ -8,6 +8,7 @@ import MobileIntroText from "@/components/common/MobileIntroText";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { normalizeDisplayedPriceText } from "@/lib/price";
 import { absoluteUrl, socialImageUrl } from "@/lib/seo";
+import { siteConfig } from "@/lib/site";
 import {
   conferenceSystemCatalog,
   CONFERENCE_PRODUCT_TYPE_LABELS,
@@ -1006,6 +1007,24 @@ export default function ConferenceSystemPage() {
       name: product.name,
     })),
   };
+  const conferenceServiceJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Conference System Supply, Installation and Support",
+    serviceType: "Conference system consultation, supply, installation and after-sales support",
+    url: absoluteUrl("/conference-system/"),
+    provider: {
+      "@type": "Organization",
+      name: "Sasha Corporation",
+      url: absoluteUrl("/"),
+      telephone: siteConfig.phone,
+      email: `${siteConfig.emailUser}@${siteConfig.emailDomain}`,
+    },
+    areaServed: {
+      "@type": "Country",
+      name: "Bangladesh",
+    },
+  };
   // Facets for the product explorer: taxonomy categories and brands that actually have stock.
   const conferenceExplorerProducts: ConferenceExplorerProduct[] = conferenceSystemCatalog.map((product) => {
     const primaryImage = getConferenceProductPrimaryImage(product);
@@ -1189,13 +1208,13 @@ export default function ConferenceSystemPage() {
 
         <nav aria-label="Conference system categories" className="mb-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
           <p className="text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Browse by system or component</p>
-          <ul className="mt-3 flex flex-wrap gap-2">
+          <ul className="mt-3 flex flex-nowrap gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] lg:justify-between lg:gap-1.5 lg:overflow-visible [&::-webkit-scrollbar]:hidden">
             {conferenceExplorerCategories.map((category) => (
               <li key={category.slug}>
                 <Link
                   prefetch={false}
                   href={`/conference-system/${category.slug}/`}
-                  className="inline-flex min-h-10 items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-[13px] font-bold text-slate-700 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40"
+                  className="inline-flex min-h-10 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-[12px] font-bold text-slate-700 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40"
                 >
                   {category.label}
                   <span className="text-xs font-semibold text-slate-400">{category.count}</span>
@@ -1918,6 +1937,50 @@ export default function ConferenceSystemPage() {
             </article>
           ))}
         </div>
+
+        <div className="mt-6 rounded-2xl border border-sky-100 bg-sky-50/45 p-5 md:p-6" aria-labelledby="conference-commercial-confidence">
+          <div className="max-w-4xl">
+            <h3 id="conference-commercial-confidence" className="text-xl font-extrabold text-slate-950">
+              Commercial Confidence &amp; Verified Business Support
+            </h3>
+            <p className="mt-2 text-sm leading-7 text-slate-700">
+              Review our verified business contact, project process and commercial policies before confirming a
+              conference-system order or installation scope.
+            </p>
+          </div>
+          <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            <article className="rounded-xl border border-slate-200 bg-white p-4">
+              <h4 className="font-extrabold text-slate-950">Verified business contact</h4>
+              <p className="mt-2 text-sm leading-6 text-slate-600">{siteConfig.address}</p>
+              <a href={`tel:${siteConfig.phone}`} className="mt-2 inline-flex text-sm font-bold text-sky-800 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40">
+                {siteConfig.phone}
+              </a>
+            </article>
+            <article className="rounded-xl border border-slate-200 bg-white p-4">
+              <h4 className="font-extrabold text-slate-950">Transparent quotation scope</h4>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                Final quotation follows verified products, quantities, compatibility, installation and agreed project scope.
+              </p>
+              <Link href="/contact/" className="mt-2 inline-flex text-sm font-bold text-sky-800 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40">Request a documented quotation</Link>
+            </article>
+            <article className="rounded-xl border border-slate-200 bg-white p-4">
+              <h4 className="font-extrabold text-slate-950">Installation &amp; support</h4>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                Room review, BOQ planning, installation, testing and after-sales scope are agreed for each project.
+              </p>
+              <Link href="/services-support/" className="mt-2 inline-flex text-sm font-bold text-sky-800 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40">Review services and support</Link>
+            </article>
+            <article className="rounded-xl border border-slate-200 bg-white p-4">
+              <h4 className="font-extrabold text-slate-950">Clear commercial policies</h4>
+              <p className="mt-2 text-sm leading-6 text-slate-600">Check applicable terms, return conditions and privacy handling before ordering.</p>
+              <nav aria-label="Commercial policies" className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-sm font-bold text-sky-800">
+                <Link href="/terms/" className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40">Terms</Link>
+                <Link href="/return-policy/" className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40">Returns</Link>
+                <Link href="/privacy/" className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40">Privacy</Link>
+              </nav>
+            </article>
+          </div>
+        </div>
         <p className="mt-5 text-xs leading-6 text-slate-500">
           Authorization scope follows the applicable manufacturer appointment and product-line terms. Supporting
           authorization information is available from Sasha Corporation on request.
@@ -1947,6 +2010,7 @@ export default function ConferenceSystemPage() {
 
         <FaqAccordion items={conferenceFaqs} accent={BRAND.maroon} className="mt-6" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(conferenceServiceJsonLd) }} />
       </section>
     </div>
   );

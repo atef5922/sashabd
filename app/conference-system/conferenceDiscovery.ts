@@ -104,22 +104,6 @@ function searchMatches(product: ConferenceDiscoveryProduct, query: string): bool
   return terms.every((term) => haystack.includes(term));
 }
 
-function searchScore(product: ConferenceDiscoveryProduct, query: string): number {
-  const normalized = query.toLocaleLowerCase().trim().replace(/\s+/g, " ");
-  if (!normalized) return 0;
-  const model = product.model?.toLocaleLowerCase();
-  const name = product.name.toLocaleLowerCase();
-  const brand = product.brandName?.toLocaleLowerCase();
-  const type = product.productTypeLabel?.toLocaleLowerCase();
-  if (model === normalized) return 1_000;
-  if (name === normalized) return 900;
-  if (model?.includes(normalized)) return 800;
-  if (name.includes(normalized)) return 700;
-  if (brand === normalized) return 600;
-  if (type === normalized) return 500;
-  return normalized.split(" ").reduce((score, term) => score + (name.includes(term) ? 20 : 1), 0);
-}
-
 export function priceOverlapsBand(price: ConferenceDiscoveryPrice, bandId: string): boolean {
   if (price.type === "request") return bandId === "request";
   const band = CONFERENCE_PRICE_BANDS.find((item) => item.id === bandId);
@@ -133,7 +117,7 @@ export function filterConferenceProducts<T extends ConferenceDiscoveryProduct>(
   products: readonly T[],
   state: ConferenceDiscoveryState,
 ): T[] {
-  const matches = products.filter((product) =>
+  return products.filter((product) =>
     searchMatches(product, state.query) &&
     (!state.brands.length || (product.brandSlug !== null && state.brands.includes(product.brandSlug))) &&
     (!state.productTypes.length || product.productTypes.some((type) => state.productTypes.includes(type))) &&
@@ -141,11 +125,6 @@ export function filterConferenceProducts<T extends ConferenceDiscoveryProduct>(
     (!state.meetingTypes.length || (product.meetingType !== null && state.meetingTypes.includes(product.meetingType))) &&
     (!state.priceBands.length || state.priceBands.some((band) => priceOverlapsBand(product.priceValue, band)))
   );
-  if (!state.query.trim()) return matches;
-  return matches
-    .map((product, index) => ({ product, index, score: searchScore(product, state.query) }))
-    .sort((a, b) => b.score - a.score || a.index - b.index)
-    .map(({ product }) => product);
 }
 
 export function sortConferenceProducts<T extends ConferenceDiscoveryProduct>(
