@@ -19,10 +19,14 @@ export default function ConferenceProductCard({
   product,
   priority = false,
   contactHref = "/contact/",
+  compareSelected = false,
+  onCompareToggle,
 }: {
   product: ConferenceProductCardData;
   priority?: boolean;
   contactHref?: string;
+  compareSelected?: boolean;
+  onCompareToggle?: (slug: string) => void;
 }) {
   const productHref = `/conference-system/${product.slug}/`;
 
@@ -61,6 +65,19 @@ export default function ConferenceProductCard({
             </span>
           ) : null}
         </div>
+
+        {onCompareToggle ? (
+          <button
+            type="button"
+            aria-pressed={compareSelected}
+            aria-label={`${compareSelected ? "Remove" : "Add"} ${product.name} ${compareSelected ? "from" : "to"} comparison`}
+            onClick={() => onCompareToggle(product.slug)}
+            className={`mt-3 inline-flex min-h-9 w-fit items-center gap-2 rounded-lg border px-3 py-1.5 text-xs font-extrabold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45 ${compareSelected ? "border-orange-300 bg-orange-50 text-orange-800" : "border-slate-200 bg-white text-slate-600 hover:border-orange-300 hover:text-orange-700"}`}
+          >
+            <span aria-hidden="true">{compareSelected ? "✓" : "+"}</span>
+            {compareSelected ? "Added to Compare" : "Compare"}
+          </button>
+        ) : null}
 
         <h3 className="mt-3 line-clamp-3 text-[15px] font-extrabold leading-6 text-slate-950">
           <Link

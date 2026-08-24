@@ -1,8 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
 import ConferenceProductCard, { type ConferenceProductCardData } from "./ConferenceProductCard";
+import { toggleComparisonSelection } from "./conferenceComparison";
 import {
   buildConferenceDiscoveryQuery,
   CONFERENCE_PRICE_BANDS,
@@ -30,6 +33,8 @@ export type ConferenceExplorerFacet = { slug: string; label: string; count: numb
 export const CONFERENCE_PRODUCTS_PER_BRAND = 3;
 export const CONFERENCE_BRAND_ORDER = ["cmx", "toa", "bosch", "spon"] as const;
 const PAGE_SIZE = CONFERENCE_PRODUCTS_PER_BRAND * CONFERENCE_BRAND_ORDER.length;
+const COMPARE_STORAGE_KEY = "sasha-conference-compare";
+const MAX_COMPARE_PRODUCTS = 3;
 
 function balancedByBrand(products: ConferenceExplorerProduct[], perBrand: number) {
   const byBrand = new Map<string, ConferenceExplorerProduct[]>();
@@ -84,7 +89,10 @@ export default function ConferenceProductExplorer({
 }) {
   const [state, setState] = useState<ConferenceDiscoveryState>(EMPTY_CONFERENCE_DISCOVERY_STATE);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [compareSlugs, setCompareSlugs] = useState<string[]>([]);
+  const [compareFeedback, setCompareFeedback] = useState("");
   const hydrated = useRef(false);
+  const comparisonHydrated = useRef(false);
   const gridTopRef = useRef<HTMLDivElement>(null);
   const mobileFilterButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -108,6 +116,31 @@ export default function ConferenceProductExplorer({
       window.removeEventListener("popstate", readLocation);
     };
   }, [readLocation]);
+
+  useEffect(() => {
+    const validSlugs = new Set(products.map((product) => product.slug));
+    let cancelled = false;
+    let restored: string[] = [];
+    try {
+      const stored = JSON.parse(window.sessionStorage.getItem(COMPARE_STORAGE_KEY) ?? "[]");
+      if (Array.isArray(stored)) {
+        restored = [...new Set(stored.filter((slug): slug is string => typeof slug === "string" && validSlugs.has(slug)))].slice(0, MAX_COMPARE_PRODUCTS);
+      }
+    } catch {
+      window.sessionStorage.removeItem(COMPARE_STORAGE_KEY);
+    }
+    queueMicrotask(() => {
+      if (cancelled) return;
+      comparisonHydrated.current = true;
+      setCompareSlugs(restored);
+    });
+    return () => { cancelled = true; };
+  }, [products]);
+
+  useEffect(() => {
+    if (!comparisonHydrated.current) return;
+    window.sessionStorage.setItem(COMPARE_STORAGE_KEY, JSON.stringify(compareSlugs));
+  }, [compareSlugs]);
 
   useEffect(() => {
     if (!mobileFiltersOpen) return;
@@ -189,6 +222,17 @@ export default function ConferenceProductExplorer({
   );
 
   const clearAll = () => updateState(EMPTY_CONFERENCE_DISCOVERY_STATE);
+  const selectedCompareProducts = products.filter((product) => compareSlugs.includes(product.slug));
+  const toggleCompare = (slug: string) => {
+    setCompareFeedback("");
+    setCompareSlugs((current) => {
+      const result = toggleComparisonSelection(current, slug);
+      if (result.limitReached) {
+        setCompareFeedback("You can compare up to 3 products.");
+      }
+      return result.slugs;
+    });
+  };
   const removeActive = (group: typeof activeFilters[number]["group"], value: string) => changeFilters({ [group]: state[group].filter((item) => item !== value) });
   const goToPage = (page: number) => {
     updateState({ ...state, page });
@@ -238,7 +282,7 @@ export default function ConferenceProductExplorer({
         <div className="min-w-0">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3"><p className="text-sm font-extrabold text-slate-900" aria-live="polite">{filtered.length} Conference {filtered.length === 1 ? "Product" : "Products"}</p>{activeFilters.length || state.query ? <button type="button" onClick={clearAll} className="text-sm font-bold text-orange-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">Clear All</button> : null}</div>
           {activeFilters.length ? <div className="mb-4 flex flex-wrap gap-2" aria-label="Active filters">{activeFilters.map((filter) => <button key={`${filter.group}-${filter.value}`} type="button" onClick={() => removeActive(filter.group, filter.value)} aria-label={`Remove ${filter.label} filter`} className="inline-flex min-h-9 items-center gap-1 rounded-full border border-orange-200 bg-orange-50 px-3 text-xs font-bold text-orange-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">{filter.label}<span aria-hidden="true">×</span></button>)}</div> : null}
-          {shown.length ? <ResponsiveProductCarousel className="product-grid-3" desktopClassName="md:grid-cols-2 xl:grid-cols-3" mobileGapClassName="gap-[10px]">{shown.map((product, index) => <ConferenceProductCard key={product.slug} product={product} priority={index === 0} />)}</ResponsiveProductCarousel> : <div className="rounded-2xl border border-slate-200 bg-white px-5 py-10 text-center"><h3 className="font-extrabold text-slate-950">No conference products found</h3><p className="mt-2 text-sm text-slate-600">No conference products match your current search and filters.</p><button type="button" onClick={clearAll} className={`${buttonClass} mt-5`}>Clear Search &amp; Filters</button></div>}
+          {shown.length ? <ResponsiveProductCarousel className="product-grid-3" desktopClassName="md:grid-cols-2 xl:grid-cols-3" mobileGapClassName="gap-[10px]">{shown.map((product, index) => <ConferenceProductCard key={product.slug} product={product} priority={index === 0} compareSelected={compareSlugs.includes(product.slug)} onCompareToggle={toggleCompare} />)}</ResponsiveProductCarousel> : <div className="rounded-2xl border border-slate-200 bg-white px-5 py-10 text-center"><h3 className="font-extrabold text-slate-950">No conference products found</h3><p className="mt-2 text-sm text-slate-600">No conference products match your current search and filters.</p><button type="button" onClick={clearAll} className={`${buttonClass} mt-5`}>Clear Search &amp; Filters</button></div>}
           {totalPages > 1 ? (
             <nav aria-label="Conference product pages" className="mt-6 flex flex-wrap items-center justify-center gap-1.5 border-t border-slate-100 pt-5">
               <button type="button" onClick={() => goToPage(safePage - 1)} disabled={safePage === 1} className={`${buttonClass} disabled:cursor-not-allowed disabled:opacity-40`}>Prev</button>
@@ -263,6 +307,34 @@ export default function ConferenceProductExplorer({
           ) : null}
         </div>
       </div>
+      {selectedCompareProducts.length ? (
+        <aside aria-label="Selected products for comparison" className="fixed inset-x-3 bottom-20 z-40 mx-auto max-w-5xl rounded-2xl border border-slate-200 bg-white/95 p-3 shadow-xl backdrop-blur md:bottom-4 md:p-4">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center">
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center justify-between gap-3">
+                <h3 className="text-sm font-extrabold text-slate-950">Compare Products</h3>
+                <button type="button" onClick={() => { setCompareSlugs([]); setCompareFeedback(""); }} className="text-xs font-bold text-slate-600 underline-offset-4 hover:text-orange-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45">Clear</button>
+              </div>
+              <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
+                {selectedCompareProducts.map((product) => (
+                  <div key={product.slug} className="flex min-w-[12rem] items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 p-2">
+                    <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-white"><Image src={product.image.src} alt="" fill sizes="40px" className="object-contain p-1" /></div>
+                    <span className="min-w-0 flex-1 truncate text-xs font-bold text-slate-800">{product.model ?? product.name}</span>
+                    <button type="button" onClick={() => toggleCompare(product.slug)} aria-label={`Remove ${product.name} from comparison`} className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-lg text-slate-500 hover:bg-white hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40">×</button>
+                  </div>
+                ))}
+                {Array.from({ length: MAX_COMPARE_PRODUCTS - selectedCompareProducts.length }, (_, index) => <div key={`empty-${index}`} className="flex min-w-[8rem] items-center justify-center rounded-xl border border-dashed border-slate-300 px-3 text-xs font-bold text-slate-500">+ Add Product</div>)}
+              </div>
+              {compareFeedback ? <p className="mt-1 text-xs font-bold text-red-700" role="status">{compareFeedback}</p> : null}
+            </div>
+            {selectedCompareProducts.length >= 2 ? (
+              <Link href={`/conference-system/compare/?products=${compareSlugs.join(",")}`} className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-xl bg-orange-600 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2">Compare ({selectedCompareProducts.length})</Link>
+            ) : (
+              <button type="button" disabled aria-disabled="true" className="inline-flex min-h-11 shrink-0 cursor-not-allowed items-center justify-center rounded-xl bg-slate-200 px-5 py-3 text-sm font-extrabold text-slate-500">Compare ({selectedCompareProducts.length})</button>
+            )}
+          </div>
+        </aside>
+      ) : null}
     </div>
   );
 }
