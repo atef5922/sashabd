@@ -3,8 +3,9 @@ import { toaConferenceProducts } from "./catalog.toa";
 
 const CONFERENCE_IMAGE_BASE = "/images/Conference%20system";
 
-export const CONFERENCE_SYSTEM_CATEGORIES = ["audio", "video"] as const;
-export const CONFERENCE_CONNECTIONS = ["wired", "wireless"] as const;
+export const CONFERENCE_SYSTEM_CATEGORIES = ["audio", "video", "hybrid"] as const;
+export const CONFERENCE_CONNECTIONS = ["wired", "wireless", "hybrid"] as const;
+export const CONFERENCE_ROOM_SIZES = ["small", "medium", "large", "auditorium"] as const;
 export const CONFERENCE_PRODUCT_TYPES = [
   "chairman-unit",
   "delegate-unit",
@@ -26,13 +27,21 @@ export const CONFERENCE_AVAILABILITIES = ["in-stock", "project-order", "contact"
 
 export type ConferenceSystemCategory = (typeof CONFERENCE_SYSTEM_CATEGORIES)[number];
 export type ConferenceConnection = (typeof CONFERENCE_CONNECTIONS)[number];
+export type ConferenceRoomSize = (typeof CONFERENCE_ROOM_SIZES)[number];
 export type ConferenceProductType = (typeof CONFERENCE_PRODUCT_TYPES)[number];
 export type ConferenceAvailability = (typeof CONFERENCE_AVAILABILITIES)[number];
 
+type ConferencePriceMetadata = {
+  currency: "BDT";
+  displayLabel: string;
+  /** Only populate from a reliable commercial source; never infer from file dates. */
+  updatedAt?: string;
+};
+
 export type ConferencePrice =
-  | { type: "fixed"; amount: number; currency: "BDT"; displayLabel: string }
-  | { type: "range"; min: number; max: number; currency: "BDT"; displayLabel: string }
-  | { type: "request"; currency: "BDT"; displayLabel: string };
+  | (ConferencePriceMetadata & { type: "fixed"; amount: number })
+  | (ConferencePriceMetadata & { type: "range"; min: number; max: number })
+  | (ConferencePriceMetadata & { type: "request" });
 
 export type ConferenceProductImage = {
   src: string;
@@ -40,14 +49,18 @@ export type ConferenceProductImage = {
   primary?: boolean;
 };
 
+export type ConferenceProductBrand = { name: string; slug: string };
+
 export type ConferenceProduct = {
   id: string;
   slug: string;
   name: string;
   model?: string;
-  brand?: { name: string; slug: string };
+  brand?: ConferenceProductBrand;
   systemCategory?: ConferenceSystemCategory;
   connection?: ConferenceConnection;
+  /** Verified manufacturer series/family only; never inferred from brand alone. */
+  systemFamily?: string;
   productTypes: ConferenceProductType[];
   price: ConferencePrice;
   availability?: ConferenceAvailability;
@@ -57,9 +70,12 @@ export type ConferenceProduct = {
   specifications: { key: string; value: string }[];
   applications: string[];
   participantRange?: { min?: number; max?: number };
+  roomSizes?: ConferenceRoomSize[];
   compatibleProductIds: string[];
   images: ConferenceProductImage[];
   datasheet?: string;
+  manual?: string;
+  brochure?: string;
   warranty?: string;
   featured?: boolean;
   badge: string;
@@ -531,8 +547,23 @@ export function getConferenceProductBySlug(slug: string): ConferenceProduct | un
   return conferenceSystemCatalog.find((product) => product.slug === slug);
 }
 
+export function getConferenceProductById(id: string): ConferenceProduct | undefined {
+  return conferenceSystemCatalog.find((product) => product.id === id);
+}
+
 export function getConferenceProductsByBrand(brandSlug: string): ConferenceProduct[] {
   return conferenceSystemCatalog.filter((product) => product.brand?.slug === brandSlug);
+}
+
+/** Brand identities derived from products; taxonomy adds route copy and presentation metadata separately. */
+export function getConferenceCatalogBrands(
+  products: readonly ConferenceProduct[] = conferenceSystemCatalog,
+): ConferenceProductBrand[] {
+  const brands = new Map<string, ConferenceProductBrand>();
+  for (const product of products) {
+    if (product.brand && !brands.has(product.brand.slug)) brands.set(product.brand.slug, product.brand);
+  }
+  return [...brands.values()];
 }
 
 export function getConferenceProductsBySystemCategory(category: ConferenceSystemCategory): ConferenceProduct[] {
@@ -545,6 +576,103 @@ export function getConferenceProductsByConnection(connection: ConferenceConnecti
 
 export function getConferenceProductsByType(productType: ConferenceProductType): ConferenceProduct[] {
   return conferenceSystemCatalog.filter((product) => product.productTypes.includes(productType));
+}
+
+export function getConferenceProductsBySystemFamily(systemFamily: string): ConferenceProduct[] {
+  const normalizedFamily = systemFamily.trim().toLocaleLowerCase("en-US");
+  if (!normalizedFamily) return [];
+  return conferenceSystemCatalog.filter(
+    (product) => product.systemFamily?.toLocaleLowerCase("en-US") === normalizedFamily,
+  );
+}
+
+export function getConferenceProductsByRoomSize(roomSize: ConferenceRoomSize): ConferenceProduct[] {
+  return conferenceSystemCatalog.filter((product) => product.roomSizes?.includes(roomSize));
+}
+
+export function getConferenceProductPricing(product: ConferenceProduct): ConferencePrice {
+  return product.price;
+}
+
+export type ConferenceCatalogIntegrityReport = {
+  totalProducts: number;
+  byBrand: Record<string, number>;
+  byProductType: Record<ConferenceProductType, number>;
+  byConnection: Record<ConferenceConnection | "unknown", number>;
+  byMeetingType: Record<ConferenceSystemCategory | "unknown", number>;
+  byPriceType: Record<ConferencePrice["type"], number>;
+  byAvailability: Record<ConferenceAvailability | "unknown", number>;
+  withSystemFamily: number;
+  withParticipantCapacity: number;
+  withCompatibilityData: number;
+  missing: {
+    priceUpdateDate: number;
+    availability: number;
+    warranty: number;
+    systemFamily: number;
+    participantCapacity: number;
+    compatibility: number;
+    datasheet: number;
+    manual: number;
+    brochure: number;
+  };
+};
+
+/** Build/reporting helper only; it does not mutate or enrich catalog records. */
+export function getConferenceCatalogIntegrityReport(
+  products: readonly ConferenceProduct[] = conferenceSystemCatalog,
+): ConferenceCatalogIntegrityReport {
+  const byProductType = Object.fromEntries(
+    CONFERENCE_PRODUCT_TYPES.map((type) => [type, 0]),
+  ) as Record<ConferenceProductType, number>;
+  const report: ConferenceCatalogIntegrityReport = {
+    totalProducts: products.length,
+    byBrand: {},
+    byProductType,
+    byConnection: { wired: 0, wireless: 0, hybrid: 0, unknown: 0 },
+    byMeetingType: { audio: 0, video: 0, hybrid: 0, unknown: 0 },
+    byPriceType: { fixed: 0, range: 0, request: 0 },
+    byAvailability: { "in-stock": 0, "project-order": 0, contact: 0, unknown: 0 },
+    withSystemFamily: 0,
+    withParticipantCapacity: 0,
+    withCompatibilityData: 0,
+    missing: {
+      priceUpdateDate: 0,
+      availability: 0,
+      warranty: 0,
+      systemFamily: 0,
+      participantCapacity: 0,
+      compatibility: 0,
+      datasheet: 0,
+      manual: 0,
+      brochure: 0,
+    },
+  };
+
+  for (const product of products) {
+    const brandKey = product.brand?.slug ?? "unknown";
+    report.byBrand[brandKey] = (report.byBrand[brandKey] ?? 0) + 1;
+    for (const type of product.productTypes) report.byProductType[type] += 1;
+    report.byConnection[product.connection ?? "unknown"] += 1;
+    report.byMeetingType[product.systemCategory ?? "unknown"] += 1;
+    report.byPriceType[product.price.type] += 1;
+    report.byAvailability[product.availability ?? "unknown"] += 1;
+
+    if (product.systemFamily) report.withSystemFamily += 1;
+    else report.missing.systemFamily += 1;
+    if (product.participantRange) report.withParticipantCapacity += 1;
+    else report.missing.participantCapacity += 1;
+    if (product.compatibleProductIds.length) report.withCompatibilityData += 1;
+    else report.missing.compatibility += 1;
+    if (!product.price.updatedAt) report.missing.priceUpdateDate += 1;
+    if (!product.availability) report.missing.availability += 1;
+    if (!product.warranty) report.missing.warranty += 1;
+    if (!product.datasheet) report.missing.datasheet += 1;
+    if (!product.manual) report.missing.manual += 1;
+    if (!product.brochure) report.missing.brochure += 1;
+  }
+
+  return report;
 }
 
 export function getConferenceProductPrimaryImage(product: ConferenceProduct): ConferenceProductImage {
@@ -582,6 +710,7 @@ const SPEC_KEY_ALIASES: Readonly<Record<string, string>> = {
 const CONNECTION_LABELS: Readonly<Record<ConferenceConnection, string>> = {
   wired: "Wired",
   wireless: "Wireless",
+  hybrid: "Hybrid",
 };
 
 /** The only values the Connection row may hold, so the property stays comparable. */
@@ -590,6 +719,7 @@ const CONNECTION_VALUES = new Set<string>(Object.values(CONNECTION_LABELS));
 const SYSTEM_CATEGORY_LABELS: Readonly<Record<ConferenceSystemCategory, string>> = {
   audio: "Audio conference",
   video: "Video conference",
+  hybrid: "Hybrid conference",
 };
 
 const AVAILABILITY_LABELS: Readonly<Record<ConferenceAvailability, string>> = {
@@ -648,6 +778,7 @@ export function getConferenceProductPriceNote(product: ConferenceProduct): strin
 export function validateConferenceCatalog(
   products: readonly ConferenceProduct[],
   reservedSlugs: readonly string[] = [],
+  knownBrands: readonly { name: string; slug: string }[] = [],
 ): string[] {
   const errors: string[] = [];
   const ids = new Set<string>();
@@ -655,8 +786,12 @@ export function validateConferenceCatalog(
   const reservedSlugSet = new Set(reservedSlugs);
   const validCategories = new Set<string>(CONFERENCE_SYSTEM_CATEGORIES);
   const validConnections = new Set<string>(CONFERENCE_CONNECTIONS);
+  const validRoomSizes = new Set<string>(CONFERENCE_ROOM_SIZES);
   const validTypes = new Set<string>(CONFERENCE_PRODUCT_TYPES);
   const validAvailabilities = new Set<string>(CONFERENCE_AVAILABILITIES);
+  const productIdSet = new Set(products.map((product) => product.id));
+  const knownBrandNames = new Map(knownBrands.map((brand) => [brand.slug, brand.name]));
+  const observedBrandNames = new Map<string, string>();
 
   for (const product of products) {
     const reference = product.slug || product.id || "unknown product";
@@ -681,8 +816,22 @@ export function validateConferenceCatalog(
       errors.push(`${reference}: multiple primary images`);
     }
 
-    if (product.brand && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(product.brand.slug)) {
-      errors.push(`${reference}: invalid brand slug ${product.brand.slug}`);
+    if (product.brand) {
+      if (!product.brand.name.trim()) errors.push(`${reference}: missing brand name`);
+      if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(product.brand.slug)) {
+        errors.push(`${reference}: invalid brand slug ${product.brand.slug}`);
+      }
+      const observedName = observedBrandNames.get(product.brand.slug);
+      if (observedName && observedName !== product.brand.name) {
+        errors.push(`${reference}: inconsistent brand name ${product.brand.name} for ${product.brand.slug}`);
+      } else {
+        observedBrandNames.set(product.brand.slug, product.brand.name);
+      }
+      if (knownBrandNames.size && !knownBrandNames.has(product.brand.slug)) {
+        errors.push(`${reference}: unknown brand reference ${product.brand.slug}`);
+      } else if (knownBrandNames.has(product.brand.slug) && knownBrandNames.get(product.brand.slug) !== product.brand.name) {
+        errors.push(`${reference}: brand name does not match registry for ${product.brand.slug}`);
+      }
     }
     if (product.systemCategory && !validCategories.has(product.systemCategory)) {
       errors.push(`${reference}: invalid system category ${product.systemCategory}`);
@@ -693,8 +842,35 @@ export function validateConferenceCatalog(
     if (!product.productTypes.length || product.productTypes.some((type) => !validTypes.has(type))) {
       errors.push(`${reference}: invalid product type`);
     }
+    if (new Set(product.productTypes).size !== product.productTypes.length) {
+      errors.push(`${reference}: duplicate product type`);
+    }
     if (product.availability && !validAvailabilities.has(product.availability)) {
       errors.push(`${reference}: invalid availability ${product.availability}`);
+    }
+    if (product.systemFamily !== undefined && !product.systemFamily.trim()) {
+      errors.push(`${reference}: empty system family`);
+    }
+    if (product.roomSizes?.some((roomSize) => !validRoomSizes.has(roomSize))) {
+      errors.push(`${reference}: invalid room size`);
+    }
+    if (product.roomSizes && new Set(product.roomSizes).size !== product.roomSizes.length) {
+      errors.push(`${reference}: duplicate room size`);
+    }
+    if (product.participantRange) {
+      const { min, max } = product.participantRange;
+      if ((min !== undefined && (!Number.isInteger(min) || min < 0)) ||
+          (max !== undefined && (!Number.isInteger(max) || max < 0)) ||
+          (min !== undefined && max !== undefined && min > max)) {
+        errors.push(`${reference}: invalid participant range`);
+      }
+    }
+    if (new Set(product.compatibleProductIds).size !== product.compatibleProductIds.length) {
+      errors.push(`${reference}: duplicate compatibility reference`);
+    }
+    for (const compatibleId of product.compatibleProductIds) {
+      if (compatibleId === product.id) errors.push(`${reference}: product cannot be compatible with itself`);
+      else if (!productIdSet.has(compatibleId)) errors.push(`${reference}: broken compatibility reference ${compatibleId}`);
     }
 
     if (product.price.currency !== "BDT" || !product.price.displayLabel.trim()) {
@@ -706,6 +882,9 @@ export function validateConferenceCatalog(
       (!Number.isFinite(product.price.min) || !Number.isFinite(product.price.max) || product.price.min > product.price.max)
     ) {
       errors.push(`${reference}: invalid price range`);
+    }
+    if (product.price.updatedAt && !/^\d{4}-\d{2}-\d{2}$/.test(product.price.updatedAt)) {
+      errors.push(`${reference}: invalid price update date`);
     }
   }
 

@@ -432,6 +432,24 @@ test("every Conference hub section heading has a consistent relevant icon", () =
   assert.match(source, /bg-gradient-to-br from-orange-50 to-white/);
 });
 
+test("Conference brand showcase separates authorization trust from brand navigation", () => {
+  const source = read("app/conference-system/page.tsx");
+  const section = sectionBetween(
+    source,
+    'aria-labelledby="conference-brand-showcase"',
+    'aria-labelledby="conference-system-faq"',
+  );
+
+  assert.match(section, /authorized distributor of Bosch, TOA, SPON, and CMX solutions in Bangladesh/);
+  assert.equal(occurrences(source, 'badge: "Authorized Distributor"'), 4);
+  assert.equal(occurrences(section, "Project support"), 1);
+  assert.match(section, /Authorization scope follows the applicable manufacturer appointment and product-line terms/);
+  assert.ok(!section.includes("Exclusive Distributor"));
+  for (const brand of ["bosch", "toa", "spon", "cmx"]) {
+    assert.match(source, new RegExp(`url: "/conference-system/brands/${brand}/"`));
+  }
+});
+
 test("Conference catalog is normalized, complete, and route-stable", () => {
   const catalog = read("app/conference-system/catalog.ts");
   const route = read("app/conference-system/[slug]/page.tsx");
@@ -511,6 +529,33 @@ test("Conference normalized prices preserve all 11 visible amounts", () => {
   assert.equal(actualPrices.length, expectedPrices.length);
 });
 
+test("Conference canonical model supports future discovery without fabricating optional data", () => {
+  const catalog = read("app/conference-system/catalog.ts");
+  const taxonomy = read("app/conference-system/taxonomy.ts");
+
+  assert.match(catalog, /CONFERENCE_SYSTEM_CATEGORIES = \["audio", "video", "hybrid"\]/);
+  assert.match(catalog, /CONFERENCE_CONNECTIONS = \["wired", "wireless", "hybrid"\]/);
+  assert.match(catalog, /CONFERENCE_ROOM_SIZES = \["small", "medium", "large", "auditorium"\]/);
+  for (const optionalField of ["systemFamily?", "roomSizes?", "participantRange?", "warranty?", "datasheet?", "manual?", "brochure?"]) {
+    assert.ok(catalog.includes(optionalField), `${optionalField} must remain optional`);
+  }
+  for (const helper of [
+    "getConferenceProductById",
+    "getConferenceCatalogBrands",
+    "getConferenceProductsBySystemFamily",
+    "getConferenceProductsByRoomSize",
+    "getConferenceProductPricing",
+    "getConferenceCatalogIntegrityReport",
+  ]) {
+    assert.match(catalog, new RegExp(`export function ${helper}\\(`));
+  }
+  assert.match(catalog, /broken compatibility reference/);
+  assert.match(catalog, /invalid participant range/);
+  assert.match(catalog, /inconsistent brand name/);
+  assert.match(catalog, /invalid price update date/);
+  assert.match(taxonomy, /conferenceBrandConfigs,\s*\),/);
+});
+
 test("Conference taxonomy registries are unique and collision-protected", () => {
   const taxonomy = read("app/conference-system/taxonomy.ts");
   const catalog = read("app/conference-system/catalog.ts");
@@ -548,7 +593,10 @@ test("Conference taxonomy registries are unique and collision-protected", () => 
   assert.deepEqual(brandSlugs, ["bosch", "toa", "spon", "cmx"]);
   assert.match(taxonomy, /RESERVED_CONFERENCE_PRODUCT_SLUGS = \[[\s\S]*\.\.\.conferenceCategoryConfigs\.map/);
   assert.match(taxonomy, /"brands",/);
-  assert.match(taxonomy, /validateConferenceCatalog\(conferenceSystemCatalog, RESERVED_CONFERENCE_PRODUCT_SLUGS\)/);
+  assert.match(
+    taxonomy,
+    /validateConferenceCatalog\(\s*conferenceSystemCatalog,\s*RESERVED_CONFERENCE_PRODUCT_SLUGS,\s*conferenceBrandConfigs,\s*\)/,
+  );
   assert.match(catalog, /reserved slug collision/);
 });
 

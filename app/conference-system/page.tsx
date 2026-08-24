@@ -459,6 +459,7 @@ type ConferenceBrandCard = {
   title: string;
   category: string;
   description: string;
+  support: string;
   badge: string;
   logoSrc?: string;
   logoWidth?: number;
@@ -472,32 +473,35 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
     title: "Bosch",
     category: "Professional Conference & Voice Communication Systems",
     description:
-      "Bosch is a globally trusted manufacturer of public address, voice evacuation, conference, and professional audio systems. Bosch solutions are widely used in airports, hospitals, educational institutions, commercial buildings, and large infrastructure projects where reliability and safety are essential.",
-    badge: "Global Brand",
+      "Browse the Bosch conference products currently listed in our verified catalog for professional discussion and meeting-room communication projects.",
+    support: "Product selection, BOQ preparation, installation planning, and warranty assistance.",
+    badge: "Authorized Distributor",
     logoSrc: "/images/brands/audio/bosch-logo.svg",
     logoWidth: 102,
     logoHeight: 22,
-    url: "https://www.bosch.com/",
+    url: "/conference-system/brands/bosch/",
   },
   {
     slug: "toa",
     title: "TOA",
     category: "Public Address & Meeting Audio Systems",
     description:
-      "TOA is known for dependable public address, paging, amplifier, microphone, and speaker solutions. Its products are commonly used in schools, offices, factories, houses of worship, and commercial facilities.",
-    badge: "Trusted Audio Brand",
+      "Explore the TOA meeting-audio products available in our conference catalog, including compatible microphone, control, amplification, and speaker solutions.",
+    support: "System compatibility guidance, product supply, installation support, and warranty assistance.",
+    badge: "Authorized Distributor",
     logoSrc: "/images/brands/audio/toa-logo.png",
     logoWidth: 90,
     logoHeight: 27,
-    url: "https://www.toa.eu/public-address-systems",
+    url: "/conference-system/brands/toa/",
   },
   {
     slug: "spon",
     title: "SPON",
     category: "Digital Conference Microphone & Control Systems",
     description:
-      "SPON specializes in digital and wireless conference microphone systems, including chairman and delegate units, central control units, DSP audio processors, and amplifiers. Their products are widely used in boardrooms, government offices, and institutional meeting rooms in Bangladesh.",
-    badge: "Conference System Specialist",
+      "View SPON digital and network conference products from our catalog, including control units, DSP processors, amplifiers, and meeting-room audio equipment.",
+    support: "Room-based system design, BOQ preparation, installation, commissioning, and after-sales guidance.",
+    badge: "Authorized Distributor",
     url: "/conference-system/brands/spon/",
   },
   {
@@ -505,8 +509,9 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
     title: "CMX",
     category: "Wireless & Digital Discussion Systems",
     description:
-      "CMX offers a wide range of wired and wireless conference discussion systems, including chairman and delegate units, digital controllers, and paperless conference management solutions for boardrooms, council chambers, and large meeting halls.",
-    badge: "Discussion System Specialist",
+      "Browse CMX wired, wireless, and paperless conference products listed in our catalog for boardrooms, council chambers, and flexible meeting spaces.",
+    support: "Product selection, microphone quantity planning, installation support, and after-sales guidance.",
+    badge: "Authorized Distributor",
     url: "/conference-system/brands/cmx/",
   },
 ];
@@ -1838,10 +1843,9 @@ export default function ConferenceSystemPage() {
             Brands We Work With
           </h2>
           <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-            Sasha Corporation&apos;s verified Conference catalog currently includes Bosch, TOA, SPON, and CMX products.
-            The listed ranges cover conference microphones, chairman and delegate units, control units, DSP processors,
-            amplifiers, and wireless conference equipment. Product selection and project recommendations are based on
-            room size, participant capacity, compatible system families, installation scope, and confirmed availability.
+            Sasha Corporation is an authorized distributor of Bosch, TOA, SPON, and CMX solutions in Bangladesh. This
+            section explains the conference-system range and project support available for each brand; use the brand
+            links above for quick navigation or open a brand page below for its current verified catalog.
           </p>
         </div>
         <div className="-mx-0.5 mt-8 flex snap-x snap-mandatory items-stretch gap-3 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:snap-none md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-4">
@@ -1860,9 +1864,25 @@ export default function ConferenceSystemPage() {
               </div>
               <p className="mt-3 text-sm font-semibold leading-6 text-slate-700 text-justify">{brand.category}</p>
               <p className="mt-3 text-sm leading-6 text-slate-600 text-justify">{brand.description}</p>
+              <div className="mt-4 border-t border-slate-200 pt-4">
+                <p className="text-xs font-extrabold uppercase tracking-[0.06em] text-slate-500">Project support</p>
+                <p className="mt-1.5 text-sm leading-6 text-slate-700">{brand.support}</p>
+              </div>
+              <Link
+                prefetch={false}
+                href={brand.url}
+                className="mt-auto inline-flex items-center gap-1 pt-5 text-[12.5px] font-extrabold uppercase tracking-[0.05em] text-[#C2410C] transition-colors hover:text-[#FD6900]"
+              >
+                View {brand.title} Products
+                <span aria-hidden="true" className="text-[#FD6900]">{"→"}</span>
+              </Link>
             </article>
           ))}
         </div>
+        <p className="mt-5 text-xs leading-6 text-slate-500">
+          Authorization scope follows the applicable manufacturer appointment and product-line terms. Supporting
+          authorization information is available from Sasha Corporation on request.
+        </p>
       </section>
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-faq">
