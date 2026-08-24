@@ -641,8 +641,8 @@ test("Conference price transparency uses one presenter and explicit commercial s
   assert.match(landing, /getConferenceProductPricePresentation\(product\)/);
   assert.doesNotMatch(`${landing}\n${detail}\n${collection}`, /normalizeDisplayedPriceText\(.*price\.displayLabel/);
   assert.match(landing, /\.filter\(\(product\) => product\.brand\?\.slug === slug && product\.price\.type !== "request"\)[\s\S]{0,100}\.slice\(0, 2\)/);
-  assert.match(landing, /Products with price/);
-  assert.match(landing, /Project quotation/);
+  assert.doesNotMatch(landing, /Conference product catalog summary|Catalogued products/);
+  assert.match(landing, /visible price guidance[\s\S]{0,100}Request Price products/);
 });
 
 test("Conference taxonomy registries are unique and collision-protected", () => {
