@@ -10,7 +10,11 @@ import { normalizeDisplayedPriceText } from "@/lib/price";
 import { absoluteUrl, socialImageUrl } from "@/lib/seo";
 import {
   conferenceSystemCatalog,
+  CONFERENCE_PRODUCT_TYPE_LABELS,
+  getConferenceConnectionLabel,
   getConferenceProductAvailabilityLabel,
+  getConferenceProductCardPrice,
+  getConferenceProductCardSpecs,
   getConferenceProductPrimaryImage,
 } from "./catalog";
 import { conferenceBrandConfigs, conferenceCategoryConfigs, hasConferenceBrandProducts } from "./taxonomy";
@@ -1007,13 +1011,14 @@ export default function ConferenceSystemPage() {
     return {
       slug: product.slug,
       name: product.name,
-      badge: product.badge,
-      priceLabel: product.price.displayLabel,
-      availabilityLabel: getConferenceProductAvailabilityLabel(product),
-      keyFeatures: product.keyFeatures,
-      applications: product.applications,
       brandSlug: product.brand?.slug ?? null,
-      brandName: product.brand?.name ?? null,
+      brandName: product.brand?.name,
+      productTypeLabel: CONFERENCE_PRODUCT_TYPE_LABELS[product.productTypes[0]],
+      connectionLabel: product.connection ? getConferenceConnectionLabel(product.connection) : undefined,
+      systemFamily: product.systemFamily,
+      keySpecs: getConferenceProductCardSpecs(product),
+      price: getConferenceProductCardPrice(product),
+      availabilityLabel: product.availability ? getConferenceProductAvailabilityLabel(product) : undefined,
       categorySlugs: conferenceCategoryConfigs
         .filter((category) => category.matchProduct(product))
         .map((category) => category.slug),
@@ -1170,7 +1175,6 @@ export default function ConferenceSystemPage() {
           products={conferenceExplorerProducts}
           categories={conferenceExplorerCategories}
           brands={conferenceExplorerBrands}
-          accentColor={BRAND.maroon}
         />
 
         <details className="mt-6 rounded-2xl border border-slate-200 bg-white shadow-sm">

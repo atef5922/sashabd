@@ -1,5 +1,6 @@
 import { boschConferenceProducts, cmxConferenceProducts } from "./catalog.brands";
 import { toaConferenceProducts } from "./catalog.toa";
+import { formatBdtAmount, formatBdtRange } from "../../lib/price";
 
 const CONFERENCE_IMAGE_BASE = "/images/Conference%20system";
 
@@ -30,6 +31,24 @@ export type ConferenceConnection = (typeof CONFERENCE_CONNECTIONS)[number];
 export type ConferenceRoomSize = (typeof CONFERENCE_ROOM_SIZES)[number];
 export type ConferenceProductType = (typeof CONFERENCE_PRODUCT_TYPES)[number];
 export type ConferenceAvailability = (typeof CONFERENCE_AVAILABILITIES)[number];
+
+export const CONFERENCE_PRODUCT_TYPE_LABELS: Readonly<Record<ConferenceProductType, string>> = {
+  "chairman-unit": "Chairman Unit",
+  "delegate-unit": "Delegate Unit",
+  "control-unit": "Control Unit",
+  dsp: "DSP",
+  amplifier: "Amplifier",
+  camera: "Camera",
+  "video-bar": "Video Bar",
+  speakerphone: "Speakerphone",
+  package: "Complete System",
+  accessory: "Accessory",
+  microphone: "Microphone",
+  charger: "Charger",
+  "access-point": "Access Point",
+  processor: "Processor",
+  other: "Conference System",
+};
 
 type ConferencePriceMetadata = {
   currency: "BDT";
@@ -683,6 +702,27 @@ export function getConferenceProductPriceLabel(product: ConferenceProduct): stri
   return product.price.displayLabel;
 }
 
+export type ConferenceCardPrice = {
+  label: string;
+  state: "exact" | "range" | "request";
+  qualifier?: string;
+};
+
+/** Card pricing is formatted from canonical numeric fields, never a second UI price list. */
+export function getConferenceProductCardPrice(product: ConferenceProduct): ConferenceCardPrice {
+  if (product.price.type === "fixed") {
+    return { label: formatBdtAmount(product.price.amount), state: "exact" };
+  }
+  if (product.price.type === "range") {
+    return {
+      label: formatBdtRange([product.price.min, product.price.max]),
+      state: "range",
+      qualifier: "Indicative price",
+    };
+  }
+  return { label: "Request Price", state: "request" };
+}
+
 /**
  * Commercial terms are not technical specifications. They are shown next to the
  * price instead of inside the spec table, and are kept out of the Product
@@ -712,6 +752,10 @@ const CONNECTION_LABELS: Readonly<Record<ConferenceConnection, string>> = {
   wireless: "Wireless",
   hybrid: "Hybrid",
 };
+
+export function getConferenceConnectionLabel(connection: ConferenceConnection): string {
+  return CONNECTION_LABELS[connection];
+}
 
 /** The only values the Connection row may hold, so the property stays comparable. */
 const CONNECTION_VALUES = new Set<string>(Object.values(CONNECTION_LABELS));
@@ -768,6 +812,44 @@ export function getConferenceProductSpecifications(
   push("Availability", getConferenceProductAvailabilityLabel(product));
 
   return rows;
+}
+
+const CARD_SPEC_PRIORITIES: Partial<Record<ConferenceProductType, readonly string[]>> = {
+  "control-unit": ["Capacity", "Microphone Capacity", "Function", "Compatibility", "Audio Output", "Installation"],
+  "chairman-unit": ["Microphone", "Function", "Compatibility", "Installation", "Application"],
+  "delegate-unit": ["Microphone", "Function", "Compatibility", "Installation", "Application"],
+  dsp: ["Input / Output", "I/O", "Function", "Compatibility", "Installation"],
+  amplifier: ["Output Power", "Function", "Compatibility", "Installation", "Application"],
+  processor: ["Input / Output", "I/O", "Function", "Compatibility", "Installation"],
+  charger: ["Charging Capacity", "Compatibility", "Installation", "Application"],
+  "access-point": ["Function", "Compatibility", "Installation", "Application"],
+};
+
+const CARD_SPEC_EXCLUSIONS = new Set([
+  "Brand",
+  "Model",
+  "Product Type",
+  "Connection",
+  "System Category",
+  "Availability",
+]);
+
+/** Selects concise, verified specification rows without deriving values from marketing copy. */
+export function getConferenceProductCardSpecs(
+  product: ConferenceProduct,
+  limit = 3,
+): { label: string; value: string }[] {
+  if (limit <= 0) return [];
+  const rows = getConferenceProductSpecifications(product).filter(
+    (spec) => !CARD_SPEC_EXCLUSIONS.has(spec.key),
+  );
+  const priority = product.productTypes.flatMap((type) => CARD_SPEC_PRIORITIES[type] ?? []);
+  const rank = new Map(priority.map((key, index) => [key, index]));
+  return rows
+    .map((spec, index) => ({ spec, index }))
+    .sort((a, b) => (rank.get(a.spec.key) ?? 100 + a.index) - (rank.get(b.spec.key) ?? 100 + b.index))
+    .slice(0, limit)
+    .map(({ spec }) => ({ label: spec.key, value: spec.value }));
 }
 
 /** The commercial note that used to sit inside the spec table, shown beside the price. */
