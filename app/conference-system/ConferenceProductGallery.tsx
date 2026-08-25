@@ -42,20 +42,20 @@ export default function ConferenceProductGallery({
               alt={`${image.alt} — view ${index + 1}`}
               fill
               sizes="80px"
-              className="object-contain p-2"
+              className="object-contain p-1"
             />
           </button>
         ))}
       </div>
 
-      <div className="order-1 relative aspect-square overflow-hidden rounded-xl bg-white sm:order-2">
+      <div className="order-1 relative aspect-square overflow-hidden rounded-xl border border-slate-100 bg-white sm:order-2">
         <Image
           src={activeImage}
           alt={productName}
           fill
           priority
           sizes="(max-width: 768px) 100vw, 50vw"
-          className="object-contain p-5 sm:p-8"
+          className="object-contain p-2 sm:p-4"
         />
       </div>
     </div>

@@ -387,7 +387,7 @@ export default function ConferenceProductExplorer({
               <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
                 {selectedCompareProducts.map((product) => (
                   <div key={product.slug} className="flex min-w-[12rem] items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 p-2">
-                    <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg bg-white"><Image src={product.image.src} alt="" fill sizes="40px" className="object-contain p-1" /></div>
+                    <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-slate-100 bg-white"><Image src={product.image.src} alt="" fill sizes="40px" className="object-contain p-0.5" /></div>
                     <span className="min-w-0 flex-1 truncate text-xs font-bold text-slate-800">{product.model ?? product.name}</span>
                     <button type="button" onClick={() => toggleCompare(product.slug)} aria-label={`Remove ${product.name} from comparison`} className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-lg text-slate-500 hover:bg-white hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40">×</button>
                   </div>

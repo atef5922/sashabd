@@ -41,14 +41,14 @@ export default function ConferenceProductCard({
         prefetch={false}
         href={productHref}
         aria-label={`View ${product.name}`}
-        className="relative block aspect-[4/3] overflow-hidden bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-sky-500 md:aspect-[16/10]"
+        className="relative block aspect-[4/3] overflow-hidden border-b border-slate-100 bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-sky-500"
       >
         <Image
           src={product.image.src}
           alt={product.image.alt}
           fill
           sizes="(max-width: 767px) 88vw, (max-width: 1023px) 50vw, 33vw"
-          className="object-contain p-4 transition duration-300 group-hover:scale-[1.025] md:p-5"
+          className="object-contain p-1.5 transition duration-300 group-hover:scale-[1.015] md:p-2"
           priority={priority}
         />
       </Link>

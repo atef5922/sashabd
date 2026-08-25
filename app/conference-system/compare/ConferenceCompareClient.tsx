@@ -53,8 +53,8 @@ export default function ConferenceCompareClient({ products }: { products: Compar
           {selectedProducts.map((product) => (
             <article key={product.slug} className="flex min-w-0 flex-col rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
               <div className="flex items-start gap-3">
-                <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-slate-50">
-                  <Image src={product.image.src} alt={product.image.alt} fill sizes="80px" className="object-contain p-2" />
+                <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-slate-100 bg-white">
+                  <Image src={product.image.src} alt={product.image.alt} fill sizes="80px" className="object-contain p-1" />
                 </div>
                 <div className="min-w-0">
                   <p className="text-xs font-extrabold uppercase tracking-wide text-orange-700">{product.brand ?? "Conference Product"}</p>
