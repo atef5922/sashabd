@@ -44,7 +44,7 @@ const pairedSecondaryCtaClass =
   "inline-flex min-h-[3.25rem] w-full items-center justify-center rounded-xl border border-slate-300 bg-white px-3 py-2 text-center text-[13px] font-extrabold leading-[1.15rem] text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40 focus-visible:ring-offset-2";
 
 const sectionClass =
-  "mt-4 rounded-3xl border bg-white p-[10px] shadow-sm md:p-8";
+  "mt-4 rounded-3xl border bg-white p-[10px] md:p-8";
 
 const sectionStyle = {
   borderColor: `${BRAND.maroon}12`,
@@ -61,9 +61,11 @@ function getParityClassName(index: number) {
 const ResponsiveCardGrid = ({
   items,
   desktopClassName = "md:grid-cols-2 lg:grid-cols-3",
+  colorFill = false,
 }: {
   items: Array<{ title: string; desc: string; icon?: ReactNode; bullets?: readonly string[]; meta?: string }>;
   desktopClassName?: string;
+  colorFill?: boolean;
 }) => (
   <div
     className={`-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:snap-none md:overflow-visible md:px-0 md:pb-0 md:pt-0 ${desktopClassName}`}
@@ -71,11 +73,11 @@ const ResponsiveCardGrid = ({
     {items.map((item, index) => (
       <article
         key={item.title}
-        className={`w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4 shadow-sm md:w-auto md:rounded-2xl md:border-slate-200 md:bg-white md:p-5 md:snap-none ${getParityClassName(index)}`}
+        className={`w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4 transition md:w-auto md:rounded-2xl md:p-5 md:snap-none md:hover:-translate-y-0.5 ${colorFill ? "" : "md:border-slate-200 md:bg-white"} ${getParityClassName(index)}`}
       >
-        <div className="flex items-start gap-3">
+        <div className="flex items-center gap-3">
           {item.icon ? (
-            <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] bg-white/80 text-orange-600">
+            <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] border border-orange-100 bg-white text-orange-600">
               {item.icon}
             </span>
           ) : null}
@@ -84,12 +86,12 @@ const ResponsiveCardGrid = ({
             {item.meta ? <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.04em] text-slate-500">{item.meta}</p> : null}
           </div>
         </div>
-        <p className="mt-2 text-[13px] leading-6 text-slate-700 text-justify">{item.desc}</p>
+        <p className="mt-3 text-[13px] leading-6 text-slate-700 text-justify">{item.desc}</p>
         {item.bullets?.length ? (
           <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
             {item.bullets.map((point) => (
               <li key={point} className="flex items-start gap-2">
-                <span className="mt-1.5 inline-block h-2 w-2 rounded-full" style={{ background: BRAND.maroon }} />
+                <span className="mt-1.5 inline-block h-2 w-2 shrink-0 rounded-full" style={{ background: BRAND.maroon }} />
                 <span className="leading-6 text-justify">{point}</span>
               </li>
             ))}
@@ -489,6 +491,7 @@ type ConferenceBrandCard = {
   logoSrc?: string;
   logoWidth?: number;
   logoHeight?: number;
+  logoMaxHeightClassName?: string;
   url: string;
 };
 
@@ -527,6 +530,9 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
       "View SPON digital and network conference products from our catalog, including control units, DSP processors, amplifiers, and meeting-room audio equipment.",
     support: "Room-based system design, BOQ preparation, installation, commissioning, and after-sales guidance.",
     badge: "Authorized Distributor",
+    logoSrc: "/images/brands/audio/spon.svg",
+    logoWidth: 163,
+    logoHeight: 33,
     url: "/conference-system/brands/spon/",
   },
   {
@@ -537,6 +543,10 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
       "Browse CMX wired, wireless, and paperless conference products listed in our catalog for boardrooms, council chambers, and flexible meeting spaces.",
     support: "Product selection, microphone quantity planning, installation support, and after-sales guidance.",
     badge: "Authorized Distributor",
+    logoSrc: "/images/brands/audio/cmx-logo.png",
+    logoWidth: 95,
+    logoHeight: 95,
+    logoMaxHeightClassName: "max-h-9 md:max-h-10",
     url: "/conference-system/brands/cmx/",
   },
 ];
@@ -549,7 +559,7 @@ const verifiedConferenceBrandCards = conferenceBrandCards.filter((card) => {
 const ConferenceBrandTitleBox = ({
   brand,
 }: {
-  brand: Pick<ConferenceBrandCard, "title" | "logoSrc" | "logoWidth" | "logoHeight" | "url">;
+  brand: Pick<ConferenceBrandCard, "title" | "logoSrc" | "logoWidth" | "logoHeight" | "logoMaxHeightClassName" | "url">;
 }) => {
   const isInternal = brand.url.startsWith("/");
 
@@ -568,7 +578,7 @@ const ConferenceBrandTitleBox = ({
             alt={`${brand.title} logo`}
             width={brand.logoWidth}
             height={brand.logoHeight}
-            className="h-auto max-h-6 w-auto object-contain md:max-h-7"
+            className={`h-auto w-auto object-contain ${brand.logoMaxHeightClassName ?? "max-h-6 md:max-h-7"}`}
           />
         ) : (
           <span className="text-base font-extrabold tracking-tight text-slate-950">{brand.title}</span>
@@ -1088,7 +1098,7 @@ export default function ConferenceSystemPage() {
         className="mb-4 pt-3 text-sm text-slate-600"
       />
 
-      <section className="mobile-page-intro-card rounded-none border-0 bg-transparent p-0 shadow-none md:rounded-3xl md:border md:bg-white md:p-8 md:shadow-sm" style={{ borderColor: `${BRAND.maroon}12` }}>
+      <section className="mobile-page-intro-card rounded-none border-0 bg-transparent p-0 shadow-none md:rounded-3xl md:border md:bg-white md:p-8" style={{ borderColor: `${BRAND.maroon}12` }}>
         <h1 className="text-[1.75rem] font-extrabold leading-[1.08] tracking-tight text-slate-950 md:text-4xl">
           {PAGE_TITLE}
         </h1>
@@ -1122,7 +1132,7 @@ export default function ConferenceSystemPage() {
       </section>
 
       <section className="mt-4" aria-labelledby="conference-brand-badges-heading">
-        <div className="rounded-2xl border bg-white p-4 shadow-sm md:p-5" style={sectionStyle}>
+        <div className="rounded-2xl border bg-white p-4 md:p-5" style={sectionStyle}>
           <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h2 id="conference-brand-badges-heading" className="flex items-center gap-3 text-lg font-extrabold text-slate-950 md:text-xl">
@@ -1180,7 +1190,7 @@ export default function ConferenceSystemPage() {
           </div>
         </div>
 
-        <nav aria-label="Conference system categories" className="mb-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <nav aria-label="Conference system categories" className="mb-4 rounded-2xl border border-slate-200 bg-white p-4">
           <p className="text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Browse by system or component</p>
           <ul className="mt-3 flex flex-nowrap gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] lg:justify-between lg:gap-1.5 lg:overflow-visible [&::-webkit-scrollbar]:hidden">
             {conferenceExplorerCategories.map((category) => (
@@ -1206,7 +1216,7 @@ export default function ConferenceSystemPage() {
           totalProducts={conferenceSystemCatalog.length}
         />
 
-        <details className="mt-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <details className="mt-6 rounded-2xl border border-slate-200 bg-white">
           <summary className="cursor-pointer px-5 py-4 text-sm font-extrabold text-slate-900 marker:text-orange-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-500/40">
             Browse the complete product directory ({conferenceSystemCatalog.length} products)
           </summary>
@@ -1338,7 +1348,7 @@ export default function ConferenceSystemPage() {
       </section>
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-components">
-        <div className="max-w-5xl">
+        <div>
           <h2 id="conference-system-components" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
             <ConferenceSectionTitleIcon icon="components" />
             Key Components of a Conference System
@@ -1369,8 +1379,8 @@ export default function ConferenceSystemPage() {
         </div>
 
         <div className="mt-6 rounded-2xl border border-orange-100 bg-orange-50/50 p-5 md:p-6">
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-3xl">
+          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div className="min-w-0 max-w-3xl md:flex-1">
               <h3 className="text-xl font-extrabold text-slate-950">
                 Need help choosing the right conference system components?
               </h3>
@@ -1408,6 +1418,7 @@ export default function ConferenceSystemPage() {
           <ResponsiveCardGrid
             desktopClassName="md:grid-cols-2 lg:grid-cols-3"
             items={systemTypes.map((item) => ({ title: item.title, desc: item.desc }))}
+            colorFill
           />
         </div>
         <p className="mt-5 text-sm leading-7 text-slate-600">
@@ -1549,7 +1560,7 @@ export default function ConferenceSystemPage() {
       </section>
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-benefits">
-        <div className="max-w-5xl">
+        <div>
           <h2 id="conference-system-benefits" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
             <ConferenceSectionTitleIcon icon="benefits" />
             Key Benefits of a Professional Conference System
@@ -1625,13 +1636,14 @@ export default function ConferenceSystemPage() {
           <ResponsiveCardGrid
             desktopClassName="md:grid-cols-2 lg:grid-cols-3"
             items={applicationCards.map((item) => ({ title: item.title, desc: item.desc }))}
+            colorFill
           />
         </div>
       </section>
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-packages">
-        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div className="max-w-4xl">
+        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+          <div className="min-w-0 max-w-4xl md:flex-1">
             <h2 id="conference-system-packages" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
               <ConferenceSectionTitleIcon icon="packages" />
               Conference System Packages by Room Size
@@ -1660,7 +1672,7 @@ export default function ConferenceSystemPage() {
           {packageCards.map((item, index) => (
             <article
               key={item.title}
-              className={`flex h-full w-[89%] shrink-0 snap-start flex-col rounded-[14px] border p-4 shadow-sm md:w-auto md:rounded-2xl md:border-slate-200 md:bg-white md:p-5 md:snap-none ${getParityClassName(index)}`}
+              className={`flex h-full w-[89%] shrink-0 snap-start flex-col rounded-[14px] border p-4 md:w-auto md:rounded-2xl md:border-slate-200 md:bg-white md:p-5 md:snap-none ${getParityClassName(index)}`}
             >
               <h3 className="text-lg font-extrabold text-slate-950">{item.title}</h3>
               <dl className="mt-4 grid gap-3 text-sm leading-6 text-slate-700">
@@ -1696,7 +1708,7 @@ export default function ConferenceSystemPage() {
       </section>
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="choose-right-conference-system">
-        <div className="max-w-5xl">
+        <div>
           <h2 id="choose-right-conference-system" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
             <ConferenceSectionTitleIcon icon="guide" />
             How to Choose the Right Conference System in Bangladesh
@@ -1800,7 +1812,7 @@ export default function ConferenceSystemPage() {
       </section>
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-installations">
-        <div className="max-w-5xl">
+        <div>
           <h2 id="conference-system-installations" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
             <ConferenceSectionTitleIcon icon="projects" />
             Conference System Project Planning
@@ -1814,20 +1826,32 @@ export default function ConferenceSystemPage() {
 
         <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {conferenceInstallationProjects.map((project) => (
-            <article key={project.title} className="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <article key={project.title} className="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white">
               <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
                 <Image src={project.image} alt={project.imageAlt} fill sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) 50vw, 33vw" className="object-cover" />
               </div>
               <div className="flex flex-1 flex-col p-4 md:p-5">
                 <p className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.08em] text-orange-700">Representative configuration</p>
                 <h3 className="text-lg font-extrabold leading-snug text-slate-950">{project.title}</h3>
-                <dl className="mt-4 space-y-2 border-y border-slate-100 py-3 text-[13px] leading-5 text-slate-700">
-                  <div className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-2"><dt className="font-bold text-slate-500">Coverage</dt><dd>{project.location}</dd></div>
-                  <div className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-2"><dt className="font-bold text-slate-500">Brand / System</dt><dd>{project.brand}</dd></div>
-                  <div className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-2"><dt className="font-bold text-slate-500">Configuration</dt><dd>{project.configuration}</dd></div>
-                  <div className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-2"><dt className="font-bold text-slate-500">Scope</dt><dd>{project.scope}</dd></div>
+                <dl className="mt-4 space-y-2.5 border-y border-slate-100 py-3.5 text-xs text-slate-700">
+                  <div className="flex items-start justify-between gap-4">
+                    <dt className="font-extrabold uppercase tracking-wide text-slate-500">Coverage</dt>
+                    <dd className="text-right font-bold text-slate-800">{project.location}</dd>
+                  </div>
+                  <div className="flex items-start justify-between gap-4">
+                    <dt className="font-extrabold uppercase tracking-wide text-slate-500">Brand / System</dt>
+                    <dd className="text-right font-bold text-slate-800">{project.brand}</dd>
+                  </div>
+                  <div>
+                    <dt className="font-extrabold uppercase tracking-wide text-slate-500">Configuration</dt>
+                    <dd className="mt-1 leading-5 text-slate-700">{project.configuration}</dd>
+                  </div>
+                  <div>
+                    <dt className="font-extrabold uppercase tracking-wide text-slate-500">Scope</dt>
+                    <dd className="mt-1 leading-5 text-slate-700">{project.scope}</dd>
+                  </div>
                 </dl>
-                <p className="mt-3 text-sm leading-6 text-slate-700">{project.description}</p>
+                <p className="mt-3.5 text-sm leading-6 text-slate-700">{project.description}</p>
                 <Link href="/contact/?project=conference-system" aria-label={`Discuss a setup based on ${project.title}`} className="mt-auto inline-flex min-h-11 items-center pt-4 text-sm font-extrabold text-orange-700 transition hover:text-orange-600 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45">
                   Discuss This Setup <span aria-hidden="true" className="ml-1">-&gt;</span>
                 </Link>
@@ -1847,7 +1871,7 @@ export default function ConferenceSystemPage() {
       </section>
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="why-choose-sasha">
-        <div className="max-w-5xl">
+        <div>
           <h2 id="why-choose-sasha" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
             <ConferenceSectionTitleIcon icon="service" />
             Why Choose Sasha Corporation for Conference Systems in Bangladesh?
@@ -1877,7 +1901,7 @@ export default function ConferenceSystemPage() {
           />
         </div>
 
-        <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:p-6">
+        <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 md:p-6">
           <h3 className="text-lg font-extrabold text-slate-950">
             Our Conference System Process
           </h3>
@@ -1942,7 +1966,7 @@ export default function ConferenceSystemPage() {
           {verifiedConferenceBrandCards.map((brand, index) => (
             <article
               key={brand.title}
-              className={`flex h-full w-[89%] shrink-0 snap-start flex-col rounded-[14px] border p-4 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md md:w-auto md:rounded-2xl md:border-slate-200 md:bg-white md:p-6 md:snap-none ${getParityClassName(index)}`}
+              className={`flex h-full w-[89%] shrink-0 snap-start flex-col rounded-[14px] border p-4 transition duration-200 hover:-translate-y-0.5 md:w-auto md:rounded-2xl md:border-slate-200 md:bg-white md:p-6 md:snap-none ${getParityClassName(index)}`}
             >
               <div>
                 <span className="inline-flex rounded-full bg-orange-50 px-3 py-1 text-xs font-extrabold text-orange-700">
@@ -1971,7 +1995,7 @@ export default function ConferenceSystemPage() {
         </div>
 
         <div className="mt-6 rounded-2xl border border-sky-100 bg-sky-50/45 p-5 md:p-6" aria-labelledby="conference-commercial-confidence">
-          <div className="max-w-4xl">
+          <div>
             <h3 id="conference-commercial-confidence" className="text-xl font-extrabold text-slate-950">
               Commercial Confidence &amp; Verified Business Support
             </h3>
@@ -1981,28 +2005,28 @@ export default function ConferenceSystemPage() {
             </p>
           </div>
           <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-            <article className="rounded-xl border border-slate-200 bg-white p-4">
+            <article className="rounded-xl border border-orange-200/80 bg-orange-50/70 p-4">
               <h4 className="font-extrabold text-slate-950">Verified business contact</h4>
               <p className="mt-2 text-sm leading-6 text-slate-600">{siteConfig.address}</p>
               <a href={`tel:${siteConfig.phone}`} className="mt-2 inline-flex text-sm font-bold text-sky-800 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40">
                 {siteConfig.phone}
               </a>
             </article>
-            <article className="rounded-xl border border-slate-200 bg-white p-4">
+            <article className="rounded-xl border border-orange-200/80 bg-orange-50/70 p-4">
               <h4 className="font-extrabold text-slate-950">Transparent quotation scope</h4>
               <p className="mt-2 text-sm leading-6 text-slate-600">
                 Final quotation follows verified products, quantities, compatibility, installation and agreed project scope.
               </p>
               <Link href="/contact/?project=conference-system" className="mt-2 inline-flex text-sm font-bold text-sky-800 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40">Request a documented quotation</Link>
             </article>
-            <article className="rounded-xl border border-slate-200 bg-white p-4">
+            <article className="rounded-xl border border-orange-200/80 bg-orange-50/70 p-4">
               <h4 className="font-extrabold text-slate-950">Installation &amp; support</h4>
               <p className="mt-2 text-sm leading-6 text-slate-600">
                 Room review, BOQ planning, installation, testing and after-sales scope are agreed for each project.
               </p>
               <Link href="/services-support/" className="mt-2 inline-flex text-sm font-bold text-sky-800 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40">Review services and support</Link>
             </article>
-            <article className="rounded-xl border border-slate-200 bg-white p-4">
+            <article className="rounded-xl border border-orange-200/80 bg-orange-50/70 p-4">
               <h4 className="font-extrabold text-slate-950">Clear commercial policies</h4>
               <p className="mt-2 text-sm leading-6 text-slate-600">Check applicable terms, return conditions and privacy handling before ordering.</p>
               <nav aria-label="Commercial policies" className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-sm font-bold text-sky-800">
@@ -2020,8 +2044,8 @@ export default function ConferenceSystemPage() {
       </section>
 
       <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-faq">
-        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div className="max-w-4xl">
+        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+          <div className="min-w-0 max-w-4xl md:flex-1">
             <h2 id="conference-system-faq" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
               <ConferenceSectionTitleIcon icon="faq" />
               Conference System FAQ
