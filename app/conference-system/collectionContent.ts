@@ -260,6 +260,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
       { q: "What is included in a complete conference package?", a: "The contents depend on the room, but may include compatible chairman and delegate units, controller, DSP, amplifier, speakers, cabling, accessories, installation, testing, and handover." },
       { q: "Are complete package products currently listed?", a: "Yes. Verified complete conference package products are listed directly on this page." },
       { q: "How is a conference-system BOQ prepared?", a: "It starts with room size, seating, participant workflow, audio and video needs, infrastructure, verified product compatibility, installation, and commissioning requirements." },
+      { q: "Do conference system package prices include installation?", a: "The displayed package ranges include the listed equipment, standard installation, system configuration, and testing. Final pricing may change after reviewing the selected brand, room layout, cable length, speaker requirements, site conditions, and any additional integration work." },
     ],
     emptyMessage: "No verified complete package is currently listed. Sasha can review the room and prepare a project-specific quotation using available verified equipment.",
   },
