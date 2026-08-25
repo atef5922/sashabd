@@ -911,6 +911,8 @@ test("Conference product explorer provides canonical search, multi-filter, sort,
   assert.match(explorer, /event\.key !== "Escape"/);
   assert.match(explorer, /mobileFilterButtonRef\.current\?\.focus\(\)/);
   assert.match(explorer, /lg:sticky lg:top-20/);
+  assert.match(explorer, /2xl:grid-cols-\[17rem_minmax\(0,1fr\)\]/);
+  assert.match(explorer, /desktopClassName="md:grid-cols-2 xl:grid-cols-3"/);
   assert.match(explorer, /lg:max-h-\[calc\(100dvh-6rem\)\]/);
   assert.match(explorer, /lg:overflow-y-auto lg:overscroll-contain/);
   assert.match(explorer, /Active filters/);
@@ -951,6 +953,7 @@ test("Conference product explorer provides canonical search, multi-filter, sort,
 
 test("Conference landing keeps client discovery payload compact and defers below-fold rendering", () => {
   const source = read("app/conference-system/page.tsx");
+  const header = read("components/common/Header.tsx");
   const explorerData = read("app/conference-system/conferenceExplorerData.ts");
   const catalogRoute = read("app/conference-system/catalog-data.json/route.ts");
   const explorerProps = sectionBetween(source, "<ConferenceProductExplorer", "/>");
@@ -964,6 +967,8 @@ test("Conference landing keeps client discovery payload compact and defers below
   assert.match(catalogRoute, /balanceConferenceProductsByBrand\(buildConferenceExplorerProducts\(\)\)/);
   assert.match(source, /contentVisibility: "auto" as const/);
   assert.match(source, /containIntrinsicSize: "auto 520px"/);
+  assert.match(source, /max-w-\[120rem\] px-4 pb-10 pt-0 md:px-6/);
+  assert.match(header, /useConferenceTabletHeader \? "w-full max-w-\[120rem\]" : "max-w-7xl"/);
 });
 
 test("Conference comparison engine keeps selection accessible, bounded, persistent, and independent", () => {

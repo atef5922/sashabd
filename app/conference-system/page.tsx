@@ -1082,7 +1082,7 @@ export default function ConferenceSystemPage() {
 
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 pb-10 pt-0 md:px-6" data-conference-route-kind="hub">
+    <div className="mx-auto w-full max-w-[120rem] px-4 pb-10 pt-0 md:px-6" data-conference-route-kind="hub">
       <Breadcrumbs
         items={[homeBreadcrumb(), { href: "/conference-system/", label: "Conference System", current: true }]}
         className="mb-4 pt-3 text-sm text-slate-600"
