@@ -14,6 +14,7 @@ import {
   type ConferenceProduct,
 } from "./catalog";
 import ConferenceProductCard from "./ConferenceProductCard";
+import ConferencePackageCards from "./ConferencePackageCards";
 import type { ConferenceCollectionFaq, ConferenceCollectionInfoItem } from "./collectionContent";
 import {
   getConferenceApplications,
@@ -131,12 +132,12 @@ function ProductGrid({ products }: { products: readonly ConferenceProduct[] }) {
   );
 }
 
-function PriceTable({ title, products }: { title: string; products: readonly ConferenceProduct[] }) {
+function PriceTable({ title, products, eyebrow = "Catalog pricing" }: { title: string; products: readonly ConferenceProduct[]; eyebrow?: string }) {
   if (!products.length) return null;
   return (
     <section id="price-list" className="mt-10 scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-5 md:p-7">
       <SectionHeading
-        eyebrow="Catalog pricing"
+        eyebrow={eyebrow}
         title={title}
         description="Each row distinguishes fixed catalog price, indicative equipment range, and project quotation. Final project cost may also include compatible equipment, cabling, installation, and commissioning."
       />
@@ -309,11 +310,14 @@ function CategoryTemplate({ category, products, breadcrumbs }: Omit<CategoryColl
   const relatedCategories = getConferenceRelatedCategories(category);
   const relevantBrands = getConferenceBrandsForProducts(products);
   const applications = getConferenceApplications(products);
+  const isCompletePackage = category.slug === "complete-package";
 
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-7 md:px-6 md:py-9" data-conference-route-kind="category">
       <Breadcrumbs items={breadcrumbs} />
       <Hero eyebrow={category.group} title={content.heroTitle} description={content.intro} productCount={products.length} />
+
+      {isCompletePackage ? <ConferencePackageCards /> : null}
 
       <section className="mt-10">
         <SectionHeading eyebrow="Category essentials" title={`Understanding ${category.label}`} />
@@ -323,9 +327,13 @@ function CategoryTemplate({ category, products, breadcrumbs }: Omit<CategoryColl
       {products.length ? (
         <section id="products" className="mt-10 scroll-mt-24">
           <SectionHeading
-            eyebrow="Verified products"
-            title="Matching Products"
-            description="Every product below is matched to this category and links to its own product page."
+            eyebrow={isCompletePackage ? "Complete system products" : "Verified products"}
+            title={isCompletePackage ? "Ready-Made Conference System Products" : "Matching Products"}
+            description={
+              isCompletePackage
+                ? "Explore verified complete conference system products available separately from the installed room packages above."
+                : "Every product below is matched to this category and links to its own product page."
+            }
           />
           <ProductGrid products={products} />
         </section>
@@ -333,7 +341,11 @@ function CategoryTemplate({ category, products, breadcrumbs }: Omit<CategoryColl
         <EmptyState title={`No verified ${category.shortLabel ?? category.label} products yet`} message={content.emptyMessage ?? "Products are being prepared for this category. Contact Sasha for project consultation and current availability."} />
       )}
 
-      <PriceTable title={`${category.label} Price in Bangladesh`} products={products} />
+      <PriceTable
+        title={isCompletePackage ? "Complete Conference System Product Price in Bangladesh" : `${category.label} Price in Bangladesh`}
+        products={products}
+        eyebrow={isCompletePackage ? "Product pricing" : undefined}
+      />
 
       <section className="mt-10 rounded-3xl border border-slate-200 bg-white p-5 md:p-7">
         <SectionHeading eyebrow="Selection guide" title={content.buyerGuideTitle} description={content.buyerGuideIntro} />

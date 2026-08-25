@@ -519,7 +519,7 @@ test("Conference catalog is normalized, complete, and route-stable", () => {
     assert.match(block, /shortDescription: "[^"]+"/);
     assert.match(block, /description:\s*(?:"|\n\s+")[\s\S]+/);
     assert.match(block, /productTypes: \["(?:chairman-unit|delegate-unit|control-unit|dsp|amplifier|camera|video-bar|speakerphone|package|accessory|microphone|charger|access-point|processor|other)"\]/);
-    assert.match(block, /price: \{ type: "fixed", amount: \d+, currency: "BDT", displayLabel: "[^"]+" \}/);
+    assert.match(block, /price: \{ type: "(?:fixed|range)", (?:amount: \d+|min: \d+, max: \d+), currency: "BDT", displayLabel: "[^"]+" \}/);
     assert.match(block, /images: \[[\s\S]*?src: [^,]+, alt: "[^"]+", primary: true/);
     assert.match(block, /applications: \[[^\]]+\]/);
     assert.match(block, /specifications: \[[\s\S]*?\{ key: "[^"]+", value: "[^"]+" \}/);
@@ -539,14 +539,11 @@ test("Conference catalog is normalized, complete, and route-stable", () => {
   assert.match(detail, /\{specifications\.map\(\(spec\) => \(/);
 });
 
-test("Conference normalized prices preserve all 11 visible amounts", () => {
+test("Conference normalized prices preserve all 11 core price records", () => {
   const catalog = read("app/conference-system/catalog.ts");
   const expectedPrices = [
     [18500, "৳18,500"],
     [145000, "৳145,000"],
-    [72500, "৳72,500"],
-    [64500, "৳64,500"],
-    [54500, "৳54,500"],
     [21500, "৳21,500"],
     [19500, "৳19,500"],
     [34500, "৳34,500"],
@@ -556,11 +553,16 @@ test("Conference normalized prices preserve all 11 visible amounts", () => {
   ];
   const actualPrices = [...catalog.matchAll(/price: \{ type: "fixed", amount: (\d+), currency: "BDT", displayLabel: "([^"]+)" \}/g)]
     .map((match) => [Number(match[1]), match[2]]);
+  const expectedRanges = [[55000, 75000], [60000, 75000], [65000, 90000]];
+  const actualRanges = [...catalog.matchAll(/price: \{ type: "range", min: (\d+), max: (\d+), currency: "BDT", displayLabel: "[^"]+" \}/g)]
+    .map((match) => [Number(match[1]), Number(match[2])]);
 
   // Every published amount must survive; the order they sit in the file may change.
   const key = (entry) => `${entry[0]}|${entry[1]}`;
   assert.deepEqual(actualPrices.map(key).sort(), expectedPrices.map(key).sort());
   assert.equal(actualPrices.length, expectedPrices.length);
+  assert.deepEqual(actualRanges.map(key).sort(), expectedRanges.map(key).sort());
+  assert.equal(actualPrices.length + actualRanges.length, 11);
 });
 
 test("Conference canonical model supports future discovery without fabricating optional data", () => {
@@ -624,6 +626,7 @@ test("Conference cards use canonical structured pricing and one accessible actio
 
 test("Conference price transparency uses one presenter and explicit commercial states", () => {
   const catalog = read("app/conference-system/catalog.ts");
+  const toa = read("app/conference-system/catalog.toa.ts");
   const landing = read("app/conference-system/page.tsx");
   const detail = read("app/conference-system/ConferenceProductDetailPage.tsx");
   const collection = read("app/conference-system/ConferenceCollectionPage.tsx");
@@ -633,6 +636,10 @@ test("Conference price transparency uses one presenter and explicit commercial s
   assert.match(catalog, /basisLabel: "Project quotation"/);
   assert.match(catalog, /Current price is provided after confirming the model, quantity and project requirements/);
   assert.match(catalog, /product\.price\.updatedAt/);
+  assert.match(catalog, /product\.price\.maxQualifier === "plus" \? "\+" : ""/);
+  assert.match(toa, /price: indicativeRange\(55000, 85000, "plus"\)/);
+  assert.match(toa, /price: indicativeRange\(27500, 29500\)/);
+  assert.match(toa, /price: indicativeRange\(22500, 27000\)/);
   assert.match(catalog, /isValidIsoCalendarDate/);
   assert.match(catalog, /missing availability/);
   assert.match(detail, /getConferenceProductPricePresentation\(product\)/);
@@ -809,7 +816,7 @@ test("Conference brand catalogs are unique, conference-only, and image-backed", 
   const shortDescriptions = [...all.matchAll(/shortDescription:\s*\n?\s*"([^"]{40,})"/g)].map((m) => m[1]);
   const descriptions = [...all.matchAll(/^    description:\s*\n?\s*"([^"]{60,})"/gm)].map((m) => m[1]);
 
-  assert.equal(ids.length, 69, "catalog must expose every verified conference product");
+  assert.equal(ids.length, 70, "catalog must expose every verified conference product");
   assert.equal(new Set(ids).size, ids.length, "product ids must be unique");
   assert.equal(new Set(slugs).size, slugs.length, "product slugs must be unique");
   assert.equal(new Set(names).size, names.length, "product names must be unique");
@@ -824,16 +831,16 @@ test("Conference brand catalogs are unique, conference-only, and image-backed", 
     /export const conferenceSystemCatalog: ConferenceProduct\[\] = \[\s*\.\.\.coreConferenceProducts,\s*\.\.\.newSponConferenceProducts,\s*\.\.\.boschConferenceProducts,\s*\.\.\.newBoschConferenceProducts,\s*\.\.\.cmxConferenceProducts,\s*\.\.\.toaConferenceProducts,\s*\];/,
   );
 
-  for (const model of ["CCSD-CL", "LBB 4116/05", "LBB 4116/10", "DCNM-WD", "DCNM-WCH05", "DCNM-HDMIC", "CCSE-CURA-IN", "DCNM-WLIION"]) {
+  for (const model of ["CCSD-CL", "LBB 4116/05", "LBB 4116/10", "LBB 4116/20", "DCNM-WD", "DCNM-WCH05", "DCNM-HDMIC", "CCSE-CURA-IN", "DCNM-WLIION"]) {
     assert.match(newBosch, new RegExp(`model: "${model.replaceAll("/", "\\/")}"`), `${model} must be present once`);
   }
-  for (const excluded of ["LBB 4116/20", "Bosch CCS-900 Wired Ultro Discussion Conference System", "BOSCH CCS 1000 Ultro Discussion System"]) {
-    assert.ok(!newBosch.includes(excluded), `${excluded} must stay excluded until its data is unambiguous`);
-  }
+  assert.match(bosch, /Bosch CCS-900 Wired Ultro Discussion Conference System\.jpg/);
+  assert.match(bosch, /Bosch-CCS-1000-D-Digital-Discussion-System\.webp/);
   for (const file of [
     "Bosch CCSD-CL Discussion Chairman Unit.webp",
     "bosch-lbb-4116-05-dcn-extension-cable-5m-in-bd.webp",
     "bosch-lbb-411610-dcn-extension-cable-10m.webp",
+    "bosch-lbb-411620-dcn-extension-cable-20m.webp",
     "bosch-dcnm-wd-dicentis-wireless-discussion-device-min.webp",
     "bosch-dcnm-wch05-dicentis-charger-for-5-batteries-min.webp",
     "bosch-dcnm-hdmic-dicentis-wireless-microphone-min.webp",
@@ -863,7 +870,7 @@ test("Conference brand catalogs are unique, conference-only, and image-backed", 
   // Every brand image reference resolves to a file that is actually on disk.
   const dirMap = { bosch: "bosch_products", cmx: "cmx_products", toa: "toa_products" };
   const refs = [...`${bosch}\n${toa}`.matchAll(/(bosch|cmx|toa)Image\("([^"]+)"\)/g)];
-  assert.equal(refs.length, 43, "each brand product carries one primary image");
+  assert.equal(refs.length, 45, "every brand image reference must resolve");
   for (const [, brand, file] of refs) {
     const relative = path.join("public/images/conference_system_products", dirMap[brand], file);
     assert.ok(statSync(path.join(root, relative)).isFile(), `${relative} must exist`);
@@ -881,9 +888,11 @@ test("Conference product explorer provides canonical search, multi-filter, sort,
 
   // Page one leads with the headline brands in order; unbranded stock follows later.
   assert.match(explorer, /export const CONFERENCE_BRAND_ORDER = \["cmx", "toa", "bosch", "spon"\] as const;/);
+  assert.match(explorer, /cmx:\s*\[\s*"cmx-cs-700a-conference-system-with-discussion-units",\s*"cmx-cs-100-s101-s102-digital-conference-system",\s*"cmx-5g-100mc-wifi-wireless-conference-controller",\s*\]/);
   assert.match(explorer, /const PAGE_SIZE = CONFERENCE_PRODUCTS_PER_BRAND \* CONFERENCE_BRAND_ORDER\.length;/);
   assert.match(explorer, /return index >= 0 \? index : slug \? CONFERENCE_BRAND_ORDER\.length : CONFERENCE_BRAND_ORDER\.length \+ 1;/);
   assert.match(explorer, /if \(rank\(slug\) < CONFERENCE_BRAND_ORDER\.length\)/);
+  assert.match(explorer, /lead\.push\(\.\.\.orderedBucket\.slice\(0, perBrand\)\)/);
   assert.match(explorer, /filterConferenceProducts\(recommendedProducts, state\)/);
   assert.match(explorer, /sortConferenceProducts\(/);
   assert.match(explorer, /Search products, models, brands or systems/);
@@ -893,6 +902,9 @@ test("Conference product explorer provides canonical search, multi-filter, sort,
   assert.match(explorer, /aria-label="Close product filters"/);
   assert.match(explorer, /event\.key !== "Escape"/);
   assert.match(explorer, /mobileFilterButtonRef\.current\?\.focus\(\)/);
+  assert.match(explorer, /lg:sticky lg:top-20/);
+  assert.match(explorer, /lg:max-h-\[calc\(100dvh-6rem\)\]/);
+  assert.match(explorer, /lg:overflow-y-auto lg:overscroll-contain/);
   assert.match(explorer, /Active filters/);
   assert.match(explorer, /Conference Format/);
   assert.match(explorer, /Availability/);

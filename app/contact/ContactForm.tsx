@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { BRAND_NAME } from "@/lib/brand";
 import { siteConfig } from "@/lib/site";
+import { conferencePackageNames } from "@/app/conference-system/conferencePackages";
 
 type SubmitState = "idle" | "submitting" | "success" | "error";
 type ConferenceQuoteProduct = { slug: string; name: string; model?: string };
@@ -31,6 +32,7 @@ export default function ContactForm({
   const [projectType, setProjectType] = useState(DEFAULT_PROJECT_TYPE);
   const [message, setMessage] = useState("");
   const [selectedConferenceProducts, setSelectedConferenceProducts] = useState<ConferenceQuoteProduct[]>([]);
+  const [selectedConferencePackage, setSelectedConferencePackage] = useState("");
 
   const email = `${siteConfig.emailUser}@${siteConfig.emailDomain}`;
   const actionUrl = `https://formsubmit.co/ajax/${encodeURIComponent(email)}`;
@@ -47,15 +49,21 @@ export default function ContactForm({
       .map((slug) => productBySlug.get(slug))
       .filter((product): product is ConferenceQuoteProduct => Boolean(product))
       .slice(0, 3);
+    const requestedPackage = params.get("package")?.trim() ?? "";
+    const selectedPackage = conferencePackageNames.includes(requestedPackage) ? requestedPackage : "";
 
-    if (params.get("project") !== "conference-system" && !selected.length) return;
+    if (params.get("project") !== "conference-system" && !selected.length && !selectedPackage) return;
     queueMicrotask(() => {
       if (cancelled) return;
       setProjectType("Conference System");
       setSelectedConferenceProducts(selected);
-      if (selected.length) {
-        const productList = selected.map(conferenceQuoteProductLabel).join("; ");
-        setMessage((current) => current || `Please provide a quotation for: ${productList}.\n\nRoom size, participant count, quantity and installation requirements:`);
+      setSelectedConferencePackage(selectedPackage);
+      if (selected.length || selectedPackage) {
+        const quotationItems = [
+          selectedPackage,
+          ...selected.map(conferenceQuoteProductLabel),
+        ].filter(Boolean).join("; ");
+        setMessage((current) => current || `Please provide a quotation for: ${quotationItems}.\n\nRoom size, participant count, quantity and installation requirements:`);
       }
     });
     return () => { cancelled = true; };
@@ -115,6 +123,15 @@ export default function ContactForm({
           <div className="rounded-xl border bg-orange-50/70 px-4 py-3 text-sm text-slate-700 md:col-span-2" style={{ borderColor: `${maroon}22` }} role="status">
             <span className="font-extrabold text-slate-950">Quotation context:</span>{" "}
             {selectedConferenceProducts.map(conferenceQuoteProductLabel).join(", ")}
+          </div>
+        </>
+      ) : null}
+      {selectedConferencePackage ? (
+        <>
+          <input type="hidden" name="conference_package" value={selectedConferencePackage} />
+          <div className="rounded-xl border bg-orange-50/70 px-4 py-3 text-sm text-slate-700 md:col-span-2" style={{ borderColor: `${maroon}22` }} role="status">
+            <span className="font-extrabold text-slate-950">Quotation context:</span>{" "}
+            {selectedConferencePackage}
           </div>
         </>
       ) : null}

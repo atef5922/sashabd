@@ -61,7 +61,7 @@ type ConferencePriceMetadata = {
 
 export type ConferencePrice =
   | (ConferencePriceMetadata & { type: "fixed"; amount: number })
-  | (ConferencePriceMetadata & { type: "range"; min: number; max: number })
+  | (ConferencePriceMetadata & { type: "range"; min: number; max: number; maxQualifier?: "plus" })
   | (ConferencePriceMetadata & { type: "request" });
 
 export type ConferenceProductImage = {
@@ -131,7 +131,7 @@ const coreConferenceProducts: ConferenceProduct[] = [
     brand: { name: "SPON", slug: "spon" },
     systemCategory: "audio",
     productTypes: ["amplifier"],
-    price: { type: "fixed", amount: 72500, currency: "BDT", displayLabel: "৳72,500" },
+    price: { type: "range", min: 65000, max: 90000, currency: "BDT", displayLabel: "৳65,000 - ৳90,000" },
     availability: "project-order",
     shortDescription: "Network integrated amplifier for conference audio routing, room sound reinforcement, and system integration.",
     images: [
@@ -168,7 +168,7 @@ const coreConferenceProducts: ConferenceProduct[] = [
     brand: { name: "SPON", slug: "spon" },
     systemCategory: "audio",
     productTypes: ["dsp"],
-    price: { type: "fixed", amount: 64500, currency: "BDT", displayLabel: "৳64,500" },
+    price: { type: "range", min: 60000, max: 75000, currency: "BDT", displayLabel: "৳60,000 - ৳75,000" },
     availability: "project-order",
     shortDescription: "8-input and 8-output digital audio processor with DSP for conference rooms, training halls, and AV integration.",
     images: [
@@ -207,7 +207,7 @@ const coreConferenceProducts: ConferenceProduct[] = [
     systemCategory: "audio",
     connection: "wired",
     productTypes: ["control-unit"],
-    price: { type: "fixed", amount: 54500, currency: "BDT", displayLabel: "৳54,500" },
+    price: { type: "range", min: 55000, max: 75000, currency: "BDT", displayLabel: "৳55,000 - ৳75,000" },
     availability: "project-order",
     shortDescription: "Central control unit for SPON digital conference systems with chairman and delegate microphone management.",
     images: [
@@ -738,7 +738,7 @@ export function getConferenceProductPricePresentation(product: ConferenceProduct
   }
   if (product.price.type === "range") {
     return {
-      label: formatBdtRange([product.price.min, product.price.max]),
+      label: `${formatBdtRange([product.price.min, product.price.max])}${product.price.maxQualifier === "plus" ? "+" : ""}`,
       state: "range",
       qualifier: "Indicative range",
       basisLabel: "Indicative equipment range",
