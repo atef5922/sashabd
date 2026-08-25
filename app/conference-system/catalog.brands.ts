@@ -25,14 +25,15 @@ export const BOSCH = { name: "Bosch", slug: "bosch" } as const;
 export const CMX = { name: "CMX", slug: "cmx" } as const;
 export const TOA = { name: "TOA", slug: "toa" } as const;
 
-export function indicativeRange(min: number, max: number): ConferenceProduct["price"] {
+export function indicativeRange(min: number, max: number, maxQualifier?: "plus"): ConferenceProduct["price"] {
   const format = (value: number) => `৳${value.toLocaleString("en-US")}`;
   return {
     type: "range",
     min,
     max,
+    maxQualifier,
     currency: "BDT",
-    displayLabel: `${format(min)} – ${format(max)}`,
+    displayLabel: `${format(min)} - ${format(max)}${maxQualifier === "plus" ? "+" : ""}`,
   };
 }
 
@@ -46,7 +47,7 @@ export const boschConferenceProducts: ConferenceProduct[] = [
     systemCategory: "audio",
     connection: "wired",
     productTypes: ["chairman-unit", "delegate-unit"],
-    price: indicativeRange(26000, 39000),
+    price: indicativeRange(22000, 25000),
     availability: "project-order",
     shortDescription:
       "Analogue discussion unit from the Bosch CCS 900 Ultra range, built for daisy-chained boardroom tables where setup speed matters more than configuration depth.",
@@ -55,6 +56,10 @@ export const boschConferenceProducts: ConferenceProduct[] = [
         src: boschImage("Bosch-CCS-900-Ultra-Conference-System-Unit-300x300.webp"),
         alt: "Bosch CCS 900 Ultra Conference System discussion unit",
         primary: true,
+      },
+      {
+        src: boschImage("Bosch CCS-900 Wired Ultro Discussion Conference System.jpg"),
+        alt: "Bosch CCS 900 Ultro wired discussion system with CCS-CU and tabletop units",
       },
     ],
     compatibleProductIds: ["bosch-ccs-cu-conference-control-power-unit"],
@@ -88,7 +93,7 @@ export const boschConferenceProducts: ConferenceProduct[] = [
     systemCategory: "audio",
     connection: "wired",
     productTypes: ["control-unit"],
-    price: indicativeRange(118000, 165000),
+    price: indicativeRange(55000, 65000),
     availability: "project-order",
     shortDescription:
       "Central control and power unit for CCS 900 Ultra rooms, driving the discussion loop and handling recording and PA output from one rack position.",
@@ -130,12 +135,13 @@ export const boschConferenceProducts: ConferenceProduct[] = [
     systemCategory: "audio",
     connection: "wired",
     productTypes: ["control-unit"],
-    price: indicativeRange(185000, 245000),
+    price: indicativeRange(230000, 270000),
     availability: "project-order",
     shortDescription:
       "Digital control unit for the CCS 1000 D platform, configured from a browser instead of front-panel menus.",
     images: [
       { src: boschImage("Bosch-CCSD-CU-300x300.webp"), alt: "Bosch CCSD-CU CCS 1000 D conference control unit", primary: true },
+      { src: boschImage("Bosch-CCS-1000-D-Digital-Discussion-System.webp"), alt: "Bosch CCS 1000 D digital discussion system with CCSD-CU and discussion units" },
     ],
     compatibleProductIds: [
       "bosch-ccs-1000-d-chairman-unit",
@@ -303,7 +309,7 @@ export const cmxConferenceProducts: ConferenceProduct[] = [
     systemCategory: "audio",
     connection: "wireless",
     productTypes: ["control-unit"],
-    price: indicativeRange(165000, 225000),
+    price: indicativeRange(92000, 96000),
     availability: "project-order",
     shortDescription:
       "Wi-Fi based conference master controller for rooms where running cable under the table is not an option.",
@@ -345,7 +351,7 @@ export const cmxConferenceProducts: ConferenceProduct[] = [
     systemCategory: "audio",
     connection: "wireless",
     productTypes: ["chairman-unit", "delegate-unit"],
-    price: indicativeRange(29000, 42000),
+    price: indicativeRange(35000, 42000),
     availability: "project-order",
     shortDescription:
       "Matched wireless chairman and delegate pair for the CMX 5G platform, battery powered and free of any table cabling.",
@@ -387,7 +393,7 @@ export const cmxConferenceProducts: ConferenceProduct[] = [
     systemCategory: "audio",
     connection: "wired",
     productTypes: ["package", "control-unit", "chairman-unit", "delegate-unit"],
-    price: indicativeRange(215000, 340000),
+    price: indicativeRange(48000, 150000),
     availability: "project-order",
     shortDescription:
       "Entry digital discussion package pairing the CS-100 controller with S101 chairman and S102 delegate units.",
@@ -429,7 +435,7 @@ export const cmxConferenceProducts: ConferenceProduct[] = [
     systemCategory: "audio",
     connection: "wired",
     productTypes: ["package", "control-unit"],
-    price: indicativeRange(268000, 395000),
+    price: indicativeRange(26000, 30000),
     availability: "project-order",
     shortDescription:
       "Mid-range CMX discussion system supplied with its matched table units for rooms that have outgrown an entry package.",
@@ -471,7 +477,7 @@ export const cmxConferenceProducts: ConferenceProduct[] = [
     systemCategory: "audio",
     connection: "wired",
     productTypes: ["chairman-unit", "delegate-unit"],
-    price: indicativeRange(17500, 26000),
+    price: indicativeRange(10000, 18000),
     availability: "project-order",
     shortDescription:
       "Wired chairman and delegate pair for CMX CS rooms, used to extend or replace positions on an existing table.",
@@ -513,7 +519,7 @@ export const cmxConferenceProducts: ConferenceProduct[] = [
     systemCategory: "video",
     connection: "wired",
     productTypes: ["processor", "control-unit"],
-    price: indicativeRange(485000, 720000),
+    price: indicativeRange(155000, 190000),
     availability: "project-order",
     shortDescription:
       "Management server for paperless meetings, distributing agendas and documents to each seat instead of printed packs.",
@@ -555,7 +561,7 @@ export const cmxConferenceProducts: ConferenceProduct[] = [
     systemCategory: "video",
     connection: "wired",
     productTypes: ["control-unit", "processor"],
-    price: indicativeRange(395000, 560000),
+    price: indicativeRange(40000, 55000),
     availability: "project-order",
     shortDescription:
       "Conference host for paperless rooms, tying the discussion audio and the document platform to one control point.",
@@ -597,7 +603,7 @@ export const cmxConferenceProducts: ConferenceProduct[] = [
     systemCategory: "video",
     connection: "wired",
     productTypes: ["control-unit", "processor"],
-    price: indicativeRange(430000, 615000),
+    price: indicativeRange(65000, 80000),
     availability: "project-order",
     shortDescription:
       "Higher-capacity paperless conference host for chambers where the seat count and item list are both large.",
@@ -639,7 +645,7 @@ export const cmxConferenceProducts: ConferenceProduct[] = [
     systemCategory: "audio",
     connection: "wireless",
     productTypes: ["control-unit"],
-    price: indicativeRange(198000, 275000),
+    price: indicativeRange(155000, 180000),
     availability: "project-order",
     shortDescription:
       "Infrared wireless conference controller for rooms where discussion audio must not pass through walls.",
@@ -681,7 +687,7 @@ export const cmxConferenceProducts: ConferenceProduct[] = [
     systemCategory: "audio",
     connection: "wireless",
     productTypes: ["control-unit"],
-    price: indicativeRange(152000, 210000),
+    price: indicativeRange(145000, 162000),
     availability: "project-order",
     shortDescription:
       "UHF wireless conference master controller offering longer reach than Wi-Fi in rooms with awkward sightlines.",

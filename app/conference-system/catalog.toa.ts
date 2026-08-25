@@ -20,7 +20,7 @@ export const toaConferenceProducts: ConferenceProduct[] = [
     systemCategory: "audio",
     connection: "wired",
     productTypes: ["control-unit"],
-    price: indicativeRange(112000, 158000),
+    price: indicativeRange(55000, 85000, "plus"),
     availability: "project-order",
     shortDescription:
       "Central unit for the TOA TS-690 wired conference range, driving chairman and delegate stations from a single chassis.",
@@ -62,7 +62,7 @@ export const toaConferenceProducts: ConferenceProduct[] = [
     systemCategory: "audio",
     connection: "wired",
     productTypes: ["chairman-unit"],
-    price: indicativeRange(24500, 34000),
+    price: indicativeRange(27500, 29500),
     availability: "project-order",
     shortDescription:
       "Chairman station for TS-690 rooms with a long gooseneck, giving the chair priority over every open delegate microphone.",
@@ -104,7 +104,7 @@ export const toaConferenceProducts: ConferenceProduct[] = [
     systemCategory: "audio",
     connection: "wired",
     productTypes: ["delegate-unit"],
-    price: indicativeRange(19500, 27500),
+    price: indicativeRange(22500, 27000),
     availability: "project-order",
     shortDescription:
       "Delegate station for TS-690 rooms with a long gooseneck, matched to the TS-691L chairman unit.",

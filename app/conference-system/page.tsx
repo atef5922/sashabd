@@ -30,6 +30,15 @@ const PAGE_TITLE = "Conference System Price in Bangladesh 2026";
 const ctaClass =
   "inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md";
 
+const pairedCtaGroupClass =
+  "grid w-full grid-cols-1 gap-2.5 sm:grid-cols-2 lg:w-[21.5rem] lg:shrink-0";
+
+const pairedPrimaryCtaClass =
+  "inline-flex min-h-[3.25rem] w-full items-center justify-center rounded-xl px-3 py-2 text-center text-[13px] font-extrabold leading-[1.15rem] text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2";
+
+const pairedSecondaryCtaClass =
+  "inline-flex min-h-[3.25rem] w-full items-center justify-center rounded-xl border border-slate-300 bg-white px-3 py-2 text-center text-[13px] font-extrabold leading-[1.15rem] text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40 focus-visible:ring-offset-2";
+
 const sectionClass =
   "mt-4 rounded-3xl border bg-white p-[10px] shadow-sm md:p-8";
 
@@ -1617,25 +1626,25 @@ export default function ConferenceSystemPage() {
         </div>
 
         <div className="mt-6 rounded-2xl border border-orange-100 bg-orange-50/50 p-5 md:p-6">
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-3xl">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <div className="min-w-0 max-w-3xl lg:flex-1">
               <h3 className="text-xl font-extrabold text-slate-950">Need the Right Conference System for Your Meeting Room?</h3>
               <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
                 Sasha Corporation can help you choose the right conference system based on room size, participant
                 capacity, microphone quantity, wired or wireless preference, and installation requirements.
               </p>
             </div>
-            <div className="flex flex-col gap-3 sm:flex-row">
+            <div className={pairedCtaGroupClass}>
               <Link
                 href="/contact/?project=conference-system"
-                className={ctaClass}
+                className={pairedPrimaryCtaClass}
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
                 Get Free Quotation
               </Link>
               <a
                 href="#conference-system-price"
-                className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
+                className={pairedSecondaryCtaClass}
               >
                 View Conference System Price
               </a>
@@ -1808,8 +1817,8 @@ export default function ConferenceSystemPage() {
         </div>
 
         <div className="mt-6 rounded-2xl border border-orange-100 bg-orange-50/50 p-5 md:p-6">
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-3xl">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <div className="min-w-0 max-w-3xl lg:flex-1">
               <h3 className="text-xl font-extrabold text-slate-950">Need Help Choosing the Right Conference System?</h3>
               <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
                 Sasha Corporation can help you select the right conference system based on room size, participant
@@ -1817,17 +1826,17 @@ export default function ConferenceSystemPage() {
                 installation scope.
               </p>
             </div>
-            <div className="flex flex-col gap-3 sm:flex-row">
+            <div className={pairedCtaGroupClass}>
               <Link
                 href="/contact/?project=conference-system"
-                className={ctaClass}
+                className={pairedPrimaryCtaClass}
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
                 Get Free Quotation
               </Link>
               <a
                 href="#conference-system-price"
-                className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-extrabold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                className={pairedSecondaryCtaClass}
               >
                 View Conference System Price
               </a>
@@ -1933,8 +1942,8 @@ export default function ConferenceSystemPage() {
         </div>
 
         <div className="mt-6 rounded-2xl border border-orange-100 bg-orange-50/50 p-5 md:p-6">
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-3xl">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+            <div className="min-w-0 max-w-3xl lg:flex-1">
               <h3 className="text-xl font-extrabold text-slate-950">Need a Conference System for Your Meeting Room?</h3>
               <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
                 Get expert support from Sasha Corporation to choose the right conference system based on room size,
@@ -1942,17 +1951,17 @@ export default function ConferenceSystemPage() {
                 and installation scope.
               </p>
             </div>
-            <div className="flex flex-col gap-3 sm:flex-row">
+            <div className={pairedCtaGroupClass}>
               <Link
                 href="/contact/?project=conference-system"
-                className={ctaClass}
+                className={pairedPrimaryCtaClass}
                 style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
               >
                 Get Free Quotation
               </Link>
               <a
                 href="#conference-system-price"
-                className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
+                className={pairedSecondaryCtaClass}
               >
                 View Conference System Price
               </a>

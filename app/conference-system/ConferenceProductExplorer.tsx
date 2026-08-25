@@ -36,6 +36,13 @@ export type ConferenceExplorerFacet = { slug: string; label: string; count: numb
 type ConferenceFilterGroup = "brands" | "productTypes" | "connections" | "meetingTypes" | "availabilities" | "priceBands";
 export const CONFERENCE_PRODUCTS_PER_BRAND = 3;
 export const CONFERENCE_BRAND_ORDER = ["cmx", "toa", "bosch", "spon"] as const;
+export const CONFERENCE_FEATURED_PRODUCT_ORDER: Partial<Record<string, readonly string[]>> = {
+  cmx: [
+    "cmx-cs-700a-conference-system-with-discussion-units",
+    "cmx-cs-100-s101-s102-digital-conference-system",
+    "cmx-5g-100mc-wifi-wireless-conference-controller",
+  ],
+};
 const PAGE_SIZE = CONFERENCE_PRODUCTS_PER_BRAND * CONFERENCE_BRAND_ORDER.length;
 const COMPARE_STORAGE_KEY = "sasha-conference-compare";
 const MAX_COMPARE_PRODUCTS = 3;
@@ -53,10 +60,15 @@ function balancedByBrand(products: ConferenceExplorerProduct[], perBrand: number
   const lead: ConferenceExplorerProduct[] = [];
   const rest: ConferenceExplorerProduct[] = [];
   for (const [slug, bucket] of [...byBrand].sort((a, b) => rank(a[0]) - rank(b[0]))) {
+    const featuredOrder = CONFERENCE_FEATURED_PRODUCT_ORDER[slug];
+    const featuredRank = new Map(featuredOrder?.map((productSlug, index) => [productSlug, index]) ?? []);
+    const orderedBucket = featuredOrder
+      ? [...bucket].sort((a, b) => (featuredRank.get(a.slug) ?? featuredOrder.length) - (featuredRank.get(b.slug) ?? featuredOrder.length))
+      : bucket;
     if (rank(slug) < CONFERENCE_BRAND_ORDER.length) {
-      lead.push(...bucket.slice(0, perBrand));
-      rest.push(...bucket.slice(perBrand));
-    } else rest.push(...bucket);
+      lead.push(...orderedBucket.slice(0, perBrand));
+      rest.push(...orderedBucket.slice(perBrand));
+    } else rest.push(...orderedBucket);
   }
   return [...lead, ...rest];
 }
@@ -319,16 +331,18 @@ export default function ConferenceProductExplorer({
         <aside
           id="conference-product-filters"
           aria-label="Conference product filters"
-          className={`${mobileFiltersOpen ? "block" : "hidden"} self-start rounded-2xl border border-slate-200 bg-white p-4 lg:block`}
+          className={`${mobileFiltersOpen ? "block" : "hidden"} self-start rounded-2xl border border-slate-200 bg-white p-4 lg:sticky lg:top-20 lg:flex lg:max-h-[calc(100dvh-6rem)] lg:flex-col lg:overflow-hidden`}
         >
-          <div className="mb-4 flex items-center justify-between gap-3">
+          <div className="mb-4 flex shrink-0 items-center justify-between gap-3">
             <h3 className="font-extrabold text-slate-950">Filter Products</h3>
             <div className="flex items-center gap-3">
               {activeCount ? <button type="button" onClick={clearAll} className="text-xs font-bold text-orange-700 hover:underline">Clear All</button> : null}
               <button type="button" aria-label="Close product filters" onClick={() => { setMobileFiltersOpen(false); mobileFilterButtonRef.current?.focus(); }} className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-xl text-slate-500 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40 lg:hidden">×</button>
             </div>
           </div>
-          {filterGroups}
+          <div className="lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:pr-1 lg:[scrollbar-gutter:stable]">
+            {filterGroups}
+          </div>
           <div className="mt-4 grid grid-cols-2 gap-2 lg:hidden">
             <button type="button" onClick={clearAll} className={buttonClass}>Clear All</button>
             <button type="button" onClick={() => { setMobileFiltersOpen(false); mobileFilterButtonRef.current?.focus(); }} className="min-h-10 rounded-xl bg-[#FD6900] px-3 text-sm font-extrabold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50">Show {filtered.length} Products</button>
