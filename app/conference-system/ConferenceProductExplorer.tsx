@@ -316,7 +316,7 @@ export default function ConferenceProductExplorer({
         </div>
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-[15rem_minmax(0,1fr)] 2xl:grid-cols-[17rem_minmax(0,1fr)]">
+      <div className="grid gap-5 lg:grid-cols-[15rem_minmax(0,1fr)]">
         <aside
           id="conference-product-filters"
           aria-label="Conference product filters"

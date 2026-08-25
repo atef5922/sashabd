@@ -663,7 +663,7 @@ export default function Header({
       <div
         className={cn(
           "mx-auto flex h-[4.15rem] items-center gap-1.5 px-3 py-0 md:h-18 md:gap-0 md:pl-3 md:pr-4",
-          useConferenceTabletHeader ? "w-full max-w-[120rem]" : "max-w-7xl",
+          useConferenceTabletHeader ? "w-full max-w-[clamp(80rem,90vw,108rem)]" : "max-w-7xl",
         )}
       >
         <Link prefetch={false} href="/" onClick={handleNavClick("/")} className="flex shrink-0 items-center gap-2">
