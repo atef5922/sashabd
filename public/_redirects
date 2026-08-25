@@ -91,3 +91,12 @@
 /conference-system/huidu-hd-vp950-conference-video-processor          /conference-system/video-conference-system/  301
 /conference-system/huidu-hd-vp950-conference-video-processor/         /conference-system/video-conference-system/  301
 /conference-system/huidu-hd-vp950-conference-video-processor/*        /conference-system/video-conference-system/  301
+
+/pa-system/bosch-ccs-900-ultra-conference-system-unit                 /conference-system/bosch-ccs-900-ultra-conference-system-unit/ 301
+/pa-system/bosch-ccs-900-ultra-conference-system-unit/                /conference-system/bosch-ccs-900-ultra-conference-system-unit/ 301
+/pa-system/bosch-ccs-cu-conference-control-power-unit                 /conference-system/bosch-ccs-cu-conference-control-power-unit/ 301
+/pa-system/bosch-ccs-cu-conference-control-power-unit/                /conference-system/bosch-ccs-cu-conference-control-power-unit/ 301
+/pa-system/conference-discussion-system-chairman-delegate-set         /conference-system/complete-package/ 301
+/pa-system/conference-discussion-system-chairman-delegate-set/        /conference-system/complete-package/ 301
+/pa-system/wireless-conference-microphone-system                      /conference-system/wireless-conference-system/ 301
+/pa-system/wireless-conference-microphone-system/                     /conference-system/wireless-conference-system/ 301

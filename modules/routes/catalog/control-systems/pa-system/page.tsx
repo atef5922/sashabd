@@ -15,8 +15,6 @@ const PAGE_TITLE = "PA System Price in Bangladesh 2026";
 
 const PA_PRICE_TABLE_SLUGS = [
   "toa-wa-z110sd-70w-portable-speaker-amplifier",
-  "bosch-ccs-900-ultra-conference-system-unit",
-  "bosch-ccs-cu-conference-control-power-unit",
   "ahuja-cmd-7200-delegate-unit-microphone",
   "ahuja-cma-5400-50w-central-mixer-amplifier",
   "ahuja-cma-7400-50w-digital-conference-amplifier",

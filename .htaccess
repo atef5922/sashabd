@@ -21,4 +21,8 @@ AddDefaultCharset UTF-8
   RewriteRule ^control-systems/interactive-flat-panel/(.+)/?$ /interactive-flat-panel/$1/ [R=301,L]
   RewriteRule ^control-systems/turnstile-gate-system/?$ /turnstile-gate/ [R=301,L]
   RewriteRule ^control-systems/turnstile-gate-system/(.+)/?$ /turnstile-gate/$1/ [R=301,L]
+  RewriteRule ^pa-system/bosch-ccs-900-ultra-conference-system-unit/?$ /conference-system/bosch-ccs-900-ultra-conference-system-unit/ [R=301,L]
+  RewriteRule ^pa-system/bosch-ccs-cu-conference-control-power-unit/?$ /conference-system/bosch-ccs-cu-conference-control-power-unit/ [R=301,L]
+  RewriteRule ^pa-system/conference-discussion-system-chairman-delegate-set/?$ /conference-system/complete-package/ [R=301,L]
+  RewriteRule ^pa-system/wireless-conference-microphone-system/?$ /conference-system/wireless-conference-system/ [R=301,L]
 </IfModule>
