@@ -26,42 +26,44 @@ type Project = {
   highlights: string[];
   meta: { k: string; v: string }[];
   tags: string[];
+  caseStudyHref?: string;
   isTemplate?: boolean;
 };
 
 /**
  * Add only business-verified, publishable projects here.
  */
-const projects: Project[] = [];
+const projects: Project[] = [
+  {
+    id: "nusaifa-trading-p5-led-billboard-nasirabad",
+    title: "P5 Outdoor LED Billboard — Nasirabad, Chattogram",
+    badge: "Completed project",
+    image: "/images/blog/Chattogram-project.webp",
+    imageClassName: "object-cover object-center",
+    organization: "Nusaifa Trading",
+    location: "Nasirabad, Chattogram",
+    year: "2026",
+    subtitle: "Completed 10 March 2026",
+    scopeLabel: "Project scope",
+    scope: "Outdoor LED billboard installation, system configuration, calibration, content testing, and handover.",
+    highlights: [
+      "Outdoor P5 display planned for traffic-facing advertising visibility",
+      "Structure, power distribution, grounding, and cable-route checks",
+      "Controller mapping, display calibration, and content playback testing",
+      "Operating guidance and practical maintenance notes at handover",
+    ],
+    meta: [
+      { k: "Display type", v: "P5 outdoor LED billboard" },
+      { k: "Screen size", v: "24.15 ft × 13.6 ft (approximately 328 sq ft)" },
+      { k: "Location", v: "Nasirabad, Chattogram" },
+    ],
+    tags: ["Outdoor LED", "P5 Billboard", "Chattogram"],
+    caseStudyHref: "/blog/p5-led-billboard-project-nasirabad-chattogram-nusaifa-trading/",
+  },
+];
 
 /** Formatting fixtures only. Never render these as Sasha Corporation project evidence. */
 const templateProjects: Project[] = [
-  {
-    id: "template-2",
-    title: "Outdoor Digital Billboard Installation",
-    badge: "Template example",
-    image: "/images/project-page/project-chattogram-card.webp",
-    imageClassName: "object-cover object-center",
-    organization: "Nusaifa Trading",
-    location: "Dhaka, Bangladesh",
-    year: "2026",
-    subtitle: "Nasirabad, Chattogram - 2026",
-    scopeLabel: "Scope",
-    scope: "Structure planning, supply and installation support.",
-    highlights: [
-      "Daylight visibility planning (brightness and content)",
-      "Weather protection and long-run cable management",
-      "Grounding and protection checklist for safety",
-      "Testing for stability before handover",
-    ],
-    meta: [
-      { k: "Pixel pitch", v: "P5" },
-      { k: "Screen size", v: "24.15 ft x 13.6 ft" },
-      { k: "Solution stack", v: "Outdoor cabinet, power distribution, controller" },
-    ],
-    tags: ["Outdoor", "Structure", "Protection planning"],
-    isTemplate: true,
-  },
   {
     id: "template-5",
     title: "Turnstile Gate System (Access Control)",
@@ -196,8 +198,8 @@ const templateProjects: Project[] = [
 
 const FAQS: { q: string; a: string }[] = [
   {
-    q: "Why are client project details not listed yet?",
-    a: "Project case studies are published only after business verification and client approval. No demo or unverified client project is presented here as completed work.",
+    q: "How are client project details verified before publication?",
+    a: "Project case studies are published only after business verification and client approval. Demo or unverified project records are never presented as completed client work.",
   },
   {
     q: "What details should I share for a matching proposal?",
@@ -287,7 +289,7 @@ const checklistRows = [
   },
 ] as const;
 
-const PAGE_TITLE = `Project Planning & Delivery Process | ${BRAND_NAME}`;
+const PAGE_TITLE = `Completed Projects & Delivery Process | ${BRAND_NAME}`;
 const PAGE_DESCRIPTION =
   `Review ${BRAND_NAME}'s planning process for LED displays, PA systems, and access control, from site review and BOQ scope to installation, commissioning, and handover.`;
 
@@ -373,11 +375,11 @@ export default function ProjectsPage() {
               </span>
 
               <h1 className="mt-4 max-w-[16rem] text-[1.9rem] font-extrabold tracking-tight text-white md:mt-16 md:max-w-[30rem] md:text-[2.5rem] md:leading-[1.12] lg:max-w-[34rem] lg:text-[2.9rem]">
-                Project Planning &amp; Delivery Process
+                Completed Projects &amp; Delivery Process
               </h1>
               <p className="mt-3 max-w-[21rem] text-justify text-[13px] leading-6 text-white/85 md:mt-6 md:max-w-[31rem] md:text-left md:text-[15px] md:leading-[1.75] lg:max-w-[34rem]">
-                Review our workflow, technical checks, and handover approach. Verified case studies will be published
-                only after business validation and client approval.
+                Review our verified project work, technical checks, and handover approach. Client case studies are
+                published only after business validation and approval.
               </p>
 
               <div className="mt-5 grid max-w-[22rem] grid-cols-2 gap-2 md:mt-12 md:flex md:max-w-none md:flex-wrap md:gap-3">
@@ -505,7 +507,16 @@ export default function ProjectsPage() {
 
         {/* Projects grid */}
         <section className="mt-8">
-          <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden sm:grid sm:px-0 sm:pb-0 sm:pt-0 sm:[scrollbar-width:auto] lg:grid-cols-3">
+          {list.length ? (
+            <div className="mb-5 max-w-3xl">
+              <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-orange-600">Completed work</p>
+              <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-950 md:text-3xl">Verified Project Case Study</h2>
+              <p className="mt-3 text-sm leading-7 text-slate-600">
+                Review a completed Sasha Corporation project with confirmed location, display specification, delivery scope, and handover details.
+              </p>
+            </div>
+          ) : null}
+          <div className={`-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden sm:grid sm:px-0 sm:pb-0 sm:pt-0 sm:[scrollbar-width:auto] ${list.length === 1 ? "max-w-xl" : "lg:grid-cols-3"}`}>
             {list.map((p) => (
               <article
                 key={p.id}
@@ -593,10 +604,10 @@ export default function ProjectsPage() {
                   ) : null}
 
                   <Link
-                    href="/contact/"
+                    href={p.caseStudyHref ?? "/contact/"}
                     className="mt-5 inline-flex min-h-10 w-fit items-center justify-center rounded-full bg-sky-600 px-4 py-2 text-[11px] font-extrabold text-white transition hover:bg-sky-700 md:text-xs"
                   >
-                    Request a similar solution
+                    {p.caseStudyHref ? "View Full Case Study" : "Request a similar solution"}
                   </Link>
                 </div>
               </article>

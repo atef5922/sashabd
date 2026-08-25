@@ -660,7 +660,12 @@ export default function Header({
         isScrolled ? "bg-[#091931] shadow-md" : "bg-white"
       )}
     >
-      <div className="mx-auto flex h-[4.15rem] max-w-7xl items-center gap-1.5 px-3 py-0 md:h-18 md:gap-0 md:pl-3 md:pr-4">
+      <div
+        className={cn(
+          "mx-auto flex h-[4.15rem] items-center gap-1.5 px-3 py-0 md:h-18 md:gap-0 md:pl-3 md:pr-4",
+          useConferenceTabletHeader ? "w-full max-w-[clamp(80rem,90vw,108rem)]" : "max-w-7xl",
+        )}
+      >
         <Link prefetch={false} href="/" onClick={handleNavClick("/")} className="flex shrink-0 items-center gap-2">
           <div className="relative h-[2.95rem] w-[5.95rem] shrink-0 overflow-visible rounded-md sm:h-[3.05rem] sm:w-[6.15rem] md:h-24 md:w-40">
             <Image

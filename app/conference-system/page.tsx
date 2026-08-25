@@ -11,21 +11,25 @@ import { siteConfig } from "@/lib/site";
 import {
   conferenceSystemCatalog,
   CONFERENCE_PRODUCT_TYPE_LABELS,
-  getConferenceConnectionLabel,
   getConferenceCatalogIntegrityReport,
   getConferenceProductAvailabilityLabel,
-  getConferenceProductCardPrice,
-  getConferenceProductCardSpecs,
   getConferenceProductPricePresentation,
-  getConferenceProductPrimaryImage,
   type ConferenceProductType,
 } from "./catalog";
 import { conferenceBrandConfigs, conferenceCategoryConfigs, hasConferenceBrandProducts } from "./taxonomy";
-import ConferenceProductExplorer, { type ConferenceExplorerProduct } from "./ConferenceProductExplorer";
+import ConferenceProductExplorer from "./ConferenceProductExplorer";
+import { buildConferenceExplorerProducts } from "./conferenceExplorerData";
+import {
+  balanceConferenceProductsByBrand,
+  CONFERENCE_INITIAL_PRODUCT_COUNT,
+} from "./conferenceExplorerOrder";
 import { conferenceInstallationProjects } from "./conferenceProjects";
 
 const BRAND = { maroon: "#FF6A00", maroonDark: "#E45700" };
 const PAGE_TITLE = "Conference System Price in Bangladesh 2026";
+const META_TITLE = `${PAGE_TITLE} | Sasha`;
+const HERO_SUBTITLE =
+  "Professional wired, wireless and digital conference microphone systems for boardrooms, meeting rooms, government offices, universities and conference halls across Bangladesh.";
 
 const ctaClass =
   "inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md";
@@ -966,7 +970,7 @@ function ConferenceSectionTitleIcon({ icon, compact = false }: { icon: Conferenc
 }
 
 export const metadata: Metadata = {
-  title: PAGE_TITLE,
+  title: META_TITLE,
   description:
     "Compare conference system price in Bangladesh with chairman & delegate mics, wired/wireless systems, BOQ, installation and free quotation.",
   keywords: [
@@ -982,7 +986,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: "/conference-system/" },
   openGraph: {
-    title: `${PAGE_TITLE} | Sasha Corporation`,
+    title: META_TITLE,
     description:
       "Professional conference microphone, wireless conference, and audio control systems for meeting rooms and conference halls.",
     url: "/conference-system/",
@@ -998,7 +1002,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: PAGE_TITLE,
+    title: META_TITLE,
     description: "Conference microphone and meeting audio solutions in Bangladesh.",
     images: [socialImageUrl("/images/Conference%20system/NAC-720W.webp")],
   },
@@ -1021,7 +1025,7 @@ export default function ConferenceSystemPage() {
     "@type": "ItemList",
     name: "Conference System Products in Bangladesh",
     numberOfItems: conferenceSystemCatalog.length,
-    itemListElement: conferenceSystemCatalog.map((product, index) => ({
+    itemListElement: conferenceSystemCatalog.slice(0, CONFERENCE_INITIAL_PRODUCT_COUNT).map((product, index) => ({
       "@type": "ListItem",
       position: index + 1,
       url: absoluteUrl(`/conference-system/${product.slug}/`),
@@ -1047,49 +1051,8 @@ export default function ConferenceSystemPage() {
     },
   };
   // Facets for the product explorer: taxonomy categories and brands that actually have stock.
-  const conferenceExplorerProducts: ConferenceExplorerProduct[] = conferenceSystemCatalog.map((product) => {
-    const primaryImage = getConferenceProductPrimaryImage(product);
-    return {
-      slug: product.slug,
-      name: product.name,
-      model: product.model,
-      brandSlug: product.brand?.slug ?? null,
-      brandName: product.brand?.name,
-      productTypes: [...product.productTypes],
-      connection: product.connection ?? null,
-      meetingType: product.systemCategory ?? null,
-      availability: product.availability ?? null,
-      productTypeLabel: CONFERENCE_PRODUCT_TYPE_LABELS[product.productTypes[0]],
-      connectionLabel: product.connection ? getConferenceConnectionLabel(product.connection) : undefined,
-      systemFamily: product.systemFamily,
-      keySpecs: getConferenceProductCardSpecs(product),
-      price: getConferenceProductCardPrice(product),
-      priceValue:
-        product.price.type === "fixed"
-          ? { type: "fixed" as const, amount: product.price.amount }
-          : product.price.type === "range"
-            ? { type: "range" as const, min: product.price.min, max: product.price.max }
-            : { type: "request" as const },
-      availabilityLabel: product.availability ? getConferenceProductAvailabilityLabel(product) : undefined,
-      categorySlugs: conferenceCategoryConfigs
-        .filter((category) => category.matchProduct(product))
-        .map((category) => category.slug),
-      image: { src: primaryImage.src, alt: primaryImage.alt },
-      searchText: [...new Set([
-        product.name,
-        product.model,
-        product.brand?.name,
-        product.productTypes.map((type) => CONFERENCE_PRODUCT_TYPE_LABELS[type]).join(" "),
-        product.connection ? getConferenceConnectionLabel(product.connection) : undefined,
-        product.systemCategory,
-        product.systemFamily,
-        ...product.tags,
-        ...product.applications,
-      ])]
-        .filter(Boolean)
-        .join(" "),
-    };
-  });
+  const conferenceExplorerProducts = balanceConferenceProductsByBrand(buildConferenceExplorerProducts());
+  const initialConferenceExplorerProducts = conferenceExplorerProducts.slice(0, CONFERENCE_INITIAL_PRODUCT_COUNT);
 
   const conferenceExplorerCategories = conferenceCategoryConfigs
     .map((category) => ({
@@ -1119,7 +1082,7 @@ export default function ConferenceSystemPage() {
 
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 pb-10 pt-0 md:px-6" data-conference-route-kind="hub">
+    <div className="mx-auto w-full max-w-[clamp(80rem,90vw,108rem)] px-4 pb-10 pt-0 md:px-6" data-conference-route-kind="hub">
       <Breadcrumbs
         items={[homeBreadcrumb(), { href: "/conference-system/", label: "Conference System", current: true }]}
         className="mb-4 pt-3 text-sm text-slate-600"
@@ -1130,26 +1093,15 @@ export default function ConferenceSystemPage() {
           {PAGE_TITLE}
         </h1>
         <MobileIntroText
-          teaser="Professional conference system solutions for boardrooms, meeting rooms, training centers and conference halls in Bangladesh."
+          teaser={HERO_SUBTITLE}
+          teaserLines={2}
           expandedClassName="mt-5"
           desktopClassName="mt-5"
           singleDom
         >
-          <div className="space-y-4 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-            <p className="text-justify">
-              <strong>Sasha Corporation</strong> supplies professional conference system solutions in Bangladesh for
-              boardrooms, meeting rooms, government offices, universities, hotels, training centers, and conference halls.
-              We provide conference microphone systems, chairman and delegate units, wireless conference systems, audio
-              processors, access points, chargers, and control units for organized discussion and clear meeting
-              communication.
-            </p>
-            <p className="text-justify">
-              A well-designed conference system helps every speaker stay audible, reduces table noise, and makes meeting
-              management smoother. Whether you need a compact setup for a small meeting room or a complete solution for a
-              large conference venue, we can help with product selection, BOQ preparation, installation planning, testing,
-              and after-sales support throughout Bangladesh.
-            </p>
-          </div>
+          <p className="text-left text-sm leading-7 text-slate-700 md:text-base md:leading-8">
+            {HERO_SUBTITLE}
+          </p>
         </MobileIntroText>
 
         <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -1247,9 +1199,11 @@ export default function ConferenceSystemPage() {
         </nav>
 
         <ConferenceProductExplorer
-          products={conferenceExplorerProducts}
+          products={initialConferenceExplorerProducts}
           brands={conferenceExplorerBrands}
           productTypes={conferenceExplorerProductTypes}
+          catalogEndpoint="/conference-system/catalog-data.json"
+          totalProducts={conferenceSystemCatalog.length}
         />
 
         <details className="mt-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
@@ -1849,11 +1803,12 @@ export default function ConferenceSystemPage() {
         <div className="max-w-5xl">
           <h2 id="conference-system-installations" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
             <ConferenceSectionTitleIcon icon="projects" />
-            Our Conference System Installations
+            Conference System Project Planning
           </h2>
           <p className="mt-4 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-            Explore some of our conference system projects delivered for meeting rooms, boardrooms, training facilities,
-            and conference halls in Bangladesh.
+            These representative room configurations show how Sasha plans conference-system supply, installation and
+            commissioning. Confirmed client case studies are published separately only after business verification and
+            publication approval.
           </p>
         </div>
 
@@ -1864,16 +1819,17 @@ export default function ConferenceSystemPage() {
                 <Image src={project.image} alt={project.imageAlt} fill sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) 50vw, 33vw" className="object-cover" />
               </div>
               <div className="flex flex-1 flex-col p-4 md:p-5">
+                <p className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.08em] text-orange-700">Representative configuration</p>
                 <h3 className="text-lg font-extrabold leading-snug text-slate-950">{project.title}</h3>
                 <dl className="mt-4 space-y-2 border-y border-slate-100 py-3 text-[13px] leading-5 text-slate-700">
-                  <div className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-2"><dt className="font-bold text-slate-500">Location</dt><dd>{project.location}</dd></div>
+                  <div className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-2"><dt className="font-bold text-slate-500">Coverage</dt><dd>{project.location}</dd></div>
                   <div className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-2"><dt className="font-bold text-slate-500">Brand / System</dt><dd>{project.brand}</dd></div>
                   <div className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-2"><dt className="font-bold text-slate-500">Configuration</dt><dd>{project.configuration}</dd></div>
                   <div className="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-2"><dt className="font-bold text-slate-500">Scope</dt><dd>{project.scope}</dd></div>
                 </dl>
                 <p className="mt-3 text-sm leading-6 text-slate-700">{project.description}</p>
-                <Link href="/projects/" aria-label={`View projects related to ${project.title}`} className="mt-auto inline-flex min-h-11 items-center pt-4 text-sm font-extrabold text-orange-700 transition hover:text-orange-600 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45">
-                  View Project <span aria-hidden="true" className="ml-1">-&gt;</span>
+                <Link href="/contact/?project=conference-system" aria-label={`Discuss a setup based on ${project.title}`} className="mt-auto inline-flex min-h-11 items-center pt-4 text-sm font-extrabold text-orange-700 transition hover:text-orange-600 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45">
+                  Discuss This Setup <span aria-hidden="true" className="ml-1">-&gt;</span>
                 </Link>
               </div>
             </article>
@@ -1882,7 +1838,7 @@ export default function ConferenceSystemPage() {
 
         <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
           <Link href="/projects/" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45">
-            View All Projects
+            View Verified Projects
           </Link>
           <Link href="/contact/?project=conference-system" className={ctaClass} style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}>
             Request a Quotation

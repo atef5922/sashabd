@@ -268,13 +268,13 @@ export default function ConferenceProductDetailPage({
                 className="group overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
                 style={{ borderColor: "rgba(15,23,42,0.1)" }}
               >
-                <div className="relative aspect-square bg-white">
+                <div className="relative aspect-square border-b border-slate-100 bg-white">
                   <Image
                     src={item.images.find((image) => image.primary)?.src ?? item.images[0].src}
                     alt={item.name}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-contain p-5 transition duration-200 group-hover:scale-[1.02]"
+                    className="object-contain p-2 transition duration-200 group-hover:scale-[1.015]"
                   />
                 </div>
                 <div className="p-4">
