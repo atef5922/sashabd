@@ -182,11 +182,23 @@ function PriceTable({ title, products, eyebrow = "Catalog pricing" }: { title: s
   );
 }
 
-function RelatedCategoryLinks({ categories, products }: { categories: readonly ConferenceCategoryConfig[]; products?: readonly ConferenceProduct[] }) {
+function RelatedCategoryLinks({
+  categories,
+  products,
+  eyebrow = "Explore next",
+  title = "Related Conference Categories",
+  description,
+}: {
+  categories: readonly ConferenceCategoryConfig[];
+  products?: readonly ConferenceProduct[];
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+}) {
   if (!categories.length) return null;
   return (
     <section className="mt-10 rounded-3xl border border-slate-200 bg-slate-50 p-5 md:p-7">
-      <SectionHeading eyebrow="Explore next" title="Related Conference Categories" />
+      <SectionHeading eyebrow={eyebrow} title={title} description={description} />
       <div className="mt-5 flex flex-wrap gap-3">
         {categories.map((category) => {
           const count = products
@@ -208,11 +220,21 @@ function RelatedCategoryLinks({ categories, products }: { categories: readonly C
   );
 }
 
-function ApplicationList({ applications }: { applications: readonly string[] }) {
+function ApplicationList({
+  applications,
+  eyebrow = "Applications",
+  title = "Best For",
+  description = "These labels are aggregated from the matching normalized product records.",
+}: {
+  applications: readonly string[];
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+}) {
   if (!applications.length) return null;
   return (
     <section className="mt-10 rounded-3xl border border-slate-200 bg-white p-5 md:p-7">
-      <SectionHeading eyebrow="Applications" title="Best For" description="These labels are aggregated from the matching normalized product records." />
+      <SectionHeading eyebrow={eyebrow} title={title} description={description} />
       <ul className="mt-5 flex flex-wrap gap-2.5">
         {applications.map((application) => (
           <li key={application} className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700">
@@ -311,6 +333,14 @@ function CategoryTemplate({ category, products, breadcrumbs }: Omit<CategoryColl
   const relevantBrands = getConferenceBrandsForProducts(products);
   const applications = getConferenceApplications(products);
   const isCompletePackage = category.slug === "complete-package";
+  const packageApplications = [
+    "Small Meeting Room",
+    "Corporate Boardroom",
+    "Executive Boardroom",
+    "Training & Seminar Room",
+    "Government Meeting Room",
+    "Large Conference Hall",
+  ];
 
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-7 md:px-6 md:py-9" data-conference-route-kind="category">
@@ -352,11 +382,28 @@ function CategoryTemplate({ category, products, breadcrumbs }: Omit<CategoryColl
         <InformationCards items={content.buyerGuide} />
       </section>
 
-      <RelatedCategoryLinks categories={relatedCategories} />
+      <RelatedCategoryLinks
+        categories={relatedCategories}
+        eyebrow={isCompletePackage ? "Plan your system" : undefined}
+        title={isCompletePackage ? "Explore Related Conference Systems" : undefined}
+        description={
+          isCompletePackage
+            ? "Compare audio, video, wired, wireless, and control-unit options when planning a complete meeting room conference system in Bangladesh."
+            : undefined
+        }
+      />
 
       {relevantBrands.length ? (
         <section className="mt-10 rounded-3xl border border-slate-200 bg-white p-5 md:p-7">
-          <SectionHeading eyebrow="Shop by brand" title="Available Brands" description="Only verified brands represented by the matching products are shown." />
+          <SectionHeading
+            eyebrow={isCompletePackage ? "Product brand" : "Shop by brand"}
+            title={isCompletePackage ? "Brand Represented in Ready-Made Systems" : "Available Brands"}
+            description={
+              isCompletePackage
+                ? "This brand is represented by the verified ready-made conference system products listed above. Installed room packages can be specified separately according to project requirements and confirmed availability."
+                : "Only verified brands represented by the matching products are shown."
+            }
+          />
           <div className="mt-5 flex flex-wrap gap-3">
             {relevantBrands.map((brand) => (
               <Link key={brand.id} href={`/conference-system/brands/${brand.slug}/`} className="inline-flex min-h-11 items-center rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-extrabold text-slate-900 transition hover:border-orange-300 hover:text-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50">
@@ -367,7 +414,16 @@ function CategoryTemplate({ category, products, breadcrumbs }: Omit<CategoryColl
         </section>
       ) : null}
 
-      <ApplicationList applications={applications} />
+      <ApplicationList
+        applications={isCompletePackage ? packageApplications : applications}
+        eyebrow={isCompletePackage ? "Meeting room applications" : undefined}
+        title={isCompletePackage ? "Suitable Applications for Conference System Packages" : undefined}
+        description={
+          isCompletePackage
+            ? "Complete conference system packages can be planned for rooms of different sizes, participant capacities, seating layouts, and formal meeting workflows."
+            : undefined
+        }
+      />
       <FaqSection title={`${category.shortLabel ?? category.label} FAQ`} faqs={content.faqs} />
       <FinalCta title="Need Help Choosing the Right Conference System?" description="Share your room size, seating layout, participant workflow, and installation requirements. Sasha can help review verified products and prepare a project quotation or BOQ." />
     </main>
