@@ -342,6 +342,10 @@ test("Conference System renders one responsive semantic content set", () => {
   assert.equal(occurrences(source, '\"@type\": \"FAQPage\"'), 1);
   assert.equal(occurrences(source, '<section id="conference-system-price"'), 1);
   assert.equal(occurrences(source, '<h1 className='), 1);
+  assert.match(source, /const META_TITLE = `\$\{PAGE_TITLE\} \| Sasha`;/);
+  assert.match(source, /title: META_TITLE/);
+  assert.match(source, /const HERO_SUBTITLE =\s*"Professional wired, wireless and digital conference microphone systems for boardrooms, meeting rooms, government offices, universities and conference halls across Bangladesh\.";/);
+  assert.match(source, /teaser=\{HERO_SUBTITLE\}/);
 
   for (const heading of [
     "Conference System Products",
@@ -355,7 +359,7 @@ test("Conference System renders one responsive semantic content set", () => {
     "Conference System Applications",
     "Conference System Packages by Room Size",
     "How to Choose the Right Conference System in Bangladesh",
-    "Our Conference System Installations",
+    "Conference System Project Planning",
     "Why Choose Sasha Corporation for Conference Systems in Bangladesh?",
     "Brands We Work With",
     "Conference System FAQ",
@@ -443,7 +447,9 @@ test("Conference installation projects use local images and the required section
 
   assert.ok(chooseIndex >= 0 && projectsIndex > chooseIndex && whyIndex > projectsIndex);
   assert.equal((projectData.match(/conference_system_projects\/project[123]\.webp/g) ?? []).length, 3);
-  assert.equal(occurrences(pageSource, "Our Conference System Installations"), 1);
+  assert.equal(occurrences(pageSource, "Conference System Project Planning"), 1);
+  assert.match(pageSource, /Representative configuration/);
+  assert.match(pageSource, /only after business verification and\s+publication approval/);
   assert.match(pageSource, /href="\/projects\/"/);
   assert.match(pageSource, /href="\/contact\/\?project=conference-system"/);
 });
@@ -533,8 +539,9 @@ test("Conference catalog is normalized, complete, and route-stable", () => {
   assert.match(route, /path: `\/conference-system\/\$\{slug\}`/);
   const explorer = read("app/conference-system/ConferenceProductExplorer.tsx");
   assert.match(explorer, /<ConferenceProductCard[\s\S]*?product=\{product\}/);
-  assert.match(landing, /price: getConferenceProductCardPrice\(product\)/);
-  assert.match(landing, /availabilityLabel: product\.availability \? getConferenceProductAvailabilityLabel\(product\) : undefined/);
+  const explorerData = read("app/conference-system/conferenceExplorerData.ts");
+  assert.match(explorerData, /price: getConferenceProductCardPrice\(product\)/);
+  assert.match(explorerData, /availabilityLabel: product\.availability[\s\S]*?getConferenceProductAvailabilityLabel\(product\)[\s\S]*?: undefined/);
   assert.match(gallery, /visibleImages\.find/);
   assert.match(detail, /\{specifications\.map\(\(spec\) => \(/);
 });
@@ -879,20 +886,21 @@ test("Conference brand catalogs are unique, conference-only, and image-backed", 
 
 test("Conference product explorer provides canonical search, multi-filter, sort, query state, and pagination", () => {
   const explorer = read("app/conference-system/ConferenceProductExplorer.tsx");
+  const explorerOrder = read("app/conference-system/conferenceExplorerOrder.ts");
   const landing = read("app/conference-system/page.tsx");
   const discovery = read("app/conference-system/conferenceDiscovery.ts");
 
   assert.match(explorer, /^"use client";/);
-  assert.match(explorer, /export const CONFERENCE_PRODUCTS_PER_BRAND = 3;/);
-  assert.match(explorer, /function balancedByBrand\(/);
+  assert.match(explorerOrder, /export const CONFERENCE_PRODUCTS_PER_BRAND = 3;/);
+  assert.match(explorerOrder, /function balanceConferenceProductsByBrand\(/);
 
   // Page one leads with the headline brands in order; unbranded stock follows later.
-  assert.match(explorer, /export const CONFERENCE_BRAND_ORDER = \["cmx", "toa", "bosch", "spon"\] as const;/);
-  assert.match(explorer, /cmx:\s*\[\s*"cmx-cs-700a-conference-system-with-discussion-units",\s*"cmx-cs-100-s101-s102-digital-conference-system",\s*"cmx-5g-100mc-wifi-wireless-conference-controller",\s*\]/);
+  assert.match(explorerOrder, /export const CONFERENCE_BRAND_ORDER = \["cmx", "toa", "bosch", "spon"\] as const;/);
+  assert.match(explorerOrder, /cmx:\s*\[\s*"cmx-cs-700a-conference-system-with-discussion-units",\s*"cmx-cs-100-s101-s102-digital-conference-system",\s*"cmx-5g-100mc-wifi-wireless-conference-controller",\s*\]/);
   assert.match(explorer, /const PAGE_SIZE = CONFERENCE_PRODUCTS_PER_BRAND \* CONFERENCE_BRAND_ORDER\.length;/);
-  assert.match(explorer, /return index >= 0 \? index : slug \? CONFERENCE_BRAND_ORDER\.length : CONFERENCE_BRAND_ORDER\.length \+ 1;/);
-  assert.match(explorer, /if \(rank\(slug\) < CONFERENCE_BRAND_ORDER\.length\)/);
-  assert.match(explorer, /lead\.push\(\.\.\.orderedBucket\.slice\(0, perBrand\)\)/);
+  assert.match(explorerOrder, /return index >= 0 \? index : slug \? CONFERENCE_BRAND_ORDER\.length : CONFERENCE_BRAND_ORDER\.length \+ 1;/);
+  assert.match(explorerOrder, /if \(rank\(slug\) < CONFERENCE_BRAND_ORDER\.length\)/);
+  assert.match(explorerOrder, /lead\.push\(\.\.\.orderedBucket\.slice\(0, perBrand\)\)/);
   assert.match(explorer, /filterConferenceProducts\(recommendedProducts, state\)/);
   assert.match(explorer, /sortConferenceProducts\(/);
   assert.match(explorer, /Search products, models, brands or systems/);
@@ -938,17 +946,22 @@ test("Conference product explorer provides canonical search, multi-filter, sort,
   assert.match(landing, /conferenceBrandConfigs\s*\.map\(\(brand\) => \(\{/);
   assert.match(landing, /Object\.entries\(CONFERENCE_PRODUCT_TYPE_LABELS\)/);
   assert.equal(occurrences(landing, ".filter((facet) => facet.count > 0)"), 3);
-  assert.match(landing, /categorySlugs: conferenceCategoryConfigs/);
+  assert.match(landing, /catalogEndpoint="\/conference-system\/catalog-data\.json"/);
 });
 
 test("Conference landing keeps client discovery payload compact and defers below-fold rendering", () => {
   const source = read("app/conference-system/page.tsx");
+  const explorerData = read("app/conference-system/conferenceExplorerData.ts");
+  const catalogRoute = read("app/conference-system/catalog-data.json/route.ts");
   const explorerProps = sectionBetween(source, "<ConferenceProductExplorer", "/>");
-  const searchIndex = sectionBetween(source, "searchText: [...new Set([", ".filter(Boolean)");
+  const searchIndex = sectionBetween(explorerData, "searchText: [", ".filter(Boolean)");
 
   assert.doesNotMatch(searchIndex, /product\.specifications/);
-  assert.match(searchIndex, /\.\.\.product\.applications/);
+  assert.doesNotMatch(searchIndex, /product\.applications|product\.tags/);
   assert.doesNotMatch(explorerProps, /categories=/);
+  assert.match(source, /initialConferenceExplorerProducts = conferenceExplorerProducts\.slice\(0, CONFERENCE_INITIAL_PRODUCT_COUNT\)/);
+  assert.match(catalogRoute, /dynamic = "force-static"/);
+  assert.match(catalogRoute, /balanceConferenceProductsByBrand\(buildConferenceExplorerProducts\(\)\)/);
   assert.match(source, /contentVisibility: "auto" as const/);
   assert.match(source, /containIntrinsicSize: "auto 520px"/);
 });
@@ -1784,16 +1797,17 @@ test("redirect configuration has no exact-source destination chains", () => {
   assert.deepEqual(chains, []);
 });
 
-test("Batch 3 withholds template projects from published case-study evidence", () => {
+test("Projects publish only verified case-study evidence and withhold templates", () => {
   const source = read("app/projects/page.tsx");
 
-  assert.match(source, /const projects: Project\[\] = \[\]/);
+  assert.match(source, /id: "nusaifa-trading-p5-led-billboard-nasirabad"/);
+  assert.match(source, /caseStudyHref: "\/blog\/p5-led-billboard-project-nasirabad-chattogram-nusaifa-trading\/"/);
+  assert.match(source, /image: "\/images\/blog\/Chattogram-project\.webp"/);
   assert.match(source, /const list = projects;/);
   assert.match(source, /Never render these as Sasha Corporation project evidence/);
-  assert.match(source, /No client project is currently published from the verified repository dataset/);
   assert.doesNotMatch(source, /const list = .*templateProjects/);
-  assert.doesNotMatch(source, /badge: "Delivered project"/);
   assert.doesNotMatch(source, /Do these projects represent real work in Bangladesh/);
+  assert.doesNotMatch(source, /id: "template-2"/);
 });
 
 test("Batch 3 removes unverified social profiles and relationship claims", () => {

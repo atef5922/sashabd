@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
-import ConferenceProductCard, { type ConferenceProductCardData } from "./ConferenceProductCard";
+import ConferenceProductCard from "./ConferenceProductCard";
 import { toggleComparisonSelection } from "./conferenceComparison";
 import {
   buildConferenceDiscoveryQuery,
@@ -16,62 +16,20 @@ import {
   paginateConferenceProducts,
   parseConferenceDiscoveryQuery,
   sortConferenceProducts,
-  type ConferenceDiscoveryPrice,
   type ConferenceDiscoveryState,
 } from "./conferenceDiscovery";
+import type { ConferenceExplorerFacet, ConferenceExplorerProduct } from "./conferenceExplorerTypes";
+import {
+  balanceConferenceProductsByBrand,
+  CONFERENCE_BRAND_ORDER,
+  CONFERENCE_PRODUCTS_PER_BRAND,
+} from "./conferenceExplorerOrder";
 
-export type ConferenceExplorerProduct = ConferenceProductCardData & {
-  model?: string;
-  searchText: string;
-  brandSlug: string | null;
-  productTypes: string[];
-  connection: string | null;
-  meetingType: string | null;
-  availability: string | null;
-  priceValue: ConferenceDiscoveryPrice;
-  categorySlugs: string[];
-};
-
-export type ConferenceExplorerFacet = { slug: string; label: string; count: number };
+export type { ConferenceExplorerFacet, ConferenceExplorerProduct } from "./conferenceExplorerTypes";
 type ConferenceFilterGroup = "brands" | "productTypes" | "connections" | "meetingTypes" | "availabilities" | "priceBands";
-export const CONFERENCE_PRODUCTS_PER_BRAND = 3;
-export const CONFERENCE_BRAND_ORDER = ["cmx", "toa", "bosch", "spon"] as const;
-export const CONFERENCE_FEATURED_PRODUCT_ORDER: Partial<Record<string, readonly string[]>> = {
-  cmx: [
-    "cmx-cs-700a-conference-system-with-discussion-units",
-    "cmx-cs-100-s101-s102-digital-conference-system",
-    "cmx-5g-100mc-wifi-wireless-conference-controller",
-  ],
-};
 const PAGE_SIZE = CONFERENCE_PRODUCTS_PER_BRAND * CONFERENCE_BRAND_ORDER.length;
 const COMPARE_STORAGE_KEY = "sasha-conference-compare";
 const MAX_COMPARE_PRODUCTS = 3;
-
-function balancedByBrand(products: ConferenceExplorerProduct[], perBrand: number) {
-  const byBrand = new Map<string, ConferenceExplorerProduct[]>();
-  for (const product of products) {
-    const key = product.brandSlug ?? "";
-    byBrand.set(key, [...(byBrand.get(key) ?? []), product]);
-  }
-  const rank = (slug: string) => {
-    const index = CONFERENCE_BRAND_ORDER.indexOf(slug as (typeof CONFERENCE_BRAND_ORDER)[number]);
-    return index >= 0 ? index : slug ? CONFERENCE_BRAND_ORDER.length : CONFERENCE_BRAND_ORDER.length + 1;
-  };
-  const lead: ConferenceExplorerProduct[] = [];
-  const rest: ConferenceExplorerProduct[] = [];
-  for (const [slug, bucket] of [...byBrand].sort((a, b) => rank(a[0]) - rank(b[0]))) {
-    const featuredOrder = CONFERENCE_FEATURED_PRODUCT_ORDER[slug];
-    const featuredRank = new Map(featuredOrder?.map((productSlug, index) => [productSlug, index]) ?? []);
-    const orderedBucket = featuredOrder
-      ? [...bucket].sort((a, b) => (featuredRank.get(a.slug) ?? featuredOrder.length) - (featuredRank.get(b.slug) ?? featuredOrder.length))
-      : bucket;
-    if (rank(slug) < CONFERENCE_BRAND_ORDER.length) {
-      lead.push(...orderedBucket.slice(0, perBrand));
-      rest.push(...orderedBucket.slice(perBrand));
-    } else rest.push(...orderedBucket);
-  }
-  return [...lead, ...rest];
-}
 
 function paginationRange(current: number, total: number): Array<number | "gap"> {
   if (total <= 7) return Array.from({ length: total }, (_, index) => index + 1);
@@ -98,11 +56,17 @@ export default function ConferenceProductExplorer({
   products,
   brands,
   productTypes,
+  catalogEndpoint,
+  totalProducts,
 }: {
   products: ConferenceExplorerProduct[];
   brands: ConferenceExplorerFacet[];
   productTypes: ConferenceExplorerFacet[];
+  catalogEndpoint?: string;
+  totalProducts?: number;
 }) {
+  const [catalogProducts, setCatalogProducts] = useState(products);
+  const [catalogLoading, setCatalogLoading] = useState(Boolean(catalogEndpoint));
   const [state, setState] = useState<ConferenceDiscoveryState>(EMPTY_CONFERENCE_DISCOVERY_STATE);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [compareSlugs, setCompareSlugs] = useState<string[]>([]);
@@ -115,10 +79,31 @@ export default function ConferenceProductExplorer({
   const options = useMemo(() => ({
     brands: new Set(brands.map((facet) => facet.slug)),
     productTypes: new Set(productTypes.map((facet) => facet.slug)),
-    connections: new Set(products.flatMap((product) => product.connection ? [product.connection] : [])),
-    meetingTypes: new Set(products.flatMap((product) => product.meetingType ? [product.meetingType] : [])),
-    availabilities: new Set(products.flatMap((product) => product.availability ? [product.availability] : [])),
-  }), [brands, productTypes, products]);
+    connections: new Set(catalogProducts.flatMap((product) => product.connection ? [product.connection] : [])),
+    meetingTypes: new Set(catalogProducts.flatMap((product) => product.meetingType ? [product.meetingType] : [])),
+    availabilities: new Set(catalogProducts.flatMap((product) => product.availability ? [product.availability] : [])),
+  }), [brands, productTypes, catalogProducts]);
+
+  useEffect(() => {
+    if (!catalogEndpoint) return;
+    const controller = new AbortController();
+    fetch(catalogEndpoint, { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error(`Catalog request failed with ${response.status}`);
+        return response.json() as Promise<ConferenceExplorerProduct[]>;
+      })
+      .then((nextProducts) => {
+        if (!Array.isArray(nextProducts) || !nextProducts.length) return;
+        setCatalogProducts(nextProducts);
+      })
+      .catch((error: unknown) => {
+        if (!(error instanceof DOMException && error.name === "AbortError")) {
+          console.error("Unable to load the complete conference catalog", error);
+        }
+      })
+      .finally(() => setCatalogLoading(false));
+    return () => controller.abort();
+  }, [catalogEndpoint]);
 
   const readLocation = useCallback(() => {
     setState(parseConferenceDiscoveryQuery(new URLSearchParams(window.location.search), options));
@@ -135,7 +120,8 @@ export default function ConferenceProductExplorer({
   }, [readLocation]);
 
   useEffect(() => {
-    const validSlugs = new Set(products.map((product) => product.slug));
+    if (catalogLoading) return;
+    const validSlugs = new Set(catalogProducts.map((product) => product.slug));
     let cancelled = false;
     let restored: string[] = [];
     try {
@@ -152,7 +138,7 @@ export default function ConferenceProductExplorer({
       setCompareSlugs(restored);
     });
     return () => { cancelled = true; };
-  }, [products]);
+  }, [catalogLoading, catalogProducts]);
 
   useEffect(() => {
     if (!comparisonHydrated.current) return;
@@ -181,7 +167,10 @@ export default function ConferenceProductExplorer({
     updateState({ ...state, ...patch, page: 1 }, history);
   };
 
-  const recommendedProducts = useMemo(() => balancedByBrand(products, CONFERENCE_PRODUCTS_PER_BRAND), [products]);
+  const recommendedProducts = useMemo(
+    () => balanceConferenceProductsByBrand(catalogProducts, CONFERENCE_PRODUCTS_PER_BRAND),
+    [catalogProducts],
+  );
   const filtered = useMemo(
     () => sortConferenceProducts(filterConferenceProducts(recommendedProducts, state), state.sort),
     [recommendedProducts, state],
@@ -288,7 +277,7 @@ export default function ConferenceProductExplorer({
   );
 
   const clearAll = () => updateState({ ...EMPTY_CONFERENCE_DISCOVERY_STATE, pageSize: state.pageSize });
-  const selectedCompareProducts = products.filter((product) => compareSlugs.includes(product.slug));
+  const selectedCompareProducts = catalogProducts.filter((product) => compareSlugs.includes(product.slug));
   const toggleCompare = (slug: string) => {
     setCompareFeedback("");
     setCompareSlugs((current) => {
@@ -311,7 +300,7 @@ export default function ConferenceProductExplorer({
       : `${buttonClass} min-w-10`;
 
   return (
-    <div data-conference-product-explorer>
+    <div data-conference-product-explorer aria-busy={catalogLoading || undefined}>
       <div ref={gridTopRef} className="scroll-mt-24" />
       <div className="mb-4 rounded-2xl border border-slate-200 bg-white p-4">
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-[minmax(0,1fr)_auto_auto_auto]">
@@ -349,7 +338,14 @@ export default function ConferenceProductExplorer({
           </div>
         </aside>
         <div className="min-w-0">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3"><p className="text-sm font-extrabold text-slate-900" aria-live="polite">{filtered.length ? `Showing ${(safePage - 1) * state.pageSize + 1}–${Math.min(safePage * state.pageSize, filtered.length)} of ${filtered.length}` : "0"} Conference {filtered.length === 1 ? "Product" : "Products"}</p>{activeCount || state.query ? <button type="button" onClick={clearAll} className="text-sm font-bold text-orange-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">Clear All</button> : null}</div>
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <p className="text-sm font-extrabold text-slate-900" aria-live="polite">
+              {filtered.length
+                ? `Showing ${(safePage - 1) * state.pageSize + 1}–${Math.min(safePage * state.pageSize, filtered.length)} of ${catalogLoading && !activeCount && !state.query ? totalProducts ?? filtered.length : filtered.length}`
+                : "0"} Conference {filtered.length === 1 ? "Product" : "Products"}
+            </p>
+            {activeCount || state.query ? <button type="button" onClick={clearAll} className="text-sm font-bold text-orange-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">Clear All</button> : null}
+          </div>
           {activeCount ? <div className="mb-4 flex flex-wrap gap-2" aria-label="Active filters">{activeFilters.map((filter) => <button key={`${filter.group}-${filter.value}`} type="button" onClick={() => removeActive(filter.group, filter.value)} aria-label={`Remove ${filter.label} filter`} className="inline-flex min-h-9 items-center gap-1 rounded-full border border-orange-200 bg-orange-50 px-3 text-xs font-bold text-orange-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">{filter.label}<span aria-hidden="true">×</span></button>)}{customPriceActive ? <button type="button" onClick={() => changeFilters({ minPrice: null, maxPrice: null })} aria-label="Remove custom price range filter" className="inline-flex min-h-9 items-center gap-1 rounded-full border border-orange-200 bg-orange-50 px-3 text-xs font-bold text-orange-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">{customPriceLabel}<span aria-hidden="true">×</span></button> : null}</div> : null}
           {shown.length ? <ResponsiveProductCarousel className="product-grid-3" desktopClassName="md:grid-cols-2 xl:grid-cols-3" mobileGapClassName="gap-[10px]">{shown.map((product, index) => <ConferenceProductCard key={product.slug} product={product} priority={index === 0} compareSelected={compareSlugs.includes(product.slug)} onCompareToggle={toggleCompare} />)}</ResponsiveProductCarousel> : <div className="rounded-2xl border border-slate-200 bg-white px-5 py-10 text-center"><h3 className="font-extrabold text-slate-950">No conference products found</h3><p className="mt-2 text-sm text-slate-600">No conference products match your current search and filters.</p><button type="button" onClick={clearAll} className={`${buttonClass} mt-5`}>Clear Search &amp; Filters</button></div>}
           {totalPages > 1 ? (
