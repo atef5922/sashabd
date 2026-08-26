@@ -1,5 +1,6 @@
 export type ConferenceInstallationProject = {
   title: string;
+  cardTitle: string;
   location: string;
   brand: string;
   configuration: string;
@@ -12,6 +13,7 @@ export type ConferenceInstallationProject = {
 export const conferenceInstallationProjects: readonly ConferenceInstallationProject[] = [
   {
     title: "Corporate Boardroom Conference System",
+    cardTitle: "Corporate Boardroom",
     location: "Dhaka, Bangladesh",
     brand: "TOA Conference System",
     configuration: "Chairman Unit + Delegate Units",
@@ -22,6 +24,7 @@ export const conferenceInstallationProjects: readonly ConferenceInstallationProj
   },
   {
     title: "Meeting & Training Room Conference System",
+    cardTitle: "Meeting & Training Room",
     location: "Bangladesh",
     brand: "Bosch Conference System",
     configuration: "Chairman Unit + Delegate Units",
@@ -32,6 +35,7 @@ export const conferenceInstallationProjects: readonly ConferenceInstallationProj
   },
   {
     title: "Conference Hall System Installation",
+    cardTitle: "Conference Hall Installation",
     location: "Bangladesh",
     brand: "SPON Conference System",
     configuration: "Central Controller + Chairman & Delegate Units",

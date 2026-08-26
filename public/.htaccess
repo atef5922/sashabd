@@ -110,6 +110,12 @@ AddDefaultCharset UTF-8
   # Huidu brand and its one conference video processor removed from Conference System
   RewriteRule ^conference-system/huidu-hd-vp950-conference-video-processor/?$ /conference-system/video-conference-system/ [R=301,L]
 
+  # Conference products previously published inside the PA catalog
+  RewriteRule ^pa-system/bosch-ccs-900-ultra-conference-system-unit/?$ /conference-system/bosch-ccs-900-ultra-conference-system-unit/ [R=301,L]
+  RewriteRule ^pa-system/bosch-ccs-cu-conference-control-power-unit/?$ /conference-system/bosch-ccs-cu-conference-control-power-unit/ [R=301,L]
+  RewriteRule ^pa-system/conference-discussion-system-chairman-delegate-set/?$ /conference-system/complete-package/ [R=301,L]
+  RewriteRule ^pa-system/wireless-conference-microphone-system/?$ /conference-system/wireless-conference-system/ [R=301,L]
+
   # Services slug change
   RewriteRule ^services/?$ /services-support/ [R=301,L]
 

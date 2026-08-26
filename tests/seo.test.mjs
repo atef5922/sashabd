@@ -333,7 +333,7 @@ test("LED display products use one responsive card render path", () => {
 
 test("Conference System renders one responsive semantic content set", () => {
   const source = read("app/conference-system/page.tsx");
-  const listing = sectionBetween(source, '<section className="mt-4" aria-labelledby="conference-products-heading">', '<section className={sectionClass} style={sectionStyle} aria-labelledby="what-is-conference-system">');
+  const listing = sectionBetween(source, '<section id="conference-products-heading"', 'aria-labelledby="what-is-conference-system"');
 
   assert.equal(occurrences(listing, "<ConferenceProductExplorer"), 1);
   assert.equal(occurrences(source, "renderConferenceProductCard"), 0, "card rendering lives in the explorer only");
@@ -341,28 +341,24 @@ test("Conference System renders one responsive semantic content set", () => {
   assert.equal(occurrences(source, "<FaqAccordion"), 1);
   assert.equal(occurrences(source, '\"@type\": \"FAQPage\"'), 1);
   assert.equal(occurrences(source, '<section id="conference-system-price"'), 1);
-  assert.equal(occurrences(source, '<h1 className='), 1);
+  assert.equal(occurrences(source, '<h1 id="conference-hero-heading"'), 1);
   assert.match(source, /const META_TITLE = `\$\{PAGE_TITLE\} \| Sasha`;/);
   assert.match(source, /title: META_TITLE/);
-  assert.match(source, /const HERO_SUBTITLE =\s*"Professional wired, wireless and digital conference microphone systems for boardrooms, meeting rooms, government offices, universities and conference halls across Bangladesh\.";/);
-  assert.match(source, /teaser=\{HERO_SUBTITLE\}/);
+  assert.match(source, /aria-labelledby="conference-hero-heading"/);
 
   for (const heading of [
-    "Conference System Products",
+    "Choose Your System Type",
+    "Popular Conference System Packages",
+    "Conference System Component Price Guide",
+    "Complete Hybrid & Video Conference Integration",
+    "Representative Conference System Configurations",
+    "Conference System Engineering & Project Support",
     "What is a Conference System?",
-    "Conference System Price in Bangladesh",
-    "Key Components of a Conference System",
-    "Types of Conference Systems",
-    "Choose Your Conference System",
-    "Wired vs Wireless Conference System",
-    "Key Benefits of a Professional Conference System",
-    "Conference System Applications",
-    "Conference System Packages by Room Size",
-    "How to Choose the Right Conference System in Bangladesh",
-    "Conference System Project Planning",
-    "Why Choose Sasha Corporation for Conference Systems in Bangladesh?",
-    "Brands We Work With",
-    "Conference System FAQ",
+    "Conference System Product Price List in Bangladesh",
+    "Commercial Confidence",
+    "Our Conference System Brand Support",
+    "Frequently Asked Questions",
+    "Ready to Build Your Perfect Conference Room?",
   ]) {
     const escaped = heading.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     assert.equal(
@@ -373,37 +369,89 @@ test("Conference System renders one responsive semantic content set", () => {
   }
 });
 
-test("Conference definition section stays concise with professional body alignment", () => {
+test("Conference pricing sections keep separate intent and use catalog-backed component ranges", () => {
   const source = read("app/conference-system/page.tsx");
-  const section = sectionBetween(
-    source,
-    'aria-labelledby="what-is-conference-system"',
-    '<section id="conference-system-price"',
-  );
 
-  assert.ok(!section.includes("Meeting room audio solution"));
-  assert.ok(!section.includes('className="max-w-5xl"'));
-  assert.match(section, /<div className="w-full">/);
-  assert.match(section, /<h2 id="what-is-conference-system" className="flex items-center gap-3 text-2xl/);
-  assert.match(section, /className="mt-4 w-full"/);
-  assert.match(section, /desktopClassName="w-full"/);
-  assert.match(section, /<p className="w-full text-left text-sm leading-7 text-slate-700 md:text-base md:leading-8">/);
-  assert.ok(!section.includes("text-align-last"));
+  assert.equal(occurrences(source, "Conference System Component Price Guide"), 1);
+  assert.equal(occurrences(source, "Conference System Product Price List in Bangladesh"), 1);
+  assert.equal(occurrences(source, ">Conference System Price in Bangladesh</h2>"), 0);
+  assert.match(source, /function getPublishedConferencePriceRange/);
+  assert.match(source, /conferenceSystemCatalog\s*\.filter\(matchProduct\)/);
+  assert.match(source, /request-price products are excluded/);
+  assert.match(source, /Package estimates cover a planned combination of conference equipment and are separate from the individual catalog product prices below\./);
+  assert.doesNotMatch(source, /price:\s*"৳\s*45,000/);
 });
 
-test("Conference definition and price descriptions share full-width professional typography", () => {
+test("Conference hub removes superseded chooser, project, and service sections", () => {
+  const source = read("app/conference-system/page.tsx");
+
+  assert.doesNotMatch(source, /Types of Conference Systems/);
+  assert.doesNotMatch(source, /Choose Your Conference System/);
+  assert.doesNotMatch(source, /Conference System Packages by Room Size/);
+  assert.doesNotMatch(source, /Audio vs Video Conference System/);
+  assert.doesNotMatch(source, /Conference System Project Planning/);
+  assert.doesNotMatch(source, /Why Choose Sasha Corporation for Conference Systems in Bangladesh/);
+  assert.doesNotMatch(source, /Our Successful Projects/);
+  assert.doesNotMatch(source, /Why Choose Sasha Corporation\?/);
+  assert.doesNotMatch(source, /Key Benefits of a Professional Conference System/);
+  assert.match(source, /href="#popular-conference-packages"/);
+});
+
+test("Conference definition and product price sections keep stable order and uniquely labelled H2 headings", () => {
+  const source = read("app/conference-system/page.tsx");
+  const sections = [
+    { label: "what-is-conference-system", heading: "what-is-conference-system" },
+    { label: "conference-system-price-heading", heading: "conference-system-price-heading" },
+  ];
+  const indices = sections.map(({ label }) => source.indexOf(`aria-labelledby="${label}"`));
+
+  assert.ok(indices.every((index) => index >= 0), "each informational section must exist");
+  assert.ok(indices.every((index, position) => position === 0 || index > indices[position - 1]), "informational sections must keep their decision-friendly order");
+  for (const { label, heading } of sections) {
+    assert.equal(occurrences(source, `aria-labelledby="${label}"`), 1, `${label} must label one section`);
+    assert.equal(occurrences(source, `<h2 id="${heading}"`), 1, `${heading} must identify one H2`);
+  }
+});
+
+test("Conference definition keeps one concise visible explanation with the core system entities", () => {
+  const source = read("app/conference-system/page.tsx");
+  const definitionSection = sectionBetween(
+    source,
+    'aria-labelledby="what-is-conference-system"',
+    'aria-labelledby="conference-system-price-heading"',
+  );
+
+  assert.equal(
+    occurrences(definitionSection, "A conference system is a professional audio communication solution"),
+    1,
+    "the primary definition must have a single source",
+  );
+  assert.match(definitionSection, /chairman units/i);
+  assert.match(definitionSection, /delegate units/i);
+  assert.match(definitionSection, /control unit/i);
+  assert.doesNotMatch(definitionSection, /Meeting room audio solution/);
+});
+
+test("Conference product price list remains a semantic catalog-backed comparison table", () => {
   const source = read("app/conference-system/page.tsx");
   const priceSection = sectionBetween(
     source,
-    '<section id="conference-system-price"',
-    'aria-labelledby="conference-system-components"',
+    'aria-labelledby="conference-system-price-heading"',
+    'aria-labelledby="conference-commercial-confidence"',
   );
 
-  assert.match(
-    priceSection,
-    /<p className="mt-4 w-full text-left text-sm leading-7 text-slate-700 md:text-base md:leading-8">/,
-  );
-  assert.ok(!priceSection.includes("text-align-last"));
+  assert.equal(occurrences(priceSection, "<table"), 1);
+  assert.equal(occurrences(priceSection, "<caption"), 1);
+  assert.match(priceSection, /Conference products with published fixed or indicative range prices/);
+  assert.match(priceSection, /conferencePriceTableProducts\.map/);
+  assert.match(priceSection, /getConferenceProductPricePresentation\(product\)/);
+  assert.match(priceSection, /href=\{`\/conference-system\/\$\{product\.slug\}\/`\}/);
+  for (const heading of ["Product Name", "Brand", "Product Type", "Best For", "Availability", "Price"]) {
+    const escaped = heading.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    assert.match(priceSection, new RegExp(`<th[^>]*>\\s*${escaped}\\s*</th>`), `${heading} must remain a table heading`);
+  }
+  assert.match(priceSection, /\{publishedPriceCount\} products with/);
+  assert.match(priceSection, /\{catalogReport\.byPriceType\.request\} Request Price products/);
 });
 
 test("Conference sections avoid redundant eyebrow labels above descriptive H2 headings", () => {
@@ -411,50 +459,83 @@ test("Conference sections avoid redundant eyebrow labels above descriptive H2 he
 
   for (const redundantLabel of [
     "Conference system equipment",
-    "Conference System Benefits",
     "Buying Guide",
     "Why Choose Us",
   ]) {
     assert.ok(!source.includes(redundantLabel), `${redundantLabel} eyebrow must be removed`);
   }
-
-  for (const id of [
-    "conference-system-components",
-    "conference-system-benefits",
-    "choose-right-conference-system",
-    "why-choose-sasha",
-  ]) {
-    assert.match(source, new RegExp(`<h2 id="${id}" className="flex items-center gap-3 text-2xl`));
-  }
 });
 
-test("every Conference hub section heading has a consistent relevant icon", () => {
+test("Conference definition and product price headings keep their relevant semantic icon mapping", () => {
   const source = read("app/conference-system/page.tsx");
+  const sections = [
+    { start: 'aria-labelledby="what-is-conference-system"', end: 'aria-labelledby="conference-system-price-heading"', icon: "info" },
+    { start: 'aria-labelledby="conference-system-price-heading"', end: 'aria-labelledby="conference-commercial-confidence"', icon: "price" },
+  ];
 
   assert.match(source, /type ConferenceSectionIcon =/);
   assert.match(source, /function ConferenceSectionTitleIcon\(/);
-  assert.equal(occurrences(source, "<ConferenceSectionTitleIcon icon="), 17);
-  assert.match(source, /aria-hidden="true"/);
-  assert.match(source, /bg-gradient-to-br from-orange-50 to-white/);
+  for (const { start, end, icon } of sections) {
+    const section = sectionBetween(source, start, end);
+    const iconPattern = new RegExp(`<ConferenceSectionTitleIcon\\b[^>]*\\bicon="${icon}"[^>]*/>`, "g");
+    assert.equal(
+      (section.match(iconPattern) ?? []).length,
+      1,
+      `${icon} must identify its matching informational heading`,
+    );
+  }
 });
 
-test("Conference installation projects use local images and the required section order", () => {
+test("Conference compact solution, project, and service sections use local data in the required order", () => {
   const pageSource = read("app/conference-system/page.tsx");
   const projectData = read("app/conference-system/conferenceProjects.ts");
-  const chooseIndex = pageSource.indexOf('aria-labelledby="choose-right-conference-system"');
-  const projectsIndex = pageSource.indexOf('aria-labelledby="conference-system-installations"');
-  const whyIndex = pageSource.indexOf('aria-labelledby="why-choose-sasha"');
+  const guideIndex = pageSource.indexOf('aria-labelledby="conference-price-guide"');
+  const hybridIndex = pageSource.indexOf('aria-labelledby="hybrid-conference-integration"');
+  const projectsIndex = pageSource.indexOf('aria-labelledby="conference-system-configurations"');
+  const whyIndex = pageSource.indexOf('aria-labelledby="conference-system-engineering-support"');
+  const definitionIndex = pageSource.indexOf('aria-labelledby="what-is-conference-system"');
 
-  assert.ok(chooseIndex >= 0 && projectsIndex > chooseIndex && whyIndex > projectsIndex);
+  assert.ok(
+    guideIndex >= 0 &&
+    hybridIndex > guideIndex &&
+    projectsIndex > hybridIndex &&
+    whyIndex > projectsIndex &&
+    definitionIndex > whyIndex,
+  );
   assert.equal((projectData.match(/conference_system_projects\/project[123]\.webp/g) ?? []).length, 3);
-  assert.equal(occurrences(pageSource, "Conference System Project Planning"), 1);
-  assert.match(pageSource, /Representative configuration/);
-  assert.match(pageSource, /only after business verification and\s+publication approval/);
+  assert.equal(occurrences(pageSource, 'id="hybrid-conference-integration"'), 1);
+  assert.equal(occurrences(pageSource, "Representative Conference System Configurations"), 1);
+  assert.equal(occurrences(pageSource, "Conference System Engineering & Project Support"), 1);
+  assert.match(pageSource, /Practical room configurations illustrating typical system design and professional delivery scopes/);
+  assert.match(pageSource, /hybridIntegrationSteps\.map/);
+  assert.match(pageSource, /chooseSashaCards\.map/);
   assert.match(pageSource, /href="\/projects\/"/);
   assert.match(pageSource, /href="\/contact\/\?project=conference-system"/);
 });
 
-test("Conference brand showcase separates authorization trust from brand navigation", () => {
+test("Conference removes the requested component, comparison, benefit, and selection-guide sections", () => {
+  const source = read("app/conference-system/page.tsx");
+
+  assert.doesNotMatch(source, /<h2[^>]*>\s*Key Components of a Conference System\s*<\/h2>/);
+  assert.doesNotMatch(source, /<h2[^>]*>\s*Wired vs Wireless Conference System\s*<\/h2>/);
+  assert.doesNotMatch(source, /Conference System Benefits & Applications/);
+  assert.doesNotMatch(source, /conference-system-components/);
+  assert.doesNotMatch(source, /wired-vs-wireless-conference-system/);
+  assert.doesNotMatch(source, /conference-system-benefits-applications/);
+  assert.doesNotMatch(source, /conferenceComponentCards|ConferenceComponentIconSvg/);
+  assert.doesNotMatch(source, /wiredPoints|wirelessPoints/);
+  assert.doesNotMatch(source, /conferenceBenefits|ConferenceBenefitIconSvg|applicationCards/);
+  assert.doesNotMatch(source, /Key Benefits of a Professional Conference System/);
+  assert.doesNotMatch(source, /<h2[^>]*>\s*Conference System Applications\s*<\/h2>/);
+  assert.doesNotMatch(source, /conferenceGuideCards/);
+  assert.doesNotMatch(source, /ConferenceGuideIconSvg/);
+  assert.doesNotMatch(source, /How to Choose the Right Conference System in Bangladesh/);
+  assert.doesNotMatch(source, /choose-right-conference-system/);
+  assert.doesNotMatch(source, /conferenceSelectionGuideRows/);
+  assert.doesNotMatch(source, /Quick Selection Guide for Conference Systems/);
+});
+
+test("Conference brand support keeps verified routes and compact feature lists", () => {
   const source = read("app/conference-system/page.tsx");
   const section = sectionBetween(
     source,
@@ -462,10 +543,10 @@ test("Conference brand showcase separates authorization trust from brand navigat
     'aria-labelledby="conference-system-faq"',
   );
 
-  assert.match(section, /authorized distributor of Bosch, TOA, SPON, and CMX solutions in Bangladesh/);
+  assert.match(section, /Our Conference System Brand Support/);
   assert.equal(occurrences(source, 'badge: "Authorized Distributor"'), 4);
-  assert.equal(occurrences(section, "Project support"), 1);
-  assert.match(section, /Authorization scope follows the applicable manufacturer appointment and product-line terms/);
+  assert.match(section, /brand\.features\.map/);
+  assert.match(section, /View \{brand\.title\} Products/);
   assert.ok(!section.includes("Exclusive Distributor"));
   for (const brand of ["bosch", "toa", "spon", "cmx"]) {
     assert.match(source, new RegExp(`url: "/conference-system/brands/${brand}/"`));
@@ -476,7 +557,9 @@ test("Conference commercial trust uses verified NAP, policy links, and factual s
   const landing = read("app/conference-system/page.tsx");
   const site = read("lib/site.ts");
 
-  assert.match(landing, /Commercial Confidence &amp; Verified Business Support/);
+  assert.match(landing, /Commercial Confidence/);
+  assert.match(landing, /commercialConfidenceCards\.map/);
+  assert.match(landing, /Authorisation Scope:/);
   assert.match(landing, /\{siteConfig\.address\}/);
   assert.match(landing, /href=\{`tel:\$\{siteConfig\.phone\}`\}/);
   assert.match(landing, /href="\/services-support\/"/);
@@ -488,6 +571,25 @@ test("Conference commercial trust uses verified NAP, policy links, and factual s
   assert.match(landing, /areaServed: \{/);
   assert.match(site, /address: "1st Floor, 36-37 Umesh Datta Road, Bakshibazar, Dhaka 1211, Bangladesh"/);
   assert.doesNotMatch(landing, /customer rating|five-star|award-winning|best seller|limited stock/i);
+});
+
+test("Conference closing sections follow the compact reference order without duplicates", () => {
+  const source = read("app/conference-system/page.tsx");
+  const commercialIndex = source.indexOf('aria-labelledby="conference-commercial-confidence"');
+  const brandIndex = source.indexOf('aria-labelledby="conference-brand-showcase"');
+  const faqIndex = source.indexOf('aria-labelledby="conference-system-faq"');
+  const ctaIndex = source.indexOf('aria-labelledby="conference-final-cta"');
+
+  assert.ok(commercialIndex >= 0 && brandIndex > commercialIndex && faqIndex > brandIndex && ctaIndex > faqIndex);
+  assert.equal(occurrences(source, 'id="conference-commercial-confidence"'), 1);
+  assert.equal(occurrences(source, 'id="conference-brand-showcase"'), 1);
+  assert.equal(occurrences(source, 'id="conference-system-faq"'), 1);
+  assert.equal(occurrences(source, 'id="conference-final-cta"'), 1);
+  assert.match(source, /variant="minimal"/);
+  assert.match(source, /Ready to Build Your Perfect Conference Room\?/);
+  assert.doesNotMatch(source, /Commercial Confidence &amp; Verified Business Support/);
+  assert.doesNotMatch(source, /Brands We Work With/);
+  assert.doesNotMatch(source, />Conference System FAQ\s*</);
 });
 
 test("Conference catalog is normalized, complete, and route-stable", () => {
@@ -914,11 +1016,11 @@ test("Conference product explorer provides canonical search, multi-filter, sort,
   assert.match(explorer, /lg:max-h-\[calc\(100dvh-6rem\)\]/);
   assert.match(explorer, /lg:overflow-y-auto lg:overscroll-contain/);
   assert.match(explorer, /Active filters/);
-  assert.match(explorer, /Conference Format/);
+  assert.match(explorer, /System Type/);
   assert.match(explorer, /Availability/);
   assert.match(explorer, /Contact for availability/);
-  assert.match(explorer, /Minimum \(৳\)/);
-  assert.match(explorer, /Maximum \(৳\)/);
+  assert.match(explorer, /Minimum price in BDT/);
+  assert.match(explorer, /Maximum price in BDT/);
   assert.match(explorer, /facetCount\("priceBands", band\.id\)/);
   assert.match(explorer, /state\.pageSize/);
   assert.match(explorer, /Showing \$\{\(safePage - 1\)/);
@@ -941,11 +1043,12 @@ test("Conference product explorer provides canonical search, multi-filter, sort,
   assert.match(explorer, /"replaceState"/);
   assert.ok(!landing.includes("?page="), "the server-rendered hub must not emit faceted query links");
 
-  // Facets are derived from canonical catalog fields and only offered when populated.
-  assert.match(landing, /conferenceCategoryConfigs\s*\.map\(\(category\) => \(\{/);
+  // Server facets are derived from canonical catalog fields and only offered when populated;
+  // connection/meeting facets are derived from the deferred canonical explorer payload.
   assert.match(landing, /conferenceBrandConfigs\s*\.map\(\(brand\) => \(\{/);
   assert.match(landing, /Object\.entries\(CONFERENCE_PRODUCT_TYPE_LABELS\)/);
-  assert.equal(occurrences(landing, ".filter((facet) => facet.count > 0)"), 3);
+  assert.equal(occurrences(landing, ".filter((facet) => facet.count > 0)"), 2);
+  assert.match(explorer, /connections: new Set\(catalogProducts\.flatMap/);
   assert.match(landing, /catalogEndpoint="\/conference-system\/catalog-data\.json"/);
 });
 
@@ -1259,40 +1362,46 @@ test("Conference specifications stay classified, consistent, and complete", () =
   }
 });
 
-test("Conference landing links every brand badge to its brand route", () => {
+test("Conference landing shows a trust bar linking every brand to its brand route", () => {
   const landing = read("app/conference-system/page.tsx");
-  const badgeSection = sectionBetween(
+  const trustSection = sectionBetween(
     landing,
-    '<section className="mt-4" aria-labelledby="conference-brand-badges-heading">',
-    '<section className="mt-4" aria-labelledby="conference-products-heading">',
+    '<section aria-labelledby="conference-trust-heading">',
+    '<section id="conference-products-heading"',
   );
 
-  // The badge row sits directly after the H1 intro card and before the product grid.
+  // The trust bar sits directly after the H1 intro card and before the product grid.
   assert.ok(
-    landing.indexOf('id="conference-brand-badges-heading"') < landing.indexOf('id="conference-products-heading"'),
-    "brand badges must come before the product listing",
+    landing.indexOf('id="conference-trust-heading"') < landing.indexOf('id="conference-products-heading"'),
+    "trust bar must come before the product listing",
   );
-  assert.equal(occurrences(landing, 'id="conference-brand-badges-heading"'), 1);
-  assert.match(badgeSection, /Shop Conference Systems by Brand/);
+  assert.equal(occurrences(landing, 'id="conference-trust-heading"'), 1);
+  assert.match(trustSection, /Trusted Conference System/);
+  assert.match(trustSection, /Solutions in Bangladesh/);
 
-  // Every badge is a real link into the brand taxonomy, plus the hub link.
-  assert.match(badgeSection, /conferenceExplorerBrands\.map\(\(brand\) => \(/);
-  assert.match(badgeSection, /href=\{`\/conference-system\/brands\/\$\{brand\.slug\}\/`\}/);
-  assert.match(badgeSection, /href="\/conference-system\/brands\/"/);
-  assert.match(badgeSection, /View All Brands/);
+  // Every brand logo is a real link into the brand taxonomy.
+  assert.match(trustSection, /verifiedConferenceBrandCards\.map\(\(brand\) => \{/);
+  assert.match(trustSection, /href=\{brand\.url\}/);
+
+  // The BOQ, installation, pricing and warranty highlights are present.
+  assert.match(trustSection, /conferenceTrustFeatures\.map\(\(feature\) => \(/);
+  assert.match(landing, /title: "BOQ & Tender Support"/);
+  assert.match(landing, /title: "Installation & Training"/);
+  assert.match(landing, /title: "Competitive Pricing"/);
+  assert.match(landing, /title: "Warranty & Support"/);
 });
 
-test("Conference landing exposes every category and product through server-rendered links", () => {
+test("Conference products remain discoverable without the removed directory disclosure", () => {
   const landing = read("app/conference-system/page.tsx");
+  const sitemap = read("app/sitemap.ts");
 
-  assert.match(landing, /aria-label="Conference system categories"/);
-  assert.match(landing, /conferenceExplorerCategories\.map\(\(category\) => \(/);
-  assert.match(landing, /href=\{`\/conference-system\/\$\{category\.slug\}\/`\}/);
-  assert.match(landing, /Browse the complete product directory/);
-  assert.match(landing, /conferenceSystemCatalog\.map\(\(product\) => \(/);
-  assert.match(landing, /href=\{`\/conference-system\/\$\{product\.slug\}\/`\}/);
+  assert.doesNotMatch(landing, /Browse the complete product directory/);
+  assert.match(landing, /products=\{initialConferenceExplorerProducts\}/);
+  assert.match(sitemap, /conferenceSystemCatalog\.map\(\(p\) => \(\{/);
+  assert.match(sitemap, /url: abs\(`\/conference-system\/\$\{p\.slug\}\/`\)/);
+  assert.match(sitemap, /conferenceCategoryConfigs\.filter\(isConferenceCategoryIndexable\)/);
 
-  // The same normalized catalog supplies a matching ItemList without creating
+  // The full normalized catalog also supplies a matching ItemList without creating
   // pagination URLs or changing the canonical route architecture.
   assert.match(landing, /const productListJsonLd = \{/);
   assert.match(landing, /"@type": "ItemList"/);

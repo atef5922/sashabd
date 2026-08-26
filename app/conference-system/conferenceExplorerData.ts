@@ -18,6 +18,10 @@ export function buildConferenceExplorerProducts(): ConferenceExplorerProduct[] {
   return conferenceSystemCatalog.map((product) => {
     const primaryImage = getConferenceProductPrimaryImage(product);
     const productTypeLabel = CONFERENCE_PRODUCT_TYPE_LABELS[product.productTypes[0]];
+    const features = [...new Set([
+      ...product.keyFeatures,
+      ...getConferenceProductCardSpecs(product).map((spec) => spec.value),
+    ])].filter(Boolean).slice(0, 3);
 
     return {
       slug: product.slug,
@@ -30,6 +34,7 @@ export function buildConferenceExplorerProducts(): ConferenceExplorerProduct[] {
       meetingType: product.systemCategory ?? null,
       availability: product.availability ?? null,
       productTypeLabel,
+      features,
       connectionLabel: product.connection ? getConferenceConnectionLabel(product.connection) : undefined,
       systemFamily: product.systemFamily,
       keySpecs: getConferenceProductCardSpecs(product).slice(0, 2),
