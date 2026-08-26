@@ -2,11 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ConferenceCardPrice } from "./catalog";
 
+const VIEW_DETAILS_LABEL = "View Details";
+
 export type ConferenceProductCardData = {
   slug: string;
   name: string;
   brandName?: string;
   productTypeLabel: string;
+  features?: readonly string[];
   connectionLabel?: string;
   systemFamily?: string;
   keySpecs: readonly { label: string; value: string }[];
@@ -21,15 +24,126 @@ export default function ConferenceProductCard({
   contactHref,
   compareSelected = false,
   onCompareToggle,
+  presentation = "standard",
 }: {
   product: ConferenceProductCardData;
   priority?: boolean;
   contactHref?: string;
   compareSelected?: boolean;
   onCompareToggle?: (slug: string) => void;
+  presentation?: "standard" | "compact";
 }) {
   const productHref = `/conference-system/${product.slug}/`;
   const quotationHref = contactHref ?? `/contact/?project=conference-system&product=${product.slug}`;
+
+  if (presentation === "compact") {
+    const features = (product.features?.length
+      ? product.features
+      : product.keySpecs.map((spec) => spec.value)
+    ).slice(0, 3);
+    const priceCaption = product.price.state === "request"
+      ? product.price.qualifier ?? "Contact for pricing"
+      : "Indicative Price Range";
+    const brandBadgeClass = (() => {
+      switch (product.brandName?.toUpperCase()) {
+        case "BOSCH":
+          return "bg-[#e30613]";
+        case "SPON":
+          return "bg-[#0868b5]";
+        case "CMX":
+          return "bg-[#ef6c00]";
+        case "TOA":
+          return "bg-[#65717d]";
+        default:
+          return "bg-slate-700";
+      }
+    })();
+
+    return (
+      <article
+        data-conference-product-card
+        data-product-slug={product.slug}
+        className="group flex h-full min-w-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_2px_12px_rgba(15,23,42,0.045)] transition-[transform,border-color,box-shadow] duration-200 motion-safe:hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_7px_20px_rgba(15,23,42,0.09)] focus-within:border-slate-400 focus-within:ring-2 focus-within:ring-slate-900/10 motion-reduce:transition-none"
+      >
+        <Link
+          prefetch={false}
+          href={productHref}
+          aria-label={`View ${product.name}`}
+          className="relative block h-[210px] shrink-0 overflow-hidden bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-500 sm:h-[220px]"
+        >
+          {product.brandName ? (
+            <span className={`absolute left-3 top-3 z-10 inline-flex rounded-[5px] px-2 py-1 text-[10px] font-extrabold uppercase leading-none tracking-[0.025em] text-white shadow-sm ${brandBadgeClass}`}>
+              {product.brandName}
+            </span>
+          ) : null}
+          <Image
+            src={product.image.src}
+            alt={product.image.alt}
+            fill
+            sizes="(max-width: 767px) 92vw, (max-width: 1279px) 50vw, 25vw"
+            className="object-contain p-5 sm:p-6"
+            priority={priority}
+          />
+        </Link>
+
+        <div className="flex flex-1 flex-col px-3.5 pb-3.5 pt-2.5">
+          <h3 className="line-clamp-2 min-h-10 text-base font-extrabold leading-5 text-[#071936]">
+            <Link
+              prefetch={false}
+              href={productHref}
+              className="rounded-sm underline-offset-4 transition-colors hover:text-orange-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45"
+            >
+              {product.name}
+            </Link>
+          </h3>
+
+          <p className="mt-1 line-clamp-1 min-h-4 text-left text-xs font-medium leading-4 text-slate-600" title={product.productTypeLabel}>
+            {product.productTypeLabel}
+          </p>
+
+          <ul className="mt-3 min-h-[4.25rem] space-y-1.5" aria-label={`Key features of ${product.name}`}>
+            {features.map((feature) => (
+              <li key={feature} className="flex min-w-0 items-center gap-2 text-left text-[12px] font-medium leading-4 text-slate-700">
+                <svg viewBox="0 0 16 16" aria-hidden="true" className="h-4 w-4 shrink-0 fill-none text-slate-700">
+                  <circle cx="8" cy="8" r="5.75" stroke="currentColor" strokeWidth="1.4" />
+                  <path d="m5.3 8.1 1.7 1.7 3.7-3.9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span className="line-clamp-1 min-w-0" title={feature}>{feature}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-auto pt-3">
+            <p className="min-w-0 break-words text-left text-lg font-extrabold leading-6 tracking-tight text-[#f05a19] [font-variant-numeric:tabular-nums]">
+              {product.price.label}
+            </p>
+            <p className="mt-0.5 text-left text-[11px] font-normal leading-4 text-slate-500">
+              {priceCaption}
+            </p>
+
+            <div className="mt-2.5 grid grid-cols-2 gap-2">
+              <Link
+                prefetch={false}
+                href={productHref}
+                aria-label={`View details for ${product.name}`}
+                className="inline-flex min-h-10 min-w-0 items-center justify-center rounded-md border border-[#102542] bg-white px-2 py-2 text-center text-xs font-bold text-[#071936] transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/35"
+              >
+                {VIEW_DETAILS_LABEL}
+              </Link>
+              <Link
+                prefetch={false}
+                href={quotationHref}
+                aria-label={`Get price for ${product.name}`}
+                className="inline-flex min-h-10 min-w-0 items-center justify-center rounded-md border border-[#071936] bg-[#071936] px-2 py-2 text-center text-xs font-bold text-white transition-colors hover:border-[#102b52] hover:bg-[#102b52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/45 focus-visible:ring-offset-2"
+              >
+                Get Price
+              </Link>
+            </div>
+          </div>
+        </div>
+      </article>
+    );
+  }
 
   return (
     <article
@@ -132,7 +246,7 @@ export default function ConferenceProductCard({
               aria-label={`View details for ${product.name}`}
               className="inline-flex min-h-10 items-center justify-center rounded-xl border border-slate-300 bg-white px-3 py-2 text-center text-xs font-extrabold text-slate-800 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50"
             >
-              View Details
+              {VIEW_DETAILS_LABEL}
             </Link>
             <Link
               prefetch={false}

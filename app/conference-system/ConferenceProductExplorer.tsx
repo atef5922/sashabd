@@ -1,9 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
 import ConferenceProductCard from "./ConferenceProductCard";
 import { toggleComparisonSelection } from "./conferenceComparison";
 import {
@@ -69,6 +68,7 @@ export default function ConferenceProductExplorer({
   const [catalogLoading, setCatalogLoading] = useState(Boolean(catalogEndpoint));
   const [state, setState] = useState<ConferenceDiscoveryState>(EMPTY_CONFERENCE_DISCOVERY_STATE);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [openFilterGroups, setOpenFilterGroups] = useState<ConferenceFilterGroup[]>(["brands", "priceBands"]);
   const [compareSlugs, setCompareSlugs] = useState<string[]>([]);
   const [compareFeedback, setCompareFeedback] = useState("");
   const hydrated = useRef(false);
@@ -207,6 +207,14 @@ export default function ConferenceProductExplorer({
     ? `${state.minPrice === null ? "Any" : `৳${state.minPrice.toLocaleString("en-BD")}`} – ${state.maxPrice === null ? "Any" : `৳${state.maxPrice.toLocaleString("en-BD")}`}`
     : "";
   const activeCount = activeFilters.length + (customPriceActive ? 1 : 0);
+  const priceSliderMax = 500_000;
+  const sliderMinValue = Math.min(state.minPrice ?? 0, priceSliderMax);
+  const sliderMaxValue = Math.max(
+    sliderMinValue,
+    Math.min(state.maxPrice ?? priceSliderMax, priceSliderMax),
+  );
+  const sliderMinPercent = (sliderMinValue / priceSliderMax) * 100;
+  const sliderMaxPercent = (sliderMaxValue / priceSliderMax) * 100;
 
   const changeCustomPrice = (field: "minPrice" | "maxPrice", rawValue: string) => {
     const numericValue = rawValue === "" ? null : Number(rawValue);
@@ -234,45 +242,115 @@ export default function ConferenceProductExplorer({
     label: string,
     count?: number,
   ) => (
-    <label key={`${group}-${value}`} className={`flex min-h-10 items-center gap-2 rounded-lg px-2 text-sm text-slate-700 ${count === 0 && !state[group].includes(value) ? "cursor-not-allowed opacity-50" : "cursor-pointer hover:bg-orange-50"}`}>
+    <label key={`${group}-${value}`} className={`group/option flex min-h-7 items-center gap-2 rounded-md px-1.5 text-[12px] leading-4 text-slate-700 transition ${count === 0 && !state[group].includes(value) ? "cursor-not-allowed opacity-45" : "cursor-pointer hover:bg-orange-50"}`}>
       <input
         type="checkbox"
         checked={state[group].includes(value)}
         disabled={count === 0 && !state[group].includes(value)}
         onChange={() => toggleFilterValue(group, value)}
-        className="h-4 w-4 rounded border-slate-300 accent-[#FD6900] focus-visible:ring-2 focus-visible:ring-[#FD6900]/40"
+        className="h-3.5 w-3.5 shrink-0 rounded-[3px] border-slate-300 accent-[#F56605] focus-visible:ring-2 focus-visible:ring-[#F56605]/35"
       />
-      <span className="flex-1 font-semibold">{label}</span>
-      {count !== undefined ? <span className="text-xs text-slate-400">{count}</span> : null}
+      <span className="min-w-0 flex-1 font-semibold text-slate-700 group-hover/option:text-slate-950">{label}</span>
+      {count !== undefined ? <span className="shrink-0 text-[10px] font-medium tabular-nums text-slate-400">({count})</span> : null}
     </label>
   );
 
+  const filterSection = (
+    group: ConferenceFilterGroup,
+    label: string,
+    children: ReactNode,
+    selectedCount = state[group].length,
+  ) => {
+    const open = openFilterGroups.includes(group);
+    const panelId = `conference-filter-${group}`;
+    return (
+      <section key={group} className="border-b border-slate-200/80 last:border-b-0">
+        <button
+          type="button"
+          aria-expanded={open}
+          aria-controls={panelId}
+          onClick={() => setOpenFilterGroups((current) => current.includes(group) ? current.filter((item) => item !== group) : [...current, group])}
+          className="flex min-h-9 w-full items-center gap-2 rounded-md px-1.5 text-left text-[12px] font-extrabold text-slate-800 transition hover:bg-slate-50 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/35"
+        >
+          <span className="min-w-0 flex-1">{label}</span>
+          {selectedCount ? (
+            <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-orange-50 px-1.5 py-0.5 text-[10px] font-extrabold text-orange-700">
+              {selectedCount}
+            </span>
+          ) : null}
+          <svg viewBox="0 0 16 16" aria-hidden="true" className={`h-3.5 w-3.5 shrink-0 fill-none text-slate-600 transition-transform duration-200 ${open ? "rotate-180" : ""}`}>
+            <path d="m4.5 6 3.5 3.5L11.5 6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+        <div id={panelId} hidden={!open} className="px-0.5 pb-2 pt-0.5">
+          {children}
+        </div>
+      </section>
+    );
+  };
+
   const filterGroups = (
-    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-1">
-      <fieldset><legend className="mb-1 text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Brand</legend>{brands.map((facet) => filterCheckbox("brands", facet.slug, facet.label, facetCount("brands", facet.slug)))}</fieldset>
-      <fieldset><legend className="mb-1 text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Product Type</legend>{productTypes.map((facet) => filterCheckbox("productTypes", facet.slug, facet.label, facetCount("productTypes", facet.slug)))}</fieldset>
-      <fieldset><legend className="mb-1 text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Connection</legend>{["wired", "wireless", "hybrid"].filter((value) => options.connections.has(value)).map((value) => filterCheckbox("connections", value, value[0].toUpperCase() + value.slice(1), facetCount("connections", value)))}</fieldset>
-      <fieldset><legend className="mb-1 text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Conference Format</legend>{["audio", "video", "hybrid"].filter((value) => options.meetingTypes.has(value)).map((value) => filterCheckbox("meetingTypes", value, value[0].toUpperCase() + value.slice(1), facetCount("meetingTypes", value)))}</fieldset>
-      <fieldset><legend className="mb-1 text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Availability</legend>{[
+    <div>
+      {filterSection("brands", "Select Brand", brands.map((facet) => filterCheckbox("brands", facet.slug, facet.label, facetCount("brands", facet.slug))))}
+      {filterSection("productTypes", "Product Category", productTypes.map((facet) => filterCheckbox("productTypes", facet.slug, facet.label, facetCount("productTypes", facet.slug))))}
+      {filterSection("meetingTypes", "System Type", ["audio", "video", "hybrid"].filter((value) => options.meetingTypes.has(value)).map((value) => filterCheckbox("meetingTypes", value, value[0].toUpperCase() + value.slice(1), facetCount("meetingTypes", value))))}
+      {filterSection("connections", "Connection Type", ["wired", "wireless", "hybrid"].filter((value) => options.connections.has(value)).map((value) => filterCheckbox("connections", value, value[0].toUpperCase() + value.slice(1), facetCount("connections", value))))}
+      {filterSection("availabilities", "Availability", [
         ["in-stock", "In stock"],
         ["project-order", "Project order"],
         ["contact", "Contact for availability"],
-      ].filter(([value]) => options.availabilities.has(value)).map(([value, label]) => filterCheckbox("availabilities", value, label, facetCount("availabilities", value)))}</fieldset>
-      <fieldset>
-        <legend className="mb-1 text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Price</legend>
-        {CONFERENCE_PRICE_BANDS.map((band) => filterCheckbox("priceBands", band.id, band.label, facetCount("priceBands", band.id)))}
-        <div className="mt-3 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
-          <label className="text-xs font-bold text-slate-600">
-            Minimum (৳)
-            <input type="number" inputMode="numeric" min={0} max={CONFERENCE_MAX_CUSTOM_PRICE} step={1000} value={state.minPrice ?? ""} onChange={(event) => changeCustomPrice("minPrice", event.currentTarget.value)} placeholder="0" aria-describedby={customPriceInvalid ? "conference-price-range-error" : undefined} className="mt-1 h-10 w-full rounded-lg border border-slate-300 px-2.5 text-sm text-slate-900 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-500/20" />
-          </label>
-          <label className="text-xs font-bold text-slate-600">
-            Maximum (৳)
-            <input type="number" inputMode="numeric" min={0} max={CONFERENCE_MAX_CUSTOM_PRICE} step={1000} value={state.maxPrice ?? ""} onChange={(event) => changeCustomPrice("maxPrice", event.currentTarget.value)} placeholder="Any" aria-describedby={customPriceInvalid ? "conference-price-range-error" : undefined} className="mt-1 h-10 w-full rounded-lg border border-slate-300 px-2.5 text-sm text-slate-900 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-500/20" />
-          </label>
+      ].filter(([value]) => options.availabilities.has(value)).map(([value, label]) => filterCheckbox("availabilities", value, label, facetCount("availabilities", value))))}
+      {filterSection("priceBands", "Price Range (৳)", (
+        <div className="px-1 pb-1">
+          <div className="relative mt-1 h-5">
+            <div className="absolute inset-x-1 top-2 h-1 rounded-full bg-slate-200" aria-hidden="true" />
+            <div
+              className="absolute top-2 h-1 rounded-full bg-[#F56605]"
+              style={{ left: `calc(${sliderMinPercent}% + 0.25rem)`, right: `calc(${100 - sliderMaxPercent}% + 0.25rem)` }}
+              aria-hidden="true"
+            />
+            <input
+              type="range"
+              min={0}
+              max={priceSliderMax}
+              step={1000}
+              value={sliderMinValue}
+              onChange={(event) => changeCustomPrice("minPrice", event.currentTarget.value === "0" ? "" : event.currentTarget.value)}
+              aria-label="Minimum conference product price"
+              className="pointer-events-none absolute inset-x-0 top-0 h-5 w-full appearance-none bg-transparent [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:bg-[#F56605] [&::-moz-range-thumb]:shadow [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-0.5 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-[#F56605] [&::-webkit-slider-thumb]:shadow"
+            />
+            <input
+              type="range"
+              min={0}
+              max={priceSliderMax}
+              step={1000}
+              value={sliderMaxValue}
+              onChange={(event) => changeCustomPrice("maxPrice", event.currentTarget.value === String(priceSliderMax) ? "" : event.currentTarget.value)}
+              aria-label="Maximum conference product price"
+              className="pointer-events-none absolute inset-x-0 top-0 h-5 w-full appearance-none bg-transparent [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:bg-[#F56605] [&::-moz-range-thumb]:shadow [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-0.5 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-[#F56605] [&::-webkit-slider-thumb]:shadow"
+            />
+          </div>
+          <div className="mt-1 grid grid-cols-2 gap-2">
+            <label className="relative block">
+              <span className="sr-only">Minimum price in BDT</span>
+              <span className="pointer-events-none absolute left-2 top-2 text-[11px] font-bold text-slate-500">৳</span>
+              <input type="number" inputMode="numeric" min={0} max={CONFERENCE_MAX_CUSTOM_PRICE} step={1000} value={state.minPrice ?? ""} onChange={(event) => changeCustomPrice("minPrice", event.currentTarget.value)} placeholder="0" aria-describedby={customPriceInvalid ? "conference-price-range-error" : undefined} className="h-8 w-full rounded-md border border-slate-300 bg-white pl-5 pr-1.5 text-[11px] font-semibold tabular-nums text-slate-800 outline-none placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/15" />
+            </label>
+            <label className="relative block">
+              <span className="sr-only">Maximum price in BDT</span>
+              <span className="pointer-events-none absolute left-2 top-2 text-[11px] font-bold text-slate-500">৳</span>
+              <input type="number" inputMode="numeric" min={0} max={CONFERENCE_MAX_CUSTOM_PRICE} step={1000} value={state.maxPrice ?? ""} onChange={(event) => changeCustomPrice("maxPrice", event.currentTarget.value)} placeholder={`${priceSliderMax.toLocaleString("en-BD")}+`} aria-describedby={customPriceInvalid ? "conference-price-range-error" : undefined} className="h-8 w-full rounded-md border border-slate-300 bg-white pl-5 pr-1.5 text-[11px] font-semibold tabular-nums text-slate-800 outline-none placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/15" />
+            </label>
+          </div>
+          {customPriceInvalid ? <p id="conference-price-range-error" role="alert" className="mt-1.5 text-[10px] font-semibold leading-4 text-red-700">Minimum price cannot exceed maximum price.</p> : null}
+          <details className="mt-2 rounded-md border border-slate-200 bg-slate-50/70 px-2 py-1.5">
+            <summary className="cursor-pointer text-[10px] font-bold text-slate-600 marker:text-orange-600">Quick price ranges{state.priceBands.length ? ` (${state.priceBands.length} selected)` : ""}</summary>
+            <div className="mt-1.5 border-t border-slate-200 pt-1.5">
+              {CONFERENCE_PRICE_BANDS.map((band) => filterCheckbox("priceBands", band.id, band.label, facetCount("priceBands", band.id)))}
+            </div>
+          </details>
         </div>
-        {customPriceInvalid ? <p id="conference-price-range-error" role="alert" className="mt-2 text-xs font-semibold text-red-700">Minimum price cannot exceed maximum price.</p> : <p className="mt-2 text-[11px] leading-4 text-slate-500">Custom range applies to published prices; Request Price remains separate.</p>}
-      </fieldset>
+      ), state.priceBands.length + (customPriceActive ? 1 : 0))}
     </div>
   );
 
@@ -299,55 +377,65 @@ export default function ConferenceProductExplorer({
       ? "inline-flex min-h-10 min-w-10 items-center justify-center rounded-xl border border-orange-600 bg-orange-600 px-3 text-sm font-extrabold text-white shadow-sm transition hover:border-orange-700 hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2"
       : `${buttonClass} min-w-10`;
 
+  const searchField = (compact = false) => (
+    <label className="relative block min-w-0">
+      <span className="sr-only">Search conference products</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true" className={`absolute fill-none text-slate-400 ${compact ? "left-2.5 top-2.5 h-4 w-4" : "left-3 top-3 h-5 w-5"}`}><circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2"/><path d="m16 16 4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+      <input type="search" value={state.query} onChange={(event) => changeFilters({ query: event.target.value }, "replace")} placeholder={compact ? "Search products..." : "Search products, models, brands or systems..."} className={`w-full border border-slate-300 bg-white text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/15 ${compact ? "h-9 rounded-lg pl-8 pr-8 text-xs" : "h-11 rounded-xl pl-10 pr-10 text-sm"}`} />
+      {state.query ? <button type="button" aria-label="Clear product search" onClick={() => changeFilters({ query: "" })} className={`absolute inline-flex items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40 ${compact ? "right-1 top-1 h-7 w-7 text-base" : "right-2 top-1.5 h-8 w-8 text-lg"}`}>×</button> : null}
+    </label>
+  );
+
   return (
     <div data-conference-product-explorer aria-busy={catalogLoading || undefined}>
       <div ref={gridTopRef} className="scroll-mt-24" />
-      <div className="mb-4 rounded-2xl border border-slate-200 bg-white p-4">
-        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-[minmax(0,1fr)_auto_auto_auto]">
-          <label className="relative block sm:col-span-2 xl:col-span-1">
-            <span className="sr-only">Search conference products</span>
-            <svg viewBox="0 0 24 24" aria-hidden="true" className="absolute left-3 top-3 h-5 w-5 fill-none text-slate-400"><circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2"/><path d="m16 16 4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
-            <input type="search" value={state.query} onChange={(event) => changeFilters({ query: event.target.value }, "replace")} placeholder="Search products, models, brands or systems..." className="h-11 w-full rounded-xl border border-slate-300 bg-white pl-10 pr-10 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/20" />
-            {state.query ? <button type="button" aria-label="Clear product search" onClick={() => changeFilters({ query: "" })} className="absolute right-2 top-1.5 h-8 w-8 rounded-lg text-lg text-slate-500 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">×</button> : null}
-          </label>
-          <button ref={mobileFilterButtonRef} type="button" aria-expanded={mobileFiltersOpen} aria-controls="conference-product-filters" onClick={() => setMobileFiltersOpen((open) => !open)} className={`${buttonClass} lg:hidden`}>Filters{activeCount ? ` (${activeCount})` : ""}</button>
-          <label className="flex items-center gap-2 text-sm font-bold text-slate-700"><span className="whitespace-nowrap">Sort by</span><select value={state.sort} onChange={(event) => changeFilters({ sort: event.target.value as ConferenceDiscoveryState["sort"] })} className="h-11 rounded-xl border border-slate-300 bg-white px-3 text-sm focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20">{SORT_OPTIONS.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
-          <label className="flex items-center gap-2 text-sm font-bold text-slate-700"><span className="whitespace-nowrap">Show</span><select value={state.pageSize} onChange={(event) => changeFilters({ pageSize: Number(event.target.value) as ConferenceDiscoveryState["pageSize"] })} className="h-11 rounded-xl border border-slate-300 bg-white px-3 text-sm focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20" aria-label={`Products per page; default ${PAGE_SIZE}`}>{CONFERENCE_RESULT_LIMITS.map((value) => <option key={value} value={value}>{value}</option>)}</select></label>
-        </div>
+      <div className="mb-4 grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:grid-cols-[minmax(0,1fr)_auto] lg:hidden">
+        {searchField()}
+        <button ref={mobileFilterButtonRef} type="button" aria-expanded={mobileFiltersOpen} aria-controls="conference-product-filters" onClick={() => setMobileFiltersOpen((open) => !open)} className={`${buttonClass}`}>Filters{activeCount ? ` (${activeCount})` : ""}</button>
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-[15rem_minmax(0,1fr)]">
+      <div className="grid gap-4 lg:grid-cols-[16rem_minmax(0,1fr)]">
         <aside
           id="conference-product-filters"
           aria-label="Conference product filters"
-          className={`${mobileFiltersOpen ? "block" : "hidden"} self-start rounded-2xl border border-slate-200 bg-white p-4 lg:sticky lg:top-20 lg:flex lg:max-h-[calc(100dvh-6rem)] lg:flex-col lg:overflow-hidden`}
+          className={`${mobileFiltersOpen ? "block" : "hidden"} self-start overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_3px_16px_rgba(15,23,42,0.045)] lg:sticky lg:top-20 lg:flex lg:max-h-[calc(100dvh-6rem)] lg:flex-col`}
         >
-          <div className="mb-4 flex shrink-0 items-center justify-between gap-3">
-            <h3 className="font-extrabold text-slate-950">Filter Products</h3>
+          <div className="flex shrink-0 items-center justify-between gap-3 px-3 pb-2 pt-3">
+            <h3 className="text-base font-extrabold leading-5 tracking-tight text-[#071936]">Filter Products</h3>
             <div className="flex items-center gap-3">
-              {activeCount ? <button type="button" onClick={clearAll} className="text-xs font-bold text-orange-700 hover:underline">Clear All</button> : null}
-              <button type="button" aria-label="Close product filters" onClick={() => { setMobileFiltersOpen(false); mobileFilterButtonRef.current?.focus(); }} className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-xl text-slate-500 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40 lg:hidden">×</button>
+              {activeCount ? <button type="button" onClick={clearAll} className="text-[11px] font-bold text-orange-700 hover:underline">Clear All</button> : null}
+              <button type="button" aria-label="Close product filters" onClick={() => { setMobileFiltersOpen(false); mobileFilterButtonRef.current?.focus(); }} className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-lg text-slate-500 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40 lg:hidden">×</button>
             </div>
           </div>
-          <div className="lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:pr-1 lg:[scrollbar-gutter:stable]">
+          <div className="hidden shrink-0 px-3 pb-2 lg:block">{searchField(true)}</div>
+          <div className="min-h-0 px-3 pb-2 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:[scrollbar-gutter:stable]">
             {filterGroups}
           </div>
-          <div className="mt-4 grid grid-cols-2 gap-2 lg:hidden">
+          <div className="mx-3 mb-3 mt-1 grid grid-cols-2 gap-2 lg:hidden">
             <button type="button" onClick={clearAll} className={buttonClass}>Clear All</button>
             <button type="button" onClick={() => { setMobileFiltersOpen(false); mobileFilterButtonRef.current?.focus(); }} className="min-h-10 rounded-xl bg-[#FD6900] px-3 text-sm font-extrabold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50">Show {filtered.length} Products</button>
           </div>
         </aside>
         <div className="min-w-0">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm font-extrabold text-slate-900" aria-live="polite">
-              {filtered.length
-                ? `Showing ${(safePage - 1) * state.pageSize + 1}–${Math.min(safePage * state.pageSize, filtered.length)} of ${catalogLoading && !activeCount && !state.query ? totalProducts ?? filtered.length : filtered.length}`
-                : "0"} Conference {filtered.length === 1 ? "Product" : "Products"}
-            </p>
-            {activeCount || state.query ? <button type="button" onClick={clearAll} className="text-sm font-bold text-orange-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">Clear All</button> : null}
+          <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+            <div className="min-w-0">
+              <h2 className="!text-xl font-extrabold leading-7 tracking-tight text-[#071936] lg:!text-[22px]">Featured Conference Systems</h2>
+              <div className="mt-1 flex flex-wrap items-center gap-3">
+                <p className="text-xs font-semibold leading-4 text-slate-600" aria-live="polite">
+                  {filtered.length
+                    ? `Showing ${(safePage - 1) * state.pageSize + 1}–${Math.min(safePage * state.pageSize, filtered.length)} of ${catalogLoading && !activeCount && !state.query ? totalProducts ?? filtered.length : filtered.length}`
+                    : "0"} Conference {filtered.length === 1 ? "Product" : "Products"}
+                </p>
+                {activeCount || state.query ? <button type="button" onClick={clearAll} className="text-sm font-bold text-orange-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">Clear All</button> : null}
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <label className="flex items-center gap-2 text-xs font-bold text-slate-700"><span className="whitespace-nowrap">Sort by</span><select value={state.sort} onChange={(event) => changeFilters({ sort: event.target.value as ConferenceDiscoveryState["sort"] })} className="h-10 rounded-lg border border-slate-300 bg-white px-3 text-xs focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20">{SORT_OPTIONS.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
+              <label className="flex items-center gap-2 text-xs font-bold text-slate-700"><span className="whitespace-nowrap">Show</span><select value={state.pageSize} onChange={(event) => changeFilters({ pageSize: Number(event.target.value) as ConferenceDiscoveryState["pageSize"] })} className="h-10 rounded-lg border border-slate-300 bg-white px-3 text-xs focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20" aria-label={`Products per page; default ${PAGE_SIZE}`}>{CONFERENCE_RESULT_LIMITS.map((value) => <option key={value} value={value}>{value}</option>)}</select></label>
+            </div>
           </div>
           {activeCount ? <div className="mb-4 flex flex-wrap gap-2" aria-label="Active filters">{activeFilters.map((filter) => <button key={`${filter.group}-${filter.value}`} type="button" onClick={() => removeActive(filter.group, filter.value)} aria-label={`Remove ${filter.label} filter`} className="inline-flex min-h-9 items-center gap-1 rounded-full border border-orange-200 bg-orange-50 px-3 text-xs font-bold text-orange-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">{filter.label}<span aria-hidden="true">×</span></button>)}{customPriceActive ? <button type="button" onClick={() => changeFilters({ minPrice: null, maxPrice: null })} aria-label="Remove custom price range filter" className="inline-flex min-h-9 items-center gap-1 rounded-full border border-orange-200 bg-orange-50 px-3 text-xs font-bold text-orange-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">{customPriceLabel}<span aria-hidden="true">×</span></button> : null}</div> : null}
-          {shown.length ? <ResponsiveProductCarousel className="product-grid-3" desktopClassName="md:grid-cols-2 xl:grid-cols-3" mobileGapClassName="gap-[10px]">{shown.map((product, index) => <ConferenceProductCard key={product.slug} product={product} priority={index === 0} compareSelected={compareSlugs.includes(product.slug)} onCompareToggle={toggleCompare} />)}</ResponsiveProductCarousel> : <div className="rounded-2xl border border-slate-200 bg-white px-5 py-10 text-center"><h3 className="font-extrabold text-slate-950">No conference products found</h3><p className="mt-2 text-sm leading-6 text-slate-600">No conference products match your current search and filters.</p><button type="button" onClick={clearAll} className={`${buttonClass} mt-5`}>Clear Search &amp; Filters</button></div>}
+          {shown.length ? <div className="product-grid-3 grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-4">{shown.map((product, index) => <ConferenceProductCard key={product.slug} product={product} priority={index === 0} compareSelected={compareSlugs.includes(product.slug)} onCompareToggle={toggleCompare} presentation="compact" />)}</div> : <div className="rounded-2xl border border-slate-200 bg-white px-5 py-10 text-center"><h3 className="font-extrabold text-slate-950">No conference products found</h3><p className="mt-2 text-sm leading-6 text-slate-600">No conference products match your current search and filters.</p><button type="button" onClick={clearAll} className={`${buttonClass} mt-5`}>Clear Search &amp; Filters</button></div>}
           {totalPages > 1 ? (
             <nav aria-label="Conference product pages" className="mt-6 flex flex-wrap items-center justify-center gap-1.5 border-t border-slate-100 pt-5">
               <button type="button" onClick={() => goToPage(safePage - 1)} disabled={safePage === 1} className={`${buttonClass} disabled:cursor-not-allowed disabled:opacity-40`}>Prev</button>

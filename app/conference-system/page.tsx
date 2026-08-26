@@ -2,10 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
-import MobileIntroText from "@/components/common/MobileIntroText";
-import { homeBreadcrumb } from "@/lib/breadcrumbs";
+import { formatBdtAmount } from "@/lib/price";
 import { absoluteUrl, socialImageUrl } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
 import {
@@ -14,9 +12,10 @@ import {
   getConferenceCatalogIntegrityReport,
   getConferenceProductAvailabilityLabel,
   getConferenceProductPricePresentation,
+  type ConferenceProduct,
   type ConferenceProductType,
 } from "./catalog";
-import { conferenceBrandConfigs, conferenceCategoryConfigs, hasConferenceBrandProducts } from "./taxonomy";
+import { conferenceBrandConfigs, hasConferenceBrandProducts } from "./taxonomy";
 import ConferenceProductExplorer from "./ConferenceProductExplorer";
 import { buildConferenceExplorerProducts } from "./conferenceExplorerData";
 import {
@@ -25,253 +24,305 @@ import {
 } from "./conferenceExplorerOrder";
 import { conferenceInstallationProjects } from "./conferenceProjects";
 
-const BRAND = { maroon: "#FF6A00", maroonDark: "#E45700" };
 const PAGE_TITLE = "Conference System Price in Bangladesh 2026";
 const META_TITLE = `${PAGE_TITLE} | Sasha`;
-const HERO_SUBTITLE =
-  "Professional wired, wireless and digital conference microphone systems for boardrooms, meeting rooms, government offices, universities and conference halls across Bangladesh.";
 
-const ctaClass =
-  "inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md";
+const compactInformationSectionClass =
+  "mt-4 rounded-2xl border border-[#dbe5f2] bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.04)] sm:px-5 md:px-6";
 
-const pairedCtaGroupClass =
-  "grid w-full grid-cols-1 gap-2.5 sm:grid-cols-2 lg:w-[21.5rem] lg:shrink-0";
+const conferenceSectionTitleClass =
+  "!text-xl font-extrabold leading-7 tracking-tight text-[#071936] lg:!text-[22px]";
 
-const pairedPrimaryCtaClass =
-  "inline-flex min-h-[3.25rem] w-full items-center justify-center rounded-xl px-3 py-2 text-center text-[13px] font-extrabold leading-[1.15rem] text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2";
-
-const pairedSecondaryCtaClass =
-  "inline-flex min-h-[3.25rem] w-full items-center justify-center rounded-xl border border-slate-300 bg-white px-3 py-2 text-center text-[13px] font-extrabold leading-[1.15rem] text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40 focus-visible:ring-offset-2";
-
-const sectionClass =
-  "mt-4 rounded-3xl border bg-white p-[10px] md:p-8";
-
-const sectionStyle = {
-  borderColor: `${BRAND.maroon}12`,
+const deferredContentStyle = {
   contentVisibility: "auto" as const,
   containIntrinsicSize: "auto 520px",
 };
 
-function getParityClassName(index: number) {
-  return index % 2 === 0
-    ? "border-cyan-200/60 bg-sky-50/70"
-    : "border-orange-200/80 bg-orange-50/70";
-}
+type ConferenceChooserIcon = "wired" | "wireless" | "digital" | "hybrid" | "small" | "medium" | "large" | "hall";
 
-const ResponsiveCardGrid = ({
-  items,
-  desktopClassName = "md:grid-cols-2 lg:grid-cols-3",
-  colorFill = false,
-}: {
-  items: Array<{ title: string; desc: string; icon?: ReactNode; bullets?: readonly string[]; meta?: string }>;
-  desktopClassName?: string;
-  colorFill?: boolean;
-}) => (
-  <div
-    className={`-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:snap-none md:overflow-visible md:px-0 md:pb-0 md:pt-0 ${desktopClassName}`}
-  >
-    {items.map((item, index) => (
-      <article
-        key={item.title}
-        className={`w-[89%] shrink-0 snap-start rounded-[14px] border px-4 py-4 transition md:w-auto md:rounded-2xl md:p-5 md:snap-none md:hover:-translate-y-0.5 ${colorFill ? "" : "md:border-slate-200 md:bg-white"} ${getParityClassName(index)}`}
-      >
-        <div className="flex items-center gap-3">
-          {item.icon ? (
-            <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] border border-orange-100 bg-white text-orange-600">
-              {item.icon}
-            </span>
-          ) : null}
-          <div className="min-w-0">
-            <h3 className="text-[17px] font-extrabold leading-snug text-slate-900 md:text-lg">{item.title}</h3>
-            {item.meta ? <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.04em] text-slate-500">{item.meta}</p> : null}
-          </div>
-        </div>
-        <p className="mt-3 text-[13px] leading-6 text-slate-700 text-justify">{item.desc}</p>
-        {item.bullets?.length ? (
-          <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700">
-            {item.bullets.map((point) => (
-              <li key={point} className="flex items-start gap-2">
-                <span className="mt-1.5 inline-block h-2 w-2 shrink-0 rounded-full" style={{ background: BRAND.maroon }} />
-                <span className="leading-6 text-justify">{point}</span>
-              </li>
-            ))}
-          </ul>
-        ) : null}
-      </article>
-    ))}
-  </div>
-);
-
-const applicationCards = [
-  {
-    title: "Corporate Boardroom",
-    desc: "Chairman and delegate microphones keep executive discussions organized around the table, with hybrid meeting integration where the room setup supports it.",
-  },
-  {
-    title: "Government Meeting Room",
-    desc: "Chairman priority control and delegate management support formal proceedings, with meeting recording available on supported systems.",
-  },
-  {
-    title: "Educational Institution",
-    desc: "Lecture halls and faculty meeting rooms use conference microphones for clear presenter audio and structured discussion among staff.",
-  },
-  {
-    title: "Hotel & Convention Center",
-    desc: "Wireless and portable conference units allow quick setup and reconfiguration for banquet halls and convention spaces booked for different events.",
-  },
-  {
-    title: "Training Center",
-    desc: "Flexible seating and instructor-to-participant microphone setups support hands-on training sessions and workshop-style delivery.",
-  },
-  {
-    title: "House of Worship / Auditorium",
-    desc: "PA integration, DSP processing, and amplification extend clear voice coverage across larger halls and auditoriums.",
-  },
-] as const;
-
-const packageCards = [
-  {
-    title: "Small Meeting Room Package",
-    bestFor: "Small offices, huddle rooms, director rooms, and private meeting spaces.",
-    included: "Chairman unit, delegate units, control unit, cables, basic speaker support, and setup guidance.",
-    capacity: "6-12 participants",
-    recommended: "Wired conference microphone units with compact control and room speakers.",
-  },
-  {
-    title: "Medium Conference Room Package",
-    bestFor: "Corporate boardrooms, training rooms, committee rooms, and institutional meeting spaces.",
-    included: "Chairman unit, multiple delegate units, central control unit, DSP or mixer support, speakers, and installation.",
-    capacity: "12-30 participants",
-    recommended: "Digital conference system with chairman and delegate microphone control.",
-  },
-  {
-    title: "Large Conference Hall Package",
-    bestFor: "Government halls, seminar rooms, convention areas, and large discussion venues.",
-    included: "Conference microphones, central controller, DSP processor, amplifiers, speakers, cables, rack planning, and commissioning.",
-    capacity: "30-80 participants",
-    recommended: "Digital conference system with PA integration and acoustic planning.",
-  },
-  {
-    title: "Wireless Conference Package",
-    bestFor: "Multipurpose rooms, flexible boardrooms, training centers, and venues with changing seating layouts.",
-    included: "Wireless chairman/delegate units, access point, charger, controller, audio output, and wireless planning.",
-    capacity: "Depends on selected wireless unit quantity",
-    recommended: "Wireless conference microphone system with access point and charging workflow.",
-  },
-  {
-    title: "Digital Conference System Package",
-    bestFor: "Corporate offices, government meeting rooms, universities, and formal decision-making spaces.",
-    included: "Digital central unit, chairman unit, delegate units, DSP integration, speakers, cables, and testing.",
-    capacity: "Scalable by system model and room layout",
-    recommended: "Digital chairman and delegate microphone system with central control.",
-  },
-  {
-    title: "Custom Conference System Project",
-    bestFor: "Tender, BOQ, auditorium, hybrid meeting, and multi-room audio projects.",
-    included: "Room survey, system design, product selection, BOQ, installation, training, and after-sales support.",
-    capacity: "Custom capacity based on seating plan",
-    recommended: "Project-specific combination of conference microphone, PA, DSP, and video meeting equipment.",
-  },
-] as const;
-
-const systemTypes = [
+const conferenceSystemChooserCards: ReadonlyArray<{
+  title: string;
+  description: string;
+  cta: string;
+  href: string;
+  image: string;
+  imageAlt: string;
+  icon: ConferenceChooserIcon;
+  imagePosition?: string;
+}> = [
   {
     title: "Wired Conference System",
-    desc: "Stable tabletop microphone setup for permanent boardrooms, committee rooms, and meeting halls.",
+    description: "Stable, secure and interference-free discussion for professional meetings.",
+    cta: "View Wired Systems",
+    href: "/conference-system/wired-conference-system/",
+    image: "/images/conference_system_projects/project1.webp",
+    imageAlt: "Wired conference microphones installed around a boardroom table",
+    icon: "wired",
+    imagePosition: "center 62%",
   },
   {
     title: "Wireless Conference System",
-    desc: "Flexible microphone solution for clean tables, movable seating, and multipurpose meeting rooms.",
+    description: "Flexible setup with easy installation for rooms with changing layouts.",
+    cta: "View Wireless Systems",
+    href: "/conference-system/wireless-conference-system/",
+    image: "/images/PA/Conference-Discussion-System.webp",
+    imageAlt: "Professional conference microphones in a modern meeting room",
+    icon: "wireless",
+    imagePosition: "center 58%",
   },
   {
     title: "Digital Conference System",
-    desc: "Structured chairman and delegate control with central processing for professional meetings.",
+    description: "Advanced digital technology with superior audio quality and control.",
+    cta: "View Digital Systems",
+    href: "/conference-system/?q=digital#conference-products-heading",
+    image: "/images/conference_system_projects/project2.webp",
+    imageAlt: "Digital conference system with microphones and meeting displays",
+    icon: "digital",
+    imagePosition: "center 55%",
   },
   {
-    title: "Chairman & Delegate Microphone System",
-    desc: "Dedicated units for the chairperson and participants to keep discussions organized.",
+    title: "Video Conference & Hybrid",
+    description: "Integrated audio, video and presentation support for hybrid meetings.",
+    cta: "View Hybrid Solutions",
+    href: "/conference-system/video-conference-system/",
+    image: "/images/podium/Auditorium-Digital-Podium.webp",
+    imageAlt: "Integrated digital presentation and video conference room solution",
+    icon: "hybrid",
+    imagePosition: "center 48%",
+  },
+];
+
+const conferenceRoomSizeCards: ReadonlyArray<{
+  capacity: string;
+  room: string;
+  description: string;
+  href: string;
+  image: string;
+  imageAlt: string;
+  icon: ConferenceChooserIcon;
+  imagePosition?: string;
+}> = [
+  {
+    capacity: "6 – 12",
+    room: "Small Boardroom",
+    description: "Ideal for director rooms and small meetings.",
+    href: "/contact/?project=conference-system&room_size=6-12",
+    image: "/images/conference_system_projects/project1.webp",
+    imageAlt: "Small boardroom prepared for a conference meeting",
+    icon: "small",
+    imagePosition: "center 58%",
   },
   {
-    title: "Network Conference System",
-    desc: "Modern conference audio planning with network-ready control and integration possibilities.",
+    capacity: "12 – 30",
+    room: "Medium Meeting Room",
+    description: "Perfect for team meetings and training rooms.",
+    href: "/contact/?project=conference-system&room_size=12-30",
+    image: "/images/conference_system_projects/project2.webp",
+    imageAlt: "Medium meeting and training room with conference microphones",
+    icon: "medium",
+    imagePosition: "center 55%",
   },
   {
-    title: "Conference System with DSP Processor",
-    desc: "Adds audio tuning, routing, feedback control, and cleaner speaker output for demanding rooms.",
+    capacity: "30 – 50",
+    room: "Large Conference Room",
+    description: "Suitable for official meetings and seminars.",
+    href: "/contact/?project=conference-system&room_size=30-50",
+    image: "/images/conference_landing/hero_banner.webp",
+    imageAlt: "Large modern conference room with tabletop microphones",
+    icon: "large",
+    imagePosition: "72% center",
+  },
+  {
+    capacity: "50+",
+    room: "Conference Hall",
+    description: "Designed for conferences, events and large gatherings.",
+    href: "/contact/?project=conference-system&room_size=50-plus",
+    image: "/images/conference_system_projects/project3.webp",
+    imageAlt: "Large conference hall with delegate microphones and seating",
+    icon: "hall",
+    imagePosition: "center 50%",
+  },
+];
+
+const popularConferencePackages = [
+  {
+    badge: "Most Popular",
+    badgeIcon: "★",
+    title: "10 Person",
+    subtitle: "Boardroom Package",
+    description: "Perfect for small boardrooms and executive meetings",
+    items: ["1 Chairman Unit", "9 Delegate Units", "1 Control Unit", "Cables & Accessories"],
+    priceEyebrow: "Estimated Budget",
+    price: "৳ 185,000",
+    priceNote: "Indicative BOQ estimate",
+    cta: "Get Package BOQ",
+    href: "/contact/?project=conference-system&package=10-person-boardroom",
+    image: "/images/conference_system_products/bosch_products/Bosch-CCS-1000-D-Digital-Discussion-System.webp",
+    imageAlt: "Ten person conference system boardroom package",
+    badgeClass: "bg-[#f1530a]",
+    priceClass: "text-[#f1530a]",
+    buttonClass: "bg-[#f1530a] hover:bg-[#d94405]",
+  },
+  {
+    badge: "Best for Teams",
+    badgeIcon: "✣",
+    title: "20 Person",
+    subtitle: "Meeting Room Package",
+    description: "Ideal for team meetings and training sessions",
+    items: ["1 Chairman Unit", "19 Delegate Units", "1 Control Unit", "Cables & Accessories"],
+    priceEyebrow: "Estimated Budget",
+    price: "৳ 355,000",
+    priceNote: "Indicative BOQ estimate",
+    cta: "Get Package BOQ",
+    href: "/contact/?project=conference-system&package=20-person-meeting-room",
+    image: "/images/conference_system_products/bosch_products/Bosch CCS-900 Wired Ultro Discussion Conference System.jpg",
+    imageAlt: "Twenty person conference system meeting room package",
+    badgeClass: "bg-[#075bc5]",
+    priceClass: "text-[#f1530a]",
+    buttonClass: "bg-[#071936] hover:bg-[#102b52]",
+  },
+  {
+    badge: "For Official Use",
+    badgeIcon: "⌘",
+    title: "30 Person",
+    subtitle: "Government Package",
+    description: "Recommended for government and official meeting rooms",
+    items: ["1 Chairman Unit", "29 Delegate Units", "1 Central Control Unit", "Cables, DSP & Accessories"],
+    priceEyebrow: "Estimated Budget",
+    price: "৳ 595,000",
+    priceNote: "Indicative BOQ estimate",
+    cta: "Get Package BOQ",
+    href: "/contact/?project=conference-system&package=30-person-government",
+    image: "/images/conference_system_products/cmx_products/CMX-CS-700A-Conference-System-with-Discussion-Units-768x768.webp",
+    imageAlt: "Thirty person conference system government package",
+    badgeClass: "bg-[#149447]",
+    priceClass: "text-[#f1530a]",
+    buttonClass: "bg-[#14833f] hover:bg-[#0d6c33]",
+  },
+  {
+    badge: "For Large Venues",
+    badgeIcon: "♙",
+    title: "50+ Person",
+    subtitle: "Conference Hall Package",
+    description: "Designed for conferences, seminars and large events",
+    items: ["2 Chairman Units", "50+ Delegate Units", "Digital Control Unit", "DSP, Amplifier & Accessories"],
+    priceEyebrow: "Custom Solution",
+    price: "Get Custom Quotation",
+    priceNote: "",
+    cta: "Request Custom BOQ",
+    href: "/contact/?project=conference-system&package=50-plus-conference-hall",
+    image: "/images/conference_system_products/cmx_products/CMX-CS-100-S101-S102-Digital-Conference-System-300x300.webp",
+    imageAlt: "Custom conference hall system package for fifty or more participants",
+    badgeClass: "bg-[#7131bd]",
+    priceClass: "text-[#7131bd]",
+    buttonClass: "bg-[#7131bd] hover:bg-[#5c249e]",
   },
 ] as const;
 
-const wiredPoints = [
-  "Stable connection",
-  "Best for permanent rooms",
-  "Lower maintenance",
-  "Requires cable installation",
-] as const;
+function getPublishedConferencePriceRange(matchProduct: (product: ConferenceProduct) => boolean) {
+  const bounds = conferenceSystemCatalog
+    .filter(matchProduct)
+    .flatMap((product) => {
+      if (product.price.type === "fixed") return [[product.price.amount, product.price.amount] as const];
+      if (product.price.type === "range") return [[product.price.min, product.price.max] as const];
+      return [];
+    });
 
-const wirelessPoints = [
-  "Flexible setup",
-  "Easy relocation",
-  "Cleaner room appearance",
-  "Requires charging and wireless planning",
-] as const;
+  if (!bounds.length) return { price: "Request a Quote", pricedProductCount: 0 };
 
-const audioVsVideoComparisonRows = [
-  ["Primary purpose", "In-room discussion", "Presentation, display & hybrid support"],
-  ["Core equipment", "Controller + chairman/delegate microphones", "Video/display processor + paperless conferencing"],
-  ["Best for", "Boardroom, council chamber, meeting room", "Hybrid meetings, presentation-heavy rooms"],
-  ["Network dependency", "Usually lower", "Usually higher"],
-] as const;
+  const minimum = Math.min(...bounds.map(([min]) => min));
+  const maximum = Math.max(...bounds.map(([, max]) => max));
+  return {
+    price: minimum === maximum
+      ? formatBdtAmount(minimum)
+      : `${formatBdtAmount(minimum)} – ${formatBdtAmount(maximum)}`,
+    pricedProductCount: bounds.length,
+  };
+}
 
-type ConferenceComponentIcon =
-  | "chairman"
-  | "delegate"
-  | "control"
-  | "processor"
-  | "speaker"
-  | "camera";
-
-const conferenceComponentCards = [
+const conferencePriceGuideItems = [
   {
     title: "Chairman Unit",
-    icon: "chairman" as const,
-    description:
-      "The chairman unit allows the meeting host to control discussions, manage delegate microphones, and maintain meeting discipline with priority control.",
-    features: ["Priority speaking control", "Delegate microphone management", "Clear gooseneck microphone"],
+    href: "/conference-system/chairman-unit/",
+    image: "/images/conference_system_products/spon_products/LCM-6013CV-L.webp",
+    imageAlt: "Conference system chairman unit",
+    matchProduct: (product: ConferenceProduct) =>
+      product.productTypes.includes("chairman-unit") && !product.productTypes.includes("package"),
   },
   {
     title: "Delegate Unit",
-    icon: "delegate" as const,
-    description:
-      "Delegate units are used by participants to speak clearly during meetings through push-to-talk or discussion-based microphone operation.",
-    features: ["Push-to-talk function", "High clarity voice pickup", "Suitable for meeting participants"],
+    href: "/conference-system/delegate-unit/",
+    image: "/images/Conference%20system/SPON%20LCM-6013DV-L%20Digital%20Conference%20Delegate%20Unit.webp",
+    imageAlt: "Conference system delegate unit",
+    matchProduct: (product: ConferenceProduct) =>
+      product.productTypes.includes("delegate-unit") && !product.productTypes.includes("package"),
   },
   {
-    title: "Central Control Unit",
-    icon: "control" as const,
-    description:
-      "The central control unit powers and manages the complete conference microphone system, audio routing, and connected discussion units.",
-    features: ["System power management", "Multiple microphone support", "Stable audio distribution"],
+    title: "Control Unit",
+    href: "/conference-system/control-unit/",
+    image: "/images/Conference%20system/SPON%20LCM-6010%20Digital%20Conference%20System%20Central%20Unit%20front.png",
+    imageAlt: "Conference system central control unit",
+    matchProduct: (product: ConferenceProduct) =>
+      product.productTypes.includes("control-unit") && !product.productTypes.includes("package"),
   },
   {
-    title: "Digital Audio Processor",
-    icon: "processor" as const,
-    description:
-      "A digital audio processor improves voice quality by reducing noise, echo, and feedback for professional meeting room sound.",
-    features: ["Noise reduction", "Echo cancellation", "Feedback control"],
+    title: "Wireless Unit",
+    href: "/conference-system/wireless-conference-system/",
+    image: "/images/Conference%20system/SPON%20LCS-5252D%20Wireless%20Conference%20Delegate%20Unit.webp",
+    imageAlt: "Wireless conference system unit",
+    matchProduct: (product: ConferenceProduct) =>
+      product.connection === "wireless" && !product.productTypes.includes("package"),
   },
   {
-    title: "Amplifier & Speakers",
-    icon: "speaker" as const,
-    description:
-      "Amplifiers and ceiling, wall, or column speakers work together to deliver clear, evenly distributed sound across the meeting room or conference hall.",
-    features: ["Room-size based speaker selection", "Stable, balanced amplifier output", "Suitable for PA integration"],
+    title: "DSP / Processor",
+    href: "/conference-system/conference-dsp/",
+    image: "/images/Conference%20system/SPON%20SAP-F88E%208x8%20Digital%20Audio%20Processor%20with%20DSP.png",
+    imageAlt: "Conference system DSP audio processor",
+    matchProduct: (product: ConferenceProduct) =>
+      (product.productTypes.includes("dsp") || product.productTypes.includes("processor")) &&
+      !product.productTypes.includes("package"),
   },
   {
-    title: "Optional Video, Recording & Software",
+    title: "Complete System",
+    href: "/conference-system/complete-package/",
+    image: "/images/conference_system_products/bosch_products/Bosch-CCS-1000-D-Digital-Discussion-System.webp",
+    imageAlt: "Complete conference system package",
+    matchProduct: (product: ConferenceProduct) => product.productTypes.includes("package"),
+  },
+].map(({ matchProduct, ...item }) => ({
+  ...item,
+  ...getPublishedConferencePriceRange(matchProduct),
+}));
+
+type HybridIntegrationIcon = "camera" | "display" | "platform";
+
+const hybridIntegrationSteps = [
+  {
+    title: "Conference Microphone",
+    subtitle: "Wired / Wireless / Digital",
+    image: "/images/conference_system_products/spon_products/LCM-6013CV-L.webp",
+    imageAlt: "Digital conference microphone",
+  },
+  {
+    title: "DSP / Audio Processor",
+    subtitle: "Audio Processing & Control",
+    image: "/images/Conference%20system/SPON%20SAP-F88E%208x8%20Digital%20Audio%20Processor%20with%20DSP.png",
+    imageAlt: "Conference room DSP audio processor",
+  },
+  {
+    title: "PTZ Camera",
+    subtitle: "Auto Tracking Support",
     icon: "camera" as const,
-    description:
-      "A PTZ camera, recording device, or conference management software can be added for video meetings, session recording, and voting or attendance features where supported.",
-    features: ["Video conferencing and speaker tracking", "Meeting recording and streaming", "Voting and attendance support"],
+  },
+  {
+    title: "Display / TV",
+    subtitle: "HD Display for Presentations",
+    icon: "display" as const,
+  },
+  {
+    title: "Online Meeting Platform",
+    subtitle: "Zoom, Teams & Google Meet",
+    icon: "platform" as const,
   },
 ] as const;
 
@@ -280,205 +331,40 @@ type ChooseSashaIcon =
   | "boq"
   | "installation"
   | "dsp"
-  | "support";
+  | "support"
+  | "expansion";
 
 const chooseSashaCards = [
   {
-    title: "System Design",
+    title: "Engineering-Based Design",
     icon: "consultation" as const,
-    description:
-      "Sasha plans conference systems around your room size, seating layout, participant capacity, and acoustic condition, so you get the right setup instead of unnecessary equipment.",
-    bullets: [
-      "Room size and seating layout analysis",
-      "Microphone quantity planning",
-      "Solution based on real project needs",
-    ],
+    description: "Expert room analysis, equipment planning, and performance-focused system design.",
   },
   {
     title: "BOQ & Tender Support",
     icon: "boq" as const,
-    description:
-      "Sasha prepares a project-based BOQ covering microphone units, control unit, DSP, amplifier, speakers, cabling, installation, and testing — useful for corporate and government tender projects.",
-    bullets: [
-      "Product and quantity breakdown",
-      "Installation and accessories included",
-      "Useful for corporate and tender projects",
-    ],
+    description: "Complete BOQ, technical specifications, and documentation for tender projects.",
   },
   {
-    title: "Installation & Testing",
+    title: "Professional Installation",
     icon: "installation" as const,
-    description:
-      "Sasha handles cable planning, microphone placement, controller configuration, DSP tuning, and audio testing to ensure clear pickup and reliable long-term performance.",
-    bullets: [
-      "Cable and microphone placement planning",
-      "System configuration and testing",
-      "Clean and professional installation",
-    ],
+    description: "Neat installation, configuration, testing, and commissioning by an experienced team.",
   },
   {
-    title: "AV Integration",
+    title: "Complete AV Integration",
     icon: "dsp" as const,
-    description:
-      "Sasha helps integrate conference microphone systems with DSP processing, PA speakers, amplifiers, and other AV equipment where the project requires it.",
-    bullets: [
-      "DSP audio processor support",
-      "PA system and speaker integration",
-      "AV equipment integration where needed",
-    ],
+    description: "Conference microphones with DSP, PA, display, camera, and control integration.",
   },
   {
-    title: "After-Sales Technical Support",
+    title: "After Sales Support",
     icon: "support" as const,
-    description:
-      "After installation, Sasha provides after-sales guidance for system operation, microphone usage, troubleshooting, maintenance, and future expansion.",
-    bullets: [
-      "User guidance after installation",
-      "Technical troubleshooting support",
-      "Future expansion support",
-    ],
-  },
-] as const;
-
-const conferenceSupportProcessSteps = [
-  "Site Survey",
-  "System Design",
-  "BOQ",
-  "Installation",
-  "Testing",
-  "Support",
-] as const;
-
-type ConferenceBenefitIcon =
-  | "voice"
-  | "control"
-  | "hybrid"
-  | "scale"
-  | "productivity";
-
-const conferenceBenefits = [
-  {
-    title: "Clear Speech",
-    icon: "voice" as const,
-    description:
-      "Chairman and delegate microphones with DSP processing give every participant clear speech pickup, reducing table noise and echo in both small boardrooms and large conference halls.",
-    bullets: ["Clear speech pickup from each seat", "Reduced noise and echo", "Better listening experience"],
+    description: "Local technical support, warranty guidance, and quick response nationwide.",
   },
   {
-    title: "Controlled Discussion",
-    icon: "control" as const,
-    description:
-      "Chairman and delegate architecture lets the chairman manage delegate microphones, reduce interruptions, and keep multi-participant meetings organized.",
-    bullets: ["Chairman priority control", "Delegate microphone management", "Organized discussion flow"],
+    title: "Expansion & Spare Support",
+    icon: "expansion" as const,
+    description: "Practical expansion planning and genuine spare-parts availability guidance.",
   },
-  {
-    title: "Scalable Participation",
-    icon: "scale" as const,
-    description:
-      "Systems can be sized to the room and participant count, from a compact setup for a small meeting room to a scalable digital system with DSP and amplification for a large hall.",
-    bullets: ["Suitable for small to large rooms", "Custom setup by participant count", "Easy future expansion"],
-  },
-  {
-    title: "Recording & AV Integration",
-    icon: "hybrid" as const,
-    description:
-      "Selected digital control units support meeting recording and speaker-camera triggers, and the system can connect with PA, DSP, and display equipment where the project requires it.",
-    bullets: ["Recording on supported control units", "Camera-trigger support on select systems", "PA and AV integration where needed"],
-  },
-  {
-    title: "Professional Meeting Experience",
-    icon: "productivity" as const,
-    description:
-      "Clear audio and organized discussion reduce communication gaps, helping every participant follow the meeting and contribute without repeated interruptions.",
-    bullets: ["Faster discussion process", "Less communication gap", "More usable meeting room"],
-  },
-] as const;
-
-type ConferenceGuideIcon =
-  | "room"
-  | "wired"
-  | "microphone"
-  | "dsp"
-  | "hybrid"
-  | "warranty";
-
-const conferenceGuideCards = [
-  {
-    title: "Room Size & Participant Count",
-    icon: "room" as const,
-    description:
-      "System size depends on room layout and participant count. A small boardroom may need a compact setup, while a large hall needs more microphones, DSP, and speaker coverage — see the room-size packages below for typical configurations.",
-    bullets: [
-      "6-12 participants: small boardroom setup",
-      "12-30 participants: medium conference room system",
-      "30+ participants: digital system with expansion support",
-    ],
-  },
-  {
-    title: "System Architecture",
-    icon: "wired" as const,
-    description:
-      "Choose a wired conference system for a permanent room, or a wireless conference system for flexible seating — see Wired vs Wireless above for the full comparison.",
-    bullets: [
-      "Wired for permanent, fixed setups",
-      "Wireless for flexible or multipurpose rooms",
-      "Choice affects installation and budget",
-    ],
-  },
-  {
-    title: "Controller & Microphone Compatibility",
-    icon: "microphone" as const,
-    description:
-      "Chairman, delegate, and controller units must belong to the same compatible system family. Mixing brands or models without verifying compatibility is the most common planning mistake.",
-    bullets: [
-      "Confirm the controller before selecting units",
-      "Do not mix incompatible product families",
-      "Ask Sasha to verify compatibility before ordering",
-    ],
-  },
-  {
-    title: "Audio & DSP Requirements",
-    icon: "dsp" as const,
-    description:
-      "Rooms with glass walls, high ceilings, or echo problems benefit from a DSP audio processor, amplifier, and properly planned speakers for clearer sound.",
-    bullets: [
-      "Reduces echo and unwanted noise",
-      "Amplifier and speaker sizing by room",
-      "Recommended for medium and large rooms",
-    ],
-  },
-  {
-    title: "Hybrid Meeting Requirements",
-    icon: "hybrid" as const,
-    description:
-      "Rooms that need to include remote participants may require video and display equipment alongside the audio system — see Choose Your Conference System above for audio vs video options.",
-    bullets: [
-      "Relevant for hybrid and remote meetings",
-      "Plan video equipment alongside audio",
-      "Not required for in-room-only meetings",
-    ],
-  },
-  {
-    title: "Budget, Warranty & Support",
-    icon: "warranty" as const,
-    description:
-      "Total conference system cost covers the full setup, not just microphone price — factor in the controller, DSP, amplifier, speakers, installation, warranty, and after-sales support.",
-    bullets: [
-      "Compare total system cost, not just mic price",
-      "Check warranty and spare-parts availability",
-      "Confirm after-sales support before ordering",
-    ],
-  },
-] as const;
-
-const conferenceSelectionGuideRows = [
-  ["Director Room", "4-8", "Compact wired or wireless microphone setup", "Simple meeting discussion"],
-  ["Small Boardroom", "6-12", "Chairman & delegate mics with control unit", "Formal office meetings"],
-  ["Medium Conference Room", "12-30", "Digital conference system with DSP", "Boardroom and committee meetings"],
-  ["Training Room", "20-50", "Conference microphone system with PA integration", "Training and presentation"],
-  ["Government Meeting Room", "20-60", "Wired conference system with chairman priority", "Formal decision-making"],
-  ["Hotel / Multipurpose Room", "Flexible", "Wireless conference system", "Changeable seating layout"],
-  ["Large Conference Hall", "50+", "Digital conference system with amplifier and speakers", "Large meetings and events"],
 ] as const;
 
 type ConferenceBrandCard = {
@@ -493,6 +379,7 @@ type ConferenceBrandCard = {
   logoHeight?: number;
   logoMaxHeightClassName?: string;
   url: string;
+  features: readonly string[];
 };
 
 const conferenceBrandCards: ConferenceBrandCard[] = [
@@ -508,6 +395,7 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
     logoWidth: 102,
     logoHeight: 22,
     url: "/conference-system/brands/bosch/",
+    features: ["Discussion & Digital Systems", "Delegate & Chairman Units", "Control Units & Accessories", "Local Technical Support"],
   },
   {
     slug: "toa",
@@ -521,6 +409,7 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
     logoWidth: 90,
     logoHeight: 27,
     url: "/conference-system/brands/toa/",
+    features: ["Infrared & Digital Systems", "Wired & Wireless Solutions", "Complete Conference Systems", "Local Technical Support"],
   },
   {
     slug: "spon",
@@ -534,6 +423,7 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
     logoWidth: 163,
     logoHeight: 33,
     url: "/conference-system/brands/spon/",
+    features: ["Digital Conference Systems", "DSP & Conference Controller", "Camera Tracking Solutions", "Technical Support"],
   },
   {
     slug: "cmx",
@@ -548,6 +438,7 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
     logoHeight: 95,
     logoMaxHeightClassName: "max-h-9 md:max-h-10",
     url: "/conference-system/brands/cmx/",
+    features: ["Professional Conference Systems", "Wired & Wireless Options", "Amplifiers & Accessories", "Technical Support"],
   },
 ];
 
@@ -556,67 +447,35 @@ const verifiedConferenceBrandCards = conferenceBrandCards.filter((card) => {
   return brand ? hasConferenceBrandProducts(brand) : false;
 });
 
-const ConferenceBrandTitleBox = ({
-  brand,
-}: {
-  brand: Pick<ConferenceBrandCard, "title" | "logoSrc" | "logoWidth" | "logoHeight" | "logoMaxHeightClassName" | "url">;
-}) => {
-  const isInternal = brand.url.startsWith("/");
+type CommercialConfidenceIcon = "verified" | "quotation" | "installation" | "warranty" | "privacy";
 
-  const content = (
-    <>
-      <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-orange-50 text-orange-600 ring-1 ring-orange-100">
-        <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="M12 3 5 6v5c0 4.6 2.9 8.4 7 10 4.1-1.6 7-5.4 7-10V6l-7-3Z" />
-          <path d="m9 12 2 2 4-5" />
-        </svg>
-      </span>
-      <span className="flex h-9 items-center md:h-10">
-        {brand.logoSrc ? (
-          <Image
-            src={brand.logoSrc}
-            alt={`${brand.title} logo`}
-            width={brand.logoWidth}
-            height={brand.logoHeight}
-            className={`h-auto w-auto object-contain ${brand.logoMaxHeightClassName ?? "max-h-6 md:max-h-7"}`}
-          />
-        ) : (
-          <span className="text-base font-extrabold tracking-tight text-slate-950">{brand.title}</span>
-        )}
-      </span>
-    </>
-  );
-
-  return (
-    <div>
-      <div
-        className="flex min-h-12 w-full items-center rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 transition-colors duration-200 hover:border-orange-200 hover:bg-orange-50/40"
-        aria-label={`${brand.title} brand logo space`}
-      >
-        {isInternal ? (
-          <Link
-            prefetch={false}
-            href={brand.url}
-            className="group/brand flex w-full items-center justify-center gap-2.5 text-slate-950"
-            aria-label={`Browse ${brand.title} conference systems`}
-          >
-            {content}
-          </Link>
-        ) : (
-          <a
-            href={brand.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group/brand flex w-full items-center justify-center gap-2.5 text-slate-950"
-            aria-label={`Visit ${brand.title} official website`}
-          >
-            {content}
-          </a>
-        )}
-      </div>
-    </div>
-  );
-};
+const commercialConfidenceCards = [
+  {
+    icon: "verified" as const,
+    title: "Verified Business",
+    description: "Sasha Corporation provides a verified business address and direct project contact in Bangladesh.",
+  },
+  {
+    icon: "quotation" as const,
+    title: "Documented Quotation",
+    description: "Every quotation includes detailed specifications, pricing, and an agreed project scope.",
+  },
+  {
+    icon: "installation" as const,
+    title: "Agreed Service Scope",
+    description: "Installation, testing, handover, and support responsibilities are documented before confirmation.",
+  },
+  {
+    icon: "warranty" as const,
+    title: "Warranty & Quality",
+    description: "Official products with manufacturer warranty and dependable quality assurance.",
+  },
+  {
+    icon: "privacy" as const,
+    title: "Secure & Private",
+    description: "Your information is handled securely with clear privacy and ordering policies.",
+  },
+] as const;
 
 const PRICE_TABLE_BRAND_ORDER = ["cmx", "toa", "bosch", "spon"] as const;
 const conferencePriceTableProducts = PRICE_TABLE_BRAND_ORDER.flatMap((slug) =>
@@ -660,80 +519,48 @@ const conferenceFaqs = [
   },
 ] as const;
 
-function ConferenceComponentIconSvg({ icon }: { icon: ConferenceComponentIcon }) {
+function HybridIntegrationIconSvg({ icon }: { icon: HybridIntegrationIcon }) {
   const commonProps = {
-    viewBox: "0 0 24 24",
+    viewBox: "0 0 64 48",
     fill: "none",
     stroke: "currentColor",
-    strokeWidth: 1.8,
+    strokeWidth: 2,
     strokeLinecap: "round" as const,
     strokeLinejoin: "round" as const,
-    className: "h-5 w-5",
+    className: "h-12 w-16",
     "aria-hidden": true,
   };
 
   switch (icon) {
-    case "chairman":
-      return (
-        <svg {...commonProps}>
-          <rect x="8.5" y="3" width="7" height="10" rx="3.5" />
-          <path d="M5 11a7 7 0 0 0 14 0" />
-          <path d="M12 18v3" />
-          <path d="M8 21h8" />
-          <path d="M17 4.5l2 2 2-3" />
-        </svg>
-      );
-    case "delegate":
-      return (
-        <svg {...commonProps}>
-          <rect x="9" y="4" width="6" height="9" rx="3" />
-          <path d="M6 12a6 6 0 0 0 12 0" />
-          <path d="M12 18v3" />
-          <path d="M9 21h6" />
-          <circle cx="5" cy="6" r="1.5" />
-          <circle cx="19" cy="6" r="1.5" />
-        </svg>
-      );
-    case "control":
-      return (
-        <svg {...commonProps}>
-          <rect x="4" y="5" width="16" height="14" rx="2" />
-          <path d="M8 10h8" />
-          <path d="M8 14h3" />
-          <circle cx="16" cy="14" r="1.5" />
-        </svg>
-      );
-    case "processor":
-      return (
-        <svg {...commonProps}>
-          <rect x="4" y="5" width="16" height="14" rx="2" />
-          <path d="M8 10h3" />
-          <path d="M8 14h3" />
-          <path d="M15 9v6" />
-          <path d="M18 10.5v3" />
-        </svg>
-      );
-    case "speaker":
-      return (
-        <svg {...commonProps}>
-          <path d="M4 9v6h4l5 4V5L8 9H4Z" />
-          <path d="M16 9.5a4 4 0 0 1 0 5" />
-          <path d="M18.5 7a7.5 7.5 0 0 1 0 10" />
-        </svg>
-      );
     case "camera":
       return (
         <svg {...commonProps}>
-          <rect x="4" y="7" width="11" height="8" rx="2" />
-          <path d="M15 10l5-3v10l-5-3" />
-          <path d="M8 19h8" />
-          <path d="M12 15v4" />
+          <rect x="20" y="15" width="24" height="17" rx="5" />
+          <circle cx="32" cy="23.5" r="5" />
+          <path d="M25 11h14l3 4H22l3-4ZM27 32l-4 7h18l-4-7" />
+        </svg>
+      );
+    case "display":
+      return (
+        <svg {...commonProps}>
+          <rect x="9" y="8" width="46" height="29" rx="3" />
+          <path d="M27 43h10M32 37v6" />
+          <path d="M14 13h36v19H14z" className="fill-blue-50 stroke-blue-300" />
+        </svg>
+      );
+    case "platform":
+      return (
+        <svg {...commonProps}>
+          <rect x="7" y="7" width="50" height="34" rx="4" />
+          <circle cx="21" cy="19" r="4" />
+          <circle cx="43" cy="19" r="4" />
+          <path d="M14 33c1-5 4-7 7-7s6 2 7 7M36 33c1-5 4-7 7-7s6 2 7 7" />
         </svg>
       );
   }
 }
 
-function ConferenceBenefitIconSvg({ icon }: { icon: ConferenceBenefitIcon }) {
+function CommercialConfidenceIconSvg({ icon }: { icon: CommercialConfidenceIcon }) {
   const commonProps = {
     viewBox: "0 0 24 24",
     fill: "none",
@@ -746,119 +573,16 @@ function ConferenceBenefitIconSvg({ icon }: { icon: ConferenceBenefitIcon }) {
   };
 
   switch (icon) {
-    case "voice":
-      return (
-        <svg {...commonProps}>
-          <path d="M12 3v10" />
-          <rect x="9" y="2.5" width="6" height="11" rx="3" />
-          <path d="M5 11a7 7 0 0 0 14 0" />
-          <path d="M12 18v3" />
-          <path d="M8 21h8" />
-        </svg>
-      );
-    case "control":
-      return (
-        <svg {...commonProps}>
-          <path d="M4 7h16" />
-          <path d="M4 12h10" />
-          <path d="M4 17h16" />
-          <circle cx="16" cy="12" r="2.5" />
-          <circle cx="8" cy="7" r="2" />
-          <circle cx="14" cy="17" r="2" />
-        </svg>
-      );
-    case "hybrid":
-      return (
-        <svg {...commonProps}>
-          <rect x="3" y="5" width="12" height="10" rx="2" />
-          <path d="M15 9l4-2v8l-4-2" />
-          <path d="M8 19h6" />
-        </svg>
-      );
-    case "scale":
-      return (
-        <svg {...commonProps}>
-          <path d="M4 19V9" />
-          <path d="M10 19V5" />
-          <path d="M16 19v-8" />
-          <path d="M22 19V3" />
-        </svg>
-      );
-    case "productivity":
-      return (
-        <svg {...commonProps}>
-          <path d="M4 19h16" />
-          <path d="M7 15l3-3 2 2 5-6" />
-          <path d="M17 8h2v2" />
-        </svg>
-      );
-  }
-}
-
-function ConferenceGuideIconSvg({ icon }: { icon: ConferenceGuideIcon }) {
-  const commonProps = {
-    viewBox: "0 0 24 24",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: 1.8,
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
-    className: "h-5 w-5",
-    "aria-hidden": true,
-  };
-
-  switch (icon) {
-    case "room":
-      return (
-        <svg {...commonProps}>
-          <rect x="3" y="4" width="18" height="14" rx="2" />
-          <path d="M7 20h10" />
-          <path d="M9 11h6" />
-        </svg>
-      );
-    case "microphone":
-      return (
-        <svg {...commonProps}>
-          <rect x="9" y="3" width="6" height="10" rx="3" />
-          <path d="M5 11a7 7 0 0 0 14 0" />
-          <path d="M12 18v3" />
-          <path d="M8 21h8" />
-        </svg>
-      );
-    case "wired":
-      return (
-        <svg {...commonProps}>
-          <path d="M7 7h6a4 4 0 0 1 4 4v2" />
-          <path d="M17 13h3v4h-3z" />
-          <path d="M4 5h3v4H4z" />
-          <path d="M10 17h4" />
-        </svg>
-      );
-    case "dsp":
-      return (
-        <svg {...commonProps}>
-          <rect x="4" y="5" width="16" height="14" rx="2" />
-          <path d="M8 10h3" />
-          <path d="M8 14h3" />
-          <circle cx="15.5" cy="10.5" r="1.5" />
-          <circle cx="15.5" cy="15.5" r="1.5" />
-        </svg>
-      );
-    case "hybrid":
-      return (
-        <svg {...commonProps}>
-          <rect x="3" y="5" width="12" height="10" rx="2" />
-          <path d="M15 9l4-2v8l-4-2" />
-          <path d="M8 19h6" />
-        </svg>
-      );
+    case "verified":
+      return <svg {...commonProps}><path d="M12 3 5 6v5c0 4.6 2.9 8.4 7 10 4.1-1.6 7-5.4 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-5" /></svg>;
+    case "quotation":
+      return <svg {...commonProps}><path d="M7 3h8l3 3v15H6V3h1" /><path d="M14 3v4h4M9 11h6M9 15h6" /><path d="m8.5 18 1 1 2-2" /></svg>;
+    case "installation":
+      return <svg {...commonProps}><path d="m14 6 4 4M4 20l6-2 8-8-4-4-8 8-2 6Z" /><path d="m16 4 2-2 4 4-2 2" /></svg>;
     case "warranty":
-      return (
-        <svg {...commonProps}>
-          <path d="M12 21s-6-3.6-6-9V5l6-2 6 2v7c0 5.4-6 9-6 9Z" />
-          <path d="M9.5 12.5 11 14l3.5-4" />
-        </svg>
-      );
+      return <svg {...commonProps}><circle cx="12" cy="9" r="5" /><path d="m9 14-1 7 4-2 4 2-1-7M9.5 9l1.5 1.5L14.5 7" /></svg>;
+    case "privacy":
+      return <svg {...commonProps}><rect x="5" y="10" width="14" height="11" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3" /></svg>;
   }
 }
 
@@ -919,25 +643,18 @@ function ChooseSashaIconSvg({ icon }: { icon: ChooseSashaIcon }) {
           <path d="M12 18h3" />
         </svg>
       );
+    case "expansion":
+      return (
+        <svg {...commonProps}>
+          <circle cx="12" cy="8" r="3" />
+          <path d="M6 20v-2a6 6 0 0 1 12 0v2" />
+          <path d="M18 5h4M20 3v4" />
+        </svg>
+      );
   }
 }
 
-type ConferenceSectionIcon =
-  | "brand"
-  | "products"
-  | "info"
-  | "price"
-  | "components"
-  | "types"
-  | "audio-video"
-  | "compare"
-  | "benefits"
-  | "applications"
-  | "packages"
-  | "guide"
-  | "projects"
-  | "service"
-  | "faq";
+type ConferenceSectionIcon = "info" | "price";
 
 function ConferenceSectionTitleIcon({ icon, compact = false }: { icon: ConferenceSectionIcon; compact?: boolean }) {
   const commonProps = {
@@ -952,21 +669,8 @@ function ConferenceSectionTitleIcon({ icon, compact = false }: { icon: Conferenc
   };
 
   const paths: Record<ConferenceSectionIcon, ReactNode> = {
-    brand: <><path d="M4 7h16v12H4z" /><path d="M8 7V5h8v2" /><path d="M8 12h8" /></>,
-    products: <><path d="M4 7l8-4 8 4-8 4-8-4Z" /><path d="M4 7v10l8 4 8-4V7" /><path d="M12 11v10" /></>,
     info: <><circle cx="12" cy="12" r="9" /><path d="M12 11v6" /><path d="M12 7h.01" /></>,
     price: <><path d="M7 4h10l3 3v10l-3 3H7l-3-3V7l3-3Z" /><path d="M9 9h4.5a2 2 0 0 1 0 4H10.5a2 2 0 0 0 0 4H15" /><path d="M12 7v2M12 17v2" /></>,
-    components: <><rect x="4" y="5" width="16" height="14" rx="2" /><path d="M8 10h8M8 14h3" /><circle cx="16" cy="14" r="1.5" /></>,
-    types: <><path d="M5 5h6v6H5zM13 5h6v6h-6zM5 13h6v6H5zM13 13h6v6h-6z" /></>,
-    "audio-video": <><rect x="3" y="6" width="12" height="10" rx="2" /><path d="M15 9l5-3v12l-5-3" /><path d="M7 19h6" /></>,
-    compare: <><path d="M7 4v16M17 4v16" /><path d="m4 8 3-3 3 3M14 16l3 3 3-3" /></>,
-    benefits: <><path d="m12 3 2.2 4.5 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L4.8 8.2l5-.7L12 3Z" /></>,
-    applications: <><path d="M4 20h16M6 20V8l6-4 6 4v12" /><path d="M9 12h6M9 16h6" /></>,
-    packages: <><path d="M4 8l8-4 8 4-8 4-8-4Z" /><path d="M4 8v9l8 4 8-4V8M12 12v9" /></>,
-    guide: <><path d="M5 4h10l4 4v12H5z" /><path d="M14 4v5h5M8 13h8M8 17h6" /></>,
-    projects: <><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 16 5-5 4 4 3-3 6 5" /><circle cx="16.5" cy="9" r="1.5" /></>,
-    service: <><path d="M4 6h16v10H8l-4 4V6Z" /><path d="M8 10h8M8 13h5" /></>,
-    faq: <><circle cx="12" cy="12" r="9" /><path d="M9.8 9a2.4 2.4 0 1 1 3.5 2.2c-.9.5-1.3 1.1-1.3 2" /><path d="M12 17h.01" /></>,
   };
 
   return (
@@ -977,6 +681,130 @@ function ConferenceSectionTitleIcon({ icon, compact = false }: { icon: Conferenc
       <svg {...commonProps}>{paths[icon]}</svg>
     </span>
   );
+}
+
+type ConferenceHeroFeatureIcon = "authorized" | "design" | "installation" | "support";
+
+const conferenceHeroFeatures: Array<{
+  icon: ConferenceHeroFeatureIcon;
+  title: string;
+  description: string;
+}> = [
+  { icon: "authorized", title: "Authorized Solutions", description: "Bosch, TOA, SPON, CMX" },
+  { icon: "design", title: "System Design & BOQ", description: "For Any Room Size" },
+  { icon: "installation", title: "Installation & Support", description: "Nationwide Service" },
+  { icon: "support", title: "After Sales Support", description: "Expert Technical Team" },
+];
+
+function ConferenceHeroFeatureIcon({ icon }: { icon: ConferenceHeroFeatureIcon }) {
+  const commonProps = {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.9,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    className: "h-6 w-6",
+    "aria-hidden": true,
+  };
+
+  switch (icon) {
+    case "authorized":
+      return <svg {...commonProps}><path d="M12 3 5 6v5c0 4.6 2.9 8.4 7 10 4.1-1.6 7-5.4 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-5" /></svg>;
+    case "design":
+      return <svg {...commonProps}><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-1.6v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z" /></svg>;
+    case "installation":
+      return <svg {...commonProps}><path d="m14.7 6.3 3-3a4 4 0 0 1-5.1 5.1l-6.8 6.8a2 2 0 1 0 2.8 2.8l6.8-6.8a4 4 0 0 1 5.1-5.1l-3 3" /><path d="m5 19-2 2" /></svg>;
+    case "support":
+      return <svg {...commonProps}><path d="M4 14v-3a8 8 0 0 1 16 0v3" /><path d="M18 19c0 1.1-.9 2-2 2h-4" /><rect x="2" y="13" width="4" height="6" rx="2" /><rect x="18" y="13" width="4" height="6" rx="2" /></svg>;
+  }
+}
+
+type ConferenceTrustFeatureIcon = "boq" | "installation" | "pricing" | "warranty";
+
+const conferenceTrustFeatures: Array<{ icon: ConferenceTrustFeatureIcon; title: string }> = [
+  { icon: "boq", title: "BOQ & Tender Support" },
+  { icon: "installation", title: "Installation & Training" },
+  { icon: "pricing", title: "Competitive Pricing" },
+  { icon: "warranty", title: "Warranty & Support" },
+];
+
+function ConferenceTrustFeatureIconSvg({ icon }: { icon: ConferenceTrustFeatureIcon }) {
+  const commonProps = {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.8,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    className: "h-4 w-4",
+    "aria-hidden": true,
+  };
+
+  switch (icon) {
+    case "boq":
+      return (
+        <svg {...commonProps}>
+          <path d="M7 3h8l3 3v15H6V3h1" />
+          <path d="M14 3v4h4" />
+          <path d="M9 11h6" />
+          <path d="M9 15h6" />
+        </svg>
+      );
+    case "installation":
+      return (
+        <svg {...commonProps}>
+          <path d="m14.7 6.3 3-3a4 4 0 0 1-5.1 5.1l-6.8 6.8a2 2 0 1 0 2.8 2.8l6.8-6.8a4 4 0 0 1 5.1-5.1l-3 3" />
+          <path d="m5 19-2 2" />
+        </svg>
+      );
+    case "pricing":
+      return (
+        <svg {...commonProps}>
+          <path d="M12.3 3H20v7.7L10.7 20 3 12.3 12.3 3Z" />
+          <circle cx="16.2" cy="6.8" r="1.4" />
+        </svg>
+      );
+    case "warranty":
+      return (
+        <svg {...commonProps}>
+          <path d="M12 21s-6-3.6-6-9V5l6-2 6 2v7c0 5.4-6 9-6 9Z" />
+          <path d="M9.5 12.5 11 14l3.5-4" />
+        </svg>
+      );
+  }
+}
+
+function ConferenceChooserIconSvg({ icon }: { icon: ConferenceChooserIcon }) {
+  const commonProps = {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.8,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    className: "h-5 w-5",
+    "aria-hidden": true,
+  };
+
+  switch (icon) {
+    case "wired":
+      return <svg {...commonProps}><path d="m10.5 13.5 3-3" /><path d="m7.6 16.4-1.4 1.4a3.4 3.4 0 0 1-4.8-4.8l3-3a3.4 3.4 0 0 1 4.8 0" /><path d="m16.4 7.6 1.4-1.4a3.4 3.4 0 1 1 4.8 4.8l-3 3a3.4 3.4 0 0 1-4.8 0" /></svg>;
+    case "wireless":
+      return <svg {...commonProps}><path d="M4.9 9.7a10 10 0 0 1 14.2 0" /><path d="M7.8 12.6a6 6 0 0 1 8.4 0" /><path d="M10.6 15.4a2 2 0 0 1 2.8 0" /><circle cx="12" cy="19" r=".8" fill="currentColor" stroke="none" /></svg>;
+    case "digital":
+      return <svg {...commonProps}><rect x="6" y="6" width="12" height="12" rx="2" /><rect x="9.5" y="9.5" width="5" height="5" rx=".5" /><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4" /></svg>;
+    case "hybrid":
+      return <svg {...commonProps}><rect x="3" y="7" width="12" height="10" rx="2" /><path d="m15 10 5-3v10l-5-3" /><circle cx="8" cy="11" r="1.5" /><path d="M5.8 15a2.5 2.5 0 0 1 4.4 0" /></svg>;
+    case "small":
+      return <svg {...commonProps}><circle cx="12" cy="7" r="2.5" /><path d="M7.5 20v-2.5a4.5 4.5 0 0 1 9 0V20" /></svg>;
+    case "medium":
+      return <svg {...commonProps}><circle cx="8" cy="8" r="2.3" /><circle cx="16" cy="8" r="2.3" /><path d="M3.5 20v-2a4.5 4.5 0 0 1 9 0v2M11.5 20v-2a4.5 4.5 0 0 1 9 0v2" /></svg>;
+    case "large":
+      return <svg {...commonProps}><circle cx="12" cy="6" r="2.2" /><circle cx="5.5" cy="10" r="2" /><circle cx="18.5" cy="10" r="2" /><path d="M8.5 20v-3a3.5 3.5 0 0 1 7 0v3M2 20v-2a3.5 3.5 0 0 1 5-3.2M22 20v-2a3.5 3.5 0 0 0-5-3.2" /></svg>;
+    case "hall":
+      return <svg {...commonProps}><circle cx="6" cy="8" r="2" /><circle cx="12" cy="6" r="2.2" /><circle cx="18" cy="8" r="2" /><path d="M2 19v-1.5a4 4 0 0 1 6-3.5M16 14a4 4 0 0 1 6 3.5V19M8 20v-3a4 4 0 0 1 8 0v3" /></svg>;
+  }
 }
 
 export const metadata: Metadata = {
@@ -1064,14 +892,6 @@ export default function ConferenceSystemPage() {
   const conferenceExplorerProducts = balanceConferenceProductsByBrand(buildConferenceExplorerProducts());
   const initialConferenceExplorerProducts = conferenceExplorerProducts.slice(0, CONFERENCE_INITIAL_PRODUCT_COUNT);
 
-  const conferenceExplorerCategories = conferenceCategoryConfigs
-    .map((category) => ({
-      slug: category.slug,
-      label: category.shortLabel ?? category.label,
-      count: conferenceSystemCatalog.filter(category.matchProduct).length,
-    }))
-    .filter((facet) => facet.count > 0);
-
   const conferenceExplorerBrands = conferenceBrandConfigs
     .map((brand) => ({
       slug: brand.slug,
@@ -1093,121 +913,132 @@ export default function ConferenceSystemPage() {
 
   return (
     <div className="mx-auto w-full max-w-[clamp(80rem,90vw,108rem)] px-4 pb-10 pt-0 md:px-6" data-conference-route-kind="hub">
-      <Breadcrumbs
-        items={[homeBreadcrumb(), { href: "/conference-system/", label: "Conference System", current: true }]}
-        className="mb-4 pt-3 text-sm text-slate-600"
-      />
+      <section
+        className="relative left-1/2 right-1/2 isolate -mx-[50vw] -mt-2 min-h-[446px] w-screen overflow-hidden bg-[#f7f9fc] sm:min-h-[406px] lg:min-h-[clamp(18.5rem,25vw,21.5rem)]"
+        aria-labelledby="conference-hero-heading"
+      >
+        <Image
+          src="/images/conference_landing/hero_banner.webp"
+          alt="Modern Sasha Corporation conference room with tabletop microphone systems"
+          width={1983}
+          height={793}
+          priority
+          sizes="100vw"
+          className="absolute inset-0 h-full w-full object-cover object-[58%_center] sm:object-[54%_center] lg:object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/10 sm:via-white/75 lg:via-white/25 lg:to-transparent" aria-hidden="true" />
 
-      <section className="mobile-page-intro-card rounded-none border-0 bg-transparent p-0 shadow-none md:rounded-3xl md:border md:bg-white md:p-8" style={{ borderColor: `${BRAND.maroon}12` }}>
-        <h1 className="text-[1.75rem] font-extrabold leading-[1.08] tracking-tight text-slate-950 md:text-4xl">
-          {PAGE_TITLE}
-        </h1>
-        <MobileIntroText
-          teaser={HERO_SUBTITLE}
-          teaserLines={2}
-          expandedClassName="mt-5"
-          desktopClassName="mt-5"
-          singleDom
-        >
-          <p className="text-left text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-            {HERO_SUBTITLE}
-          </p>
-        </MobileIntroText>
-
-        <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <Link
-            href="/contact/?project=conference-system"
-            className={ctaClass}
-            style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-          >
-            Get a Free BOQ
-          </Link>
-          <a
-            href="#conference-products-heading"
-            className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
-          >
-            Browse Conference Systems
-          </a>
-        </div>
-      </section>
-
-      <section className="mt-4" aria-labelledby="conference-brand-badges-heading">
-        <div className="rounded-2xl border bg-white p-4 md:p-5" style={sectionStyle}>
-          <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <h2 id="conference-brand-badges-heading" className="flex items-center gap-3 text-lg font-extrabold text-slate-950 md:text-xl">
-                <ConferenceSectionTitleIcon icon="brand" compact />
-                Shop Conference Systems by Brand
-              </h2>
-              <p className="mt-1 text-sm text-slate-600">
-                Browse the verified Bosch, TOA, SPON and CMX conference ranges we supply and support in Bangladesh.
-              </p>
-            </div>
-            <Link
-              prefetch={false}
-              href="/conference-system/brands/"
-              className="inline-flex shrink-0 items-center gap-1 self-start text-[12.5px] font-extrabold uppercase tracking-[0.05em] text-[#C2410C] transition-colors hover:text-[#FD6900] sm:self-auto"
-            >
-              View All Brands
-              <span aria-hidden="true" className="text-[#FD6900]">
-                {"→"}
-              </span>
-            </Link>
-          </div>
-
-          <ul className="mt-4 flex flex-wrap gap-2">
-            {conferenceExplorerBrands.map((brand) => (
-              <li key={brand.slug}>
-                <Link
-                  prefetch={false}
-                  href={`/conference-system/brands/${brand.slug}/`}
-                  className="group/brand inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-[13px] font-bold text-slate-700 shadow-sm transition-colors duration-200 hover:border-[#FD6900]/45 hover:bg-orange-50/70 hover:text-[#C2410C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FD6900]/45"
-                >
-                  {brand.label}
-                  <span
-                    aria-hidden="true"
-                    className="text-slate-300 transition-all duration-200 group-hover/brand:translate-x-0.5 group-hover/brand:text-[#FD6900]"
-                  >
-                    {"→"}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section className="mt-4" aria-labelledby="conference-products-heading">
-        <div className="mb-4 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h2 id="conference-products-heading" className="flex items-center gap-3 text-xl font-extrabold text-slate-950">
-              <ConferenceSectionTitleIcon icon="products" compact />
-              Conference System Products
-            </h2>
-            <p className="hidden text-sm text-slate-600 md:block">
-              Bosch, TOA, SPON and CMX chairman units, delegate units, control units, DSP, amplifiers and accessories.
+        <div className="relative mx-auto flex min-h-[446px] w-full max-w-[clamp(80rem,90vw,108rem)] flex-col px-5 py-6 sm:min-h-[406px] sm:px-8 sm:py-7 lg:min-h-[clamp(18.5rem,25vw,21.5rem)] lg:px-10 lg:py-[clamp(1.5rem,2vw,2rem)]">
+          <div className="max-w-[42rem] sm:translate-y-2 lg:max-w-[38%] lg:translate-y-3">
+            <h1 id="conference-hero-heading" className="text-[1.75rem] font-black leading-[1.08] tracking-[-0.03em] text-[#071936] sm:text-[2rem] lg:text-[2.125rem] xl:text-4xl">
+              Conference System
+              <span className="block">Price in Bangladesh 2026</span>
+            </h1>
+            <p className="mt-3 max-w-[39rem] text-[13px] font-medium leading-5 text-slate-700 sm:text-sm sm:leading-6 lg:text-[clamp(0.78rem,0.9vw,0.95rem)]">
+              Explore Bosch, TOA, SPON &amp; CMX conference systems with price range, features, and complete solutions for meeting rooms, boardrooms, and conference halls.
             </p>
-          </div>
-        </div>
 
-        <nav aria-label="Conference system categories" className="mb-4 rounded-2xl border border-slate-200 bg-white p-4">
-          <p className="text-xs font-extrabold uppercase tracking-[0.08em] text-slate-500">Browse by system or component</p>
-          <ul className="mt-3 flex flex-nowrap gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] lg:justify-between lg:gap-1.5 lg:overflow-visible [&::-webkit-scrollbar]:hidden">
-            {conferenceExplorerCategories.map((category) => (
-              <li key={category.slug}>
-                <Link
-                  prefetch={false}
-                  href={`/conference-system/${category.slug}/`}
-                  className="inline-flex min-h-10 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-[12px] font-bold text-slate-700 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40"
-                >
-                  {category.label}
-                  <span className="text-xs font-semibold text-slate-400">{category.count}</span>
-                </Link>
+            <div className="mt-4 flex flex-col gap-2.5 min-[430px]:flex-row sm:mt-5">
+              <Link
+                href="/contact/?project=conference-system"
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-[#ef4a00] to-[#ff6a00] px-5 text-[13px] font-extrabold text-white shadow-[0_8px_22px_rgba(255,94,0,0.22)] transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
+              >
+                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M6 3h9l4 4v14H6z" /><path d="M14 3v5h5M9 12h7M9 16h7" />
+                </svg>
+                Get a Free BOQ
+              </Link>
+              <a
+                href="#conference-products-heading"
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[#071936] px-5 text-[13px] font-extrabold text-white shadow-[0_8px_22px_rgba(7,25,54,0.18)] transition hover:-translate-y-0.5 hover:bg-[#102b52] hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2"
+              >
+                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect x="4" y="4" width="6" height="6" rx="1" /><rect x="14" y="4" width="6" height="6" rx="1" /><rect x="4" y="14" width="6" height="6" rx="1" /><rect x="14" y="14" width="6" height="6" rx="1" />
+                </svg>
+                Browse Conference Systems
+              </a>
+            </div>
+          </div>
+
+          <ul className="mt-auto grid max-w-[38rem] -translate-y-2 grid-cols-2 gap-x-3 gap-y-3 pt-4 sm:grid-cols-4 sm:gap-x-4 lg:w-1/2 lg:max-w-none lg:-translate-y-3 lg:gap-x-5 lg:pt-3">
+            {conferenceHeroFeatures.map((feature) => (
+              <li
+                key={feature.title}
+                className="flex min-w-0 items-center gap-2 text-[#071936] [text-shadow:0_1px_2px_rgb(255_255_255/95%)]"
+              >
+                <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center text-[#071936] drop-shadow-[0_1px_1px_rgba(255,255,255,0.95)] [&>svg]:h-5 [&>svg]:w-5 lg:[&>svg]:h-[22px] lg:[&>svg]:w-[22px]">
+                  <ConferenceHeroFeatureIcon icon={feature.icon} />
+                </span>
+                <span className="min-w-0">
+                  <strong className="block whitespace-nowrap text-[9px] font-black leading-3 tracking-[-0.015em] sm:text-[9.5px] lg:text-[10px]">{feature.title}</strong>
+                  <span className="mt-0.5 block whitespace-nowrap text-[7.5px] font-bold leading-3 text-slate-600 sm:text-[8px] lg:text-[8.5px]">{feature.description}</span>
+                </span>
               </li>
             ))}
           </ul>
-        </nav>
+        </div>
+      </section>
 
+      <section aria-labelledby="conference-trust-heading">
+        <div className="overflow-hidden rounded-xl border border-slate-200/90 bg-white px-4 py-4 shadow-[0_4px_16px_rgba(15,23,42,0.035)] sm:px-5 xl:min-h-[96px] xl:px-7 xl:py-3">
+          <div className="grid items-center gap-4 lg:grid-cols-[10rem_minmax(0,1fr)] xl:min-h-[70px] xl:grid-cols-[minmax(205px,0.9fr)_1px_minmax(420px,2.6fr)_1px_minmax(350px,1.8fr)] xl:gap-0">
+            <p id="conference-trust-heading" role="heading" aria-level={2} className="text-left text-xs font-extrabold leading-[1.4] tracking-[-0.01em] text-[#071936] sm:text-[13px] xl:max-w-[205px]">
+              <span className="block">Trusted Conference System</span>
+              <span className="block">Solutions in Bangladesh</span>
+            </p>
+
+            <div className="hidden h-12 w-px bg-slate-200 xl:block" aria-hidden="true" />
+
+            <div className="grid min-w-0 grid-cols-2 items-center gap-x-3 gap-y-4 border-t border-slate-100 pt-4 lg:grid-cols-4 lg:gap-x-7 lg:border-t-0 lg:pt-0 xl:px-8 2xl:gap-x-10">
+              {verifiedConferenceBrandCards.map((brand) => {
+                const logoHeightClass = {
+                  bosch: "h-7 sm:h-8 lg:h-[34px]",
+                  toa: "h-7 sm:h-8 lg:h-[34px]",
+                  spon: "h-6 sm:h-7 lg:h-8",
+                  cmx: "h-6 sm:h-7 lg:h-8",
+                }[brand.slug] ?? "h-8";
+
+                return (
+                  <Link
+                    key={brand.slug}
+                    prefetch={false}
+                    href={brand.url}
+                    aria-label={`Browse ${brand.title} conference systems`}
+                    className="flex min-w-0 items-center justify-center transition duration-200 hover:scale-[1.03] hover:opacity-80 focus-visible:rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50"
+                  >
+                    {brand.logoSrc ? (
+                      <Image
+                        src={brand.logoSrc}
+                        alt={`${brand.title} logo`}
+                        width={brand.logoWidth ?? 100}
+                        height={brand.logoHeight ?? 24}
+                        className={`${logoHeightClass} max-w-full w-auto object-contain`}
+                      />
+                    ) : (
+                      <span className="text-lg font-extrabold tracking-tight text-slate-950">{brand.title}</span>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+
+            <div className="hidden h-12 w-px bg-slate-200 xl:block" aria-hidden="true" />
+
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 border-t border-slate-100 pt-4 lg:col-span-2 xl:col-span-1 xl:border-t-0 xl:pl-7 xl:pt-0 2xl:gap-x-7">
+              {conferenceTrustFeatures.map((feature) => (
+                <div key={feature.title} className="flex min-w-0 items-center gap-2 text-[#071936]">
+                  <span className="inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center text-orange-600 [&>svg]:h-4 [&>svg]:w-4">
+                    <ConferenceTrustFeatureIconSvg icon={feature.icon} />
+                  </span>
+                  <span className="whitespace-nowrap text-[10px] font-bold leading-4 sm:text-[11px]">{feature.title}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="conference-products-heading" className="mt-4 scroll-mt-24" aria-label="Conference System Products">
         <ConferenceProductExplorer
           products={initialConferenceExplorerProducts}
           brands={conferenceExplorerBrands}
@@ -1216,130 +1047,514 @@ export default function ConferenceSystemPage() {
           totalProducts={conferenceSystemCatalog.length}
         />
 
-        <details className="mt-6 rounded-2xl border border-slate-200 bg-white">
-          <summary className="cursor-pointer px-5 py-4 text-sm font-extrabold text-slate-900 marker:text-orange-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-500/40">
-            Browse the complete product directory ({conferenceSystemCatalog.length} products)
-          </summary>
-          <div className="border-t border-slate-200 px-5 py-5">
-            <p className="max-w-4xl text-sm leading-6 text-slate-600">
-              Every product in the normalized Conference catalog is linked below. Each price is identified as a fixed
-              catalog price, indicative equipment range, or project quotation; final availability and project cost can
-              depend on quantity, compatible equipment, cabling and installation scope.
-            </p>
-            <ul className="mt-4 grid gap-x-6 gap-y-2 sm:grid-cols-2 lg:grid-cols-3">
-              {conferenceSystemCatalog.map((product) => (
-                <li key={product.slug}>
-                  <Link
-                    prefetch={false}
-                    href={`/conference-system/${product.slug}/`}
-                    className="inline-flex min-h-9 items-center text-sm font-semibold leading-5 text-slate-700 underline-offset-4 hover:text-orange-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40"
-                  >
-                    {product.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </details>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productListJsonLd) }} />
       </section>
 
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="what-is-conference-system">
-        <div className="w-full">
-          <h2 id="what-is-conference-system" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
-            <ConferenceSectionTitleIcon icon="info" />
-            What is a Conference System?
+      <section
+        className="mt-4 rounded-2xl border border-slate-200/90 bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6"
+        aria-labelledby="choose-conference-system-type"
+      >
+        <div>
+          <h2 id="choose-conference-system-type" className={conferenceSectionTitleClass}>
+            Choose Your System Type
           </h2>
-          <MobileIntroText
-            teaser="A conference system is a professional audio communication setup for organized meetings, clearer speech pickup and better discussion control."
-            className="mt-4 w-full"
-            desktopClassName="w-full"
-            singleDom
-          >
-            <p className="w-full text-left text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-              A conference system is a professional audio communication solution used for meetings, boardrooms, seminar
-              rooms, training centers, government offices, corporate offices, hotels, educational institutions, and
-              conference halls. It includes chairman units, delegate units, a control unit, wireless microphones, DSP
-              processor, speakers, cables, and accessories to keep every speaker clear and every discussion organized.
-            </p>
-          </MobileIntroText>
+          <p className="mt-1 text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">
+            Find the perfect conference system that fits your meeting requirements
+          </p>
+        </div>
+
+        <div className="-mx-1 mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-2 [scrollbar-width:none] [-ms-overflow-style:none] md:mx-0 md:grid md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 xl:grid-cols-4 [&::-webkit-scrollbar]:hidden">
+          {conferenceSystemChooserCards.map((card) => (
+            <article
+              key={card.title}
+              className="group flex w-[86%] shrink-0 snap-start flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_3px_12px_rgba(15,23,42,0.055)] transition duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_9px_24px_rgba(15,23,42,0.09)] min-[520px]:w-[66%] md:w-auto md:snap-none"
+            >
+              <div className="relative h-[104px] overflow-hidden bg-slate-100 sm:h-[112px]">
+                <Image
+                  src={card.image}
+                  alt={card.imageAlt}
+                  fill
+                  sizes="(min-width: 1280px) 24vw, (min-width: 768px) 48vw, 86vw"
+                  className="object-cover transition duration-300 group-hover:scale-[1.025]"
+                  style={{ objectPosition: card.imagePosition }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#071936]/18 via-transparent to-transparent" aria-hidden="true" />
+              </div>
+
+              <div className="relative flex flex-1 flex-col px-4 pb-4 pt-5">
+                <span className="absolute -top-7 left-4 inline-flex h-11 w-11 items-center justify-center rounded-full border-[3px] border-white bg-[#071936] text-white shadow-[0_4px_12px_rgba(7,25,54,0.22)] [&>svg]:h-[19px] [&>svg]:w-[19px]">
+                  <ConferenceChooserIconSvg icon={card.icon} />
+                </span>
+                <h3 className="text-[14px] font-extrabold leading-5 tracking-tight text-[#071936] sm:text-[15px]">{card.title}</h3>
+                <p className="mt-1.5 text-[11px] font-medium leading-[1.15rem] text-slate-600 sm:text-xs">{card.description}</p>
+                <Link
+                  prefetch={false}
+                  href={card.href}
+                  className="mt-auto inline-flex min-h-8 items-end gap-1.5 pt-3 text-[11px] font-extrabold text-[#075BC5] transition-colors hover:text-orange-600 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40 sm:text-xs"
+                >
+                  {card.cta}
+                  <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
+                </Link>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 
-      <section id="conference-system-price" className={`${sectionClass} scroll-mt-24`} style={sectionStyle} aria-labelledby="conference-system-price-heading">
-        <h2 id="conference-system-price-heading" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
-          <ConferenceSectionTitleIcon icon="price" />
-          Conference System Price in Bangladesh
+      <section
+        className="mt-4 rounded-2xl border border-[#dce7f6] bg-[linear-gradient(110deg,#f5f8fd_0%,#f9fbfe_52%,#f1f6fd_100%)] px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6"
+        aria-labelledby="choose-conference-room-size"
+      >
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 id="choose-conference-room-size" className={conferenceSectionTitleClass}>
+              Choose by Room Size <span className="text-[13px] font-bold tracking-normal sm:text-sm">(Participants)</span>
+            </h2>
+            <p className="mt-1 text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">
+              Select the right solution based on your room capacity
+            </p>
+          </div>
+          <a
+            href="#popular-conference-packages"
+            className="inline-flex min-h-9 shrink-0 items-center justify-center gap-2 self-start rounded-lg border border-[#315bd7] bg-white px-4 text-[11px] font-extrabold text-[#173aa7] shadow-sm transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 sm:self-auto sm:text-xs"
+          >
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M5 4h11l3 3v13H5z" /><path d="M15 4v4h4M8 11h8M8 15h8" />
+            </svg>
+            View Room Size Guide
+          </a>
+        </div>
+
+        <div className="-mx-1 mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-2 [scrollbar-width:none] [-ms-overflow-style:none] md:mx-0 md:grid md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 xl:grid-cols-4 [&::-webkit-scrollbar]:hidden">
+          {conferenceRoomSizeCards.map((card) => (
+            <article
+              key={card.capacity}
+              className="group relative h-[154px] w-[88%] shrink-0 snap-start overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_3px_12px_rgba(15,23,42,0.055)] transition duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_9px_24px_rgba(15,23,42,0.09)] min-[520px]:w-[68%] md:w-auto md:snap-none"
+            >
+              <div className="absolute inset-y-0 right-0 w-[51%] overflow-hidden bg-slate-100">
+                <Image
+                  src={card.image}
+                  alt={card.imageAlt}
+                  fill
+                  sizes="(min-width: 1280px) 13vw, (min-width: 768px) 25vw, 45vw"
+                  className="object-cover transition duration-300 group-hover:scale-[1.035]"
+                  style={{ objectPosition: card.imagePosition }}
+                />
+              </div>
+              <div className="absolute inset-y-0 left-0 z-[1] w-[67%] bg-gradient-to-r from-white via-white via-76% to-white/0" aria-hidden="true" />
+
+              <div className="relative z-[2] flex h-full w-[64%] flex-col px-3.5 py-3">
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center text-orange-500 [&>svg]:h-7 [&>svg]:w-7">
+                    <ConferenceChooserIconSvg icon={card.icon} />
+                  </span>
+                  <p className="text-[18px] font-black leading-5 tracking-[-0.025em] text-[#071936]">
+                    {card.capacity}
+                    <span className="block text-[9px] font-extrabold leading-3 tracking-normal text-slate-700">Participants</span>
+                  </p>
+                </div>
+                <h3 className="mt-2 text-[11px] font-extrabold leading-4 text-[#071936] sm:text-xs">{card.room}</h3>
+                <p className="mt-0.5 line-clamp-2 text-[10px] font-medium leading-[0.95rem] text-slate-600 sm:text-[11px]">{card.description}</p>
+                <Link
+                  href={card.href}
+                  className="mt-auto inline-flex min-h-6 items-end gap-1 pt-1 text-[10px] font-extrabold text-orange-600 transition-colors hover:text-[#075BC5] focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40 sm:text-[11px]"
+                >
+                  View Solutions
+                  <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section
+        className="mt-4 rounded-2xl border border-slate-200/90 bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6"
+        aria-labelledby="popular-conference-packages"
+      >
+        <h2 id="popular-conference-packages" className={conferenceSectionTitleClass}>
+          Popular Conference System Packages
         </h2>
-        <p className="mt-4 w-full text-left text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-          Conference system price in Bangladesh varies by product model, microphone quantity, system type, brand,
-          control unit, processor, speaker coverage, installation complexity, and service support. The table below
-          lists Sasha Corporation conference system products with direct product links for easier comparison.
+        <p className="mt-1 text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">
+          Capacity-based planning packages with estimated equipment budgets; final pricing is confirmed through a project BOQ.
         </p>
-        <div className="mt-6 overflow-hidden rounded-2xl border border-orange-200/80 bg-white">
-          <table className="w-full border-collapse text-left text-sm">
+
+        <div className="-mx-1 mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-2 [scrollbar-width:none] [-ms-overflow-style:none] md:mx-0 md:grid md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 xl:grid-cols-4 [&::-webkit-scrollbar]:hidden">
+          {popularConferencePackages.map((item) => (
+            <article
+              key={item.title}
+              className="group relative h-[226px] w-[89%] shrink-0 snap-start overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_3px_12px_rgba(15,23,42,0.055)] transition duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_9px_24px_rgba(15,23,42,0.09)] min-[520px]:w-[68%] md:w-auto md:snap-none"
+            >
+              <span className={`absolute left-0 top-0 z-10 inline-flex h-6 items-center gap-1 rounded-br-lg px-2.5 text-[9px] font-extrabold text-white ${item.badgeClass}`}>
+                <span aria-hidden="true">{item.badgeIcon}</span>
+                {item.badge}
+              </span>
+
+              <div className="absolute right-2 top-8 h-[82px] w-[49%]">
+                <Image
+                  src={item.image}
+                  alt={item.imageAlt}
+                  fill
+                  sizes="(min-width: 1280px) 12vw, (min-width: 768px) 24vw, 42vw"
+                  className="object-contain transition duration-300 group-hover:scale-[1.035]"
+                />
+              </div>
+
+              <div className="px-3.5 pt-8">
+                <div className="max-w-[53%]">
+                  <h3 className="text-[14px] font-black leading-[1.05rem] tracking-tight text-[#071936] sm:text-[15px]">{item.title}</h3>
+                  <p className="text-[11px] font-extrabold leading-4 text-[#071936] sm:text-xs">{item.subtitle}</p>
+                  <p className="mt-1.5 line-clamp-2 text-[9px] font-medium leading-[0.9rem] text-slate-600 sm:text-[10px]">{item.description}</p>
+                </div>
+
+                <ul className="absolute bottom-3.5 left-3.5 w-[49%] space-y-1 text-[9px] font-semibold leading-3 text-slate-700 sm:text-[10px]">
+                  {item.items.map((feature) => (
+                    <li key={feature} className="flex items-start gap-1.5">
+                      <svg viewBox="0 0 20 20" className="mt-0.5 h-3 w-3 shrink-0 text-emerald-600" fill="currentColor" aria-hidden="true">
+                        <circle cx="10" cy="10" r="9" /><path d="m6 10 2.4 2.4L14.5 6.8" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="absolute bottom-[47px] right-3 w-[44%] text-center">
+                  <p className="text-[8px] font-semibold leading-3 text-slate-500">{item.priceEyebrow}</p>
+                  <p className={`mt-0.5 text-[17px] font-black leading-5 tracking-[-0.025em] ${item.priceClass} ${item.price.length > 15 ? "text-[14px] leading-4" : ""}`}>
+                    {item.price}
+                  </p>
+                  {item.priceNote ? <p className="mt-0.5 text-[8px] font-medium leading-3 text-slate-500">{item.priceNote}</p> : null}
+                </div>
+
+                <Link
+                  href={item.href}
+                  className={`absolute bottom-3 right-3 inline-flex h-7 w-[45%] items-center justify-center rounded-md px-2 text-center text-[9px] font-extrabold text-white shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40 focus-visible:ring-offset-1 ${item.buttonClass}`}
+                >
+                  {item.cta}
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+        <p className="mt-2 text-[9px] font-medium leading-4 text-slate-600 sm:text-[10px]">
+          Package estimates cover a planned combination of conference equipment and are separate from the individual catalog product prices below.
+        </p>
+      </section>
+
+      <section
+        className="mt-4 rounded-2xl border border-[#dce7f6] bg-[linear-gradient(110deg,#f5f8fd_0%,#fbfcfe_50%,#f0f5fc_100%)] px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6"
+        aria-labelledby="conference-price-guide"
+      >
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 id="conference-price-guide" className={conferenceSectionTitleClass}>
+              Conference System Component Price Guide
+            </h2>
+            <p className="mt-1 text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">
+              Quick component ranges calculated from currently published catalog prices
+            </p>
+          </div>
+          <a
+            href="#conference-system-price"
+            className="inline-flex min-h-9 shrink-0 items-center justify-center gap-2 self-start rounded-lg border border-[#315bd7] bg-white px-4 text-[11px] font-extrabold text-[#173aa7] shadow-sm transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 sm:self-auto sm:text-xs"
+          >
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M4 8.5 10.5 2H20v9.5L13.5 18 4 8.5Z" /><circle cx="15.7" cy="6.3" r="1.3" />
+            </svg>
+            View All Prices
+          </a>
+        </div>
+
+        <div className="-mx-1 mt-4 flex snap-x snap-mandatory gap-2.5 overflow-x-auto px-1 pb-2 [scrollbar-width:none] [-ms-overflow-style:none] sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-3 xl:grid-cols-6 [&::-webkit-scrollbar]:hidden">
+          {conferencePriceGuideItems.map((item) => (
+            <Link
+              key={item.title}
+              prefetch={false}
+              href={item.href}
+              className="group flex h-[68px] w-[76%] shrink-0 snap-start items-center overflow-hidden rounded-lg border border-slate-200 bg-white px-2 shadow-[0_2px_8px_rgba(15,23,42,0.045)] transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md min-[520px]:w-[56%] sm:w-auto sm:snap-none"
+            >
+              <span className="relative h-14 w-[44%] shrink-0">
+                <Image
+                  src={item.image}
+                  alt={item.imageAlt}
+                  fill
+                  sizes="(min-width: 1280px) 7vw, (min-width: 640px) 20vw, 32vw"
+                  className="object-contain p-1 transition duration-300 group-hover:scale-[1.04]"
+                />
+              </span>
+              <span className="min-w-0 py-2">
+                <strong className="block text-[10px] font-extrabold leading-4 text-[#071936] sm:text-[11px]">{item.title}</strong>
+                <span className="mt-0.5 block text-[9px] font-bold leading-3 text-slate-700 sm:text-[10px]">{item.price}</span>
+              </span>
+            </Link>
+          ))}
+        </div>
+
+        <div className="mt-2 flex flex-col gap-1 border-t border-slate-200/80 pt-2 text-[9px] font-medium leading-4 text-slate-600 sm:flex-row sm:items-center sm:justify-between sm:text-[10px]">
+          <p>Note: Component ranges are generated from published catalog prices; request-price products are excluded.</p>
+          <p className="shrink-0">
+            For exact pricing and BOQ,{" "}
+            <Link href="/contact/?project=conference-system" className="font-extrabold text-orange-600 hover:text-orange-700 hover:underline">
+              Get a Free Quotation →
+            </Link>
+          </p>
+        </div>
+      </section>
+
+      <section
+        className="mt-4 scroll-mt-24 overflow-hidden rounded-2xl border border-[#d7e2f2] bg-white shadow-[0_6px_22px_rgba(15,23,42,0.05)]"
+        aria-labelledby="hybrid-conference-integration"
+      >
+        <div className="grid bg-[linear-gradient(105deg,#ffffff_0%,#f8fbff_64%,#eef5ff_100%)] lg:grid-cols-[minmax(0,1fr)_30%]">
+          <div className="relative px-4 py-5 sm:px-5 md:px-6 lg:py-6">
+            <div className="grid gap-6 xl:grid-cols-[250px_minmax(0,1fr)] xl:items-center">
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.08em] text-[#2456c7]">Hybrid Meeting Solution</p>
+                <h2 id="hybrid-conference-integration" className="mt-1.5 max-w-[290px] !text-[23px] font-black leading-[1.08] tracking-tight text-[#071936] sm:!text-[27px]">
+                  Complete Hybrid & Video Conference Integration
+                </h2>
+                <p className="mt-2.5 text-left text-[11px] font-medium leading-[1.15rem] text-slate-600 sm:text-xs">
+                  Integrate conference microphones with cameras, displays, audio processing, and online meeting platforms for a complete hybrid experience.
+                </p>
+                <ul className="mt-3 space-y-1.5 text-[10px] font-bold leading-4 text-slate-700 sm:text-[11px]">
+                  {["Crystal-clear audio and video", "Automatic camera tracking", "Zoom, Microsoft Teams and more", "Scalable for any room size"].map((benefit) => (
+                    <li key={benefit} className="flex items-center gap-2">
+                      <span className="inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-[8px] text-white" aria-hidden="true">✓</span>
+                      {benefit}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-1">
+                  <Link href="/contact/?project=hybrid-conference-room" className="inline-flex min-h-9 items-center justify-center rounded-md bg-[#071f4a] px-3 text-[10px] font-extrabold text-white shadow-sm transition hover:bg-[#123665] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40">
+                    Design My Meeting Room <span aria-hidden="true" className="ml-1.5">→</span>
+                  </Link>
+                  <a href={`tel:${siteConfig.phone}`} className="inline-flex min-h-9 items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-3 text-[10px] font-extrabold text-[#123566] transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40">
+                    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a14 14 0 0 0 5 5L15 13l5 2v4c0 1.1-.9 2-2 2A15 15 0 0 1 3 6c0-1.1.9-2 2-2Z" /></svg>
+                    Talk to an AV Engineer
+                  </a>
+                </div>
+              </div>
+
+              <div className="min-w-0 self-center">
+                <div className="-mx-1 flex snap-x snap-mandatory items-start overflow-x-auto px-1 pb-2 [scrollbar-width:none] [-ms-overflow-style:none] sm:mx-0 sm:overflow-visible sm:px-0 sm:pb-0 [&::-webkit-scrollbar]:hidden">
+                  {hybridIntegrationSteps.map((step, index) => (
+                    <div key={step.title} className="flex shrink-0 items-start snap-start sm:min-w-0 sm:flex-1">
+                      <div className="w-[104px] text-center sm:w-auto sm:min-w-0 sm:flex-1">
+                        <div className="mx-auto flex h-[62px] w-[78px] items-center justify-center text-[#102c57]">
+                          {"image" in step ? (
+                            <span className="relative block h-[58px] w-[76px]">
+                              <Image src={step.image} alt={step.imageAlt} fill sizes="76px" className="object-contain" />
+                            </span>
+                          ) : (
+                            <HybridIntegrationIconSvg icon={step.icon} />
+                          )}
+                        </div>
+                        <h3 className="mt-1 !text-[10px] font-extrabold leading-3.5 text-[#071936]">{step.title}</h3>
+                        <p className="mt-1 text-[8px] font-semibold leading-3 text-slate-500 sm:text-[9px]">{step.subtitle}</p>
+                      </div>
+                      {index < hybridIntegrationSteps.length - 1 ? (
+                        <span className="mt-6 inline-flex w-5 shrink-0 items-center justify-center text-sm font-black text-[#2855a7] sm:w-4" aria-hidden="true">→</span>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+                <div className="mx-auto mt-3 max-w-[360px] rounded-md border border-[#dce5f2] bg-white/90 px-4 py-2 text-center shadow-sm">
+                  <p className="text-[10px] font-extrabold text-[#071936]">Central Control System</p>
+                  <p className="mt-0.5 text-[8px] font-semibold text-slate-500 sm:text-[9px]">Intuitive control from a touch panel or software</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative min-h-[230px] overflow-hidden lg:min-h-full">
+            <Image
+              src="/images/conference_system_projects/project2.webp"
+              alt="Hybrid conference room with microphones, displays, and video meeting facilities"
+              fill
+              sizes="(max-width: 1023px) 100vw, 30vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/15 to-transparent lg:from-white lg:via-transparent" aria-hidden="true" />
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="mt-4 rounded-2xl border border-[#dbe5f2] bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.04)] sm:px-5 md:px-6"
+        aria-labelledby="conference-system-configurations"
+      >
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h2 id="conference-system-configurations" className={conferenceSectionTitleClass}>Representative Conference System Configurations</h2>
+            <p className="mt-1 text-left text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">Practical room configurations illustrating typical system design and professional delivery scopes</p>
+          </div>
+          <Link href="/projects/" className="inline-flex min-h-9 shrink-0 items-center justify-center self-start rounded-md border border-[#b9cbea] bg-white px-4 text-[10px] font-extrabold text-[#1744a1] transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 sm:text-[11px]">
+            View All Projects <span aria-hidden="true" className="ml-1.5">→</span>
+          </Link>
+        </div>
+
+        <div className="mt-4 grid gap-3 lg:grid-cols-3">
+          {conferenceInstallationProjects.map((project) => (
+            <article key={project.title} className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_3px_12px_rgba(15,23,42,0.055)] transition hover:-translate-y-0.5 hover:shadow-[0_9px_24px_rgba(15,23,42,0.09)] sm:grid sm:grid-cols-[47%_53%] lg:block xl:grid xl:grid-cols-[47%_53%]">
+              <div className="relative aspect-[16/10] min-h-[170px] overflow-hidden bg-slate-100 sm:aspect-auto lg:aspect-[16/9] lg:min-h-0 xl:aspect-auto xl:min-h-[190px]">
+                <Image src={project.image} alt={project.imageAlt} fill sizes="(max-width: 639px) 100vw, (max-width: 1023px) 45vw, 24vw" className="object-cover transition duration-300 group-hover:scale-[1.025]" />
+              </div>
+              <div className="flex min-w-0 flex-col p-3.5">
+                <h3 className="!text-[13px] font-extrabold leading-5 text-[#071936] sm:!text-sm">{project.cardTitle}</h3>
+                <dl className="mt-2.5 space-y-2 border-y border-slate-100 py-2.5 text-[10px] leading-4 text-slate-600 sm:text-[11px]">
+                  <div><dt className="font-extrabold text-slate-800">Location</dt><dd>{project.location}</dd></div>
+                  <div><dt className="font-extrabold text-slate-800">Brand / System</dt><dd>{project.brand}</dd></div>
+                  <div><dt className="font-extrabold text-slate-800">Configuration</dt><dd>{project.configuration}</dd></div>
+                  <div><dt className="font-extrabold text-slate-800">Scope of Work</dt><dd>{project.scope}</dd></div>
+                </dl>
+                <Link href="/projects/" aria-label={`View project details for ${project.title}`} className="mt-auto inline-flex min-h-8 items-end pt-2 text-[11px] font-extrabold text-[#1744a1] hover:text-blue-700 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 sm:text-xs">
+                  View Project Details <span aria-hidden="true" className="ml-1">→</span>
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section
+        className="mt-4 rounded-2xl border border-[#dbe5f2] bg-[linear-gradient(110deg,#ffffff_0%,#fbfdff_70%,#f2f7ff_100%)] px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.04)] sm:px-5 md:px-6"
+        aria-labelledby="conference-system-engineering-support"
+      >
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_270px]">
+          <div className="min-w-0">
+            <h2 id="conference-system-engineering-support" className={conferenceSectionTitleClass}>Conference System Engineering & Project Support</h2>
+            <p className="mt-1 text-left text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">Room-based design, BOQ, integration, installation, and lifecycle support</p>
+            <div className="mt-4 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+              {chooseSashaCards.map((item) => (
+                <article key={item.title} className="rounded-lg border border-slate-200 bg-white p-3 shadow-[0_2px_8px_rgba(15,23,42,0.035)]">
+                  <div className="flex items-start gap-2.5 xl:block">
+                    <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-blue-100 bg-blue-50 text-[#2456c7] xl:mb-2.5">
+                      <ChooseSashaIconSvg icon={item.icon} />
+                    </span>
+                    <h3 className="pt-0.5 !text-xs font-extrabold leading-4 text-[#071936] sm:!text-[13px] xl:pt-0">{item.title}</h3>
+                  </div>
+                  <p className="mt-2 text-left text-[10px] font-medium leading-4 text-slate-600 sm:text-[11px]">{item.description}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <aside className="flex flex-col rounded-xl border border-blue-100 bg-[#eef5ff] p-4" aria-label="Conference project consultation">
+            <div className="flex items-start gap-3">
+              <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-[#2456c7] shadow-sm"><ChooseSashaIconSvg icon="support" /></span>
+              <div>
+                <h3 className="!text-[15px] font-extrabold leading-5 text-[#123566]">Need Expert Advice for Your Project?</h3>
+                <p className="mt-2 text-left text-[11px] font-medium leading-5 text-slate-600 sm:text-xs">Our AV engineers are ready to help you choose the right conference system.</p>
+              </div>
+            </div>
+            <div className="mt-auto grid gap-2 pt-4">
+              <Link href="/contact/?project=conference-system" className="inline-flex min-h-9 items-center justify-center rounded-md bg-[#071f4a] px-3 text-[10px] font-extrabold text-white shadow-sm transition hover:bg-[#123665] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40">Get Free BOQ</Link>
+              <a href={`tel:${siteConfig.phone}`} className="inline-flex min-h-9 items-center justify-center gap-2 rounded-md border border-[#9fb8df] bg-white px-3 text-[10px] font-extrabold text-[#123566] transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40">
+                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a14 14 0 0 0 5 5L15 13l5 2v4c0 1.1-.9 2-2 2A15 15 0 0 1 3 6c0-1.1.9-2 2-2Z" /></svg>
+                Talk to an Engineer
+              </a>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section className={compactInformationSectionClass} style={deferredContentStyle} aria-labelledby="what-is-conference-system">
+        <h2 id="what-is-conference-system" className={`${conferenceSectionTitleClass} flex items-center gap-2.5`}>
+          <ConferenceSectionTitleIcon icon="info" compact />
+          What is a Conference System?
+        </h2>
+        <div className="mt-3 rounded-xl border border-[#dbe5f2] bg-[#f6f9ff] p-4">
+          <p className="text-left text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">
+            A conference system is a professional audio communication solution used for meetings, boardrooms, seminar
+            rooms, training centers, government offices, corporate offices, hotels, educational institutions, and
+            conference halls. It includes chairman units, delegate units, a control unit, wireless microphones, DSP
+            processor, speakers, cables, and accessories to keep every speaker clear and every discussion organized.
+          </p>
+        </div>
+      </section>
+
+      <section id="conference-system-price" className={`${compactInformationSectionClass} scroll-mt-24`} style={deferredContentStyle} aria-labelledby="conference-system-price-heading">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="min-w-0">
+            <h2 id="conference-system-price-heading" className={`${conferenceSectionTitleClass} flex items-center gap-2.5`}>
+              <ConferenceSectionTitleIcon icon="price" compact />
+              Conference System Product Price List in Bangladesh
+            </h2>
+            <p className="mt-2 max-w-5xl text-left text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">
+              This detailed product-level price list complements the component guide above. Conference system price in
+              Bangladesh varies by product model, microphone quantity, system type, brand, control unit, processor, speaker
+              coverage, installation complexity, and service support. The table below lists individual Sasha Corporation
+              conference products with availability, pricing basis, and direct product links for easier comparison.
+            </p>
+          </div>
+          <span className="inline-flex min-h-8 shrink-0 items-center self-start rounded-full border border-blue-100 bg-[#eef5ff] px-3 text-[9px] font-extrabold uppercase tracking-[0.05em] text-[#1744a1] sm:text-[10px]">
+            {conferencePriceTableProducts.length} representative products
+          </span>
+        </div>
+        <div className="mt-4 overflow-hidden rounded-xl border border-[#dbe5f2] bg-white shadow-[0_2px_9px_rgba(15,23,42,0.035)]">
+          <table className="w-full border-collapse text-left text-[10px] sm:text-[11px]">
             <caption className="sr-only">Conference products with published fixed or indicative range prices</caption>
-            <thead className="hidden bg-gradient-to-r from-slate-900 via-slate-800 to-sky-800 text-white md:table-header-group">
+            <thead className="hidden bg-[linear-gradient(90deg,#071936_0%,#123665_62%,#2456c7_100%)] text-white md:table-header-group">
               <tr>
-                <th className="w-[30%] border-r border-white/25 px-4 py-3.5 font-extrabold">Product Name</th>
-                <th className="w-[10%] border-r border-white/25 px-4 py-3.5 font-extrabold">Brand</th>
-                <th className="w-[14%] border-r border-white/25 px-4 py-3.5 font-extrabold">Product Type</th>
-                <th className="w-[18%] border-r border-white/25 px-4 py-3.5 font-extrabold">Best For</th>
-                <th className="w-[14%] border-r border-white/25 px-4 py-3.5 font-extrabold">Availability</th>
-                <th className="w-[16%] px-4 py-3 text-right font-extrabold">Price</th>
+                <th className="w-[30%] border-r border-white/20 px-3 py-2.5 font-extrabold">Product Name</th>
+                <th className="w-[10%] border-r border-white/20 px-3 py-2.5 font-extrabold">Brand</th>
+                <th className="w-[14%] border-r border-white/20 px-3 py-2.5 font-extrabold">Product Type</th>
+                <th className="w-[18%] border-r border-white/20 px-3 py-2.5 font-extrabold">Best For</th>
+                <th className="w-[14%] border-r border-white/20 px-3 py-2.5 font-extrabold">Availability</th>
+                <th className="w-[16%] px-3 py-2.5 text-right font-extrabold">Price</th>
               </tr>
             </thead>
             <tbody className="block divide-y divide-slate-200 md:table-row-group">
               {conferencePriceTableProducts.map((product) => {
                 const price = getConferenceProductPricePresentation(product);
-                return <tr key={product.slug} className="block bg-white align-top transition-colors md:table-row md:even:bg-sky-50/45 md:hover:bg-orange-50/65">
-                  <td className="block border-l-4 border-orange-500 px-4 py-4 md:table-cell md:border-l-0 md:border-r md:border-slate-200 md:py-3">
+                return <tr key={product.slug} className="block bg-white align-top transition-colors md:table-row md:even:bg-sky-50/45 md:hover:bg-blue-50/70">
+                  <td className="block border-l-[3px] border-[#2456c7] px-3 py-3 md:table-cell md:border-l-0 md:border-r md:border-slate-200 md:py-2.5">
                     <Link
                       href={`/conference-system/${product.slug}/`}
-                      className="block break-words font-extrabold leading-6 text-slate-950 underline-offset-4 transition hover:text-orange-600 hover:underline"
+                      className="block break-words text-[11px] font-extrabold leading-4 text-[#071936] underline-offset-4 transition hover:text-[#2456c7] hover:underline sm:text-xs"
                     >
                       {product.name}
                     </Link>
-                    <p className="mt-1 text-xs leading-5 text-slate-500">{product.shortDescription}</p>
-                    <div className="mt-3 grid gap-3 md:hidden">
-                      <div className="flex items-start justify-between gap-4">
-                        <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">Brand</span>
-                        <span className="text-right text-xs font-bold text-slate-800">{product.brand?.name ?? "Sasha"}</span>
+                    <p className="mt-1 text-[9px] font-medium leading-4 text-slate-500 sm:text-[10px]">{product.shortDescription}</p>
+                    <div className="mt-2.5 grid gap-2 border-t border-slate-100 pt-2.5 md:hidden">
+                      <div className="flex items-start justify-between gap-3">
+                        <span className="text-[9px] font-extrabold uppercase tracking-[0.04em] text-slate-500">Brand</span>
+                        <span className="text-right text-[10px] font-bold text-slate-800">{product.brand?.name ?? "Sasha"}</span>
                       </div>
-                      <div className="flex items-start justify-between gap-4">
-                        <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">Type</span>
-                        <span className="text-right text-xs font-bold text-slate-800">{product.badge}</span>
+                      <div className="flex items-start justify-between gap-3">
+                        <span className="text-[9px] font-extrabold uppercase tracking-[0.04em] text-slate-500">Type</span>
+                        <span className="text-right text-[10px] font-bold text-slate-800">{product.badge}</span>
                       </div>
                       <div>
-                        <span className="block text-xs font-extrabold uppercase tracking-wide text-slate-500">Best For</span>
-                        <span className="mt-1 block text-xs leading-5 text-slate-700">{product.applications.join(", ")}</span>
+                        <span className="block text-[9px] font-extrabold uppercase tracking-[0.04em] text-slate-500">Best For</span>
+                        <span className="mt-0.5 block text-[10px] font-medium leading-4 text-slate-700">{product.applications.join(", ")}</span>
                       </div>
-                      <div className="flex items-center justify-between gap-4">
-                        <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">Availability</span>
-                        <span className="text-right text-xs font-bold text-slate-800">{getConferenceProductAvailabilityLabel(product)}</span>
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-[9px] font-extrabold uppercase tracking-[0.04em] text-slate-500">Availability</span>
+                        <span className="text-right text-[10px] font-bold text-slate-800">{getConferenceProductAvailabilityLabel(product)}</span>
                       </div>
-                      <div className="flex items-center justify-between gap-4">
-                        <span className="text-xs font-extrabold uppercase tracking-wide text-slate-500">Price</span>
-                        <span className="text-right"><span className="block text-sm font-extrabold text-slate-950">{price.label}</span><span className="block text-[11px] font-semibold text-slate-500">{price.basisLabel}</span></span>
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-[9px] font-extrabold uppercase tracking-[0.04em] text-slate-500">Price</span>
+                        <span className="text-right"><span className="block text-[11px] font-extrabold text-[#071936]">{price.label}</span><span className="block text-[9px] font-semibold text-slate-500">{price.basisLabel}</span></span>
                       </div>
                     </div>
                   </td>
-                  <td className="hidden px-4 py-3 font-semibold text-slate-800 md:table-cell md:border-r md:border-slate-200">{product.brand?.name ?? "Sasha"}</td>
-                  <td className="hidden px-4 py-3 font-semibold text-slate-800 md:table-cell md:border-r md:border-slate-200">{product.badge}</td>
-                  <td className="hidden px-4 py-3 text-slate-700 md:table-cell md:border-r md:border-slate-200">{product.applications.join(", ")}</td>
-                  <td className="hidden px-4 py-3 text-slate-700 md:table-cell md:border-r md:border-slate-200">{getConferenceProductAvailabilityLabel(product)}</td>
-                  <td className="hidden px-4 py-3 text-right md:table-cell">
+                  <td className="hidden px-3 py-2.5 font-semibold leading-4 text-slate-800 md:table-cell md:border-r md:border-slate-200">{product.brand?.name ?? "Sasha"}</td>
+                  <td className="hidden px-3 py-2.5 font-semibold leading-4 text-slate-800 md:table-cell md:border-r md:border-slate-200">{product.badge}</td>
+                  <td className="hidden px-3 py-2.5 font-medium leading-4 text-slate-600 md:table-cell md:border-r md:border-slate-200">{product.applications.join(", ")}</td>
+                  <td className="hidden px-3 py-2.5 font-medium leading-4 text-slate-600 md:table-cell md:border-r md:border-slate-200">{getConferenceProductAvailabilityLabel(product)}</td>
+                  <td className="hidden px-3 py-2.5 text-right md:table-cell">
                     <span className="font-extrabold text-slate-800">
                       {price.label}
                     </span>
-                    <span className="mt-1 block text-[11px] font-semibold text-slate-500">{price.basisLabel}</span>
+                    <span className="mt-0.5 block text-[9px] font-semibold leading-3 text-slate-500">{price.basisLabel}</span>
                   </td>
                 </tr>;
               })}
             </tbody>
           </table>
         </div>
-        <p className="mt-5 rounded-2xl border border-orange-100 bg-orange-50/60 p-4 text-sm leading-7 text-slate-700">
+        <p className="mt-3 rounded-lg border border-blue-100 bg-[#f6f9ff] px-3 py-2.5 text-left text-[11px] font-medium leading-5 text-slate-600 sm:text-xs">
           This compact table shows representative fixed-price and indicative-range products from each supported brand.
           Use the searchable catalog and Price filters above to review all <strong>{publishedPriceCount} products with
           visible price guidance</strong> or the {catalogReport.byPriceType.request} Request Price products. Quotation items
@@ -1347,726 +1562,113 @@ export default function ConferenceSystemPage() {
         </p>
       </section>
 
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-components">
-        <div>
-          <h2 id="conference-system-components" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
-            <ConferenceSectionTitleIcon icon="components" />
-            Key Components of a Conference System
-          </h2>
-          <MobileIntroText
-            teaser="The right component mix keeps speech clear, discussion organized and room-wide communication stable."
-            className="mt-4"
-            singleDom
-          >
-            <p className="text-sm leading-7 text-slate-700 text-justify md:text-base md:leading-8">
-              A conference system connects chairman and delegate microphones, a central controller, audio processing,
-              amplification and speakers, plus cables and optional video, recording, or software add-ons, into one
-              working meeting room setup.
-            </p>
-          </MobileIntroText>
-        </div>
+      <section
+        className="mt-4 rounded-2xl border border-[#dbe5f2] bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.04)] sm:px-5 md:px-6"
+        aria-labelledby="conference-commercial-confidence"
+      >
+        <h2 id="conference-commercial-confidence" className={conferenceSectionTitleClass}>Commercial Confidence</h2>
+        <p className="mt-1 text-left text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">We ensure transparency and reliability in every project.</p>
 
-        <div className="mt-6">
-          <ResponsiveCardGrid
-            desktopClassName="md:grid-cols-2 lg:grid-cols-3"
-            items={conferenceComponentCards.map((item) => ({
-              title: item.title,
-              desc: item.description,
-              bullets: item.features,
-              icon: <ConferenceComponentIconSvg icon={item.icon} />,
-            }))}
-          />
-        </div>
-
-        <div className="mt-6 rounded-2xl border border-orange-100 bg-orange-50/50 p-5 md:p-6">
-          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-            <div className="min-w-0 max-w-3xl md:flex-1">
-              <h3 className="text-xl font-extrabold text-slate-950">
-                Need help choosing the right conference system components?
-              </h3>
-              <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-                Sasha Corporation can recommend chairman units, delegate units, central control units, audio processors,
-                conference speaker options, and PTZ camera integration based on your room size and installation scope.
-              </p>
-            </div>
-            <Link
-              href="/contact/?project=conference-system"
-              className={ctaClass}
-              style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-            >
-              Get Expert Consultation
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="types-of-conference-systems">
-        <h2 id="types-of-conference-systems" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
-          <ConferenceSectionTitleIcon icon="types" />
-          Types of Conference Systems
-        </h2>
-        <MobileIntroText
-          teaser="Choose the right conference system type based on room use, table layout, installation style and meeting workflow."
-          className="mt-3 md:hidden"
-          singleDom
-        >
-          <p className="text-sm leading-7 text-slate-600 text-justify">
-            Choose the right conference system type based on room use, table layout, installation style and meeting workflow.
-          </p>
-        </MobileIntroText>
-        <div className="mt-6">
-          <ResponsiveCardGrid
-            desktopClassName="md:grid-cols-2 lg:grid-cols-3"
-            items={systemTypes.map((item) => ({ title: item.title, desc: item.desc }))}
-            colorFill
-          />
-        </div>
-        <p className="mt-5 text-sm leading-7 text-slate-600">
-          These types describe connection architecture — wired, wireless, digital, or network-based. Meeting mode is
-          a separate choice: audio-only or video-enabled collaboration, covered next.
-        </p>
-      </section>
-
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="choose-your-conference-system">
-        <h2 id="choose-your-conference-system" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
-          <ConferenceSectionTitleIcon icon="audio-video" />
-          Choose Your Conference System
-        </h2>
-        <MobileIntroText
-          teaser="Audio and video conference systems solve different parts of the meeting workflow and are often combined for hybrid rooms."
-          className="mt-3 md:hidden"
-          singleDom
-        >
-          <p className="text-sm leading-7 text-slate-600 text-justify">
-            Audio and video conference systems solve different parts of the meeting workflow and are often combined for hybrid rooms.
-          </p>
-        </MobileIntroText>
-
-        <div className="mt-6 grid gap-6 md:grid-cols-2">
-          <div>
-            <h3 className="text-lg font-extrabold text-slate-950">Audio Conference System</h3>
-            <p className="mt-2 text-sm leading-7 text-slate-700 text-justify">
-              An audio conference system uses chairman and delegate microphones with a central controller to
-              organize in-room discussion and keep every speaker clear. It is the standard setup for boardrooms,
-              government meeting rooms, and training centers where structured, in-person discussion matters most.
-            </p>
-            <Link
-              prefetch={false}
-              href="/conference-system/audio-conference-system/"
-              className="mt-3 inline-flex items-center gap-1 text-[12.5px] font-extrabold uppercase tracking-[0.05em] text-[#C2410C] transition-colors hover:text-[#FD6900]"
-            >
-              Explore Audio Conference Systems
-              <span aria-hidden="true" className="text-[#FD6900]">{"→"}</span>
-            </Link>
-          </div>
-          <div>
-            <h3 className="text-lg font-extrabold text-slate-950">Video Conference System</h3>
-            <p className="mt-2 text-sm leading-7 text-slate-700 text-justify">
-              A video conference system extends meeting audio with camera, display, and video processing equipment
-              to support hybrid and remote collaboration. Sasha&apos;s current video conference range focuses on
-              presentation processing, display integration, and paperless conferencing equipment that pairs with
-              your existing audio setup.
-            </p>
-            <Link
-              prefetch={false}
-              href="/conference-system/video-conference-system/"
-              className="mt-3 inline-flex items-center gap-1 text-[12.5px] font-extrabold uppercase tracking-[0.05em] text-[#C2410C] transition-colors hover:text-[#FD6900]"
-            >
-              Explore Video Conference Systems
-              <span aria-hidden="true" className="text-[#FD6900]">{"→"}</span>
-            </Link>
-          </div>
-        </div>
-
-        <div className="mt-6 overflow-hidden rounded-2xl border border-orange-200/80 bg-white">
-          <table className="w-full border-collapse text-left text-sm">
-            <thead className="hidden bg-gradient-to-r from-slate-900 via-slate-800 to-sky-800 text-white md:table-header-group">
-              <tr>
-                <th className="w-[24%] border-r border-white/15 px-4 py-3.5 font-extrabold">Feature</th>
-                <th className="w-[38%] border-r border-white/15 px-4 py-3.5 font-extrabold">Audio Conference</th>
-                <th className="w-[38%] px-4 py-3.5 font-extrabold">Video Conference</th>
-              </tr>
-            </thead>
-            <tbody className="block divide-y divide-slate-200 md:table-row-group">
-              {audioVsVideoComparisonRows.map((row) => (
-                <tr key={row[0]} className="block bg-white transition-colors md:table-row md:even:bg-sky-50/45 md:hover:bg-orange-50/65">
-                  <td className="block border-l-4 border-orange-500 px-4 py-4 font-extrabold text-slate-950 md:table-cell md:border-l-0 md:border-r md:border-slate-200 md:py-3">
-                    {row[0]}
-                  </td>
-                  <td className="block px-4 py-3 text-slate-700 md:table-cell md:border-r md:border-slate-200 md:px-4 md:py-3">
-                    <div className="text-xs font-extrabold uppercase tracking-wide text-slate-500 md:hidden">Audio Conference</div>
-                    <div className="mt-1 md:mt-0">{row[1]}</div>
-                  </td>
-                  <td className="block px-4 py-3 text-slate-700 md:table-cell md:px-4 md:py-3">
-                    <div className="text-xs font-extrabold uppercase tracking-wide text-slate-500 md:hidden">Video Conference</div>
-                    <div className="mt-1 md:mt-0">{row[2]}</div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="wired-vs-wireless-conference-system">
-        <h2 id="wired-vs-wireless-conference-system" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
-          <ConferenceSectionTitleIcon icon="compare" />
-          Wired vs Wireless Conference System
-        </h2>
-        <MobileIntroText
-          teaser="Both wired and wireless systems work well when matched to the room layout, usage pattern and maintenance preference."
-          className="mt-3 md:hidden"
-          singleDom
-        >
-          <p className="text-sm leading-7 text-slate-600 text-justify">
-            Both wired and wireless systems work well when matched to the room layout, usage pattern and maintenance preference.
-          </p>
-        </MobileIntroText>
-        <div className="mt-6">
-          <ResponsiveCardGrid
-            desktopClassName="md:grid-cols-2"
-            items={[
-              {
-                title: "Wired Conference System",
-                desc: "Best for permanent rooms where stable connection, fixed microphone points and lower maintenance are important.",
-                bullets: wiredPoints,
-              },
-              {
-                title: "Wireless Conference System",
-                desc: "Best for flexible rooms where clean tables, reconfiguration and mobility are important.",
-                bullets: wirelessPoints,
-              },
-            ]}
-          />
-        </div>
-        <div className="mt-5 flex flex-wrap items-center gap-4">
-          <Link
-            prefetch={false}
-            href="/conference-system/wired-conference-system/"
-            className="inline-flex items-center gap-1 text-[12.5px] font-extrabold uppercase tracking-[0.05em] text-[#C2410C] transition-colors hover:text-[#FD6900]"
-          >
-            View Wired Conference System Price
-            <span aria-hidden="true" className="text-[#FD6900]">{"→"}</span>
-          </Link>
-          <Link
-            prefetch={false}
-            href="/conference-system/wireless-conference-system/"
-            className="inline-flex items-center gap-1 text-[12.5px] font-extrabold uppercase tracking-[0.05em] text-[#C2410C] transition-colors hover:text-[#FD6900]"
-          >
-            View Wireless Conference System Price
-            <span aria-hidden="true" className="text-[#FD6900]">{"→"}</span>
-          </Link>
-        </div>
-      </section>
-
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-benefits">
-        <div>
-          <h2 id="conference-system-benefits" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
-            <ConferenceSectionTitleIcon icon="benefits" />
-            Key Benefits of a Professional Conference System
-          </h2>
-          <MobileIntroText
-            teaser="A properly planned conference system improves meeting control, voice clarity and overall room professionalism."
-            className="mt-4"
-            singleDom
-          >
-            <p className="text-sm leading-7 text-slate-700 text-justify md:text-base md:leading-8">
-              A well-designed conference system improves speech clarity, meeting control, and scalability while
-              supporting different room layouts and integration needs, from small boardrooms to large conference
-              halls.
-            </p>
-          </MobileIntroText>
-        </div>
-
-        <div className="mt-6">
-          <ResponsiveCardGrid
-            desktopClassName="md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
-            items={conferenceBenefits.map((item) => ({
-              title: item.title,
-              desc: item.description,
-              bullets: item.bullets,
-              icon: <ConferenceBenefitIconSvg icon={item.icon} />,
-            }))}
-          />
-        </div>
-
-        <div className="mt-6 rounded-2xl border border-orange-100 bg-orange-50/50 p-5 md:p-6">
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-            <div className="min-w-0 max-w-3xl lg:flex-1">
-              <h3 className="text-xl font-extrabold text-slate-950">Need the Right Conference System for Your Meeting Room?</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-                Sasha Corporation can help you choose the right conference system based on room size, participant
-                capacity, microphone quantity, wired or wireless preference, and installation requirements.
-              </p>
-            </div>
-            <div className={pairedCtaGroupClass}>
-              <Link
-                href="/contact/?project=conference-system"
-                className={pairedPrimaryCtaClass}
-                style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-              >
-                Get Free Quotation
-              </Link>
-              <a
-                href="#conference-system-price"
-                className={pairedSecondaryCtaClass}
-              >
-                View Conference System Price
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-applications">
-        <h2 id="conference-system-applications" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
-          <ConferenceSectionTitleIcon icon="applications" />
-          Conference System Applications
-        </h2>
-        <MobileIntroText
-          teaser="Different meeting environments need different microphone quantity, room audio planning and control workflow."
-          className="mt-3 md:hidden"
-          singleDom
-        >
-          <p className="text-sm leading-7 text-slate-600 text-justify">
-            Different meeting environments need different microphone quantity, room audio planning and control workflow.
-          </p>
-        </MobileIntroText>
-        <div className="mt-6">
-          <ResponsiveCardGrid
-            desktopClassName="md:grid-cols-2 lg:grid-cols-3"
-            items={applicationCards.map((item) => ({ title: item.title, desc: item.desc }))}
-            colorFill
-          />
-        </div>
-      </section>
-
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-packages">
-        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-          <div className="min-w-0 max-w-4xl md:flex-1">
-            <h2 id="conference-system-packages" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
-              <ConferenceSectionTitleIcon icon="packages" />
-              Conference System Packages by Room Size
-            </h2>
-            <MobileIntroText
-              teaser="Package planning depends on room layout, participant count, microphone quantity, audio coverage and installation scope."
-              className="mt-4"
-              singleDom
-            >
-              <p className="text-sm leading-7 text-slate-700 text-justify md:text-base md:leading-8">
-                Sasha Corporation can prepare a practical conference system package based on participant capacity, room
-                layout, microphone count, audio coverage, and installation scope.
-              </p>
-            </MobileIntroText>
-          </div>
-          <Link
-            href="/contact/?project=conference-system"
-            className={ctaClass}
-            style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-          >
-            Request Quotation -&gt;
-          </Link>
-        </div>
-
-        <div className="-mx-0.5 mt-6 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:snap-none md:overflow-visible md:px-0 md:pb-0 xl:grid-cols-3">
-          {packageCards.map((item, index) => (
-            <article
-              key={item.title}
-              className={`flex h-full w-[89%] shrink-0 snap-start flex-col rounded-[14px] border p-4 md:w-auto md:rounded-2xl md:border-slate-200 md:bg-white md:p-5 md:snap-none ${getParityClassName(index)}`}
-            >
-              <h3 className="text-lg font-extrabold text-slate-950">{item.title}</h3>
-              <dl className="mt-4 grid gap-3 text-sm leading-6 text-slate-700">
-                <div>
-                  <dt className="font-extrabold text-slate-950">Best for</dt>
-                  <dd className="mt-1">{item.bestFor}</dd>
-                </div>
-                <div>
-                  <dt className="font-extrabold text-slate-950">Included items</dt>
-                  <dd className="mt-1">{item.included}</dd>
-                </div>
-                <div>
-                  <dt className="font-extrabold text-slate-950">Approximate participant capacity</dt>
-                  <dd className="mt-1">{item.capacity}</dd>
-                </div>
-                <div>
-                  <dt className="font-extrabold text-slate-950">Recommended products</dt>
-                  <dd className="mt-1">{item.recommended}</dd>
-                </div>
-              </dl>
-              <div className="mt-auto pt-5">
-                <Link
-                  href="/contact/?project=conference-system"
-                  className="inline-flex w-full items-center justify-center rounded-xl border px-4 py-3 text-sm font-extrabold transition hover:-translate-y-0.5 hover:bg-orange-50"
-                  style={{ borderColor: `${BRAND.maroon}35`, color: BRAND.maroon }}
-                >
-                  Request Quotation -&gt;
-                </Link>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="choose-right-conference-system">
-        <div>
-          <h2 id="choose-right-conference-system" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
-            <ConferenceSectionTitleIcon icon="guide" />
-            How to Choose the Right Conference System in Bangladesh
-          </h2>
-          <MobileIntroText
-            teaser="The right conference setup depends on room size, participant count, mic type, AV integration and installation scope."
-            className="mt-4"
-            singleDom
-          >
-            <p className="text-sm leading-7 text-slate-700 text-justify md:text-base md:leading-8">
-              Choosing the right conference system depends on room size, participant capacity, microphone type, audio
-              quality, installation requirements, and budget. Whether you need chairman & delegate mics for a boardroom,
-              a wired conference system for a permanent meeting room, or a wireless conference system for a flexible
-              space, the right setup ensures clear communication, better meeting control, and long-term performance.
-            </p>
-          </MobileIntroText>
-        </div>
-
-        <div className="mt-6">
-          <ResponsiveCardGrid
-            desktopClassName="md:grid-cols-2 xl:grid-cols-3"
-            items={conferenceGuideCards.map((item) => ({
-              title: item.title,
-              desc: item.description,
-              bullets: item.bullets,
-              icon: <ConferenceGuideIconSvg icon={item.icon} />,
-            }))}
-          />
-        </div>
-
-        <div className="mt-6 overflow-hidden rounded-2xl border border-orange-200/80 bg-white">
-          <div className="border-b border-orange-200 bg-gradient-to-r from-orange-50 via-amber-50 to-sky-50 px-5 py-4 md:px-6">
-            <h3 className="flex items-center gap-3 text-lg font-extrabold text-slate-950">
-              <ConferenceSectionTitleIcon icon="guide" compact />
-              Quick Selection Guide for Conference Systems
-            </h3>
-          </div>
-          <div className="overflow-hidden">
-            <table className="w-full border-collapse text-left text-sm">
-              <thead className="hidden bg-gradient-to-r from-slate-900 via-slate-800 to-sky-800 text-white md:table-header-group">
-                <tr>
-                  <th className="border-r border-white/15 px-4 py-3.5 font-extrabold">Room Type</th>
-                  <th className="border-r border-white/15 px-4 py-3.5 font-extrabold">Participants</th>
-                  <th className="border-r border-white/15 px-4 py-3.5 font-extrabold">Recommended System</th>
-                  <th className="px-4 py-3.5 font-extrabold">Best Choice</th>
-                </tr>
-              </thead>
-              <tbody className="block divide-y divide-slate-200 md:table-row-group">
-                {conferenceSelectionGuideRows.map((row) => (
-                  <tr key={row[0]} className="block bg-white transition-colors md:table-row md:even:bg-sky-50/45 md:hover:bg-orange-50/65">
-                    <td className="block border-l-4 border-orange-500 px-4 py-4 md:table-cell md:border-l-0 md:border-r md:border-slate-200 md:py-3">
-                      <div className="text-xs font-extrabold uppercase tracking-wide text-slate-500 md:hidden">Room Type</div>
-                      <div className="font-extrabold text-slate-950">{row[0]}</div>
-                    </td>
-                    <td className="block px-4 py-0 pb-4 md:table-cell md:border-r md:border-slate-200 md:px-4 md:py-3">
-                      <div className="text-xs font-extrabold uppercase tracking-wide text-slate-500 md:hidden">Participants</div>
-                      <div className="mt-1 font-semibold text-slate-700 md:mt-0">{row[1]}</div>
-                    </td>
-                    <td className="block px-4 py-0 pb-4 md:table-cell md:border-r md:border-slate-200 md:px-4 md:py-3">
-                      <div className="text-xs font-extrabold uppercase tracking-wide text-slate-500 md:hidden">Recommended System</div>
-                      <div className="mt-1 md:mt-0 text-slate-700">{row[2]}</div>
-                    </td>
-                    <td className="block px-4 py-0 pb-4 md:table-cell md:px-4 md:py-3">
-                      <div className="text-xs font-extrabold uppercase tracking-wide text-slate-500 md:hidden">Best Choice</div>
-                      <div className="mt-1 font-semibold text-slate-700 md:mt-0">{row[3]}</div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div className="mt-6 rounded-2xl border border-orange-100 bg-orange-50/50 p-5 md:p-6">
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-            <div className="min-w-0 max-w-3xl lg:flex-1">
-              <h3 className="text-xl font-extrabold text-slate-950">Need Help Choosing the Right Conference System?</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-                Sasha Corporation can help you select the right conference system based on room size, participant
-                capacity, chairman & delegate mic quantity, wired or wireless preference, BOQ requirements, and
-                installation scope.
-              </p>
-            </div>
-            <div className={pairedCtaGroupClass}>
-              <Link
-                href="/contact/?project=conference-system"
-                className={pairedPrimaryCtaClass}
-                style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-              >
-                Get Free Quotation
-              </Link>
-              <a
-                href="#conference-system-price"
-                className={pairedSecondaryCtaClass}
-              >
-                View Conference System Price
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-installations">
-        <div>
-          <h2 id="conference-system-installations" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
-            <ConferenceSectionTitleIcon icon="projects" />
-            Conference System Project Planning
-          </h2>
-          <p className="mt-4 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-            These representative room configurations show how Sasha plans conference-system supply, installation and
-            commissioning. Confirmed client case studies are published separately only after business verification and
-            publication approval.
-          </p>
-        </div>
-
-        <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {conferenceInstallationProjects.map((project) => (
-            <article key={project.title} className="flex min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white">
-              <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
-                <Image src={project.image} alt={project.imageAlt} fill sizes="(max-width: 767px) calc(100vw - 40px), (max-width: 1279px) 50vw, 33vw" className="object-cover" />
-              </div>
-              <div className="flex flex-1 flex-col p-4 md:p-5">
-                <p className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.08em] text-orange-700">Representative configuration</p>
-                <h3 className="text-lg font-extrabold leading-snug text-slate-950">{project.title}</h3>
-                <dl className="mt-4 space-y-2.5 border-y border-slate-100 py-3.5 text-xs text-slate-700">
-                  <div className="flex items-start justify-between gap-4">
-                    <dt className="font-extrabold uppercase tracking-wide text-slate-500">Coverage</dt>
-                    <dd className="text-right font-bold text-slate-800">{project.location}</dd>
-                  </div>
-                  <div className="flex items-start justify-between gap-4">
-                    <dt className="font-extrabold uppercase tracking-wide text-slate-500">Brand / System</dt>
-                    <dd className="text-right font-bold text-slate-800">{project.brand}</dd>
-                  </div>
-                  <div>
-                    <dt className="font-extrabold uppercase tracking-wide text-slate-500">Configuration</dt>
-                    <dd className="mt-1 leading-5 text-slate-700">{project.configuration}</dd>
-                  </div>
-                  <div>
-                    <dt className="font-extrabold uppercase tracking-wide text-slate-500">Scope</dt>
-                    <dd className="mt-1 leading-5 text-slate-700">{project.scope}</dd>
-                  </div>
-                </dl>
-                <p className="mt-3.5 text-sm leading-6 text-slate-700">{project.description}</p>
-                <Link href="/contact/?project=conference-system" aria-label={`Discuss a setup based on ${project.title}`} className="mt-auto inline-flex min-h-11 items-center pt-4 text-sm font-extrabold text-orange-700 transition hover:text-orange-600 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45">
-                  Discuss This Setup <span aria-hidden="true" className="ml-1">-&gt;</span>
-                </Link>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-          <Link href="/projects/" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-extrabold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45">
-            View Verified Projects
-          </Link>
-          <Link href="/contact/?project=conference-system" className={ctaClass} style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}>
-            Request a Quotation
-          </Link>
-        </div>
-      </section>
-
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="why-choose-sasha">
-        <div>
-          <h2 id="why-choose-sasha" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
-            <ConferenceSectionTitleIcon icon="service" />
-            Why Choose Sasha Corporation for Conference Systems in Bangladesh?
-          </h2>
-          <MobileIntroText
-            teaser="We support conference projects with room-based planning, product selection, BOQ preparation, installation and after-sales guidance."
-            className="mt-4"
-            singleDom
-          >
-            <p className="text-sm leading-7 text-slate-700 text-justify md:text-base md:leading-8">
-              Sasha Corporation provides reliable conference system solutions for boardrooms, offices, training rooms,
-              government meeting rooms, hotels, institutions, and conference halls across Bangladesh. From chairman &
-              delegate mics to wired and wireless conference microphone systems, we help clients choose the right
-              products, prepare proper BOQ, complete installation, and ensure clear meeting room audio performance.
-            </p>
-          </MobileIntroText>
-        </div>
-        <div className="mt-6">
-          <ResponsiveCardGrid
-            desktopClassName="md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
-            items={chooseSashaCards.map((item) => ({
-              title: item.title,
-              desc: item.description,
-              bullets: item.bullets,
-              icon: <ChooseSashaIconSvg icon={item.icon} />,
-            }))}
-          />
-        </div>
-
-        <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 md:p-6">
-          <h3 className="text-lg font-extrabold text-slate-950">
-            Our Conference System Process
-          </h3>
-          <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-3">
-            {conferenceSupportProcessSteps.map((step, index) => (
-              <span key={step} className="flex items-center gap-2">
-                <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-extrabold text-slate-900">
-                  {step}
-                </span>
-                {index < conferenceSupportProcessSteps.length - 1 ? (
-                  <span aria-hidden="true" className="text-slate-300">
-                    {"→"}
-                  </span>
-                ) : null}
+        <div className="mt-4 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-5">
+          {commercialConfidenceCards.map((item) => (
+            <article key={item.title} className="rounded-lg border border-slate-200 bg-white p-3 text-center shadow-[0_2px_8px_rgba(15,23,42,0.035)]">
+              <span className="mx-auto inline-flex h-9 w-9 items-center justify-center rounded-full bg-blue-50 text-[#2456c7] ring-1 ring-blue-100">
+                <CommercialConfidenceIconSvg icon={item.icon} />
               </span>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-6 rounded-2xl border border-orange-100 bg-orange-50/50 p-5 md:p-6">
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-            <div className="min-w-0 max-w-3xl lg:flex-1">
-              <h3 className="text-xl font-extrabold text-slate-950">Need a Conference System for Your Meeting Room?</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-                Get expert support from Sasha Corporation to choose the right conference system based on room size,
-                participant capacity, chairman & delegate mic quantity, wired or wireless preference, BOQ requirement,
-                and installation scope.
-              </p>
-            </div>
-            <div className={pairedCtaGroupClass}>
-              <Link
-                href="/contact/?project=conference-system"
-                className={pairedPrimaryCtaClass}
-                style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-              >
-                Get Free Quotation
-              </Link>
-              <a
-                href="#conference-system-price"
-                className={pairedSecondaryCtaClass}
-              >
-                View Conference System Price
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-brand-showcase">
-        <div className="text-center">
-          <h2 id="conference-brand-showcase" className="flex items-center justify-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
-            <ConferenceSectionTitleIcon icon="brand" />
-            Brands We Work With
-          </h2>
-          <p className="mt-3 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-            Sasha Corporation is an authorized distributor of Bosch, TOA, SPON, and CMX solutions in Bangladesh. This
-            section explains the conference-system range and project support available for each brand; use the brand
-            links above for quick navigation or open a brand page below for its current verified catalog.
-          </p>
-        </div>
-        <div className="-mx-0.5 mt-8 flex snap-x snap-mandatory items-stretch gap-3 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:snap-none md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-4">
-          {verifiedConferenceBrandCards.map((brand, index) => (
-            <article
-              key={brand.title}
-              className={`flex h-full w-[89%] shrink-0 snap-start flex-col rounded-[14px] border p-4 transition duration-200 hover:-translate-y-0.5 md:w-auto md:rounded-2xl md:border-slate-200 md:bg-white md:p-6 md:snap-none ${getParityClassName(index)}`}
-            >
-              <div>
-                <span className="inline-flex rounded-full bg-orange-50 px-3 py-1 text-xs font-extrabold text-orange-700">
-                  {brand.badge}
-                </span>
-              </div>
-              <div className="mt-3">
-                <ConferenceBrandTitleBox brand={brand} />
-              </div>
-              <p className="mt-3 text-sm font-semibold leading-6 text-slate-700 text-justify">{brand.category}</p>
-              <p className="mt-3 text-sm leading-6 text-slate-600 text-justify">{brand.description}</p>
-              <div className="mt-4 border-t border-slate-200 pt-4">
-                <p className="text-xs font-extrabold uppercase tracking-[0.06em] text-slate-500">Project support</p>
-                <p className="mt-1.5 text-sm leading-6 text-slate-700">{brand.support}</p>
-              </div>
-              <Link
-                prefetch={false}
-                href={brand.url}
-                className="mt-auto inline-flex items-center gap-1 pt-5 text-[12.5px] font-extrabold uppercase tracking-[0.05em] text-[#C2410C] transition-colors hover:text-[#FD6900]"
-              >
-                View {brand.title} Products
-                <span aria-hidden="true" className="text-[#FD6900]">{"→"}</span>
-              </Link>
+              <h3 className="mt-2 !text-xs font-extrabold leading-4 text-[#071936]">{item.title}</h3>
+              <p className="mt-1.5 text-center text-[11px] font-medium leading-[1.1rem] text-slate-600">{item.description}</p>
+              {item.icon === "verified" ? (
+                <div className="mt-1.5 text-[10px] font-semibold leading-4 text-slate-500">
+                  <address className="not-italic">{siteConfig.address}</address>
+                  <a href={`tel:${siteConfig.phone}`} className="mt-1 inline-flex font-extrabold text-[#1744a1] hover:underline">{siteConfig.phone}</a>
+                </div>
+              ) : null}
+              {item.icon === "privacy" ? (
+                <nav aria-label="Commercial policies" className="mt-1.5 flex flex-wrap justify-center gap-x-2 text-[10px] font-extrabold text-[#1744a1]">
+                  <Link href="/terms/" className="hover:underline">Terms</Link>
+                  <Link href="/return-policy/" className="hover:underline">Returns</Link>
+                  <Link href="/privacy/" className="hover:underline">Privacy</Link>
+                </nav>
+              ) : null}
             </article>
           ))}
         </div>
 
-        <div className="mt-6 rounded-2xl border border-sky-100 bg-sky-50/45 p-5 md:p-6" aria-labelledby="conference-commercial-confidence">
-          <div>
-            <h3 id="conference-commercial-confidence" className="text-xl font-extrabold text-slate-950">
-              Commercial Confidence &amp; Verified Business Support
-            </h3>
-            <p className="mt-2 text-sm leading-7 text-slate-700">
-              Review our verified business contact, project process and commercial policies before confirming a
-              conference-system order or installation scope.
-            </p>
-          </div>
-          <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-            <article className="rounded-xl border border-orange-200/80 bg-orange-50/70 p-4">
-              <h4 className="font-extrabold text-slate-950">Verified business contact</h4>
-              <p className="mt-2 text-sm leading-6 text-slate-600">{siteConfig.address}</p>
-              <a href={`tel:${siteConfig.phone}`} className="mt-2 inline-flex text-sm font-bold text-sky-800 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40">
-                {siteConfig.phone}
-              </a>
-            </article>
-            <article className="rounded-xl border border-orange-200/80 bg-orange-50/70 p-4">
-              <h4 className="font-extrabold text-slate-950">Transparent quotation scope</h4>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
-                Final quotation follows verified products, quantities, compatibility, installation and agreed project scope.
-              </p>
-              <Link href="/contact/?project=conference-system" className="mt-2 inline-flex text-sm font-bold text-sky-800 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40">Request a documented quotation</Link>
-            </article>
-            <article className="rounded-xl border border-orange-200/80 bg-orange-50/70 p-4">
-              <h4 className="font-extrabold text-slate-950">Installation &amp; support</h4>
-              <p className="mt-2 text-sm leading-6 text-slate-600">
-                Room review, BOQ planning, installation, testing and after-sales scope are agreed for each project.
-              </p>
-              <Link href="/services-support/" className="mt-2 inline-flex text-sm font-bold text-sky-800 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40">Review services and support</Link>
-            </article>
-            <article className="rounded-xl border border-orange-200/80 bg-orange-50/70 p-4">
-              <h4 className="font-extrabold text-slate-950">Clear commercial policies</h4>
-              <p className="mt-2 text-sm leading-6 text-slate-600">Check applicable terms, return conditions and privacy handling before ordering.</p>
-              <nav aria-label="Commercial policies" className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-sm font-bold text-sky-800">
-                <Link href="/terms/" className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40">Terms</Link>
-                <Link href="/return-policy/" className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40">Returns</Link>
-                <Link href="/privacy/" className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40">Privacy</Link>
-              </nav>
-            </article>
-          </div>
+        <div className="mt-3 flex flex-col gap-2 rounded-lg border border-blue-100 bg-[#f6f9ff] px-3 py-2.5 text-[11px] font-medium leading-5 text-slate-600 sm:flex-row sm:items-center sm:justify-between sm:text-xs">
+          <p className="flex items-start gap-2 text-left">
+            <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-blue-200 text-[9px] font-extrabold text-[#2456c7]" aria-hidden="true">i</span>
+            <span><strong className="text-slate-800">Authorisation Scope:</strong> Authorisation and dealership are granted according to manufacturer appointment and product-line terms.</span>
+          </p>
+          <Link href="/services-support/" className="shrink-0 font-extrabold text-[#1744a1] hover:underline">Learn More <span aria-hidden="true">→</span></Link>
         </div>
-        <p className="mt-5 text-xs leading-6 text-slate-500">
-          Authorization scope follows the applicable manufacturer appointment and product-line terms. Supporting
-          authorization information is available from Sasha Corporation on request.
-        </p>
       </section>
 
-      <section className={sectionClass} style={sectionStyle} aria-labelledby="conference-system-faq">
-        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-          <div className="min-w-0 max-w-4xl md:flex-1">
-            <h2 id="conference-system-faq" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight text-slate-950">
-              <ConferenceSectionTitleIcon icon="faq" />
-              Conference System FAQ
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-slate-700 md:text-base md:leading-8">
-              Answers to common questions about conference system price, chairman and delegate units, wireless
-              microphones, digital conference systems, and installation support in Bangladesh.
-            </p>
-          </div>
-          <Link
-            href="/contact/?project=conference-system"
-            className={ctaClass}
-            style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-          >
-            Request Quotation -&gt;
-          </Link>
+      <section
+        className="mt-4 rounded-2xl border border-[#dbe5f2] bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.04)] sm:px-5 md:px-6"
+        aria-labelledby="conference-brand-showcase"
+      >
+        <h2 id="conference-brand-showcase" className={conferenceSectionTitleClass}>Our Conference System Brand Support</h2>
+        <div className="mt-4 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
+          {verifiedConferenceBrandCards.map((brand) => (
+            <article key={brand.title} className="flex min-w-0 flex-col rounded-lg border border-slate-200 bg-white p-3 shadow-[0_2px_8px_rgba(15,23,42,0.035)]">
+              <div className="flex h-10 items-center gap-2.5 border-b border-slate-100 pb-2">
+                <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-[#2456c7] ring-1 ring-blue-100">
+                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 3 5 6v5c0 4.6 2.9 8.4 7 10 4.1-1.6 7-5.4 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-5" /></svg>
+                </span>
+                {brand.logoSrc ? (
+                  <Image src={brand.logoSrc} alt={`${brand.title} logo`} width={brand.logoWidth} height={brand.logoHeight} className={`h-auto w-auto object-contain ${brand.logoMaxHeightClassName ?? "max-h-6"}`} />
+                ) : (
+                  <strong className="text-sm font-extrabold text-[#071936]">{brand.title}</strong>
+                )}
+              </div>
+              <h3 className="sr-only">{brand.title} Conference System Support</h3>
+              <ul className="mt-2.5 space-y-1.5 text-[11px] font-medium leading-4 text-slate-600 sm:text-xs">
+                {brand.features.map((feature) => (
+                  <li key={feature} className="flex items-start gap-1.5"><span className="mt-[5px] h-1 w-1 shrink-0 rounded-full bg-[#2456c7]" aria-hidden="true" />{feature}</li>
+                ))}
+              </ul>
+              <Link prefetch={false} href={brand.url} className="mt-auto inline-flex items-center pt-3 text-[11px] font-extrabold text-[#1744a1] hover:text-blue-700 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 sm:text-xs">
+                View {brand.title} Products <span aria-hidden="true" className="ml-1">→</span>
+              </Link>
+            </article>
+          ))}
         </div>
+      </section>
 
-        <FaqAccordion items={conferenceFaqs} accent={BRAND.maroon} className="mt-6" />
+      <section
+        className="mt-4 rounded-2xl border border-[#dbe5f2] bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.04)] sm:px-5 md:px-6"
+        aria-labelledby="conference-system-faq"
+      >
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <h2 id="conference-system-faq" className={conferenceSectionTitleClass}>Frequently Asked Questions</h2>
+          <a href="#conference-faq-list" className="inline-flex min-h-8 shrink-0 items-center justify-center self-start rounded-md border border-[#b9cbea] bg-white px-3 text-[9px] font-extrabold text-[#1744a1] transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 sm:self-auto sm:text-[10px]">View All Questions <span aria-hidden="true" className="ml-1.5">→</span></a>
+        </div>
+        <div id="conference-faq-list" className="scroll-mt-24">
+          <FaqAccordion items={conferenceFaqs} accent="#2456c7" columns={1} density="compact" variant="minimal" className="mt-3" />
+        </div>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(conferenceServiceJsonLd) }} />
+      </section>
+
+      <section className="relative mt-4 min-h-[250px] overflow-hidden rounded-2xl border border-[#172c53] bg-[#071936] shadow-[0_8px_28px_rgba(7,25,54,0.18)]" aria-labelledby="conference-final-cta">
+        <Image src="/images/conference_system_projects/project2.webp" alt="" fill sizes="100vw" className="object-cover object-center opacity-80" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,25,54,0.99)_0%,rgba(7,25,54,0.96)_37%,rgba(7,25,54,0.68)_60%,rgba(7,25,54,0.18)_100%)]" aria-hidden="true" />
+        <div className="relative z-10 flex min-h-[250px] max-w-[520px] flex-col justify-center px-5 py-6 sm:px-7 md:px-9">
+          <h2 id="conference-final-cta" className="max-w-[390px] !text-[24px] font-black leading-[1.08] tracking-tight text-white sm:!text-[28px]">Ready to Build Your Perfect Conference Room?</h2>
+          <p className="mt-2 max-w-[390px] text-left text-[11px] font-medium leading-[1.15rem] text-blue-100 sm:text-xs">Our experts will design the right conference solution for your space, budget, and meeting requirements.</p>
+          <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+            <Link href="/contact/?project=conference-system" className="inline-flex min-h-9 items-center justify-center rounded-md bg-[#f45b18] px-5 text-[10px] font-extrabold text-white shadow-sm transition hover:bg-[#db490d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400/60">Get Free BOQ <span aria-hidden="true" className="ml-1.5">→</span></Link>
+            <a href={`tel:${siteConfig.phone}`} className="inline-flex min-h-9 items-center justify-center gap-2 rounded-md border border-white/45 bg-white/10 px-5 text-[10px] font-extrabold text-white backdrop-blur-sm transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50">
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a14 14 0 0 0 5 5L15 13l5 2v4c0 1.1-.9 2-2 2A15 15 0 0 1 3 6c0-1.1.9-2 2-2Z" /></svg>
+              Talk to an Engineer
+            </a>
+          </div>
+          <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-[8px] font-semibold text-blue-100 sm:text-[9px]">
+            {["Expert Consultation", "Customized Solution", "Best Pricing", "Nationwide Support"].map((item) => (
+              <li key={item} className="flex items-center gap-1.5"><span className="inline-flex h-3 w-3 items-center justify-center rounded-full border border-blue-200/60 text-[7px]" aria-hidden="true">✓</span>{item}</li>
+            ))}
+          </ul>
+        </div>
       </section>
     </div>
   );
