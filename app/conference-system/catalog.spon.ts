@@ -7,7 +7,7 @@ export const newSponConferenceProducts: ConferenceProduct[] = [
   {
     id: "spon-lcs-8004htp-lcs-8008htp-lcs-8016htp",
     slug: "spon-lcs-8004htp-lcs-8008htp-lcs-8016htp",
-    name: "LCS-8004HTP/LCS-8008HTP/LCS-8016HTP",
+    name: "SPON LCS-8004HTP / LCS-8008HTP / LCS-8016HTP HDMI Video Matrix",
     model: "LCS-8004HTP / LCS-8008HTP / LCS-8016HTP",
     brand: { name: "SPON", slug: "spon" },
     systemCategory: "video",
@@ -42,7 +42,7 @@ export const newSponConferenceProducts: ConferenceProduct[] = [
   {
     id: "spon-lcs-2883a",
     slug: "spon-lcs-2883a-omnidirectional-microphone",
-    name: "LCS-2883A",
+    name: "SPON LCS-2883A Omnidirectional Conference Speakerphone",
     model: "LCS-2883A",
     brand: { name: "SPON", slug: "spon" },
     systemTypes: ["audio", "video-hybrid"],
@@ -76,7 +76,7 @@ export const newSponConferenceProducts: ConferenceProduct[] = [
   {
     id: "spon-lcs-2870d",
     slug: "spon-lcs-2870d-inverted-camera-bracket",
-    name: "LCS-2870D",
+    name: "SPON LCS-2870D Inverted Conference Camera Bracket",
     model: "LCS-2870D",
     brand: { name: "SPON", slug: "spon" },
     systemCategory: "video",
@@ -96,7 +96,7 @@ export const newSponConferenceProducts: ConferenceProduct[] = [
   {
     id: "spon-lcs-2871d",
     slug: "spon-lcs-2871d-inverted-camera-bracket",
-    name: "LCS-2871D",
+    name: "SPON LCS-2871D Inverted Conference Camera Bracket",
     model: "LCS-2871D",
     brand: { name: "SPON", slug: "spon" },
     systemCategory: "video",
@@ -116,7 +116,7 @@ export const newSponConferenceProducts: ConferenceProduct[] = [
   {
     id: "spon-lcs-2871-20",
     slug: "spon-lcs-2871-20-hd-conference-camera",
-    name: "LCS-2871-20",
+    name: "SPON LCS-2871-20 HD Conference Camera",
     model: "LCS-2871-20",
     brand: { name: "SPON", slug: "spon" },
     systemCategory: "video",
@@ -146,7 +146,7 @@ export const newSponConferenceProducts: ConferenceProduct[] = [
   {
     id: "spon-lcs-5203l",
     slug: "spon-lcs-5203l-digital-conference-central-unit",
-    name: "LCS-5203L",
+    name: "SPON LCS-5203L Digital Conference Central Unit",
     model: "LCS-5203L",
     brand: { name: "SPON", slug: "spon" },
     systemTypes: ["audio", "digital"],
@@ -186,7 +186,7 @@ export const newSponConferenceProducts: ConferenceProduct[] = [
   {
     id: "spon-lcm-6013dvw-l",
     slug: "spon-lcm-6013dvw-l-wireless-microphone-delegate-unit",
-    name: "LCM-6013DVW-L",
+    name: "SPON LCM-6013DVW-L Wireless Conference Delegate Unit",
     model: "LCM-6013DVW-L",
     brand: { name: "SPON", slug: "spon" },
     systemCategory: "audio",

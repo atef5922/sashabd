@@ -6,12 +6,14 @@ import {
   CONFERENCE_PRODUCT_TYPE_LABELS,
   getConferenceConnectionLabel,
   getConferenceProductAvailabilityLabel,
+  getConferenceProductPrimaryImage,
   getConferenceProductPriceNote,
   getConferenceProductPricePresentation,
   getConferenceProductSpecifications,
   type ConferenceProduct,
 } from "./catalog";
 import ConferenceProductGallery from "./ConferenceProductGallery";
+import { getConferenceRelatedSectionCopy } from "./conferenceProductRelations";
 
 type ConferenceContextLink = { href: string; label: string };
 
@@ -41,6 +43,7 @@ export default function ConferenceProductDetailPage({
   const priceNote = getConferenceProductPriceNote(product);
   const price = getConferenceProductPricePresentation(product);
   const availabilityLabel = getConferenceProductAvailabilityLabel(product);
+  const relatedSectionCopy = getConferenceRelatedSectionCopy(product);
   const quoteHref = `/contact/?project=conference-system&product=${product.slug}`;
   const productFacts = [
     { label: "Brand", value: product.brand?.name },
@@ -126,6 +129,7 @@ export default function ConferenceProductDetailPage({
               href={wa}
               target="_blank"
               rel="noreferrer"
+              aria-label={`Ask an engineer about ${product.name} on WhatsApp`}
               className="rounded-xl bg-emerald-600 px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md"
             >
               WhatsApp Now
@@ -197,7 +201,9 @@ export default function ConferenceProductDetailPage({
 
           {compatibleProducts.length ? (
             <>
-              <p className="sr-only">{`Units commonly specified with the ${product.name}`}</p>
+              <p className="mt-2 text-xs leading-5 text-slate-600">
+                Catalogued product relationships for system planning. Confirm the final configuration and BOQ before ordering.
+              </p>
               <ul className="mt-3 flex flex-wrap gap-2">
                 {compatibleProducts.map((item) => (
                   <li key={item.slug}>
@@ -213,7 +219,11 @@ export default function ConferenceProductDetailPage({
                 ))}
               </ul>
             </>
-          ) : null}
+          ) : (
+            <p className="mt-2 text-xs leading-5 text-slate-600">
+              No product-level compatibility relationship is documented in the current catalog. Compatibility should be confirmed before ordering.
+            </p>
+          )}
 
           {categoryLinks.length || brandLink ? (
             <div className="mt-4 border-t border-slate-100 pt-3">
@@ -252,7 +262,7 @@ export default function ConferenceProductDetailPage({
           <div className="flex items-center justify-between gap-3">
             <div>
               <h2 className="text-base font-bold text-slate-900">Related Conference Products</h2>
-              <p className="text-xs text-slate-600">Other items for chairman, delegate, wireless, DSP, and control-room planning.</p>
+              <p className="text-xs text-slate-600">{relatedSectionCopy}</p>
             </div>
             <Link href="/conference-system/" className="text-xs font-bold" style={{ color: BRAND.maroon }}>
               View all products
@@ -260,29 +270,32 @@ export default function ConferenceProductDetailPage({
           </div>
 
           <div className="mt-4 grid gap-4 md:grid-cols-3">
-            {relatedProducts.map((item) => (
-              <Link
-                key={item.slug}
-                href={`/conference-system/${item.slug}/`}
-                prefetch={false}
-                className="group overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-                style={{ borderColor: "rgba(15,23,42,0.1)" }}
-              >
-                <div className="relative aspect-square border-b border-slate-100 bg-white">
-                  <Image
-                    src={item.images.find((image) => image.primary)?.src ?? item.images[0].src}
-                    alt={item.name}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-contain p-2 transition duration-200 group-hover:scale-[1.015]"
-                  />
-                </div>
-                <div className="p-4">
-                  <h3 className="text-sm font-extrabold leading-snug text-slate-900 line-clamp-2">{item.name}</h3>
-                  <p className="mt-1 text-xs font-semibold text-sky-700">{getConferenceProductPricePresentation(item).label}</p>
-                </div>
-              </Link>
-            ))}
+            {relatedProducts.map((item) => {
+              const image = getConferenceProductPrimaryImage(item);
+              return (
+                <Link
+                  key={item.slug}
+                  href={`/conference-system/${item.slug}/`}
+                  prefetch={false}
+                  className="group overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                  style={{ borderColor: "rgba(15,23,42,0.1)" }}
+                >
+                  <div className="relative aspect-square border-b border-slate-100 bg-white">
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-contain p-2 transition duration-200 group-hover:scale-[1.015]"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="text-sm font-extrabold leading-snug text-slate-900 line-clamp-2">{item.name}</h3>
+                    <p className="mt-1 text-xs font-semibold text-sky-700">{getConferenceProductPricePresentation(item).label}</p>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </section>
       ) : null}
