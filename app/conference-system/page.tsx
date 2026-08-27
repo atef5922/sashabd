@@ -18,10 +18,7 @@ import {
 import { conferenceBrandConfigs, hasConferenceBrandProducts } from "./taxonomy";
 import ConferenceProductExplorer from "./ConferenceProductExplorer";
 import { buildConferenceExplorerProducts } from "./conferenceExplorerData";
-import {
-  balanceConferenceProductsByBrand,
-  CONFERENCE_INITIAL_PRODUCT_COUNT,
-} from "./conferenceExplorerOrder";
+import { balanceConferenceProductsByBrand, CONFERENCE_INITIAL_PRODUCT_COUNT } from "./conferenceExplorerOrder";
 import { conferenceInstallationProjects } from "./conferenceProjects";
 
 const PAGE_TITLE = "Conference System Price in Bangladesh 2026";
@@ -890,7 +887,6 @@ export default function ConferenceSystemPage() {
   };
   // Facets for the product explorer: taxonomy categories and brands that actually have stock.
   const conferenceExplorerProducts = balanceConferenceProductsByBrand(buildConferenceExplorerProducts());
-  const initialConferenceExplorerProducts = conferenceExplorerProducts.slice(0, CONFERENCE_INITIAL_PRODUCT_COUNT);
 
   const conferenceExplorerBrands = conferenceBrandConfigs
     .map((brand) => ({
@@ -1040,11 +1036,9 @@ export default function ConferenceSystemPage() {
 
       <section id="conference-products-heading" className="mt-4 scroll-mt-24" aria-label="Conference System Products">
         <ConferenceProductExplorer
-          products={initialConferenceExplorerProducts}
+          products={conferenceExplorerProducts}
           brands={conferenceExplorerBrands}
           productTypes={conferenceExplorerProductTypes}
-          catalogEndpoint="/conference-system/catalog-data.json"
-          totalProducts={conferenceSystemCatalog.length}
         />
 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productListJsonLd) }} />

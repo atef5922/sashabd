@@ -1043,16 +1043,16 @@ test("Conference product explorer provides canonical search, multi-filter, sort,
   assert.match(explorer, /"replaceState"/);
   assert.ok(!landing.includes("?page="), "the server-rendered hub must not emit faceted query links");
 
-  // Server facets are derived from canonical catalog fields and only offered when populated;
-  // connection/meeting facets are derived from the deferred canonical explorer payload.
+  // Server facets and connection/meeting options all derive from the complete canonical projection.
   assert.match(landing, /conferenceBrandConfigs\s*\.map\(\(brand\) => \(\{/);
   assert.match(landing, /Object\.entries\(CONFERENCE_PRODUCT_TYPE_LABELS\)/);
   assert.equal(occurrences(landing, ".filter((facet) => facet.count > 0)"), 2);
   assert.match(explorer, /connections: new Set\(catalogProducts\.flatMap/);
-  assert.match(landing, /catalogEndpoint="\/conference-system\/catalog-data\.json"/);
+  assert.match(landing, /products=\{conferenceExplorerProducts\}/);
+  assert.doesNotMatch(landing, /catalogEndpoint="\/conference-system\/catalog-data\.json"/);
 });
 
-test("Conference landing keeps client discovery payload compact and defers below-fold rendering", () => {
+test("Conference landing sends the compact full-catalog projection and defers below-fold rendering", () => {
   const source = read("app/conference-system/page.tsx");
   const header = read("components/common/Header.tsx");
   const explorerData = read("app/conference-system/conferenceExplorerData.ts");
@@ -1061,9 +1061,12 @@ test("Conference landing keeps client discovery payload compact and defers below
   const searchIndex = sectionBetween(explorerData, "searchText: [", ".filter(Boolean)");
 
   assert.doesNotMatch(searchIndex, /product\.specifications/);
-  assert.doesNotMatch(searchIndex, /product\.applications|product\.tags/);
+  assert.doesNotMatch(searchIndex, /product\.applications/);
+  assert.match(searchIndex, /product\.tags\.join\(" "\)/);
   assert.doesNotMatch(explorerProps, /categories=/);
-  assert.match(source, /initialConferenceExplorerProducts = conferenceExplorerProducts\.slice\(0, CONFERENCE_INITIAL_PRODUCT_COUNT\)/);
+  assert.match(explorerProps, /products=\{conferenceExplorerProducts\}/);
+  assert.doesNotMatch(source, /initialConferenceExplorerProducts|conferenceExplorerProducts\.slice\(/);
+  assert.doesNotMatch(explorerProps, /catalogEndpoint=|totalProducts=/);
   assert.match(catalogRoute, /dynamic = "force-static"/);
   assert.match(catalogRoute, /balanceConferenceProductsByBrand\(buildConferenceExplorerProducts\(\)\)/);
   assert.match(source, /contentVisibility: "auto" as const/);
@@ -1174,18 +1177,25 @@ test("Conference discovery helpers implement deterministic search, filter, price
   assert.equal(discovery.filterConferenceProducts(products, { ...state, brands: ["bosch", "toa"], connections: ["wired"] }).length, 2, "OR within brand and AND across groups");
   assert.equal(discovery.filterConferenceProducts(products, { ...state, brands: ["bosch"], productTypes: ["control-unit"] }).length, 0);
   assert.equal(discovery.filterConferenceProducts(products, { ...state, availabilities: ["contact"] })[0].slug, "cmx-wireless");
-  assert.equal(discovery.priceOverlapsBand(products[1].priceValue, "100k-200k"), true);
-  assert.equal(discovery.priceOverlapsBand(products[2].priceValue, "under-25k"), false, "request price is never numeric zero");
-  assert.equal(discovery.priceOverlapsBand({ type: "fixed", amount: 25_000 }, "under-25k"), false, "exact boundary does not appear in adjacent bands");
-  assert.equal(discovery.priceOverlapsBand({ type: "fixed", amount: 25_000 }, "25k-50k"), true);
-  assert.equal(discovery.priceOverlapsBand({ type: "fixed", amount: 50_000 }, "25k-50k"), false);
-  assert.equal(discovery.priceOverlapsBand({ type: "fixed", amount: 50_000 }, "50k-100k"), true);
-  assert.equal(discovery.priceOverlapsBand(products[2].priceValue, "request"), true, "request-price products have their own nonnumeric filter");
-  assert.equal(discovery.priceOverlapsBand({ type: "range", min: 165_000, max: 225_000 }, "100k-200k"), true, "partial range overlap matches");
-  assert.equal(discovery.priceOverlapsBand({ type: "range", min: 110_000, max: 150_000 }, "100k-200k"), true, "product fully inside selected range matches");
-  assert.equal(discovery.priceOverlapsBand({ type: "range", min: 80_000, max: 250_000 }, "100k-200k"), true, "selected range fully inside product range matches");
-  assert.equal(discovery.priceOverlapsBand({ type: "range", min: 201_000, max: 225_000 }, "100k-200k"), false, "non-overlapping range does not match");
-  assert.equal(discovery.priceOverlapsBand({ type: "range", min: 165_000, max: 225_000 }, "25k-50k"), false, "distant ranges do not overlap");
+  assert.equal(discovery.priceMatchesBand(products[1].priceValue, "100k-200k"), true);
+  assert.equal(discovery.priceMatchesBand(products[2].priceValue, "under-25k"), false, "request price is never numeric zero");
+  assert.equal(discovery.priceMatchesBand({ type: "fixed", amount: 25_000 }, "under-25k"), false, "exact boundary does not appear in adjacent bands");
+  assert.equal(discovery.priceMatchesBand({ type: "fixed", amount: 25_000 }, "25k-50k"), true);
+  assert.equal(discovery.priceMatchesBand({ type: "fixed", amount: 50_000 }, "25k-50k"), false);
+  assert.equal(discovery.priceMatchesBand({ type: "fixed", amount: 50_000 }, "50k-100k"), true);
+  assert.equal(discovery.priceMatchesBand(products[2].priceValue, "request"), true, "request-price products have their own nonnumeric filter");
+  assert.equal(discovery.priceMatchesBand({ type: "range", min: 165_000, max: 225_000 }, "100k-200k"), true, "range uses its minimum price");
+  assert.equal(discovery.priceMatchesBand({ type: "range", min: 165_000, max: 225_000 }, "over-200k"), false, "one range cannot enter two quick-price buckets");
+  assert.equal(discovery.priceMatchesBand({ type: "range", min: 110_000, max: 150_000 }, "100k-200k"), true);
+  assert.equal(discovery.priceMatchesBand({ type: "range", min: 80_000, max: 250_000 }, "50k-100k"), true);
+  assert.equal(discovery.priceMatchesBand({ type: "range", min: 80_000, max: 250_000 }, "100k-200k"), false, "maximum price does not create an overlapping assignment");
+  assert.equal(discovery.priceMatchesBand({ type: "range", min: 201_000, max: 225_000 }, "100k-200k"), false);
+  assert.equal(discovery.priceMatchesBand({ type: "range", min: 201_000, max: 225_000 }, "over-200k"), true);
+  assert.equal(discovery.priceMatchesBand({ type: "range", min: 165_000, max: 225_000 }, "25k-50k"), false);
+  for (const priceValue of products.map((product) => product.priceValue)) {
+    const matchingBands = discovery.CONFERENCE_PRICE_BANDS.filter((band) => discovery.priceMatchesBand(priceValue, band.id));
+    assert.equal(matchingBands.length, 1, "every valid price has one quick-price assignment");
+  }
   assert.equal(discovery.priceOverlapsCustomRange(products[0].priceValue, 70_000, 80_000), true);
   assert.equal(discovery.priceOverlapsCustomRange(products[1].priceValue, 150_000, 180_000), true, "custom price uses range overlap semantics");
   assert.equal(discovery.priceOverlapsCustomRange(products[2].priceValue, 0, 1_000_000), false, "request price is not numeric zero");
@@ -1396,7 +1406,7 @@ test("Conference products remain discoverable without the removed directory disc
   const sitemap = read("app/sitemap.ts");
 
   assert.doesNotMatch(landing, /Browse the complete product directory/);
-  assert.match(landing, /products=\{initialConferenceExplorerProducts\}/);
+  assert.match(landing, /products=\{conferenceExplorerProducts\}/);
   assert.match(sitemap, /conferenceSystemCatalog\.map\(\(p\) => \(\{/);
   assert.match(sitemap, /url: abs\(`\/conference-system\/\$\{p\.slug\}\/`\)/);
   assert.match(sitemap, /conferenceCategoryConfigs\.filter\(isConferenceCategoryIndexable\)/);
