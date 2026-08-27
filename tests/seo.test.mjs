@@ -707,6 +707,7 @@ test("Conference cards use canonical structured pricing and one accessible actio
   const card = read("app/conference-system/ConferenceProductCard.tsx");
   const explorer = read("app/conference-system/ConferenceProductExplorer.tsx");
   const collection = read("app/conference-system/ConferenceCollectionPage.tsx");
+  const collectionGrid = read("app/conference-system/ConferenceCollectionProductGrid.tsx");
 
   assert.match(price, /export function formatBdtAmount\(amount: number\)/);
   assert.match(catalog, /product\.price\.type === "fixed"[\s\S]*formatBdtAmount\(product\.price\.amount\)/);
@@ -728,9 +729,11 @@ test("Conference cards use canonical structured pricing and one accessible actio
   assert.doesNotMatch(card, /wishlist|Limited Stock|Only \d+ left|discount/i);
 
   assert.match(explorer, /<ConferenceProductCard/);
-  assert.match(collection, /<ConferenceProductCard/);
+  assert.match(collection, /<ConferenceCollectionProductGrid/);
+  assert.match(collectionGrid, /<ConferenceProductCard/);
   assert.doesNotMatch(explorer, /<ProductGridCard/);
   assert.doesNotMatch(collection, /<ProductGridCard/);
+  assert.doesNotMatch(collectionGrid, /<ProductGridCard/);
 });
 
 test("Conference price transparency uses one presenter and explicit commercial states", () => {
@@ -1422,6 +1425,9 @@ test("Conference products remain discoverable without the removed directory disc
 
 test("Conference collection templates stay normalized, adaptive, and single-DOM", () => {
   const collection = read("app/conference-system/ConferenceCollectionPage.tsx");
+  const collectionGrid = read("app/conference-system/ConferenceCollectionProductGrid.tsx");
+  const collectionPriceTable = read("app/conference-system/ConferenceCollectionPriceTable.tsx");
+  const taxonomy = read("app/conference-system/taxonomy.ts");
   const categoryRoute = read("app/conference-system/[slug]/page.tsx");
   const brandRoute = read("app/conference-system/brands/[brandSlug]/page.tsx");
   const productGrid = sectionBetween(collection, "function ProductGrid", "function PriceTable");
@@ -1432,17 +1438,28 @@ test("Conference collection templates stay normalized, adaptive, and single-DOM"
   assert.equal((productGrid.match(/products\.map\(\(product\)/g) ?? []).length, 1);
   assert.equal((priceTable.match(/products\.map\(\(product\)/g) ?? []).length, 1);
   assert.match(productGrid, /getConferenceProductPrimaryImage\(product\)/);
-  assert.match(productGrid, /<ConferenceProductCard/);
+  assert.match(productGrid, /<ConferenceCollectionProductGrid/);
+  assert.match(collectionGrid, /<ConferenceProductCard/);
+  assert.match(collectionGrid, /const COLLECTION_PAGE_SIZE = 12/);
+  assert.match(collectionGrid, /paginateConferenceProducts\(products, requestedPage, COLLECTION_PAGE_SIZE\)/);
+  assert.match(collectionGrid, /totalPages > 1/);
+  assert.match(collectionGrid, /shownProducts\.map\(\(product, index\)/);
   assert.match(productGrid, /slug: product\.slug/);
   assert.match(priceTable, /getConferenceProductPricePresentation\(product\)/);
   assert.match(priceTable, /getConferenceProductAvailabilityLabel\(product\)/);
   assert.match(priceTable, /price\.basisLabel/);
+  assert.match(collectionPriceTable, /const REPRESENTATIVE_ROW_LIMIT = 10/);
+  assert.match(collectionPriceTable, /visibleRows\.map\(\(row\)/);
+  assert.match(collectionPriceTable, /aria-expanded=\{showAll\}/);
+  assert.match(taxonomy, /export function getConferenceDisplayApplications\(/);
+  assert.match(taxonomy, /const rawApplications = getConferenceApplications\(products\)/);
+  assert.match(taxonomy, /Math\.min\(Math\.max\(Math\.trunc\(limit\), 1\), 10\)/);
   assert.doesNotMatch(collection, /const (?:wireless|audio|video|brand)Products\s*=/);
   assert.match(collection, /getConferenceBrandsForProducts\(products\)/);
-  assert.match(collection, /getConferenceApplications\(products\)/);
+  assert.match(collection, /getConferenceDisplayApplications\(products\)/);
   assert.match(collection, /getConferenceCategoriesForProducts\(products\)/);
   assert.match(collection, /productCount === 1/);
-  assert.match(collection, /productCount <= 5/);
+  assert.match(collectionGrid, /productCount <= 5/);
   assert.equal(occurrences(collection, "<FaqAccordion"), 1);
   assert.equal(occurrences(collection, '"@type": "FAQPage"'), 1);
   assert.doesNotMatch(collection, /md:hidden[\s\S]{0,1200}hidden md:/);
@@ -1467,18 +1484,17 @@ test("Conference empty and thin routes use content-quality indexability", () => 
   assert.match(brandRoute, /isConferenceBrandIndexable\(brand\)/);
   assert.match(categoryRoute, /robots: \{ index: false, follow: true \}/);
   assert.match(brandRoute, /robots: \{ index: false, follow: true \}/);
-  assert.match(collection, /No verified \$\{category\.shortLabel/);
-  assert.match(collection, /No verified \$\{brand\.name\} Conference products yet/);
+  assert.match(collection, /No \$\{category\.shortLabel/);
+  assert.match(collection, /No \$\{brand\.name\} Conference products listed yet/);
 });
 
-test("Conference brands hub distinguishes featured, empty, and other verified brands", () => {
+test("Conference brands hub shows available brands with customer-facing copy", () => {
   const hub = read("app/conference-system/brands/page.tsx");
 
-  assert.match(hub, /conferenceBrandConfigs\.filter\(\(brand\) => brand\.featured\)/);
-  assert.match(hub, /!brand\.featured && getConferenceBrandProductCount\(brand\) > 0/);
+  assert.match(hub, /conferenceBrandConfigs\.filter\([\s\S]*getConferenceBrandProductCount\(brand\) > 0/);
   assert.match(hub, /Products Available/);
-  assert.match(hub, /Contact for Availability/);
-  assert.match(hub, /Other Available Brands/);
+  assert.doesNotMatch(hub, /planned featured brand registry|normalized data|search indexing|empty brand routes/i);
+  assert.doesNotMatch(hub, /Contact for Availability|Other Available Brands/);
   assert.match(hub, /getConferenceCategoryProductCount\(category\)/);
   assert.match(hub, /href="\/conference-system\/"/);
   assert.match(hub, /href="\/contact\/\?project=conference-system"/);

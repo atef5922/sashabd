@@ -34,7 +34,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
   "audio-conference-system": {
     heroTitle: "Audio Conference System Price in Bangladesh",
     intro:
-      "Audio conference systems organize speech pickup, meeting control, processing, and room sound so participants can communicate clearly. Sasha supports boardroom and conference-room planning with verified microphones, chairman and delegate units, controllers, DSP, amplifiers, and related equipment.",
+      "Audio conference systems organize speech pickup, meeting control, processing, and room sound so participants can communicate clearly. Sasha supports boardroom and conference-room planning with microphones, chairman and delegate units, controllers, DSP, amplifiers, and related equipment.",
     highlights: [
       { title: "Structured discussion", description: "Chairman, delegate, and microphone architecture helps organize who speaks and how meeting audio is managed." },
       { title: "Clearer room audio", description: "DSP, amplification, and speaker planning can improve speech distribution when selected for the room and system." },
@@ -57,22 +57,22 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
   "video-conference-system": {
     heroTitle: "Video Conference System Price in Bangladesh",
     intro:
-      "Video conference systems connect room presentation, camera or video processing, displays, and meeting audio for hybrid collaboration. Current verified products are shown without implying unsupported platform or camera compatibility.",
+      "Video conference systems connect room presentation, camera or video processing, displays, and meeting audio for hybrid collaboration. Current products are shown without implying unsupported platform or camera compatibility.",
     highlights: [
       { title: "Room collaboration", description: "Video and presentation equipment should support the way in-room and remote participants share information." },
       { title: "AV signal planning", description: "Source switching, processing, scaling, display output, and audio integration need to be planned as one workflow." },
       { title: "Hybrid meeting readiness", description: "Camera framing, display visibility, speech pickup, and connection requirements should be reviewed for the actual room." },
     ],
     buyerGuideTitle: "How to Choose Video Conference Equipment",
-    buyerGuideIntro: "Select equipment around room dimensions, presentation sources, display systems, and verified integration requirements.",
+    buyerGuideIntro: "Select equipment around room dimensions, presentation sources, display systems, and confirmed integration requirements.",
     buyerGuide: [
       { title: "Define the meeting workflow", description: "Confirm whether the room needs presentation switching, remote meetings, recording, or only local display processing." },
-      { title: "Review inputs and outputs", description: "Match source devices and displays using verified ports, formats, and system-loading requirements." },
+      { title: "Review inputs and outputs", description: "Match source devices and displays using published ports, formats, and system-loading requirements." },
       { title: "Coordinate audio and video", description: "Plan microphones, speakers, processing, camera placement, and display viewing together for a usable room." },
     ],
     relatedCategorySlugs: ["audio-conference-system", "complete-package"],
     faqs: [
-      { q: "What belongs in a video conference system?", a: "Depending on the project, it may include cameras, video processing, displays, presentation sources, meeting audio, control, and network connectivity. Only verified products are listed on this page." },
+      { q: "What belongs in a video conference system?", a: "Depending on the project, it may include cameras, video processing, displays, presentation sources, meeting audio, control, and network connectivity. The current matching products are listed on this page." },
       { q: "Can video conference equipment support hybrid meetings?", a: "It can be planned for hybrid meetings when the selected camera, audio, processing, display, and connection workflow are mutually compatible." },
       { q: "What affects video conference system pricing?", a: "Room size, camera and display requirements, processing, source switching, meeting audio, installation, and integration scope all affect the final quotation." },
     ],
@@ -80,11 +80,11 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
   "wired-conference-system": {
     heroTitle: "Wired Conference System Price in Bangladesh",
     intro:
-      "Wired conference systems are generally planned for permanent meeting rooms where structured physical connectivity and fixed seating are preferred. Verified wired conference products, including chairman units, delegate units, and control units, are listed below.",
+      "Wired conference systems are generally planned for permanent meeting rooms where structured physical connectivity and fixed seating are preferred. Current wired conference products, including chairman units, delegate units, and control units, are listed below.",
     highlights: [
       { title: "Permanent room planning", description: "Wired systems suit fixed boardrooms and formal meeting spaces where table and cable routes can be designed in advance." },
       { title: "Structured connectivity", description: "Controller location, table entry points, cable protection, and service access should be included in the installation plan." },
-      { title: "Compatibility first", description: "Chairman, delegate, controller, and extension components must belong to a verified compatible ecosystem." },
+      { title: "Compatibility first", description: "Chairman, delegate, controller, and extension components must belong to a compatible product ecosystem." },
     ],
     buyerGuideTitle: "How to Plan a Wired Conference System",
     buyerGuideIntro: "A wired project begins with seating, cable routes, controller capacity, and future maintenance access.",
@@ -96,22 +96,22 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
     relatedCategorySlugs: ["audio-conference-system", "wireless-conference-system", "chairman-unit", "delegate-unit", "control-unit"],
     faqs: [
       { q: "When is a wired conference system suitable?", a: "It is generally suitable for permanent boardrooms, government-style meeting rooms, councils, and other spaces with fixed seating and planned cable routes." },
-      { q: "Are wired products currently listed here?", a: "Yes. Verified wired conference products, including chairman units, delegate units, and control units, are listed directly on this page." },
+      { q: "Are wired products currently listed here?", a: "Yes. Wired conference products, including chairman units, delegate units, and control units, are listed directly on this page." },
       { q: "What should a wired conference BOQ include?", a: "The BOQ should consider compatible microphones, controller, cables, connectors, table or floor routing, rack equipment, installation, testing, and future service access." },
     ],
-    emptyMessage: "No dedicated products are currently verified as wired. Contact Sasha for project consultation and current availability without assuming catalog classification.",
+    emptyMessage: "No dedicated wired products are currently listed. Contact Sasha for project consultation and current availability.",
   },
   "wireless-conference-system": {
     heroTitle: "Wireless Conference System Price in Bangladesh",
     intro:
-      "Wireless conference systems reduce table cabling and support rooms where seating layouts change. Verified wireless delegate units, access equipment, charging products, and systems are listed directly below.",
+      "Wireless conference systems reduce table cabling and support rooms where seating layouts change. Current wireless delegate units, access equipment, charging products, and systems are listed directly below.",
     highlights: [
       { title: "Flexible seating", description: "Wireless operation can support reconfigured tables, multipurpose rooms, and venues where fixed microphone cabling is impractical." },
       { title: "Cleaner tabletop layout", description: "Fewer table cables can simplify room presentation while charging and storage still require planning." },
       { title: "Ecosystem compatibility", description: "Wireless units, access points, controllers, batteries, and chargers must be selected as a compatible system." },
     ],
     buyerGuideTitle: "How to Choose a Wireless Conference System",
-    buyerGuideIntro: "Review participant quantity, room coverage, charging workflow, and verified ecosystem compatibility.",
+    buyerGuideIntro: "Review participant quantity, room coverage, charging workflow, and product-family compatibility.",
     buyerGuide: [
       { title: "Assess room and seating changes", description: "Confirm the maximum layout, participant positions, and how often furniture is reconfigured." },
       { title: "Plan access and charging", description: "Account for compatible access equipment, charging capacity, storage, and meeting turnaround time." },
@@ -127,11 +127,11 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
   "chairman-unit": {
     heroTitle: "Conference Chairman Unit Price in Bangladesh",
     intro:
-      "A chairman unit is the meeting position intended for the chairperson or moderator. It forms part of a compatible conference ecosystem and may support meeting-control functions depending on the verified product and controller.",
+      "A chairman unit is the meeting position intended for the chairperson or moderator. It forms part of a compatible conference ecosystem and may support meeting-control functions depending on the selected product and controller.",
     highlights: [
       { title: "Chairperson position", description: "The unit provides a dedicated speaking position for the person leading or moderating the meeting." },
       { title: "Meeting control concept", description: "Priority or moderation behavior is a category concept; exact functions must be confirmed for each product." },
-      { title: "System compatibility", description: "A chairman unit should be matched with its verified controller, delegate units, cabling, or wireless ecosystem." },
+      { title: "System compatibility", description: "A chairman unit should be matched with its compatible controller, delegate units, cabling, or wireless ecosystem." },
     ],
     buyerGuideTitle: "How to Choose a Chairman Unit",
     buyerGuideIntro: "Start with the controller ecosystem and the meeting-control behavior required by the room.",
@@ -144,7 +144,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
     faqs: [
       { q: "What is a conference chairman unit?", a: "It is a dedicated microphone or discussion position for the chairperson or moderator within a compatible conference system." },
       { q: "Can any chairman unit work with any controller?", a: "No. Controller, connection, protocol, and product-family compatibility must be verified before units are combined." },
-      { q: "Does every chairman unit have a priority function?", a: "Priority control is common as a category concept, but exact controls vary. Confirm the verified product specifications and controller behavior." },
+      { q: "Does every chairman unit have a priority function?", a: "Priority control is common as a category concept, but exact controls vary. Confirm the published product specifications and controller behavior." },
     ],
   },
   "delegate-unit": {
@@ -152,7 +152,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
     intro:
       "Delegate units give meeting participants individual speaking positions within a structured discussion system. Selection depends on controller compatibility, connection architecture, participant workflow, and room layout.",
     highlights: [
-      { title: "Participant speech position", description: "Each verified delegate unit provides a defined place for participant speech pickup and meeting interaction." },
+      { title: "Participant speech position", description: "Each delegate unit provides a defined place for participant speech pickup and meeting interaction." },
       { title: "Scalable room planning", description: "The required quantity follows the seating plan and the supported capacity of the chosen system." },
       { title: "Compatible ecosystem", description: "Delegate units must match the controller and any wired or wireless access and charging equipment." },
     ],
@@ -161,12 +161,12 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
     buyerGuide: [
       { title: "Count participant positions", description: "Map regular and maximum meeting attendance against the seating layout." },
       { title: "Verify the controller", description: "Confirm supported product family, connection, capacity, and required accessories." },
-      { title: "Review user workflow", description: "Consider microphone operation and any verified interaction features required for the meeting format." },
+      { title: "Review user workflow", description: "Consider microphone operation and any documented interaction features required for the meeting format." },
     ],
     relatedCategorySlugs: ["chairman-unit", "control-unit", "audio-conference-system", "wireless-conference-system"],
     faqs: [
       { q: "What does a delegate unit do?", a: "It provides an individual participant position for speaking and taking part in a structured conference discussion." },
-      { q: "How many delegate units are needed?", a: "The quantity depends on participant positions, shared-seat policy, room layout, and the verified capacity of the selected controller." },
+      { q: "How many delegate units are needed?", a: "The quantity depends on participant positions, shared-seat policy, room layout, and the published capacity of the selected controller." },
       { q: "Are delegate units interchangeable between brands?", a: "They should not be assumed interchangeable. Verify controller, protocol, connection, and charging compatibility within the selected system." },
     ],
   },
@@ -177,13 +177,13 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
     highlights: [
       { title: "Central coordination", description: "The controller forms the management point for compatible discussion units and meeting audio operation." },
       { title: "Capacity planning", description: "Supported unit quantity and expansion should be verified for the selected controller and project." },
-      { title: "Audio integration", description: "Connections to DSP, amplification, recording, or room audio must follow verified interfaces and system design." },
+      { title: "Audio integration", description: "Connections to DSP, amplification, recording, or room audio must follow supported interfaces and system design." },
     ],
     buyerGuideTitle: "How to Choose a Conference Control Unit",
     buyerGuideIntro: "Match the controller to the microphone ecosystem, room scale, operating workflow, and integration plan.",
     buyerGuide: [
       { title: "Start with compatible units", description: "Identify the exact chairman and delegate family the controller is designed to manage." },
-      { title: "Confirm capacity and expansion", description: "Review current participant quantity and realistic future growth using verified specifications." },
+      { title: "Confirm capacity and expansion", description: "Review current participant quantity and realistic future growth using published specifications." },
       { title: "Plan external audio connections", description: "Check requirements for DSP, speakers, recording, PA, or hybrid meeting integration." },
     ],
     relatedCategorySlugs: ["chairman-unit", "delegate-unit", "audio-conference-system", "conference-dsp", "conference-amplifier"],
@@ -196,7 +196,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
   "conference-dsp": {
     heroTitle: "Conference DSP Price in Bangladesh",
     intro:
-      "Conference DSP equipment processes and routes room audio between microphones, sources, outputs, and supporting systems. Required processing depends on room acoustics, input and output needs, and verified integration requirements.",
+      "Conference DSP equipment processes and routes room audio between microphones, sources, outputs, and supporting systems. Required processing depends on room acoustics, input and output needs, and confirmed integration requirements.",
     highlights: [
       { title: "Signal routing", description: "DSP can organize audio paths between microphone, source, amplifier, recording, and output equipment." },
       { title: "Room tuning", description: "EQ and level management are common processing concepts, while exact features vary by model." },
@@ -213,15 +213,15 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
     faqs: [
       { q: "What is a conference DSP used for?", a: "It is used for digital audio routing and processing between conference microphones, sources, amplifiers, recording feeds, and room outputs." },
       { q: "Does every conference room need a DSP?", a: "No. The requirement depends on microphone quantity, room acoustics, routing complexity, speaker design, and integration scope." },
-      { q: "What should be checked before choosing a DSP?", a: "Check verified input and output capacity, processing needs, control workflow, interfaces, and compatibility with the wider room audio system." },
+      { q: "What should be checked before choosing a DSP?", a: "Check published input and output capacity, processing needs, control workflow, interfaces, and compatibility with the wider room audio system." },
     ],
   },
   "conference-amplifier": {
     heroTitle: "Conference Amplifier Price in Bangladesh",
     intro:
-      "Conference amplifiers increase audio signal power for suitable room speakers and may form part of a wider meeting-room audio system. Selection depends on the speaker design, room coverage, signal chain, and verified product capabilities.",
+      "Conference amplifiers increase audio signal power for suitable room speakers and may form part of a wider meeting-room audio system. Selection depends on the speaker design, room coverage, signal chain, and published product capabilities.",
     highlights: [
-      { title: "Speaker power", description: "The amplifier should be matched to the room's speaker load and coverage plan using verified ratings." },
+      { title: "Speaker power", description: "The amplifier should be matched to the room's speaker load and coverage plan using published ratings." },
       { title: "Conference audio integration", description: "Inputs and outputs should fit the controller, DSP, mixer, or other room-audio equipment." },
       { title: "Speech-focused planning", description: "Room acoustics, loudspeaker placement, and commissioning affect speech clarity as much as amplifier selection." },
     ],
@@ -235,21 +235,21 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
     relatedCategorySlugs: ["audio-conference-system", "conference-dsp", "control-unit"],
     faqs: [
       { q: "Why is an amplifier used in a conference room?", a: "It provides suitable power for room speakers when the conference or processing equipment cannot directly drive the planned speaker system." },
-      { q: "How is amplifier size selected?", a: "Selection should use verified speaker load, room zones, wiring design, output type, and suitable engineering margin." },
-      { q: "Can a conference amplifier connect directly to microphones?", a: "That depends on the product's verified inputs and system design. Many projects route microphone audio through a controller, mixer, or DSP first." },
+      { q: "How is amplifier size selected?", a: "Selection should use the confirmed speaker load, room zones, wiring design, output type, and suitable engineering margin." },
+      { q: "Can a conference amplifier connect directly to microphones?", a: "That depends on the product's published inputs and system design. Many projects route microphone audio through a controller, mixer, or DSP first." },
     ],
   },
   "complete-package": {
     heroTitle: "Complete Conference System Package in Bangladesh",
     intro:
-      "A complete conference package combines the discussion, control, processing, amplification, speaker, cabling, and installation requirements for a specific room. Verified complete package products are listed below.",
+      "A complete conference package combines the discussion, control, processing, amplification, speaker, cabling, and installation requirements for a specific room. Installed package options and ready-made catalog products are shown as separate sections below.",
     highlights: [
       { title: "Complete signal chain", description: "A package may need chairman and delegate positions, controller, processing, amplification, speakers, and supporting accessories." },
       { title: "Room-size planning", description: "Participant count, seating, acoustics, and installation conditions determine the appropriate equipment mix." },
-      { title: "BOQ-based scope", description: "A project BOQ documents verified products, quantities, cabling, installation, configuration, testing, and handover." },
+      { title: "BOQ-based scope", description: "A project BOQ documents selected products, quantities, cabling, installation, configuration, testing, and handover." },
     ],
     buyerGuideTitle: "How to Plan a Complete Conference Package",
-    buyerGuideIntro: "Build the package from verified room requirements instead of selecting a generic bundle.",
+    buyerGuideIntro: "Build the package from confirmed room requirements instead of selecting a generic bundle.",
     buyerGuide: [
       { title: "Survey the room", description: "Document seating, participant quantity, acoustics, furniture, display needs, and cable routes." },
       { title: "Define the system architecture", description: "Choose a compatible chairman, delegate, controller, processing, amplifier, and speaker workflow." },
@@ -258,11 +258,11 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
     relatedCategorySlugs: ["audio-conference-system", "video-conference-system", "wired-conference-system", "wireless-conference-system", "control-unit"],
     faqs: [
       { q: "What is included in a complete conference package?", a: "The contents depend on the room, but may include compatible chairman and delegate units, controller, DSP, amplifier, speakers, cabling, accessories, installation, testing, and handover." },
-      { q: "Are complete package products currently listed?", a: "Yes. Verified complete conference package products are listed directly on this page." },
-      { q: "How is a conference-system BOQ prepared?", a: "It starts with room size, seating, participant workflow, audio and video needs, infrastructure, verified product compatibility, installation, and commissioning requirements." },
+      { q: "Are complete package products currently listed?", a: "Yes. Two ready-made complete-system products are listed separately from the installed room packages on this page." },
+      { q: "How is a conference-system BOQ prepared?", a: "It starts with room size, seating, participant workflow, audio and video needs, infrastructure, product compatibility, installation, and commissioning requirements." },
       { q: "Do conference system package prices include installation?", a: "The displayed package ranges include the listed equipment, standard installation, system configuration, and testing. Final pricing may change after reviewing the selected brand, room layout, cable length, speaker requirements, site conditions, and any additional integration work." },
     ],
-    emptyMessage: "No verified complete package is currently listed. Sasha can review the room and prepare a project-specific quotation using available verified equipment.",
+    emptyMessage: "No ready-made complete-system product is currently listed. Sasha can review the room and prepare a project-specific quotation using available equipment.",
   },
 };
 
@@ -270,7 +270,7 @@ export const conferenceBrandPageContent: Readonly<Record<string, ConferenceBrand
   bosch: {
     heroTitle: "Bosch Conference System Price in Bangladesh",
     intro:
-      "The verified Bosch Conference catalog covers the analogue CCS 900 Ultra range and the digital CCS 1000 D platform, including control units, a recording control unit, and chairman and delegate discussion positions. Bosch PA amplifiers and loudspeakers are listed separately under PA System.",
+      "The current Bosch Conference catalog covers the analogue CCS 900 Ultra range and the digital CCS 1000 D platform, including control units, a recording control unit, and chairman and delegate discussion positions. Bosch PA amplifiers and loudspeakers are listed separately under PA System.",
     highlights: [
       { title: "Two discussion platforms", description: "CCS 900 Ultra covers plug-and-play analogue rooms; CCS 1000 D adds browser-based digital configuration and speaker queueing." },
       { title: "Recording without extra hardware", description: "The CCSD-CURD control unit captures meeting audio to USB storage, removing the separate recorder a minute-taking room would otherwise need." },
@@ -292,7 +292,7 @@ export const conferenceBrandPageContent: Readonly<Record<string, ConferenceBrand
   toa: {
     heroTitle: "TOA Conference System Price in Bangladesh",
     intro:
-      "The verified TOA Conference catalog spans the TS-680, TS-690, TS-780, TS-790, TS-800, and TS-900 discussion ranges, covering central units, chairman and delegate stations, an expansion unit, and factory extension cords. TOA PA amplifiers and loudspeakers are listed under PA System.",
+      "The current TOA Conference catalog spans the TS-680, TS-690, TS-780, TS-790, TS-800, and TS-900 discussion ranges, covering central units, chairman and delegate stations, an expansion unit, and factory extension cords. TOA PA amplifiers and loudspeakers are listed under PA System.",
     highlights: [
       { title: "A platform for each room size", description: "TS-690 and TS-820 suit compact rooms, TS-780 and TS-790 cover mid-size halls, and TS-900 is TOA's provision for large formal chambers." },
       { title: "Defined expansion route", description: "The TS-918 expansion unit extends a TS-910 chamber without replacing the central unit, which protects the original specification as seating grows." },
@@ -314,7 +314,7 @@ export const conferenceBrandPageContent: Readonly<Record<string, ConferenceBrand
   cmx: {
     heroTitle: "CMX Conference System Price in Bangladesh",
     intro:
-      "The verified CMX Conference catalog covers wired digital discussion across the CS, US, and WS ranges, wireless platforms using Wi-Fi, UHF, and infrared, and MC-series paperless conference hosts and management servers for document-driven meetings.",
+      "The current CMX Conference catalog covers wired digital discussion across the CS, US, and WS ranges, wireless platforms using Wi-Fi, UHF, and infrared, and MC-series paperless conference hosts and management servers for document-driven meetings.",
     highlights: [
       { title: "Wired, wireless, and infrared", description: "CMX covers all three carriers, so a room can be specified around cabling constraints, radio congestion, or session confidentiality." },
       { title: "Paperless meeting platform", description: "The MC-5800E server and MC-5802ABC and MC-5803 hosts distribute agendas and papers to seat terminals instead of printed packs." },
@@ -336,23 +336,23 @@ export const conferenceBrandPageContent: Readonly<Record<string, ConferenceBrand
   spon: {
     heroTitle: "SPON Conference System Price in Bangladesh",
     intro:
-      "The verified SPON Conference catalog currently covers chairman and delegate units, a control unit, DSP, amplification, microphones, wireless access equipment, and charging products.",
+      "The current SPON Conference catalog covers chairman and delegate units, a control unit, DSP, amplification, microphones, wireless access equipment, and charging products.",
     highlights: [
-      { title: "Discussion components", description: "Verified SPON chairman, delegate, microphone, and central-control products support structured meeting-system planning." },
-      { title: "Audio processing and power", description: "The current catalog includes verified SPON DSP and amplifier products for wider room-audio integration." },
-      { title: "Wireless workflow", description: "Verified wireless delegate, access-point, and charging products support flexible conference-system planning." },
+      { title: "Discussion components", description: "SPON chairman, delegate, microphone, and central-control products support structured meeting-system planning." },
+      { title: "Audio processing and power", description: "The current catalog includes SPON DSP and amplifier products for wider room-audio integration." },
+      { title: "Wireless workflow", description: "Wireless delegate, access-point, and charging products support flexible conference-system planning." },
     ],
     buyerGuideTitle: "Planning a SPON Conference System",
-    buyerGuideIntro: "Select products as a verified ecosystem and confirm compatibility before preparing the final BOQ.",
+    buyerGuideIntro: "Select products as a compatible system and confirm model relationships before preparing the final BOQ.",
     buyerGuide: [
       { title: "Choose the system architecture", description: "Define whether the project uses compatible digital or wireless discussion products and supporting equipment." },
       { title: "Match control and participant units", description: "Verify controller, chairman, delegate, access, and charging compatibility rather than relying on brand name alone." },
       { title: "Complete the room audio plan", description: "Review DSP, amplification, speakers, cabling, installation, and commissioning requirements." },
     ],
     faqs: [
-      { q: "Which SPON Conference products are currently listed?", a: "Sasha currently lists verified SPON microphones, chairman and delegate units, a control unit, DSP, amplifier, wireless access equipment, and a charger." },
+      { q: "Which SPON Conference products are currently listed?", a: "Sasha currently lists SPON microphones, chairman and delegate units, a control unit, DSP, amplifier, wireless access equipment, and a charger." },
       { q: "Can all SPON Conference products be combined automatically?", a: "No. Model family, controller, connection, charging, and accessory compatibility must still be verified for the intended system." },
-      { q: "Can Sasha prepare a SPON Conference quotation?", a: "Yes. Sasha can review the room, participant layout, verified product requirements, installation scope, and BOQ before preparing a quotation." },
+      { q: "Can Sasha prepare a SPON Conference quotation?", a: "Yes. Sasha can review the room, participant layout, product requirements, installation scope, and BOQ before preparing a quotation." },
     ],
   },
 };
