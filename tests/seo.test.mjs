@@ -1073,6 +1073,7 @@ test("Conference Digital, Video-Hybrid, and Paperless classifications stay evide
   const taxonomy = read("app/conference-system/taxonomy.ts");
   const landing = read("app/conference-system/page.tsx");
   const explorer = read("app/conference-system/ConferenceProductExplorer.tsx");
+  const chooserCards = sectionBetween(landing, "const conferenceSystemChooserCards", "const conferenceRoomSizeCards");
 
   assert.equal((catalogs.match(/systemTypes: \[[^\]]*"digital"[^\]]*\]/g) ?? []).length, 28);
   assert.equal((catalogs.match(/systemTypes: \[[^\]]*"paperless"[^\]]*\]/g) ?? []).length, 3);
@@ -1099,6 +1100,13 @@ test("Conference Digital, Video-Hybrid, and Paperless classifications stay evide
   assert.match(taxonomy, /slug: "digital-conference-system"/);
   assert.match(taxonomy, /slug: "paperless-conference-system"/);
   assert.match(landing, /href: "\/conference-system\/digital-conference-system\/"/);
+  assert.match(landing, /href: "\/conference-system\/video-conference-system\/"/);
+  assert.match(landing, /title: "Paperless Conference System"/);
+  assert.match(landing, /cta: "View Paperless Systems"/);
+  assert.match(landing, /href: "\/conference-system\/paperless-conference-system\/"/);
+  assert.equal(occurrences(chooserCards, 'title: "'), 5);
+  assert.match(landing, /snap-mandatory.*md:grid-cols-2.*xl:grid-cols-5/);
+  assert.match(landing, /md:last:col-span-2.*xl:last:col-span-1/);
   assert.doesNotMatch(landing, /href: "\/conference-system\/\?q=digital/);
   assert.match(explorer, /SYSTEM_TYPE_OPTIONS/);
   assert.match(explorer, /product\.systemTypes/);

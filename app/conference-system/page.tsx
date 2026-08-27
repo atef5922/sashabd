@@ -35,7 +35,7 @@ const deferredContentStyle = {
   containIntrinsicSize: "auto 520px",
 };
 
-type ConferenceChooserIcon = "wired" | "wireless" | "digital" | "hybrid" | "small" | "medium" | "large" | "hall";
+type ConferenceChooserIcon = "wired" | "wireless" | "digital" | "paperless" | "hybrid" | "small" | "medium" | "large" | "hall";
 
 const conferenceSystemChooserCards: ReadonlyArray<{
   title: string;
@@ -86,6 +86,15 @@ const conferenceSystemChooserCards: ReadonlyArray<{
     imageAlt: "Integrated digital presentation and video conference room solution",
     icon: "hybrid",
     imagePosition: "center 48%",
+  },
+  {
+    title: "Paperless Conference System",
+    description: "Paperless meeting systems for agenda, document and meeting-management workflows.",
+    cta: "View Paperless Systems",
+    href: "/conference-system/paperless-conference-system/",
+    image: "/images/conference_system_products/cmx_products/CMX-MC-5800E-Paperless-Conference-Management-Server-300x300.webp",
+    imageAlt: "CMX paperless conference management server for agenda and document workflows",
+    icon: "paperless",
   },
 ];
 
@@ -791,6 +800,8 @@ function ConferenceChooserIconSvg({ icon }: { icon: ConferenceChooserIcon }) {
       return <svg {...commonProps}><path d="M4.9 9.7a10 10 0 0 1 14.2 0" /><path d="M7.8 12.6a6 6 0 0 1 8.4 0" /><path d="M10.6 15.4a2 2 0 0 1 2.8 0" /><circle cx="12" cy="19" r=".8" fill="currentColor" stroke="none" /></svg>;
     case "digital":
       return <svg {...commonProps}><rect x="6" y="6" width="12" height="12" rx="2" /><rect x="9.5" y="9.5" width="5" height="5" rx=".5" /><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4" /></svg>;
+    case "paperless":
+      return <svg {...commonProps}><path d="M6 3h9l3 3v15H6z" /><path d="M14 3v4h4M9 11h6M9 15h6M9 18h4" /></svg>;
     case "hybrid":
       return <svg {...commonProps}><rect x="3" y="7" width="12" height="10" rx="2" /><path d="m15 10 5-3v10l-5-3" /><circle cx="8" cy="11" r="1.5" /><path d="M5.8 15a2.5 2.5 0 0 1 4.4 0" /></svg>;
     case "small":
@@ -1057,11 +1068,11 @@ export default function ConferenceSystemPage() {
           </p>
         </div>
 
-        <div className="-mx-1 mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-2 [scrollbar-width:none] [-ms-overflow-style:none] md:mx-0 md:grid md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 xl:grid-cols-4 [&::-webkit-scrollbar]:hidden">
+        <div className="-mx-1 mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-2 [scrollbar-width:none] [-ms-overflow-style:none] md:mx-0 md:grid md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 xl:grid-cols-5 [&::-webkit-scrollbar]:hidden">
           {conferenceSystemChooserCards.map((card) => (
             <article
               key={card.title}
-              className="group flex w-[86%] shrink-0 snap-start flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_3px_12px_rgba(15,23,42,0.055)] transition duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_9px_24px_rgba(15,23,42,0.09)] min-[520px]:w-[66%] md:w-auto md:snap-none"
+              className="group flex w-[86%] shrink-0 snap-start flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_3px_12px_rgba(15,23,42,0.055)] transition duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_9px_24px_rgba(15,23,42,0.09)] min-[520px]:w-[66%] md:w-auto md:snap-none md:last:col-span-2 md:last:w-[calc(50%_-_0.375rem)] md:last:justify-self-center xl:last:col-span-1 xl:last:w-auto xl:last:justify-self-stretch"
             >
               <div className="relative h-[104px] overflow-hidden bg-slate-100 sm:h-[112px]">
                 <Image
