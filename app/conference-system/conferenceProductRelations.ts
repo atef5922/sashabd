@@ -66,6 +66,23 @@ function documentsAnotherProductCompatibility(
 }
 
 /**
+ * Returns both directions of an explicit catalog relationship. A controller may
+ * name an accessory, or the accessory may name the controller; either direction
+ * is verified source data and should remain discoverable from both product pages.
+ */
+export function getConferenceCompatibleProducts(
+  current: ConferenceProduct,
+  products: readonly ConferenceProduct[],
+): ConferenceProduct[] {
+  const relatedIds = new Set(current.compatibleProductIds);
+  for (const product of products) {
+    if (product.compatibleProductIds.includes(current.id)) relatedIds.add(product.id);
+  }
+
+  return products.filter((product) => product.id !== current.id && relatedIds.has(product.id));
+}
+
+/**
  * Ranks discovery links without presenting inferred relationships as verified
  * compatibility. Explicit catalog references and matching verified system
  * families come first; product role and taxonomy provide the remaining context.

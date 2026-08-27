@@ -52,8 +52,8 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     group: "system",
     description: "Audio conference products for meeting-room speech, control, processing, amplification, and wireless operation.",
     seo: {
-      title: "Audio Conference System in Bangladesh",
-      description: "Browse audio conference system products for microphones, control, DSP, amplification, and meeting-room projects in Bangladesh.",
+      title: "Audio Conference System Price in Bangladesh",
+      description: "Compare audio conference system prices in Bangladesh. Explore chairman, delegate, control and complete discussion systems with project BOQ support.",
     },
     matchProduct: (product) => getConferenceProductSystemTypes(product).includes("audio"),
     featured: true,
@@ -67,8 +67,8 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     group: "system",
     description: "Digital discussion and conference products with verified digital system architecture or family relationships.",
     seo: {
-      title: "Digital Conference System in Bangladesh",
-      description: "Browse digital conference systems, control units, chairman and delegate units, hosts, and compatible supporting products in Bangladesh.",
+      title: "Digital Conference System Price in Bangladesh",
+      description: "Compare digital conference system prices in Bangladesh from Bosch, TOA, SPON and CMX. Browse control, chairman and delegate units and request a BOQ.",
     },
     matchProduct: (product) => getConferenceProductSystemTypes(product).includes("digital"),
     featured: true,
@@ -82,8 +82,8 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     group: "system",
     description: "Video and hybrid conference products for cameras, presentation processing, switching, and meeting-room AV workflows.",
     seo: {
-      title: "Video & Hybrid Conference System in Bangladesh",
-      description: "Browse video and hybrid conference products for cameras, presentation processing, switching, display integration, and meeting-room AV projects.",
+      title: "Video & Hybrid Conference System Price in Bangladesh",
+      description: "Explore video and hybrid conference system prices in Bangladesh, including cameras and AV processing with room planning and project BOQ support.",
     },
     matchProduct: (product) => getConferenceProductSystemTypes(product).includes("video-hybrid"),
     featured: true,
@@ -97,8 +97,8 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     group: "system",
     description: "Paperless conference hosts and management servers for agenda, document, and formal meeting workflows.",
     seo: {
-      title: "Paperless Conference System in Bangladesh",
-      description: "Browse paperless conference hosts and management servers for agenda and document-led meeting rooms in Bangladesh.",
+      title: "Paperless Conference System Price in Bangladesh",
+      description: "Explore paperless conference system prices in Bangladesh for agenda, document and meeting-management workflows. Compare systems and request a BOQ.",
     },
     matchProduct: (product) => getConferenceProductSystemTypes(product).includes("paperless"),
     featured: true,
@@ -112,8 +112,8 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     group: "connection",
     description: "Wired conference system products, including chairman units, delegate units, and control units.",
     seo: {
-      title: "Wired Conference System in Bangladesh",
-      description: "Explore wired conference system products and project options for permanent boardroom and meeting-room installations in Bangladesh.",
+      title: "Wired Conference System Price in Bangladesh",
+      description: "Compare wired conference system prices in Bangladesh for boardrooms and meeting rooms. Browse chairman, delegate and control units with BOQ support.",
     },
     matchProduct: (product) => product.connection === "wired",
     featured: true,
@@ -127,8 +127,8 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     group: "connection",
     description: "Wireless conference products for flexible meeting-room layouts, delegate operation, access, and charging workflows.",
     seo: {
-      title: "Wireless Conference System in Bangladesh",
-      description: "Browse wireless conference system products for flexible meeting rooms, delegate units, access points, and charging workflows.",
+      title: "Wireless Conference System Price in Bangladesh",
+      description: "Compare wireless conference system prices in Bangladesh. Browse wireless controllers, discussion units and accessories with project BOQ support.",
     },
     matchProduct: (product) => product.connection === "wireless",
     featured: true,
@@ -142,8 +142,8 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     group: "component",
     description: "Chairman units for structured conference discussion and chairperson control positions.",
     seo: {
-      title: "Conference Chairman Unit in Bangladesh",
-      description: "Browse conference chairman units for boardrooms, councils, committees, and structured meeting-room discussion systems.",
+      title: "Conference Chairman Unit Price in Bangladesh",
+      description: "Compare conference chairman unit prices in Bangladesh for boardrooms and councils. Review system compatibility and request a project BOQ.",
     },
     matchProduct: (product) => product.productTypes.includes("chairman-unit"),
     order: 50,
@@ -156,8 +156,8 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     group: "component",
     description: "Delegate units for participant speech pickup and organized conference-table discussions.",
     seo: {
-      title: "Conference Delegate Unit in Bangladesh",
-      description: "Browse conference delegate units for boardrooms, meeting rooms, councils, and structured participant discussion systems.",
+      title: "Conference Delegate Unit Price in Bangladesh",
+      description: "Compare conference delegate unit prices in Bangladesh for meeting rooms and councils. Review controller compatibility and request a project BOQ.",
     },
     matchProduct: (product) => product.productTypes.includes("delegate-unit"),
     order: 60,
@@ -170,8 +170,8 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     group: "component",
     description: "Central control units for conference microphone management and meeting audio operation.",
     seo: {
-      title: "Conference Control Unit in Bangladesh",
-      description: "Browse conference control units for chairman and delegate microphone management, system planning, and meeting audio projects.",
+      title: "Conference Control Unit Price in Bangladesh",
+      description: "Compare conference control unit prices in Bangladesh. Review compatible chairman and delegate systems, specifications and project BOQ support.",
     },
     matchProduct: (product) => product.productTypes.includes("control-unit"),
     order: 70,
@@ -183,8 +183,8 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     group: "component",
     description: "Digital signal processors for conference audio routing, tuning, and speech-system integration.",
     seo: {
-      title: "Conference DSP in Bangladesh",
-      description: "Browse conference DSP products for microphone processing, audio routing, room tuning, and professional AV integration.",
+      title: "Conference DSP Price in Bangladesh",
+      description: "Compare conference DSP prices in Bangladesh for microphone processing, audio routing and room tuning. Review specifications and request a BOQ.",
     },
     matchProduct: (product) => product.productTypes.includes("dsp"),
     order: 80,
@@ -196,8 +196,8 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     group: "component",
     description: "Amplifiers for conference audio reinforcement, speaker integration, and room sound planning.",
     seo: {
-      title: "Conference Amplifier in Bangladesh",
-      description: "Browse conference amplifiers for microphone audio reinforcement, speaker integration, and professional meeting-room projects.",
+      title: "Conference Amplifier Price in Bangladesh",
+      description: "Compare conference amplifier prices in Bangladesh for room audio reinforcement and speaker integration. Review specifications and request a BOQ.",
     },
     matchProduct: (product) => product.productTypes.includes("amplifier"),
     order: 90,
@@ -210,8 +210,8 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     group: "package",
     description: "Complete conference system products for discussion, control, and room-system planning.",
     seo: {
-      title: "Complete Conference System Package in Bangladesh",
-      description: "Explore complete conference system products and installed package options for meeting-room projects in Bangladesh.",
+      title: "Complete Conference System Package Price in Bangladesh",
+      description: "Compare complete conference system package prices in Bangladesh for boardrooms and meeting rooms, with equipment guidance and project BOQ support.",
     },
     matchProduct: (product) => product.productTypes.includes("package"),
     order: 100,
@@ -227,8 +227,8 @@ export const conferenceBrandConfigs: readonly ConferenceBrandConfig[] = [
     featured: true,
     order: 10,
     seo: {
-      title: "Bosch Conference System in Bangladesh",
-      description: "Browse Bosch conference system products, specifications, pricing, and project support in Bangladesh.",
+      title: "Bosch Conference System Price in Bangladesh",
+      description: "Compare Bosch conference system prices in Bangladesh, including CCS 900 Ultra and CCS 1000 D components. Check compatibility and request a project BOQ.",
     },
   },
   {
@@ -239,8 +239,8 @@ export const conferenceBrandConfigs: readonly ConferenceBrandConfig[] = [
     featured: true,
     order: 20,
     seo: {
-      title: "TOA Conference System in Bangladesh",
-      description: "Browse TOA conference system products, specifications, pricing, and project support in Bangladesh.",
+      title: "TOA Conference System Price in Bangladesh",
+      description: "Compare TOA conference system prices in Bangladesh across TS discussion-system families. Review compatible components and request a project BOQ.",
     },
   },
   {
@@ -251,8 +251,8 @@ export const conferenceBrandConfigs: readonly ConferenceBrandConfig[] = [
     featured: true,
     order: 40,
     seo: {
-      title: "SPON Conference System in Bangladesh",
-      description: "Browse SPON conference microphones, control units, delegate units, DSP, amplifiers, and wireless conference products.",
+      title: "SPON Conference System Price in Bangladesh",
+      description: "Compare SPON conference system prices in Bangladesh for microphones, control units, DSP, amplifiers and wireless equipment. Request a project BOQ.",
     },
   },
   {
@@ -263,8 +263,8 @@ export const conferenceBrandConfigs: readonly ConferenceBrandConfig[] = [
     featured: true,
     order: 50,
     seo: {
-      title: "CMX Conference System in Bangladesh",
-      description: "Browse CMX conference system products, specifications, pricing, and project support in Bangladesh.",
+      title: "CMX Conference System Price in Bangladesh",
+      description: "Compare CMX conference system prices in Bangladesh for wired, wireless, infrared and paperless systems. Check compatibility and request a BOQ.",
     },
   },
 ];

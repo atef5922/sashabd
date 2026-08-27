@@ -28,7 +28,8 @@ export default function FloatingActions() {
         type="button"
         onClick={scrollToTop}
         aria-label="Back to top"
-        className={`grid h-12 w-12 place-items-center rounded-full border bg-white text-slate-900 shadow-lg transition ${
+        title="Back to top"
+        className={`grid h-12 w-12 cursor-pointer place-items-center rounded-full border bg-white text-slate-900 shadow-lg transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-500/50 focus-visible:ring-offset-2 ${
           showTop ? "opacity-100 translate-y-0" : "pointer-events-none opacity-0 translate-y-2"
         }`}
         style={{ borderColor: "rgba(15,23,42,0.12)" }}
