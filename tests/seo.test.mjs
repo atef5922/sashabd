@@ -964,6 +964,7 @@ test("Conference brand catalogs are unique, conference-only, and image-backed", 
   const ids = [...all.matchAll(/^    id: "([^"]+)",$/gm)].map((m) => m[1]);
   const slugs = [...all.matchAll(/^    slug: "([^"]+)",$/gm)].map((m) => m[1]);
   const names = [...all.matchAll(/^    name: "([^"]+)",$/gm)].map((m) => m[1]);
+  const models = [...all.matchAll(/^    model: "([^"]+)",$/gm)].map((m) => m[1]);
   const shortDescriptions = [...all.matchAll(/shortDescription:\s*\n?\s*"([^"]{40,})"/g)].map((m) => m[1]);
   const descriptions = [...all.matchAll(/^    description:\s*\n?\s*"([^"]{60,})"/gm)].map((m) => m[1]);
 
@@ -971,6 +972,12 @@ test("Conference brand catalogs are unique, conference-only, and image-backed", 
   assert.equal(new Set(ids).size, ids.length, "product ids must be unique");
   assert.equal(new Set(slugs).size, slugs.length, "product slugs must be unique");
   assert.equal(new Set(names).size, names.length, "product names must be unique");
+  assert.equal(models.length, ids.length, "every product needs a model for detail-page facts");
+  const weakTitles = names.filter((name, index) => {
+    const normalize = (value) => value.toLowerCase().replace(/\s*\/\s*/g, "/").trim();
+    return normalize(name) === normalize(models[index]);
+  });
+  assert.deepEqual(weakTitles, [], "product H1 sources must not be model-only");
   assert.equal(new Set(shortDescriptions).size, shortDescriptions.length, "short descriptions must be unique for SEO");
   assert.equal(new Set(descriptions).size, descriptions.length, "descriptions must be unique for SEO");
   assert.equal(descriptions.length, ids.length, "every product needs its own description");
@@ -1002,10 +1009,24 @@ test("Conference brand catalogs are unique, conference-only, and image-backed", 
     assert.ok(statSync(path.join(root, relative)).isFile(), `${relative} must exist`);
   }
 
-  for (const model of ["LCS-8004HTP/LCS-8008HTP/LCS-8016HTP", "LCS-2883A", "LCS-2870D", "LCS-2871D", "LCS-2871-20", "LCS-5203L", "LCM-6013DVW-L"]) {
-    assert.match(spon, new RegExp(`name: "${model.replaceAll("/", "\\/")}"`), `${model} must keep its supplied product name`);
+  for (const title of [
+    "SPON LCS-8004HTP / LCS-8008HTP / LCS-8016HTP HDMI Video Matrix",
+    "SPON LCS-2883A Omnidirectional Conference Speakerphone",
+    "SPON LCS-2870D Inverted Conference Camera Bracket",
+    "SPON LCS-2871D Inverted Conference Camera Bracket",
+    "SPON LCS-2871-20 HD Conference Camera",
+    "SPON LCS-5203L Digital Conference Central Unit",
+    "SPON LCM-6013DVW-L Wireless Conference Delegate Unit",
+  ]) {
+    assert.ok(spon.includes(`name: "${title}"`), `${title} needs a descriptive canonical title`);
   }
-  assert.match(core, /name: "LCM-6013CV-L"/);
+  for (const title of [
+    "SPON LCM-6013CV-L Digital Conference Chairman Unit",
+    "SPON GEN-5301P13 Conference Microphone Unit",
+    "SPON NAC-720W Wireless Conference System",
+  ]) {
+    assert.ok(core.includes(`name: "${title}"`), `${title} needs a brand-qualified canonical title`);
+  }
   for (const file of ["LCS-800XHTP.webp", "LCS-2883A.webp", "LCS-2870D.webp", "LCS-2871D.webp", "2af217e477.webp", "LCS-5203L.webp", "LCM-6013DVW-L.webp", "LCM-6013CV-L.webp"]) {
     const relative = path.join("public/images/conference_system_products/spon_products", file);
     assert.ok(statSync(path.join(root, relative)).isFile(), `${relative} must exist`);
@@ -1337,6 +1358,7 @@ test("Conference product pages emit Product schema and relevance-ranked internal
   const detail = read("app/conference-system/ConferenceProductDetailPage.tsx");
   const gallery = read("app/conference-system/ConferenceProductGallery.tsx");
   const catalog = read("app/conference-system/catalog.ts");
+  const relations = read("app/conference-system/conferenceProductRelations.ts");
 
   // Product / Offer / Brand structured data stays factual.
   assert.match(route, /function buildProductJsonLd\(/);
@@ -1352,14 +1374,14 @@ test("Conference product pages emit Product schema and relevance-ranked internal
   assert.ok(!route.includes("AggregateRating"), "ratings must not be fabricated");
   assert.ok(!route.includes("reviewCount"), "review counts must not be fabricated");
 
-  // Related products are ranked, not the first three of the catalog.
-  assert.match(route, /for \(const id of current\.compatibleProductIds\)/);
-  assert.match(route, /product\.brand\?\.slug === current\.brand\.slug/);
-  assert.match(route, /product\.productTypes\.some\(\(type\) => current\.productTypes\.includes\(type\)\)/);
-  assert.ok(
-    !/function getRelatedProducts[\s\S]{0,200}\.slice\(0, 3\);\n\}/.test(route),
-    "related products must not be a flat catalog slice",
-  );
+  // Related products use explicit compatibility first, then verified family and
+  // contextual role/taxonomy signals. Self-links and duplicate slugs are excluded.
+  assert.match(route, /getConferenceRelatedProducts\(product, conferenceSystemCatalog\)/);
+  assert.match(relations, /current\.compatibleProductIds\.map/);
+  assert.match(relations, /current\.systemFamily && product\.systemFamily === current\.systemFamily/);
+  assert.match(relations, /RELATED_TYPE_PRIORITIES/);
+  assert.match(relations, /product\.id === current\.id \|\| product\.slug === current\.slug/);
+  assert.match(relations, /seen\.has\(product\.slug\)/);
 
   // Commercial qualifier in the title tag, capped to the SERP limit.
   assert.match(route, /const SERP_TITLE_LIMIT = 60;/);
@@ -1374,6 +1396,7 @@ test("Conference product pages emit Product schema and relevance-ranked internal
   // Compatibility block gives each product its own internal links, with no templated prose.
   assert.match(detail, /System Compatibility/);
   assert.match(detail, /compatibleProducts\.map\(\(item\) => \(/);
+  assert.match(detail, /Compatibility should be confirmed before ordering/);
   assert.ok(
     !detail.includes("avoids the compatibility gaps"),
     "the templated compatibility sentence must not be repeated across product pages",
@@ -1383,13 +1406,16 @@ test("Conference product pages emit Product schema and relevance-ranked internal
   assert.match(catalog, /export function getConferenceProductSpecifications\(/);
   assert.match(catalog, /const COMMERCIAL_SPEC_KEYS = new Set\(\["Price Basis", "Quotation", "Price", "Support"\]\)/);
   assert.match(catalog, /const SPEC_KEY_ALIASES: Readonly<Record<string, string>>/);
+  assert.match(catalog, /const EMPTY_SPECIFICATION_VALUES = new Set/);
   assert.match(detail, /getConferenceProductSpecifications\(product\)/);
   assert.match(detail, /\{specifications\.map\(\(spec\) => \(/);
   assert.match(detail, /getConferenceProductPriceNote\(product\)/);
   assert.ok(!detail.startsWith('"use client";'), "the complete product page must remain a server component");
   assert.match(detail, /<ConferenceProductGallery productName=\{product\.name\} images=\{product\.images\} \/>/);
   assert.match(gallery, /^"use client";/);
-  assert.match(gallery, /aria-pressed=\{activeImage === image\.src\}/);
+  assert.match(gallery, /aria-pressed=\{activeImage\.src === image\.src\}/);
+  assert.match(gallery, /alt=\{activeImage\.alt \|\| productName\}/);
+  assert.match(gallery, /loading="lazy"/);
   assert.match(gallery, /priority/);
   assert.match(detail, /aria-label="Price and availability"/);
   assert.match(detail, /productFacts\.map/);
@@ -1403,6 +1429,55 @@ test("Conference product pages emit Product schema and relevance-ranked internal
   assert.match(route, /compatibleProducts=\{product\.compatibleProductIds/);
   assert.match(route, /categoryLinks=\{conferenceCategoryConfigs/);
   assert.match(route, /brandLink=\{/);
+});
+
+test("Conference related products are contextual, explicit-first, unique, and never self-related", async () => {
+  const moduleUrl = pathToFileURL(path.join(root, "app/conference-system/conferenceProductRelations.ts")).href;
+  const { getConferenceRelatedProducts, getConferenceRelatedSectionCopy } = await import(`${moduleUrl}?test=${Date.now()}`);
+  const makeProduct = (overrides) => ({
+    id: overrides.id,
+    slug: overrides.slug ?? overrides.id,
+    name: overrides.name ?? overrides.id,
+    brand: { name: "Example", slug: "example" },
+    systemTypes: ["audio", "digital"],
+    systemCategory: "audio",
+    connection: "wired",
+    productTypes: ["accessory"],
+    price: { type: "request", currency: "BDT", displayLabel: "Request Price" },
+    availability: "contact",
+    shortDescription: "Verified conference product summary.",
+    description: "Verified conference product overview.",
+    keyFeatures: ["Verified feature one", "Verified feature two", "Verified feature three"],
+    specifications: [],
+    applications: ["Meeting Room"],
+    compatibleProductIds: [],
+    images: [{ src: "/example.webp", alt: "Example conference product" }],
+    badge: "Conference",
+    tags: ["Conference"],
+    ...overrides,
+  });
+  const controller = makeProduct({
+    id: "controller",
+    productTypes: ["control-unit"],
+    compatibleProductIds: ["chairman", "delegate"],
+  });
+  const chairman = makeProduct({ id: "chairman", productTypes: ["chairman-unit"] });
+  const delegate = makeProduct({ id: "delegate", productTypes: ["delegate-unit"] });
+  const duplicateDelegate = makeProduct({ id: "duplicate-delegate", slug: "delegate", productTypes: ["delegate-unit"] });
+  const unrelated = makeProduct({ id: "camera", productTypes: ["camera"], systemTypes: ["video-hybrid"], systemCategory: "video" });
+
+  const related = getConferenceRelatedProducts(
+    controller,
+    [controller, unrelated, delegate, duplicateDelegate, chairman],
+    4,
+  );
+  assert.deepEqual(related.slice(0, 2).map((product) => product.id), ["chairman", "delegate"]);
+  assert.ok(related.every((product) => product.id !== controller.id));
+  assert.equal(new Set(related.map((product) => product.slug)).size, related.length);
+  assert.match(getConferenceRelatedSectionCopy(controller), /Discussion units/);
+  assert.match(getConferenceRelatedSectionCopy(makeProduct({ id: "dsp", productTypes: ["dsp"] })), /audio processing/);
+  assert.match(getConferenceRelatedSectionCopy(makeProduct({ id: "camera-copy", productTypes: ["camera"] })), /video and hybrid/);
+  assert.match(getConferenceRelatedSectionCopy(makeProduct({ id: "paperless", systemTypes: ["paperless"], productTypes: ["processor"] })), /paperless and digital/);
 });
 
 test("Conference offer schema emits only valid fixed-price offers", async () => {

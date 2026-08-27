@@ -6,6 +6,7 @@ import { BRAND_NAME } from "@/lib/brand";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import ConferenceCollectionPage from "../ConferenceCollectionPage";
 import ConferenceProductDetailPage from "../ConferenceProductDetailPage";
+import { getConferenceRelatedProducts } from "../conferenceProductRelations";
 import { buildConferenceProductOfferJsonLd } from "../conferenceProductSchema";
 import {
   conferenceSystemCatalog,
@@ -76,44 +77,6 @@ export async function generateStaticParams() {
 }
 
 /**
- * Related products, most relevant first:
- * 1. units the catalog explicitly marks as compatible
- * 2. other products from the same brand
- * 3. products sharing a product type
- * 4. catalogue order, so the block is never empty
- */
-function getRelatedProducts(slug: string, limit = 3) {
-  const current = getConferenceProductBySlug(slug);
-  if (!current) return conferenceSystemCatalog.filter((product) => product.slug !== slug).slice(0, limit);
-
-  const picked = new Map<string, (typeof conferenceSystemCatalog)[number]>();
-  const add = (product: (typeof conferenceSystemCatalog)[number]) => {
-    if (product.slug !== slug && !picked.has(product.slug) && picked.size < limit) {
-      picked.set(product.slug, product);
-    }
-  };
-
-  for (const id of current.compatibleProductIds) {
-    const match = conferenceSystemCatalog.find((product) => product.id === id);
-    if (match) add(match);
-  }
-
-  if (current.brand) {
-    for (const product of conferenceSystemCatalog) {
-      if (product.brand?.slug === current.brand.slug) add(product);
-    }
-  }
-
-  for (const product of conferenceSystemCatalog) {
-    if (product.productTypes.some((type) => current.productTypes.includes(type))) add(product);
-  }
-
-  for (const product of conferenceSystemCatalog) add(product);
-
-  return [...picked.values()];
-}
-
-/**
  * Product schema remains factual: only a positive fixed catalog price becomes
  * an Offer. Indicative project ranges and request-price records stay visible in
  * the page UI but are not misrepresented as sellable offers.
@@ -151,7 +114,7 @@ export default async function ConferenceProductPage(
   const product = getConferenceProductBySlug(slug);
 
   if (product) {
-    const wa = buildWhatsAppHref(`Hello Sasha Corporation, I need quotation for ${product.name}.`);
+    const wa = buildWhatsAppHref(`Hello Sasha Corporation, I need a quotation for ${product.name}.`);
 
     return (
       <>
@@ -161,7 +124,7 @@ export default async function ConferenceProductPage(
         />
         <ConferenceProductDetailPage
           product={product}
-          relatedProducts={getRelatedProducts(product.slug)}
+          relatedProducts={getConferenceRelatedProducts(product, conferenceSystemCatalog)}
           wa={wa}
           compatibleProducts={product.compatibleProductIds
             .map((id) => conferenceSystemCatalog.find((item) => item.id === id))

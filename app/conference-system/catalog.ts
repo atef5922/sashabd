@@ -245,7 +245,7 @@ const coreConferenceProducts: ConferenceProduct[] = [
   {
     id: "spon-lcm-6013cv-l-digital-conference-chairman-unit",
     slug: "spon-lcm-6013cv-l-digital-conference-chairman-unit",
-    name: "LCM-6013CV-L",
+    name: "SPON LCM-6013CV-L Digital Conference Chairman Unit",
     model: "LCM-6013CV-L",
     brand: { name: "SPON", slug: "spon" },
     systemTypes: ["audio", "digital"],
@@ -497,7 +497,7 @@ const coreConferenceProducts: ConferenceProduct[] = [
   {
     id: "gen-5301p13-conference-microphone-unit",
     slug: "gen-5301p13-conference-microphone-unit",
-    name: "GEN-5301P13 Conference Microphone Unit",
+    name: "SPON GEN-5301P13 Conference Microphone Unit",
     model: "GEN-5301P13",
     brand: { name: "SPON", slug: "spon" },
     systemCategory: "audio",
@@ -507,7 +507,7 @@ const coreConferenceProducts: ConferenceProduct[] = [
     availability: "project-order",
     shortDescription: "Desktop gooseneck conference microphone unit for clean speech pickup in small and medium meeting rooms.",
     images: [
-      { src: conferenceImage("GEN-5301P13.webp"), alt: "GEN-5301P13 Conference Microphone Unit", primary: true },
+      { src: conferenceImage("GEN-5301P13.webp"), alt: "SPON GEN-5301P13 Conference Microphone Unit", primary: true },
     ],
     compatibleProductIds: ["spon-lcm-6010-digital-conference-system-central-unit", "spon-gen-5301p26-network-integrated-amplifier"],
     badge: "Microphone Unit",
@@ -534,7 +534,7 @@ const coreConferenceProducts: ConferenceProduct[] = [
   {
     id: "nac-720w-wireless-conference-system",
     slug: "nac-720w-wireless-conference-system",
-    name: "NAC-720W Wireless Conference System",
+    name: "SPON NAC-720W Wireless Conference System",
     model: "NAC-720W",
     brand: { name: "SPON", slug: "spon" },
     systemCategory: "audio",
@@ -544,7 +544,7 @@ const coreConferenceProducts: ConferenceProduct[] = [
     availability: "project-order",
     shortDescription: "Wireless conference solution for flexible seating layouts and clean table arrangements without heavy microphone cabling.",
     images: [
-      { src: conferenceImage("NAC-720W.webp"), alt: "NAC-720W Wireless Conference System", primary: true },
+      { src: conferenceImage("NAC-720W.webp"), alt: "SPON NAC-720W Wireless Conference System", primary: true },
     ],
     compatibleProductIds: ["spon-lcs-5301z-wireless-digital-conference-access-point", "spon-lcs-5252d-wireless-conference-delegate-unit"],
     badge: "Wireless System",
@@ -860,7 +860,18 @@ const COMMERCIAL_SPEC_KEYS = new Set(["Price Basis", "Quotation", "Price", "Supp
  * property across every product instead of seeing three separate ones.
  */
 const SPEC_KEY_ALIASES: Readonly<Record<string, string>> = {
+  "Audio Sampling and Bitrate": "Audio Sampling / Bitrate",
+  "Audio Sampling Rate and Bitrate": "Audio Sampling / Bitrate",
+  "Device Dimensions": "Dimensions",
+  Dimension: "Dimensions",
   Models: "Model",
+  "Mounting Method": "Mounting",
+  "Packed Dimensions": "Package Dimensions",
+  "Gross Weight": "Package Weight",
+  "Product Dimensions": "Dimensions",
+  "Product Series": "Series",
+  "Product Warranty": "Warranty",
+  "Product Weight": "Weight",
   Functions: "Function",
   "System Compatibility": "Compatibility",
   "Microphone Style": "Microphone",
@@ -870,6 +881,24 @@ const SPEC_KEY_ALIASES: Readonly<Record<string, string>> = {
   "System Role": "Function",
   "Processing Role": "Function",
 };
+
+const EMPTY_SPECIFICATION_VALUES = new Set([
+  "-",
+  "—",
+  "–",
+  "n/a",
+  "na",
+  "not available",
+  "not verified",
+  "tbc",
+  "tbd",
+  "unknown",
+]);
+
+function isUsableSpecificationValue(value: string | undefined): value is string {
+  if (!value?.trim()) return false;
+  return !EMPTY_SPECIFICATION_VALUES.has(value.trim().toLocaleLowerCase("en-US"));
+}
 
 const CONNECTION_LABELS: Readonly<Record<ConferenceConnection, string>> = {
   wired: "Wired",
@@ -931,11 +960,11 @@ export function getConferenceProductSpecifications(
   const seen = new Set<string>();
 
   const push = (key: string, value: string | undefined) => {
-    if (!value) return;
-    const normalizedKey = SPEC_KEY_ALIASES[key] ?? key;
+    if (!key.trim() || !isUsableSpecificationValue(value)) return;
+    const normalizedKey = SPEC_KEY_ALIASES[key.trim()] ?? key.trim();
     if (COMMERCIAL_SPEC_KEYS.has(normalizedKey) || seen.has(normalizedKey)) return;
     seen.add(normalizedKey);
-    rows.push({ key: normalizedKey, value });
+    rows.push({ key: normalizedKey, value: value.trim() });
   };
 
   push("Brand", product.brand?.name);
@@ -956,7 +985,7 @@ export function getConferenceProductSpecifications(
     push(isConnectionProse ? "Compatibility" : spec.key, spec.value);
   }
   push("Warranty", product.warranty);
-  push("Availability", getConferenceProductAvailabilityLabel(product));
+  push("Availability", product.availability ? getConferenceProductAvailabilityLabel(product) : undefined);
 
   return rows;
 }
