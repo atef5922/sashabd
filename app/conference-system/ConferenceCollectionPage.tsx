@@ -263,14 +263,14 @@ function FinalCta({ title, description }: { title: string; description: string }
   );
 }
 
-function Hero({ eyebrow, title, description, productCount, productsAnchor = true }: { eyebrow: string; title: string; description: string; productCount: number; productsAnchor?: boolean }) {
+function Hero({ eyebrow, title, description, productCount, productCountLabel, productsAnchor = true }: { eyebrow: string; title: string; description: string; productCount: number; productCountLabel: string; productsAnchor?: boolean }) {
   return (
     <section className="relative overflow-hidden rounded-3xl border border-orange-100 bg-[linear-gradient(135deg,#fff7ed_0%,#ffffff_52%,#f8fafc_100%)] p-6 md:p-9">
       <div className="relative max-w-4xl">
         <div className="flex flex-wrap items-center gap-2">
           <span className="rounded-full bg-slate-950 px-3 py-1 text-xs font-extrabold uppercase tracking-[0.15em] text-white">{eyebrow}</span>
           <span className="rounded-full border border-orange-200 bg-white px-3 py-1 text-xs font-bold text-orange-700">
-            {productCount} {productCount === 1 ? "product" : "products"} in this collection
+            {productCountLabel}
           </span>
         </div>
         <h1 className="mt-5 text-3xl font-extrabold leading-tight tracking-tight text-slate-950 md:text-5xl">{title}</h1>
@@ -286,6 +286,14 @@ function Hero({ eyebrow, title, description, productCount, productsAnchor = true
       </div>
     </section>
   );
+}
+
+function getCategoryProductCountLabel(category: ConferenceCategoryConfig, productCount: number): string {
+  if (category.slug === "control-unit") return `${productCount} Conference Control Products`;
+  if (category.group === "system" || category.group === "connection") {
+    return `${productCount} ${category.shortLabel ?? category.label} Conference Products`;
+  }
+  return `${productCount} ${category.shortLabel ?? category.label} Products`;
 }
 
 function EmptyState({ title, message }: { title: string; message: string }) {
@@ -319,7 +327,13 @@ function CategoryTemplate({ category, products, breadcrumbs }: Omit<CategoryColl
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-7 md:px-6 md:py-9" data-conference-route-kind="category">
       <Breadcrumbs items={breadcrumbs} />
-      <Hero eyebrow={CATEGORY_HERO_EYEBROWS[category.group]} title={content.heroTitle} description={content.intro} productCount={products.length} />
+      <Hero
+        eyebrow={CATEGORY_HERO_EYEBROWS[category.group]}
+        title={content.heroTitle}
+        description={content.intro}
+        productCount={products.length}
+        productCountLabel={getCategoryProductCountLabel(category, products.length)}
+      />
 
       {isCompletePackage ? <ConferencePackageCards /> : null}
 
@@ -415,7 +429,13 @@ function BrandTemplate({ brand, products, breadcrumbs }: Omit<BrandCollectionPro
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-7 md:px-6 md:py-9" data-conference-route-kind="brand">
       <Breadcrumbs items={breadcrumbs} />
-      <Hero eyebrow="Conference system brand" title={title} description={description} productCount={products.length} />
+      <Hero
+        eyebrow="Conference system brand"
+        title={title}
+        description={description}
+        productCount={products.length}
+        productCountLabel={`${products.length} ${brand.name} Conference Products`}
+      />
 
       {content ? (
         <section className="mt-10">
