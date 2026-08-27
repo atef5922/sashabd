@@ -151,7 +151,9 @@ test("Conference navigation exposes one accessible desktop mega menu and mobile 
   const navRegistry = sectionBetween(header, "const nav: NavItem[]", "function cn");
   const expectedCategoryRoutes = [
     "audio-conference-system",
+    "digital-conference-system",
     "video-conference-system",
+    "paperless-conference-system",
     "wired-conference-system",
     "wireless-conference-system",
     "chairman-unit",
@@ -238,7 +240,7 @@ test("Conference section headings carry a titled icon for every group", () => {
   assert.match(header, /stroke-\[#FD6900\]/);
 
   // Titles read as one consistent set, not a mix of "Shop by X" and bare nouns.
-  for (const title of ["System Types", "Core Components", "Featured Brands", "Complete Setup"]) {
+  for (const title of ["Systems & Connections", "Core Components", "Featured Brands", "Complete Setup"]) {
     assert.match(navigation, new RegExp(`title: "${title}"`), `${title} must be the group title`);
   }
   assert.doesNotMatch(navigation, /title: "Shop by /);
@@ -347,7 +349,7 @@ test("Conference System renders one responsive semantic content set", () => {
   assert.match(source, /aria-labelledby="conference-hero-heading"/);
 
   for (const heading of [
-    "Choose Your System Type",
+    "Choose Your Conference Setup",
     "Popular Conference System Packages",
     "Conference System Component Price Guide",
     "Complete Hybrid & Video Conference Integration",
@@ -595,7 +597,6 @@ test("Conference closing sections follow the compact reference order without dup
 test("Conference catalog is normalized, complete, and route-stable", () => {
   const catalog = read("app/conference-system/catalog.ts");
   const route = read("app/conference-system/[slug]/page.tsx");
-  const landing = read("app/conference-system/page.tsx");
   const detail = read("app/conference-system/ConferenceProductDetailPage.tsx");
   const gallery = read("app/conference-system/ConferenceProductGallery.tsx");
   const expectedSlugs = [
@@ -679,9 +680,10 @@ test("Conference canonical model supports future discovery without fabricating o
   const taxonomy = read("app/conference-system/taxonomy.ts");
 
   assert.match(catalog, /CONFERENCE_SYSTEM_CATEGORIES = \["audio", "video", "hybrid"\]/);
+  assert.match(catalog, /CONFERENCE_SYSTEM_TYPES = \["audio", "digital", "video-hybrid", "paperless"\]/);
   assert.match(catalog, /CONFERENCE_CONNECTIONS = \["wired", "wireless", "hybrid"\]/);
   assert.match(catalog, /CONFERENCE_ROOM_SIZES = \["small", "medium", "large", "auditorium"\]/);
-  for (const optionalField of ["systemFamily?", "roomSizes?", "participantRange?", "warranty?", "datasheet?", "manual?", "brochure?"]) {
+  for (const optionalField of ["systemTypes?", "systemFamily?", "roomSizes?", "participantRange?", "warranty?", "datasheet?", "manual?", "brochure?"]) {
     assert.ok(catalog.includes(optionalField), `${optionalField} must remain optional`);
   }
   for (const helper of [
@@ -782,13 +784,15 @@ test("Conference taxonomy registries are unique and collision-protected", () => 
   const brandIds = [...brandSource.matchAll(/^    id: "([^"]+)",$/gm)].map((match) => match[1]);
   const brandSlugs = [...brandSource.matchAll(/^    slug: "([^"]+)",$/gm)].map((match) => match[1]);
 
-  assert.equal(categorySlugs.length, 10);
+  assert.equal(categorySlugs.length, 12);
   assert.equal(new Set(categorySlugs).size, categorySlugs.length);
   assert.equal(new Set(brandSlugs).size, brandSlugs.length);
   assert.equal(new Set([...categoryIds, ...brandIds]).size, categoryIds.length + brandIds.length);
   assert.deepEqual(categorySlugs, [
     "audio-conference-system",
+    "digital-conference-system",
     "video-conference-system",
+    "paperless-conference-system",
     "wired-conference-system",
     "wireless-conference-system",
     "chairman-unit",
@@ -813,8 +817,10 @@ test("Conference taxonomy matches only normalized catalog fields", () => {
   const catalog = read("app/conference-system/catalog.ts");
 
   for (const matcher of [
-    'product.systemCategory === "audio"',
-    'product.systemCategory === "video"',
+    'getConferenceProductSystemTypes(product).includes("audio")',
+    'getConferenceProductSystemTypes(product).includes("digital")',
+    'getConferenceProductSystemTypes(product).includes("video-hybrid")',
+    'getConferenceProductSystemTypes(product).includes("paperless")',
     'product.connection === "wired"',
     'product.connection === "wireless"',
     'product.productTypes.includes("chairman-unit")',
@@ -830,9 +836,9 @@ test("Conference taxonomy matches only normalized catalog fields", () => {
   assert.match(taxonomy, /product\.brand\?\.slug === brand\.slug/);
 
   const representativeMappings = [
-    ["spon-lcm-6013cv-l-digital-conference-chairman-unit", 'systemCategory: "audio"', 'productTypes: ["chairman-unit"]'],
-    ["spon-lcm-6013dv-l-digital-conference-delegate-unit", 'systemCategory: "audio"', 'productTypes: ["delegate-unit"]'],
-    ["spon-lcm-6010-digital-conference-system-central-unit", 'systemCategory: "audio"', 'productTypes: ["control-unit"]'],
+    ["spon-lcm-6013cv-l-digital-conference-chairman-unit", 'systemTypes: ["audio", "digital"]', 'productTypes: ["chairman-unit"]'],
+    ["spon-lcm-6013dv-l-digital-conference-delegate-unit", 'systemTypes: ["audio", "digital"]', 'productTypes: ["delegate-unit"]'],
+    ["spon-lcm-6010-digital-conference-system-central-unit", 'systemTypes: ["audio", "digital"]', 'productTypes: ["control-unit"]'],
     ["spon-sap-f88e-8x8-digital-audio-processor-dsp", 'systemCategory: "audio"', 'productTypes: ["dsp"]'],
     ["spon-gen-5301p26-network-integrated-amplifier", 'systemCategory: "audio"', 'productTypes: ["amplifier"]'],
     ["spon-lcs-5252d-wireless-conference-delegate-unit", 'connection: "wireless"', 'brand: { name: "SPON", slug: "spon" }'],
@@ -897,13 +903,13 @@ test("Conference category and populated-brand content is unique and complete", (
   const categoryHeroTitles = [...categorySource.matchAll(/heroTitle: "([^"]+)"/g)].map((match) => match[1]);
   const brandHeroTitles = [...brandSource.matchAll(/heroTitle: "([^"]+)"/g)].map((match) => match[1]);
 
-  assert.equal(categoryKeys.length, 10);
-  assert.equal(categoryHeroTitles.length, 10);
-  assert.equal(new Set(categoryHeroTitles).size, 10, "category hero titles must be unique");
-  assert.equal((categorySource.match(/highlights: \[/g) ?? []).length, 10);
-  assert.equal((categorySource.match(/buyerGuide: \[/g) ?? []).length, 10);
-  assert.equal((categorySource.match(/relatedCategorySlugs: \[/g) ?? []).length, 10);
-  assert.equal((categorySource.match(/faqs: \[/g) ?? []).length, 10);
+  assert.equal(categoryKeys.length, 12);
+  assert.equal(categoryHeroTitles.length, 12);
+  assert.equal(new Set(categoryHeroTitles).size, 12, "category hero titles must be unique");
+  assert.equal((categorySource.match(/highlights: \[/g) ?? []).length, 12);
+  assert.equal((categorySource.match(/buyerGuide: \[/g) ?? []).length, 12);
+  assert.equal((categorySource.match(/relatedCategorySlugs: \[/g) ?? []).length, 12);
+  assert.equal((categorySource.match(/faqs: \[/g) ?? []).length, 12);
   assert.equal(brandHeroTitles.length, 4);
   assert.equal(new Set(brandHeroTitles).size, 4, "brand hero titles must be unique");
   for (const brand of ["bosch", "toa", "cmx", "spon"]) {
@@ -1053,6 +1059,49 @@ test("Conference product explorer provides canonical search, multi-filter, sort,
   assert.match(explorer, /connections: new Set\(catalogProducts\.flatMap/);
   assert.match(landing, /products=\{conferenceExplorerProducts\}/);
   assert.doesNotMatch(landing, /catalogEndpoint="\/conference-system\/catalog-data\.json"/);
+});
+
+test("Conference Digital, Video-Hybrid, and Paperless classifications stay evidence-based and separate from connection", () => {
+  const core = read("app/conference-system/catalog.ts");
+  const catalogs = [
+    core,
+    read("app/conference-system/catalog.brands.ts"),
+    read("app/conference-system/catalog.bosch.ts"),
+    read("app/conference-system/catalog.toa.ts"),
+    read("app/conference-system/catalog.spon.ts"),
+  ].join("\n");
+  const taxonomy = read("app/conference-system/taxonomy.ts");
+  const landing = read("app/conference-system/page.tsx");
+  const explorer = read("app/conference-system/ConferenceProductExplorer.tsx");
+
+  assert.equal((catalogs.match(/systemTypes: \[[^\]]*"digital"[^\]]*\]/g) ?? []).length, 28);
+  assert.equal((catalogs.match(/systemTypes: \[[^\]]*"paperless"[^\]]*\]/g) ?? []).length, 3);
+  assert.equal((catalogs.match(/systemCategory: "audio"/g) ?? []).length, 63);
+  assert.equal((catalogs.match(/systemCategory: "video"/g) ?? []).length, 4);
+  assert.equal((catalogs.match(/systemTypes: \[[^\]]*"video-hybrid"[^\]]*\]/g) ?? []).length, 1);
+  assert.equal((catalogs.match(/connection: "wired"/g) ?? []).length, 49);
+  assert.equal((catalogs.match(/connection: "wireless"/g) ?? []).length, 10);
+
+  for (const id of [
+    "cmx-mc-5800e-paperless-conference-management-server",
+    "cmx-mc-5802abc-paperless-digital-conference-host",
+    "cmx-mc-5803-paperless-digital-conference-system-host",
+  ]) {
+    const start = catalogs.indexOf(`id: "${id}"`);
+    const end = catalogs.indexOf("\n  {", start);
+    const block = catalogs.slice(start, end === -1 ? undefined : end);
+    assert.match(block, /systemTypes: \[[^\]]*"paperless"/);
+    assert.doesNotMatch(block, /systemCategory: "video"/);
+  }
+
+  assert.match(core, /getConferenceProductSystemTypes\(product: ConferenceProduct\)/);
+  assert.match(core, /getConferenceProductsBySystemType\(systemType: ConferenceSystemType\)/);
+  assert.match(taxonomy, /slug: "digital-conference-system"/);
+  assert.match(taxonomy, /slug: "paperless-conference-system"/);
+  assert.match(landing, /href: "\/conference-system\/digital-conference-system\/"/);
+  assert.doesNotMatch(landing, /href: "\/conference-system\/\?q=digital/);
+  assert.match(explorer, /SYSTEM_TYPE_OPTIONS/);
+  assert.match(explorer, /product\.systemTypes/);
 });
 
 test("Conference landing sends the compact full-catalog projection and defers below-fold rendering", () => {
@@ -1360,7 +1409,7 @@ test("Conference specifications stay classified, consistent, and complete", () =
   assert.match(catalog, /push\(isConnectionProse \? "Compatibility" : spec\.key, spec\.value\)/);
 
   // Canonical rows are derived from typed fields, so they cannot drift per product.
-  for (const derived of ["Brand", "Model", "Product Type", "System Family", "Connection", "Participant Capacity", "Room Size", "System Category", "Warranty", "Availability"]) {
+  for (const derived of ["Brand", "Model", "Product Type", "System Family", "Connection", "Participant Capacity", "Room Size", "System Type", "Warranty", "Availability"]) {
     assert.ok(catalog.includes(`push("${derived}"`), `${derived} must be derived from a typed field`);
   }
 
