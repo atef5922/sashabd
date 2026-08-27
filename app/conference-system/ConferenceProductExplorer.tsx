@@ -51,6 +51,17 @@ const SORT_OPTIONS = [
   ["name-desc", "Name: Z–A"],
 ] as const;
 
+const SYSTEM_TYPE_OPTIONS = [
+  ["audio", "Audio"],
+  ["digital", "Digital"],
+  ["video-hybrid", "Video / Hybrid"],
+  ["paperless", "Paperless"],
+] as const;
+
+function systemTypeLabel(value: string): string {
+  return SYSTEM_TYPE_OPTIONS.find(([systemType]) => systemType === value)?.[1] ?? value;
+}
+
 export default function ConferenceProductExplorer({
   products,
   brands,
@@ -75,7 +86,7 @@ export default function ConferenceProductExplorer({
     brands: new Set(brands.map((facet) => facet.slug)),
     productTypes: new Set(productTypes.map((facet) => facet.slug)),
     connections: new Set(catalogProducts.flatMap((product) => product.connection ? [product.connection] : [])),
-    meetingTypes: new Set(catalogProducts.flatMap((product) => product.meetingType ? [product.meetingType] : [])),
+    meetingTypes: new Set(catalogProducts.flatMap((product) => product.systemTypes)),
     availabilities: new Set(catalogProducts.flatMap((product) => product.availability ? [product.availability] : [])),
   }), [brands, productTypes, catalogProducts]);
 
@@ -179,7 +190,7 @@ export default function ConferenceProductExplorer({
     ...state.brands.map((value) => ({ group: "brands" as const, value, label: brands.find((item) => item.slug === value)?.label ?? value })),
     ...state.productTypes.map((value) => ({ group: "productTypes" as const, value, label: productTypes.find((item) => item.slug === value)?.label ?? value })),
     ...state.connections.map((value) => ({ group: "connections" as const, value, label: value[0].toUpperCase() + value.slice(1) })),
-    ...state.meetingTypes.map((value) => ({ group: "meetingTypes" as const, value, label: `${value[0].toUpperCase() + value.slice(1)} Conference` })),
+    ...state.meetingTypes.map((value) => ({ group: "meetingTypes" as const, value, label: `${systemTypeLabel(value)} Conference` })),
     ...state.availabilities.map((value) => ({ group: "availabilities" as const, value, label: value === "in-stock" ? "In stock" : value === "project-order" ? "Project order" : "Contact for availability" })),
     ...state.priceBands.map((value) => ({ group: "priceBands" as const, value, label: CONFERENCE_PRICE_BANDS.find((item) => item.id === value)?.label ?? value })),
   ];
@@ -275,7 +286,7 @@ export default function ConferenceProductExplorer({
     <div>
       {filterSection("brands", "Select Brand", brands.map((facet) => filterCheckbox("brands", facet.slug, facet.label, facetCount("brands", facet.slug))))}
       {filterSection("productTypes", "Product Category", productTypes.map((facet) => filterCheckbox("productTypes", facet.slug, facet.label, facetCount("productTypes", facet.slug))))}
-      {filterSection("meetingTypes", "System Type", ["audio", "video", "hybrid"].filter((value) => options.meetingTypes.has(value)).map((value) => filterCheckbox("meetingTypes", value, value[0].toUpperCase() + value.slice(1), facetCount("meetingTypes", value))))}
+      {filterSection("meetingTypes", "System Type", SYSTEM_TYPE_OPTIONS.filter(([value]) => options.meetingTypes.has(value)).map(([value, label]) => filterCheckbox("meetingTypes", value, label, facetCount("meetingTypes", value))))}
       {filterSection("connections", "Connection Type", ["wired", "wireless", "hybrid"].filter((value) => options.connections.has(value)).map((value) => filterCheckbox("connections", value, value[0].toUpperCase() + value.slice(1), facetCount("connections", value))))}
       {filterSection("availabilities", "Availability", [
         ["in-stock", "In stock"],

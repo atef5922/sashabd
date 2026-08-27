@@ -16,7 +16,7 @@ export type ConferenceNavigationGroup = {
 export const conferenceNavigationGroups: readonly ConferenceNavigationGroup[] = [
   {
     id: "system",
-    title: "System Types",
+    title: "Systems & Connections",
     items: conferenceCategoryConfigs
       .filter((category) => category.group === "system" || category.group === "connection")
       .map((category) => ({

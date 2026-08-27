@@ -15,6 +15,7 @@ export type ConferenceDiscoveryProduct = {
   productTypes: string[];
   connection: string | null;
   meetingType: string | null;
+  systemTypes?: string[];
   availability?: string | null;
   priceValue: ConferenceDiscoveryPrice;
 };
@@ -183,7 +184,7 @@ export function filterConferenceProducts<T extends ConferenceDiscoveryProduct>(
     (!state.brands.length || (product.brandSlug !== null && state.brands.includes(product.brandSlug))) &&
     (!state.productTypes.length || product.productTypes.some((type) => state.productTypes.includes(type))) &&
     (!state.connections.length || (product.connection !== null && state.connections.includes(product.connection))) &&
-    (!state.meetingTypes.length || (product.meetingType !== null && state.meetingTypes.includes(product.meetingType))) &&
+    (!state.meetingTypes.length || (product.systemTypes ?? (product.meetingType ? [product.meetingType] : [])).some((systemType) => state.meetingTypes.includes(systemType))) &&
     (!state.availabilities.length || (product.availability !== undefined && product.availability !== null && state.availabilities.includes(product.availability))) &&
     (!state.priceBands.length || state.priceBands.some((band) => priceMatchesBand(product.priceValue, band))) &&
     priceOverlapsCustomRange(product.priceValue, state.minPrice, state.maxPrice)

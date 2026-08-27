@@ -7,6 +7,7 @@ import { formatBdtAmount, formatBdtRange } from "../../lib/price";
 const CONFERENCE_IMAGE_BASE = "/images/Conference%20system";
 
 export const CONFERENCE_SYSTEM_CATEGORIES = ["audio", "video", "hybrid"] as const;
+export const CONFERENCE_SYSTEM_TYPES = ["audio", "digital", "video-hybrid", "paperless"] as const;
 export const CONFERENCE_CONNECTIONS = ["wired", "wireless", "hybrid"] as const;
 export const CONFERENCE_ROOM_SIZES = ["small", "medium", "large", "auditorium"] as const;
 export const CONFERENCE_PRODUCT_TYPES = [
@@ -29,6 +30,7 @@ export const CONFERENCE_PRODUCT_TYPES = [
 export const CONFERENCE_AVAILABILITIES = ["in-stock", "project-order", "contact"] as const;
 
 export type ConferenceSystemCategory = (typeof CONFERENCE_SYSTEM_CATEGORIES)[number];
+export type ConferenceSystemType = (typeof CONFERENCE_SYSTEM_TYPES)[number];
 export type ConferenceConnection = (typeof CONFERENCE_CONNECTIONS)[number];
 export type ConferenceRoomSize = (typeof CONFERENCE_ROOM_SIZES)[number];
 export type ConferenceProductType = (typeof CONFERENCE_PRODUCT_TYPES)[number];
@@ -78,6 +80,9 @@ export type ConferenceProduct = {
   name: string;
   model?: string;
   brand?: ConferenceProductBrand;
+  /** Multi-value solution classification; kept separate from physical connection. */
+  systemTypes?: ConferenceSystemType[];
+  /** Primary meeting modality retained for comparison and legacy query compatibility. */
   systemCategory?: ConferenceSystemCategory;
   connection?: ConferenceConnection;
   /** Verified manufacturer series/family only; never inferred from brand alone. */
@@ -204,6 +209,7 @@ const coreConferenceProducts: ConferenceProduct[] = [
     name: "SPON LCM-6010 Digital Conference System Central Unit",
     model: "LCM-6010",
     brand: { name: "SPON", slug: "spon" },
+    systemTypes: ["audio", "digital"],
     systemCategory: "audio",
     connection: "wired",
     productTypes: ["control-unit"],
@@ -242,6 +248,7 @@ const coreConferenceProducts: ConferenceProduct[] = [
     name: "LCM-6013CV-L",
     model: "LCM-6013CV-L",
     brand: { name: "SPON", slug: "spon" },
+    systemTypes: ["audio", "digital"],
     systemCategory: "audio",
     connection: "wired",
     productTypes: ["chairman-unit"],
@@ -291,6 +298,7 @@ const coreConferenceProducts: ConferenceProduct[] = [
     name: "SPON LCM-6013DV-L Digital Conference Delegate Unit",
     model: "LCM-6013DV-L",
     brand: { name: "SPON", slug: "spon" },
+    systemTypes: ["audio", "digital"],
     systemCategory: "audio",
     connection: "wired",
     productTypes: ["delegate-unit"],
@@ -330,6 +338,7 @@ const coreConferenceProducts: ConferenceProduct[] = [
     name: "SPON LCM-6015P 12-Port Wireless Microphone Charger",
     model: "LCM-6015P",
     brand: { name: "SPON", slug: "spon" },
+    systemTypes: ["audio", "digital"],
     systemCategory: "audio",
     connection: "wireless",
     productTypes: ["charger"],
@@ -369,6 +378,7 @@ const coreConferenceProducts: ConferenceProduct[] = [
     name: "SPON LCS-5251CD Digital Conference Microphone System",
     model: "LCS-5251CD",
     brand: { name: "SPON", slug: "spon" },
+    systemTypes: ["audio", "digital"],
     systemCategory: "audio",
     connection: "wired",
     productTypes: ["microphone"],
@@ -407,6 +417,7 @@ const coreConferenceProducts: ConferenceProduct[] = [
     name: "SPON LCS-5252D Wireless Conference Delegate Unit",
     model: "LCS-5252D",
     brand: { name: "SPON", slug: "spon" },
+    systemTypes: ["audio", "digital"],
     systemCategory: "audio",
     connection: "wireless",
     productTypes: ["delegate-unit"],
@@ -450,6 +461,7 @@ const coreConferenceProducts: ConferenceProduct[] = [
     name: "SPON LCS-5301Z Wireless Digital Conference Access Point",
     model: "LCS-5301Z",
     brand: { name: "SPON", slug: "spon" },
+    systemTypes: ["audio", "digital"],
     systemCategory: "audio",
     connection: "wireless",
     productTypes: ["access-point"],
@@ -603,6 +615,23 @@ export function getConferenceProductsBySystemCategory(category: ConferenceSystem
   return conferenceSystemCatalog.filter((product) => product.systemCategory === category);
 }
 
+/**
+ * Returns customer-facing system classifications without treating wired or
+ * wireless topology as a system type. Older audio/video records inherit their
+ * established meeting modality; products with overlapping or corrected
+ * classifications declare systemTypes directly in the canonical catalog.
+ */
+export function getConferenceProductSystemTypes(product: ConferenceProduct): ConferenceSystemType[] {
+  if (product.systemTypes?.length) return [...product.systemTypes];
+  if (product.systemCategory === "audio") return ["audio"];
+  if (product.systemCategory === "video" || product.systemCategory === "hybrid") return ["video-hybrid"];
+  return [];
+}
+
+export function getConferenceProductsBySystemType(systemType: ConferenceSystemType): ConferenceProduct[] {
+  return conferenceSystemCatalog.filter((product) => getConferenceProductSystemTypes(product).includes(systemType));
+}
+
 export function getConferenceProductsByConnection(connection: ConferenceConnection): ConferenceProduct[] {
   return conferenceSystemCatalog.filter((product) => product.connection === connection);
 }
@@ -633,6 +662,7 @@ export type ConferenceCatalogIntegrityReport = {
   byProductType: Record<ConferenceProductType, number>;
   byConnection: Record<ConferenceConnection | "unknown", number>;
   byMeetingType: Record<ConferenceSystemCategory | "unknown", number>;
+  bySystemType: Record<ConferenceSystemType, number>;
   byPriceType: Record<ConferencePrice["type"], number>;
   byAvailability: Record<ConferenceAvailability | "unknown", number>;
   withSystemFamily: number;
@@ -643,6 +673,7 @@ export type ConferenceCatalogIntegrityReport = {
     missingNameOrModel: string[];
     missingProductTypes: string[];
     missingSystemCategory: string[];
+    missingSystemTypes: string[];
     missingConnection: string[];
     missingPriceClassification: string[];
     invalidNumericPrice: string[];
@@ -675,6 +706,7 @@ export function getConferenceCatalogIntegrityReport(
     byProductType,
     byConnection: { wired: 0, wireless: 0, hybrid: 0, unknown: 0 },
     byMeetingType: { audio: 0, video: 0, hybrid: 0, unknown: 0 },
+    bySystemType: { audio: 0, digital: 0, "video-hybrid": 0, paperless: 0 },
     byPriceType: { fixed: 0, range: 0, request: 0 },
     byAvailability: { "in-stock": 0, "project-order": 0, contact: 0, unknown: 0 },
     withSystemFamily: 0,
@@ -685,6 +717,7 @@ export function getConferenceCatalogIntegrityReport(
       missingNameOrModel: [],
       missingProductTypes: [],
       missingSystemCategory: [],
+      missingSystemTypes: [],
       missingConnection: [],
       missingPriceClassification: [],
       invalidNumericPrice: [],
@@ -709,7 +742,9 @@ export function getConferenceCatalogIntegrityReport(
     if (!product.brand?.name.trim() || !product.brand.slug.trim()) report.dataQuality.missingBrand.push(reference);
     if (!product.name.trim() && !product.model?.trim()) report.dataQuality.missingNameOrModel.push(reference);
     if (!product.productTypes.length) report.dataQuality.missingProductTypes.push(reference);
-    if (!product.systemCategory) report.dataQuality.missingSystemCategory.push(reference);
+    const systemTypes = getConferenceProductSystemTypes(product);
+    if (!product.systemCategory && !systemTypes.length) report.dataQuality.missingSystemCategory.push(reference);
+    if (!systemTypes.length) report.dataQuality.missingSystemTypes.push(reference);
     if (!product.connection) report.dataQuality.missingConnection.push(reference);
     if (!(["fixed", "range", "request"] as const).includes(product.price.type)) {
       report.dataQuality.missingPriceClassification.push(reference);
@@ -733,6 +768,7 @@ export function getConferenceCatalogIntegrityReport(
     for (const type of product.productTypes) report.byProductType[type] += 1;
     report.byConnection[product.connection ?? "unknown"] += 1;
     report.byMeetingType[product.systemCategory ?? "unknown"] += 1;
+    for (const systemType of systemTypes) report.bySystemType[systemType] += 1;
     report.byPriceType[product.price.type] += 1;
     report.byAvailability[product.availability ?? "unknown"] += 1;
 
@@ -848,10 +884,11 @@ export function getConferenceConnectionLabel(connection: ConferenceConnection): 
 /** The only values the Connection row may hold, so the property stays comparable. */
 const CONNECTION_VALUES = new Set<string>(Object.values(CONNECTION_LABELS));
 
-const SYSTEM_CATEGORY_LABELS: Readonly<Record<ConferenceSystemCategory, string>> = {
+export const CONFERENCE_SYSTEM_TYPE_LABELS: Readonly<Record<ConferenceSystemType, string>> = {
   audio: "Audio conference",
-  video: "Video conference",
-  hybrid: "Hybrid conference",
+  digital: "Digital conference",
+  "video-hybrid": "Video & hybrid conference",
+  paperless: "Paperless conference",
 };
 
 const AVAILABILITY_LABELS: Readonly<Record<ConferenceAvailability, string>> = {
@@ -911,11 +948,13 @@ export function getConferenceProductSpecifications(
   push("Connection", product.connection ? CONNECTION_LABELS[product.connection] : undefined);
   push("Participant Capacity", formatParticipantRange(product.participantRange));
   push("Room Size", product.roomSizes?.map((roomSize) => ROOM_SIZE_LABELS[roomSize]).join(", "));
+  const systemTypeLabels = getConferenceProductSystemTypes(product)
+    .map((systemType) => CONFERENCE_SYSTEM_TYPE_LABELS[systemType]);
+  push("System Type", systemTypeLabels.length ? systemTypeLabels.join(", ") : undefined);
   for (const spec of product.specifications) {
     const isConnectionProse = spec.key === "Connection" && !CONNECTION_VALUES.has(spec.value);
     push(isConnectionProse ? "Compatibility" : spec.key, spec.value);
   }
-  push("System Category", product.systemCategory ? SYSTEM_CATEGORY_LABELS[product.systemCategory] : undefined);
   push("Warranty", product.warranty);
   push("Availability", getConferenceProductAvailabilityLabel(product));
 
@@ -938,7 +977,7 @@ const CARD_SPEC_EXCLUSIONS = new Set([
   "Model",
   "Product Type",
   "Connection",
-  "System Category",
+  "System Type",
   "Availability",
 ]);
 
@@ -983,6 +1022,7 @@ export function validateConferenceCatalog(
   const slugs = new Set<string>();
   const reservedSlugSet = new Set(reservedSlugs);
   const validCategories = new Set<string>(CONFERENCE_SYSTEM_CATEGORIES);
+  const validSystemTypes = new Set<string>(CONFERENCE_SYSTEM_TYPES);
   const validConnections = new Set<string>(CONFERENCE_CONNECTIONS);
   const validRoomSizes = new Set<string>(CONFERENCE_ROOM_SIZES);
   const validTypes = new Set<string>(CONFERENCE_PRODUCT_TYPES);
@@ -1033,6 +1073,15 @@ export function validateConferenceCatalog(
     }
     if (product.systemCategory && !validCategories.has(product.systemCategory)) {
       errors.push(`${reference}: invalid system category ${product.systemCategory}`);
+    }
+    if (product.systemTypes?.some((systemType) => !validSystemTypes.has(systemType))) {
+      errors.push(`${reference}: invalid system type`);
+    }
+    if (product.systemTypes && new Set(product.systemTypes).size !== product.systemTypes.length) {
+      errors.push(`${reference}: duplicate system type`);
+    }
+    if (!getConferenceProductSystemTypes(product).length) {
+      errors.push(`${reference}: missing system type classification`);
     }
     if (product.connection && !validConnections.has(product.connection)) {
       errors.push(`${reference}: invalid connection ${product.connection}`);

@@ -99,7 +99,7 @@ export function buildComparisonSections(
 
   const system = section("system-role", "System & Role", [
     makeRow("connection", "Connection Type", products, (product) => product.connection),
-    makeRow("meeting-type", "Meeting Type", products, (product) => product.meetingType),
+    makeRow("meeting-type", "System Type", products, (product) => product.meetingType),
     makeRow("role", "Product Role", products, (product) => product.productRole),
     makeRow("system-family", "System Family", products, (product) => product.systemFamily),
     makeRow("participant-capacity", "Participant Capacity", products, (product) => product.participantCapacity),

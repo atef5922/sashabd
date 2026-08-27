@@ -71,7 +71,7 @@ const conferenceSystemChooserCards: ReadonlyArray<{
     title: "Digital Conference System",
     description: "Advanced digital technology with superior audio quality and control.",
     cta: "View Digital Systems",
-    href: "/conference-system/?q=digital#conference-products-heading",
+    href: "/conference-system/digital-conference-system/",
     image: "/images/conference_system_projects/project2.webp",
     imageAlt: "Digital conference system with microphones and meeting displays",
     icon: "digital",
@@ -1050,10 +1050,10 @@ export default function ConferenceSystemPage() {
       >
         <div>
           <h2 id="choose-conference-system-type" className={conferenceSectionTitleClass}>
-            Choose Your System Type
+            Choose Your Conference Setup
           </h2>
           <p className="mt-1 text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">
-            Find the perfect conference system that fits your meeting requirements
+            Browse system types and connection options for your meeting requirements
           </p>
         </div>
 

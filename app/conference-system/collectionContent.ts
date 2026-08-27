@@ -47,15 +47,38 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
       { title: "Plan the audio chain", description: "Review microphone pickup, controller, DSP, amplifier, and speaker requirements as one connected system." },
       { title: "Check integration needs", description: "Consider recording, hybrid meeting, presentation, and wider PA integration without assuming every product supports every function." },
     ],
-    relatedCategorySlugs: ["wired-conference-system", "wireless-conference-system", "chairman-unit", "delegate-unit", "control-unit", "conference-dsp", "conference-amplifier"],
+    relatedCategorySlugs: ["digital-conference-system", "wired-conference-system", "wireless-conference-system", "chairman-unit", "delegate-unit", "control-unit", "conference-dsp", "conference-amplifier"],
     faqs: [
       { q: "What is included in an audio conference system?", a: "A project may include microphones, chairman and delegate units, a central controller, DSP, amplification, speakers, cabling, and installation services. The exact combination depends on the room and meeting workflow." },
       { q: "Does every meeting room need a DSP or amplifier?", a: "No. Processing and amplification depend on room acoustics, microphone quantity, speaker design, and integration requirements. They should be selected from the project needs rather than added automatically." },
       { q: "What affects audio conference system pricing?", a: "Pricing depends on product models, microphone quantity, controller requirements, processing, speakers, cabling, installation complexity, and commissioning scope." },
     ],
   },
+  "digital-conference-system": {
+    heroTitle: "Digital Conference System Price in Bangladesh",
+    intro:
+      "Digital conference systems use compatible digital discussion, control, and participant equipment to organize meeting audio and operating workflows. The products below are included only where the catalog identifies a digital conference system, digital discussion platform, or verified digital product family.",
+    highlights: [
+      { title: "Structured discussion", description: "Compatible chairman, delegate, and control units support an organized meeting architecture within their documented product family." },
+      { title: "System-level control", description: "Digital controllers and hosts coordinate compatible positions and documented meeting functions from a central point." },
+      { title: "Scalable planning", description: "Participant quantity, controller capacity, cabling or wireless access, and compatible expansion equipment should be planned together." },
+    ],
+    buyerGuideTitle: "How to Choose a Digital Conference System",
+    buyerGuideIntro: "Select the platform first, then match every controller, participant position, and supporting product to that verified ecosystem.",
+    buyerGuide: [
+      { title: "Choose a compatible family", description: "Do not mix controllers and discussion units across product families unless published compatibility confirms it." },
+      { title: "Map chairman and delegate positions", description: "Confirm the chairperson, participant count, speaker workflow, and any documented meeting-control requirements." },
+      { title: "Plan connection and expansion", description: "Review wired or wireless topology, controller capacity, extension products, charging, and room integration from actual specifications." },
+    ],
+    relatedCategorySlugs: ["audio-conference-system", "wired-conference-system", "wireless-conference-system", "chairman-unit", "delegate-unit", "control-unit"],
+    faqs: [
+      { q: "What is a digital conference system?", a: "It is a compatible discussion or meeting platform in which digital controllers, hosts, and participant equipment coordinate the documented conference workflow." },
+      { q: "Is every electronic conference product a digital conference system product?", a: "No. A product appears here only when its name, specifications, or verified product family identifies a digital conference or digital discussion role." },
+      { q: "What affects digital conference system pricing?", a: "The platform, chairman and delegate quantity, controller and expansion needs, wired or wireless infrastructure, supporting equipment, installation, and commissioning affect the final quotation." },
+    ],
+  },
   "video-conference-system": {
-    heroTitle: "Video Conference System Price in Bangladesh",
+    heroTitle: "Video & Hybrid Conference System Price in Bangladesh",
     intro:
       "Video conference systems connect room presentation, camera or video processing, displays, and meeting audio for hybrid collaboration. Current products are shown without implying unsupported platform or camera compatibility.",
     highlights: [
@@ -70,11 +93,34 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
       { title: "Review inputs and outputs", description: "Match source devices and displays using published ports, formats, and system-loading requirements." },
       { title: "Coordinate audio and video", description: "Plan microphones, speakers, processing, camera placement, and display viewing together for a usable room." },
     ],
-    relatedCategorySlugs: ["audio-conference-system", "complete-package"],
+    relatedCategorySlugs: ["digital-conference-system", "audio-conference-system", "conference-dsp", "complete-package"],
     faqs: [
       { q: "What belongs in a video conference system?", a: "Depending on the project, it may include cameras, video processing, displays, presentation sources, meeting audio, control, and network connectivity. The current matching products are listed on this page." },
       { q: "Can video conference equipment support hybrid meetings?", a: "It can be planned for hybrid meetings when the selected camera, audio, processing, display, and connection workflow are mutually compatible." },
       { q: "What affects video conference system pricing?", a: "Room size, camera and display requirements, processing, source switching, meeting audio, installation, and integration scope all affect the final quotation." },
+    ],
+  },
+  "paperless-conference-system": {
+    heroTitle: "Paperless Conference System Price in Bangladesh",
+    intro:
+      "Paperless conference systems manage agendas and meeting documents through networked hosts and servers instead of printed packs. The current range covers CMX MC-series management and host products for document-led formal meetings; it is kept separate from video conferencing equipment.",
+    highlights: [
+      { title: "Central document management", description: "A paperless management server can hold agendas and supporting papers for controlled distribution to compatible room equipment." },
+      { title: "Coordinated meeting operation", description: "Compatible conference hosts can coordinate documented discussion and agenda workflows from the operator position." },
+      { title: "Formal-room planning", description: "Seat count, network design, document workflow, operator needs, and the compatible discussion system should be scoped together." },
+    ],
+    buyerGuideTitle: "How to Plan a Paperless Conference System",
+    buyerGuideIntro: "Begin with the meeting's agenda and document process, then confirm the room network and compatible host architecture.",
+    buyerGuide: [
+      { title: "Define the document workflow", description: "Map how agendas, supporting papers, and meeting items should be prepared, released, and managed during a sitting." },
+      { title: "Coordinate AV and IT planning", description: "Confirm network, rack, operator, and room requirements with both the meeting-room and IT teams before installation." },
+      { title: "Verify the MC-series roles", description: "Select management server and conference host products from their published functions and the required room scale." },
+    ],
+    relatedCategorySlugs: ["digital-conference-system", "wired-conference-system", "control-unit"],
+    faqs: [
+      { q: "What does a paperless conference system manage?", a: "The listed systems manage agendas and supporting meeting documents through compatible networked servers and hosts for formal meeting rooms." },
+      { q: "Is a paperless conference system the same as video conferencing?", a: "No. Paperless systems focus on agenda and document-led meeting workflows, so they are not classified as video conferencing products solely because screens or interfaces may be used." },
+      { q: "What affects paperless conference system pricing?", a: "Host and server selection, room and seat count, network requirements, compatible discussion equipment, installation, configuration, and operator training affect project pricing." },
     ],
   },
   "wired-conference-system": {
@@ -93,7 +139,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
       { title: "Verify the system ecosystem", description: "Do not combine chairman, delegate, and controller products unless compatibility is documented." },
       { title: "Prepare the installation BOQ", description: "Include microphones, controller, extension cables, connectors, rack needs, testing, and handover requirements." },
     ],
-    relatedCategorySlugs: ["audio-conference-system", "wireless-conference-system", "chairman-unit", "delegate-unit", "control-unit"],
+    relatedCategorySlugs: ["digital-conference-system", "audio-conference-system", "wireless-conference-system", "chairman-unit", "delegate-unit", "control-unit"],
     faqs: [
       { q: "When is a wired conference system suitable?", a: "It is generally suitable for permanent boardrooms, government-style meeting rooms, councils, and other spaces with fixed seating and planned cable routes." },
       { q: "Are wired products currently listed here?", a: "Yes. Wired conference products, including chairman units, delegate units, and control units, are listed directly on this page." },
@@ -117,7 +163,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
       { title: "Plan access and charging", description: "Account for compatible access equipment, charging capacity, storage, and meeting turnaround time." },
       { title: "Verify system compatibility", description: "Match delegate or chairman units with the correct controller, access point, and charging ecosystem." },
     ],
-    relatedCategorySlugs: ["audio-conference-system", "wired-conference-system", "chairman-unit", "delegate-unit", "control-unit"],
+    relatedCategorySlugs: ["digital-conference-system", "audio-conference-system", "wired-conference-system", "chairman-unit", "delegate-unit", "control-unit"],
     faqs: [
       { q: "Why choose a wireless conference system?", a: "Wireless systems are useful when seating changes, tabletop cabling must be reduced, or a multipurpose room needs a more flexible discussion layout." },
       { q: "Do wireless conference units need charging equipment?", a: "Many wireless systems use rechargeable units, but charging requirements depend on the selected products. Verify charger capacity and compatibility before preparing the BOQ." },

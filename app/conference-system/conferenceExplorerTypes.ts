@@ -8,6 +8,7 @@ export type ConferenceExplorerProduct = ConferenceProductCardData & {
   productTypes: string[];
   connection: string | null;
   meetingType: string | null;
+  systemTypes: string[];
   availability: string | null;
   priceValue: ConferenceDiscoveryPrice;
 };

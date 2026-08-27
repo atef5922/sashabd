@@ -1,15 +1,15 @@
 import {
   CONFERENCE_PRODUCT_TYPE_LABELS,
+  CONFERENCE_SYSTEM_TYPE_LABELS,
   getConferenceConnectionLabel,
   getConferenceProductAvailabilityLabel,
   getConferenceProductCardPrice,
   getConferenceProductPrimaryImage,
+  getConferenceProductSystemTypes,
   getConferenceProductSpecifications,
   type ConferenceProduct,
 } from "./catalog";
 import type { ComparisonProductSnapshot } from "./conferenceComparison";
-
-const meetingTypeLabels = { audio: "Audio conference", video: "Video conference", hybrid: "Hybrid conference" } as const;
 
 export function createComparisonProductSnapshot(
   product: ConferenceProduct,
@@ -26,7 +26,9 @@ export function createComparisonProductSnapshot(
     productTypes: product.productTypes.map((type) => CONFERENCE_PRODUCT_TYPE_LABELS[type]),
     productRole: product.badge,
     connection: product.connection ? getConferenceConnectionLabel(product.connection) : null,
-    meetingType: product.systemCategory ? meetingTypeLabels[product.systemCategory] : null,
+    meetingType: getConferenceProductSystemTypes(product)
+      .map((systemType) => CONFERENCE_SYSTEM_TYPE_LABELS[systemType])
+      .join(", ") || null,
     systemFamily: product.systemFamily ?? null,
     participantCapacity: product.participantRange
       ? `${product.participantRange.min ?? "Unspecified"}-${product.participantRange.max ?? "Unspecified"}`

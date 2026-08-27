@@ -6,6 +6,8 @@ import {
   getConferenceProductCardPrice,
   getConferenceProductCardSpecs,
   getConferenceProductPrimaryImage,
+  getConferenceProductSystemTypes,
+  CONFERENCE_SYSTEM_TYPE_LABELS,
 } from "./catalog";
 import type { ConferenceExplorerProduct } from "./conferenceExplorerTypes";
 
@@ -22,6 +24,7 @@ export function buildConferenceExplorerProducts(): ConferenceExplorerProduct[] {
       ...product.keyFeatures,
       ...getConferenceProductCardSpecs(product).map((spec) => spec.value),
     ])].filter(Boolean).slice(0, 3);
+    const systemTypes = getConferenceProductSystemTypes(product);
 
     return {
       slug: product.slug,
@@ -32,6 +35,7 @@ export function buildConferenceExplorerProducts(): ConferenceExplorerProduct[] {
       productTypes: [...product.productTypes],
       connection: product.connection ?? null,
       meetingType: product.systemCategory ?? null,
+      systemTypes,
       availability: product.availability ?? null,
       productTypeLabel,
       features,
@@ -55,7 +59,7 @@ export function buildConferenceExplorerProducts(): ConferenceExplorerProduct[] {
         product.brand?.name,
         product.productTypes.map((type) => CONFERENCE_PRODUCT_TYPE_LABELS[type]).join(" "),
         product.connection ? getConferenceConnectionLabel(product.connection) : undefined,
-        product.systemCategory,
+        systemTypes.map((systemType) => CONFERENCE_SYSTEM_TYPE_LABELS[systemType]).join(" "),
         product.systemFamily,
         product.tags.join(" "),
       ]
