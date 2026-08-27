@@ -149,13 +149,17 @@ function searchMatches(product: ConferenceDiscoveryProduct, query: string): bool
   return terms.every((term) => haystack.includes(term) || compactHaystack.includes(term));
 }
 
-export function priceOverlapsBand(price: ConferenceDiscoveryPrice, bandId: string): boolean {
+/**
+ * Assigns every product to exactly one quick-price bucket. Ranged prices use
+ * their published starting price so a single product never inflates several
+ * facet counts.
+ */
+export function priceMatchesBand(price: ConferenceDiscoveryPrice, bandId: string): boolean {
   if (price.type === "request") return bandId === "request";
   const band = CONFERENCE_PRICE_BANDS.find((item) => item.id === bandId);
   if (!band || "requestOnly" in band) return false;
-  const productMin = price.type === "fixed" ? price.amount : price.min;
-  const productMax = price.type === "fixed" ? price.amount : price.max;
-  return productMax >= band.min && productMin < band.maxExclusive;
+  const productMinimum = price.type === "fixed" ? price.amount : price.min;
+  return productMinimum >= band.min && productMinimum < band.maxExclusive;
 }
 
 export function priceOverlapsCustomRange(
@@ -181,7 +185,7 @@ export function filterConferenceProducts<T extends ConferenceDiscoveryProduct>(
     (!state.connections.length || (product.connection !== null && state.connections.includes(product.connection))) &&
     (!state.meetingTypes.length || (product.meetingType !== null && state.meetingTypes.includes(product.meetingType))) &&
     (!state.availabilities.length || (product.availability !== undefined && product.availability !== null && state.availabilities.includes(product.availability))) &&
-    (!state.priceBands.length || state.priceBands.some((band) => priceOverlapsBand(product.priceValue, band))) &&
+    (!state.priceBands.length || state.priceBands.some((band) => priceMatchesBand(product.priceValue, band))) &&
     priceOverlapsCustomRange(product.priceValue, state.minPrice, state.maxPrice)
   );
 }

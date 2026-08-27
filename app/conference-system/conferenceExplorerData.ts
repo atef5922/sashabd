@@ -57,6 +57,7 @@ export function buildConferenceExplorerProducts(): ConferenceExplorerProduct[] {
         product.connection ? getConferenceConnectionLabel(product.connection) : undefined,
         product.systemCategory,
         product.systemFamily,
+        product.tags.join(" "),
       ]
         .filter(Boolean)
         .join(" "),

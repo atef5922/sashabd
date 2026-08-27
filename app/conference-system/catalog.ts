@@ -638,6 +638,17 @@ export type ConferenceCatalogIntegrityReport = {
   withSystemFamily: number;
   withParticipantCapacity: number;
   withCompatibilityData: number;
+  dataQuality: {
+    missingBrand: string[];
+    missingNameOrModel: string[];
+    missingProductTypes: string[];
+    missingSystemCategory: string[];
+    missingConnection: string[];
+    missingPriceClassification: string[];
+    invalidNumericPrice: string[];
+    missingSlug: string[];
+    missingAvailability: string[];
+  };
   missing: {
     priceUpdateDate: number;
     availability: number;
@@ -669,6 +680,17 @@ export function getConferenceCatalogIntegrityReport(
     withSystemFamily: 0,
     withParticipantCapacity: 0,
     withCompatibilityData: 0,
+    dataQuality: {
+      missingBrand: [],
+      missingNameOrModel: [],
+      missingProductTypes: [],
+      missingSystemCategory: [],
+      missingConnection: [],
+      missingPriceClassification: [],
+      invalidNumericPrice: [],
+      missingSlug: [],
+      missingAvailability: [],
+    },
     missing: {
       priceUpdateDate: 0,
       availability: 0,
@@ -683,6 +705,29 @@ export function getConferenceCatalogIntegrityReport(
   };
 
   for (const product of products) {
+    const reference = product.slug || product.id || "unknown-product";
+    if (!product.brand?.name.trim() || !product.brand.slug.trim()) report.dataQuality.missingBrand.push(reference);
+    if (!product.name.trim() && !product.model?.trim()) report.dataQuality.missingNameOrModel.push(reference);
+    if (!product.productTypes.length) report.dataQuality.missingProductTypes.push(reference);
+    if (!product.systemCategory) report.dataQuality.missingSystemCategory.push(reference);
+    if (!product.connection) report.dataQuality.missingConnection.push(reference);
+    if (!(["fixed", "range", "request"] as const).includes(product.price.type)) {
+      report.dataQuality.missingPriceClassification.push(reference);
+    }
+    if (
+      (product.price.type === "fixed" && (!Number.isFinite(product.price.amount) || product.price.amount <= 0)) ||
+      (product.price.type === "range" && (
+        !Number.isFinite(product.price.min) ||
+        !Number.isFinite(product.price.max) ||
+        product.price.min <= 0 ||
+        product.price.max < product.price.min
+      ))
+    ) {
+      report.dataQuality.invalidNumericPrice.push(reference);
+    }
+    if (!product.slug.trim()) report.dataQuality.missingSlug.push(product.id || "unknown-product");
+    if (!product.availability) report.dataQuality.missingAvailability.push(reference);
+
     const brandKey = product.brand?.slug ?? "unknown";
     report.byBrand[brandKey] = (report.byBrand[brandKey] ?? 0) + 1;
     for (const type of product.productTypes) report.byProductType[type] += 1;

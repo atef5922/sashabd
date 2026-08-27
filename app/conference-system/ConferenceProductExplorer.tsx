@@ -55,17 +55,12 @@ export default function ConferenceProductExplorer({
   products,
   brands,
   productTypes,
-  catalogEndpoint,
-  totalProducts,
 }: {
   products: ConferenceExplorerProduct[];
   brands: ConferenceExplorerFacet[];
   productTypes: ConferenceExplorerFacet[];
-  catalogEndpoint?: string;
-  totalProducts?: number;
 }) {
-  const [catalogProducts, setCatalogProducts] = useState(products);
-  const [catalogLoading, setCatalogLoading] = useState(Boolean(catalogEndpoint));
+  const catalogProducts = products;
   const [state, setState] = useState<ConferenceDiscoveryState>(EMPTY_CONFERENCE_DISCOVERY_STATE);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [openFilterGroups, setOpenFilterGroups] = useState<ConferenceFilterGroup[]>(["brands", "priceBands"]);
@@ -84,27 +79,6 @@ export default function ConferenceProductExplorer({
     availabilities: new Set(catalogProducts.flatMap((product) => product.availability ? [product.availability] : [])),
   }), [brands, productTypes, catalogProducts]);
 
-  useEffect(() => {
-    if (!catalogEndpoint) return;
-    const controller = new AbortController();
-    fetch(catalogEndpoint, { signal: controller.signal })
-      .then((response) => {
-        if (!response.ok) throw new Error(`Catalog request failed with ${response.status}`);
-        return response.json() as Promise<ConferenceExplorerProduct[]>;
-      })
-      .then((nextProducts) => {
-        if (!Array.isArray(nextProducts) || !nextProducts.length) return;
-        setCatalogProducts(nextProducts);
-      })
-      .catch((error: unknown) => {
-        if (!(error instanceof DOMException && error.name === "AbortError")) {
-          console.error("Unable to load the complete conference catalog", error);
-        }
-      })
-      .finally(() => setCatalogLoading(false));
-    return () => controller.abort();
-  }, [catalogEndpoint]);
-
   const readLocation = useCallback(() => {
     setState(parseConferenceDiscoveryQuery(new URLSearchParams(window.location.search), options));
   }, [options]);
@@ -120,7 +94,6 @@ export default function ConferenceProductExplorer({
   }, [readLocation]);
 
   useEffect(() => {
-    if (catalogLoading) return;
     const validSlugs = new Set(catalogProducts.map((product) => product.slug));
     let cancelled = false;
     let restored: string[] = [];
@@ -138,7 +111,7 @@ export default function ConferenceProductExplorer({
       setCompareSlugs(restored);
     });
     return () => { cancelled = true; };
-  }, [catalogLoading, catalogProducts]);
+  }, [catalogProducts]);
 
   useEffect(() => {
     if (!comparisonHydrated.current) return;
@@ -180,8 +153,17 @@ export default function ConferenceProductExplorer({
     [filtered, state.page, state.pageSize],
   );
 
-  const facetCount = (group: ConferenceFilterGroup, value: string) =>
-    filterConferenceProducts(recommendedProducts, { ...state, [group]: [value], page: 1 }).length;
+  const facetCount = (group: ConferenceFilterGroup, value: string) => {
+    const facetState: ConferenceDiscoveryState = { ...state, [group]: [value], page: 1 };
+    if (group === "priceBands" && value === "request") {
+      return filterConferenceProducts(recommendedProducts, {
+        ...facetState,
+        minPrice: null,
+        maxPrice: null,
+      }).length;
+    }
+    return filterConferenceProducts(recommendedProducts, facetState).length;
+  };
 
   useEffect(() => {
     if (!hydrated.current || state.page === safePage) return;
@@ -387,7 +369,7 @@ export default function ConferenceProductExplorer({
   );
 
   return (
-    <div data-conference-product-explorer aria-busy={catalogLoading || undefined}>
+    <div data-conference-product-explorer>
       <div ref={gridTopRef} className="scroll-mt-24" />
       <div className="mb-4 grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:grid-cols-[minmax(0,1fr)_auto] lg:hidden">
         {searchField()}
@@ -423,7 +405,7 @@ export default function ConferenceProductExplorer({
               <div className="mt-1 flex flex-wrap items-center gap-3">
                 <p className="text-xs font-semibold leading-4 text-slate-600" aria-live="polite">
                   {filtered.length
-                    ? `Showing ${(safePage - 1) * state.pageSize + 1}–${Math.min(safePage * state.pageSize, filtered.length)} of ${catalogLoading && !activeCount && !state.query ? totalProducts ?? filtered.length : filtered.length}`
+                    ? `Showing ${(safePage - 1) * state.pageSize + 1}–${Math.min(safePage * state.pageSize, filtered.length)} of ${filtered.length}`
                     : "0"} Conference {filtered.length === 1 ? "Product" : "Products"}
                 </p>
                 {activeCount || state.query ? <button type="button" onClick={clearAll} className="text-sm font-bold text-orange-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">Clear All</button> : null}
