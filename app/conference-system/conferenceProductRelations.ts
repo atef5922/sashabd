@@ -26,6 +26,14 @@ const PAPERLESS_PRIORITIES: readonly ConferenceProductType[] = [
   "other",
 ];
 
+const VIDEO_PRIORITIES: readonly ConferenceProductType[] = [
+  "camera",
+  "accessory",
+  "processor",
+  "speakerphone",
+  "dsp",
+];
+
 function getSystemTypes(product: ConferenceProduct): ConferenceSystemType[] {
   if (product.systemTypes?.length) return product.systemTypes;
   if (product.systemCategory === "audio") return ["audio"];
@@ -34,7 +42,9 @@ function getSystemTypes(product: ConferenceProduct): ConferenceSystemType[] {
 }
 
 function getRelatedTypePriorities(product: ConferenceProduct): readonly ConferenceProductType[] {
-  if (getSystemTypes(product).includes("paperless")) return PAPERLESS_PRIORITIES;
+  const systemTypes = getSystemTypes(product);
+  if (systemTypes.includes("paperless")) return PAPERLESS_PRIORITIES;
+  if (systemTypes.includes("video-hybrid")) return VIDEO_PRIORITIES;
   for (const type of product.productTypes) {
     const priorities = RELATED_TYPE_PRIORITIES[type];
     if (priorities) return priorities;
@@ -72,6 +82,9 @@ export function getConferenceRelatedProducts(
   );
   const typePriorities = getRelatedTypePriorities(current);
   const currentSystemTypes = new Set(getSystemTypes(current));
+  const isPaperless = currentSystemTypes.has("paperless");
+  const isVideo = currentSystemTypes.has("video-hybrid");
+  const isWireless = current.connection === "wireless";
   const seen = new Set<string>();
 
   return products
@@ -81,21 +94,38 @@ export function getConferenceRelatedProducts(
 
       let score = 0;
       const compatibilityIndex = explicitCompatibility.get(product.id);
-      if (compatibilityIndex !== undefined) score += 10_000 - compatibilityIndex * 100;
+      const isExplicitlyCompatible = compatibilityIndex !== undefined;
+      if (isExplicitlyCompatible) score += 10_000 - compatibilityIndex * 100;
 
-      if (current.systemFamily && product.systemFamily === current.systemFamily) score += 1_200;
+      const hasMatchingSystemFamily = Boolean(
+        current.systemFamily && product.systemFamily === current.systemFamily,
+      );
+      if (hasMatchingSystemFamily) score += 1_200;
 
       const typeIndex = typePriorities.findIndex((type) => product.productTypes.includes(type));
       if (typeIndex >= 0) score += 500 - typeIndex * 40;
 
-      const sharedSystemTypes = getSystemTypes(product)
+      const productSystemTypes = getSystemTypes(product);
+      const sharedSystemTypes = productSystemTypes
         .filter((systemType) => currentSystemTypes.has(systemType)).length;
       score += sharedSystemTypes * 100;
 
       if (current.systemCategory && product.systemCategory === current.systemCategory) score += 60;
       if (current.connection && product.connection === current.connection) score += 20;
       if (current.brand && product.brand?.slug === current.brand.slug) score += 80;
-      if (documentsAnotherProductCompatibility(product, current)) score -= 1_000;
+      const hasConflictingCompatibility = documentsAnotherProductCompatibility(product, current);
+      if (hasConflictingCompatibility) score -= 1_000;
+
+      const isStrongCandidate = isExplicitlyCompatible || hasMatchingSystemFamily || (
+        typeIndex >= 0 &&
+        sharedSystemTypes > 0 &&
+        score >= 500 &&
+        !hasConflictingCompatibility &&
+        (!isPaperless || productSystemTypes.includes("paperless")) &&
+        (!isVideo || productSystemTypes.includes("video-hybrid")) &&
+        !isWireless
+      );
+      if (!isStrongCandidate) return null;
 
       return { product, score, catalogIndex };
     })
@@ -110,7 +140,10 @@ export function getConferenceRelatedSectionCopy(product: ConferenceProduct): str
     return "Related paperless and digital conference system components.";
   }
   if (product.productTypes.includes("package") || product.productTypes.includes("other")) {
-    return "Related system components, upgrades, and integration products.";
+    return "Related conference system components, upgrades, and integration products.";
+  }
+  if (product.connection === "wireless") {
+    return "Related wireless conference system components for room planning.";
   }
   if (product.productTypes.includes("control-unit")) {
     return "Discussion units and related system components for conference planning.";
@@ -125,16 +158,13 @@ export function getConferenceRelatedSectionCopy(product: ConferenceProduct): str
     return "Related conference audio processing and integration products.";
   }
   if (product.productTypes.includes("amplifier")) {
-    return "Related conference audio processing and reinforcement products.";
+    return "Related conference audio processing and amplification products.";
   }
   if (product.productTypes.includes("camera")) {
     return "Related video and hybrid conference integration products.";
   }
   if (product.productTypes.includes("processor")) {
     return "Related conference processing and system integration products.";
-  }
-  if (product.connection === "wireless") {
-    return "Related wireless conference system components and accessories.";
   }
   return "Related conference system components for project planning.";
 }
