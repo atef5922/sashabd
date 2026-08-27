@@ -1679,7 +1679,11 @@ test("Conference collection templates stay normalized, adaptive, and single-DOM"
   assert.match(collection, /getConferenceBrandsForProducts\(products\)/);
   assert.match(collection, /getConferenceDisplayApplications\(products\)/);
   assert.match(collection, /getConferenceCategoriesForProducts\(products\)/);
-  assert.match(collection, /productCount === 1/);
+  assert.match(collection, /function getCategoryProductCountLabel/);
+  assert.match(collection, /Conference Control Products/);
+  assert.match(collection, /Conference Products`/);
+  assert.match(collection, /productCountLabel=\{getCategoryProductCountLabel\(category, products\.length\)\}/);
+  assert.doesNotMatch(collection, /verified products/i);
   assert.match(collectionGrid, /productCount <= 5/);
   assert.equal(occurrences(collection, "<FaqAccordion"), 1);
   assert.equal(occurrences(collection, '"@type": "FAQPage"'), 1);
