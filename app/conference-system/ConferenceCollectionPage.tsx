@@ -252,7 +252,7 @@ function FinalCta({ title, description }: { title: string; description: string }
         </div>
         <div className="flex flex-col gap-3 sm:flex-row md:flex-col lg:flex-row">
           <Link href="/contact/?project=conference-system" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-orange-600 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300">
-            Request a Quote
+            Get Free BOQ
           </Link>
           <Link href="/conference-system/" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-600 px-5 py-3 text-sm font-extrabold text-white transition hover:border-slate-400 hover:bg-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300">
             Conference System Hub
@@ -277,7 +277,7 @@ function Hero({ eyebrow, title, description, productCount, productsAnchor = true
         <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-700 md:text-base md:leading-8">{description}</p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
           <Link href="/contact/?project=conference-system" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-orange-600 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50">
-            Request a Quote
+            Get Free BOQ
           </Link>
           <Link href={productsAnchor && productCount ? "#products" : "/conference-system/"} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-extrabold text-slate-800 transition hover:border-orange-300 hover:text-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50">
             {productsAnchor && productCount ? "View Products" : "Browse Conference Systems"}

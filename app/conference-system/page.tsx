@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import FaqAccordion from "@/components/common/FaqAccordion";
+import { buildWhatsAppHref } from "@/lib/contact";
 import { formatBdtAmount } from "@/lib/price";
 import { absoluteUrl, socialImageUrl } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
@@ -19,13 +20,12 @@ import { conferenceBrandConfigs, hasConferenceBrandProducts } from "./taxonomy";
 import ConferenceProductExplorer from "./ConferenceProductExplorer";
 import { buildConferenceExplorerProducts } from "./conferenceExplorerData";
 import { balanceConferenceProductsByBrand, CONFERENCE_INITIAL_PRODUCT_COUNT } from "./conferenceExplorerOrder";
-import { conferenceInstallationProjects } from "./conferenceProjects";
+import { conferenceRepresentativeConfigurations } from "./conferenceProjects";
+import { CONFERENCE_ENGINEER_WHATSAPP_MESSAGE } from "./conferenceInquiry";
 
 const PAGE_TITLE = "Conference System Price in Bangladesh 2026";
 const META_TITLE = `${PAGE_TITLE} | Sasha`;
-const conferenceEngineerWhatsAppHref = `https://wa.me/${siteConfig.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(
-  "Hello Sasha Corporation, I would like to discuss a conference system project with your engineering team.",
-)}`;
+const conferenceEngineerWhatsAppHref = buildWhatsAppHref(CONFERENCE_ENGINEER_WHATSAPP_MESSAGE);
 
 const compactInformationSectionClass =
   "mt-4 rounded-2xl border border-[#dbe5f2] bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.04)] sm:px-5 md:px-6";
@@ -161,9 +161,9 @@ const popularConferencePackages = [
     subtitle: "Boardroom Package",
     description: "Perfect for small boardrooms and executive meetings",
     items: ["1 Chairman Unit", "9 Delegate Units", "1 Control Unit", "Cables & Accessories"],
-    priceEyebrow: "Estimated Budget",
+    priceEyebrow: "Estimated Equipment Budget",
     price: "৳ 185,000",
-    priceNote: "Indicative BOQ estimate",
+    priceNote: "Indicative equipment estimate",
     cta: "Get Package BOQ",
     href: "/contact/?project=conference-system&package=10-person-boardroom",
     image: "/images/conference_system_products/bosch_products/Bosch-CCS-1000-D-Digital-Discussion-System.webp",
@@ -179,9 +179,9 @@ const popularConferencePackages = [
     subtitle: "Meeting Room Package",
     description: "Ideal for team meetings and training sessions",
     items: ["1 Chairman Unit", "19 Delegate Units", "1 Control Unit", "Cables & Accessories"],
-    priceEyebrow: "Estimated Budget",
+    priceEyebrow: "Estimated Equipment Budget",
     price: "৳ 355,000",
-    priceNote: "Indicative BOQ estimate",
+    priceNote: "Indicative equipment estimate",
     cta: "Get Package BOQ",
     href: "/contact/?project=conference-system&package=20-person-meeting-room",
     image: "/images/conference_system_products/bosch_products/Bosch CCS-900 Wired Ultro Discussion Conference System.jpg",
@@ -197,9 +197,9 @@ const popularConferencePackages = [
     subtitle: "Government Package",
     description: "Recommended for government and official meeting rooms",
     items: ["1 Chairman Unit", "29 Delegate Units", "1 Central Control Unit", "Cables, DSP & Accessories"],
-    priceEyebrow: "Estimated Budget",
+    priceEyebrow: "Estimated Equipment Budget",
     price: "৳ 595,000",
-    priceNote: "Indicative BOQ estimate",
+    priceNote: "Indicative equipment estimate",
     cta: "Get Package BOQ",
     href: "/contact/?project=conference-system&package=30-person-government",
     image: "/images/conference_system_products/cmx_products/CMX-CS-700A-Conference-System-with-Discussion-Units-768x768.webp",
@@ -218,7 +218,7 @@ const popularConferencePackages = [
     priceEyebrow: "Custom Solution",
     price: "Get Custom Quotation",
     priceNote: "",
-    cta: "Request Custom BOQ",
+    cta: "Get Package BOQ",
     href: "/contact/?project=conference-system&package=50-plus-conference-hall",
     image: "/images/conference_system_products/cmx_products/CMX-CS-100-S101-S102-Digital-Conference-System-300x300.webp",
     imageAlt: "Custom conference hall system package for fifty or more participants",
@@ -367,7 +367,7 @@ const chooseSashaCards = [
   {
     title: "After Sales Support",
     icon: "support" as const,
-    description: "Local technical support, warranty guidance, and quick response nationwide.",
+    description: "Bangladesh-based technical support, project follow-up, and warranty guidance where applicable.",
   },
   {
     title: "Expansion & Spare Support",
@@ -382,7 +382,6 @@ type ConferenceBrandCard = {
   category: string;
   description: string;
   support: string;
-  badge: string;
   logoSrc?: string;
   logoWidth?: number;
   logoHeight?: number;
@@ -399,7 +398,6 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
     description:
       "Browse the Bosch conference products currently listed in our verified catalog for professional discussion and meeting-room communication projects.",
     support: "Product selection, BOQ preparation, installation planning, and warranty assistance.",
-    badge: "Authorized Distributor",
     logoSrc: "/images/brands/audio/bosch-logo.svg",
     logoWidth: 102,
     logoHeight: 22,
@@ -413,7 +411,6 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
     description:
       "Explore the TOA meeting-audio products available in our conference catalog, including compatible microphone, control, amplification, and speaker solutions.",
     support: "System compatibility guidance, product supply, installation support, and warranty assistance.",
-    badge: "Authorized Distributor",
     logoSrc: "/images/brands/audio/toa-logo.png",
     logoWidth: 90,
     logoHeight: 27,
@@ -427,7 +424,6 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
     description:
       "View SPON digital and network conference products from our catalog, including control units, DSP processors, amplifiers, and meeting-room audio equipment.",
     support: "Room-based system design, BOQ preparation, installation, commissioning, and after-sales guidance.",
-    badge: "Authorized Distributor",
     logoSrc: "/images/brands/audio/spon.svg",
     logoWidth: 163,
     logoHeight: 33,
@@ -441,7 +437,6 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
     description:
       "Browse CMX wired, wireless, and paperless conference products listed in our catalog for boardrooms, council chambers, and flexible meeting spaces.",
     support: "Product selection, microphone quantity planning, installation support, and after-sales guidance.",
-    badge: "Authorized Distributor",
     logoSrc: "/images/brands/audio/cmx-logo.png",
     logoWidth: 95,
     logoHeight: 95,
@@ -461,8 +456,8 @@ type CommercialConfidenceIcon = "verified" | "quotation" | "installation" | "war
 const commercialConfidenceCards = [
   {
     icon: "verified" as const,
-    title: "Verified Business",
-    description: "Sasha Corporation provides a verified business address and direct project contact in Bangladesh.",
+    title: "Bangladesh-Based AV Provider",
+    description: "Sasha Corporation provides a Dhaka office address and direct project contact for AV requirements in Bangladesh.",
   },
   {
     icon: "quotation" as const,
@@ -476,8 +471,8 @@ const commercialConfidenceCards = [
   },
   {
     icon: "warranty" as const,
-    title: "Warranty & Quality",
-    description: "Official products with manufacturer warranty and dependable quality assurance.",
+    title: "Applicable Warranty Support",
+    description: "Manufacturer or supplier warranty applies where stated in the product quotation and agreed commercial scope.",
   },
   {
     icon: "privacy" as const,
@@ -699,9 +694,9 @@ const conferenceHeroFeatures: Array<{
   title: string;
   description: string;
 }> = [
-  { icon: "authorized", title: "Authorized Solutions", description: "Bosch, TOA, SPON, CMX" },
-  { icon: "design", title: "System Design & BOQ", description: "For Any Room Size" },
-  { icon: "installation", title: "Installation & Support", description: "Nationwide Service" },
+  { icon: "authorized", title: "Conference System Solutions", description: "Bosch, TOA, SPON, CMX" },
+  { icon: "design", title: "System Design & BOQ", description: "For Different Room Sizes" },
+  { icon: "installation", title: "Installation & Support", description: "Bangladesh-Based Service" },
   { icon: "support", title: "After Sales Support", description: "Expert Technical Team" },
 ];
 
@@ -734,8 +729,8 @@ type ConferenceTrustFeatureIcon = "boq" | "installation" | "pricing" | "warranty
 const conferenceTrustFeatures: Array<{ icon: ConferenceTrustFeatureIcon; title: string }> = [
   { icon: "boq", title: "BOQ & Tender Support" },
   { icon: "installation", title: "Installation & Training" },
-  { icon: "pricing", title: "Competitive Pricing" },
-  { icon: "warranty", title: "Warranty & Support" },
+  { icon: "pricing", title: "BOQ-Based Pricing" },
+  { icon: "warranty", title: "Applicable Warranty & Support" },
 ];
 
 function ConferenceTrustFeatureIconSvg({ icon }: { icon: ConferenceTrustFeatureIcon }) {
@@ -956,7 +951,7 @@ export default function ConferenceSystemPage() {
                 <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M6 3h9l4 4v14H6z" /><path d="M14 3v5h5M9 12h7M9 16h7" />
                 </svg>
-                Get a Free BOQ
+                Get Free BOQ
               </Link>
               <a
                 href="#conference-products-heading"
@@ -1244,9 +1239,14 @@ export default function ConferenceSystemPage() {
             </article>
           ))}
         </div>
-        <p className="mt-2 text-[9px] font-medium leading-4 text-slate-600 sm:text-[10px]">
-          Package estimates cover a planned combination of conference equipment and are separate from the individual catalog product prices below.
-        </p>
+        <div className="mt-2 flex flex-col gap-1.5 text-[9px] font-medium leading-4 text-slate-600 sm:flex-row sm:items-start sm:justify-between sm:text-[10px]">
+          <p className="max-w-4xl text-left">
+            Indicative equipment estimates are based on each listed configuration. Final pricing depends on the selected brand, model, accessories, and project scope; the final BOQ confirms whether installation, cabling, integration, transport, VAT/tax, and commissioning are included or quoted separately.
+          </p>
+          <Link href="/conference-system/complete-package/" className="shrink-0 self-start font-extrabold text-[#1744a1] hover:text-blue-700 hover:underline focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40">
+            View Complete Installed Packages <span aria-hidden="true">→</span>
+          </Link>
+        </div>
       </section>
 
       <section
@@ -1336,8 +1336,8 @@ export default function ConferenceSystemPage() {
                   <Link href="/contact/?project=hybrid-conference-room" className="inline-flex min-h-9 items-center justify-center rounded-md bg-[#071f4a] px-3 text-[10px] font-extrabold text-white shadow-sm transition hover:bg-[#123665] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40">
                     Design My Meeting Room <span aria-hidden="true" className="ml-1.5">→</span>
                   </Link>
-                  <a href={`tel:${siteConfig.phone}`} className="inline-flex min-h-9 items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-3 text-[10px] font-extrabold text-[#123566] transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40">
-                    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a14 14 0 0 0 5 5L15 13l5 2v4c0 1.1-.9 2-2 2A15 15 0 0 1 3 6c0-1.1.9-2 2-2Z" /></svg>
+                  <a href={conferenceEngineerWhatsAppHref} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-9 items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-3 text-[10px] font-extrabold text-[#123566] transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40">
+                    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.4 9.4 0 0 1-3.8-.9L3 21l1.8-5a8.5 8.5 0 1 1 16.2-4.5Z" /><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" /></svg>
                     Talk to an AV Engineer
                   </a>
                 </div>
@@ -1394,7 +1394,7 @@ export default function ConferenceSystemPage() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <h2 id="conference-system-configurations" className={conferenceSectionTitleClass}>Representative Conference System Configurations</h2>
-            <p className="mt-1 text-left text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">Practical room configurations illustrating typical system design and professional delivery scopes</p>
+            <p className="mt-1 text-left text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">Sample room configurations illustrating typical system design and possible delivery scopes—not completed client case studies</p>
           </div>
           <Link href="/projects/" className="inline-flex min-h-9 shrink-0 items-center justify-center self-start rounded-md border border-[#b9cbea] bg-white px-4 text-[10px] font-extrabold text-[#1744a1] transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 sm:text-[11px]">
             View All Projects <span aria-hidden="true" className="ml-1.5">→</span>
@@ -1402,7 +1402,7 @@ export default function ConferenceSystemPage() {
         </div>
 
         <div className="mt-4 grid gap-3 lg:grid-cols-3">
-          {conferenceInstallationProjects.map((project) => (
+          {conferenceRepresentativeConfigurations.map((project) => (
             <article key={project.title} className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_3px_12px_rgba(15,23,42,0.055)] transition hover:-translate-y-0.5 hover:shadow-[0_9px_24px_rgba(15,23,42,0.09)] sm:grid sm:grid-cols-[47%_53%] lg:block xl:grid xl:grid-cols-[47%_53%]">
               <div className="relative aspect-[16/10] min-h-[170px] overflow-hidden bg-slate-100 sm:aspect-auto lg:aspect-[16/9] lg:min-h-0 xl:aspect-auto xl:min-h-[190px]">
                 <Image src={project.image} alt={project.imageAlt} fill sizes="(max-width: 639px) 100vw, (max-width: 1023px) 45vw, 24vw" className="object-cover transition duration-300 group-hover:scale-[1.025]" />
@@ -1410,13 +1410,13 @@ export default function ConferenceSystemPage() {
               <div className="flex min-w-0 flex-col p-3.5">
                 <h3 className="!text-[13px] font-extrabold leading-5 text-[#071936] sm:!text-sm">{project.cardTitle}</h3>
                 <dl className="mt-2.5 space-y-2 border-y border-slate-100 py-2.5 text-[10px] leading-4 text-slate-600 sm:text-[11px]">
-                  <div><dt className="font-extrabold text-slate-800">Location</dt><dd>{project.location}</dd></div>
+                  <div><dt className="font-extrabold text-slate-800">Example Application</dt><dd>{project.application}</dd></div>
                   <div><dt className="font-extrabold text-slate-800">Brand / System</dt><dd>{project.brand}</dd></div>
                   <div><dt className="font-extrabold text-slate-800">Configuration</dt><dd>{project.configuration}</dd></div>
-                  <div><dt className="font-extrabold text-slate-800">Scope of Work</dt><dd>{project.scope}</dd></div>
+                  <div><dt className="font-extrabold text-slate-800">Illustrative Scope</dt><dd>{project.illustrativeScope}</dd></div>
                 </dl>
-                <Link href="/projects/" aria-label={`View project details for ${project.title}`} className="mt-auto inline-flex min-h-8 items-end pt-2 text-[11px] font-extrabold text-[#1744a1] hover:text-blue-700 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 sm:text-xs">
-                  View Project Details <span aria-hidden="true" className="ml-1">→</span>
+                <Link href="/projects/" aria-label={`View projects related to the ${project.title} sample configuration`} className="mt-auto inline-flex min-h-8 items-end pt-2 text-[11px] font-extrabold text-[#1744a1] hover:text-blue-700 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 sm:text-xs">
+                  View Projects <span aria-hidden="true" className="ml-1">→</span>
                 </Link>
               </div>
             </article>
@@ -1459,7 +1459,7 @@ export default function ConferenceSystemPage() {
               <Link href="/contact/?project=conference-system" className="inline-flex min-h-9 items-center justify-center rounded-md bg-[#071f4a] px-3 text-[10px] font-extrabold text-white shadow-sm transition hover:bg-[#123665] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40">Get Free BOQ</Link>
               <a href={conferenceEngineerWhatsAppHref} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-9 items-center justify-center gap-2 rounded-md border border-[#9fb8df] bg-white px-3 text-[10px] font-extrabold text-[#123566] transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40">
                 <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.4 9.4 0 0 1-3.8-.9L3 21l1.8-5a8.5 8.5 0 1 1 16.2-4.5Z" /><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" /></svg>
-                WhatsApp Engineering Team
+                Talk to an AV Engineer
               </a>
             </div>
           </aside>
@@ -1575,7 +1575,7 @@ export default function ConferenceSystemPage() {
         aria-labelledby="conference-commercial-confidence"
       >
         <h2 id="conference-commercial-confidence" className={conferenceSectionTitleClass}>Commercial Confidence</h2>
-        <p className="mt-1 text-left text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">We ensure transparency and reliability in every project.</p>
+        <p className="mt-1 text-left text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">Clear quotation, project scope, service responsibilities, and applicable commercial terms.</p>
 
         <div className="mt-4 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-5">
           {commercialConfidenceCards.map((item) => (
@@ -1605,7 +1605,7 @@ export default function ConferenceSystemPage() {
         <div className="mt-3 flex flex-col gap-2 rounded-lg border border-blue-100 bg-[#f6f9ff] px-3 py-2.5 text-[11px] font-medium leading-5 text-slate-600 sm:flex-row sm:items-center sm:justify-between sm:text-xs">
           <p className="flex items-start gap-2 text-left">
             <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-blue-200 text-[9px] font-extrabold text-[#2456c7]" aria-hidden="true">i</span>
-            <span><strong className="text-slate-800">Authorisation Scope:</strong> Authorisation and dealership are granted according to manufacturer appointment and product-line terms.</span>
+            <span><strong className="text-slate-800">Brand &amp; Warranty Scope:</strong> Product availability, warranty coverage, and commercial terms are confirmed for the selected model in the final quotation.</span>
           </p>
           <Link href="/services-support/" className="shrink-0 font-extrabold text-[#1744a1] hover:underline">Learn More <span aria-hidden="true">→</span></Link>
         </div>
@@ -1668,11 +1668,11 @@ export default function ConferenceSystemPage() {
             <Link href="/contact/?project=conference-system" className="inline-flex min-h-9 items-center justify-center rounded-md bg-[#f45b18] px-5 text-[10px] font-extrabold text-white shadow-sm transition hover:bg-[#db490d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400/60">Get Free BOQ <span aria-hidden="true" className="ml-1.5">→</span></Link>
             <a href={conferenceEngineerWhatsAppHref} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-9 items-center justify-center gap-2 rounded-md border border-white/45 bg-white/10 px-5 text-[10px] font-extrabold text-white backdrop-blur-sm transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50">
               <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.4 9.4 0 0 1-3.8-.9L3 21l1.8-5a8.5 8.5 0 1 1 16.2-4.5Z" /><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" /></svg>
-              WhatsApp Engineering Team
+              Talk to an AV Engineer
             </a>
           </div>
           <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-[8px] font-semibold text-blue-100 sm:text-[9px]">
-            {["Expert Consultation", "Customized Solution", "Best Pricing", "Nationwide Support"].map((item) => (
+            {["Project Consultation", "Customized Solution", "Clear BOQ Pricing", "Bangladesh-Based Support"].map((item) => (
               <li key={item} className="flex items-center gap-1.5"><span className="inline-flex h-3 w-3 items-center justify-center rounded-full border border-blue-200/60 text-[7px]" aria-hidden="true">✓</span>{item}</li>
             ))}
           </ul>

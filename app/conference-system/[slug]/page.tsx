@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { siteConfig } from "@/lib/site";
+import { buildWhatsAppHref } from "@/lib/contact";
 import { absoluteUrl, buildProductMetadata, ensureMetaDescription, socialImageUrl } from "@/lib/seo";
 import { BRAND_NAME } from "@/lib/brand";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
@@ -151,9 +151,7 @@ export default async function ConferenceProductPage(
   const product = getConferenceProductBySlug(slug);
 
   if (product) {
-    const wa = `https://wa.me/${siteConfig.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(
-      `Hello Sasha Corporation, I need quotation for ${product.name}.`
-    )}`;
+    const wa = buildWhatsAppHref(`Hello Sasha Corporation, I need quotation for ${product.name}.`);
 
     return (
       <>

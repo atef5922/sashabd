@@ -6,6 +6,7 @@ import { siteConfig } from "../../lib/site";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { socialImageUrl } from "@/lib/seo";
 import { BRAND_NAME } from "@/lib/brand";
+import { buildWhatsAppHref } from "@/lib/contact";
 import ContactForm from "./ContactForm";
 import EmailReveal from "@/components/common/EmailReveal";
 import { conferenceSystemCatalog } from "@/app/conference-system/catalog";
@@ -81,15 +82,14 @@ function SectionTitle({
 }
 
 export default function AboutPage() {
-  const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
+  const wa = buildWhatsAppHref();
 
-  // Researched contact details (from your live site)
-  const phoneDisplay = "+880160-8843419";
-  const phoneDial = "+880160-8843419";
+  const phoneDisplay = siteConfig.phone;
+  const phoneDial = siteConfig.phone;
   const address = siteConfig.address;
 
   // Simple embed without API key
-  const mapQuery = "1st Floor, 36-37 Umesh Datta Road, Bakshibazar, Dhaka 1211, Bangladesh";
+  const mapQuery = siteConfig.address;
   const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&t=&z=19&ie=UTF8&iwloc=B&output=embed`;
   const mapOpenUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
 

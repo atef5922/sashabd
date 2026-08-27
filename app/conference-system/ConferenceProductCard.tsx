@@ -133,10 +133,10 @@ export default function ConferenceProductCard({
               <Link
                 prefetch={false}
                 href={quotationHref}
-                aria-label={`Get price for ${product.name}`}
+                aria-label={`Get a quote for ${product.name}`}
                 className="inline-flex min-h-10 min-w-0 items-center justify-center rounded-md border border-[#071936] bg-[#071936] px-2 py-2 text-center text-xs font-bold text-white transition-colors hover:border-[#102b52] hover:bg-[#102b52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/45 focus-visible:ring-offset-2"
               >
-                Get Price
+                Get a Quote
               </Link>
             </div>
           </div>
@@ -251,10 +251,10 @@ export default function ConferenceProductCard({
             <Link
               prefetch={false}
               href={quotationHref}
-              aria-label={`Request quotation for ${product.name}`}
+              aria-label={`Get a quote for ${product.name}`}
               className="inline-flex min-h-10 items-center justify-center rounded-xl bg-gradient-to-r from-sky-700 to-sky-600 px-3 py-2 text-center text-xs font-extrabold text-white transition hover:from-sky-600 hover:to-sky-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/60 focus-visible:ring-offset-2"
             >
-              Request Quotation
+              Get a Quote
             </Link>
           </div>
         </div>

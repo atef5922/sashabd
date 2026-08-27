@@ -50,7 +50,7 @@ export default function ConferenceBrandsPage() {
         </p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
           <Link href="/contact/?project=conference-system" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-orange-600 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50">
-            Request a Quote
+            Get Free BOQ
           </Link>
           <Link href="/conference-system/" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-extrabold text-slate-800 transition hover:border-orange-300 hover:text-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50">
             Conference System Hub
@@ -119,19 +119,17 @@ export default function ConferenceBrandsPage() {
           <article>
             <h3 className="text-base font-extrabold text-slate-900">TOA — TS-680 through TS-900</h3>
             <p className="mt-2 text-sm leading-7 text-slate-700">
-              TOA offers the widest ladder of room sizes, from the compact TS-820 up to the TS-900 range for formal
-              chambers. Its practical advantage in Bangladesh is service depth: the brand has been supported here long
-              enough that spares and repair knowledge exist in-country. The TS-918 expansion unit gives a defined route
-              to add member positions later without replacing the central unit.
+              TOA&apos;s listed conference range spans compact through formal meeting-room applications, including the
+              TS-820 and TS-900 series. The TS-918 expansion unit provides a defined route to add compatible member
+              positions without replacing the corresponding central unit.
             </p>
           </article>
           <article>
             <h3 className="text-base font-extrabold text-slate-900">CMX — wired, wireless, infrared and paperless</h3>
             <p className="mt-2 text-sm leading-7 text-slate-700">
-              CMX is the broadest range on carrier choice. The WS and US series cover wired digital discussion, the 5G
-              and UHF series free the table from cabling, and the S800MC uses infrared so discussion audio cannot pass
-              through walls during closed sessions. The MC series adds paperless meeting hosts that distribute agendas
-              and papers to seat terminals instead of printed packs.
+              The listed CMX range covers wired digital, wireless, infrared, and paperless meeting options. The WS and
+              US series cover wired discussion, the 5G and UHF series support flexible table layouts, and the MC series
+              adds paperless meeting hosts for agenda and document workflows.
             </p>
           </article>
           <article>
@@ -161,7 +159,7 @@ export default function ConferenceBrandsPage() {
             </p>
           </div>
           <Link href="/contact/?project=conference-system" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-orange-600 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300">
-            Talk to an Expert
+            Get Free BOQ
           </Link>
         </div>
       </section>
