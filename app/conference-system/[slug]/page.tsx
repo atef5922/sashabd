@@ -1,15 +1,16 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { buildWhatsAppHref } from "@/lib/contact";
-import { absoluteUrl, buildProductMetadata, ensureMetaDescription, socialImageUrl } from "@/lib/seo";
+import { absoluteUrl, buildProductMetadata, socialImageUrl } from "@/lib/seo";
 import { BRAND_NAME } from "@/lib/brand";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import ConferenceCollectionPage from "../ConferenceCollectionPage";
 import ConferenceProductDetailPage from "../ConferenceProductDetailPage";
-import { getConferenceRelatedProducts } from "../conferenceProductRelations";
+import { getConferenceCompatibleProducts, getConferenceRelatedProducts } from "../conferenceProductRelations";
 import { buildConferenceProductOfferJsonLd } from "../conferenceProductSchema";
 import {
   conferenceSystemCatalog,
+  CONFERENCE_PRODUCT_TYPE_LABELS,
   getConferenceProductBySlug,
   getConferenceProductPrimaryImage,
   getConferenceProductSpecifications,
@@ -23,17 +24,48 @@ import {
 
 export const dynamicParams = false;
 
-/**
- * Adds the commercial qualifier Bangladeshi buyers actually search for, but only
- * as much of it as fits inside the ~60 character SERP limit.
- */
-const SERP_TITLE_LIMIT = 60;
+function compactConferenceModel(model: string): string {
+  const parts = model.split("/").map((part) => part.trim()).filter(Boolean);
+  if (parts.length < 2) return model;
 
-function conferenceProductSeoTitle(name: string): string {
-  for (const suffix of [" Price in Bangladesh", " Price in BD", " Price"]) {
-    if (name.length + suffix.length <= SERP_TITLE_LIMIT) return `${name}${suffix}`;
+  const prefix = parts[0].match(/^[A-Z]+-/)?.[0];
+  if (!prefix || !parts.every((part) => part.startsWith(prefix))) return model;
+
+  return [parts[0], ...parts.slice(1).map((part) => part.slice(prefix.length))].join("/");
+}
+
+function conferenceProductSeoIdentity(product: (typeof conferenceSystemCatalog)[number]): string {
+  const primaryType = CONFERENCE_PRODUCT_TYPE_LABELS[product.productTypes[0] ?? "other"];
+  const usefulType = primaryType === "Complete System"
+    ? primaryType
+    : primaryType === "Conference System"
+      ? primaryType
+      : `Conference ${primaryType}`;
+
+  if (product.brand?.name && product.model) {
+    return `${product.brand.name} ${compactConferenceModel(product.model)} ${usefulType}`;
   }
-  return name;
+
+  return product.name;
+}
+
+function conferenceProductSeoTitle(product: (typeof conferenceSystemCatalog)[number]): string {
+  return `${conferenceProductSeoIdentity(product)} Price in Bangladesh`;
+}
+
+function conferenceProductSeoDescription(product: (typeof conferenceSystemCatalog)[number]): string {
+  const identity = conferenceProductSeoIdentity(product);
+  if (product.price.type === "request") {
+    return `${identity} in Bangladesh. Check specifications, compatibility and current availability, then request current pricing and a project BOQ from Sasha Corporation.`;
+  }
+
+  const availability = product.availability === "project-order"
+    ? "project-order availability"
+    : product.availability === "in-stock"
+      ? "listed availability"
+      : "current availability";
+
+  return `${identity} price in Bangladesh. Check specifications, compatibility and ${availability}, then request a project BOQ from Sasha Corporation.`;
 }
 
 export async function generateMetadata(
@@ -43,11 +75,8 @@ export async function generateMetadata(
   const product = getConferenceProductBySlug(slug);
   if (product) {
     return buildProductMetadata({
-      title: conferenceProductSeoTitle(product.name),
-      description: ensureMetaDescription(
-        product.shortDescription,
-        "Conference system price, specifications, BOQ support, installation, and after-sales service in Bangladesh."
-      ),
+      title: conferenceProductSeoTitle(product),
+      description: conferenceProductSeoDescription(product),
       path: `/conference-system/${slug}`,
       image: getConferenceProductPrimaryImage(product).src,
       openGraphTitle: `${product.name} | Conference System`,
@@ -126,9 +155,7 @@ export default async function ConferenceProductPage(
           product={product}
           relatedProducts={getConferenceRelatedProducts(product, conferenceSystemCatalog)}
           wa={wa}
-          compatibleProducts={product.compatibleProductIds
-            .map((id) => conferenceSystemCatalog.find((item) => item.id === id))
-            .filter((item): item is (typeof conferenceSystemCatalog)[number] => Boolean(item))}
+          compatibleProducts={getConferenceCompatibleProducts(product, conferenceSystemCatalog)}
           categoryLinks={conferenceCategoryConfigs
             .filter((category) => category.matchProduct(product) && isConferenceCategoryIndexable(category))
             .map((category) => ({ href: `/conference-system/${category.slug}/`, label: category.label }))}

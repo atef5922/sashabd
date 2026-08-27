@@ -1383,10 +1383,14 @@ test("Conference product pages emit Product schema and relevance-ranked internal
   assert.match(relations, /product\.id === current\.id \|\| product\.slug === current\.slug/);
   assert.match(relations, /seen\.has\(product\.slug\)/);
 
-  // Commercial qualifier in the title tag, capped to the SERP limit.
-  assert.match(route, /const SERP_TITLE_LIMIT = 60;/);
-  assert.match(route, /" Price in Bangladesh", " Price in BD", " Price"/);
-  assert.match(route, /title: conferenceProductSeoTitle\(product\.name\)/);
+  // Commercial metadata remains data-driven and preserves the full Bangladesh
+  // intent without falling back to an ambiguous country abbreviation.
+  assert.match(route, /function conferenceProductSeoIdentity\(/);
+  assert.match(route, /CONFERENCE_PRODUCT_TYPE_LABELS/);
+  assert.match(route, /Price in Bangladesh/);
+  assert.doesNotMatch(route, /Price in BD/);
+  assert.match(route, /title: conferenceProductSeoTitle\(product\)/);
+  assert.match(route, /description: conferenceProductSeoDescription\(product\)/);
 
   // Specifications are a real heading, always rendered - not hidden behind a tab.
   assert.match(detail, /<h2 className="border-b border-slate-200 pb-2 text-base font-bold text-slate-900">Specifications<\/h2>/);
@@ -1426,14 +1430,14 @@ test("Conference product pages emit Product schema and relevance-ranked internal
   assert.doesNotMatch(route, /\bmpn\s*:/);
   assert.doesNotMatch(route, /\bgtin\w*\s*:/);
   assert.ok(!route.includes("offerCount"), "a single listing must not claim an offer count");
-  assert.match(route, /compatibleProducts=\{product\.compatibleProductIds/);
+  assert.match(route, /compatibleProducts=\{getConferenceCompatibleProducts\(product, conferenceSystemCatalog\)\}/);
   assert.match(route, /categoryLinks=\{conferenceCategoryConfigs/);
   assert.match(route, /brandLink=\{/);
 });
 
 test("Conference related products are contextual, explicit-first, unique, and never self-related", async () => {
   const moduleUrl = pathToFileURL(path.join(root, "app/conference-system/conferenceProductRelations.ts")).href;
-  const { getConferenceRelatedProducts, getConferenceRelatedSectionCopy } = await import(`${moduleUrl}?test=${Date.now()}`);
+  const { getConferenceCompatibleProducts, getConferenceRelatedProducts, getConferenceRelatedSectionCopy } = await import(`${moduleUrl}?test=${Date.now()}`);
   const makeProduct = (overrides) => ({
     id: overrides.id,
     slug: overrides.slug ?? overrides.id,
@@ -1465,6 +1469,12 @@ test("Conference related products are contextual, explicit-first, unique, and ne
   const delegate = makeProduct({ id: "delegate", productTypes: ["delegate-unit"] });
   const duplicateDelegate = makeProduct({ id: "duplicate-delegate", slug: "delegate", productTypes: ["delegate-unit"] });
   const unrelated = makeProduct({ id: "camera", productTypes: ["camera"], systemTypes: ["video-hybrid"], systemCategory: "video" });
+
+  assert.deepEqual(
+    getConferenceCompatibleProducts(chairman, [controller, chairman, delegate]).map((product) => product.id),
+    ["controller"],
+    "an explicit catalog relationship remains discoverable in both directions",
+  );
 
   const related = getConferenceRelatedProducts(
     controller,

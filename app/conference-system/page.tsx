@@ -816,7 +816,7 @@ function ConferenceChooserIconSvg({ icon }: { icon: ConferenceChooserIcon }) {
 export const metadata: Metadata = {
   title: META_TITLE,
   description:
-    "Compare conference system price in Bangladesh with chairman & delegate mics, wired/wireless systems, BOQ, installation and free quotation.",
+    "Compare Bosch, TOA, SPON and CMX conference system prices in Bangladesh. Explore wired, wireless, digital and paperless systems with BOQ support.",
   keywords: [
     "conference system price in Bangladesh",
     "conference system in Bangladesh",
@@ -832,7 +832,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: META_TITLE,
     description:
-      "Professional conference microphone, wireless conference, and audio control systems for meeting rooms and conference halls.",
+      "Compare Bosch, TOA, SPON and CMX conference system prices in Bangladesh. Explore wired, wireless, digital and paperless systems with BOQ support.",
     url: "/conference-system/",
     type: "website",
     images: [
@@ -847,7 +847,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: META_TITLE,
-    description: "Conference microphone and meeting audio solutions in Bangladesh.",
+    description: "Compare conference system prices in Bangladesh and explore wired, wireless, digital and paperless systems with project BOQ support.",
     images: [socialImageUrl("/images/Conference%20system/NAC-720W.webp")],
   },
 };
@@ -965,7 +965,7 @@ export default function ConferenceSystemPage() {
             </div>
           </div>
 
-          <ul className="mt-auto grid max-w-[38rem] -translate-y-2 grid-cols-2 gap-x-3 gap-y-3 pt-4 sm:grid-cols-4 sm:gap-x-4 lg:w-1/2 lg:max-w-none lg:-translate-y-3 lg:gap-x-5 lg:pt-3">
+          <ul className="mt-auto grid max-w-[42rem] -translate-y-2 grid-cols-2 gap-x-4 gap-y-3 pt-4 sm:grid-cols-4 sm:gap-x-6 lg:w-[56%] lg:max-w-none lg:-translate-y-3 lg:gap-x-7 lg:pt-3">
             {conferenceHeroFeatures.map((feature) => (
               <li
                 key={feature.title}

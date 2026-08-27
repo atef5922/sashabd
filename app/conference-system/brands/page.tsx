@@ -11,10 +11,10 @@ import {
 } from "../taxonomy";
 
 export const metadata: Metadata = buildProductMetadata({
-  title: "Conference System Brands in Bangladesh",
-  description: "Explore Conference System brands, current product ranges, pricing, and project consultation in Bangladesh.",
+  title: "Conference System Brands & Prices in Bangladesh",
+  description: "Compare Bosch, TOA, SPON and CMX conference system brands and prices in Bangladesh. Explore compatible product families and request a project BOQ.",
   path: "/conference-system/brands/",
-  openGraphTitle: "Conference System Brands in Bangladesh",
+  openGraphTitle: "Conference System Brands & Prices in Bangladesh",
   openGraphType: "website",
 });
 
