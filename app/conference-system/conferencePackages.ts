@@ -34,7 +34,7 @@ export const conferencePackages: readonly ConferencePackage[] = [
     ],
     capacity: "1 Chairman + 7 Delegates",
     systemType: "Wired Digital Conference System",
-    ctaLabel: "Request a Quote",
+    ctaLabel: "Get Package BOQ",
   },
   {
     id: "professional-12-person",
@@ -59,7 +59,7 @@ export const conferencePackages: readonly ConferencePackage[] = [
     ],
     capacity: "1 Chairman + 11 Delegates",
     systemType: "Digital Conference System with DSP Audio",
-    ctaLabel: "Request a Quote",
+    ctaLabel: "Get Package BOQ",
     featured: true,
   },
   {
@@ -88,8 +88,6 @@ export const conferencePackages: readonly ConferencePackage[] = [
     ],
     capacity: "1 Chairman + 19 Delegates",
     systemType: "Professional Digital Conference System",
-    ctaLabel: "Request a Quote",
+    ctaLabel: "Get Package BOQ",
   },
 ];
-
-export const conferencePackageNames = conferencePackages.map((item) => item.name);

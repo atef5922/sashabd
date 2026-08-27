@@ -108,12 +108,12 @@ export default function ConferenceCompareClient({ products }: { products: Compar
           </div>
           <div className="mt-6 flex flex-col items-center justify-center gap-3 rounded-2xl border border-slate-200 bg-white p-5 text-center sm:flex-row">
             {selectedProducts.length < 3 ? <Link href="/conference-system/#conference-products-heading" className="inline-flex min-h-11 items-center rounded-xl border border-slate-300 px-5 py-3 text-sm font-extrabold text-slate-800 hover:border-orange-300 hover:text-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45">Add Product</Link> : null}
-            <Link href={quotationHref} className="inline-flex min-h-11 items-center rounded-xl bg-orange-600 px-5 py-3 text-sm font-extrabold text-white hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50">Request Quotation</Link>
+            <Link href={quotationHref} className="inline-flex min-h-11 items-center rounded-xl bg-orange-600 px-5 py-3 text-sm font-extrabold text-white hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50">Get a Quote</Link>
           </div>
           <section className="mt-6 rounded-2xl bg-slate-950 p-6 text-center text-white">
             <h2 className="text-xl font-extrabold">Need help choosing?</h2>
             <p className="mx-auto mt-2 max-w-2xl text-sm leading-6 text-slate-300">Share your room size, participant count and installation requirements with Sasha Corporation.</p>
-            <Link href="/contact/?project=conference-system" className="mt-4 inline-flex min-h-11 items-center rounded-xl bg-white px-5 py-3 text-sm font-extrabold text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400">Talk to an Expert</Link>
+            <Link href="/contact/?project=conference-system" className="mt-4 inline-flex min-h-11 items-center rounded-xl bg-white px-5 py-3 text-sm font-extrabold text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400">Get Free BOQ</Link>
           </section>
         </>
       )}

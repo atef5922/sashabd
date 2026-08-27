@@ -4,18 +4,16 @@ import { useEffect, useRef, useState } from "react";
 
 import { BRAND_NAME } from "@/lib/brand";
 import { siteConfig } from "@/lib/site";
-import { conferencePackageNames } from "@/app/conference-system/conferencePackages";
+import {
+  getConferenceInquiryProductLabel,
+  resolveConferenceInquiry,
+  type ConferenceInquiryProduct,
+  type ConferencePackageInquiry,
+  type ConferenceRoomSizeInquiry,
+} from "@/app/conference-system/conferenceInquiry";
 
 type SubmitState = "idle" | "submitting" | "success" | "error";
-type ConferenceQuoteProduct = { slug: string; name: string; model?: string };
-
-const DEFAULT_PROJECT_TYPE = "Indoor LED Display";
-
-function conferenceQuoteProductLabel(product: ConferenceQuoteProduct): string {
-  return product.model && !product.name.toLocaleLowerCase("en").includes(product.model.toLocaleLowerCase("en"))
-    ? `${product.name} (${product.model})`
-    : product.name;
-}
+const DEFAULT_PROJECT_TYPE = "";
 
 export default function ContactForm({
   maroon,
@@ -24,15 +22,17 @@ export default function ContactForm({
 }: {
   maroon: string;
   maroonDark: string;
-  conferenceProducts?: readonly ConferenceQuoteProduct[];
+  conferenceProducts?: readonly ConferenceInquiryProduct[];
 }) {
   const formRef = useRef<HTMLFormElement | null>(null);
   const [state, setState] = useState<SubmitState>("idle");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [projectType, setProjectType] = useState(DEFAULT_PROJECT_TYPE);
   const [message, setMessage] = useState("");
-  const [selectedConferenceProducts, setSelectedConferenceProducts] = useState<ConferenceQuoteProduct[]>([]);
-  const [selectedConferencePackage, setSelectedConferencePackage] = useState("");
+  const [selectedConferenceProducts, setSelectedConferenceProducts] = useState<ConferenceInquiryProduct[]>([]);
+  const [selectedConferencePackage, setSelectedConferencePackage] = useState<ConferencePackageInquiry | null>(null);
+  const [selectedConferenceRoomSize, setSelectedConferenceRoomSize] = useState<ConferenceRoomSizeInquiry | null>(null);
+  const [inquiryProjectKey, setInquiryProjectKey] = useState("");
 
   const email = `${siteConfig.emailUser}@${siteConfig.emailDomain}`;
   const actionUrl = `https://formsubmit.co/ajax/${encodeURIComponent(email)}`;
@@ -40,34 +40,24 @@ export default function ContactForm({
   useEffect(() => {
     let cancelled = false;
     const params = new URLSearchParams(window.location.search);
-    const requestedSlugs = [
-      params.get("product") ?? "",
-      ...(params.get("products") ?? "").split(","),
-    ].map((slug) => slug.trim()).filter(Boolean);
-    const productBySlug = new Map(conferenceProducts.map((product) => [product.slug, product]));
-    const selected = [...new Set(requestedSlugs)]
-      .map((slug) => productBySlug.get(slug))
-      .filter((product): product is ConferenceQuoteProduct => Boolean(product))
-      .slice(0, 3);
-    const requestedPackage = params.get("package")?.trim() ?? "";
-    const selectedPackage = conferencePackageNames.includes(requestedPackage) ? requestedPackage : "";
+    const context = resolveConferenceInquiry(params, conferenceProducts);
 
-    if (params.get("project") !== "conference-system" && !selected.length && !selectedPackage) return;
+    if (!context.projectType) return;
     queueMicrotask(() => {
       if (cancelled) return;
-      setProjectType("Conference System");
-      setSelectedConferenceProducts(selected);
-      setSelectedConferencePackage(selectedPackage);
-      if (selected.length || selectedPackage) {
-        const quotationItems = [
-          selectedPackage,
-          ...selected.map(conferenceQuoteProductLabel),
-        ].filter(Boolean).join("; ");
-        setMessage((current) => current || `Please provide a quotation for: ${quotationItems}.\n\nRoom size, participant count, quantity and installation requirements:`);
-      }
+      setProjectType(context.projectType);
+      setInquiryProjectKey(context.projectKey);
+      setSelectedConferenceProducts(context.products);
+      setSelectedConferencePackage(context.packageInquiry);
+      setSelectedConferenceRoomSize(context.roomSizeInquiry);
+      if (context.message) setMessage((current) => current || context.message);
     });
     return () => { cancelled = true; };
   }, [conferenceProducts]);
+
+  const subject = projectType
+    ? `${BRAND_NAME} — New ${projectType} inquiry`
+    : `${BRAND_NAME} — New project inquiry`;
 
   return (
     <form
@@ -112,26 +102,37 @@ export default function ContactForm({
       }}
     >
       {/* FormSubmit config */}
-      <input type="hidden" name="_subject" value={`${BRAND_NAME} — New ${projectType} inquiry`} />
+      <input type="hidden" name="_subject" value={subject} />
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_captcha" value="false" />
       <input type="text" name="_honey" className="hidden" tabIndex={-1} autoComplete="off" />
+      {inquiryProjectKey ? <input type="hidden" name="inquiry_project" value={inquiryProjectKey} /> : null}
       {selectedConferenceProducts.length ? (
         <>
           <input type="hidden" name="conference_product_slugs" value={selectedConferenceProducts.map((product) => product.slug).join(", ")} />
-          <input type="hidden" name="conference_products" value={selectedConferenceProducts.map(conferenceQuoteProductLabel).join(", ")} />
+          <input type="hidden" name="conference_products" value={selectedConferenceProducts.map(getConferenceInquiryProductLabel).join(", ")} />
           <div className="rounded-xl border bg-orange-50/70 px-4 py-3 text-sm text-slate-700 md:col-span-2" style={{ borderColor: `${maroon}22` }} role="status">
             <span className="font-extrabold text-slate-950">Quotation context:</span>{" "}
-            {selectedConferenceProducts.map(conferenceQuoteProductLabel).join(", ")}
+            {selectedConferenceProducts.map(getConferenceInquiryProductLabel).join(", ")}
           </div>
         </>
       ) : null}
       {selectedConferencePackage ? (
         <>
-          <input type="hidden" name="conference_package" value={selectedConferencePackage} />
+          <input type="hidden" name="conference_package_key" value={selectedConferencePackage.key} />
+          <input type="hidden" name="conference_package" value={selectedConferencePackage.label} />
           <div className="rounded-xl border bg-orange-50/70 px-4 py-3 text-sm text-slate-700 md:col-span-2" style={{ borderColor: `${maroon}22` }} role="status">
             <span className="font-extrabold text-slate-950">Quotation context:</span>{" "}
-            {selectedConferencePackage}
+            {selectedConferencePackage.label}
+          </div>
+        </>
+      ) : null}
+      {selectedConferenceRoomSize ? (
+        <>
+          <input type="hidden" name="conference_room_size" value={selectedConferenceRoomSize.key} />
+          <div className="rounded-xl border bg-orange-50/70 px-4 py-3 text-sm text-slate-700 md:col-span-2" style={{ borderColor: `${maroon}22` }} role="status">
+            <span className="font-extrabold text-slate-950">Room context:</span>{" "}
+            {selectedConferenceRoomSize.label}
           </div>
         </>
       ) : null}
@@ -192,10 +193,12 @@ export default function ContactForm({
           value={projectType}
           onChange={(event) => setProjectType(event.currentTarget.value)}
         >
+          <option value="">Select project type</option>
           <option>Indoor LED Display</option>
           <option>Outdoor LED Display</option>
           <option>Rental LED Display</option>
           <option>Conference System</option>
+          <option>Hybrid / Video Meeting Room</option>
           <option>PA Sound System</option>
           <option>Turnstile Gate System</option>
           <option>Accessories / Controller</option>
@@ -214,7 +217,7 @@ export default function ContactForm({
           rows={5}
           value={message}
           onChange={(event) => setMessage(event.currentTarget.value)}
-          placeholder={projectType === "Conference System" ? "Share room size, participant count, quantity and installation requirements..." : "Share location, solution size, quantity and timeline..."}
+          placeholder={projectType === "Conference System" || projectType === "Hybrid / Video Meeting Room" ? "Share room size, participant count, quantity and installation requirements..." : "Share location, solution size, quantity and timeline..."}
           className="mt-2 w-full rounded-[12px] border px-4 py-3 text-sm text-slate-900 outline-none transition focus:ring-2 md:rounded-xl"
           style={{ borderColor: `${maroon}22` }}
         />

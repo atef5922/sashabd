@@ -472,7 +472,7 @@ export default function Footer() {
                       <span>
                         Service hours: <span className="font-semibold text-white">Sat-Thu, 10am-7pm</span>
                       </span>
-                      <span className="block">Emergency support for critical LED screens by prior agreement.</span>
+                      <span className="block">Emergency support for critical AV systems by prior agreement.</span>
                     </span>
                   </div>
 

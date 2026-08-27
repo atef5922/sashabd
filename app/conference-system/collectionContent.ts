@@ -342,7 +342,7 @@ export const conferenceBrandPageContent: Readonly<Record<string, ConferenceBrand
     highlights: [
       { title: "A platform for each room size", description: "TS-690 and TS-820 suit compact rooms, TS-780 and TS-790 cover mid-size halls, and TS-900 is TOA's provision for large formal chambers." },
       { title: "Defined expansion route", description: "The TS-918 expansion unit extends a TS-910 chamber without replacing the central unit, which protects the original specification as seating grows." },
-      { title: "Local service depth", description: "TOA has been supported in Bangladesh long enough that spares and repair knowledge exist in-country, which matters for a ten-year installation." },
+      { title: "Support planning", description: "Confirm current spare-parts availability, compatible expansion units, and the agreed support scope when preparing a long-term TOA installation." },
     ],
     buyerGuideTitle: "Planning a TOA Conference System",
     buyerGuideIntro: "Size the platform against realistic growth, not just today's seating — outgrowing a central unit is the most expensive mistake in a conference fit-out.",

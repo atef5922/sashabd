@@ -380,7 +380,7 @@ test("Conference pricing sections keep separate intent and use catalog-backed co
   assert.match(source, /function getPublishedConferencePriceRange/);
   assert.match(source, /conferenceSystemCatalog\s*\.filter\(matchProduct\)/);
   assert.match(source, /request-price products are excluded/);
-  assert.match(source, /Package estimates cover a planned combination of conference equipment and are separate from the individual catalog product prices below\./);
+  assert.match(source, /Indicative equipment estimates are based on each listed configuration/);
   assert.doesNotMatch(source, /price:\s*"৳\s*45,000/);
 });
 
@@ -508,15 +508,40 @@ test("Conference compact solution, project, and service sections use local data 
   assert.equal(occurrences(pageSource, 'id="hybrid-conference-integration"'), 1);
   assert.equal(occurrences(pageSource, "Representative Conference System Configurations"), 1);
   assert.equal(occurrences(pageSource, "Conference System Engineering & Project Support"), 1);
-  assert.match(pageSource, /Practical room configurations illustrating typical system design and professional delivery scopes/);
+  assert.match(pageSource, /Sample room configurations illustrating typical system design and possible delivery scopes—not completed client case studies/);
+  assert.match(projectData, /conferenceRepresentativeConfigurations/);
+  assert.match(projectData, /illustrativeScope:/);
   assert.match(pageSource, /hybridIntegrationSteps\.map/);
   assert.match(pageSource, /chooseSashaCards\.map/);
   assert.match(pageSource, /href="\/projects\/"/);
+  assert.match(pageSource, /View Projects/);
+  assert.doesNotMatch(pageSource, /View Project Details|View project details/);
   assert.match(pageSource, /href="\/contact\/\?project=conference-system"/);
-  assert.match(pageSource, /const conferenceEngineerWhatsAppHref = `https:\/\/wa\.me\/\$\{siteConfig\.whatsapp\.replace/);
-  assert.equal(occurrences(pageSource, "href={conferenceEngineerWhatsAppHref}"), 2);
-  assert.equal(occurrences(pageSource, "WhatsApp Engineering Team"), 2);
+  assert.match(pageSource, /buildWhatsAppHref\(CONFERENCE_ENGINEER_WHATSAPP_MESSAGE\)/);
+  assert.equal(occurrences(pageSource, "href={conferenceEngineerWhatsAppHref}"), 3);
+  assert.equal(occurrences(pageSource, "Talk to an AV Engineer"), 3);
+  assert.equal(occurrences(pageSource, "WhatsApp Engineering Team"), 0);
   assert.equal(occurrences(pageSource, "Talk to an Engineer"), 0);
+});
+
+test("Conference package pricing distinguishes equipment estimates from installed packages", () => {
+  const landing = read("app/conference-system/page.tsx");
+  const packageCards = read("app/conference-system/ConferencePackageCards.tsx");
+  const packages = read("app/conference-system/conferencePackages.ts");
+  const inquiry = read("app/conference-system/conferenceInquiry.ts");
+
+  assert.equal(occurrences(landing, 'priceEyebrow: "Estimated Equipment Budget"'), 3);
+  assert.equal(occurrences(landing, 'priceNote: "Indicative equipment estimate"'), 3);
+  assert.match(landing, /Final pricing depends on the selected brand, model, accessories, and project scope/);
+  assert.match(landing, /href="\/conference-system\/complete-package\/"/);
+  assert.match(landing, /View Complete Installed Packages/);
+  assert.match(packageCards, /Complete Installed Conference System Packages/);
+  assert.match(packageCards, /Complete Installed Package/);
+  assert.match(packageCards, /package=\$\{packageItem\.id\}/);
+  assert.equal(occurrences(packages, 'ctaLabel: "Get Package BOQ"'), 3);
+  for (const key of ["10-person-boardroom", "20-person-meeting-room", "30-person-government", "50-plus-conference-hall"]) {
+    assert.ok(inquiry.includes(`key: "${key}"`), `${key} needs an allowlisted contact context`);
+  }
 });
 
 test("Conference removes the requested component, comparison, benefit, and selection-guide sections", () => {
@@ -550,22 +575,26 @@ test("Conference brand support keeps verified routes and compact feature lists",
   );
 
   assert.match(section, /Our Conference System Brand Support/);
-  assert.equal(occurrences(source, 'badge: "Authorized Distributor"'), 4);
+  assert.doesNotMatch(source, /Authorized Distributor|Exclusive Distributor/);
   assert.match(section, /brand\.features\.map/);
   assert.match(section, /View \{brand\.title\} Products/);
-  assert.ok(!section.includes("Exclusive Distributor"));
   for (const brand of ["bosch", "toa", "spon", "cmx"]) {
     assert.match(source, new RegExp(`url: "/conference-system/brands/${brand}/"`));
   }
 });
 
-test("Conference commercial trust uses verified NAP, policy links, and factual service entity data", () => {
+test("Conference commercial trust uses factual NAP, conditional warranty, and neutral brand wording", () => {
   const landing = read("app/conference-system/page.tsx");
   const site = read("lib/site.ts");
 
   assert.match(landing, /Commercial Confidence/);
   assert.match(landing, /commercialConfidenceCards\.map/);
-  assert.match(landing, /Authorisation Scope:/);
+  assert.match(landing, /Bangladesh-Based AV Provider/);
+  assert.match(landing, /Applicable Warranty Support/);
+  assert.match(landing, /Manufacturer or supplier warranty applies where stated/);
+  assert.match(landing, /Brand &amp; Warranty Scope:/);
+  assert.match(landing, /Conference System Solutions/);
+  assert.doesNotMatch(landing, /Authorized Solutions|Authorisation Scope:|Verified Business|Official products with manufacturer warranty/);
   assert.match(landing, /\{siteConfig\.address\}/);
   assert.match(landing, /href=\{`tel:\$\{siteConfig\.phone\}`\}/);
   assert.match(landing, /href="\/services-support\/"/);
@@ -725,10 +754,10 @@ test("Conference cards use canonical structured pricing and one accessible actio
   assert.match(catalog, /export function getConferenceProductCardSpecs\(/);
 
   assert.equal(occurrences(card, "View Details"), 1);
-  assert.equal(occurrences(card, "Request Quotation"), 1);
+  assert.equal(occurrences(card, "Get a Quote"), 2);
   assert.ok(!card.includes('className="absolute inset-0 z-10"'));
   assert.match(card, /aria-label=\{`View details for \$\{product\.name\}`\}/);
-  assert.match(card, /aria-label=\{`Request quotation for \$\{product\.name\}`\}/);
+  assert.match(card, /aria-label=\{`Get a quote for \$\{product\.name\}`\}/);
   assert.match(card, /product\.availabilityLabel \?/);
   assert.match(card, /product\.connectionLabel \?/);
   assert.match(card, /product\.systemFamily \?/);
@@ -1219,8 +1248,8 @@ test("Conference compare route is a noindex utility page with canonical URL and 
   assert.match(client, /This comparison includes different product types/);
   assert.match(client, /overflow-x-auto/);
   assert.match(client, /sticky left-0/);
-  assert.match(client, /Request Quotation/);
-  assert.match(client, /Talk to an Expert/);
+  assert.match(client, /Get a Quote/);
+  assert.match(client, /Get Free BOQ/);
   assert.doesNotMatch(client, /best product|winner|cheapest/i);
 });
 
@@ -1399,16 +1428,28 @@ test("Conference quotation links preserve validated product context", () => {
   const detail = read("app/conference-system/ConferenceProductDetailPage.tsx");
   const compare = read("app/conference-system/compare/ConferenceCompareClient.tsx");
   const contactForm = read("app/contact/ContactForm.tsx");
+  const inquiry = read("app/conference-system/conferenceInquiry.ts");
   const contactPage = read("app/contact/page.tsx");
 
   assert.match(card, /\/contact\/\?project=conference-system&product=\$\{product\.slug\}/);
   assert.match(detail, /\/contact\/\?project=conference-system&product=\$\{product\.slug\}/);
   assert.match(compare, /\/contact\/\?project=conference-system&products=\$\{encodeURIComponent\(selectedSlugs\.join\(","\)\)\}/);
-  assert.match(contactForm, /new Map\(conferenceProducts\.map\(\(product\) => \[product\.slug, product\]\)\)/);
-  assert.match(contactForm, /\.map\(\(slug\) => productBySlug\.get\(slug\)\)/);
+  assert.match(contactForm, /resolveConferenceInquiry\(params, conferenceProducts\)/);
+  assert.match(inquiry, /new Map\(conferenceProducts\.map\(\(product\) => \[product\.slug, product\]\)\)/);
+  assert.match(inquiry, /\.map\(\(slug\) => productBySlug\.get\(slug\)\)/);
   assert.match(contactForm, /<option>Conference System<\/option>/);
+  assert.match(contactForm, /<option>Hybrid \/ Video Meeting Room<\/option>/);
+  assert.match(contactForm, /<option value="">Select project type<\/option>/);
+  assert.match(contactForm, /const DEFAULT_PROJECT_TYPE = ""/);
   assert.match(contactForm, /name="conference_product_slugs"/);
-  assert.match(contactForm, /Room size, participant count, quantity and installation requirements/);
+  assert.match(contactForm, /name="conference_package_key"/);
+  assert.match(contactForm, /name="conference_room_size"/);
+  assert.match(contactForm, /setMessage\(\(current\) => current \|\| context\.message\)/);
+  assert.match(inquiry, /requestedProject === "hybrid-conference-room"/);
+  assert.match(inquiry, /room_size/);
+  assert.match(inquiry, /Room size, participant count, quantity and installation requirements/);
+  assert.equal(occurrences(card, "Get a Quote"), 2);
+  assert.equal(occurrences(detail, "Get a Quote"), 1);
   assert.match(contactPage, /conferenceSystemCatalog\.map\(\(product\) => \(\{/);
   assert.match(contactPage, /conferenceProducts=\{conferenceQuoteProducts\}/);
 });
@@ -1468,8 +1509,8 @@ test("Conference landing shows a trust bar linking every brand to its brand rout
   assert.match(trustSection, /conferenceTrustFeatures\.map\(\(feature\) => \(/);
   assert.match(landing, /title: "BOQ & Tender Support"/);
   assert.match(landing, /title: "Installation & Training"/);
-  assert.match(landing, /title: "Competitive Pricing"/);
-  assert.match(landing, /title: "Warranty & Support"/);
+  assert.match(landing, /title: "BOQ-Based Pricing"/);
+  assert.match(landing, /title: "Applicable Warranty & Support"/);
 });
 
 test("Conference products remain discoverable without the removed directory disclosure", () => {
@@ -2085,4 +2126,11 @@ test("footer navigation arrows are white until their links are hovered", () => {
     source,
     /mt-\[5px\] text-white[^"\n]*group-hover:translate-x-1[^"\n]*group-hover:text-\[#FF7A1A\]/,
   );
+});
+
+test("global footer uses AV-wide emergency support wording", () => {
+  const source = read("components/common/Footer.tsx");
+
+  assert.match(source, /Emergency support for critical AV systems by prior agreement\./);
+  assert.doesNotMatch(source, /Emergency support for critical LED screens/);
 });
