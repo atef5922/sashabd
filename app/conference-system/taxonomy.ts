@@ -49,10 +49,10 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     label: "Audio Conference System",
     shortLabel: "Audio",
     group: "system",
-    description: "Verified audio conference products for meeting-room speech, control, processing, amplification, and wireless operation.",
+    description: "Audio conference products for meeting-room speech, control, processing, amplification, and wireless operation.",
     seo: {
       title: "Audio Conference System in Bangladesh",
-      description: "Browse verified audio conference system products for microphones, control, DSP, amplification, and meeting-room projects in Bangladesh.",
+      description: "Browse audio conference system products for microphones, control, DSP, amplification, and meeting-room projects in Bangladesh.",
     },
     matchProduct: (product) => product.systemCategory === "audio",
     featured: true,
@@ -64,10 +64,10 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     label: "Video Conference System",
     shortLabel: "Video",
     group: "system",
-    description: "Verified video conference products for presentation, processing, switching, and professional meeting-room display workflows.",
+    description: "Video conference products for presentation, processing, switching, and professional meeting-room display workflows.",
     seo: {
       title: "Video Conference System in Bangladesh",
-      description: "Browse verified video conference products for presentation processing, switching, display integration, and meeting-room AV projects.",
+      description: "Browse video conference products for presentation processing, switching, display integration, and meeting-room AV projects.",
     },
     matchProduct: (product) => product.systemCategory === "video",
     featured: true,
@@ -79,10 +79,10 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     label: "Wired Conference System",
     shortLabel: "Wired",
     group: "connection",
-    description: "Verified wired conference system products, including chairman units, delegate units, and control units.",
+    description: "Wired conference system products, including chairman units, delegate units, and control units.",
     seo: {
       title: "Wired Conference System in Bangladesh",
-      description: "Explore verified wired conference system products and project options for permanent boardroom and meeting-room installations in Bangladesh.",
+      description: "Explore wired conference system products and project options for permanent boardroom and meeting-room installations in Bangladesh.",
     },
     matchProduct: (product) => product.connection === "wired",
     featured: true,
@@ -94,10 +94,10 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     label: "Wireless Conference System",
     shortLabel: "Wireless",
     group: "connection",
-    description: "Verified wireless conference products for flexible meeting-room layouts, delegate operation, access, and charging workflows.",
+    description: "Wireless conference products for flexible meeting-room layouts, delegate operation, access, and charging workflows.",
     seo: {
       title: "Wireless Conference System in Bangladesh",
-      description: "Browse verified wireless conference system products for flexible meeting rooms, delegate units, access points, and charging workflows.",
+      description: "Browse wireless conference system products for flexible meeting rooms, delegate units, access points, and charging workflows.",
     },
     matchProduct: (product) => product.connection === "wireless",
     featured: true,
@@ -109,10 +109,10 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     label: "Conference Chairman Unit",
     shortLabel: "Chairman Unit",
     group: "component",
-    description: "Verified chairman units for structured conference discussion and chairperson control positions.",
+    description: "Chairman units for structured conference discussion and chairperson control positions.",
     seo: {
       title: "Conference Chairman Unit in Bangladesh",
-      description: "Browse verified conference chairman units for boardrooms, councils, committees, and structured meeting-room discussion systems.",
+      description: "Browse conference chairman units for boardrooms, councils, committees, and structured meeting-room discussion systems.",
     },
     matchProduct: (product) => product.productTypes.includes("chairman-unit"),
     order: 50,
@@ -123,10 +123,10 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     label: "Conference Delegate Unit",
     shortLabel: "Delegate Unit",
     group: "component",
-    description: "Verified delegate units for participant speech pickup and organized conference-table discussions.",
+    description: "Delegate units for participant speech pickup and organized conference-table discussions.",
     seo: {
       title: "Conference Delegate Unit in Bangladesh",
-      description: "Browse verified conference delegate units for boardrooms, meeting rooms, councils, and structured participant discussion systems.",
+      description: "Browse conference delegate units for boardrooms, meeting rooms, councils, and structured participant discussion systems.",
     },
     matchProduct: (product) => product.productTypes.includes("delegate-unit"),
     order: 60,
@@ -137,10 +137,10 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     label: "Conference Control Unit",
     shortLabel: "Control Unit",
     group: "component",
-    description: "Verified central control units for conference microphone management and meeting audio operation.",
+    description: "Central control units for conference microphone management and meeting audio operation.",
     seo: {
       title: "Conference Control Unit in Bangladesh",
-      description: "Browse verified conference control units for chairman and delegate microphone management, system planning, and meeting audio projects.",
+      description: "Browse conference control units for chairman and delegate microphone management, system planning, and meeting audio projects.",
     },
     matchProduct: (product) => product.productTypes.includes("control-unit"),
     order: 70,
@@ -150,10 +150,10 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     slug: "conference-dsp",
     label: "Conference DSP",
     group: "component",
-    description: "Verified digital signal processors for conference audio routing, tuning, and speech-system integration.",
+    description: "Digital signal processors for conference audio routing, tuning, and speech-system integration.",
     seo: {
       title: "Conference DSP in Bangladesh",
-      description: "Browse verified conference DSP products for microphone processing, audio routing, room tuning, and professional AV integration.",
+      description: "Browse conference DSP products for microphone processing, audio routing, room tuning, and professional AV integration.",
     },
     matchProduct: (product) => product.productTypes.includes("dsp"),
     order: 80,
@@ -163,10 +163,10 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     slug: "conference-amplifier",
     label: "Conference Amplifier",
     group: "component",
-    description: "Verified amplifiers for conference audio reinforcement, speaker integration, and room sound planning.",
+    description: "Amplifiers for conference audio reinforcement, speaker integration, and room sound planning.",
     seo: {
       title: "Conference Amplifier in Bangladesh",
-      description: "Browse verified conference amplifiers for microphone audio reinforcement, speaker integration, and professional meeting-room projects.",
+      description: "Browse conference amplifiers for microphone audio reinforcement, speaker integration, and professional meeting-room projects.",
     },
     matchProduct: (product) => product.productTypes.includes("amplifier"),
     order: 90,
@@ -177,10 +177,10 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     label: "Complete Conference Package",
     shortLabel: "Complete Package",
     group: "package",
-    description: "Verified complete conference system packages bundling discussion, control, and installation requirements.",
+    description: "Complete conference system products for discussion, control, and room-system planning.",
     seo: {
       title: "Complete Conference System Package in Bangladesh",
-      description: "Explore verified complete conference system packages for meeting-room equipment, installation planning, and project support in Bangladesh.",
+      description: "Explore complete conference system products and installed package options for meeting-room projects in Bangladesh.",
     },
     matchProduct: (product) => product.productTypes.includes("package"),
     order: 100,
@@ -192,48 +192,48 @@ export const conferenceBrandConfigs: readonly ConferenceBrandConfig[] = [
     id: "brand-bosch",
     slug: "bosch",
     name: "Bosch",
-    description: "Verified Bosch conference discussion units, control units, and recording control equipment from the CCS 900 Ultra and CCS 1000 D ranges.",
+    description: "Bosch conference discussion units, control units, and recording control equipment from the CCS 900 Ultra and CCS 1000 D ranges.",
     featured: true,
     order: 10,
     seo: {
       title: "Bosch Conference System in Bangladesh",
-      description: "Browse verified Bosch conference system products, specifications, pricing, and project support when available in the dedicated catalog.",
+      description: "Browse Bosch conference system products, specifications, pricing, and project support in Bangladesh.",
     },
   },
   {
     id: "brand-toa",
     slug: "toa",
     name: "TOA",
-    description: "Verified TOA conference chairman, delegate, and central units across the TS-680, TS-690, TS-780, TS-790, TS-800, and TS-900 discussion ranges.",
+    description: "TOA conference chairman, delegate, and central units across the TS-680, TS-690, TS-780, TS-790, TS-800, and TS-900 discussion ranges.",
     featured: true,
     order: 20,
     seo: {
       title: "TOA Conference System in Bangladesh",
-      description: "Browse verified TOA conference system products, specifications, pricing, and project support when available in the dedicated catalog.",
+      description: "Browse TOA conference system products, specifications, pricing, and project support in Bangladesh.",
     },
   },
   {
     id: "brand-spon",
     slug: "spon",
     name: "SPON",
-    description: "Verified SPON conference microphones, control units, DSP, amplifiers, wireless equipment, and accessories.",
+    description: "SPON conference microphones, control units, DSP, amplifiers, wireless equipment, and accessories.",
     featured: true,
     order: 40,
     seo: {
       title: "SPON Conference System in Bangladesh",
-      description: "Browse verified SPON conference microphones, control units, delegate units, DSP, amplifiers, and wireless conference products.",
+      description: "Browse SPON conference microphones, control units, delegate units, DSP, amplifiers, and wireless conference products.",
     },
   },
   {
     id: "brand-cmx",
     slug: "cmx",
     name: "CMX",
-    description: "Verified CMX wired, wireless, and infrared conference discussion units, controllers, and paperless conference management systems.",
+    description: "CMX wired, wireless, and infrared conference discussion units, controllers, and paperless conference management systems.",
     featured: true,
     order: 50,
     seo: {
       title: "CMX Conference System in Bangladesh",
-      description: "Browse verified CMX conference system products, specifications, pricing, and project support when available in the dedicated catalog.",
+      description: "Browse CMX conference system products, specifications, pricing, and project support in Bangladesh.",
     },
   },
 ];
@@ -327,6 +327,47 @@ export function getConferenceProductTypes(products: readonly ConferenceProduct[]
 
 export function getConferenceApplications(products: readonly ConferenceProduct[]): string[] {
   return [...new Set(products.flatMap((product) => product.applications))];
+}
+
+const CONFERENCE_APPLICATION_GROUPS: readonly {
+  label: string;
+  patterns: readonly RegExp[];
+}[] = [
+  { label: "Corporate & Executive Boardrooms", patterns: [/boardroom/i, /corporate board/i, /executive meeting/i] },
+  { label: "Council & Committee Rooms", patterns: [/council/i, /committee/i, /parliamentary/i, /regulatory/i] },
+  { label: "Government Meeting Rooms", patterns: [/government/i, /ministerial/i, /assembly hall/i] },
+  { label: "Conference Rooms & Halls", patterns: [/conference room/i, /conference hall/i, /meeting hall/i, /conference venue/i, /heritage meeting hall/i] },
+  { label: "Training & Seminar Rooms", patterns: [/training/i, /seminar/i] },
+  { label: "Universities & Education", patterns: [/university/i] },
+  { label: "Flexible & Wireless Rooms", patterns: [/wireless/i, /flexible meeting/i, /huddle room/i] },
+  { label: "Hybrid & Video Meetings", patterns: [/video conference/i, /boardroom av/i] },
+  { label: "Hotels & Event Venues", patterns: [/hotel/i, /ballroom/i] },
+  { label: "Meeting Rooms & Offices", patterns: [/^meeting room$/i, /corporate head office/i, /departmental office/i] },
+];
+
+/**
+ * Converts granular catalog tags into a short set of customer-facing room uses.
+ * Raw applications remain untouched on each product record and product page.
+ */
+export function getConferenceDisplayApplications(
+  products: readonly ConferenceProduct[],
+  limit = 8,
+): string[] {
+  const rawApplications = getConferenceApplications(products);
+  const safeLimit = Math.min(Math.max(Math.trunc(limit), 1), 10);
+
+  return CONFERENCE_APPLICATION_GROUPS
+    .map((group, order) => ({
+      label: group.label,
+      order,
+      matches: rawApplications.filter((application) =>
+        group.patterns.some((pattern) => pattern.test(application)),
+      ).length,
+    }))
+    .filter((group) => group.matches > 0)
+    .sort((a, b) => b.matches - a.matches || a.order - b.order)
+    .slice(0, safeLimit)
+    .map((group) => group.label);
 }
 
 export function isConferenceBrandIndexable(brand: ConferenceBrandConfig): boolean {

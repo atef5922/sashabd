@@ -81,11 +81,12 @@ export default function ConferencePackageCards() {
   return (
     <section className="mt-10" aria-labelledby="complete-conference-packages-title">
       <div className="max-w-4xl">
+        <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-orange-600">Installed room packages</p>
         <h2 id="complete-conference-packages-title" className="text-2xl font-extrabold tracking-tight text-slate-950 md:text-3xl">
-          Complete Conference System Packages
+          Installed Conference System Packages
         </h2>
         <p className="mt-3 text-sm leading-7 text-slate-600 md:text-base">
-          Choose a complete conference system package based on your meeting room size and participant capacity. Each package combines the essential conference equipment, accessories, installation and system configuration required for a professional meeting environment.
+          These three project packages combine equipment, accessories, installation, and configuration for a room and participant capacity. They are installed project scopes, separate from the two ready-made catalog products listed below.
         </p>
       </div>
 

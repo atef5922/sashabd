@@ -13,11 +13,12 @@ import {
   getConferenceProductPrimaryImage,
   type ConferenceProduct,
 } from "./catalog";
-import ConferenceProductCard from "./ConferenceProductCard";
+import ConferenceCollectionPriceTable from "./ConferenceCollectionPriceTable";
+import ConferenceCollectionProductGrid from "./ConferenceCollectionProductGrid";
 import ConferencePackageCards from "./ConferencePackageCards";
 import type { ConferenceCollectionFaq, ConferenceCollectionInfoItem } from "./collectionContent";
 import {
-  getConferenceApplications,
+  getConferenceDisplayApplications,
   getConferenceBrandPageContent,
   getConferenceBrandsForProducts,
   getConferenceCategoriesForProducts,
@@ -46,12 +47,12 @@ type BrandCollectionProps = {
 type ConferenceCollectionPageProps = CategoryCollectionProps | BrandCollectionProps;
 
 const ACCENT = "#FF6A00";
-
-function getGridClassName(productCount: number): string {
-  if (productCount === 1) return "grid max-w-2xl grid-cols-1 gap-5";
-  if (productCount <= 5) return "grid max-w-5xl gap-5 sm:grid-cols-2 lg:grid-cols-3";
-  return "grid gap-5 sm:grid-cols-2 xl:grid-cols-3";
-}
+const CATEGORY_HERO_EYEBROWS: Readonly<Record<ConferenceCategoryConfig["group"], string>> = {
+  system: "Conference systems",
+  connection: "Connection options",
+  component: "System components",
+  package: "Complete solutions",
+};
 
 function SectionHeading({ eyebrow, title, description }: { eyebrow: string; title: string; description?: string }) {
   return (
@@ -101,39 +102,48 @@ function ProductListJsonLd({ products }: { products: readonly ConferenceProduct[
 }
 
 function ProductGrid({ products }: { products: readonly ConferenceProduct[] }) {
+  const cardProducts = products.map((product) => {
+    const image = getConferenceProductPrimaryImage(product);
+    const primaryType = product.productTypes[0];
+    return {
+      slug: product.slug,
+      name: product.name,
+      brandName: product.brand?.name,
+      productTypeLabel: primaryType ? CONFERENCE_PRODUCT_TYPE_LABELS[primaryType] : product.badge,
+      connectionLabel: product.connection ? getConferenceConnectionLabel(product.connection) : undefined,
+      systemFamily: product.systemFamily,
+      keySpecs: getConferenceProductCardSpecs(product),
+      price: getConferenceProductCardPrice(product),
+      availabilityLabel: product.availability ? getConferenceProductAvailabilityLabel(product) : undefined,
+      image: { src: image.src, alt: image.alt },
+    };
+  });
+
   return (
-    <div
-      className={`mt-6 ${getGridClassName(products.length)}`}
-      data-conference-product-grid={products.length === 1 ? "single" : "multiple"}
-    >
+    <>
       <ProductListJsonLd products={products} />
-      {products.map((product) => {
-        const image = getConferenceProductPrimaryImage(product);
-        const primaryType = product.productTypes[0];
-        return (
-          <ConferenceProductCard
-            key={product.id}
-            product={{
-              slug: product.slug,
-              name: product.name,
-              brandName: product.brand?.name,
-              productTypeLabel: primaryType ? CONFERENCE_PRODUCT_TYPE_LABELS[primaryType] : product.badge,
-              connectionLabel: product.connection ? getConferenceConnectionLabel(product.connection) : undefined,
-              systemFamily: product.systemFamily,
-              keySpecs: getConferenceProductCardSpecs(product),
-              price: getConferenceProductCardPrice(product),
-              availabilityLabel: product.availability ? getConferenceProductAvailabilityLabel(product) : undefined,
-              image: { src: image.src, alt: image.alt },
-            }}
-          />
-        );
-      })}
-    </div>
+      <ConferenceCollectionProductGrid products={cardProducts} />
+    </>
   );
 }
 
 function PriceTable({ title, products, eyebrow = "Catalog pricing" }: { title: string; products: readonly ConferenceProduct[]; eyebrow?: string }) {
   if (!products.length) return null;
+  const rows = products.map((product) => {
+    const price = getConferenceProductPricePresentation(product);
+    return {
+      id: product.id,
+      slug: product.slug,
+      name: product.name,
+      brand: product.brand?.name ?? "—",
+      model: product.model ?? "—",
+      productType: product.productTypes.map((type) => CONFERENCE_PRODUCT_TYPE_LABELS[type]).join(", "),
+      availability: getConferenceProductAvailabilityLabel(product),
+      price: price.label,
+      priceBasis: price.basisLabel,
+    };
+  });
+
   return (
     <section id="price-list" className="mt-10 scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-5 md:p-7">
       <SectionHeading
@@ -141,43 +151,7 @@ function PriceTable({ title, products, eyebrow = "Catalog pricing" }: { title: s
         title={title}
         description="Each row distinguishes fixed catalog price, indicative equipment range, and project quotation. Final project cost may also include compatible equipment, cabling, installation, and commissioning."
       />
-      <div className="mt-5 overflow-x-auto rounded-2xl border border-slate-200">
-        <table className="min-w-[900px] w-full border-collapse text-left text-sm">
-          <caption className="sr-only">Conference product catalog pricing and availability</caption>
-          <thead className="bg-slate-950 text-white">
-            <tr>
-              <th scope="col" className="px-4 py-3 font-bold">Product</th>
-              <th scope="col" className="px-4 py-3 font-bold">Brand</th>
-              <th scope="col" className="px-4 py-3 font-bold">Model</th>
-              <th scope="col" className="px-4 py-3 font-bold">Type</th>
-              <th scope="col" className="px-4 py-3 font-bold">Availability</th>
-              <th scope="col" className="px-4 py-3 text-right font-bold">Price</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-200">
-            {products.map((product) => {
-              const price = getConferenceProductPricePresentation(product);
-              return <tr key={product.id} className="align-top hover:bg-orange-50/40">
-                <th scope="row" className="px-4 py-3 font-bold text-slate-950">
-                  <Link href={`/conference-system/${product.slug}/`} className="underline-offset-4 hover:text-orange-600 hover:underline">
-                    {product.name}
-                  </Link>
-                </th>
-                <td className="px-4 py-3 text-slate-700">{product.brand?.name ?? "Not verified"}</td>
-                <td className="px-4 py-3 text-slate-700">{product.model ?? "Not verified"}</td>
-                <td className="px-4 py-3 text-slate-700">
-                  {product.productTypes.map((type) => CONFERENCE_PRODUCT_TYPE_LABELS[type]).join(", ")}
-                </td>
-                <td className="px-4 py-3 text-slate-700">{getConferenceProductAvailabilityLabel(product)}</td>
-                <td className="px-4 py-3 text-right font-extrabold text-slate-950">
-                  {price.label}
-                  <span className="mt-1 block text-[11px] font-semibold text-slate-500">{price.basisLabel}</span>
-                </td>
-              </tr>;
-            })}
-          </tbody>
-        </table>
-      </div>
+      <ConferenceCollectionPriceTable rows={rows} />
     </section>
   );
 }
@@ -224,7 +198,7 @@ function ApplicationList({
   applications,
   eyebrow = "Applications",
   title = "Best For",
-  description = "These labels are aggregated from the matching normalized product records.",
+  description = "Common room types and meeting environments suited to products in this collection.",
 }: {
   applications: readonly string[];
   eyebrow?: string;
@@ -296,7 +270,7 @@ function Hero({ eyebrow, title, description, productCount, productsAnchor = true
         <div className="flex flex-wrap items-center gap-2">
           <span className="rounded-full bg-slate-950 px-3 py-1 text-xs font-extrabold uppercase tracking-[0.15em] text-white">{eyebrow}</span>
           <span className="rounded-full border border-orange-200 bg-white px-3 py-1 text-xs font-bold text-orange-700">
-            {productCount} verified {productCount === 1 ? "product" : "products"}
+            {productCount} {productCount === 1 ? "product" : "products"} in this collection
           </span>
         </div>
         <h1 className="mt-5 text-3xl font-extrabold leading-tight tracking-tight text-slate-950 md:text-5xl">{title}</h1>
@@ -331,7 +305,7 @@ function CategoryTemplate({ category, products, breadcrumbs }: Omit<CategoryColl
   const content = getConferenceCategoryPageContent(category);
   const relatedCategories = getConferenceRelatedCategories(category);
   const relevantBrands = getConferenceBrandsForProducts(products);
-  const applications = getConferenceApplications(products);
+  const applications = getConferenceDisplayApplications(products);
   const isCompletePackage = category.slug === "complete-package";
   const packageApplications = [
     "Small Meeting Room",
@@ -345,7 +319,7 @@ function CategoryTemplate({ category, products, breadcrumbs }: Omit<CategoryColl
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-7 md:px-6 md:py-9" data-conference-route-kind="category">
       <Breadcrumbs items={breadcrumbs} />
-      <Hero eyebrow={category.group} title={content.heroTitle} description={content.intro} productCount={products.length} />
+      <Hero eyebrow={CATEGORY_HERO_EYEBROWS[category.group]} title={content.heroTitle} description={content.intro} productCount={products.length} />
 
       {isCompletePackage ? <ConferencePackageCards /> : null}
 
@@ -357,18 +331,18 @@ function CategoryTemplate({ category, products, breadcrumbs }: Omit<CategoryColl
       {products.length ? (
         <section id="products" className="mt-10 scroll-mt-24">
           <SectionHeading
-            eyebrow={isCompletePackage ? "Complete system products" : "Verified products"}
+            eyebrow={isCompletePackage ? "Ready-made systems" : "Available products"}
             title={isCompletePackage ? "Ready-Made Conference System Products" : "Matching Products"}
             description={
               isCompletePackage
-                ? "Explore verified complete conference system products available separately from the installed room packages above."
+                ? `${products.length} ready-made system products are listed here separately from the installed room packages above.`
                 : "Every product below is matched to this category and links to its own product page."
             }
           />
           <ProductGrid products={products} />
         </section>
       ) : (
-        <EmptyState title={`No verified ${category.shortLabel ?? category.label} products yet`} message={content.emptyMessage ?? "Products are being prepared for this category. Contact Sasha for project consultation and current availability."} />
+        <EmptyState title={`No ${category.shortLabel ?? category.label} products listed yet`} message={content.emptyMessage ?? "Products are being prepared for this category. Contact Sasha for project consultation and current availability."} />
       )}
 
       <PriceTable
@@ -400,8 +374,8 @@ function CategoryTemplate({ category, products, breadcrumbs }: Omit<CategoryColl
             title={isCompletePackage ? "Brand Represented in Ready-Made Systems" : "Available Brands"}
             description={
               isCompletePackage
-                ? "This brand is represented by the verified ready-made conference system products listed above. Installed room packages can be specified separately according to project requirements and confirmed availability."
-                : "Only verified brands represented by the matching products are shown."
+                ? "This brand is represented by the ready-made conference system products listed above. Installed room packages are planned separately according to project requirements and confirmed availability."
+                : "Brands represented by the products in this collection are shown here."
             }
           />
           <div className="mt-5 flex flex-wrap gap-3">
@@ -425,7 +399,7 @@ function CategoryTemplate({ category, products, breadcrumbs }: Omit<CategoryColl
         }
       />
       <FaqSection title={`${category.shortLabel ?? category.label} FAQ`} faqs={content.faqs} />
-      <FinalCta title="Need Help Choosing the Right Conference System?" description="Share your room size, seating layout, participant workflow, and installation requirements. Sasha can help review verified products and prepare a project quotation or BOQ." />
+      <FinalCta title="Need Help Choosing the Right Conference System?" description="Share your room size, seating layout, participant workflow, and installation requirements. Sasha can help review available products and prepare a project quotation or BOQ." />
     </main>
   );
 }
@@ -434,18 +408,18 @@ function BrandTemplate({ brand, products, breadcrumbs }: Omit<BrandCollectionPro
   const content = getConferenceBrandPageContent(brand);
   const categories = getConferenceCategoriesForProducts(products);
   const productTypes = getConferenceProductTypes(products);
-  const applications = getConferenceApplications(products);
+  const applications = getConferenceDisplayApplications(products);
   const title = content?.heroTitle ?? `${brand.name} Conference System Availability`;
   const description = content?.intro ?? brand.description;
 
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-7 md:px-6 md:py-9" data-conference-route-kind="brand">
       <Breadcrumbs items={breadcrumbs} />
-      <Hero eyebrow={brand.featured ? "Featured brand" : "Verified brand"} title={title} description={description} productCount={products.length} />
+      <Hero eyebrow="Conference system brand" title={title} description={description} productCount={products.length} />
 
       {content ? (
         <section className="mt-10">
-          <SectionHeading eyebrow="Verified coverage" title={`${brand.name} Conference Portfolio`} />
+          <SectionHeading eyebrow="Brand overview" title={`${brand.name} Conference Portfolio`} />
           <InformationCards items={content.highlights} />
         </section>
       ) : null}
@@ -453,7 +427,7 @@ function BrandTemplate({ brand, products, breadcrumbs }: Omit<BrandCollectionPro
       {products.length ? (
         <>
           <section className="mt-10 rounded-3xl border border-slate-200 bg-white p-5 md:p-7">
-            <SectionHeading eyebrow="Catalog breakdown" title="Available Product Categories" description="Counts are calculated from this brand's normalized products." />
+            <SectionHeading eyebrow="Product range" title="Available Product Categories" description={`Explore the conference categories represented by ${brand.name} products in this collection.`} />
             <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {categories.map((category) => (
                 <Link key={category.id} href={`/conference-system/${category.slug}/`} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:border-orange-300 hover:bg-orange-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50">
@@ -465,7 +439,7 @@ function BrandTemplate({ brand, products, breadcrumbs }: Omit<BrandCollectionPro
           </section>
 
           <section id="products" className="mt-10 scroll-mt-24">
-            <SectionHeading eyebrow="Verified products" title={`${brand.name} Products`} description={`Only verified ${brand.name} products are included.`} />
+            <SectionHeading eyebrow="Available products" title={`${brand.name} Products`} description={`Browse the ${brand.name} conference products currently included in this collection.`} />
             <ProductGrid products={products} />
           </section>
 
@@ -493,10 +467,10 @@ function BrandTemplate({ brand, products, breadcrumbs }: Omit<BrandCollectionPro
           {content ? <FaqSection title={`${brand.name} Conference System FAQ`} faqs={content.faqs} /> : null}
         </>
       ) : (
-        <EmptyState title={`No verified ${brand.name} Conference products yet`} message={brand.description} />
+        <EmptyState title={`No ${brand.name} Conference products listed yet`} message={brand.description} />
       )}
 
-      <FinalCta title={`Plan a ${brand.name} Conference Project`} description="Contact Sasha with your room, participant, integration, and installation requirements. Any recommendation will be based on verified catalog availability and project scope." />
+      <FinalCta title={`Plan a ${brand.name} Conference Project`} description="Contact Sasha with your room, participant, integration, and installation requirements. Recommendations are based on current product availability and project scope." />
     </main>
   );
 }
