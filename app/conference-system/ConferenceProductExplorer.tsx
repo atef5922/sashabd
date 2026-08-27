@@ -409,7 +409,7 @@ export default function ConferenceProductExplorer({
             <button type="button" onClick={() => { setMobileFiltersOpen(false); mobileFilterButtonRef.current?.focus(); }} className="min-h-10 rounded-xl bg-[#FD6900] px-3 text-sm font-extrabold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50">Show {filtered.length} Products</button>
           </div>
         </aside>
-        <div className="min-w-0">
+        <div data-conference-product-listing className="min-w-0 rounded-xl border border-slate-200 bg-white p-3 shadow-[0_3px_16px_rgba(15,23,42,0.045)] sm:p-4">
           <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
             <div className="min-w-0">
               <h2 className="!text-xl font-extrabold leading-7 tracking-tight text-[#071936] lg:!text-[22px]">Featured Conference Systems</h2>

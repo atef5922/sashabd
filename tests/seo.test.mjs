@@ -513,6 +513,10 @@ test("Conference compact solution, project, and service sections use local data 
   assert.match(pageSource, /chooseSashaCards\.map/);
   assert.match(pageSource, /href="\/projects\/"/);
   assert.match(pageSource, /href="\/contact\/\?project=conference-system"/);
+  assert.match(pageSource, /const conferenceEngineerWhatsAppHref = `https:\/\/wa\.me\/\$\{siteConfig\.whatsapp\.replace/);
+  assert.equal(occurrences(pageSource, "href={conferenceEngineerWhatsAppHref}"), 2);
+  assert.equal(occurrences(pageSource, "WhatsApp Engineering Team"), 2);
+  assert.equal(occurrences(pageSource, "Talk to an Engineer"), 0);
 });
 
 test("Conference removes the requested component, comparison, benefit, and selection-guide sections", () => {
@@ -1036,6 +1040,8 @@ test("Conference product explorer provides canonical search, multi-filter, sort,
   assert.match(explorer, /Remove \$\{filter\.label\} filter/);
   assert.match(explorer, /No conference products match your current search and filters/);
   assert.match(explorer, /aria-live="polite"/);
+  assert.match(explorer, /data-conference-product-listing/);
+  assert.match(explorer, /min-w-0 rounded-xl border border-slate-200 bg-white p-3 shadow-\[0_3px_16px_rgba\(15,23,42,0\.045\)\] sm:p-4/);
 
   // Numbered pagination, not an incremental "show more" button.
   assert.match(explorer, /function paginationRange\(current: number, total: number\)/);
@@ -1448,10 +1454,15 @@ test("Conference landing shows a trust bar linking every brand to its brand rout
   assert.equal(occurrences(landing, 'id="conference-trust-heading"'), 1);
   assert.match(trustSection, /Trusted Conference System/);
   assert.match(trustSection, /Solutions in Bangladesh/);
+  assert.match(trustSection, /xl:min-h-\[80px\].*xl:py-2/);
+  assert.match(trustSection, /xl:min-h-\[62px\]/);
 
   // Every brand logo is a real link into the brand taxonomy.
   assert.match(trustSection, /verifiedConferenceBrandCards\.map\(\(brand\) => \{/);
   assert.match(trustSection, /href=\{brand\.url\}/);
+  assert.match(trustSection, /lg:flex lg:justify-center lg:gap-x-7/);
+  assert.match(trustSection, /cmx: "h-8 sm:h-9 lg:h-9"/);
+  assert.match(trustSection, /brand\.slug === "spon" \? "lg:-mr-5"/);
 
   // The BOQ, installation, pricing and warranty highlights are present.
   assert.match(trustSection, /conferenceTrustFeatures\.map\(\(feature\) => \(/);
@@ -2065,4 +2076,13 @@ test("footer decorative waves use complete SVG curve commands", () => {
   assert.doesNotMatch(wavePath, /, 205 |, 240 /);
   assert.doesNotMatch(wavePath, /undefined|null|NaN/);
   assert.equal(occurrences(source, '<FooterBottomPattern side="'), 2);
+});
+
+test("footer navigation arrows are white until their links are hovered", () => {
+  const source = read("components/common/Footer.tsx");
+
+  assert.match(
+    source,
+    /mt-\[5px\] text-white[^"\n]*group-hover:translate-x-1[^"\n]*group-hover:text-\[#FF7A1A\]/,
+  );
 });

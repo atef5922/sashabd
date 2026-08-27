@@ -197,7 +197,7 @@ function FooterLinkList({
               href={item.href}
               className="group inline-flex items-start gap-1.5 text-[12px] leading-6 text-slate-300 transition duration-200 hover:text-[#FF7A1A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] motion-reduce:transition-none"
             >
-              <span className="mt-[5px] text-[#FF7A1A] transition duration-200 group-hover:translate-x-1 motion-reduce:transition-none">
+              <span className="mt-[5px] text-white transition duration-200 group-hover:translate-x-1 group-hover:text-[#FF7A1A] motion-reduce:transition-none">
                 <ArrowIcon />
               </span>
               <span className="transition duration-200 group-hover:text-[#FF7A1A] motion-reduce:transition-none">{item.label}</span>

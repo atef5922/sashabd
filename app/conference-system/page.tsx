@@ -23,6 +23,9 @@ import { conferenceInstallationProjects } from "./conferenceProjects";
 
 const PAGE_TITLE = "Conference System Price in Bangladesh 2026";
 const META_TITLE = `${PAGE_TITLE} | Sasha`;
+const conferenceEngineerWhatsAppHref = `https://wa.me/${siteConfig.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(
+  "Hello Sasha Corporation, I would like to discuss a conference system project with your engineering team.",
+)}`;
 
 const compactInformationSectionClass =
   "mt-4 rounded-2xl border border-[#dbe5f2] bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.04)] sm:px-5 md:px-6";
@@ -987,8 +990,8 @@ export default function ConferenceSystemPage() {
       </section>
 
       <section aria-labelledby="conference-trust-heading">
-        <div className="overflow-hidden rounded-xl border border-slate-200/90 bg-white px-4 py-4 shadow-[0_4px_16px_rgba(15,23,42,0.035)] sm:px-5 xl:min-h-[96px] xl:px-7 xl:py-3">
-          <div className="grid items-center gap-4 lg:grid-cols-[10rem_minmax(0,1fr)] xl:min-h-[70px] xl:grid-cols-[minmax(205px,0.9fr)_1px_minmax(420px,2.6fr)_1px_minmax(350px,1.8fr)] xl:gap-0">
+        <div className="overflow-hidden rounded-xl border border-slate-200/90 bg-white px-4 py-3 shadow-[0_4px_16px_rgba(15,23,42,0.035)] sm:px-5 xl:min-h-[80px] xl:px-7 xl:py-2">
+          <div className="grid items-center gap-4 lg:grid-cols-[10rem_minmax(0,1fr)] xl:min-h-[62px] xl:grid-cols-[minmax(205px,0.9fr)_1px_minmax(420px,2.6fr)_1px_minmax(350px,1.8fr)] xl:gap-0">
             <p id="conference-trust-heading" role="heading" aria-level={2} className="text-left text-xs font-extrabold leading-[1.4] tracking-[-0.01em] text-[#071936] sm:text-[13px] xl:max-w-[205px]">
               <span className="block">Trusted Conference System</span>
               <span className="block">Solutions in Bangladesh</span>
@@ -996,13 +999,13 @@ export default function ConferenceSystemPage() {
 
             <div className="hidden h-12 w-px bg-slate-200 xl:block" aria-hidden="true" />
 
-            <div className="grid min-w-0 grid-cols-2 items-center gap-x-3 gap-y-4 border-t border-slate-100 pt-4 lg:grid-cols-4 lg:gap-x-7 lg:border-t-0 lg:pt-0 xl:px-8 2xl:gap-x-10">
+            <div className="grid min-w-0 grid-cols-2 items-center gap-x-3 gap-y-4 border-t border-slate-100 pt-4 lg:flex lg:justify-center lg:gap-x-7 lg:border-t-0 lg:pt-0 xl:px-8 2xl:gap-x-10">
               {verifiedConferenceBrandCards.map((brand) => {
                 const logoHeightClass = {
                   bosch: "h-7 sm:h-8 lg:h-[34px]",
                   toa: "h-7 sm:h-8 lg:h-[34px]",
                   spon: "h-6 sm:h-7 lg:h-8",
-                  cmx: "h-6 sm:h-7 lg:h-8",
+                  cmx: "h-8 sm:h-9 lg:h-9",
                 }[brand.slug] ?? "h-8";
 
                 return (
@@ -1011,7 +1014,7 @@ export default function ConferenceSystemPage() {
                     prefetch={false}
                     href={brand.url}
                     aria-label={`Browse ${brand.title} conference systems`}
-                    className="flex min-w-0 items-center justify-center transition duration-200 hover:scale-[1.03] hover:opacity-80 focus-visible:rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50"
+                    className="flex min-w-0 shrink-0 items-center justify-center transition duration-200 hover:scale-[1.03] hover:opacity-80 focus-visible:rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50"
                   >
                     {brand.logoSrc ? (
                       <Image
@@ -1019,7 +1022,7 @@ export default function ConferenceSystemPage() {
                         alt={`${brand.title} logo`}
                         width={brand.logoWidth ?? 100}
                         height={brand.logoHeight ?? 24}
-                        className={`${logoHeightClass} max-w-full w-auto object-contain`}
+                        className={`${logoHeightClass} max-w-full w-auto object-contain ${brand.slug === "spon" ? "lg:-mr-5" : ""}`}
                       />
                     ) : (
                       <span className="text-lg font-extrabold tracking-tight text-slate-950">{brand.title}</span>
@@ -1454,9 +1457,9 @@ export default function ConferenceSystemPage() {
             </div>
             <div className="mt-auto grid gap-2 pt-4">
               <Link href="/contact/?project=conference-system" className="inline-flex min-h-9 items-center justify-center rounded-md bg-[#071f4a] px-3 text-[10px] font-extrabold text-white shadow-sm transition hover:bg-[#123665] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40">Get Free BOQ</Link>
-              <a href={`tel:${siteConfig.phone}`} className="inline-flex min-h-9 items-center justify-center gap-2 rounded-md border border-[#9fb8df] bg-white px-3 text-[10px] font-extrabold text-[#123566] transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40">
-                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a14 14 0 0 0 5 5L15 13l5 2v4c0 1.1-.9 2-2 2A15 15 0 0 1 3 6c0-1.1.9-2 2-2Z" /></svg>
-                Talk to an Engineer
+              <a href={conferenceEngineerWhatsAppHref} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-9 items-center justify-center gap-2 rounded-md border border-[#9fb8df] bg-white px-3 text-[10px] font-extrabold text-[#123566] transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40">
+                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.4 9.4 0 0 1-3.8-.9L3 21l1.8-5a8.5 8.5 0 1 1 16.2-4.5Z" /><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" /></svg>
+                WhatsApp Engineering Team
               </a>
             </div>
           </aside>
@@ -1663,9 +1666,9 @@ export default function ConferenceSystemPage() {
           <p className="mt-2 max-w-[390px] text-left text-[11px] font-medium leading-[1.15rem] text-blue-100 sm:text-xs">Our experts will design the right conference solution for your space, budget, and meeting requirements.</p>
           <div className="mt-4 flex flex-col gap-2 sm:flex-row">
             <Link href="/contact/?project=conference-system" className="inline-flex min-h-9 items-center justify-center rounded-md bg-[#f45b18] px-5 text-[10px] font-extrabold text-white shadow-sm transition hover:bg-[#db490d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400/60">Get Free BOQ <span aria-hidden="true" className="ml-1.5">→</span></Link>
-            <a href={`tel:${siteConfig.phone}`} className="inline-flex min-h-9 items-center justify-center gap-2 rounded-md border border-white/45 bg-white/10 px-5 text-[10px] font-extrabold text-white backdrop-blur-sm transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50">
-              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a14 14 0 0 0 5 5L15 13l5 2v4c0 1.1-.9 2-2 2A15 15 0 0 1 3 6c0-1.1.9-2 2-2Z" /></svg>
-              Talk to an Engineer
+            <a href={conferenceEngineerWhatsAppHref} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-9 items-center justify-center gap-2 rounded-md border border-white/45 bg-white/10 px-5 text-[10px] font-extrabold text-white backdrop-blur-sm transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50">
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.4 9.4 0 0 1-3.8-.9L3 21l1.8-5a8.5 8.5 0 1 1 16.2-4.5Z" /><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" /></svg>
+              WhatsApp Engineering Team
             </a>
           </div>
           <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-[8px] font-semibold text-blue-100 sm:text-[9px]">
