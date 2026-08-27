@@ -1478,6 +1478,33 @@ test("Conference related products are contextual, explicit-first, unique, and ne
   assert.match(getConferenceRelatedSectionCopy(makeProduct({ id: "dsp", productTypes: ["dsp"] })), /audio processing/);
   assert.match(getConferenceRelatedSectionCopy(makeProduct({ id: "camera-copy", productTypes: ["camera"] })), /video and hybrid/);
   assert.match(getConferenceRelatedSectionCopy(makeProduct({ id: "paperless", systemTypes: ["paperless"], productTypes: ["processor"] })), /paperless and digital/);
+
+  const paperless = makeProduct({
+    id: "paperless-host",
+    systemTypes: ["digital", "paperless"],
+    productTypes: ["control-unit", "processor"],
+    compatibleProductIds: ["paperless-server"],
+  });
+  const paperlessServer = makeProduct({ id: "paperless-server", systemTypes: ["paperless"], productTypes: ["processor"] });
+  const paperlessPeer = makeProduct({ id: "paperless-peer", systemTypes: ["digital", "paperless"], productTypes: ["control-unit"] });
+  const unrelatedWireless = makeProduct({ id: "wireless-unit", connection: "wireless", systemTypes: ["digital"], productTypes: ["delegate-unit"] });
+  assert.deepEqual(
+    getConferenceRelatedProducts(paperless, [paperless, unrelatedWireless, paperlessPeer, paperlessServer], 6).map((product) => product.id),
+    ["paperless-server", "paperless-peer"],
+  );
+
+  const wirelessController = makeProduct({
+    id: "wireless-controller",
+    connection: "wireless",
+    productTypes: ["control-unit"],
+    compatibleProductIds: ["wireless-compatible-unit"],
+  });
+  const wirelessCompatibleUnit = makeProduct({ id: "wireless-compatible-unit", connection: "wireless", productTypes: ["delegate-unit"] });
+  const unverifiedWirelessUnit = makeProduct({ id: "wireless-unverified-unit", connection: "wireless", productTypes: ["delegate-unit"] });
+  assert.deepEqual(
+    getConferenceRelatedProducts(wirelessController, [wirelessController, unverifiedWirelessUnit, wirelessCompatibleUnit], 6).map((product) => product.id),
+    ["wireless-compatible-unit"],
+  );
 });
 
 test("Conference offer schema emits only valid fixed-price offers", async () => {
