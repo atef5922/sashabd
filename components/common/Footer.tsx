@@ -153,14 +153,14 @@ function FooterSectionHeading({
   return (
     <div className="min-h-[28px]">
       <div className="flex min-h-[24px] items-center gap-1.5">
-        <div className="inline-flex h-4 w-4 shrink-0 items-center justify-center text-[#67E8F9]">
+        <div className="inline-flex h-4 w-4 shrink-0 items-center justify-center text-[#FF7A1A]">
           {icon}
         </div>
         <span className="whitespace-nowrap text-[16px] font-bold uppercase tracking-[0.03em] text-white">
           {title}
         </span>
       </div>
-      <div className="mt-1 h-[2px] w-8 rounded-full bg-[#67E8F9]" />
+      <div className="mt-1 h-[2px] w-8 rounded-full bg-[#FF7A1A]" />
     </div>
   );
 }
@@ -195,12 +195,12 @@ function FooterLinkList({
             <Link
               prefetch={false}
               href={item.href}
-              className="group inline-flex items-start gap-1.5 text-[12px] leading-6 text-slate-300 transition duration-200 hover:text-[#67E8F9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#67E8F9] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] motion-reduce:transition-none"
+              className="group inline-flex items-start gap-1.5 text-[12px] leading-6 text-slate-300 transition duration-200 hover:text-[#FF7A1A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] motion-reduce:transition-none"
             >
-              <span className="mt-[5px] text-[#67E8F9] transition duration-200 group-hover:translate-x-1 motion-reduce:transition-none">
+              <span className="mt-[5px] text-[#FF7A1A] transition duration-200 group-hover:translate-x-1 motion-reduce:transition-none">
                 <ArrowIcon />
               </span>
-              <span className="transition duration-200 group-hover:text-[#67E8F9] motion-reduce:transition-none">{item.label}</span>
+              <span className="transition duration-200 group-hover:text-[#FF7A1A] motion-reduce:transition-none">{item.label}</span>
             </Link>
           </li>
         ))}
@@ -275,12 +275,12 @@ export default function Footer() {
       className="w-full overflow-hidden border border-white/8 bg-[radial-gradient(circle_at_top,rgba(14,55,121,0.22),transparent_34%),linear-gradient(180deg,#08111f_0%,#07101d_100%)] text-slate-200 shadow-[0_18px_40px_rgba(0,0,0,0.2)]"
       aria-label="Site footer"
     >
-      <div className="grid gap-4 px-4 py-3 sm:px-5 sm:py-3.5 md:grid-cols-2 md:gap-x-6 md:gap-y-4 lg:px-7 lg:py-4 xl:grid-cols-[minmax(0,1.48fr)_minmax(0,0.84fr)_minmax(0,0.88fr)_minmax(0,0.92fr)] xl:gap-x-5">
+      <div className="mx-auto grid w-full max-w-[clamp(80rem,90vw,108rem)] gap-4 px-3 py-3 sm:py-3.5 md:grid-cols-2 md:gap-x-6 md:gap-y-4 md:pl-3 md:pr-4 lg:py-4 xl:grid-cols-[minmax(0,1.48fr)_minmax(0,0.84fr)_minmax(0,0.88fr)_minmax(0,0.92fr)] xl:gap-x-5">
             <section className="min-w-0">
               <Link
                 prefetch={false}
                 href="/"
-                className="inline-flex rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#67E8F9] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f]"
+                className="inline-flex rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f]"
                 aria-label={`${BRAND_NAME} home`}
               >
                 <div className="relative h-14 w-36 shrink-0 sm:h-16 sm:w-40">
@@ -299,14 +299,14 @@ export default function Footer() {
               <div className="mt-3 grid grid-cols-2 gap-1.5 md:flex md:flex-wrap md:gap-2">
                 <a
                   href={`tel:${siteConfig.phone}`}
-                  className="glow-pill inline-flex min-w-0 items-center justify-center rounded-full border border-slate-700 bg-slate-800/50 px-2 py-1.5 text-[10px] font-semibold leading-none tracking-tight text-[#39FF14] transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#39FF14] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] md:px-3 md:text-xs"
+                  className="glow-pill inline-flex min-w-0 items-center justify-center rounded-full border border-slate-700 bg-slate-800/50 px-2 py-1.5 text-[10px] font-semibold leading-none tracking-tight text-[#FF7A1A] transition hover:bg-slate-800 hover:text-[#FF9A52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] md:px-3 md:text-xs"
                 >
                   <span className="whitespace-nowrap">{`Phone: ${siteConfig.phone}`}</span>
                 </a>
                 <EmailReveal
                   user={siteConfig.emailUser}
                   domain={siteConfig.emailDomain}
-                  className="glow-pill inline-flex min-w-0 items-center justify-center rounded-full border border-slate-700 bg-slate-800/50 px-2 py-1.5 text-[10px] font-semibold leading-none tracking-tight text-[#39FF14] transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#39FF14] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] md:px-3 md:text-xs"
+                  className="glow-pill inline-flex min-w-0 items-center justify-center rounded-full border border-slate-700 bg-slate-800/50 px-2 py-1.5 text-[10px] font-semibold leading-none tracking-tight text-[#FF7A1A] transition hover:bg-slate-800 hover:text-[#FF9A52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] md:px-3 md:text-xs"
                   title="Email us"
                   prefix="Email: "
                 />
@@ -336,13 +336,13 @@ export default function Footer() {
                 }
               >
                 <span className="flex min-h-[24px] items-center gap-1.5">
-                  <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center text-[#67E8F9]">
+                  <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center text-[#FF7A1A]">
                     <BuildingIcon />
                   </span>
                   <span className="whitespace-nowrap text-[15px] font-bold uppercase tracking-[0.03em] text-white">Company</span>
                 </span>
                 <span
-                  className={`text-[#67E8F9] transition duration-200 ${mobileOpenSections.company ? "rotate-90" : "rotate-0"}`}
+                  className={`text-[#FF7A1A] transition duration-200 ${mobileOpenSections.company ? "rotate-90" : "rotate-0"}`}
                 >
                   <ArrowIcon />
                 </span>
@@ -369,13 +369,13 @@ export default function Footer() {
                 }
               >
                 <span className="flex min-h-[24px] items-center gap-1.5">
-                  <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center text-[#67E8F9]">
+                  <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center text-[#FF7A1A]">
                     <SupportIcon />
                   </span>
                   <span className="whitespace-nowrap text-[15px] font-bold uppercase tracking-[0.03em] text-white">Support</span>
                 </span>
                 <span
-                  className={`text-[#67E8F9] transition duration-200 ${mobileOpenSections.support ? "rotate-90" : "rotate-0"}`}
+                  className={`text-[#FF7A1A] transition duration-200 ${mobileOpenSections.support ? "rotate-90" : "rotate-0"}`}
                 >
                   <ArrowIcon />
                 </span>
@@ -402,13 +402,13 @@ export default function Footer() {
                 }
               >
                 <span className="flex min-h-[24px] items-center gap-1.5">
-                  <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center text-[#67E8F9]">
+                  <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center text-[#FF7A1A]">
                     <LocationIcon />
                   </span>
                   <span className="whitespace-nowrap text-[15px] font-bold uppercase tracking-[0.03em] text-white">Contact</span>
                 </span>
                 <span
-                  className={`text-[#67E8F9] transition duration-200 ${mobileOpenSections.contact ? "rotate-90" : "rotate-0"}`}
+                  className={`text-[#FF7A1A] transition duration-200 ${mobileOpenSections.contact ? "rotate-90" : "rotate-0"}`}
                 >
                   <ArrowIcon />
                 </span>
@@ -425,20 +425,20 @@ export default function Footer() {
                     href={mapOpenUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-start gap-2 text-slate-200 transition duration-200 hover:text-[#67E8F9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#67E8F9] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] motion-reduce:transition-none"
+                    className="group flex items-start gap-2 text-slate-200 transition duration-200 hover:text-[#FF7A1A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] motion-reduce:transition-none"
                     aria-label="Open office location in Google Maps"
                   >
-                    <span className="mt-[3px] inline-flex h-4.5 w-4.5 shrink-0 items-center justify-center text-[#57D9FF] transition duration-200 group-hover:text-[#67E8F9] motion-reduce:transition-none">
+                    <span className="mt-[3px] inline-flex h-4.5 w-4.5 shrink-0 items-center justify-center text-[#FF7A1A] transition duration-200 group-hover:text-[#FF9A52] motion-reduce:transition-none">
                       <LocationIcon />
                     </span>
-                    <span className="leading-5 text-slate-300 transition duration-200 group-hover:text-[#67E8F9] motion-reduce:transition-none">
+                    <span className="leading-5 text-slate-300 transition duration-200 group-hover:text-[#FF7A1A] motion-reduce:transition-none">
                       {siteConfig.address}
                     </span>
                   </a>
 
                   <a
                     href={`tel:${siteConfig.phone}`}
-                    className="mt-2 flex items-center gap-2 font-semibold text-[#57D9FF] transition duration-200 hover:text-[#67E8F9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#67E8F9] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] motion-reduce:transition-none"
+                    className="mt-2 flex items-center gap-2 font-semibold text-[#FF7A1A] transition duration-200 hover:text-[#FF9A52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] motion-reduce:transition-none"
                   >
                     <span className="inline-flex h-4.5 w-4.5 shrink-0 items-center justify-center">
                       <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" aria-hidden="true">
@@ -450,9 +450,9 @@ export default function Footer() {
 
                   <a
                     href={`mailto:${supportEmail}`}
-                    className="mt-2 flex items-center gap-2 text-slate-100 transition duration-200 hover:text-[#67E8F9] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#67E8F9] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] motion-reduce:transition-none"
+                    className="mt-2 flex items-center gap-2 text-slate-100 transition duration-200 hover:text-[#FF7A1A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] motion-reduce:transition-none"
                   >
-                    <span className="inline-flex h-4.5 w-4.5 shrink-0 items-center justify-center text-[#57D9FF]">
+                    <span className="inline-flex h-4.5 w-4.5 shrink-0 items-center justify-center text-[#FF7A1A]">
                       <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" aria-hidden="true">
                         <path d="M4 6h16v12H4z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
                         <path d="m5 7 7 5 7-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -462,7 +462,7 @@ export default function Footer() {
                   </a>
 
                   <div className="mt-2 flex items-start gap-2 text-[11.5px] leading-5 text-slate-300">
-                    <span className="mt-[2px] inline-flex h-4.5 w-4.5 shrink-0 items-center justify-center text-[#57D9FF]">
+                    <span className="mt-[2px] inline-flex h-4.5 w-4.5 shrink-0 items-center justify-center text-[#FF7A1A]">
                       <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" aria-hidden="true">
                         <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" strokeWidth="1.8" />
                         <path d="M12 7.5V12l3 2" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
@@ -480,7 +480,7 @@ export default function Footer() {
                     <Link
                       prefetch={false}
                       href="/contact/"
-                      className="glow-pill inline-flex items-center justify-center rounded-full border border-[#67E8F9]/40 bg-slate-900/40 px-3 py-1.5 text-[11.5px] font-semibold text-[#67E8F9] transition duration-200 hover:bg-slate-900/60 hover:text-[#A5F3FC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#67E8F9] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] motion-reduce:transition-none"
+                      className="glow-pill inline-flex items-center justify-center rounded-full border border-[#FF7A1A]/40 bg-slate-900/40 px-3 py-1.5 text-[11.5px] font-semibold text-[#FF7A1A] transition duration-200 hover:bg-slate-900/60 hover:text-[#FF9A52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] motion-reduce:transition-none"
                     >
                       <span>Get a Quote</span>
                     </Link>
@@ -488,7 +488,7 @@ export default function Footer() {
                       href={whatsappUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="glow-pill inline-flex items-center justify-center rounded-full border border-[#67E8F9]/40 bg-slate-900/40 px-3 py-1.5 text-[11.5px] font-semibold text-[#67E8F9] transition duration-200 hover:bg-slate-900/60 hover:text-[#A5F3FC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#67E8F9] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] motion-reduce:transition-none"
+                      className="glow-pill inline-flex items-center justify-center rounded-full border border-[#FF7A1A]/40 bg-slate-900/40 px-3 py-1.5 text-[11.5px] font-semibold text-[#FF7A1A] transition duration-200 hover:bg-slate-900/60 hover:text-[#FF9A52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] motion-reduce:transition-none"
                     >
                       <span>WhatsApp</span>
                     </a>
@@ -497,7 +497,7 @@ export default function Footer() {
             </section>
       </div>
 
-      <div className="px-4 pb-3 sm:px-5 sm:pb-3.5 lg:px-7 lg:pb-3.5">
+      <div className="mx-auto w-full max-w-[clamp(80rem,90vw,108rem)] px-3 pb-3 sm:pb-3.5 md:pl-3 md:pr-4">
         <div className="relative overflow-hidden border border-white/8 bg-[linear-gradient(180deg,rgba(9,18,35,0.96),rgba(7,14,28,0.98))] px-4 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] sm:px-5">
           <FooterBottomPattern side="left" />
           <FooterBottomPattern side="right" />
@@ -518,7 +518,7 @@ export default function Footer() {
                 href="https://mugneeit.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-[#67E8F9] transition hover:text-[#A5F3FC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#67E8F9] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b1324] motion-reduce:transition-none"
+                className="font-semibold text-[#FF7A1A] transition hover:text-[#FF9A52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b1324] motion-reduce:transition-none"
               >
                 Mugnee IT Solutions.
               </a>
