@@ -451,25 +451,15 @@ function ConferenceDesktopNavItem({
                   >
                     <span
                       aria-hidden="true"
-                      className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-white text-[#FD6900] shadow-[0_1px_2px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/80 transition-colors duration-200 group-hover/package:ring-[#FD6900]/30"
+                      className="relative block aspect-[4/3] w-full overflow-hidden rounded-lg bg-white shadow-[0_2px_8px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/80 transition-colors duration-200 group-hover/package:ring-[#FD6900]/30"
                     >
-                      <svg
-                        viewBox="0 0 24 24"
-                        className="h-4 w-4 fill-none stroke-current"
-                        strokeWidth="1.7"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M9 4.5H7.6A1.6 1.6 0 0 0 6 6.1v13A1.6 1.6 0 0 0 7.6 20.7h8.8a1.6 1.6 0 0 0 1.6-1.6v-13A1.6 1.6 0 0 0 16.4 4.5H15" />
-                        <rect x="9" y="2.6" width="6" height="3.8" rx="1.1" />
-                        <path d="m9.6 13.2 1.9 1.9 3.5-3.6" />
-                      </svg>
-                    </span>
-                    <span className="mt-2.5 block text-[13.5px] font-bold leading-5 text-slate-800">
-                      {packageItem.label}
-                    </span>
-                    <span className="mt-1.5 block text-[12px] leading-[1.5] text-slate-500">
-                      Plan a complete room-based conference system.
+                      <Image
+                        src="/images/conference_landing/complete-conference-package-thumbnail.webp"
+                        alt=""
+                        fill
+                        sizes="220px"
+                        className="object-contain"
+                      />
                     </span>
                     <span className="mt-auto flex items-center gap-1 pt-3 text-[11.5px] font-extrabold uppercase leading-4 tracking-[0.06em] text-[#C2410C]">
                       Explore Packages
