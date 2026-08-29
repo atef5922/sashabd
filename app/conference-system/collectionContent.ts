@@ -342,6 +342,7 @@ export const conferenceBrandPageContent: Readonly<Record<string, ConferenceBrand
       { q: "What is the difference between CCS 900 Ultra and CCS 1000 D?", a: "CCS 900 Ultra is an analogue discussion range commissioned without configuration software. CCS 1000 D is digital, configured from a web browser, and adds request-to-speak queueing and camera-control triggers." },
       { q: "Do I need the CCSD-CURD instead of the CCSD-CU?", a: "Only if the meeting audio has to be recorded. The CCSD-CURD adds onboard capture to USB storage; otherwise the two control units manage discussion identically." },
       { q: "Are Bosch PA products part of this Conference range?", a: "No. Bosch mixer amplifiers, ceiling loudspeakers, and call stations are PA System products and are listed under that category, not here." },
+      { q: "Can a Bosch CCS 1000 D system support camera control?", a: "Yes, CCS 1000 D can provide camera-control triggers when the selected cameras, switching equipment, and system integration are compatible. Confirm the complete control workflow before preparing the BOQ." },
     ],
   },
   toa: {
@@ -364,6 +365,7 @@ export const conferenceBrandPageContent: Readonly<Record<string, ConferenceBrand
       { q: "Which TOA conference platform suits a large council chamber?", a: "The TS-900 range. Its TS-910 central unit supports formal speaker-queue procedure and expands through the TS-918 unit as member positions increase." },
       { q: "What does the L suffix mean on TOA station models?", a: "It indicates a long gooseneck microphone. Models such as TS-691L, TS-692L, and TS-792L are specified where participants sit back from the table edge." },
       { q: "Can I extend an existing TOA conference room?", a: "Usually yes. Confirm which central unit is installed first, then additional stations from the same series can be added to the chain." },
+      { q: "Can TOA chairman and delegate units be mixed across different TS series?", a: "Not automatically. Chairman and delegate stations must be matched with a compatible central unit, extension equipment, microphones, and cables from the intended TOA system family." },
     ],
   },
   cmx: {
@@ -386,6 +388,7 @@ export const conferenceBrandPageContent: Readonly<Record<string, ConferenceBrand
       { q: "Which CMX system suits a confidential closed session?", a: "The S800MC infrared controller. Infrared does not pass through walls, so discussion audio stays acoustically contained in a way no radio system can guarantee." },
       { q: "What is the difference between the WS-257, WS-259, and WS-261 units?", a: "They are the compact, standard, and executive tiers of the same WS table range. All three work with the same controller and differ in footprint, build, and finish." },
       { q: "Do CMX paperless systems replace the discussion audio?", a: "No. The MC-series hosts and servers handle agendas and documents alongside the discussion system rather than replacing the microphones and controller." },
+      { q: "Should I choose a wired, UHF, Wi-Fi, or infrared CMX system?", a: "Choose according to room layout, cabling access, radio conditions, line-of-sight requirements, and meeting confidentiality. A site review helps determine the most suitable carrier before equipment selection." },
     ],
   },
   spon: {
@@ -408,6 +411,7 @@ export const conferenceBrandPageContent: Readonly<Record<string, ConferenceBrand
       { q: "Which SPON Conference products are currently listed?", a: "Sasha currently lists SPON microphones, chairman and delegate units, a control unit, DSP, amplifier, wireless access equipment, and a charger." },
       { q: "Can all SPON Conference products be combined automatically?", a: "No. Model family, controller, connection, charging, and accessory compatibility must still be verified for the intended system." },
       { q: "Can Sasha prepare a SPON Conference quotation?", a: "Yes. Sasha can review the room, participant layout, product requirements, installation scope, and BOQ before preparing a quotation." },
+      { q: "What supporting equipment does a SPON wireless conference system need?", a: "Requirements depend on the selected product family, but a wireless design may need a compatible controller or access point, charging equipment, power, network planning, and suitable room-audio integration." },
     ],
   },
 };

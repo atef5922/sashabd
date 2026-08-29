@@ -36,6 +36,7 @@ const supportLinks: FooterLinkItem[] = [
   { href: "/contact/", label: "Spare Parts & Maintenance" },
   { href: "/contact/", label: "BOQ & Tender Assistance" },
   { href: "/contact/", label: "Site Visit & Consultation" },
+  { href: "/services-support/", label: "Training & System Handover" },
 ];
 
 const companyDescription =
