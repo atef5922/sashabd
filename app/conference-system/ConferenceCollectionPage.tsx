@@ -101,6 +101,30 @@ const CONFERENCE_HUB_CATEGORY_HERO_IMAGES: Readonly<Record<string, CollectionHer
   },
 };
 
+const DEFAULT_CONFERENCE_BRAND_HERO_IMAGE: CollectionHeroImage = {
+  src: "/images/conference_landing/hero_banner.webp",
+  alt: "Professional conference room with tabletop discussion microphones",
+};
+
+const CONFERENCE_HUB_BRAND_HERO_IMAGES: Readonly<Record<string, CollectionHeroImage>> = {
+  bosch: {
+    src: "/images/conference_landing/bosch-conference-brand-hero.webp",
+    alt: "Bosch conference system installed in a professional meeting room",
+  },
+  toa: {
+    src: "/images/conference_landing/toa-brand-hero-clean.webp",
+    alt: "TOA conference system installed in a professional meeting room",
+  },
+  spon: {
+    src: "/images/conference_landing/spon-brand-hero.webp",
+    alt: "SPON conference system installed in a professional meeting room",
+  },
+  cmx: {
+    src: "/images/conference_landing/cmx-brand-hero.webp",
+    alt: "CMX conference system installed in a professional meeting room",
+  },
+};
+
 const CATEGORY_HERO_EYEBROWS: Readonly<Record<ConferenceCategoryConfig["group"], string>> = {
   system: "Conference systems",
   connection: "Connection options",
@@ -377,6 +401,7 @@ function Hero({
   productsAnchor = true,
   heroImage,
   breadcrumbs,
+  fitEntireImageOnDesktop = false,
 }: {
   eyebrow: string;
   title: string;
@@ -386,11 +411,12 @@ function Hero({
   productsAnchor?: boolean;
   heroImage?: CollectionHeroImage;
   breadcrumbs?: BreadcrumbItem[];
+  fitEntireImageOnDesktop?: boolean;
 }) {
   if (heroImage) {
     return (
       <section
-        className="relative left-1/2 right-1/2 isolate -mx-[50vw] min-h-[520px] w-screen overflow-hidden border-0 bg-[#f7f9fc] shadow-none sm:min-h-[460px] lg:min-h-[clamp(25rem,30vw,29rem)]"
+        className="relative left-1/2 right-1/2 isolate -mx-[50vw] min-h-[520px] w-screen overflow-hidden border-0 bg-white shadow-none sm:min-h-[460px] lg:min-h-[clamp(25rem,30vw,29rem)]"
         aria-labelledby="conference-collection-hero-heading"
       >
         <Image
@@ -399,7 +425,7 @@ function Hero({
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[72%_center] sm:object-[66%_center] lg:object-center"
+          className={`object-cover object-[72%_center] sm:object-[66%_center] lg:object-center ${fitEntireImageOnDesktop ? "conference-brand-hero-image" : ""}`}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/65 to-transparent sm:from-white/90 sm:via-white/45 lg:hidden" aria-hidden="true" />
 
@@ -624,10 +650,7 @@ function BrandTemplate({ brand, products, breadcrumbs }: Omit<BrandCollectionPro
   const title = content?.heroTitle ?? `${brand.name} Conference System Availability`;
   const description = content?.intro ?? brand.description;
   const presentation: CollectionPresentation = "conference-hub";
-  const heroImage: CollectionHeroImage = {
-    src: "/images/conference_landing/hero_banner.webp",
-    alt: "Professional conference room with tabletop discussion microphones",
-  };
+  const heroImage = CONFERENCE_HUB_BRAND_HERO_IMAGES[brand.slug] ?? DEFAULT_CONFERENCE_BRAND_HERO_IMAGE;
 
   return (
     <main className="mx-auto -mt-2 w-full max-w-[clamp(80rem,90vw,108rem)] px-4 pb-10 pt-0 md:px-6" data-conference-route-kind="brand">
@@ -639,6 +662,7 @@ function BrandTemplate({ brand, products, breadcrumbs }: Omit<BrandCollectionPro
         productCountLabel={`${products.length} ${brand.name} Conference Products`}
         breadcrumbs={breadcrumbs}
         heroImage={heroImage}
+        fitEntireImageOnDesktop
       />
 
       {content ? (
