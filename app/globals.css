@@ -43,13 +43,6 @@ body {
   font-weight: var(--site-font-weight-normal);
 }
 
-@media (min-width: 1024px) {
-  .conference-brand-hero-image {
-    object-fit: contain;
-    object-position: right center;
-  }
-}
-
 main :where(p, li, dd, blockquote) {
   text-align: justify;
   text-justify: inter-word;

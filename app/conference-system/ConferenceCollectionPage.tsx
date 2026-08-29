@@ -405,7 +405,6 @@ function Hero({
   productsAnchor = true,
   heroImage,
   breadcrumbs,
-  fitEntireImageOnDesktop = false,
 }: {
   eyebrow: string;
   title: string;
@@ -415,7 +414,6 @@ function Hero({
   productsAnchor?: boolean;
   heroImage?: CollectionHeroImage;
   breadcrumbs?: BreadcrumbItem[];
-  fitEntireImageOnDesktop?: boolean;
 }) {
   if (heroImage) {
     return (
@@ -429,7 +427,7 @@ function Hero({
           fill
           priority
           sizes="100vw"
-          className={`object-cover object-[72%_center] sm:object-[66%_center] lg:object-center ${fitEntireImageOnDesktop ? "conference-brand-hero-image" : ""}`}
+          className="object-cover object-[72%_center] sm:object-[66%_center] lg:object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/65 to-transparent sm:from-white/90 sm:via-white/45 lg:hidden" aria-hidden="true" />
 
@@ -666,7 +664,6 @@ function BrandTemplate({ brand, products, breadcrumbs }: Omit<BrandCollectionPro
         productCountLabel={`${products.length} ${brand.name} Conference Products`}
         breadcrumbs={breadcrumbs}
         heroImage={heroImage}
-        fitEntireImageOnDesktop
       />
 
       {content ? (
