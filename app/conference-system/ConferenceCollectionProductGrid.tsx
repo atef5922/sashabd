@@ -6,7 +6,12 @@ import { paginateConferenceProducts } from "./conferenceDiscovery";
 
 const COLLECTION_PAGE_SIZE = 12;
 
-function getGridClassName(productCount: number): string {
+function getGridClassName(productCount: number, presentation: "standard" | "compact"): string {
+  if (presentation === "compact") {
+    if (productCount === 1) return "grid max-w-sm grid-cols-1 gap-4";
+    if (productCount <= 3) return "grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3";
+    return "grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-4";
+  }
   if (productCount === 1) return "grid max-w-2xl grid-cols-1 gap-5";
   if (productCount <= 5) return "grid max-w-5xl gap-5 sm:grid-cols-2 lg:grid-cols-3";
   return "grid gap-5 sm:grid-cols-2 xl:grid-cols-3";
@@ -25,8 +30,10 @@ function paginationRange(current: number, total: number): Array<number | "gap"> 
 
 export default function ConferenceCollectionProductGrid({
   products,
+  presentation = "standard",
 }: {
   products: readonly ConferenceProductCardData[];
+  presentation?: "standard" | "compact";
 }) {
   const totalPages = Math.max(1, Math.ceil(products.length / COLLECTION_PAGE_SIZE));
   const [requestedPage, setRequestedPage] = useState(1);
@@ -79,12 +86,12 @@ export default function ConferenceCollectionProductGrid({
       ) : null}
 
       <div
-        className={`${totalPages > 1 ? "mt-4" : "mt-6"} ${getGridClassName(shownProducts.length)}`}
+        className={`${totalPages > 1 ? "mt-4" : presentation === "compact" ? "mt-4" : "mt-6"} ${getGridClassName(shownProducts.length, presentation)}`}
         data-conference-product-grid={shownProducts.length === 1 ? "single" : "multiple"}
         data-products-on-page={shownProducts.length}
       >
         {shownProducts.map((product, index) => (
-          <ConferenceProductCard key={product.slug} product={product} priority={index === 0} />
+          <ConferenceProductCard key={product.slug} product={product} priority={index === 0} presentation={presentation} />
         ))}
       </div>
 

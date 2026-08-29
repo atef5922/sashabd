@@ -501,6 +501,20 @@ export default function Header({
   const pathname = usePathname();
   const router = useRouter();
   const useConferenceTabletHeader = pathname.startsWith("/conference-system");
+  const normalizedPathname = pathname.replace(/\/+$/, "");
+  const hasFlushConferenceHero = [
+    "/conference-system/audio-conference-system",
+    "/conference-system/digital-conference-system",
+    "/conference-system/video-conference-system",
+    "/conference-system/paperless-conference-system",
+    "/conference-system/wired-conference-system",
+    "/conference-system/wireless-conference-system",
+    "/conference-system/chairman-unit",
+    "/conference-system/delegate-unit",
+    "/conference-system/control-unit",
+    "/conference-system/conference-dsp",
+    "/conference-system/conference-amplifier",
+  ].includes(normalizedPathname);
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -657,7 +671,9 @@ export default function Header({
     <header
       className={cn(
         "sticky inset-x-0 top-0 z-[80] w-full transition-colors duration-300",
-        isScrolled ? "bg-[#091931] shadow-md" : "bg-white"
+        isScrolled
+          ? hasFlushConferenceHero ? "bg-[#091931] shadow-none" : "bg-[#091931] shadow-md"
+          : hasFlushConferenceHero ? "bg-white shadow-none" : "bg-white"
       )}
     >
       <div

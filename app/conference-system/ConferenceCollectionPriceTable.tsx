@@ -27,9 +27,12 @@ function getRepresentativeRows(rows: readonly ConferenceCollectionPriceRow[]) {
 
 export default function ConferenceCollectionPriceTable({
   rows,
+  presentation = "standard",
 }: {
   rows: readonly ConferenceCollectionPriceRow[];
+  presentation?: "standard" | "compact";
 }) {
+  const compact = presentation === "compact";
   const [showAll, setShowAll] = useState(false);
   const representativeRows = useMemo(() => getRepresentativeRows(rows), [rows]);
   const visibleRows = showAll ? rows : representativeRows;
@@ -38,39 +41,39 @@ export default function ConferenceCollectionPriceTable({
   return (
     <>
       {canExpand ? (
-        <p className="mt-5 text-sm leading-6 text-slate-600" aria-live="polite">
+        <p className={compact ? "mt-3 text-xs leading-5 text-slate-600" : "mt-5 text-sm leading-6 text-slate-600"} aria-live="polite">
           {showAll
             ? `Showing all ${rows.length} products.`
             : `Showing ${representativeRows.length} representative products from this ${rows.length}-product collection.`}
         </p>
       ) : null}
 
-      <div className={`${canExpand ? "mt-3" : "mt-5"} overflow-x-auto rounded-2xl border border-slate-200 [scrollbar-gutter:stable]`}>
-        <table className="w-full min-w-[820px] border-collapse text-left text-sm">
+      <div className={`${canExpand ? "mt-3" : compact ? "mt-4" : "mt-5"} overflow-x-auto ${compact ? "rounded-lg border-[#dbe5f2]" : "rounded-2xl border-slate-200"} border [scrollbar-gutter:stable]`}>
+        <table className={`w-full min-w-[820px] border-collapse text-left ${compact ? "text-xs" : "text-sm"}`}>
           <caption className="sr-only">Conference product catalog pricing and availability</caption>
-          <thead className="bg-slate-950 text-white">
+          <thead className={compact ? "bg-[#071936] text-white" : "bg-slate-950 text-white"}>
             <tr>
-              <th scope="col" className="min-w-56 px-4 py-3 font-bold">Product</th>
-              <th scope="col" className="px-4 py-3 font-bold">Brand</th>
-              <th scope="col" className="px-4 py-3 font-bold">Model</th>
-              <th scope="col" className="px-4 py-3 font-bold">Type</th>
-              <th scope="col" className="px-4 py-3 font-bold">Availability</th>
-              <th scope="col" className="px-4 py-3 text-right font-bold">Price</th>
+              <th scope="col" className={`min-w-56 px-4 font-bold ${compact ? "py-2.5" : "py-3"}`}>Product</th>
+              <th scope="col" className={`px-4 font-bold ${compact ? "py-2.5" : "py-3"}`}>Brand</th>
+              <th scope="col" className={`px-4 font-bold ${compact ? "py-2.5" : "py-3"}`}>Model</th>
+              <th scope="col" className={`px-4 font-bold ${compact ? "py-2.5" : "py-3"}`}>Type</th>
+              <th scope="col" className={`px-4 font-bold ${compact ? "py-2.5" : "py-3"}`}>Availability</th>
+              <th scope="col" className={`px-4 text-right font-bold ${compact ? "py-2.5" : "py-3"}`}>Price</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200">
             {visibleRows.map((row) => (
-              <tr key={row.id} className="align-top hover:bg-orange-50/40">
-                <th scope="row" className="px-4 py-3 font-bold text-slate-950">
-                  <Link href={`/conference-system/${row.slug}/`} className="underline-offset-4 hover:text-orange-600 hover:underline">
+              <tr key={row.id} className={compact ? "align-top hover:bg-blue-50/40" : "align-top hover:bg-orange-50/40"}>
+                <th scope="row" className={`px-4 font-bold text-slate-950 ${compact ? "py-2.5" : "py-3"}`}>
+                  <Link href={`/conference-system/${row.slug}/`} className={compact ? "underline-offset-4 hover:text-[#1744a1] hover:underline" : "underline-offset-4 hover:text-orange-600 hover:underline"}>
                     {row.name}
                   </Link>
                 </th>
-                <td className="px-4 py-3 text-slate-700">{row.brand}</td>
-                <td className="px-4 py-3 text-slate-700">{row.model}</td>
-                <td className="px-4 py-3 text-slate-700">{row.productType}</td>
-                <td className="px-4 py-3 text-slate-700">{row.availability}</td>
-                <td className="px-4 py-3 text-right font-extrabold text-slate-950">
+                <td className={`px-4 text-slate-700 ${compact ? "py-2.5" : "py-3"}`}>{row.brand}</td>
+                <td className={`px-4 text-slate-700 ${compact ? "py-2.5" : "py-3"}`}>{row.model}</td>
+                <td className={`px-4 text-slate-700 ${compact ? "py-2.5" : "py-3"}`}>{row.productType}</td>
+                <td className={`px-4 text-slate-700 ${compact ? "py-2.5" : "py-3"}`}>{row.availability}</td>
+                <td className={`px-4 text-right font-extrabold text-slate-950 ${compact ? "py-2.5" : "py-3"}`}>
                   {row.price}
                   <span className="mt-1 block text-[11px] font-semibold text-slate-500">{row.priceBasis}</span>
                 </td>

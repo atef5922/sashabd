@@ -52,6 +52,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
       { q: "What is included in an audio conference system?", a: "A project may include microphones, chairman and delegate units, a central controller, DSP, amplification, speakers, cabling, and installation services. The exact combination depends on the room and meeting workflow." },
       { q: "Does every meeting room need a DSP or amplifier?", a: "No. Processing and amplification depend on room acoustics, microphone quantity, speaker design, and integration requirements. They should be selected from the project needs rather than added automatically." },
       { q: "What affects audio conference system pricing?", a: "Pricing depends on product models, microphone quantity, controller requirements, processing, speakers, cabling, installation complexity, and commissioning scope." },
+      { q: "Can an audio conference system connect to a video meeting platform?", a: "Yes, when the selected conference controller, DSP, USB or audio interface, and video meeting equipment provide compatible inputs and outputs. Integration should be confirmed from the actual product specifications before installation." },
     ],
   },
   "digital-conference-system": {
@@ -75,6 +76,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
       { q: "What is a digital conference system?", a: "It is a compatible discussion or meeting platform in which digital controllers, hosts, and participant equipment coordinate the documented conference workflow." },
       { q: "Is every electronic conference product a digital conference system product?", a: "No. A product appears here only when its name, specifications, or verified product family identifies a digital conference or digital discussion role." },
       { q: "What affects digital conference system pricing?", a: "The platform, chairman and delegate quantity, controller and expansion needs, wired or wireless infrastructure, supporting equipment, installation, and commissioning affect the final quotation." },
+      { q: "Can a digital conference system support recording or hybrid meetings?", a: "Some digital conference platforms support recording or integration with hybrid meeting equipment, but the available functions depend on the selected controller, product family, software, and documented compatibility." },
     ],
   },
   "video-conference-system": {
@@ -98,6 +100,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
       { q: "What belongs in a video conference system?", a: "Depending on the project, it may include cameras, video processing, displays, presentation sources, meeting audio, control, and network connectivity. The current matching products are listed on this page." },
       { q: "Can video conference equipment support hybrid meetings?", a: "It can be planned for hybrid meetings when the selected camera, audio, processing, display, and connection workflow are mutually compatible." },
       { q: "What affects video conference system pricing?", a: "Room size, camera and display requirements, processing, source switching, meeting audio, installation, and integration scope all affect the final quotation." },
+      { q: "Does every video conference room need the same camera and display setup?", a: "No. Camera coverage, display size and quantity, microphone pickup, speaker placement, and control requirements should be selected for the room dimensions, seating layout, and number of participants." },
     ],
   },
   "paperless-conference-system": {
@@ -121,6 +124,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
       { q: "What does a paperless conference system manage?", a: "The listed systems manage agendas and supporting meeting documents through compatible networked servers and hosts for formal meeting rooms." },
       { q: "Is a paperless conference system the same as video conferencing?", a: "No. Paperless systems focus on agenda and document-led meeting workflows, so they are not classified as video conferencing products solely because screens or interfaces may be used." },
       { q: "What affects paperless conference system pricing?", a: "Host and server selection, room and seat count, network requirements, compatible discussion equipment, installation, configuration, and operator training affect project pricing." },
+      { q: "Can a paperless conference system support voting and document annotation?", a: "Some platforms support voting, agenda control, document viewing, and annotation, but the available functions depend on the selected host, software, licenses, and compatible participant terminals." },
     ],
   },
   "wired-conference-system": {
@@ -191,6 +195,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
       { q: "What is a conference chairman unit?", a: "It is a dedicated microphone or discussion position for the chairperson or moderator within a compatible conference system." },
       { q: "Can any chairman unit work with any controller?", a: "No. Controller, connection, protocol, and product-family compatibility must be verified before units are combined." },
       { q: "Does every chairman unit have a priority function?", a: "Priority control is common as a category concept, but exact controls vary. Confirm the published product specifications and controller behavior." },
+      { q: "How many chairman units does a conference room need?", a: "Many rooms use one chairman unit, but larger councils or moderated meeting workflows may need more. Confirm the required chair positions and the controller's supported configuration before ordering." },
     ],
   },
   "delegate-unit": {
@@ -214,6 +219,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
       { q: "What does a delegate unit do?", a: "It provides an individual participant position for speaking and taking part in a structured conference discussion." },
       { q: "How many delegate units are needed?", a: "The quantity depends on participant positions, shared-seat policy, room layout, and the published capacity of the selected controller." },
       { q: "Are delegate units interchangeable between brands?", a: "They should not be assumed interchangeable. Verify controller, protocol, connection, and charging compatibility within the selected system." },
+      { q: "Should I choose wired or wireless delegate units?", a: "Wired units suit fixed seating and planned cable routes, while wireless units support flexible layouts. The final choice must also match the controller, access equipment, charging workflow, and room requirements." },
     ],
   },
   "control-unit": {
@@ -237,6 +243,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
       { q: "What does a conference control unit manage?", a: "It coordinates compatible discussion units and meeting audio behavior. Exact capacity and operating modes depend on the selected model." },
       { q: "Can one controller operate any conference microphone?", a: "No. Product family, connection, protocol, power, and system compatibility must be verified." },
       { q: "Should the controller be selected before microphones?", a: "The controller and microphone units should be planned together because compatibility and supported capacity affect the complete system." },
+      { q: "What affects conference control unit price?", a: "Supported microphone quantity, operating modes, connection architecture, expansion capability, audio interfaces, integration features, configuration, and project support all affect the final price." },
     ],
   },
   "conference-dsp": {
@@ -260,6 +267,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
       { q: "What is a conference DSP used for?", a: "It is used for digital audio routing and processing between conference microphones, sources, amplifiers, recording feeds, and room outputs." },
       { q: "Does every conference room need a DSP?", a: "No. The requirement depends on microphone quantity, room acoustics, routing complexity, speaker design, and integration scope." },
       { q: "What should be checked before choosing a DSP?", a: "Check published input and output capacity, processing needs, control workflow, interfaces, and compatibility with the wider room audio system." },
+      { q: "Does a conference DSP require professional configuration?", a: "Usually yes for integrated rooms. Signal routing, levels, EQ, dynamics, echo-control features, and output tuning should be configured and tested against the actual room and connected equipment." },
     ],
   },
   "conference-amplifier": {
@@ -283,6 +291,7 @@ export const conferenceCategoryPageContent: Readonly<Record<string, ConferenceCa
       { q: "Why is an amplifier used in a conference room?", a: "It provides suitable power for room speakers when the conference or processing equipment cannot directly drive the planned speaker system." },
       { q: "How is amplifier size selected?", a: "Selection should use the confirmed speaker load, room zones, wiring design, output type, and suitable engineering margin." },
       { q: "Can a conference amplifier connect directly to microphones?", a: "That depends on the product's published inputs and system design. Many projects route microphone audio through a controller, mixer, or DSP first." },
+      { q: "What affects conference amplifier price?", a: "Output power, channel count, speaker-system compatibility, protection features, connectivity, brand, installation requirements, and project support influence the final price." },
     ],
   },
   "complete-package": {
