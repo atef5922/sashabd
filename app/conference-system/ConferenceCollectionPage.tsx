@@ -49,7 +49,7 @@ type ConferenceCollectionPageProps = CategoryCollectionProps | BrandCollectionPr
 
 const ACCENT = "#FF6A00";
 type CollectionPresentation = "default" | "conference-hub";
-type CollectionHeroImage = { src: string; alt: string; className?: string };
+type CollectionHeroImage = { src: string; alt: string };
 
 const conferenceHubSectionClass =
   "mt-4 rounded-2xl border border-[#dbe5f2] bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.04)] [content-visibility:auto] [contain-intrinsic-size:auto_32rem] sm:px-5 md:px-6";
@@ -62,52 +62,42 @@ const CONFERENCE_HUB_CATEGORY_HERO_IMAGES: Readonly<Record<string, CollectionHer
   "digital-conference-system": {
     src: "/images/conference_landing/digital-conference-system-hero.webp",
     alt: "Modern digital conference system with touchscreen discussion microphones in a professional meeting room",
-    className: "object-cover object-[72%_center] sm:object-[66%_center] lg:object-contain lg:object-right",
   },
   "video-conference-system": {
     src: "/images/conference_landing/video-hybrid-conference-system-hero.webp",
     alt: "Modern video and hybrid conference room with remote participants, display, camera, and tabletop microphones",
-    className: "object-cover object-[72%_center] sm:object-[66%_center] lg:object-contain lg:object-right",
   },
   "paperless-conference-system": {
     src: "/images/conference_landing/paperless-conference-system-hero.webp",
     alt: "Modern paperless conference room with participant touchscreens and digital meeting display",
-    className: "object-cover object-[72%_center] sm:object-[66%_center] lg:object-contain lg:object-right",
   },
   "wired-conference-system": {
     src: "/images/conference_landing/wired-conference-system-hero.webp",
     alt: "Modern wired conference system with cabled tabletop microphones in a professional meeting room",
-    className: "object-cover object-[72%_center] sm:object-[66%_center] lg:object-contain lg:object-right",
   },
   "wireless-conference-system": {
     src: "/images/conference_landing/wireless-conference-system-hero.webp",
     alt: "Modern wireless conference system with tabletop microphones in a professional meeting room",
-    className: "object-cover object-[72%_center] sm:object-[66%_center] lg:object-contain lg:object-right",
   },
   "chairman-unit": {
     src: "/images/conference_landing/chairman-unit-hero-compact.webp",
     alt: "Conference chairman unit with meeting controls in a professional boardroom",
-    className: "object-cover object-[72%_center] sm:object-[66%_center] lg:object-contain lg:object-right",
   },
   "delegate-unit": {
     src: "/images/conference_landing/delegate-unit-hero.webp",
     alt: "Conference delegate unit with tabletop microphone in a professional meeting room",
-    className: "object-cover object-[72%_center] sm:object-[66%_center] lg:object-contain lg:object-right",
   },
   "control-unit": {
     src: "/images/conference_landing/control-unit-hero.webp",
     alt: "Conference control unit for centralized meeting management in a professional boardroom",
-    className: "object-cover object-[72%_center] sm:object-[66%_center] lg:object-contain lg:object-right",
   },
   "conference-dsp": {
     src: "/images/conference_landing/conference-dsp-hero.webp",
     alt: "Conference DSP processor for professional meeting room audio routing and processing",
-    className: "object-cover object-[72%_center] sm:object-[66%_center] lg:object-contain lg:object-right",
   },
   "conference-amplifier": {
     src: "/images/conference_landing/conference-amplifier-hero.webp",
     alt: "Conference amplifier for professional meeting room speaker systems and clear audio reinforcement",
-    className: "object-cover object-[72%_center] sm:object-[66%_center] lg:object-contain lg:object-right",
   },
 };
 
@@ -409,7 +399,7 @@ function Hero({
           fill
           priority
           sizes="100vw"
-          className={heroImage.className ?? "object-cover object-[72%_center] sm:object-[66%_center] lg:object-center"}
+          className="object-cover object-[72%_center] sm:object-[66%_center] lg:object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/65 to-transparent sm:from-white/90 sm:via-white/45 lg:hidden" aria-hidden="true" />
 
@@ -637,7 +627,6 @@ function BrandTemplate({ brand, products, breadcrumbs }: Omit<BrandCollectionPro
   const heroImage: CollectionHeroImage = {
     src: "/images/conference_landing/hero_banner.webp",
     alt: "Professional conference room with tabletop discussion microphones",
-    className: "object-cover object-[72%_center] sm:object-[66%_center] lg:object-contain lg:object-right",
   };
 
   return (

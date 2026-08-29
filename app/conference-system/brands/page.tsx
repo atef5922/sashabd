@@ -42,7 +42,7 @@ export default function ConferenceBrandsPage() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[72%_center] sm:object-[66%_center] lg:object-contain lg:object-right"
+          className="object-cover object-[72%_center] sm:object-[66%_center] lg:object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/65 to-transparent sm:from-white/90 sm:via-white/45 lg:hidden" aria-hidden="true" />
         <div className="relative mx-auto flex min-h-[520px] w-full max-w-[clamp(80rem,90vw,108rem)] items-center px-5 py-8 sm:min-h-[460px] sm:px-8 lg:min-h-[clamp(25rem,30vw,29rem)] lg:px-10">
