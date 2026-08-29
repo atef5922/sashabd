@@ -923,7 +923,7 @@ export default function ConferenceSystemPage() {
         aria-labelledby="conference-hero-heading"
       >
         <Image
-          src="/images/conference_landing/hero_banner.webp"
+          src="/images/conference_landing/conference-system-hero-clear.webp"
           alt="Modern Sasha Corporation conference room with tabletop microphone systems"
           width={1983}
           height={793}
@@ -931,7 +931,7 @@ export default function ConferenceSystemPage() {
           sizes="100vw"
           className="absolute inset-0 h-full w-full object-cover object-[58%_center] sm:object-[54%_center] lg:object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/10 sm:via-white/75 lg:via-white/25 lg:to-transparent" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/10 sm:via-white/75 lg:hidden" aria-hidden="true" />
 
         <div className="relative mx-auto flex min-h-[446px] w-full max-w-[clamp(80rem,90vw,108rem)] flex-col px-5 py-6 sm:min-h-[406px] sm:px-8 sm:py-7 lg:min-h-[clamp(18.5rem,25vw,21.5rem)] lg:px-10 lg:py-[clamp(1.5rem,2vw,2rem)]">
           <div className="max-w-[42rem] sm:translate-y-2 lg:max-w-[38%] lg:translate-y-3">
