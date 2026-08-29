@@ -514,6 +514,11 @@ export default function Header({
     "/conference-system/control-unit",
     "/conference-system/conference-dsp",
     "/conference-system/conference-amplifier",
+    "/conference-system/brands/bosch",
+    "/conference-system/brands/toa",
+    "/conference-system/brands/spon",
+    "/conference-system/brands/cmx",
+    "/conference-system/brands",
   ].includes(normalizedPathname);
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
   const [open, setOpen] = useState(false);

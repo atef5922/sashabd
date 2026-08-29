@@ -52,7 +52,7 @@ type CollectionPresentation = "default" | "conference-hub";
 type CollectionHeroImage = { src: string; alt: string; className?: string };
 
 const conferenceHubSectionClass =
-  "mt-4 rounded-2xl border border-[#dbe5f2] bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.04)] sm:px-5 md:px-6";
+  "mt-4 rounded-2xl border border-[#dbe5f2] bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.04)] [content-visibility:auto] [contain-intrinsic-size:auto_32rem] sm:px-5 md:px-6";
 
 const CONFERENCE_HUB_CATEGORY_HERO_IMAGES: Readonly<Record<string, CollectionHeroImage>> = {
   "audio-conference-system": {
@@ -188,6 +188,7 @@ function ProductListJsonLd({ products }: { products: readonly ConferenceProduct[
 }
 
 function ProductGrid({ products, presentation = "default" }: { products: readonly ConferenceProduct[]; presentation?: CollectionPresentation }) {
+  const compact = presentation === "conference-hub";
   const cardProducts = products.map((product) => {
     const image = getConferenceProductPrimaryImage(product);
     const primaryType = product.productTypes[0];
@@ -196,11 +197,11 @@ function ProductGrid({ products, presentation = "default" }: { products: readonl
       name: product.name,
       brandName: product.brand?.name,
       productTypeLabel: primaryType ? CONFERENCE_PRODUCT_TYPE_LABELS[primaryType] : product.badge,
-      connectionLabel: product.connection ? getConferenceConnectionLabel(product.connection) : undefined,
-      systemFamily: product.systemFamily,
+      connectionLabel: !compact && product.connection ? getConferenceConnectionLabel(product.connection) : undefined,
+      systemFamily: compact ? undefined : product.systemFamily,
       keySpecs: getConferenceProductCardSpecs(product),
       price: getConferenceProductCardPrice(product),
-      availabilityLabel: product.availability ? getConferenceProductAvailabilityLabel(product) : undefined,
+      availabilityLabel: !compact && product.availability ? getConferenceProductAvailabilityLabel(product) : undefined,
       image: { src: image.src, alt: image.alt },
     };
   });
@@ -208,7 +209,7 @@ function ProductGrid({ products, presentation = "default" }: { products: readonl
   return (
     <>
       <ProductListJsonLd products={products} />
-      <ConferenceCollectionProductGrid products={cardProducts} presentation={presentation === "conference-hub" ? "compact" : "standard"} />
+      <ConferenceCollectionProductGrid products={cardProducts} presentation={compact ? "compact" : "standard"} />
     </>
   );
 }
@@ -632,72 +633,82 @@ function BrandTemplate({ brand, products, breadcrumbs }: Omit<BrandCollectionPro
   const applications = getConferenceDisplayApplications(products);
   const title = content?.heroTitle ?? `${brand.name} Conference System Availability`;
   const description = content?.intro ?? brand.description;
+  const presentation: CollectionPresentation = "conference-hub";
+  const heroImage: CollectionHeroImage = {
+    src: "/images/conference_landing/hero_banner.webp",
+    alt: "Professional conference room with tabletop discussion microphones",
+    className: "object-cover object-[72%_center] sm:object-[66%_center] lg:object-contain lg:object-right",
+  };
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-4 py-7 md:px-6 md:py-9" data-conference-route-kind="brand">
-      <Breadcrumbs items={breadcrumbs} />
+    <main className="mx-auto -mt-2 w-full max-w-[clamp(80rem,90vw,108rem)] px-4 pb-10 pt-0 md:px-6" data-conference-route-kind="brand">
       <Hero
         eyebrow="Conference system brand"
         title={title}
         description={description}
         productCount={products.length}
         productCountLabel={`${products.length} ${brand.name} Conference Products`}
+        breadcrumbs={breadcrumbs}
+        heroImage={heroImage}
       />
 
       {content ? (
-        <section className="mt-10">
-          <SectionHeading eyebrow="Brand overview" title={`${brand.name} Conference Portfolio`} />
-          <InformationCards items={content.highlights} />
+        <section className={conferenceHubSectionClass}>
+          <SectionHeading eyebrow="Brand overview" title={`${brand.name} Conference Portfolio`} presentation={presentation} />
+          <InformationCards items={content.highlights} presentation={presentation} filled />
         </section>
       ) : null}
 
       {products.length ? (
         <>
-          <section className="mt-10 rounded-3xl border border-slate-200 bg-white p-5 md:p-7">
-            <SectionHeading eyebrow="Product range" title="Available Product Categories" description={`Explore the conference categories represented by ${brand.name} products in this collection.`} />
-            <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <section className={conferenceHubSectionClass}>
+            <SectionHeading eyebrow="Product range" title="Available Product Categories" description={`Explore the conference categories represented by ${brand.name} products in this collection.`} presentation={presentation} />
+            <div className="mt-4 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
               {categories.map((category) => (
-                <Link key={category.id} href={`/conference-system/${category.slug}/`} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:border-orange-300 hover:bg-orange-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50">
-                  <span className="block text-sm font-extrabold text-slate-950">{category.shortLabel ?? category.label}</span>
-                  <span className="mt-1 block text-xs font-semibold text-slate-500">{products.filter(category.matchProduct).length} products</span>
+                <Link key={category.id} href={`/conference-system/${category.slug}/`} className="flex min-h-14 items-center justify-between rounded-lg border border-slate-200 bg-[#f8fbff] px-4 py-3 transition hover:border-blue-300 hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40">
+                  <span>
+                    <span className="block text-sm font-extrabold text-[#071936]">{category.shortLabel ?? category.label}</span>
+                    <span className="mt-0.5 block text-[11px] font-semibold text-slate-500">{products.filter(category.matchProduct).length} products</span>
+                  </span>
+                  <span className="text-[#2456c7]" aria-hidden="true">→</span>
                 </Link>
               ))}
             </div>
           </section>
 
-          <section id="products" className="mt-10 scroll-mt-24">
-            <SectionHeading eyebrow="Available products" title={`${brand.name} Products`} description={`Browse the ${brand.name} conference products currently included in this collection.`} />
-            <ProductGrid products={products} />
+          <section id="products" className={`${conferenceHubSectionClass} scroll-mt-24`}>
+            <SectionHeading eyebrow="Available products" title={`${brand.name} Products`} description={`Browse the ${brand.name} conference products currently included in this collection.`} presentation={presentation} />
+            <ProductGrid products={products} presentation={presentation} />
           </section>
 
-          <PriceTable title={`${brand.name} Conference System Price in Bangladesh`} products={products} />
+          <PriceTable title={`${brand.name} Conference System Price in Bangladesh`} products={products} presentation={presentation} />
 
           {productTypes.length ? (
-            <section className="mt-10 rounded-3xl border border-slate-200 bg-white p-5 md:p-7">
-              <SectionHeading eyebrow="Product coverage" title="Available Product Types" />
-              <ul className="mt-5 flex flex-wrap gap-2.5">
-                {productTypes.map((type) => <li key={type} className="rounded-full border border-orange-200 bg-orange-50 px-4 py-2 text-sm font-bold text-orange-800">{CONFERENCE_PRODUCT_TYPE_LABELS[type]}</li>)}
+            <section className={conferenceHubSectionClass}>
+              <SectionHeading eyebrow="Product coverage" title="Available Product Types" presentation={presentation} />
+              <ul className="mt-4 flex flex-wrap gap-2">
+                {productTypes.map((type) => <li key={type} className="rounded-full border border-[#cdd9e8] bg-[#f8fbff] px-3.5 py-2 text-xs font-extrabold text-[#071936]">{CONFERENCE_PRODUCT_TYPE_LABELS[type]}</li>)}
               </ul>
             </section>
           ) : null}
 
-          <ApplicationList applications={applications} />
-          <RelatedCategoryLinks categories={categories} products={products} />
+          <ApplicationList applications={applications} presentation={presentation} />
+          <RelatedCategoryLinks categories={categories} products={products} presentation={presentation} />
 
           {content ? (
-            <section className="mt-10 rounded-3xl border border-slate-200 bg-white p-5 md:p-7">
-              <SectionHeading eyebrow="Project planning" title={content.buyerGuideTitle} description={content.buyerGuideIntro} />
-              <InformationCards items={content.buyerGuide} />
+            <section className={conferenceHubSectionClass}>
+              <SectionHeading eyebrow="Project planning" title={content.buyerGuideTitle} description={content.buyerGuideIntro} presentation={presentation} />
+              <InformationCards items={content.buyerGuide} presentation={presentation} />
             </section>
           ) : null}
 
-          {content ? <FaqSection title={`${brand.name} Conference System FAQ`} faqs={content.faqs} /> : null}
+          {content ? <FaqSection title={`${brand.name} Conference System FAQ`} faqs={content.faqs} presentation={presentation} /> : null}
         </>
       ) : (
         <EmptyState title={`No ${brand.name} Conference products listed yet`} message={brand.description} />
       )}
 
-      <FinalCta title={`Plan a ${brand.name} Conference Project`} description="Contact Sasha with your room, participant, integration, and installation requirements. Recommendations are based on current product availability and project scope." />
+      <FinalCta title={`Plan a ${brand.name} Conference Project`} description="Contact Sasha with your room, participant, integration, and installation requirements. Recommendations are based on current product availability and project scope." presentation={presentation} />
     </main>
   );
 }

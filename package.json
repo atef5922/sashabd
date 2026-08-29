@@ -4,7 +4,7 @@
     "private": true,
     "description": "Sashabd - LED display sales, installation, and support in Bangladesh",
     "scripts": {
-        "dev": "next dev --webpack",
+        "dev": "next dev",
         "build": "next build",
         "build:package": "powershell -ExecutionPolicy Bypass -File scripts/build-static-package.ps1",
         "start": "next start",

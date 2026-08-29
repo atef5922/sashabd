@@ -90,8 +90,8 @@ export default function ConferenceCollectionProductGrid({
         data-conference-product-grid={shownProducts.length === 1 ? "single" : "multiple"}
         data-products-on-page={shownProducts.length}
       >
-        {shownProducts.map((product, index) => (
-          <ConferenceProductCard key={product.slug} product={product} priority={index === 0} presentation={presentation} />
+        {shownProducts.map((product) => (
+          <ConferenceProductCard key={product.slug} product={product} presentation={presentation} />
         ))}
       </div>
 
