@@ -99,6 +99,10 @@ const CONFERENCE_HUB_CATEGORY_HERO_IMAGES: Readonly<Record<string, CollectionHer
     src: "/images/conference_landing/conference-amplifier-hero.webp",
     alt: "Conference amplifier for professional meeting room speaker systems and clear audio reinforcement",
   },
+  "complete-package": {
+    src: "/images/conference_landing/hero_banner.webp",
+    alt: "Complete conference system package installed in a professional meeting room",
+  },
 };
 
 const DEFAULT_CONFERENCE_BRAND_HERO_IMAGE: CollectionHeroImage = {

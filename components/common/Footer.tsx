@@ -299,14 +299,14 @@ export default function Footer() {
               <div className="mt-3 grid grid-cols-2 gap-1.5 md:flex md:flex-wrap md:gap-2">
                 <a
                   href={`tel:${siteConfig.phone}`}
-                  className="glow-pill inline-flex min-w-0 items-center justify-center rounded-full border border-slate-700 bg-slate-800/50 px-2 py-1.5 text-[10px] font-semibold leading-none tracking-tight text-[#FF7A1A] transition hover:bg-slate-800 hover:text-[#FF9A52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] md:px-3 md:text-xs"
+                  className="glow-pill inline-flex min-w-0 items-center justify-center rounded-full border border-[#FF7A1A]/40 bg-slate-900/40 px-2 py-1.5 text-[10px] font-semibold leading-none tracking-tight text-white transition duration-200 hover:bg-slate-900/60 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] motion-reduce:transition-none md:px-3 md:text-xs"
                 >
                   <span className="whitespace-nowrap">{`Phone: ${siteConfig.phone}`}</span>
                 </a>
                 <EmailReveal
                   user={siteConfig.emailUser}
                   domain={siteConfig.emailDomain}
-                  className="glow-pill inline-flex min-w-0 items-center justify-center rounded-full border border-slate-700 bg-slate-800/50 px-2 py-1.5 text-[10px] font-semibold leading-none tracking-tight text-[#FF7A1A] transition hover:bg-slate-800 hover:text-[#FF9A52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] md:px-3 md:text-xs"
+                  className="glow-pill inline-flex min-w-0 items-center justify-center rounded-full border border-[#FF7A1A]/40 bg-slate-900/40 px-2 py-1.5 text-[10px] font-semibold leading-none tracking-tight text-white transition duration-200 hover:bg-slate-900/60 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] motion-reduce:transition-none md:px-3 md:text-xs"
                   title="Email us"
                   prefix="Email: "
                 />
@@ -480,7 +480,7 @@ export default function Footer() {
                     <Link
                       prefetch={false}
                       href="/contact/"
-                      className="glow-pill inline-flex items-center justify-center rounded-full border border-[#FF7A1A]/40 bg-slate-900/40 px-3 py-1.5 text-[11.5px] font-semibold text-[#FF7A1A] transition duration-200 hover:bg-slate-900/60 hover:text-[#FF9A52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] motion-reduce:transition-none"
+                      className="glow-pill inline-flex items-center justify-center rounded-full border border-[#FF7A1A]/40 bg-slate-900/40 px-3 py-1.5 text-[11.5px] font-semibold text-white transition duration-200 hover:bg-slate-900/60 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] motion-reduce:transition-none"
                     >
                       <span>Get a Quote</span>
                     </Link>
@@ -488,7 +488,7 @@ export default function Footer() {
                       href={whatsappUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="glow-pill inline-flex items-center justify-center rounded-full border border-[#FF7A1A]/40 bg-slate-900/40 px-3 py-1.5 text-[11.5px] font-semibold text-[#FF7A1A] transition duration-200 hover:bg-slate-900/60 hover:text-[#FF9A52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] motion-reduce:transition-none"
+                      className="glow-pill inline-flex items-center justify-center rounded-full border border-[#FF7A1A]/40 bg-slate-900/40 px-3 py-1.5 text-[11.5px] font-semibold text-white transition duration-200 hover:bg-slate-900/60 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] motion-reduce:transition-none"
                     >
                       <span>WhatsApp</span>
                     </a>
