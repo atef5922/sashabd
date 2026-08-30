@@ -771,6 +771,36 @@ test("Conference cards use canonical structured pricing and one accessible actio
   assert.doesNotMatch(collectionGrid, /<ProductGridCard/);
 });
 
+test("Conference product card labels follow collection context without changing taxonomy", async () => {
+  const moduleUrl = pathToFileURL(path.join(root, "app/conference-system/conferenceProductDisplayType.ts")).href;
+  const displayType = await import(`${moduleUrl}?test=${Date.now()}`);
+  const multiRoleProduct = {
+    productTypes: ["chairman-unit", "delegate-unit"],
+    badge: "Discussion Unit",
+  };
+
+  assert.equal(displayType.getConferenceProductDisplayType(multiRoleProduct, "delegate-unit"), "Delegate Unit");
+  assert.equal(displayType.getConferenceProductDisplayType(multiRoleProduct, "chairman-unit"), "Chairman Unit");
+  assert.equal(displayType.getConferenceProductDisplayType(multiRoleProduct), "Chairman / Delegate");
+  assert.equal(
+    displayType.getConferenceProductDisplayType({ productTypes: ["delegate-unit"], badge: "Legacy badge" }),
+    "Delegate Unit",
+  );
+  assert.equal(
+    displayType.getConferenceProductDisplayType({ productTypes: ["invalid-type"], badge: "Discussion Device" }),
+    "Discussion Device",
+  );
+  assert.equal(displayType.getConferenceProductDisplayType({ productTypes: [] }), "Conference System");
+
+  const taxonomy = read("app/conference-system/taxonomy.ts");
+  const collection = read("app/conference-system/ConferenceCollectionPage.tsx");
+  const explorerData = read("app/conference-system/conferenceExplorerData.ts");
+  assert.match(taxonomy, /slug: "chairman-unit",[\s\S]*?productType: "chairman-unit"/);
+  assert.match(taxonomy, /slug: "delegate-unit",[\s\S]*?productType: "delegate-unit"/);
+  assert.match(collection, /getConferenceProductDisplayType\(product, currentProductType\)/);
+  assert.match(explorerData, /getConferenceProductDisplayType\(product\)/);
+});
+
 test("Conference price transparency uses one presenter and explicit commercial states", () => {
   const catalog = read("app/conference-system/catalog.ts");
   const toa = read("app/conference-system/catalog.toa.ts");

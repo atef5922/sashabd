@@ -20,6 +20,8 @@ export type ConferenceCategoryConfig = {
   label: string;
   shortLabel?: string;
   group: ConferenceCategoryGroup;
+  /** Functional product type represented by this collection, when applicable. */
+  productType?: ConferenceProductType;
   description: string;
   seo: {
     title: string;
@@ -140,6 +142,7 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     label: "Conference Chairman Unit",
     shortLabel: "Chairman Unit",
     group: "component",
+    productType: "chairman-unit",
     description: "Chairman units for structured conference discussion and chairperson control positions.",
     seo: {
       title: "Conference Chairman Unit Price in Bangladesh",
@@ -154,6 +157,7 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     label: "Conference Delegate Unit",
     shortLabel: "Delegate Unit",
     group: "component",
+    productType: "delegate-unit",
     description: "Delegate units for participant speech pickup and organized conference-table discussions.",
     seo: {
       title: "Conference Delegate Unit Price in Bangladesh",
@@ -168,6 +172,7 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     label: "Conference Control Unit",
     shortLabel: "Control Unit",
     group: "component",
+    productType: "control-unit",
     description: "Central control units for conference microphone management and meeting audio operation.",
     seo: {
       title: "Conference Control Unit Price in Bangladesh",
@@ -181,6 +186,7 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     slug: "conference-dsp",
     label: "Conference DSP",
     group: "component",
+    productType: "dsp",
     description: "Digital signal processors for conference audio routing, tuning, and speech-system integration.",
     seo: {
       title: "Conference DSP Price in Bangladesh",
@@ -194,6 +200,7 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     slug: "conference-amplifier",
     label: "Conference Amplifier",
     group: "component",
+    productType: "amplifier",
     description: "Amplifiers for conference audio reinforcement, speaker integration, and room sound planning.",
     seo: {
       title: "Conference Amplifier Price in Bangladesh",
@@ -208,6 +215,7 @@ export const conferenceCategoryConfigs: readonly ConferenceCategoryConfig[] = [
     label: "Complete Conference Package",
     shortLabel: "Complete Package",
     group: "package",
+    productType: "package",
     description: "Complete conference system products for discussion, control, and room-system planning.",
     seo: {
       title: "Complete Conference System Package Price in Bangladesh",

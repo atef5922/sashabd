@@ -1,6 +1,5 @@
 import {
   conferenceSystemCatalog,
-  CONFERENCE_PRODUCT_TYPE_LABELS,
   getConferenceConnectionLabel,
   getConferenceProductAvailabilityLabel,
   getConferenceProductCardPrice,
@@ -9,6 +8,10 @@ import {
   getConferenceProductSystemTypes,
   CONFERENCE_SYSTEM_TYPE_LABELS,
 } from "./catalog";
+import {
+  CONFERENCE_PRODUCT_TYPE_LABELS,
+  getConferenceProductDisplayType,
+} from "./conferenceProductDisplayType";
 import type { ConferenceExplorerProduct } from "./conferenceExplorerTypes";
 
 /**
@@ -19,7 +22,7 @@ import type { ConferenceExplorerProduct } from "./conferenceExplorerTypes";
 export function buildConferenceExplorerProducts(): ConferenceExplorerProduct[] {
   return conferenceSystemCatalog.map((product) => {
     const primaryImage = getConferenceProductPrimaryImage(product);
-    const productTypeLabel = CONFERENCE_PRODUCT_TYPE_LABELS[product.productTypes[0]];
+    const productTypeLabel = getConferenceProductDisplayType(product);
     const features = [...new Set([
       ...product.keyFeatures,
       ...getConferenceProductCardSpecs(product).map((spec) => spec.value),

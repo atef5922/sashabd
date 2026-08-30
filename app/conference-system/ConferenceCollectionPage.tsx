@@ -13,7 +13,9 @@ import {
   getConferenceProductPricePresentation,
   getConferenceProductPrimaryImage,
   type ConferenceProduct,
+  type ConferenceProductType,
 } from "./catalog";
+import { getConferenceProductDisplayType } from "./conferenceProductDisplayType";
 import ConferenceCollectionPriceTable from "./ConferenceCollectionPriceTable";
 import ConferenceCollectionProductGrid from "./ConferenceCollectionProductGrid";
 import ConferencePackageCards from "./ConferencePackageCards";
@@ -205,16 +207,23 @@ function ProductListJsonLd({ products }: { products: readonly ConferenceProduct[
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(json) }} />;
 }
 
-function ProductGrid({ products, presentation = "default" }: { products: readonly ConferenceProduct[]; presentation?: CollectionPresentation }) {
+function ProductGrid({
+  products,
+  presentation = "default",
+  currentProductType,
+}: {
+  products: readonly ConferenceProduct[];
+  presentation?: CollectionPresentation;
+  currentProductType?: ConferenceProductType;
+}) {
   const compact = presentation === "conference-hub";
   const cardProducts = products.map((product) => {
     const image = getConferenceProductPrimaryImage(product);
-    const primaryType = product.productTypes[0];
     return {
       slug: product.slug,
       name: product.name,
       brandName: product.brand?.name,
-      productTypeLabel: primaryType ? CONFERENCE_PRODUCT_TYPE_LABELS[primaryType] : product.badge,
+      productTypeLabel: getConferenceProductDisplayType(product, currentProductType),
       connectionLabel: !compact && product.connection ? getConferenceConnectionLabel(product.connection) : undefined,
       systemFamily: compact ? undefined : product.systemFamily,
       keySpecs: getConferenceProductCardSpecs(product),
@@ -574,7 +583,7 @@ function CategoryTemplate({ category, products, breadcrumbs }: Omit<CategoryColl
             }
             presentation={presentation}
           />
-          <ProductGrid products={products} presentation={presentation} />
+          <ProductGrid products={products} presentation={presentation} currentProductType={category.productType} />
         </section>
       ) : (
         <EmptyState title={`No ${category.shortLabel ?? category.label} products listed yet`} message={content.emptyMessage ?? "Products are being prepared for this category. Contact Sasha for project consultation and current availability."} />

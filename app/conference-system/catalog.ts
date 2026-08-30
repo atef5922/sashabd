@@ -3,6 +3,17 @@ import { newBoschConferenceProducts } from "./catalog.bosch";
 import { toaConferenceProducts } from "./catalog.toa";
 import { newSponConferenceProducts } from "./catalog.spon";
 import { formatBdtAmount, formatBdtRange } from "../../lib/price";
+import {
+  CONFERENCE_PRODUCT_TYPES,
+  CONFERENCE_PRODUCT_TYPE_LABELS,
+  type ConferenceProductType,
+} from "./conferenceProductDisplayType";
+
+export {
+  CONFERENCE_PRODUCT_TYPES,
+  CONFERENCE_PRODUCT_TYPE_LABELS,
+  type ConferenceProductType,
+} from "./conferenceProductDisplayType";
 
 const CONFERENCE_IMAGE_BASE = "/images/Conference%20system";
 
@@ -10,49 +21,13 @@ export const CONFERENCE_SYSTEM_CATEGORIES = ["audio", "video", "hybrid"] as cons
 export const CONFERENCE_SYSTEM_TYPES = ["audio", "digital", "video-hybrid", "paperless"] as const;
 export const CONFERENCE_CONNECTIONS = ["wired", "wireless", "hybrid"] as const;
 export const CONFERENCE_ROOM_SIZES = ["small", "medium", "large", "auditorium"] as const;
-export const CONFERENCE_PRODUCT_TYPES = [
-  "chairman-unit",
-  "delegate-unit",
-  "control-unit",
-  "dsp",
-  "amplifier",
-  "camera",
-  "video-bar",
-  "speakerphone",
-  "package",
-  "accessory",
-  "microphone",
-  "charger",
-  "access-point",
-  "processor",
-  "other",
-] as const;
 export const CONFERENCE_AVAILABILITIES = ["in-stock", "project-order", "contact"] as const;
 
 export type ConferenceSystemCategory = (typeof CONFERENCE_SYSTEM_CATEGORIES)[number];
 export type ConferenceSystemType = (typeof CONFERENCE_SYSTEM_TYPES)[number];
 export type ConferenceConnection = (typeof CONFERENCE_CONNECTIONS)[number];
 export type ConferenceRoomSize = (typeof CONFERENCE_ROOM_SIZES)[number];
-export type ConferenceProductType = (typeof CONFERENCE_PRODUCT_TYPES)[number];
 export type ConferenceAvailability = (typeof CONFERENCE_AVAILABILITIES)[number];
-
-export const CONFERENCE_PRODUCT_TYPE_LABELS: Readonly<Record<ConferenceProductType, string>> = {
-  "chairman-unit": "Chairman Unit",
-  "delegate-unit": "Delegate Unit",
-  "control-unit": "Control Unit",
-  dsp: "DSP",
-  amplifier: "Amplifier",
-  camera: "Camera",
-  "video-bar": "Video Bar",
-  speakerphone: "Speakerphone",
-  package: "Complete System",
-  accessory: "Accessory",
-  microphone: "Microphone",
-  charger: "Charger",
-  "access-point": "Access Point",
-  processor: "Processor",
-  other: "Conference System",
-};
 
 type ConferencePriceMetadata = {
   currency: "BDT";

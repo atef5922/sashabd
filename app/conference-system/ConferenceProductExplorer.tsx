@@ -4,6 +4,10 @@ import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } fro
 import Image from "next/image";
 import Link from "next/link";
 import ConferenceProductCard from "./ConferenceProductCard";
+import {
+  getConferenceProductDisplayType,
+  type ConferenceProductType,
+} from "./conferenceProductDisplayType";
 import { toggleComparisonSelection } from "./conferenceComparison";
 import {
   buildConferenceDiscoveryQuery,
@@ -163,6 +167,18 @@ export default function ConferenceProductExplorer({
     () => paginateConferenceProducts(filtered, state.page, state.pageSize),
     [filtered, state.page, state.pageSize],
   );
+  const activeProductType = state.productTypes.length === 1
+    ? state.productTypes[0] as ConferenceProductType
+    : undefined;
+  const getContextualCardProduct = (product: ConferenceExplorerProduct): ConferenceExplorerProduct => activeProductType
+    ? {
+        ...product,
+        productTypeLabel: getConferenceProductDisplayType(
+          { productTypes: product.productTypes, badge: product.productTypeLabel },
+          activeProductType,
+        ),
+      }
+    : product;
 
   const facetCount = (group: ConferenceFilterGroup, value: string) => {
     const facetState: ConferenceDiscoveryState = { ...state, [group]: [value], page: 1 };
@@ -428,7 +444,7 @@ export default function ConferenceProductExplorer({
             </div>
           </div>
           {activeCount ? <div className="mb-4 flex flex-wrap gap-2" aria-label="Active filters">{activeFilters.map((filter) => <button key={`${filter.group}-${filter.value}`} type="button" onClick={() => removeActive(filter.group, filter.value)} aria-label={`Remove ${filter.label} filter`} className="inline-flex min-h-9 items-center gap-1 rounded-full border border-orange-200 bg-orange-50 px-3 text-xs font-bold text-orange-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">{filter.label}<span aria-hidden="true">×</span></button>)}{customPriceActive ? <button type="button" onClick={() => changeFilters({ minPrice: null, maxPrice: null })} aria-label="Remove custom price range filter" className="inline-flex min-h-9 items-center gap-1 rounded-full border border-orange-200 bg-orange-50 px-3 text-xs font-bold text-orange-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">{customPriceLabel}<span aria-hidden="true">×</span></button> : null}</div> : null}
-          {shown.length ? <div className="product-grid-3 grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-4">{shown.map((product, index) => <ConferenceProductCard key={product.slug} product={product} priority={index === 0} compareSelected={compareSlugs.includes(product.slug)} onCompareToggle={toggleCompare} presentation="compact" />)}</div> : <div className="rounded-2xl border border-slate-200 bg-white px-5 py-10 text-center"><h3 className="font-extrabold text-slate-950">No conference products found</h3><p className="mt-2 text-sm leading-6 text-slate-600">No conference products match your current search and filters.</p><button type="button" onClick={clearAll} className={`${buttonClass} mt-5`}>Clear Search &amp; Filters</button></div>}
+          {shown.length ? <div className="product-grid-3 grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-4">{shown.map((product, index) => <ConferenceProductCard key={product.slug} product={getContextualCardProduct(product)} priority={index === 0} compareSelected={compareSlugs.includes(product.slug)} onCompareToggle={toggleCompare} presentation="compact" />)}</div> : <div className="rounded-2xl border border-slate-200 bg-white px-5 py-10 text-center"><h3 className="font-extrabold text-slate-950">No conference products found</h3><p className="mt-2 text-sm leading-6 text-slate-600">No conference products match your current search and filters.</p><button type="button" onClick={clearAll} className={`${buttonClass} mt-5`}>Clear Search &amp; Filters</button></div>}
           {totalPages > 1 ? (
             <nav aria-label="Conference product pages" className="mt-6 flex flex-wrap items-center justify-center gap-1.5 border-t border-slate-100 pt-5">
               <button type="button" onClick={() => goToPage(safePage - 1)} disabled={safePage === 1} className={`${buttonClass} disabled:cursor-not-allowed disabled:opacity-40`}>Prev</button>
