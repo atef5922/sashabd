@@ -353,7 +353,7 @@ test("Conference System renders one responsive semantic content set", () => {
     "Popular Conference System Packages",
     "Conference System Component Price Guide",
     "Complete Hybrid & Video Conference Integration",
-    "Representative Conference System Configurations",
+    "Recent Conference System Projects in Bangladesh",
     "Conference System Engineering & Project Support",
     "What is a Conference System?",
     "Conference System Product Price List in Bangladesh",
@@ -488,12 +488,13 @@ test("Conference definition and product price headings keep their relevant seman
   }
 });
 
-test("Conference compact solution, project, and service sections use local data in the required order", () => {
+test("Conference compact solution, case-study, and service sections use canonical project data in the required order", () => {
   const pageSource = read("app/conference-system/page.tsx");
-  const projectData = read("app/conference-system/conferenceProjects.ts");
+  const projectData = read("app/projects/projectData.ts");
+  const projectCard = read("app/projects/ProjectCard.tsx");
   const guideIndex = pageSource.indexOf('aria-labelledby="conference-price-guide"');
   const hybridIndex = pageSource.indexOf('aria-labelledby="hybrid-conference-integration"');
-  const projectsIndex = pageSource.indexOf('aria-labelledby="conference-system-configurations"');
+  const projectsIndex = pageSource.indexOf('aria-labelledby="recent-conference-system-projects"');
   const whyIndex = pageSource.indexOf('aria-labelledby="conference-system-engineering-support"');
   const definitionIndex = pageSource.indexOf('aria-labelledby="what-is-conference-system"');
 
@@ -504,18 +505,27 @@ test("Conference compact solution, project, and service sections use local data 
     whyIndex > projectsIndex &&
     definitionIndex > whyIndex,
   );
-  assert.equal((projectData.match(/conference_system_projects\/project[123]\.webp/g) ?? []).length, 3);
+  assert.equal(occurrences(projectData, "/images/conference_system_projects/conference_p1.webp"), 1);
+  assert.equal(occurrences(projectData, "/images/conference_system_projects/coference_p2.webp"), 1);
+  assert.equal(occurrences(projectData, "/images/conference_system_projects/conference_p3.webp"), 1);
   assert.equal(occurrences(pageSource, 'id="hybrid-conference-integration"'), 1);
-  assert.equal(occurrences(pageSource, "Representative Conference System Configurations"), 1);
+  assert.equal(occurrences(pageSource, "Recent Conference System Projects in Bangladesh"), 1);
   assert.equal(occurrences(pageSource, "Conference System Engineering & Project Support"), 1);
-  assert.match(pageSource, /Sample room configurations illustrating typical system design and possible delivery scopes—not completed client case studies/);
-  assert.match(projectData, /conferenceRepresentativeConfigurations/);
-  assert.match(projectData, /illustrativeScope:/);
+  assert.doesNotMatch(pageSource, /Representative Conference System Configurations/);
+  assert.match(projectData, /export const conferenceProjects = projects\.filter/);
+  assert.match(pageSource, /conferenceProjects\.map/);
+  assert.match(pageSource, /md:grid-cols-2 lg:grid-cols-3/);
+  assert.match(pageSource, /<ProjectCard key=\{project\.slug\} project=\{project\} presentation="compact"/);
+  assert.match(projectCard, /project\.tags\.slice\(0, 3\)/);
+  assert.match(projectCard, /line-clamp-2 min-h-10/);
+  assert.match(projectCard, /sizes=\{compact \?/);
   assert.match(pageSource, /hybridIntegrationSteps\.map/);
   assert.match(pageSource, /chooseSashaCards\.map/);
   assert.match(pageSource, /href="\/projects\/"/);
-  assert.match(pageSource, /View Projects/);
-  assert.doesNotMatch(pageSource, /View Project Details|View project details/);
+  assert.match(pageSource, /View All Projects/);
+  assert.match(projectData, /caseStudyHref: "\/projects\/corporate-boardroom-conference-system-dhaka\/"/);
+  assert.match(projectData, /caseStudyHref: "\/projects\/smart-meeting-room-conference-system-dhaka\/"/);
+  assert.match(projectData, /caseStudyHref: "\/projects\/large-conference-room-system-dhaka\/"/);
   assert.match(pageSource, /href="\/contact\/\?project=conference-system"/);
   assert.match(pageSource, /buildWhatsAppHref\(CONFERENCE_ENGINEER_WHATSAPP_MESSAGE\)/);
   assert.equal(occurrences(pageSource, "href={conferenceEngineerWhatsAppHref}"), 3);
@@ -2262,15 +2272,56 @@ test("redirect configuration has no exact-source destination chains", () => {
 
 test("Projects publish only verified case-study evidence and withhold templates", () => {
   const source = read("app/projects/page.tsx");
+  const data = read("app/projects/projectData.ts");
 
-  assert.match(source, /id: "nusaifa-trading-p5-led-billboard-nasirabad"/);
-  assert.match(source, /caseStudyHref: "\/blog\/p5-led-billboard-project-nasirabad-chattogram-nusaifa-trading\/"/);
-  assert.match(source, /image: "\/images\/blog\/Chattogram-project\.webp"/);
+  assert.match(data, /id: "nusaifa-trading-p5-led-billboard-nasirabad"/);
+  assert.match(data, /caseStudyHref: "\/blog\/p5-led-billboard-project-nasirabad-chattogram-nusaifa-trading\/"/);
+  assert.match(data, /image: "\/images\/blog\/Chattogram-project\.webp"/);
   assert.match(source, /const list = projects;/);
   assert.match(source, /Never render these as Sasha Corporation project evidence/);
   assert.doesNotMatch(source, /const list = .*templateProjects/);
   assert.doesNotMatch(source, /Do these projects represent real work in Bangladesh/);
   assert.doesNotMatch(source, /id: "template-2"/);
+});
+
+test("Conference project case studies use canonical data, SEO, schema, breadcrumbs, images and sitemap routes", () => {
+  const data = read("app/projects/projectData.ts");
+  const detail = read("app/projects/[slug]/page.tsx");
+  const listing = read("app/projects/page.tsx");
+  const sitemap = read("app/sitemap.ts");
+
+  for (const slug of [
+    "corporate-boardroom-conference-system-dhaka",
+    "smart-meeting-room-conference-system-dhaka",
+    "large-conference-room-system-dhaka",
+  ]) {
+    assert.equal(occurrences(data, `slug: "${slug}"`), 1);
+    assert.match(data, new RegExp(`caseStudyHref: "\\/projects\\/${slug}\\/"`));
+  }
+  assert.equal(occurrences(data, 'category: "conference-system"'), 3);
+  assert.match(data, /categoryLabel: "Conference System"/);
+  assert.match(data, /Corporate Boardroom Conference System Installation in Dhaka \| Sasha Corporation/);
+  assert.match(data, /Smart Meeting Room Conference System Installation in Dhaka \| Sasha Corporation/);
+  assert.match(data, /Large Conference Room System Installation in Dhaka \| Sasha Corporation/);
+  assert.match(data, /image: "\/images\/conference_system_projects\/conference_p3\.webp"/);
+  assert.match(data, /Large conference room digital conference system installation in Dhaka by Sasha Corporation/);
+  assert.match(detail, /export const dynamicParams = false/);
+  assert.match(detail, /conferenceProjects\.map\(\(project\) => \(\{ slug: project\.slug \}\)\)/);
+  assert.match(detail, /alternates: \{ canonical \}/);
+  assert.match(detail, /type: "article"/);
+  assert.match(detail, /"@type": "WebPage"/);
+  assert.match(detail, /"@type": "ImageObject"/);
+  assert.match(detail, /homeBreadcrumb\(\)/);
+  assert.match(detail, /\{ href: "\/projects\/", label: "Projects" \}/);
+  assert.match(detail, /Request a Conference System BOQ/);
+  assert.match(detail, /detail\.ctaHeading \?\? "Planning a Conference Room Project\?"/);
+  assert.match(detail, /href="\/contact\/\?project=conference-system"/);
+  assert.match(detail, /width=\{1448\}/);
+  assert.match(detail, /height=\{1086\}/);
+  assert.match(detail, /className="h-auto w-full object-contain"/);
+  assert.match(listing, /<ProjectCard key=\{project\.id\} project=\{project\}/);
+  assert.match(sitemap, /conferenceProjects\.map/);
+  assert.match(sitemap, /url: abs\(`\/projects\/\$\{project\.slug\}\/`\)/);
 });
 
 test("Batch 3 removes unverified social profiles and relationship claims", () => {

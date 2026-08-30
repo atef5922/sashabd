@@ -21,6 +21,7 @@ import {
   isConferenceBrandIndexable,
   isConferenceCategoryIndexable,
 } from "./conference-system/taxonomy";
+import { conferenceProjects } from "./projects/projectData";
 
 export const dynamic = "force-static";
 
@@ -161,9 +162,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.55,
   }));
 
+  const projectRoutes: MetadataRoute.Sitemap = conferenceProjects.map((project) => ({
+    url: abs(`/projects/${project.slug}/`),
+    lastModified: new Date(`${project.completedIso}T00:00:00.000Z`),
+    changeFrequency: "monthly",
+    priority: 0.65,
+  }));
+
   const allRoutes = [
     ...staticRoutes,
     ...productRoutes,
+    ...projectRoutes,
     ...blogRoutes,
   ];
 
