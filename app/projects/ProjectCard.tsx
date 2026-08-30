@@ -47,9 +47,17 @@ export default function ProjectCard({ project, presentation = "detailed" }: Proj
         </p>
 
         {project.tags.length ? (
-          <div className="mt-3 flex flex-wrap gap-1.5" aria-label="Project details">
+          <div
+            className={`mt-3 flex items-center ${compact ? "flex-nowrap gap-1" : "flex-wrap gap-1.5"}`}
+            aria-label="Project details"
+          >
             {project.tags.slice(0, 3).map((tag) => (
-              <span key={`${project.id}-${tag}`} className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[9px] font-bold leading-4 text-slate-700 sm:text-[10px]">
+              <span
+                key={`${project.id}-${tag}`}
+                className={`whitespace-nowrap rounded-full border border-slate-200 bg-slate-50 py-1 font-bold leading-4 text-slate-700 ${
+                  compact ? "shrink-0 px-1.5 text-[8px] xl:px-2 xl:text-[9px]" : "px-2.5 text-[9px] sm:text-[10px]"
+                }`}
+              >
                 {tag}
               </span>
             ))}

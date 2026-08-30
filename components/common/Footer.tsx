@@ -40,7 +40,7 @@ const supportLinks: FooterLinkItem[] = [
 ];
 
 const companyDescription =
-  "Sasha Corporation supplies and installs indoor LED display, outdoor LED billboard, rental LED screen, LED video wall, PA sound system, turnstile gate system, digital podium, LED controller, receiving card, power supply, and LED accessories across Bangladesh.";
+  "Sasha Corporation supplies, installs and integrates conference systems, LED displays, PA systems, turnstile and access control solutions, digital podiums and professional AV systems across Bangladesh.";
 
 const copyrightYear = 2026;
 

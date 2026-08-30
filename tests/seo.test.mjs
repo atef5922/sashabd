@@ -518,6 +518,8 @@ test("Conference compact solution, case-study, and service sections use canonica
   assert.match(pageSource, /<ProjectCard key=\{project\.slug\} project=\{project\} presentation="compact"/);
   assert.match(projectCard, /project\.tags\.slice\(0, 3\)/);
   assert.match(projectCard, /line-clamp-2 min-h-10/);
+  assert.match(projectCard, /flex-nowrap gap-1/);
+  assert.match(projectCard, /shrink-0 px-1\.5 text-\[8px\]/);
   assert.match(projectCard, /sizes=\{compact \?/);
   assert.match(pageSource, /hybridIntegrationSteps\.map/);
   assert.match(pageSource, /chooseSashaCards\.map/);
@@ -2284,6 +2286,49 @@ test("Projects publish only verified case-study evidence and withhold templates"
   assert.doesNotMatch(source, /id: "template-2"/);
 });
 
+test("Phase 1 keeps the Projects landing multi-solution and corrects shared entity wording", () => {
+  const projects = read("app/projects/page.tsx");
+  const workflow = sectionBetween(projects, "const workflowSteps = [", "const checklistRows = [");
+  const checklist = sectionBetween(projects, "const checklistRows = [", "const PAGE_TITLE");
+  const footer = read("components/common/Footer.tsx");
+  const turnstile = read("modules/routes/catalog/control-systems/turnstile-gate-system/page.tsx");
+  const contact = read("app/contact/page.tsx");
+
+  assert.match(projects, /Professional technology project delivery from requirement assessment and BOQ planning through/);
+  assert.equal(occurrences(workflow, 'n: "'), 4);
+  for (const title of [
+    "Site Assessment & Requirements",
+    "Solution Design & BOQ Planning",
+    "Installation & Integration",
+    "Testing, Commissioning & Handover",
+  ]) {
+    assert.match(workflow, new RegExp(title.replace(/[&]/g, "\\&")));
+  }
+  assert.equal(occurrences(checklist, "title:"), 5);
+  for (const title of [
+    "Requirement & Compatibility Verification",
+    "Installation & Cabling Quality",
+    "Configuration & System Integration",
+    "Performance Testing",
+    "Commissioning & Handover",
+  ]) {
+    assert.ok(checklist.includes(title));
+  }
+  assert.match(projects, /For conference system projects, include room size, participant capacity/);
+  assert.match(projects, /Planning a Technology Project\?/);
+  assert.match(projects, /prepare a project-specific equipment list and BOQ/);
+  assert.match(
+    footer,
+    /Sasha Corporation supplies, installs and integrates conference systems, LED displays, PA systems, turnstile and access control solutions, digital podiums and professional AV systems across Bangladesh\./,
+  );
+  assert.doesNotMatch(turnstile, /Mugnee(?: Multiple)? Ltd\./i);
+  assert.match(turnstile, /Sasha Corporation is a trusted/);
+  assert.match(turnstile, /Sasha Corporation provides complete/);
+  assert.match(turnstile, /Sasha Corporation helps businesses/);
+  assert.match(contact, /Sales &amp; Support/);
+  assert.doesNotMatch(contact, /call anytime/i);
+});
+
 test("Conference project case studies use canonical data, SEO, schema, breadcrumbs, images and sitemap routes", () => {
   const data = read("app/projects/projectData.ts");
   const detail = read("app/projects/[slug]/page.tsx");
@@ -2361,7 +2406,7 @@ test("Batch 3 close-out renders each Projects semantic set once", () => {
   assert.equal(occurrences(source, "checklistRows.map((row)"), 1);
   assert.equal((source.match(/const valueBlocks = \[([\s\S]*?)\] as const;/)?.[1].match(/\bn:/g) ?? []).length, 3);
   assert.equal((source.match(/const workflowSteps = \[([\s\S]*?)\] as const;/)?.[1].match(/\bn:/g) ?? []).length, 4);
-  assert.equal((source.match(/const checklistRows = \[([\s\S]*?)\] as const;/)?.[1].match(/title:/g) ?? []).length, 6);
+  assert.equal((source.match(/const checklistRows = \[([\s\S]*?)\] as const;/)?.[1].match(/title:/g) ?? []).length, 5);
 });
 
 test("Batch 3 close-out renders each Services semantic set once", () => {

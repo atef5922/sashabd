@@ -153,7 +153,7 @@ const FAQS: { q: string; a: string }[] = [
   },
   {
     q: "What details should I share for a matching proposal?",
- a: "Send location, indoor/outdoor, approximate size (W x H), viewing distance, content type, and timeline. For PA or access control projects, share layout, zone/lane count, and daily operation requirements.",
+    a: "Share the project location, application, expected size or capacity, installation environment and available budget range where possible. For LED display projects, include screen size, indoor/outdoor use and approximate viewing distance. For conference system projects, include room size, participant capacity, seating or table layout, wired or wireless preference, video-conferencing requirements and any existing display or audio equipment. For PA or access-control projects, share the required coverage area, number of zones or entry points and relevant operating requirements.",
   },
   {
     q: "Do you support installation, commissioning and after-sales?",
@@ -169,12 +169,12 @@ const valueBlocks = [
   {
     n: "1",
     t: "Scope you can trust",
-    d: "We outline supply, installation, configuration, calibration and commissioning clearly so BOQ and delivery stay aligned-without surprises.",
+    d: "We define the approved supply, installation, integration, configuration, testing and commissioning scope clearly so the BOQ and delivery stay aligned.",
   },
   {
     n: "2",
     t: "Built for reliability",
-    d: "We plan controller mapping, power distribution and verification checks to reduce flicker risk, mismatch and early failures in real use.",
+    d: "We verify equipment compatibility, system architecture, infrastructure requirements and integration details to support stable day-to-day operation.",
   },
   {
     n: "3",
@@ -186,56 +186,51 @@ const valueBlocks = [
 const workflowSteps = [
   {
     n: "1",
-    t: "Site review",
-    d: "Viewing distance, ambient conditions, mounting height, access route, and power/network readiness.",
+    t: "Site Assessment & Requirements",
+    d: "We review the project environment, application, dimensions or room layout, user capacity, technical requirements, existing infrastructure and installation conditions before recommending a solution.",
   },
   {
     n: "2",
-    t: "Solution planning",
-    d: "Model/pitch selection, cabinet/module choice, controller mapping and safety-focused power planning.",
+    t: "Solution Design & BOQ Planning",
+    d: "Our team selects suitable equipment, defines the system architecture and prepares a project-specific solution, equipment list and BOQ based on technical and budget requirements.",
   },
   {
     n: "3",
-    t: "Installation",
-    d: "Structure and mounting, wiring and routing, grounding guidance, controller configuration and testing.",
+    t: "Installation & Integration",
+    d: "Equipment is installed and integrated with the required power, network, audio, video, control or structural infrastructure using an organized project implementation process.",
   },
   {
     n: "4",
-    t: "Handover & support",
-    d: "Calibration, content testing, operator guidance and a support path as per the agreed scope.",
+    t: "Testing, Commissioning & Handover",
+    d: "The completed system is tested, configured and optimized before final commissioning and handover, with operational guidance and support provided where applicable.",
   },
 ] as const;
 
 const checklistRows = [
   {
-    title: "Pitch vs viewing distance",
-    reason: "Avoids blurry text and prevents overspending on unnecessary resolution.",
-    scope: "Indoor / Outdoor / Rental",
+    title: "Requirement & Compatibility Verification",
+    reason: "Confirm the selected equipment, capacities, interfaces and system architecture match the approved project requirements.",
+    scope: "All project types",
   },
   {
-    title: "Controller mapping & resolution",
-    reason: "Reduces scaling issues, flicker risk and unstable playback.",
-    scope: "Video wall / billboard / rental",
+    title: "Installation & Cabling Quality",
+    reason: "Verify equipment placement, structured cabling, power/network connections, labeling and installation quality.",
+    scope: "Installed systems",
   },
   {
-    title: "Power distribution & load planning",
-    reason: "Improves safety headroom and reduces power-supply stress.",
-    scope: "LED + control systems",
+    title: "Configuration & System Integration",
+    reason: "Configure and integrate the required audio, video, display, control, network or access-control components as applicable.",
+    scope: "Integrated systems",
   },
   {
-    title: "Cabling, routing & protection",
-    reason: "Supports long-run stability in local environments and weather.",
-    scope: "Outdoor + multi-floor sites",
+    title: "Performance Testing",
+    reason: "Test the completed system against its intended operating requirements and optimize performance where necessary.",
+    scope: "All applicable systems",
   },
   {
-    title: "Calibration & uniformity check",
-    reason: "Keeps color and brightness consistent across the full screen.",
-    scope: "Indoor + rental displays",
-  },
-  {
-    title: "Content test + operator handover",
-    reason: "Helps clients run content confidently after commissioning.",
-    scope: "All applicable projects",
+    title: "Commissioning & Handover",
+    reason: "Complete final verification, commissioning and operational handover with documentation or guidance where applicable.",
+    scope: "Completed projects",
   },
 ] as const;
 
@@ -323,8 +318,8 @@ export default function ProjectsPage() {
                 Completed Projects &amp; Delivery Process
               </h1>
               <p className="mt-3 max-w-[21rem] text-justify text-[13px] leading-6 text-white/85 md:mt-6 md:max-w-[31rem] md:text-left md:text-[15px] md:leading-[1.75] lg:max-w-[34rem]">
-                Review our verified project work, technical checks, and handover approach. Client case studies are
-                published only after business validation and approval.
+                Professional technology project delivery from requirement assessment and BOQ planning through
+                installation, integration, testing and final commissioning.
               </p>
 
               <div className="mt-5 grid max-w-[22rem] grid-cols-2 gap-2 md:mt-12 md:flex md:max-w-none md:flex-wrap md:gap-3">
@@ -506,11 +501,11 @@ export default function ProjectsPage() {
         <section className="mt-10 rounded-[22px] bg-slate-50 p-4 md:rounded-3xl md:p-10">
           <div className="mx-auto max-w-5xl text-center">
             <h2 className="text-[1.5rem] font-extrabold tracking-tight text-slate-900 md:text-3xl">
-              Planning a project?
+              Planning a Technology Project?
             </h2>
             <p className="mx-auto mt-3 max-w-[19rem] text-[13px] leading-6 text-slate-600 md:max-w-3xl md:text-base md:leading-7">
-              Share screen size (W x H), indoor/outdoor, location, viewing distance and BOQ/space notes. We will propose a
-              practical solution with scope and a technical plan.
+              Share your project type, location, expected capacity or dimensions and key requirements. Our team can
+              recommend a suitable solution and prepare a project-specific equipment list and BOQ.
             </p>
 
             <div className="mt-6 grid grid-cols-2 gap-2 md:flex md:flex-wrap md:justify-center md:gap-3">

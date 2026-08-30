@@ -147,7 +147,7 @@ export default function AboutPage() {
                 <a className="font-semibold text-slate-900 hover:underline" href={`tel:${phoneDial}`}>
                   {phoneDisplay}
                 </a>
-                <div className="mt-1 text-sm text-slate-500">Sales & support (call anytime)</div>
+                <div className="mt-1 text-sm text-slate-500">Sales &amp; Support</div>
               </div>
             </div>
 

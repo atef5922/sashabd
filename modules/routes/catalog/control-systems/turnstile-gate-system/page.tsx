@@ -670,7 +670,7 @@ export default function TurnstileGateSystemPage() {
           >
             <div className="space-y-4 text-justify text-[15px] leading-[1.8] text-slate-700 md:text-base">
               <p>
-                Mugnee Multiple Ltd. is a trusted <strong className="font-extrabold text-slate-950">turnstile gate supplier in Bangladesh</strong>, offering professional <strong className="font-extrabold text-slate-950">access control system</strong> solutions for offices, factories, garments, banks, hospitals, universities, government organizations, commercial buildings, and industrial facilities. We supply and install <strong className="font-extrabold text-slate-950">tripod turnstile gate</strong>, <strong className="font-extrabold text-slate-950">flap barrier gate</strong>, <strong className="font-extrabold text-slate-950">speed gate turnstile</strong>, <strong className="font-extrabold text-slate-950">swing barrier gate</strong>, and <strong className="font-extrabold text-slate-950">full height turnstile</strong> systems for secure and efficient entry control.
+                Sasha Corporation is a trusted <strong className="font-extrabold text-slate-950">turnstile gate supplier in Bangladesh</strong>, offering professional <strong className="font-extrabold text-slate-950">access control system</strong> solutions for offices, factories, garments, banks, hospitals, universities, government organizations, commercial buildings, and industrial facilities. We supply and install <strong className="font-extrabold text-slate-950">tripod turnstile gate</strong>, <strong className="font-extrabold text-slate-950">flap barrier gate</strong>, <strong className="font-extrabold text-slate-950">speed gate turnstile</strong>, <strong className="font-extrabold text-slate-950">swing barrier gate</strong>, and <strong className="font-extrabold text-slate-950">full height turnstile</strong> systems for secure and efficient entry control.
               </p>
               <p>
                 Our <strong className="font-extrabold text-slate-950">office turnstile gate</strong>, <strong className="font-extrabold text-slate-950">factory turnstile gate</strong>, and <strong className="font-extrabold text-slate-950">security entrance system</strong> solutions can integrate with <strong className="font-extrabold text-slate-950">RFID access control</strong>, <strong className="font-extrabold text-slate-950">face recognition access control</strong>, <strong className="font-extrabold text-slate-950">fingerprint attendance system</strong>, QR code verification, visitor management software, and attendance software. For the latest <strong className="font-extrabold text-slate-950">turnstile gate price in Bangladesh</strong>, we provide site survey, system design, installation, commissioning, user training, and nationwide after-sales support.
@@ -848,7 +848,7 @@ export default function TurnstileGateSystemPage() {
           <p className="mx-auto mt-4 w-full text-justify text-sm leading-7 text-slate-700 md:text-base md:leading-8">
             Turnstile gate price in Bangladesh usually starts from {normalizeDisplayedPriceText("295,000 BDT")} and can exceed {normalizeDisplayedPriceText("1,200,000 BDT")} depending
             on the gate type, lane configuration, access control device, body material, sensor system, software
-            integration, installation requirements, and warranty support. Mugnee Multiple Ltd. provides complete
+            integration, installation requirements, and warranty support. Sasha Corporation provides complete
             turnstile gate solutions including product supply, site survey, RFID access control, face recognition access
             control, fingerprint attendance integration, visitor management system setup, installation, commissioning,
             and after-sales support across Bangladesh.
@@ -938,7 +938,7 @@ export default function TurnstileGateSystemPage() {
           <h2 className="text-2xl font-extrabold tracking-tight text-slate-950 md:text-3xl">Turnstile Gate Types</h2>
           <p className="mt-3 text-justify text-[15px] leading-7 text-slate-600 md:text-base">
             Different turnstile gate models are suitable for different security, access control, and traffic management
-            requirements. As a professional turnstile gate supplier in Bangladesh, Mugnee Multiple Ltd. helps businesses
+            requirements. As a professional turnstile gate supplier in Bangladesh, Sasha Corporation helps businesses
             choose the right security entrance system based on entrance space, user volume, access method, and budget.
             From a compact tripod turnstile gate to premium speed gate turnstile and optical turnstile solutions, each
             system offers a different balance of flow control, appearance, and security.
