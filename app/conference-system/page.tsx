@@ -20,8 +20,9 @@ import { conferenceBrandConfigs, hasConferenceBrandProducts } from "./taxonomy";
 import ConferenceProductExplorer from "./ConferenceProductExplorer";
 import { buildConferenceExplorerProducts } from "./conferenceExplorerData";
 import { balanceConferenceProductsByBrand, CONFERENCE_INITIAL_PRODUCT_COUNT } from "./conferenceExplorerOrder";
-import { conferenceRepresentativeConfigurations } from "./conferenceProjects";
 import { CONFERENCE_ENGINEER_WHATSAPP_MESSAGE } from "./conferenceInquiry";
+import ProjectCard from "../projects/ProjectCard";
+import { conferenceProjects } from "../projects/projectData";
 
 const PAGE_TITLE = "Conference System Price in Bangladesh 2026";
 const META_TITLE = `${PAGE_TITLE} | Sasha`;
@@ -1389,37 +1390,23 @@ export default function ConferenceSystemPage() {
 
       <section
         className="mt-4 rounded-2xl border border-[#dbe5f2] bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.04)] sm:px-5 md:px-6"
-        aria-labelledby="conference-system-configurations"
+        aria-labelledby="recent-conference-system-projects"
       >
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h2 id="conference-system-configurations" className={conferenceSectionTitleClass}>Representative Conference System Configurations</h2>
-            <p className="mt-1 text-left text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">Sample room configurations illustrating typical system design and possible delivery scopes—not completed client case studies</p>
+            <h2 id="recent-conference-system-projects" className={conferenceSectionTitleClass}>Recent Conference System Projects in Bangladesh</h2>
+            <p className="mt-1 max-w-4xl text-left text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">
+              Explore recent boardroom and meeting-room conference system solutions delivered by Sasha Corporation, including digital discussion systems, hybrid video conferencing, professional room audio and complete AV integration.
+            </p>
           </div>
           <Link href="/projects/" className="inline-flex min-h-9 shrink-0 items-center justify-center self-start rounded-md border border-[#b9cbea] bg-white px-4 text-[10px] font-extrabold text-[#1744a1] transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 sm:text-[11px]">
             View All Projects <span aria-hidden="true" className="ml-1.5">→</span>
           </Link>
         </div>
 
-        <div className="mt-4 grid gap-3 lg:grid-cols-3">
-          {conferenceRepresentativeConfigurations.map((project) => (
-            <article key={project.title} className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_3px_12px_rgba(15,23,42,0.055)] transition hover:-translate-y-0.5 hover:shadow-[0_9px_24px_rgba(15,23,42,0.09)] sm:grid sm:grid-cols-[47%_53%] lg:block xl:grid xl:grid-cols-[47%_53%]">
-              <div className="relative aspect-[16/10] min-h-[170px] overflow-hidden bg-slate-100 sm:aspect-auto lg:aspect-[16/9] lg:min-h-0 xl:aspect-auto xl:min-h-[190px]">
-                <Image src={project.image} alt={project.imageAlt} fill sizes="(max-width: 639px) 100vw, (max-width: 1023px) 45vw, 24vw" className="object-cover transition duration-300 group-hover:scale-[1.025]" />
-              </div>
-              <div className="flex min-w-0 flex-col p-3.5">
-                <h3 className="!text-[13px] font-extrabold leading-5 text-[#071936] sm:!text-sm">{project.cardTitle}</h3>
-                <dl className="mt-2.5 space-y-2 border-y border-slate-100 py-2.5 text-[10px] leading-4 text-slate-600 sm:text-[11px]">
-                  <div><dt className="font-extrabold text-slate-800">Example Application</dt><dd>{project.application}</dd></div>
-                  <div><dt className="font-extrabold text-slate-800">Brand / System</dt><dd>{project.brand}</dd></div>
-                  <div><dt className="font-extrabold text-slate-800">Configuration</dt><dd>{project.configuration}</dd></div>
-                  <div><dt className="font-extrabold text-slate-800">Illustrative Scope</dt><dd>{project.illustrativeScope}</dd></div>
-                </dl>
-                <Link href="/projects/" aria-label={`View projects related to the ${project.title} sample configuration`} className="mt-auto inline-flex min-h-8 items-end pt-2 text-[11px] font-extrabold text-[#1744a1] hover:text-blue-700 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 sm:text-xs">
-                  View Projects <span aria-hidden="true" className="ml-1">→</span>
-                </Link>
-              </div>
-            </article>
+        <div className="mt-4 grid items-stretch gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {conferenceProjects.map((project) => (
+            <ProjectCard key={project.slug} project={project} presentation="compact" />
           ))}
         </div>
       </section>

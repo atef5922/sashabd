@@ -7,60 +7,10 @@ import { siteConfig } from "@/lib/site";
 import { absoluteUrl, socialImageUrl } from "@/lib/seo";
 import { BRAND_NAME } from "@/lib/brand";
 import FaqAccordion from "@/components/common/FaqAccordion";
+import ProjectCard from "./ProjectCard";
+import { projects, type Project } from "./projectData";
 
 const BRAND = { maroon: "#FF6A00", maroonDark: "#E45700" };
-
-type Project = {
-  id: string;
-  title: string;
-  badge: string;
-  image?: string;
-  imageFit?: "cover" | "contain";
-  imageClassName?: string;
-  organization: string;
-  location: string;
-  year: string;
-  subtitle?: string;
-  scopeLabel: string;
-  scope: string;
-  highlights: string[];
-  meta: { k: string; v: string }[];
-  tags: string[];
-  caseStudyHref?: string;
-  isTemplate?: boolean;
-};
-
-/**
- * Add only business-verified, publishable projects here.
- */
-const projects: Project[] = [
-  {
-    id: "nusaifa-trading-p5-led-billboard-nasirabad",
-    title: "P5 Outdoor LED Billboard — Nasirabad, Chattogram",
-    badge: "Completed project",
-    image: "/images/blog/Chattogram-project.webp",
-    imageClassName: "object-cover object-center",
-    organization: "Nusaifa Trading",
-    location: "Nasirabad, Chattogram",
-    year: "2026",
-    subtitle: "Completed 10 March 2026",
-    scopeLabel: "Project scope",
-    scope: "Outdoor LED billboard installation, system configuration, calibration, content testing, and handover.",
-    highlights: [
-      "Outdoor P5 display planned for traffic-facing advertising visibility",
-      "Structure, power distribution, grounding, and cable-route checks",
-      "Controller mapping, display calibration, and content playback testing",
-      "Operating guidance and practical maintenance notes at handover",
-    ],
-    meta: [
-      { k: "Display type", v: "P5 outdoor LED billboard" },
-      { k: "Screen size", v: "24.15 ft × 13.6 ft (approximately 328 sq ft)" },
-      { k: "Location", v: "Nasirabad, Chattogram" },
-    ],
-    tags: ["Outdoor LED", "P5 Billboard", "Chattogram"],
-    caseStudyHref: "/blog/p5-led-billboard-project-nasirabad-chattogram-nusaifa-trading/",
-  },
-];
 
 /** Formatting fixtures only. Never render these as Sasha Corporation project evidence. */
 const templateProjects: Project[] = [
@@ -291,7 +241,7 @@ const checklistRows = [
 
 const PAGE_TITLE = `Completed Projects & Delivery Process | ${BRAND_NAME}`;
 const PAGE_DESCRIPTION =
-  `Review ${BRAND_NAME}'s planning process for LED displays, PA systems, and access control, from site review and BOQ scope to installation, commissioning, and handover.`;
+  `Review ${BRAND_NAME}'s verified LED display and conference system projects, plus its site planning, BOQ, installation, commissioning, and handover process.`;
 
 export const metadata: Metadata = {
   title: { absolute: PAGE_TITLE },
@@ -318,11 +268,6 @@ export const metadata: Metadata = {
     images: [socialImageUrl()],
   },
 };
-
-function buildProjectCardSubtitle(p: Project): string {
-  const parts = [p.organization, p.location, p.year].filter(Boolean);
-  return parts.join(" | ");
-}
 
 export default function ProjectsPage() {
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
@@ -510,107 +455,15 @@ export default function ProjectsPage() {
           {list.length ? (
             <div className="mb-5 max-w-3xl">
               <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-orange-600">Completed work</p>
-              <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-950 md:text-3xl">Verified Project Case Study</h2>
+              <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-950 md:text-3xl">Verified Project Case Studies</h2>
               <p className="mt-3 text-sm leading-7 text-slate-600">
-                Review a completed Sasha Corporation project with confirmed location, display specification, delivery scope, and handover details.
+                Review completed Sasha Corporation LED display and conference system work with confirmed locations, delivery scopes and case-study details.
               </p>
             </div>
           ) : null}
-          <div className={`-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden sm:grid sm:px-0 sm:pb-0 sm:pt-0 sm:[scrollbar-width:auto] ${list.length === 1 ? "max-w-xl" : "lg:grid-cols-3"}`}>
-            {list.map((p) => (
-              <article
-                key={p.id}
-                className="w-[88%] shrink-0 snap-start overflow-hidden rounded-[20px] border bg-white shadow-sm sm:w-auto sm:shrink sm:rounded-3xl"
-                style={{ borderColor: "rgba(15,23,42,0.10)" }}
-              >
-                <div className="relative w-full bg-slate-100 aspect-[7/5]">
-                  {p.image ? (
-                    <>
-                      <Image
-                        src={p.image}
-                        alt={p.title}
-                        fill
-                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                        className={
-                          p.imageClassName ??
-                          (p.imageFit === "contain" ? "object-contain object-center" : "object-cover object-center")
-                        }
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/10 to-transparent" />
-                    </>
-                  ) : null}
-                  <div className="absolute left-3 top-3 rounded-full bg-slate-900/85 px-3 py-1 text-[11px] font-extrabold uppercase tracking-wide text-white">
-                    {p.badge}
-                  </div>
-                </div>
-
-                <div className="p-4 md:p-6">
-                  <h3 className="text-[17px] font-extrabold leading-snug text-slate-900 md:max-w-full md:overflow-hidden md:text-[14px] md:leading-tight md:tracking-tight md:text-ellipsis md:whitespace-nowrap lg:text-[15px] xl:text-base">
-                    {p.title}
-                  </h3>
-                  <p className="mt-1 text-justify text-[11px] text-slate-600 md:text-left md:text-xs">{p.subtitle ?? buildProjectCardSubtitle(p)}</p>
-
-                  <div className="mt-3 space-y-1.5 text-justify text-[12px] text-slate-700 md:hidden">
-                    <div>
-                      <span className="font-extrabold text-slate-900">Client/Site:</span> {p.organization}
-                    </div>
-                    {p.meta.slice(0, 2).map((m) => (
-                      <div key={`${p.id}-m-${m.k}`}>
-                        <span className="font-extrabold text-slate-900">{m.k}:</span> {m.v}
-                      </div>
-                    ))}
-                    <div className="pt-0.5">
-                      <span className="font-extrabold text-slate-900">{p.scopeLabel}:</span>{" "}
-                      <span className="text-slate-600">{p.scope}</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 hidden space-y-2 text-[13px] text-slate-700 md:block md:text-sm">
-                    <div>
-                      <span className="font-extrabold text-slate-900">Client/Site:</span> {p.organization}
-                    </div>
-                    {p.meta.map((m) => (
-                      <div key={`${p.id}-${m.k}`}>
-                        <span className="font-extrabold text-slate-900">{m.k}:</span> {m.v}
-                      </div>
-                    ))}
-                    <div>
-                      <span className="font-extrabold text-slate-900">{p.scopeLabel}:</span> {p.scope}
-                    </div>
-                  </div>
-
-                  {p.highlights?.length ? (
-                    <ul className="mt-4 hidden space-y-1 text-[13px] text-slate-700 md:block md:text-sm">
-                      {p.highlights.slice(0, 4).map((x) => (
-                        <li key={`${p.id}-${x}`} className="leading-6">
-                          - {x}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-
-                  {p.tags?.length ? (
-                    <div className="mt-4 hidden flex-wrap gap-2 md:flex">
-                      {p.tags.slice(0, 6).map((t) => (
-                        <span
-                          key={`${p.id}-tag-${t}`}
-                          className="rounded-full border bg-white px-3 py-1 text-xs font-semibold text-slate-700"
-                          style={{ borderColor: "rgba(15,23,42,0.12)" }}
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                  ) : null}
-
-                  <Link
-                    href={p.caseStudyHref ?? "/contact/"}
-                    className="mt-5 inline-flex min-h-10 w-fit items-center justify-center rounded-full bg-sky-600 px-4 py-2 text-[11px] font-extrabold text-white transition hover:bg-sky-700 md:text-xs"
-                  >
-                    {p.caseStudyHref ? "View Full Case Study" : "Request a similar solution"}
-                  </Link>
-                </div>
-              </article>
+          <div className={`-mx-0.5 grid gap-4 px-0.5 sm:grid-cols-2 sm:px-0 lg:grid-cols-3 ${list.length === 1 ? "max-w-xl" : ""}`}>
+            {list.map((project) => (
+              <ProjectCard key={project.id} project={project} />
             ))}
             {list.length === 0 ? (
               <div
