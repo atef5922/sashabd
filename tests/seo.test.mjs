@@ -364,7 +364,7 @@ test("Conference System renders one responsive semantic content set", () => {
     "What is a Conference System?",
     "Conference System Product Price List in Bangladesh",
     "Commercial Confidence",
-    "Authorized Conference System Brands & Support",
+    "Conference System Brands & Support",
     "Frequently Asked Questions",
     "Ready to Build Your Perfect Conference Room?",
   ]) {
@@ -656,7 +656,7 @@ test("Conference brand support keeps verified routes, a clean card layout, and d
     'aria-labelledby="conference-system-faq"',
   );
 
-  assert.match(section, /Authorized Conference System Brands & Support/);
+  assert.match(section, /Conference System Brands & Support/);
   assert.doesNotMatch(source, /Authorized Distributor|Exclusive Distributor|authorizationStatus/);
   assert.match(section, /brand\.features\.map/);
   assert.match(section, /Explore \{brand\.title\} Conference Systems/);

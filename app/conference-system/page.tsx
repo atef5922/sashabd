@@ -1100,11 +1100,11 @@ export default function ConferenceSystemPage() {
       <section aria-labelledby="conference-trust-heading">
         <div className="overflow-hidden rounded-xl border border-slate-200/90 bg-white px-4 py-3 shadow-[0_4px_16px_rgba(15,23,42,0.035)] sm:px-5 xl:min-h-[80px] xl:px-7 xl:py-2">
           <div className="grid items-center gap-4 lg:grid-cols-[10rem_minmax(0,1fr)] xl:min-h-[62px] xl:grid-cols-[minmax(205px,0.9fr)_1px_minmax(420px,2.6fr)_1px_minmax(350px,1.8fr)] xl:gap-0">
-            <div className="min-w-0 text-left xl:max-w-[205px]">
-              <p id="conference-trust-heading" role="heading" aria-level={2} className="text-xs font-extrabold leading-[1.4] tracking-[-0.01em] text-[#071936] sm:text-[13px]">
+            <div className="min-w-0 overflow-hidden pr-2 text-left xl:max-w-[205px]">
+              <p id="conference-trust-heading" role="heading" aria-level={2} className="whitespace-nowrap text-[10px] font-bold leading-4 tracking-[-0.02em] text-[#071936]">
                 Authorized Conference System Brands
               </p>
-              <p className="mt-1 text-[9px] font-semibold leading-4 text-slate-500 sm:text-[10px]">
+              <p className="mt-1 whitespace-nowrap text-[10px] font-bold leading-4 tracking-[-0.035em] text-slate-600">
                 Genuine Products <span aria-hidden="true">•</span> Warranty <span aria-hidden="true">•</span> Local Support
               </p>
             </div>
@@ -1152,7 +1152,7 @@ export default function ConferenceSystemPage() {
                   <span className="inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center text-orange-600 [&>svg]:h-4 [&>svg]:w-4">
                     <ConferenceTrustFeatureIconSvg icon={feature.icon} />
                   </span>
-                  <span className="whitespace-nowrap text-[10px] font-bold leading-4 sm:text-[11px]">{feature.title}</span>
+                  <span className="whitespace-nowrap text-[10px] font-bold leading-4">{feature.title}</span>
                 </div>
               ))}
             </div>
@@ -1824,7 +1824,7 @@ export default function ConferenceSystemPage() {
       >
         <h2 id="conference-brand-showcase" className={`${conferenceSectionTitleClass} flex items-center gap-2.5`}>
           <ConferenceSectionTitleIcon icon="brands" compact />
-          <span className="min-w-0">Authorized Conference System Brands & Support</span>
+          <span className="min-w-0">Conference System Brands & Support</span>
         </h2>
         <div className="mt-4 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
           {verifiedConferenceBrandCards.map((brand) => (
