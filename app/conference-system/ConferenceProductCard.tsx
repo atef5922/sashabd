@@ -63,8 +63,20 @@ export default function ConferenceProductCard({
       <article
         data-conference-product-card
         data-product-slug={product.slug}
-        className="group flex h-full min-w-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_2px_12px_rgba(15,23,42,0.045)] transition-[transform,border-color,box-shadow] duration-200 motion-safe:hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_7px_20px_rgba(15,23,42,0.09)] focus-within:border-slate-400 focus-within:ring-2 focus-within:ring-slate-900/10 motion-reduce:transition-none"
+        className="group relative flex h-full min-w-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_2px_12px_rgba(15,23,42,0.045)] transition-[transform,border-color,box-shadow] duration-200 motion-safe:hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_7px_20px_rgba(15,23,42,0.09)] focus-within:border-slate-400 focus-within:ring-2 focus-within:ring-slate-900/10 motion-reduce:transition-none"
       >
+        {onCompareToggle ? (
+          <button
+            type="button"
+            aria-pressed={compareSelected}
+            aria-label={`${compareSelected ? "Remove" : "Add"} ${product.name} ${compareSelected ? "from" : "to"} comparison`}
+            onClick={() => onCompareToggle(product.slug)}
+            className={`absolute right-3 top-3 z-20 inline-flex min-h-8 items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-extrabold shadow-sm backdrop-blur-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 ${compareSelected ? "border-orange-300 bg-orange-50/95 text-orange-800" : "border-slate-200 bg-white/95 text-slate-700 hover:border-orange-300 hover:text-orange-700"}`}
+          >
+            <span aria-hidden="true">{compareSelected ? "✓" : "+"}</span>
+            {compareSelected ? "Selected" : "Compare"}
+          </button>
+        ) : null}
         <Link
           prefetch={false}
           href={productHref}
