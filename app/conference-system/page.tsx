@@ -764,7 +764,18 @@ function ChooseSashaIconSvg({ icon }: { icon: ChooseSashaIcon }) {
   }
 }
 
-type ConferenceSectionIcon = "info" | "price";
+type ConferenceSectionIcon =
+  | "info"
+  | "price"
+  | "setup"
+  | "comparison"
+  | "roomSize"
+  | "packages"
+  | "projects"
+  | "engineering"
+  | "confidence"
+  | "brands"
+  | "faq";
 
 function ConferenceSectionTitleIcon({ icon, compact = false }: { icon: ConferenceSectionIcon; compact?: boolean }) {
   const commonProps = {
@@ -781,6 +792,15 @@ function ConferenceSectionTitleIcon({ icon, compact = false }: { icon: Conferenc
   const paths: Record<ConferenceSectionIcon, ReactNode> = {
     info: <><circle cx="12" cy="12" r="9" /><path d="M12 11v6" /><path d="M12 7h.01" /></>,
     price: <><path d="M7 4h10l3 3v10l-3 3H7l-3-3V7l3-3Z" /><path d="M9 9h4.5a2 2 0 0 1 0 4H10.5a2 2 0 0 0 0 4H15" /><path d="M12 7v2M12 17v2" /></>,
+    setup: <><path d="M4 6h16M4 12h16M4 18h16" /><circle cx="8" cy="6" r="2" fill="white" /><circle cx="15" cy="12" r="2" fill="white" /><circle cx="11" cy="18" r="2" fill="white" /></>,
+    comparison: <><path d="M7 4v16M17 4v16M4 8h6M14 16h6" /><path d="m8 6 2 2-2 2M16 14l-2 2 2 2" /></>,
+    roomSize: <><circle cx="12" cy="8" r="3" /><circle cx="5.5" cy="11" r="2" /><circle cx="18.5" cy="11" r="2" /><path d="M7 21v-2a5 5 0 0 1 10 0v2M2 21v-1a4 4 0 0 1 5-3.7M22 21v-1a4 4 0 0 0-5-3.7" /></>,
+    packages: <><path d="m4 8 8-4 8 4-8 4-8-4Z" /><path d="m4 8 8 4 8-4v8l-8 4-8-4V8Z" /><path d="M12 12v8" /></>,
+    projects: <><rect x="4" y="6" width="16" height="14" rx="2" /><path d="M9 6V4h6v2M4 11h16M10 14h4" /></>,
+    engineering: <><path d="m14.5 6.5 3-3a4 4 0 0 1-5 5L5 16l-1 4 4-1 7.5-7.5a4 4 0 0 1 5-5l-3 3" /><path d="m12 12 3 3" /></>,
+    confidence: <><path d="M12 3 5 6v5c0 4.6 2.9 8.4 7 10 4.1-1.6 7-5.4 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-5" /></>,
+    brands: <><circle cx="12" cy="12" r="8" /><path d="m12 4 2.2 4.5 4.8.7-3.5 3.4.8 4.8-4.3-2.3-4.3 2.3.8-4.8L5 9.2l4.8-.7L12 4Z" /></>,
+    faq: <><path d="M5 5h14v11H9l-4 4V5Z" /><path d="M9.5 9a2.5 2.5 0 1 1 3.7 2.2c-.8.4-1.2.8-1.2 1.8M12 15h.01" /></>,
   };
 
   return (
@@ -1155,8 +1175,9 @@ export default function ConferenceSystemPage() {
         aria-labelledby="choose-conference-system-type"
       >
         <div>
-          <h2 id="choose-conference-system-type" className={conferenceSectionTitleClass}>
-            Choose Your Conference Setup
+          <h2 id="choose-conference-system-type" className={`${conferenceSectionTitleClass} flex items-center gap-2.5`}>
+            <ConferenceSectionTitleIcon icon="setup" compact />
+            <span className="min-w-0">Choose Your Conference Setup</span>
           </h2>
           <p className="mt-1 text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">
             Browse system types and connection options for your meeting requirements
@@ -1206,8 +1227,9 @@ export default function ConferenceSystemPage() {
         aria-labelledby="conference-system-comparison-heading"
       >
         <div>
-          <h2 id="conference-system-comparison-heading" className={conferenceSectionTitleClass}>
-            Which Conference System Is Right for Your Room?
+          <h2 id="conference-system-comparison-heading" className={`${conferenceSectionTitleClass} flex items-center gap-2.5`}>
+            <ConferenceSectionTitleIcon icon="comparison" compact />
+            <span className="min-w-0">Which Conference System Is Right for Your Room?</span>
           </h2>
           <p className="mt-1 max-w-5xl text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">
             Compare wired, wireless, digital and hybrid conference systems by installation requirements, flexibility,
@@ -1293,8 +1315,9 @@ export default function ConferenceSystemPage() {
       >
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 id="choose-conference-room-size" className={conferenceSectionTitleClass}>
-              Choose by Room Size <span className="text-[13px] font-bold tracking-normal sm:text-sm">(Participants)</span>
+            <h2 id="choose-conference-room-size" className={`${conferenceSectionTitleClass} flex items-center gap-2.5`}>
+              <ConferenceSectionTitleIcon icon="roomSize" compact />
+              <span className="min-w-0">Choose by Room Size <span className="text-[13px] font-bold tracking-normal sm:text-sm">(Participants)</span></span>
             </h2>
             <p className="mt-1 text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">
               Select the right solution based on your room capacity
@@ -1358,8 +1381,9 @@ export default function ConferenceSystemPage() {
         className="mt-4 rounded-2xl border border-slate-200/90 bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6"
         aria-labelledby="popular-conference-packages"
       >
-        <h2 id="popular-conference-packages" className={conferenceSectionTitleClass}>
-          Popular Conference System Packages
+        <h2 id="popular-conference-packages" className={`${conferenceSectionTitleClass} flex items-center gap-2.5`}>
+          <ConferenceSectionTitleIcon icon="packages" compact />
+          <span className="min-w-0">Popular Conference System Packages</span>
         </h2>
         <p className="mt-1 text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">
           Capacity-based planning packages with estimated equipment budgets; final pricing is confirmed through a project BOQ.
@@ -1438,8 +1462,9 @@ export default function ConferenceSystemPage() {
       >
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 id="conference-price-guide" className={conferenceSectionTitleClass}>
-              Conference System Component Price Guide
+            <h2 id="conference-price-guide" className={`${conferenceSectionTitleClass} flex items-center gap-2.5`}>
+              <ConferenceSectionTitleIcon icon="price" compact />
+              <span className="min-w-0">Conference System Component Price Guide</span>
             </h2>
             <p className="mt-1 text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">
               Quick component ranges calculated from currently published catalog prices
@@ -1576,7 +1601,10 @@ export default function ConferenceSystemPage() {
       >
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h2 id="recent-conference-system-projects" className={conferenceSectionTitleClass}>Recent Conference System Projects in Bangladesh</h2>
+            <h2 id="recent-conference-system-projects" className={`${conferenceSectionTitleClass} flex items-center gap-2.5`}>
+              <ConferenceSectionTitleIcon icon="projects" compact />
+              <span className="min-w-0">Recent Conference System Projects in Bangladesh</span>
+            </h2>
             <p className="mt-1 max-w-4xl text-left text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">
               Explore recent boardroom and meeting-room conference system solutions delivered by Sasha Corporation, including digital discussion systems, hybrid video conferencing, professional room audio and complete AV integration.
             </p>
@@ -1599,11 +1627,14 @@ export default function ConferenceSystemPage() {
       >
         <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_270px]">
           <div className="min-w-0">
-            <h2 id="conference-system-engineering-support" className={conferenceSectionTitleClass}>Conference System Engineering & Project Support</h2>
+            <h2 id="conference-system-engineering-support" className={`${conferenceSectionTitleClass} flex items-center gap-2.5`}>
+              <ConferenceSectionTitleIcon icon="engineering" compact />
+              <span className="min-w-0">Conference System Engineering & Project Support</span>
+            </h2>
             <p className="mt-1 text-left text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">Room-based design, BOQ, integration, installation, and lifecycle support</p>
             <div className="mt-4 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
               {chooseSashaCards.map((item) => (
-                <article key={item.title} className="rounded-lg border border-slate-200 bg-white p-3 shadow-[0_2px_8px_rgba(15,23,42,0.035)]">
+                <article key={item.title} className="rounded-lg border border-[#d8e5f7] bg-[#f2f7ff] p-3 shadow-[0_2px_8px_rgba(15,23,42,0.035)]">
                   <div className="flex items-start gap-2.5 xl:block">
                     <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-blue-100 bg-blue-50 text-[#2456c7] xl:mb-2.5">
                       <ChooseSashaIconSvg icon={item.icon} />
@@ -1743,12 +1774,19 @@ export default function ConferenceSystemPage() {
         className="mt-4 rounded-2xl border border-[#dbe5f2] bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.04)] sm:px-5 md:px-6"
         aria-labelledby="conference-commercial-confidence"
       >
-        <h2 id="conference-commercial-confidence" className={conferenceSectionTitleClass}>Commercial Confidence</h2>
+        <h2 id="conference-commercial-confidence" className={`${conferenceSectionTitleClass} flex items-center gap-2.5`}>
+          <ConferenceSectionTitleIcon icon="confidence" compact />
+          <span className="min-w-0">Commercial Confidence</span>
+        </h2>
         <p className="mt-1 text-left text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">Clear quotation, project scope, service responsibilities, and applicable commercial terms.</p>
 
         <div className="mt-4 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-5">
           {commercialConfidenceCards.map((item) => (
-            <article key={item.title} className="rounded-lg border border-slate-200 bg-white p-3 text-center shadow-[0_2px_8px_rgba(15,23,42,0.035)]">
+            <article
+              key={item.title}
+              className="rounded-lg border p-3 text-center shadow-[0_4px_16px_rgba(15,23,42,0.08)]"
+              style={{ backgroundColor: "#eef4ff", borderColor: "#c9d9f0" }}
+            >
               <span className="mx-auto inline-flex h-9 w-9 items-center justify-center rounded-full bg-blue-50 text-[#2456c7] ring-1 ring-blue-100">
                 <CommercialConfidenceIconSvg icon={item.icon} />
               </span>
@@ -1784,7 +1822,10 @@ export default function ConferenceSystemPage() {
         className="mt-4 rounded-2xl border border-[#dbe5f2] bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.04)] sm:px-5 md:px-6"
         aria-labelledby="conference-brand-showcase"
       >
-        <h2 id="conference-brand-showcase" className={conferenceSectionTitleClass}>Authorized Conference System Brands & Support</h2>
+        <h2 id="conference-brand-showcase" className={`${conferenceSectionTitleClass} flex items-center gap-2.5`}>
+          <ConferenceSectionTitleIcon icon="brands" compact />
+          <span className="min-w-0">Authorized Conference System Brands & Support</span>
+        </h2>
         <div className="mt-4 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
           {verifiedConferenceBrandCards.map((brand) => (
             <article key={brand.title} className="flex min-w-0 flex-col rounded-lg border border-slate-200 bg-white p-3 shadow-[0_2px_8px_rgba(15,23,42,0.035)]">
@@ -1817,7 +1858,10 @@ export default function ConferenceSystemPage() {
         aria-labelledby="conference-system-faq"
       >
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h2 id="conference-system-faq" className={conferenceSectionTitleClass}>Frequently Asked Questions</h2>
+          <h2 id="conference-system-faq" className={`${conferenceSectionTitleClass} flex items-center gap-2.5`}>
+            <ConferenceSectionTitleIcon icon="faq" compact />
+            <span className="min-w-0">Frequently Asked Questions</span>
+          </h2>
           <a href="#conference-faq-list" className="inline-flex min-h-8 shrink-0 items-center justify-center self-start rounded-md border border-[#b9cbea] bg-white px-3 text-[9px] font-extrabold text-[#1744a1] transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 sm:self-auto sm:text-[10px]">View All Questions <span aria-hidden="true" className="ml-1.5">→</span></a>
         </div>
         <div id="conference-faq-list" className="scroll-mt-24">

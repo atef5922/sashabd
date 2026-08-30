@@ -370,7 +370,7 @@ test("Conference System renders one responsive semantic content set", () => {
   ]) {
     const escaped = heading.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     assert.equal(
-      (source.match(new RegExp(`<h2[^>]*>[\\s\\S]*?${escaped}\\s*</h2>`, "g")) ?? []).length,
+      (source.match(new RegExp(`<h2[^>]*>[\\s\\S]*?${escaped}[\\s\\S]*?</h2>`, "g")) ?? []).length,
       1,
       `${heading} must render from one H2 source`,
     );
@@ -474,24 +474,34 @@ test("Conference sections avoid redundant eyebrow labels above descriptive H2 he
   }
 });
 
-test("Conference definition and product price headings keep their relevant semantic icon mapping", () => {
+test("Conference section headings keep their relevant semantic icon mapping", () => {
   const source = read("app/conference-system/page.tsx");
-  const sections = [
-    { start: 'aria-labelledby="what-is-conference-system"', end: 'aria-labelledby="conference-system-price-heading"', icon: "info" },
-    { start: 'aria-labelledby="conference-system-price-heading"', end: 'aria-labelledby="conference-commercial-confidence"', icon: "price" },
+  const headings = [
+    { id: "choose-conference-system-type", icon: "setup" },
+    { id: "conference-system-comparison-heading", icon: "comparison" },
+    { id: "choose-conference-room-size", icon: "roomSize" },
+    { id: "popular-conference-packages", icon: "packages" },
+    { id: "conference-price-guide", icon: "price" },
+    { id: "recent-conference-system-projects", icon: "projects" },
+    { id: "conference-system-engineering-support", icon: "engineering" },
+    { id: "what-is-conference-system", icon: "info" },
+    { id: "conference-system-price-heading", icon: "price" },
+    { id: "conference-commercial-confidence", icon: "confidence" },
+    { id: "conference-brand-showcase", icon: "brands" },
+    { id: "conference-system-faq", icon: "faq" },
   ];
 
   assert.match(source, /type ConferenceSectionIcon =/);
   assert.match(source, /function ConferenceSectionTitleIcon\(/);
-  for (const { start, end, icon } of sections) {
-    const section = sectionBetween(source, start, end);
-    const iconPattern = new RegExp(`<ConferenceSectionTitleIcon\\b[^>]*\\bicon="${icon}"[^>]*/>`, "g");
+  for (const { id, icon } of headings) {
+    const iconPattern = new RegExp(`<h2\\s+id="${id}"[\\s\\S]*?<ConferenceSectionTitleIcon\\b[^>]*\\bicon="${icon}"[^>]*/>[\\s\\S]*?</h2>`, "g");
     assert.equal(
-      (section.match(iconPattern) ?? []).length,
+      (source.match(iconPattern) ?? []).length,
       1,
-      `${icon} must identify its matching informational heading`,
+      `${icon} must identify the ${id} heading`,
     );
   }
+  assert.equal(occurrences(source, "<ConferenceSectionTitleIcon"), headings.length);
 });
 
 test("Conference compact solution, case-study, and service sections use canonical project data in the required order", () => {
@@ -529,6 +539,7 @@ test("Conference compact solution, case-study, and service sections use canonica
   assert.match(projectCard, /sizes=\{compact \?/);
   assert.match(pageSource, /hybridIntegrationSteps\.map/);
   assert.match(pageSource, /chooseSashaCards\.map/);
+  assert.match(pageSource, /border-\[#d8e5f7\] bg-\[#f2f7ff\]/);
   assert.match(pageSource, /href="\/projects\/"/);
   assert.match(pageSource, /View All Projects/);
   assert.match(projectData, /caseStudyHref: "\/projects\/corporate-boardroom-conference-system-dhaka\/"/);
@@ -660,6 +671,7 @@ test("Conference commercial trust uses factual NAP, conditional warranty, and ne
 
   assert.match(landing, /Commercial Confidence/);
   assert.match(landing, /commercialConfidenceCards\.map/);
+  assert.match(landing, /style=\{\{ backgroundColor: "#eef4ff", borderColor: "#c9d9f0" \}\}/);
   assert.match(landing, /Bangladesh-Based AV Provider/);
   assert.match(landing, /Applicable Warranty Support/);
   assert.match(landing, /Manufacturer or supplier warranty applies where stated/);
