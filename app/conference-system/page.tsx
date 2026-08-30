@@ -102,6 +102,109 @@ const conferenceSystemChooserCards: ReadonlyArray<{
   },
 ];
 
+type ConferenceComparisonSystem = "wired" | "wireless" | "digital" | "hybridVideo";
+
+const conferenceSystemComparisonColumns: ReadonlyArray<{
+  id: ConferenceComparisonSystem;
+  label: string;
+  linkLabel: string;
+  href: string;
+}> = [
+  {
+    id: "wired",
+    label: "Wired",
+    linkLabel: "Wired Conference System",
+    href: "/conference-system/wired-conference-system/",
+  },
+  {
+    id: "wireless",
+    label: "Wireless",
+    linkLabel: "Wireless Conference System",
+    href: "/conference-system/wireless-conference-system/",
+  },
+  {
+    id: "digital",
+    label: "Digital",
+    linkLabel: "Digital Conference System",
+    href: "/conference-system/digital-conference-system/",
+  },
+  {
+    id: "hybridVideo",
+    label: "Hybrid / Video",
+    linkLabel: "Video & Hybrid Conference System",
+    href: "/conference-system/video-conference-system/",
+  },
+];
+
+const conferenceSystemComparisonRows: ReadonlyArray<{
+  feature: string;
+  values: Record<ConferenceComparisonSystem, string>;
+}> = [
+  {
+    feature: "Best For",
+    values: {
+      wired: "Permanent boardrooms & meeting rooms",
+      wireless: "Flexible or reconfigurable rooms",
+      digital: "Professional discussion & controlled meetings",
+      hybridVideo: "In-room + remote collaboration",
+    },
+  },
+  {
+    feature: "Cabling",
+    values: {
+      wired: "Structured conference cabling required",
+      wireless: "Minimal conference cabling",
+      digital: "Structured digital connection",
+      hybridVideo: "Network + AV connectivity",
+    },
+  },
+  {
+    feature: "Installation",
+    values: {
+      wired: "Permanent",
+      wireless: "Flexible",
+      digital: "Professional system integration",
+      hybridVideo: "Advanced AV integration",
+    },
+  },
+  {
+    feature: "Flexibility",
+    values: {
+      wired: "Good",
+      wireless: "Excellent",
+      digital: "Very Good",
+      hybridVideo: "Excellent",
+    },
+  },
+  {
+    feature: "Scalability",
+    values: {
+      wired: "Good",
+      wireless: "Very Good",
+      digital: "Excellent",
+      hybridVideo: "Excellent",
+    },
+  },
+  {
+    feature: "Video & Camera Integration",
+    values: {
+      wired: "Optional",
+      wireless: "Optional",
+      digital: "Strong",
+      hybridVideo: "Best suited",
+    },
+  },
+  {
+    feature: "Typical Application",
+    values: {
+      wired: "Corporate meeting rooms",
+      wireless: "Multipurpose & executive rooms",
+      digital: "Boardrooms, council & institutional meetings",
+      hybridVideo: "Modern hybrid meeting rooms",
+    },
+  },
+];
+
 const conferenceRoomSizeCards: ReadonlyArray<{
   capacity: string;
   room: string;
@@ -1102,6 +1205,92 @@ export default function ConferenceSystemPage() {
               </div>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section
+        className="mt-4 min-w-0 rounded-2xl border border-[#dbe5f2] bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.04)] sm:px-5 md:px-6"
+        aria-labelledby="conference-system-comparison-heading"
+      >
+        <div>
+          <h2 id="conference-system-comparison-heading" className={conferenceSectionTitleClass}>
+            Which Conference System Is Right for Your Room?
+          </h2>
+          <p className="mt-1 max-w-5xl text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">
+            Compare wired, wireless, digital and hybrid conference systems by installation requirements, flexibility,
+            room suitability and AV integration before choosing the right solution for your meeting space.
+          </p>
+        </div>
+
+        <p className="mt-3 text-[10px] font-bold text-[#1744a1] sm:hidden" id="conference-comparison-scroll-hint">
+          Scroll horizontally to compare all system types
+        </p>
+        <div
+          className="mt-2 max-w-full overflow-x-auto rounded-xl border border-[#dbe5f2] bg-white shadow-[0_2px_9px_rgba(15,23,42,0.035)] [scrollbar-color:#94a3b8_#e2e8f0] [scrollbar-width:thin] sm:mt-4"
+          role="region"
+          aria-label="Conference system type comparison"
+          aria-describedby="conference-comparison-scroll-hint"
+          tabIndex={0}
+        >
+          <table className="w-full min-w-[760px] border-collapse text-left text-[10px] sm:min-w-[880px] sm:text-[11px] lg:min-w-0">
+            <caption className="sr-only">
+              Comparison of wired, wireless, digital, and hybrid or video conference systems
+            </caption>
+            <thead className="bg-[linear-gradient(90deg,#071936_0%,#123665_62%,#2456c7_100%)] text-white">
+              <tr>
+                <th
+                  scope="col"
+                  className="sticky left-0 z-20 w-[132px] min-w-[132px] border-r border-white/20 bg-[#071936] px-3 py-3 font-extrabold sm:w-[150px] sm:min-w-[150px] sm:px-4"
+                >
+                  Feature
+                </th>
+                {conferenceSystemComparisonColumns.map((system) => (
+                  <th key={system.id} scope="col" className="min-w-[157px] border-r border-white/15 px-3 py-2.5 last:border-r-0 sm:min-w-[182px] sm:px-4">
+                    <Link
+                      prefetch={false}
+                      href={system.href}
+                      aria-label={`Learn more about ${system.linkLabel}`}
+                      className="group inline-flex min-h-9 flex-col justify-center rounded-sm font-extrabold text-white underline-offset-4 transition hover:text-orange-200 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300/80"
+                    >
+                      <span>{system.label}</span>
+                      <span className="mt-0.5 text-[8px] font-semibold uppercase tracking-[0.05em] text-blue-100 transition group-hover:text-orange-100 sm:text-[9px]">
+                        Learn more
+                      </span>
+                    </Link>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-200">
+              {conferenceSystemComparisonRows.map((row, rowIndex) => (
+                <tr key={row.feature} className={rowIndex % 2 === 0 ? "bg-white" : "bg-sky-50/45"}>
+                  <th
+                    scope="row"
+                    className={`sticky left-0 z-10 border-r border-slate-200 px-3 py-2.5 text-[10px] font-extrabold leading-4 text-[#071936] sm:px-4 sm:text-[11px] ${
+                      rowIndex % 2 === 0 ? "bg-white" : "bg-[#f4faff]"
+                    }`}
+                  >
+                    {row.feature}
+                  </th>
+                  {conferenceSystemComparisonColumns.map((system) => (
+                    <td key={`${row.feature}-${system.id}`} className="border-r border-slate-200 px-3 py-2.5 font-medium leading-4 text-slate-700 last:border-r-0 sm:px-4 sm:leading-5">
+                      {row.values[system.id]}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="mt-3 flex flex-col gap-2 border-t border-slate-200/80 pt-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs font-semibold leading-5 text-slate-700 sm:text-[13px]">Not sure which setup fits your room?</p>
+          <Link
+            href="/contact/?project=conference-system"
+            className="inline-flex min-h-9 shrink-0 items-center justify-center self-start rounded-lg bg-[#071f4a] px-4 text-[11px] font-extrabold text-white shadow-sm transition hover:bg-[#123665] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 sm:self-auto sm:text-xs"
+          >
+            Request a Conference System BOQ
+          </Link>
         </div>
       </section>
 

@@ -536,6 +536,59 @@ test("Conference compact solution, case-study, and service sections use canonica
   assert.equal(occurrences(pageSource, "Talk to an Engineer"), 0);
 });
 
+test("Conference landing adds one semantic system comparison between setup and room-size discovery", () => {
+  const page = read("app/conference-system/page.tsx");
+  const taxonomy = read("app/conference-system/taxonomy.ts");
+  const comparison = sectionBetween(
+    page,
+    'aria-labelledby="conference-system-comparison-heading"',
+    'aria-labelledby="choose-conference-room-size"',
+  );
+  const columns = sectionBetween(
+    page,
+    "const conferenceSystemComparisonColumns:",
+    "const conferenceSystemComparisonRows:",
+  );
+  const rows = sectionBetween(
+    page,
+    "const conferenceSystemComparisonRows:",
+    "const conferenceRoomSizeCards:",
+  );
+  const chooserIndex = page.indexOf('aria-labelledby="choose-conference-system-type"');
+  const comparisonIndex = page.indexOf('aria-labelledby="conference-system-comparison-heading"');
+  const roomSizeIndex = page.indexOf('aria-labelledby="choose-conference-room-size"');
+
+  assert.ok(chooserIndex >= 0 && comparisonIndex > chooserIndex && roomSizeIndex > comparisonIndex);
+  assert.equal(occurrences(page, 'id="conference-system-comparison-heading"'), 1);
+  assert.equal(occurrences(columns, 'id: "'), 4);
+  assert.equal(occurrences(rows, 'feature: "'), 7);
+  assert.match(comparison, /Which Conference System Is Right for Your Room\?/);
+  assert.match(comparison, /<table/);
+  assert.match(comparison, /<caption className="sr-only">/);
+  assert.match(comparison, /<thead/);
+  assert.match(comparison, /<tbody/);
+  assert.match(comparison, /scope="col"/);
+  assert.match(comparison, /scope="row"/);
+  assert.match(comparison, /overflow-x-auto/);
+  assert.match(comparison, /min-w-\[760px\]/);
+  assert.match(comparison, /sticky left-0/);
+  assert.match(comparison, /tabIndex=\{0\}/);
+  assert.match(comparison, /Not sure which setup fits your room\?/);
+  assert.match(comparison, /href="\/contact\/\?project=conference-system"/);
+  assert.match(comparison, /Request a Conference System BOQ/);
+  assert.doesNotMatch(comparison, /\b(?:BDT|Tk|price)\b/i);
+
+  for (const slug of [
+    "wired-conference-system",
+    "wireless-conference-system",
+    "digital-conference-system",
+    "video-conference-system",
+  ]) {
+    assert.equal(occurrences(columns, `href: "/conference-system/${slug}/"`), 1);
+    assert.match(taxonomy, new RegExp(`slug: "${slug}"`));
+  }
+});
+
 test("Conference package pricing distinguishes equipment estimates from installed packages", () => {
   const landing = read("app/conference-system/page.tsx");
   const packageCards = read("app/conference-system/ConferencePackageCards.tsx");
