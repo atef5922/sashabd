@@ -41,10 +41,11 @@ export function buildConferenceExplorerProducts(): ConferenceExplorerProduct[] {
       systemTypes,
       availability: product.availability ?? null,
       productTypeLabel,
+      shortDescription: product.shortDescription,
       features,
       connectionLabel: product.connection ? getConferenceConnectionLabel(product.connection) : undefined,
       systemFamily: product.systemFamily,
-      keySpecs: getConferenceProductCardSpecs(product).slice(0, 2),
+      keySpecs: getConferenceProductCardSpecs(product).slice(0, 5),
       price: getConferenceProductCardPrice(product),
       priceValue:
         product.price.type === "fixed"
@@ -56,6 +57,7 @@ export function buildConferenceExplorerProducts(): ConferenceExplorerProduct[] {
         ? getConferenceProductAvailabilityLabel(product)
         : undefined,
       image: { src: primaryImage.src, alt: primaryImage.alt },
+      images: product.images.slice(0, 4).map((image) => ({ src: image.src, alt: image.alt })),
       searchText: [
         product.name,
         product.model,
