@@ -344,8 +344,14 @@ test("Conference System renders one responsive semantic content set", () => {
   assert.equal(occurrences(source, '\"@type\": \"FAQPage\"'), 1);
   assert.equal(occurrences(source, '<section id="conference-system-price"'), 1);
   assert.equal(occurrences(source, '<h1 id="conference-hero-heading"'), 1);
+  assert.match(source, /const PAGE_TITLE = "Conference System Price in Bangladesh 2026";/);
   assert.match(source, /const META_TITLE = `\$\{PAGE_TITLE\} \| Sasha`;/);
+  assert.match(source, /const META_DESCRIPTION =[\s\S]*?"Conference system price in Bangladesh for Bosch, TOA, SPON & CMX\. Compare wired, wireless, digital and hybrid systems with BOQ, installation and support\.";/);
   assert.match(source, /title: META_TITLE/);
+  assert.equal(occurrences(source, "description: META_DESCRIPTION"), 3);
+  assert.match(source, /alternates: \{ canonical: "\/conference-system\/" \}/);
+  assert.doesNotMatch(source, /\bkeywords\s*:/);
+  assert.match(source, /Compare Bosch, TOA, SPON &amp; CMX conference systems in Bangladesh with price guidance for wired, wireless, digital and hybrid meeting-room solutions\./);
   assert.match(source, /aria-labelledby="conference-hero-heading"/);
 
   for (const heading of [

@@ -26,6 +26,8 @@ import { conferenceProjects } from "../projects/projectData";
 
 const PAGE_TITLE = "Conference System Price in Bangladesh 2026";
 const META_TITLE = `${PAGE_TITLE} | Sasha`;
+const META_DESCRIPTION =
+  "Conference system price in Bangladesh for Bosch, TOA, SPON & CMX. Compare wired, wireless, digital and hybrid systems with BOQ, installation and support.";
 const conferenceEngineerWhatsAppHref = buildWhatsAppHref(CONFERENCE_ENGINEER_WHATSAPP_MESSAGE);
 
 const compactInformationSectionClass =
@@ -919,24 +921,11 @@ function ConferenceChooserIconSvg({ icon }: { icon: ConferenceChooserIcon }) {
 
 export const metadata: Metadata = {
   title: META_TITLE,
-  description:
-    "Compare Bosch, TOA, SPON and CMX conference system prices in Bangladesh. Explore wired, wireless, digital and paperless systems with BOQ support.",
-  keywords: [
-    "conference system price in Bangladesh",
-    "conference system in Bangladesh",
-    "wireless conference microphone",
-    "digital conference system",
-    "chairman unit",
-    "delegate unit",
-    "conference microphone system",
-    "meeting room audio system",
-    "PA and conference system Bangladesh",
-  ],
+  description: META_DESCRIPTION,
   alternates: { canonical: "/conference-system/" },
   openGraph: {
     title: META_TITLE,
-    description:
-      "Compare Bosch, TOA, SPON and CMX conference system prices in Bangladesh. Explore wired, wireless, digital and paperless systems with BOQ support.",
+    description: META_DESCRIPTION,
     url: "/conference-system/",
     type: "website",
     images: [
@@ -951,7 +940,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: META_TITLE,
-    description: "Compare conference system prices in Bangladesh and explore wired, wireless, digital and paperless systems with project BOQ support.",
+    description: META_DESCRIPTION,
     images: [socialImageUrl("/images/Conference%20system/NAC-720W.webp")],
   },
 };
@@ -1044,7 +1033,7 @@ export default function ConferenceSystemPage() {
               <span className="block">Price in Bangladesh 2026</span>
             </h1>
             <p className="mt-3 max-w-[39rem] text-[13px] font-medium leading-5 text-slate-700 sm:text-sm sm:leading-6 lg:text-[clamp(0.78rem,0.9vw,0.95rem)]">
-              Explore Bosch, TOA, SPON &amp; CMX conference systems with price range, features, and complete solutions for meeting rooms, boardrooms, and conference halls.
+              Compare Bosch, TOA, SPON &amp; CMX conference systems in Bangladesh with price guidance for wired, wireless, digital and hybrid meeting-room solutions.
             </p>
 
             <div className="mt-4 flex flex-col gap-2.5 min-[430px]:flex-row sm:mt-5">
