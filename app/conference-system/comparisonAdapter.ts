@@ -9,7 +9,17 @@ import {
   getConferenceProductSpecifications,
   type ConferenceProduct,
 } from "./catalog";
+import { getConferenceProductDisplayType } from "./conferenceProductDisplayType";
 import type { ComparisonProductSnapshot } from "./conferenceComparison";
+
+function formatParticipantCapacity(product: ConferenceProduct): string | null {
+  if (!product.participantRange) return null;
+  const { min, max } = product.participantRange;
+  if (min !== undefined && max !== undefined) return `${min}–${max} participants`;
+  if (min !== undefined) return `At least ${min} participants`;
+  if (max !== undefined) return `Up to ${max} participants`;
+  return null;
+}
 
 export function createComparisonProductSnapshot(
   product: ConferenceProduct,
@@ -24,15 +34,13 @@ export function createComparisonProductSnapshot(
     model: product.model ?? null,
     brand: product.brand?.name ?? null,
     productTypes: product.productTypes.map((type) => CONFERENCE_PRODUCT_TYPE_LABELS[type]),
-    productRole: product.badge,
+    productRole: getConferenceProductDisplayType(product),
     connection: product.connection ? getConferenceConnectionLabel(product.connection) : null,
     meetingType: getConferenceProductSystemTypes(product)
       .map((systemType) => CONFERENCE_SYSTEM_TYPE_LABELS[systemType])
       .join(", ") || null,
     systemFamily: product.systemFamily ?? null,
-    participantCapacity: product.participantRange
-      ? `${product.participantRange.min ?? "Unspecified"}-${product.participantRange.max ?? "Unspecified"}`
-      : null,
+    participantCapacity: formatParticipantCapacity(product),
     price: price.label,
     priceType: price.state === "exact" ? "Exact" : price.state === "range" ? "Range" : "Request",
     availability: product.availability ? getConferenceProductAvailabilityLabel(product) : null,

@@ -8,7 +8,13 @@ import {
   getConferenceProductDisplayType,
   type ConferenceProductType,
 } from "./conferenceProductDisplayType";
-import { toggleComparisonSelection } from "./conferenceComparison";
+import {
+  buildConferenceComparisonHref,
+  CONFERENCE_COMPARE_STORAGE_KEY,
+  MAX_COMPARISON_PRODUCTS,
+  restoreComparisonSlugs,
+  toggleComparisonSelection,
+} from "./conferenceComparison";
 import {
   buildConferenceDiscoveryQuery,
   CONFERENCE_MAX_CUSTOM_PRICE,
@@ -31,8 +37,6 @@ import {
 export type { ConferenceExplorerFacet, ConferenceExplorerProduct } from "./conferenceExplorerTypes";
 type ConferenceFilterGroup = "brands" | "productTypes" | "connections" | "meetingTypes" | "availabilities" | "priceBands";
 const PAGE_SIZE = CONFERENCE_PRODUCTS_PER_BRAND * CONFERENCE_BRAND_ORDER.length;
-const COMPARE_STORAGE_KEY = "sasha-conference-compare";
-const MAX_COMPARE_PRODUCTS = 3;
 
 function paginationRange(current: number, total: number): Array<number | "gap"> {
   if (total <= 7) return Array.from({ length: total }, (_, index) => index + 1);
@@ -113,12 +117,12 @@ export default function ConferenceProductExplorer({
     let cancelled = false;
     let restored: string[] = [];
     try {
-      const stored = JSON.parse(window.sessionStorage.getItem(COMPARE_STORAGE_KEY) ?? "[]");
-      if (Array.isArray(stored)) {
-        restored = [...new Set(stored.filter((slug): slug is string => typeof slug === "string" && validSlugs.has(slug)))].slice(0, MAX_COMPARE_PRODUCTS);
-      }
+      restored = restoreComparisonSlugs(
+        window.sessionStorage.getItem(CONFERENCE_COMPARE_STORAGE_KEY),
+        validSlugs,
+      );
     } catch {
-      window.sessionStorage.removeItem(COMPARE_STORAGE_KEY);
+      // Storage can be unavailable in privacy-restricted browsing contexts.
     }
     queueMicrotask(() => {
       if (cancelled) return;
@@ -130,7 +134,11 @@ export default function ConferenceProductExplorer({
 
   useEffect(() => {
     if (!comparisonHydrated.current) return;
-    window.sessionStorage.setItem(COMPARE_STORAGE_KEY, JSON.stringify(compareSlugs));
+    try {
+      window.sessionStorage.setItem(CONFERENCE_COMPARE_STORAGE_KEY, JSON.stringify(compareSlugs));
+    } catch {
+      // Comparison remains fully usable through React state and the shareable URL.
+    }
   }, [compareSlugs]);
 
   useEffect(() => {
@@ -364,7 +372,16 @@ export default function ConferenceProductExplorer({
   );
 
   const clearAll = () => updateState({ ...EMPTY_CONFERENCE_DISCOVERY_STATE, pageSize: state.pageSize });
-  const selectedCompareProducts = catalogProducts.filter((product) => compareSlugs.includes(product.slug));
+  const productBySlug = useMemo(
+    () => new Map(catalogProducts.map((product) => [product.slug, product])),
+    [catalogProducts],
+  );
+  const selectedCompareProducts = useMemo(
+    () => compareSlugs
+      .map((slug) => productBySlug.get(slug))
+      .filter((product): product is ConferenceExplorerProduct => Boolean(product)),
+    [compareSlugs, productBySlug],
+  );
   const toggleCompare = (slug: string) => {
     setCompareFeedback("");
     setCompareSlugs((current) => {
@@ -485,12 +502,12 @@ export default function ConferenceProductExplorer({
                     <button type="button" onClick={() => toggleCompare(product.slug)} aria-label={`Remove ${product.name} from comparison`} className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-lg text-slate-500 hover:bg-white hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40">×</button>
                   </div>
                 ))}
-                {Array.from({ length: MAX_COMPARE_PRODUCTS - selectedCompareProducts.length }, (_, index) => <div key={`empty-${index}`} className="flex min-w-[8rem] items-center justify-center rounded-xl border border-dashed border-slate-300 px-3 text-xs font-bold text-slate-500">+ Add Product</div>)}
+                {Array.from({ length: MAX_COMPARISON_PRODUCTS - selectedCompareProducts.length }, (_, index) => <div key={`empty-${index}`} className="flex min-w-[8rem] items-center justify-center rounded-xl border border-dashed border-slate-300 px-3 text-xs font-bold text-slate-500">+ Add Product</div>)}
               </div>
               {compareFeedback ? <p className="mt-1 text-xs font-bold text-red-700" role="status">{compareFeedback}</p> : null}
             </div>
             {selectedCompareProducts.length >= 2 ? (
-              <Link href={`/conference-system/compare/?products=${compareSlugs.join(",")}`} className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-xl bg-orange-600 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2">Compare ({selectedCompareProducts.length})</Link>
+              <Link href={buildConferenceComparisonHref(compareSlugs)} className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-xl bg-orange-600 px-5 py-3 text-sm font-extrabold text-white transition hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2">Compare ({selectedCompareProducts.length})</Link>
             ) : (
               <button type="button" disabled aria-disabled="true" className="inline-flex min-h-11 shrink-0 cursor-not-allowed items-center justify-center rounded-xl bg-slate-200 px-5 py-3 text-sm font-extrabold text-slate-500">Compare ({selectedCompareProducts.length})</button>
             )}

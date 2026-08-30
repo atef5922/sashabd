@@ -41,6 +41,30 @@ export function sanitizeComparisonSlugs(raw: string | null | undefined, validSlu
   return selected;
 }
 
+export function restoreComparisonSlugs(
+  rawStoredValue: string | null | undefined,
+  validSlugs: ReadonlySet<string>,
+): string[] {
+  if (!rawStoredValue) return [];
+  try {
+    const stored = JSON.parse(rawStoredValue);
+    if (!Array.isArray(stored)) return [];
+    return sanitizeComparisonSlugs(
+      stored.filter((slug): slug is string => typeof slug === "string").join(","),
+      validSlugs,
+    );
+  } catch {
+    return [];
+  }
+}
+
+export function buildConferenceComparisonHref(slugs: readonly string[]): string {
+  const selected = [...new Set(slugs)].slice(0, MAX_COMPARISON_PRODUCTS);
+  return selected.length
+    ? `/conference-system/compare/?products=${encodeURIComponent(selected.join(","))}`
+    : "/conference-system/compare/";
+}
+
 export function toggleComparisonSelection(current: readonly string[], slug: string): {
   slugs: string[];
   limitReached: boolean;
@@ -149,4 +173,11 @@ export function buildComparisonSections(
 
 export function comparisonHasDifferentProductTypes(products: readonly ComparisonProductSnapshot[]): boolean {
   return new Set(products.map((product) => [...product.productTypes].sort().join("|"))).size > 1;
+}
+
+export function getComparisonDifferenceCount(sections: readonly ComparisonSection[]): number {
+  return sections.reduce(
+    (count, comparisonSection) => count + comparisonSection.rows.filter((row) => row.different).length,
+    0,
+  );
 }

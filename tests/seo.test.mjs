@@ -1224,16 +1224,19 @@ test("Conference landing sends the compact full-catalog projection and defers be
 test("Conference comparison engine keeps selection accessible, bounded, persistent, and independent", () => {
   const card = read("app/conference-system/ConferenceProductCard.tsx");
   const explorer = read("app/conference-system/ConferenceProductExplorer.tsx");
+  const comparison = read("app/conference-system/conferenceComparison.ts");
 
   assert.match(card, /aria-pressed=\{compareSelected\}/);
   assert.match(card, /Added to Compare/);
   assert.match(card, /onCompareToggle\(product\.slug\)/);
-  assert.match(explorer, /sasha-conference-compare/);
+  assert.match(comparison, /CONFERENCE_COMPARE_STORAGE_KEY = "sasha-conference-compare"/);
+  assert.match(explorer, /CONFERENCE_COMPARE_STORAGE_KEY/);
   assert.match(explorer, /window\.sessionStorage/);
   assert.match(explorer, /You can compare up to 3 products\./);
   assert.match(explorer, /Compare \(\{selectedCompareProducts\.length\}\)/);
   assert.match(explorer, /selectedCompareProducts\.length >= 2/);
-  assert.match(explorer, /\/conference-system\/compare\/\?products=/);
+  assert.match(explorer, /buildConferenceComparisonHref\(compareSlugs\)/);
+  assert.match(card, /presentation === "compact"[\s\S]*?aria-pressed=\{compareSelected\}[\s\S]*?onCompareToggle\(product\.slug\)/);
   assert.doesNotMatch(explorer, /updateState\([^)]*compare/i, "comparison selection must remain independent of discovery state");
 });
 
@@ -1247,6 +1250,14 @@ test("Conference comparison helpers sanitize URL state, enforce three products, 
   assert.deepEqual(comparison.sanitizeComparisonSlugs("one,one,invalid,two", valid), ["one", "two"]);
   assert.deepEqual(comparison.sanitizeComparisonSlugs("invalid", valid), []);
   assert.deepEqual(comparison.sanitizeComparisonSlugs("one,two,three,four", valid), ["one", "two", "three"]);
+  assert.deepEqual(comparison.restoreComparisonSlugs('["two","invalid","two","one"]', valid), ["two", "one"]);
+  assert.deepEqual(comparison.restoreComparisonSlugs("not-json", valid), []);
+  assert.deepEqual(comparison.restoreComparisonSlugs('{"one":true}', valid), []);
+  assert.equal(comparison.buildConferenceComparisonHref([]), "/conference-system/compare/");
+  assert.equal(
+    comparison.buildConferenceComparisonHref(["one", "two"]),
+    "/conference-system/compare/?products=one%2Ctwo",
+  );
 
   let selection = [];
   selection = comparison.toggleComparisonSelection(selection, "one").slugs;
@@ -1279,6 +1290,7 @@ test("Conference comparison helpers sanitize URL state, enforce three products, 
   assert.deepEqual(rows.find((row) => row.id === "connection").values, ["Wired", "Not specified", "Wired"], "partial missing values are disclosed");
   assert.equal(rows.some((row) => row.id === "warranty"), false, "rows missing for every product are hidden");
   assert.equal(rows.find((row) => row.label === "Power Supply").different, true);
+  assert.equal(comparison.getComparisonDifferenceCount(sections), rows.filter((row) => row.different).length);
   assert.equal(comparison.comparisonHasDifferentProductTypes(products), true);
   assert.equal(comparison.comparisonHasDifferentProductTypes([products[0], product({ slug: "four" })]), false);
 });
@@ -1295,11 +1307,16 @@ test("Conference compare route is a noindex utility page with canonical URL and 
   assert.doesNotMatch(sitemap, /abs\("\/conference-system\/compare\/"\)/);
   assert.match(client, /useSearchParams\(\)/);
   assert.match(client, /Highlight Differences/);
+  assert.match(client, /Copy Share Link/);
+  assert.match(client, /comparison-product-picker-title/);
+  assert.match(client, /restoreComparisonSlugs/);
+  assert.match(client, /Compatible and similar products are shown first/);
+  assert.match(client, /Change/);
   assert.match(client, /Different/);
   assert.match(client, /This comparison includes different product types/);
   assert.match(client, /overflow-x-auto/);
   assert.match(client, /sticky left-0/);
-  assert.match(client, /Get a Quote/);
+  assert.match(client, /Get Quote for Selection/);
   assert.match(client, /Get Free BOQ/);
   assert.doesNotMatch(client, /best product|winner|cheapest/i);
 });
