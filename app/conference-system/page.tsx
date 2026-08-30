@@ -798,7 +798,7 @@ const conferenceHeroFeatures: Array<{
   title: string;
   description: string;
 }> = [
-  { icon: "authorized", title: "Conference System Solutions", description: "Bosch, TOA, SPON, CMX" },
+  { icon: "authorized", title: "Conference System Expertise", description: "Bosch, TOA, SPON, CMX" },
   { icon: "design", title: "System Design & BOQ", description: "For Different Room Sizes" },
   { icon: "installation", title: "Installation & Support", description: "Bangladesh-Based Service" },
   { icon: "support", title: "After Sales Support", description: "Expert Technical Team" },
@@ -1091,10 +1091,14 @@ export default function ConferenceSystemPage() {
       <section aria-labelledby="conference-trust-heading">
         <div className="overflow-hidden rounded-xl border border-slate-200/90 bg-white px-4 py-3 shadow-[0_4px_16px_rgba(15,23,42,0.035)] sm:px-5 xl:min-h-[80px] xl:px-7 xl:py-2">
           <div className="grid items-center gap-4 lg:grid-cols-[10rem_minmax(0,1fr)] xl:min-h-[62px] xl:grid-cols-[minmax(205px,0.9fr)_1px_minmax(420px,2.6fr)_1px_minmax(350px,1.8fr)] xl:gap-0">
-            <p id="conference-trust-heading" role="heading" aria-level={2} className="text-left text-xs font-extrabold leading-[1.4] tracking-[-0.01em] text-[#071936] sm:text-[13px] xl:max-w-[205px]">
-              <span className="block">Trusted Conference System</span>
-              <span className="block">Solutions in Bangladesh</span>
-            </p>
+            <div className="min-w-0 text-left xl:max-w-[205px]">
+              <p id="conference-trust-heading" role="heading" aria-level={2} className="text-xs font-extrabold leading-[1.4] tracking-[-0.01em] text-[#071936] sm:text-[13px]">
+                Authorized Conference System Brands
+              </p>
+              <p className="mt-1 text-[9px] font-semibold leading-4 text-slate-500 sm:text-[10px]">
+                Genuine Products <span aria-hidden="true">•</span> Warranty <span aria-hidden="true">•</span> Local Support
+              </p>
+            </div>
 
             <div className="hidden h-12 w-px bg-slate-200 xl:block" aria-hidden="true" />
 
@@ -1781,7 +1785,7 @@ export default function ConferenceSystemPage() {
         <div className="mt-3 flex flex-col gap-2 rounded-lg border border-blue-100 bg-[#f6f9ff] px-3 py-2.5 text-[11px] font-medium leading-5 text-slate-600 sm:flex-row sm:items-center sm:justify-between sm:text-xs">
           <p className="flex items-start gap-2 text-left">
             <span className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-blue-200 text-[9px] font-extrabold text-[#2456c7]" aria-hidden="true">i</span>
-            <span><strong className="text-slate-800">Brand &amp; Warranty Scope:</strong> Product availability, warranty coverage, and commercial terms are confirmed for the selected model in the final quotation.</span>
+            <span><strong className="text-slate-800">Authorized Distribution &amp; Warranty:</strong> Sasha Corporation supplies genuine conference system products through authorized distribution channels, with warranty coverage, project consultation and after-sales support based on the selected brand and model.</span>
           </p>
           <Link href="/services-support/" className="shrink-0 font-extrabold text-[#1744a1] hover:underline">Learn More <span aria-hidden="true">→</span></Link>
         </div>
@@ -1791,7 +1795,7 @@ export default function ConferenceSystemPage() {
         className="mt-4 rounded-2xl border border-[#dbe5f2] bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.04)] sm:px-5 md:px-6"
         aria-labelledby="conference-brand-showcase"
       >
-        <h2 id="conference-brand-showcase" className={conferenceSectionTitleClass}>Our Conference System Brand Support</h2>
+        <h2 id="conference-brand-showcase" className={conferenceSectionTitleClass}>Authorized Conference System Brands & Support</h2>
         <div className="mt-4 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
           {verifiedConferenceBrandCards.map((brand) => (
             <article key={brand.title} className="flex min-w-0 flex-col rounded-lg border border-slate-200 bg-white p-3 shadow-[0_2px_8px_rgba(15,23,42,0.035)]">
@@ -1812,7 +1816,7 @@ export default function ConferenceSystemPage() {
                 ))}
               </ul>
               <Link prefetch={false} href={brand.url} className="mt-auto inline-flex items-center pt-3 text-[11px] font-extrabold text-[#1744a1] hover:text-blue-700 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 sm:text-xs">
-                View {brand.title} Products <span aria-hidden="true" className="ml-1">→</span>
+                Explore {brand.title} Conference Systems <span aria-hidden="true" className="ml-1">→</span>
               </Link>
             </article>
           ))}

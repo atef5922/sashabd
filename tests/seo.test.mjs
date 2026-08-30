@@ -358,7 +358,7 @@ test("Conference System renders one responsive semantic content set", () => {
     "What is a Conference System?",
     "Conference System Product Price List in Bangladesh",
     "Commercial Confidence",
-    "Our Conference System Brand Support",
+    "Authorized Conference System Brands & Support",
     "Frequently Asked Questions",
     "Ready to Build Your Perfect Conference Room?",
   ]) {
@@ -631,7 +631,7 @@ test("Conference removes the requested component, comparison, benefit, and selec
   assert.doesNotMatch(source, /Quick Selection Guide for Conference Systems/);
 });
 
-test("Conference brand support keeps verified routes and compact feature lists", () => {
+test("Conference brand support keeps verified routes, a clean card layout, and descriptive CTAs", () => {
   const source = read("app/conference-system/page.tsx");
   const section = sectionBetween(
     source,
@@ -639,10 +639,10 @@ test("Conference brand support keeps verified routes and compact feature lists",
     'aria-labelledby="conference-system-faq"',
   );
 
-  assert.match(section, /Our Conference System Brand Support/);
-  assert.doesNotMatch(source, /Authorized Distributor|Exclusive Distributor/);
+  assert.match(section, /Authorized Conference System Brands & Support/);
+  assert.doesNotMatch(source, /Authorized Distributor|Exclusive Distributor|authorizationStatus/);
   assert.match(section, /brand\.features\.map/);
-  assert.match(section, /View \{brand\.title\} Products/);
+  assert.match(section, /Explore \{brand\.title\} Conference Systems/);
   for (const brand of ["bosch", "toa", "spon", "cmx"]) {
     assert.match(source, new RegExp(`url: "/conference-system/brands/${brand}/"`));
   }
@@ -657,8 +657,10 @@ test("Conference commercial trust uses factual NAP, conditional warranty, and ne
   assert.match(landing, /Bangladesh-Based AV Provider/);
   assert.match(landing, /Applicable Warranty Support/);
   assert.match(landing, /Manufacturer or supplier warranty applies where stated/);
-  assert.match(landing, /Brand &amp; Warranty Scope:/);
-  assert.match(landing, /Conference System Solutions/);
+  assert.match(landing, /Authorized Distribution &amp; Warranty:/);
+  assert.match(landing, /Sasha Corporation supplies genuine conference system products through authorized distribution channels, with warranty coverage, project consultation and after-sales support based on the selected brand and model\./);
+  assert.match(landing, /Conference System Expertise/);
+  assert.match(landing, /description: "Bosch, TOA, SPON, CMX"/);
   assert.doesNotMatch(landing, /Authorized Solutions|Authorisation Scope:|Verified Business|Official products with manufacturer warranty/);
   assert.match(landing, /\{siteConfig\.address\}/);
   assert.match(landing, /href=\{`tel:\$\{siteConfig\.phone\}`\}/);
@@ -840,15 +842,19 @@ test("Conference product quick view is accessible, contextual, and available in 
   const card = read("app/conference-system/ConferenceProductCard.tsx");
   const quickView = read("app/conference-system/ConferenceProductQuickView.tsx");
   const collection = read("app/conference-system/ConferenceCollectionPage.tsx");
-  const globalStyles = read("app/globals.css");
 
   assert.equal(occurrences(card, "<ConferenceProductQuickView"), 2);
   assert.match(quickView, /^"use client";/);
   assert.match(quickView, /createPortal\(dialog, document\.body\)/);
-  assert.match(quickView, /className="conference-quick-view-overlay"/);
-  assert.match(quickView, /conference-quick-view-close/);
-  assert.match(quickView, /conference-quick-view-thumbnail/);
-  assert.match(quickView, /className="conference-quick-view-layout"/);
+  assert.match(quickView, /className="conference-quick-view-overlay fixed inset-0 z-\[200\] flex items-center justify-center/);
+  assert.match(quickView, /conference-quick-view-dialog relative max-h-\[calc\(100dvh-24px\)\] w-full max-w-\[1120px\]/);
+  assert.match(quickView, /conference-quick-view-close[^"`]*cursor-pointer/);
+  assert.match(quickView, /conference-quick-view-thumbnail[^"`]*cursor-pointer/);
+  assert.match(quickView, /conference-quick-view-layout grid min-w-0/);
+  assert.match(quickView, /lg:grid-cols-\[76px_minmax\(0,0\.95fr\)_minmax\(360px,1\.05fr\)\]/);
+  assert.match(quickView, /lg:grid-cols-\[minmax\(0,0\.95fr\)_minmax\(360px,1\.05fr\)\]/);
+  assert.match(quickView, /conference-quick-view-details order-3[^"`]*lg:order-none lg:overflow-y-auto/);
+  assert.doesNotMatch(quickView, /conference-quick-view-overlay[^\n]*items-end/);
   assert.match(quickView, /role="dialog"/);
   assert.match(quickView, /aria-modal="true"/);
   assert.match(quickView, /aria-haspopup="dialog"/);
@@ -869,12 +875,6 @@ test("Conference product quick view is accessible, contextual, and available in 
   assert.match(collection, /features: product\.keyFeatures\.slice\(0, 4\)/);
   assert.match(collection, /images: product\.images\.slice\(0, 4\)/);
   assert.match(read("app/conference-system/conferenceExplorerData.ts"), /keySpecs: getConferenceProductCardSpecs\(product\)\.slice\(0, 5\)/);
-  assert.match(globalStyles, /\.conference-quick-view-overlay\s*\{[\s\S]*?position: fixed;[\s\S]*?z-index: 200;/);
-  assert.match(globalStyles, /\.conference-quick-view-dialog\s*\{[\s\S]*?max-width: 1120px;[\s\S]*?max-height: 94dvh;/);
-  assert.match(globalStyles, /\.conference-quick-view-close\s*\{\s*cursor: pointer;\s*\}/);
-  assert.match(globalStyles, /\.conference-quick-view-thumbnail\s*\{\s*cursor: pointer;\s*\}/);
-  assert.match(globalStyles, /\.conference-quick-view-layout\[data-has-gallery="true"\][\s\S]*?grid-template-columns: 76px/);
-  assert.match(globalStyles, /\.conference-quick-view-details\s*\{[\s\S]*?order: initial;[\s\S]*?overflow: hidden;/);
   assert.match(quickView, /product\.keySpecs\.slice\(0, 3\)/);
 });
 
@@ -1770,8 +1770,9 @@ test("Conference landing shows a trust bar linking every brand to its brand rout
     "trust bar must come before the product listing",
   );
   assert.equal(occurrences(landing, 'id="conference-trust-heading"'), 1);
-  assert.match(trustSection, /Trusted Conference System/);
-  assert.match(trustSection, /Solutions in Bangladesh/);
+  assert.match(trustSection, /Authorized Conference System Brands/);
+  assert.match(trustSection, /Genuine Products[\s\S]*Warranty[\s\S]*Local Support/);
+  assert.doesNotMatch(trustSection, /Authorized Distributor/);
   assert.match(trustSection, /xl:min-h-\[80px\].*xl:py-2/);
   assert.match(trustSection, /xl:min-h-\[62px\]/);
 

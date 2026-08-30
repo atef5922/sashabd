@@ -91,7 +91,7 @@ export default function ConferenceProductQuickView({
 
   const dialog = open ? (
     <div
-      className="conference-quick-view-overlay"
+      className="conference-quick-view-overlay fixed inset-0 z-[200] flex items-center justify-center bg-slate-950/70 p-3 backdrop-blur-[2px] sm:p-5"
       onClick={(event) => {
         if (event.target === event.currentTarget) closeDialog();
       }}
@@ -103,7 +103,7 @@ export default function ConferenceProductQuickView({
         aria-modal="true"
         aria-labelledby={titleId}
         aria-describedby={descriptionId}
-        className="conference-quick-view-dialog relative bg-white"
+        className="conference-quick-view-dialog relative max-h-[calc(100dvh-24px)] w-full max-w-[1120px] overflow-hidden rounded-xl bg-white shadow-[0_28px_90px_rgba(2,8,23,0.4)] sm:max-h-[calc(100dvh-40px)] sm:w-[calc(100vw-40px)] sm:rounded-2xl"
         data-conference-quick-view-dialog
       >
         <div className="relative z-20 flex min-h-12 items-center justify-between gap-4 border-b border-slate-200 bg-white px-4 py-2 sm:px-5">
@@ -116,15 +116,18 @@ export default function ConferenceProductQuickView({
             type="button"
             onClick={closeDialog}
             aria-label={`Close quick view for ${product.name}`}
-            className="conference-quick-view-close inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300 bg-white text-lg leading-none text-slate-600 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50"
+            className="conference-quick-view-close inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-slate-300 bg-white text-lg leading-none text-slate-600 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50"
           >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
 
-        <div className="conference-quick-view-layout" data-has-gallery={galleryImages.length > 1 ? "true" : "false"}>
+        <div
+          className={`conference-quick-view-layout grid min-w-0 max-h-[calc(100dvh-72px)] overflow-y-auto sm:max-h-[calc(100dvh-88px)] lg:h-[min(540px,calc(100dvh-88px))] lg:overflow-hidden ${galleryImages.length > 1 ? "lg:grid-cols-[76px_minmax(0,0.95fr)_minmax(360px,1.05fr)]" : "lg:grid-cols-[minmax(0,0.95fr)_minmax(360px,1.05fr)]"}`}
+          data-has-gallery={galleryImages.length > 1 ? "true" : "false"}
+        >
           {galleryImages.length > 1 ? (
-            <div className="conference-quick-view-thumbnails flex gap-2 border-b border-slate-200 bg-slate-50 p-3 lg:border-b-0 lg:border-r">
+            <div className="conference-quick-view-thumbnails order-2 flex gap-2 overflow-x-auto border-b border-slate-200 bg-slate-50 p-3 lg:order-none lg:flex-col lg:overflow-x-hidden lg:overflow-y-auto lg:border-b-0 lg:border-r">
               {galleryImages.map((image, index) => (
                 <button
                   key={image.src}
@@ -132,7 +135,7 @@ export default function ConferenceProductQuickView({
                   onClick={() => setActiveImageSrc(image.src)}
                   aria-label={`Show ${product.name}, image ${index + 1}`}
                   aria-pressed={activeImage.src === image.src}
-                  className={`conference-quick-view-thumbnail relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 bg-white transition hover:border-orange-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 ${activeImage.src === image.src ? "border-orange-500 shadow-sm" : "border-slate-200"}`}
+                  className={`conference-quick-view-thumbnail relative h-16 w-16 shrink-0 cursor-pointer overflow-hidden rounded-lg border-2 bg-white transition hover:border-orange-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 ${activeImage.src === image.src ? "border-orange-500 shadow-sm" : "border-slate-200"}`}
                 >
                   <Image src={image.src} alt="" fill sizes="64px" className="object-contain p-1.5" />
                 </button>
@@ -140,7 +143,7 @@ export default function ConferenceProductQuickView({
             </div>
           ) : null}
 
-          <div className="conference-quick-view-preview flex min-h-[230px] min-w-0 flex-col border-b border-slate-200 bg-white lg:min-h-0 lg:border-b-0 lg:border-r">
+          <div className="conference-quick-view-preview order-1 flex min-h-[230px] min-w-0 flex-col border-b border-slate-200 bg-white lg:order-none lg:min-h-0 lg:border-b-0 lg:border-r">
             <div className="relative min-h-0 flex-1">
               <Image
                 src={activeImage.src}
@@ -158,7 +161,7 @@ export default function ConferenceProductQuickView({
             </div>
           </div>
 
-          <div className="conference-quick-view-details min-w-0 bg-white p-4 sm:p-5">
+          <div className="conference-quick-view-details order-3 min-w-0 bg-white p-4 sm:p-5 lg:order-none lg:overflow-y-auto">
             <div className="flex flex-wrap items-center gap-2">
               <span className="rounded-full border border-orange-200 bg-orange-50 px-2.5 py-1 text-[10px] font-extrabold text-orange-800">{product.productTypeLabel}</span>
               {product.connectionLabel ? <span className="rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 text-[10px] font-extrabold text-sky-800">{product.connectionLabel}</span> : null}
