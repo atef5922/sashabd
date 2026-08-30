@@ -1,14 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ConferenceCardPrice } from "./catalog";
+import ConferenceProductQuickView from "./ConferenceProductQuickView";
 
 const VIEW_DETAILS_LABEL = "View Details";
 
 export type ConferenceProductCardData = {
   slug: string;
   name: string;
+  model?: string;
   brandName?: string;
   productTypeLabel: string;
+  shortDescription?: string;
   features?: readonly string[];
   connectionLabel?: string;
   systemFamily?: string;
@@ -16,6 +19,7 @@ export type ConferenceProductCardData = {
   price: ConferenceCardPrice;
   availabilityLabel?: string;
   image: { src: string; alt: string };
+  images?: readonly { src: string; alt: string }[];
 };
 
 export default function ConferenceProductCard({
@@ -93,7 +97,7 @@ export default function ConferenceProductCard({
             alt={product.image.alt}
             fill
             sizes="(max-width: 767px) 92vw, (max-width: 1279px) 50vw, 25vw"
-            className="object-contain p-5 sm:p-6"
+            className="conference-product-card-image object-contain p-5 sm:p-6"
             priority={priority}
           />
         </Link>
@@ -133,7 +137,10 @@ export default function ConferenceProductCard({
               {priceCaption}
             </p>
 
-            <div className="mt-2.5 grid grid-cols-2 gap-2">
+            <div className="mt-2.5">
+              <ConferenceProductQuickView product={product} productHref={productHref} quotationHref={quotationHref} />
+            </div>
+            <div className="mt-2 grid grid-cols-2 gap-2">
               <Link
                 prefetch={false}
                 href={productHref}
@@ -174,7 +181,7 @@ export default function ConferenceProductCard({
           alt={product.image.alt}
           fill
           sizes="(max-width: 767px) 88vw, (max-width: 1023px) 50vw, 33vw"
-          className="object-contain p-1.5 transition duration-300 group-hover:scale-[1.015] md:p-2"
+          className="conference-product-card-image object-contain p-1.5 md:p-2"
           priority={priority}
         />
       </Link>
@@ -251,7 +258,10 @@ export default function ConferenceProductCard({
             ) : null}
           </div>
 
-          <div className="mt-4 grid grid-cols-2 gap-2.5">
+          <div className="mt-4">
+            <ConferenceProductQuickView product={product} productHref={productHref} quotationHref={quotationHref} />
+          </div>
+          <div className="mt-2.5 grid grid-cols-2 gap-2.5">
             <Link
               prefetch={false}
               href={productHref}

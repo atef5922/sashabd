@@ -771,6 +771,59 @@ test("Conference cards use canonical structured pricing and one accessible actio
   assert.doesNotMatch(collectionGrid, /<ProductGridCard/);
 });
 
+test("Conference product quick view is accessible, contextual, and available in every card presentation", () => {
+  const card = read("app/conference-system/ConferenceProductCard.tsx");
+  const quickView = read("app/conference-system/ConferenceProductQuickView.tsx");
+  const collection = read("app/conference-system/ConferenceCollectionPage.tsx");
+  const globalStyles = read("app/globals.css");
+
+  assert.equal(occurrences(card, "<ConferenceProductQuickView"), 2);
+  assert.match(quickView, /^"use client";/);
+  assert.match(quickView, /createPortal\(dialog, document\.body\)/);
+  assert.match(quickView, /className="conference-quick-view-overlay"/);
+  assert.match(quickView, /conference-quick-view-close/);
+  assert.match(quickView, /conference-quick-view-thumbnail/);
+  assert.match(quickView, /className="conference-quick-view-layout"/);
+  assert.match(quickView, /role="dialog"/);
+  assert.match(quickView, /aria-modal="true"/);
+  assert.match(quickView, /aria-haspopup="dialog"/);
+  assert.match(quickView, /event\.key === "Escape"/);
+  assert.match(quickView, /event\.key !== "Tab"/);
+  assert.match(quickView, /document\.body\.style\.overflow = "hidden"/);
+  assert.match(quickView, /restoreFocusTarget\?\.focus\(\)/);
+  assert.match(quickView, /aria-label=\{`Quick view \$\{product\.name\}`\}/);
+  assert.match(quickView, /href=\{productHref\}/);
+  assert.match(quickView, /href=\{quotationHref\}/);
+  assert.match(quickView, /Quick Overview/);
+  assert.match(quickView, /galleryImages\.map\(\(image, index\)/);
+  assert.match(quickView, /aria-pressed=\{activeImage\.src === image\.src\}/);
+  assert.match(quickView, /Request a Quote/);
+  assert.match(quickView, /Final pricing may depend on quantity, room requirements and installation scope/);
+  assert.doesNotMatch(quickView, /dangerouslySetInnerHTML|iframe/i);
+  assert.match(collection, /model: product\.model/);
+  assert.match(collection, /features: product\.keyFeatures\.slice\(0, 4\)/);
+  assert.match(collection, /images: product\.images\.slice\(0, 4\)/);
+  assert.match(read("app/conference-system/conferenceExplorerData.ts"), /keySpecs: getConferenceProductCardSpecs\(product\)\.slice\(0, 5\)/);
+  assert.match(globalStyles, /\.conference-quick-view-overlay\s*\{[\s\S]*?position: fixed;[\s\S]*?z-index: 200;/);
+  assert.match(globalStyles, /\.conference-quick-view-dialog\s*\{[\s\S]*?max-width: 1120px;[\s\S]*?max-height: 94dvh;/);
+  assert.match(globalStyles, /\.conference-quick-view-close\s*\{\s*cursor: pointer;\s*\}/);
+  assert.match(globalStyles, /\.conference-quick-view-thumbnail\s*\{\s*cursor: pointer;\s*\}/);
+  assert.match(globalStyles, /\.conference-quick-view-layout\[data-has-gallery="true"\][\s\S]*?grid-template-columns: 76px/);
+  assert.match(globalStyles, /\.conference-quick-view-details\s*\{[\s\S]*?order: initial;[\s\S]*?overflow: hidden;/);
+  assert.match(quickView, /product\.keySpecs\.slice\(0, 3\)/);
+});
+
+test("Conference product cards use a pointer-aware reduced-motion-safe image zoom", () => {
+  const card = read("app/conference-system/ConferenceProductCard.tsx");
+  const globalStyles = read("app/globals.css");
+
+  assert.equal(occurrences(card, "conference-product-card-image"), 2);
+  assert.match(globalStyles, /\.conference-product-card-image\s*\{[\s\S]*?transition: transform 320ms/);
+  assert.match(globalStyles, /@media \(hover: hover\) and \(pointer: fine\) and \(prefers-reduced-motion: no-preference\)/);
+  assert.match(globalStyles, /\[data-conference-product-card\]:hover \.conference-product-card-image\s*\{[\s\S]*?transform: scale\(1\.055\);/);
+  assert.match(globalStyles, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.conference-product-card-image[\s\S]*?transition: none;/);
+});
+
 test("Conference product card labels follow collection context without changing taxonomy", async () => {
   const moduleUrl = pathToFileURL(path.join(root, "app/conference-system/conferenceProductDisplayType.ts")).href;
   const displayType = await import(`${moduleUrl}?test=${Date.now()}`);

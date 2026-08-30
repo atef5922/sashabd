@@ -222,14 +222,18 @@ function ProductGrid({
     return {
       slug: product.slug,
       name: product.name,
+      model: product.model,
       brandName: product.brand?.name,
       productTypeLabel: getConferenceProductDisplayType(product, currentProductType),
-      connectionLabel: !compact && product.connection ? getConferenceConnectionLabel(product.connection) : undefined,
-      systemFamily: compact ? undefined : product.systemFamily,
+      shortDescription: product.shortDescription,
+      features: product.keyFeatures.slice(0, 4),
+      connectionLabel: product.connection ? getConferenceConnectionLabel(product.connection) : undefined,
+      systemFamily: product.systemFamily,
       keySpecs: getConferenceProductCardSpecs(product),
       price: getConferenceProductCardPrice(product),
-      availabilityLabel: !compact && product.availability ? getConferenceProductAvailabilityLabel(product) : undefined,
+      availabilityLabel: product.availability ? getConferenceProductAvailabilityLabel(product) : undefined,
       image: { src: image.src, alt: image.alt },
+      images: product.images.slice(0, 4).map((productImage) => ({ src: productImage.src, alt: productImage.alt })),
     };
   });
 
