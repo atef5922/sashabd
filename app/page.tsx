@@ -352,9 +352,9 @@ export default function HomePage() {
           }
         }
       `}</style>
-      <div className="home-page-stack space-y-4">
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
+      <div className="home-page-stack space-y-4">
         {/* 1) HERO */}
         <HomeHeroCarousel />
         <HomeTrustServiceStrip />

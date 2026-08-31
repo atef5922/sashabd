@@ -59,31 +59,62 @@ body {
 @media (min-width: 1024px) {
   .home-hero-shell,
   .home-hero-frame {
-    min-height: clamp(335px, calc(25vw + 15px), 383px) !important;
+    min-height: clamp(360px, 27vw, 560px) !important;
   }
 }
 
 @media (min-width: 1440px) {
-  .home-hero-shell,
+  [data-home-header="true"] .site-header-inner {
+    height: clamp(72px, 5.27vw, 108px) !important;
+    max-width: clamp(1280px, 93vw, 1900px) !important;
+  }
+
+  [data-home-header="true"] .site-header-logo {
+    width: clamp(160px, 11.72vw, 240px) !important;
+    height: clamp(96px, 7.03vw, 144px) !important;
+  }
+
+  [data-home-header="true"] .site-header-search .premium-search-inner > div {
+    min-height: clamp(40px, 2.93vw, 60px);
+    padding-left: clamp(16px, 1.17vw, 24px);
+    padding-right: clamp(16px, 1.17vw, 24px);
+  }
+
+  [data-home-header="true"] .site-header-search input,
+  [data-home-header="true"] .site-header-nav > a,
+  [data-home-header="true"] .site-header-nav > .group > a,
+  [data-home-header="true"] [data-conference-desktop-nav] > div > a {
+    font-size: clamp(14px, 1.025vw, 21px) !important;
+  }
+
+  [data-home-header="true"] .site-header-nav > a,
+  [data-home-header="true"] .site-header-nav > .group > a {
+    padding-left: clamp(12px, 0.88vw, 18px) !important;
+    padding-right: clamp(12px, 0.88vw, 18px) !important;
+  }
+
   .home-hero-frame {
-    min-height: clamp(470px, 27vw, 540px) !important;
+    padding-left: clamp(40px, 3vw, 60px) !important;
+    padding-right: clamp(40px, 3vw, 60px) !important;
+    padding-top: clamp(24px, 2vw, 40px) !important;
+    padding-bottom: clamp(24px, 2vw, 40px) !important;
   }
 
   .home-hero-content {
-    transform: translateY(30px) !important;
+    transform: translateY(clamp(24px, 2vw, 40px)) !important;
   }
 
   .home-hero-content > p:first-child {
-    font-size: 0.75rem !important;
+    font-size: clamp(0.6875rem, 0.8vw, 1rem) !important;
   }
 
   .home-hero-title {
-    font-size: 2.65rem !important;
+    font-size: clamp(2.25rem, 2.65vw, 3.35rem) !important;
   }
 
   .home-hero-description {
-    font-size: 1rem !important;
-    line-height: 1.65rem !important;
+    font-size: clamp(0.875rem, 1vw, 1.25rem) !important;
+    line-height: 1.65 !important;
   }
 
   .home-hero-actions {
@@ -92,44 +123,44 @@ body {
 
   .home-hero-actions > a {
     flex: 0 0 auto;
-    min-height: 46px;
-    padding-left: 22px;
-    padding-right: 22px;
-    font-size: 0.8rem;
+    min-height: clamp(44px, 3.22vw, 66px);
+    padding-left: clamp(20px, 1.6vw, 32px);
+    padding-right: clamp(20px, 1.6vw, 32px);
+    font-size: clamp(0.75rem, 0.88vw, 1.1rem);
   }
 
   .home-hero-features > li {
     border: 1px solid rgba(255, 255, 255, 0.58);
     border-radius: 5px;
     background: rgba(255, 255, 255, 0.72);
-    min-height: 32px;
-    padding: 5px 10px;
+    min-height: clamp(30px, 2.2vw, 46px);
+    padding: clamp(5px, 0.4vw, 8px) clamp(9px, 0.75vw, 15px);
     box-shadow: 0 3px 10px rgba(7, 25, 54, 0.05);
     backdrop-filter: blur(2px);
   }
 
   .home-hero-features > li > span:last-child {
-    font-size: 0.68rem !important;
-    line-height: 0.85rem !important;
+    font-size: clamp(0.625rem, 0.73vw, 0.9rem) !important;
+    line-height: 1.25 !important;
   }
 
   .home-trust-service-card {
-    min-height: 98px !important;
-    padding: 14px 30px !important;
+    min-height: clamp(80px, 5.86vw, 120px) !important;
+    padding: clamp(10px, 0.75vw, 15px) clamp(28px, 2.05vw, 42px) !important;
   }
 
   .home-category-grid {
-    gap: 14px !important;
-    padding: 16px !important;
+    gap: clamp(12px, 0.88vw, 18px) !important;
+    padding: clamp(14px, 1.03vw, 21px) !important;
   }
 
   .home-overview-category-card {
-    min-height: 134px !important;
-    padding: 14px 10px !important;
+    min-height: clamp(108px, 7.9vw, 162px) !important;
+    padding: clamp(10px, 0.9vw, 18px) 10px !important;
   }
 
   .home-page-stack > :not([hidden]) ~ :not([hidden]) {
-    margin-top: 22px !important;
+    margin-top: clamp(16px, 1.4vw, 28px) !important;
   }
 
   .mobile-browse-products,
@@ -137,11 +168,11 @@ body {
   #home-technology-partners,
   #home-project-workflow,
   #why-choose-sasha {
-    padding: 32px 30px !important;
+    padding: clamp(26px, 1.9vw, 39px) clamp(28px, 2.05vw, 42px) !important;
   }
 
   #home-project-proposal {
-    padding: 42px 32px !important;
+    padding: clamp(36px, 2.65vw, 54px) clamp(30px, 2.2vw, 45px) !important;
   }
 }
 
@@ -359,6 +390,11 @@ label {
     transform: translateX(-50%);
   }
 }
+
+.home-brand-marquee-track {
+  animation: renexMarquee 42s linear infinite;
+}
+
 @keyframes fadeUp {
   to {
     opacity: 1;

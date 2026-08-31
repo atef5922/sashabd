@@ -4,9 +4,19 @@ import Link from "next/link";
 const homeBrandLogos = [
   { name: "LianTronics", src: "/images/logo/liantronics.png", href: "/led-display/", className: "h-5 sm:h-6" },
   { name: "NovaStar", src: "/images/logo/novastar.webp", href: "/led-display/accessories/controller/", className: "h-6 sm:h-7" },
+  { name: "AOTO Electronics", src: "/images/logo/aoto-electronics.webp", href: "/led-display/", className: "h-5 sm:h-6" },
+  { name: "G-Energy", src: "/images/logo/g-energy.webp", href: "/led-display/", className: "h-7 sm:h-8" },
+  { name: "Lampro", src: "/images/logo/lampro.webp", href: "/led-display/", className: "h-5 sm:h-6" },
+  { name: "Huidu", src: "/images/brands/huidu.webp", href: "/led-display/accessories/controller/", className: "h-6 sm:h-7" },
+  { name: "Colorlight", src: "/images/logo/colorlight.webp", href: "/led-display/accessories/controller/", className: "h-6 sm:h-7" },
+  { name: "Mean Well", src: "/images/logo/mean-well.webp", href: "/led-display/", className: "h-6 sm:h-7" },
+  { name: "Mugnee", src: "/images/logo/mugnee.webp", href: "/led-display/", className: "h-6 sm:h-7" },
+  { name: "Renex Digital", src: "/images/brands/renex-exact.webp", href: "/led-display/", className: "h-7 sm:h-8" },
+  { name: "Synoveta", src: "/images/brands/synoveta-logo.jpeg", href: "/led-display/", className: "h-7 sm:h-8" },
   { name: "Bosch", src: "/images/brands/audio/bosch-logo.svg", href: "/conference-system/brands/bosch/", className: "h-6 sm:h-7" },
   { name: "TOA", src: "/images/brands/audio/toa-logo.png", href: "/conference-system/brands/toa/", className: "h-6 sm:h-7" },
   { name: "SPON", src: "/images/brands/audio/spon.svg", href: "/conference-system/brands/spon/", className: "h-5 sm:h-6" },
+  { name: "CMX", src: "/images/brands/audio/cmx-logo.png", href: "/conference-system/brands/cmx/", className: "h-7 sm:h-8" },
 ] as const;
 
 const serviceHighlights = [
@@ -46,24 +56,34 @@ export default function HomeTrustServiceStrip() {
 
           <div className="hidden h-12 w-px bg-slate-200 xl:block" aria-hidden="true" />
 
-          <div className="flex min-w-0 items-center gap-4 overflow-x-auto border-t border-slate-100 px-1 pt-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid sm:grid-cols-5 sm:gap-x-3 sm:overflow-visible sm:px-0 lg:flex lg:justify-center lg:gap-x-4 lg:border-t-0 lg:pt-0 xl:px-5 2xl:gap-x-6 2xl:px-7">
-            {homeBrandLogos.map((brand) => (
-              <Link
-                key={brand.name}
-                prefetch={false}
-                href={brand.href}
-                aria-label={`Browse ${brand.name} solutions`}
-                className="flex min-w-[92px] shrink-0 items-center justify-center transition duration-200 hover:scale-[1.03] hover:opacity-80 focus-visible:rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 sm:min-w-0"
-              >
-                <Image
-                  src={brand.src}
-                  alt={`${brand.name} logo`}
-                  width={120}
-                  height={36}
-                  className={`${brand.className} w-auto max-w-[96px] object-contain sm:max-w-[110px] xl:max-w-[92px] 2xl:max-w-[110px]`}
-                />
-              </Link>
-            ))}
+          <div className="group relative min-w-0 overflow-hidden border-t border-slate-100 px-1 pt-4 lg:border-t-0 lg:pt-0 xl:mx-5 xl:px-0 2xl:mx-7">
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-5 bg-gradient-to-r from-white to-transparent sm:w-8" aria-hidden="true" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-5 bg-gradient-to-l from-white to-transparent sm:w-8" aria-hidden="true" />
+
+            <div className="home-brand-marquee-track flex w-max will-change-transform group-hover:[animation-play-state:paused] motion-reduce:transform-none motion-reduce:animate-none">
+              {[0, 1].map((groupIndex) => (
+                <div key={groupIndex} className="flex shrink-0 items-center gap-4 pr-4" aria-hidden={groupIndex === 1 ? "true" : undefined}>
+                  {homeBrandLogos.map((brand) => (
+                    <Link
+                      key={`${groupIndex}-${brand.name}`}
+                      prefetch={false}
+                      href={brand.href}
+                      aria-label={groupIndex === 0 ? `Browse ${brand.name} solutions` : undefined}
+                      tabIndex={groupIndex === 1 ? -1 : undefined}
+                      className="flex h-10 w-[96px] shrink-0 items-center justify-center transition duration-200 hover:scale-[1.03] hover:opacity-80 focus-visible:rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 sm:w-[108px] xl:w-[100px] 2xl:w-[112px]"
+                    >
+                      <Image
+                        src={brand.src}
+                        alt={groupIndex === 0 ? `${brand.name} logo` : ""}
+                        width={120}
+                        height={36}
+                        className={`${brand.className} w-auto max-w-[90px] object-contain sm:max-w-[102px] xl:max-h-[23px] xl:max-w-[90px] 2xl:max-w-[102px]`}
+                      />
+                    </Link>
+                  ))}
+                </div>
+              ))}
+            </div>
           </div>
 
           <div className="hidden h-12 w-px bg-slate-200 xl:block" aria-hidden="true" />

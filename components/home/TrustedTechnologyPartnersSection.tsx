@@ -16,6 +16,7 @@ const trustedTechPartnerLogos: Array<{ name: string; src: string; href?: string 
   { name: "Mean Well", src: "/images/logo/mean-well.webp", href: "https://www.meanwell.com/" },
   { name: "Mugnee Multiple Limited", src: "/images/logo/mugnee.webp", href: "https://www.mugnee.com/" },
   { name: "Renex Digital", src: "/images/brands/renex-exact.webp", href: "https://renex.com.bd/" },
+  { name: "Synoveta", src: "/images/brands/synoveta-logo.jpeg" },
 ];
 
 const hiddenPartnerNames = new Set(["Absen", "Unilumin", "Leyard"]);
@@ -37,6 +38,7 @@ function getLogoClassName(name: string) {
   if (name === "NovaStar") return "h-8 w-auto max-w-[118px] object-contain md:h-10 md:max-w-[150px]";
   if (name === "Mugnee Multiple Limited") return "h-8 w-auto max-w-[122px] object-contain md:h-10 md:max-w-[156px]";
   if (name === "Renex Digital") return "h-10 w-full max-w-none object-cover object-center md:h-12";
+  if (name === "Synoveta") return "h-9 w-auto max-w-[112px] object-contain md:h-11 md:max-w-[146px]";
   return "h-8 w-auto max-w-[112px] object-contain md:h-10 md:max-w-[146px]";
 }
 
@@ -85,10 +87,11 @@ export default function TrustedTechnologyPartnersSection() {
   const marqueeFrameRef = useRef<number | null>(null);
   const marqueeOffsetRef = useRef(0);
   const trustedPartnersSubtitle =
-    "We use globally trusted LED display components in Bangladesh projects with LianTronics, AOTO Electronics, G-Energy, Lampro, NovaStar, Huidu, Colorlight, Mean Well, Mugnee Multiple Limited, and Renex Digital to ensure stable performance, reliable power, and long-term support.";
+    "We use globally trusted LED display components in Bangladesh projects with Synoveta, LianTronics, AOTO Electronics, G-Energy, Lampro, NovaStar, Huidu, Colorlight, Mean Well, Mugnee Multiple Limited, and Renex Digital to ensure stable performance, reliable power, and long-term support.";
   const trustedPartnersSubtitleContent = (
     <>
       We use globally trusted LED display components in Bangladesh projects with{" "}
+      <span className="font-bold text-slate-900">Synoveta</span>,{" "}
       <span className="font-bold text-slate-900">LianTronics</span>,{" "}
       <span className="font-bold text-slate-900">AOTO Electronics</span>,{" "}
       <span className="font-bold text-slate-900">G-Energy</span>,{" "}
@@ -192,7 +195,7 @@ export default function TrustedTechnologyPartnersSection() {
               <p className="mx-auto text-[13px] leading-5 text-slate-600">{trustedPartnersSubtitleContent}</p>
             ) : (
               <p className="mx-auto max-w-full truncate text-[13px] leading-5">
-                We use globally trusted LED display components in Bangladesh projects with LianTronics, AOTO Electronics...
+                We use globally trusted LED display components in Bangladesh projects with Synoveta, LianTronics, AOTO Electronics...
               </p>
             )}
             <button
