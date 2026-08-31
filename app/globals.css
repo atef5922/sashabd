@@ -43,6 +43,65 @@ body {
   font-weight: var(--site-font-weight-normal);
 }
 
+/* Home hero geometry is static CSS so the first paint matches the hydrated UI. */
+.home-hero-shell,
+.home-hero-frame {
+  min-height: 445px !important;
+}
+
+@media (min-width: 640px) {
+  .home-hero-shell,
+  .home-hero-frame {
+    min-height: 435px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-hero-shell,
+  .home-hero-frame {
+    min-height: clamp(335px, calc(25vw + 15px), 383px) !important;
+  }
+}
+
+@media (min-width: 1440px) {
+  .home-hero-shell,
+  .home-hero-frame {
+    min-height: clamp(410px, 23vw, 455px) !important;
+  }
+
+  .home-hero-content {
+    transform: translateY(26px) !important;
+  }
+
+  .home-hero-title {
+    font-size: 2.5rem !important;
+  }
+
+  .home-hero-description {
+    font-size: 0.95rem !important;
+    line-height: 1.55rem !important;
+  }
+
+  .home-hero-actions {
+    width: max-content;
+  }
+
+  .home-hero-actions > a {
+    flex: 0 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .home-hero-features > li {
+    border: 1px solid rgba(255, 255, 255, 0.58);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.72);
+    padding: 4px 10px;
+    box-shadow: 0 3px 10px rgba(7, 25, 54, 0.05);
+    backdrop-filter: blur(2px);
+  }
+}
+
 .conference-product-card-image {
   transform: scale(1);
   transform-origin: center;

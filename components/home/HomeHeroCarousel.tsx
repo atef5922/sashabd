@@ -180,24 +180,6 @@ export default function HomeHeroCarousel() {
         else showNext();
       }}
     >
-      <style jsx>{`
-        .home-hero-shell,
-        .home-hero-frame {
-          min-height: 445px !important;
-        }
-        @media (min-width: 640px) {
-          .home-hero-shell,
-          .home-hero-frame {
-            min-height: 435px !important;
-          }
-        }
-        @media (min-width: 1024px) {
-          .home-hero-shell,
-          .home-hero-frame {
-            min-height: clamp(335px, calc(25vw + 15px), 383px) !important;
-          }
-        }
-      `}</style>
       {heroSlides.map((slide, index) => (
         <Image
           key={slide.id}
@@ -226,30 +208,30 @@ export default function HomeHeroCarousel() {
         aria-roledescription="slide"
         aria-label={`${activeIndex + 1} of ${heroSlides.length}: ${activeSlide.title}`}
       >
-              <div className="max-w-[19rem] text-left sm:max-w-[34rem] lg:max-w-[39%] lg:translate-y-1">
+              <div className="home-hero-content max-w-[19rem] text-left sm:max-w-[34rem] lg:max-w-[39%] lg:translate-y-1">
                 <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#ef4a00] sm:text-[11px]">
                   {activeSlide.eyebrow}
                 </p>
                 {activeIndex === 0 ? (
-                  <h1 className="mt-2 text-[1.75rem] font-black leading-[1.08] tracking-[-0.035em] text-[#071936] sm:text-[2rem] lg:text-[2.125rem] xl:text-4xl">
+                  <h1 className="home-hero-title mt-2 text-[1.75rem] font-black leading-[1.08] tracking-[-0.035em] text-[#071936] sm:text-[2rem] lg:text-[2.125rem] xl:text-4xl">
                     {activeSlide.title}
                   </h1>
                 ) : (
-                  <h2 className="mt-2 !pb-0 text-[1.75rem] font-black leading-[1.08] tracking-[-0.035em] text-[#071936] after:!hidden sm:text-[2rem] lg:text-[2.125rem] xl:text-4xl">
+                  <h2 className="home-hero-title mt-2 !pb-0 text-[1.75rem] font-black leading-[1.08] tracking-[-0.035em] text-[#071936] after:!hidden sm:text-[2rem] lg:text-[2.125rem] xl:text-4xl">
                     {activeSlide.title}
                   </h2>
                 )}
-                <p className="mt-3 max-w-[38rem] text-[13px] font-medium leading-5 text-slate-700 sm:text-sm sm:leading-6 lg:text-[clamp(0.78rem,0.9vw,0.95rem)]">
+                <p className="home-hero-description mt-3 max-w-[38rem] text-[13px] font-medium leading-5 text-slate-700 sm:text-sm sm:leading-6 lg:text-[clamp(0.78rem,0.9vw,0.95rem)]">
                   {activeSlide.description}
                 </p>
 
-                <div className="mt-4 flex flex-col gap-2.5 sm:mt-5 sm:flex-row lg:grid lg:max-w-[23rem] lg:grid-cols-2 xl:flex xl:max-w-none">
+                <div className="home-hero-actions mt-4 flex flex-col gap-2.5 sm:mt-5 sm:flex-row lg:grid lg:max-w-[23rem] lg:grid-cols-2 xl:flex xl:max-w-none">
                   <Link
                     prefetch={false}
                     href={activeSlide.primaryHref}
                     className="inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-[#071936] px-5 text-[12px] font-extrabold text-white shadow-[0_8px_22px_rgba(7,25,54,0.18)] transition hover:-translate-y-0.5 hover:bg-[#102b52] hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#071936] focus-visible:ring-offset-2 sm:text-[13px] lg:px-2.5 lg:text-[10px] xl:px-5 xl:text-[13px]"
                   >
-                    <span className="inline-flex lg:hidden xl:inline-flex"><GridIcon /></span>
+                    <span className="inline-flex"><GridIcon /></span>
                     {activeSlide.primaryLabel}
                   </Link>
                   <Link
@@ -257,15 +239,15 @@ export default function HomeHeroCarousel() {
                     href={activeSlide.secondaryHref}
                     className="inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-gradient-to-r from-[#ef4a00] to-[#ff6a00] px-5 text-[12px] font-extrabold text-white shadow-[0_8px_22px_rgba(255,94,0,0.22)] transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 sm:text-[13px] lg:px-2.5 lg:text-[10px] xl:px-5 xl:text-[13px]"
                   >
-                    <span className="inline-flex lg:hidden xl:inline-flex"><DocumentIcon /></span>
+                    <span className="inline-flex"><DocumentIcon /></span>
                     {activeSlide.secondaryLabel}
                   </Link>
                 </div>
               </div>
 
-              <ul className="mt-auto grid max-w-[39rem] grid-cols-2 gap-x-3 gap-y-2.5 pb-9 pt-5 sm:grid-cols-2 sm:gap-x-5 sm:pb-10 lg:w-[56%] lg:max-w-none lg:grid-cols-4 lg:gap-x-7 lg:pb-0 lg:pt-3">
+              <ul className="home-hero-features mt-auto grid max-w-[39rem] grid-cols-2 gap-x-3 gap-y-2.5 pb-9 pt-5 sm:grid-cols-2 sm:gap-x-5 sm:pb-10 lg:w-[56%] lg:max-w-none lg:grid-cols-4 lg:gap-x-7 lg:pb-0 lg:pt-3">
                 {activeSlide.features.map((feature) => (
-                  <li key={feature} className="flex min-w-0 items-center gap-2 text-left text-[#071936] lg:rounded-md lg:bg-white/70 lg:px-2 lg:py-1 lg:backdrop-blur-[1px]">
+                  <li key={feature} className="flex min-w-0 items-center gap-2 text-left text-[#071936]">
                     <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#071936]/15 bg-white/80 text-[#ef4a00] shadow-sm">
                       <svg viewBox="0 0 20 20" className="h-3 w-3" fill="none" aria-hidden="true">
                         <path d="m5.5 10 2.7 2.7 6.2-6.1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
