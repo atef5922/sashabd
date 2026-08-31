@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type Dispatch, type SetStateAction } from "react";
 
 import { buildLedProductCardHighlights } from "@/lib/productCardHighlights";
-import ProductGridCard from "@/components/products/ProductGridCard";
+import { normalizeDisplayedPriceText } from "@/lib/price";
 import {
   controllerCatalog,
   getCardShort,
@@ -21,6 +21,12 @@ import { getPaSystemCardPriceLabel, paSystemCatalog } from "@/modules/routes/cat
 import { digitalPodiumCatalog } from "@/modules/routes/catalog/control-systems/digital-podium/catalog";
 import { turnstileCatalog } from "@/modules/routes/catalog/control-systems/turnstile-gate-system/catalog";
 import {
+  conferenceSystemCatalog,
+  getConferenceProductPriceLabel,
+  getConferenceProductPrimaryImage,
+} from "@/app/conference-system/catalog";
+import { getConferenceProductDisplayType } from "@/app/conference-system/conferenceProductDisplayType";
+import {
   getInteractiveFlatPanelBrandLabel,
   getInteractiveFlatPanelBullets,
   getInteractiveFlatPanelChips,
@@ -32,7 +38,7 @@ const PAGE_SIZE = 12;
 
 type HomeProduct = {
   id: string;
-  kind: "led" | "accessory" | "pa" | "turnstile" | "podium" | "interactive-flat-panel";
+  kind: "led" | "conference" | "accessory" | "pa" | "turnstile" | "podium" | "interactive-flat-panel";
   title: string;
   subtitle: string;
   image: string;
@@ -48,6 +54,12 @@ type HomeProduct = {
   turnstileKind?: (typeof turnstileCatalog)[number]["kind"];
   ifpBrand?: (typeof interactiveFlatPanelCatalog)[number]["brand"];
   ifpSize?: (typeof interactiveFlatPanelCatalog)[number]["sizeInch"];
+  brandName?: string;
+  brandSlug?: string;
+  conferencePriceType?: "fixed" | "range" | "request";
+  conferencePriceMin?: number;
+  conferencePriceMax?: number;
+  productTypeLabel?: string;
 };
 
 function getLedCardBullets(product: HomeProduct): string[] {
@@ -61,19 +73,155 @@ function getLedCardBullets(product: HomeProduct): string[] {
   });
 }
 
-type HomeFilterKey =
+type HomeCategoryKey =
   | "all"
-  | "indoor"
-  | "outdoor"
-  | "rental"
-  | "receiving-card"
-  | "controller"
-  | "power-supply"
-  | "led-accessories"
+  | "led-display"
+  | "conference-system"
   | "pa-system"
   | "turnstile-gate"
   | "digital-podium"
-  | "interactive-flat-panel";
+  | "interactive-flat-panel"
+  | "accessories";
+
+type HomeSortKey = "recommended" | "price-asc" | "price-desc" | "name-asc" | "name-desc";
+
+type SimpleFilterGroup = "category" | "price";
+
+const HOME_PRICE_OPTIONS = [
+  ["under-25k", "Under ৳25,000"],
+  ["25k-50k", "৳25,000–৳49,999"],
+  ["50k-100k", "৳50,000–৳99,999"],
+  ["100k-200k", "৳100,000–৳199,999"],
+  ["over-200k", "৳200,000+"],
+  ["request", "Request Price"],
+] as const;
+
+function matchesHomeCategory(product: HomeProduct, category: HomeCategoryKey): boolean {
+  if (category === "all") return true;
+  if (category === "led-display") return product.kind === "led";
+  if (category === "conference-system") return product.kind === "conference";
+  if (category === "pa-system") return product.kind === "pa";
+  if (category === "turnstile-gate") return product.kind === "turnstile";
+  if (category === "digital-podium") return product.kind === "podium";
+  if (category === "interactive-flat-panel") return product.kind === "interactive-flat-panel";
+  return product.kind === "accessory";
+}
+
+function getHomeCategoryHref(category: HomeCategoryKey): string {
+  switch (category) {
+    case "conference-system":
+      return "/conference-system/";
+    case "pa-system":
+      return "/pa-system/";
+    case "turnstile-gate":
+      return "/turnstile-gate/";
+    case "digital-podium":
+      return "/digital-podium/";
+    case "interactive-flat-panel":
+      return "/interactive-flat-panel/";
+    case "accessories":
+      return "/led-display/accessories/";
+    default:
+      return "/led-display/";
+  }
+}
+
+function getHomeProductPrice(product: HomeProduct): string {
+  if (product.priceLine) return normalizeDisplayedPriceText(product.priceLine);
+  if (product.kind === "pa" && product.priceLabel) {
+    return normalizeDisplayedPriceText(getPaSystemCardPriceLabel({ priceLabel: product.priceLabel }) ?? product.priceLabel);
+  }
+  if (product.priceLabel) return normalizeDisplayedPriceText(product.priceLabel);
+  return "Request quotation";
+}
+
+function getHomeProductNumericPrice(product: HomeProduct, useMaximum = false): number | null {
+  if (product.kind === "conference") {
+    if (product.conferencePriceType === "request") return null;
+    return useMaximum
+      ? product.conferencePriceMax ?? product.conferencePriceMin ?? null
+      : product.conferencePriceMin ?? product.conferencePriceMax ?? null;
+  }
+  const priceText = getHomeProductPrice(product).replace(/,/g, "");
+  const match = priceText.match(/\d+(?:\.\d+)?/);
+  return match ? Number(match[0]) : null;
+}
+
+function homePriceMatchesBand(product: HomeProduct, band: string): boolean {
+  const minimum = getHomeProductNumericPrice(product);
+  if (minimum === null) return band === "request";
+  switch (band) {
+    case "under-25k":
+      return minimum < 25_000;
+    case "25k-50k":
+      return minimum >= 25_000 && minimum < 50_000;
+    case "50k-100k":
+      return minimum >= 50_000 && minimum < 100_000;
+    case "100k-200k":
+      return minimum >= 100_000 && minimum < 200_000;
+    case "over-200k":
+      return minimum >= 200_000;
+    default:
+      return false;
+  }
+}
+
+const VERIFIED_HOME_BRANDS = [
+  "Bosch",
+  "TOA",
+  "SPON",
+  "CMX",
+  "LG",
+  "Samsung",
+  "Newline",
+  "iScreen",
+  "iBoard",
+  "Huidu",
+  "NovaStar",
+  "Colorlight",
+  "G-Energy",
+] as const;
+
+function brandSlug(label: string): string {
+  return label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+function inferVerifiedHomeBrand(title: string, tags: readonly string[] = []): { name: string; slug: string } | null {
+  const haystack = `${title} ${tags.join(" ")}`.toLowerCase();
+  const matched = VERIFIED_HOME_BRANDS.find((brand) => {
+    const normalized = brand.toLowerCase();
+    return new RegExp(`(^|[^a-z0-9])${normalized.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}([^a-z0-9]|$)`, "i").test(haystack);
+  });
+  return matched ? { name: matched, slug: brandSlug(matched) } : null;
+}
+
+function getBadgeClass(kind: HomeProduct["kind"], badge?: string): string {
+  switch (kind) {
+    case "led":
+      return "bg-[#ef4a00]";
+    case "conference":
+      switch (badge?.toUpperCase()) {
+        case "BOSCH":
+          return "bg-[#e30613]";
+        case "TOA":
+          return "bg-[#65717d]";
+        case "CMX":
+          return "bg-[#ef6c00]";
+        default:
+          return "bg-[#0868b5]";
+      }
+    case "pa":
+      return "bg-sky-700";
+    case "turnstile":
+      return "bg-emerald-700";
+    case "podium":
+      return "bg-violet-700";
+    case "interactive-flat-panel":
+      return "bg-indigo-700";
+    default:
+      return "bg-slate-700";
+  }
+}
 
 function getPaginationItems(current: number, total: number): Array<number | "..."> {
   if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
@@ -205,35 +353,27 @@ function subtitleToBullets(subtitle: string): string[] {
 }
 
 export default function HomeAllProductsGrid() {
+  const searchInputId = useId();
   const gridTopRef = useRef<HTMLDivElement | null>(null);
   const scrollToGridOnNextPageChangeRef = useRef(false);
   const mobileCarouselRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const [filter, setFilter] = useState<HomeFilterKey>("all");
+  const [category, setCategory] = useState<HomeCategoryKey>("all");
+  const [query, setQuery] = useState("");
+  const [sort, setSort] = useState<HomeSortKey>("recommended");
+  const [pageSize, setPageSize] = useState(PAGE_SIZE);
   const [page, setPage] = useState(1);
+  const [selectedPriceBands, setSelectedPriceBands] = useState<string[]>([]);
+  const [openFilterGroups, setOpenFilterGroups] = useState<SimpleFilterGroup[]>(["category", "price"]);
+  const [mobileFilterDrawerOpen, setMobileFilterDrawerOpen] = useState(false);
 
-  const imageFitFixIds = useMemo(
-    () =>
-      new Set<string>([
-        "indoor:p1-25-indoor-led-display",
-        "indoor:p1-53-indoor-led-display",
-        "indoor:p1-667-indoor-led-display",
-        "indoor:p1-86-indoor-led-display",
-        "indoor:p2-indoor-led-display",
-        "indoor:p2-5-indoor-led-display",
-        "indoor:p3-indoor-led-display",
-        "indoor:p3-076-indoor-led-display",
-        "outdoor:p2-5-outdoor-led-display-module",
-        "outdoor:p3-outdoor-led-display-module",
-        "outdoor:p3-076-outdoor-led-display-module",
-        "outdoor:p4-outdoor-led-display",
-        "outdoor:p5-outdoor-led-display",
-        "outdoor:p6-outdoor-led-display",
-        "outdoor:p6-67-outdoor-led-display-module-320x160mm",
-        "outdoor:p8-outdoor-led-display-module",
-        "outdoor:p10-outdoor-led-display-module",
-      ]),
-    [],
-  );
+  useEffect(() => {
+    if (!mobileFilterDrawerOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileFilterDrawerOpen(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [mobileFilterDrawerOpen]);
 
   const products = useMemo<HomeProduct[]>(() => {
     const basePath = "/led-display";
@@ -299,7 +439,32 @@ export default function HomeAllProductsGrid() {
       tags: p.tags,
       ifpBrand: p.brand,
       ifpSize: p.sizeInch,
+      brandName: getInteractiveFlatPanelBrandLabel(p.brand),
+      brandSlug: brandSlug(getInteractiveFlatPanelBrandLabel(p.brand)),
     }));
+
+    const conference: HomeProduct[] = conferenceSystemCatalog.map((p) => {
+      const primaryImage = getConferenceProductPrimaryImage(p);
+      return {
+        id: `conference:${p.slug}`,
+        kind: "conference",
+        title: p.name,
+        subtitle: p.shortDescription,
+        image: primaryImage.src,
+        href: `/conference-system/${p.slug}/`,
+        badge: p.brand?.name ?? "Conference",
+        priceLabel: getConferenceProductPriceLabel(p),
+        quickFeatures: p.keyFeatures.slice(0, 4),
+        bestFor: p.applications.slice(0, 3),
+        tags: p.tags,
+        brandName: p.brand?.name,
+        brandSlug: p.brand?.slug,
+        conferencePriceType: p.price.type,
+        conferencePriceMin: p.price.type === "fixed" ? p.price.amount : p.price.type === "range" ? p.price.min : undefined,
+        conferencePriceMax: p.price.type === "fixed" ? p.price.amount : p.price.type === "range" ? p.price.max : undefined,
+        productTypeLabel: getConferenceProductDisplayType(p),
+      };
+    });
 
     const receiving: HomeProduct[] = receivingCardCatalog.map((p) => ({
       id: `acc:receiving:${p.slug}`,
@@ -398,10 +563,11 @@ export default function HomeAllProductsGrid() {
       tags: p.tags,
     }));
 
-    return [
+    const allProducts: HomeProduct[] = [
       ...ledIndoor,
       ...ledOutdoor,
       ...ledRental,
+      ...conference,
       ...interactiveFlat,
       ...podium,
       ...receiving,
@@ -411,64 +577,84 @@ export default function HomeAllProductsGrid() {
       ...turnstile,
       ...ledAccessories,
     ];
+
+    return allProducts.map((product) => {
+      if (product.brandName && product.brandSlug) return product;
+      const inferredBrand = inferVerifiedHomeBrand(product.title, product.tags);
+      return inferredBrand
+        ? { ...product, brandName: inferredBrand.name, brandSlug: inferredBrand.slug }
+        : product;
+    });
   }, []);
 
-  const filteredProducts = useMemo(() => {
-    if (filter === "all") {
-      const page1Config = [
-        { prefix: "led:indoor:", count: 2 },
-        { prefix: "led:outdoor:", count: 2 },
-        { prefix: "ifp:", count: 2 },
-        { prefix: "podium:", count: 2 },
-        { prefix: "pa:", count: 2 },
-        { prefix: "turnstile:", count: 2 },
-      ];
-
-      const page1Items: HomeProduct[] = [];
-      const usedIds = new Set<string>();
-
-      page1Config.forEach((cfg) => {
-        const matches = products.filter((p) => p.id.startsWith(cfg.prefix)).slice(0, cfg.count);
-        matches.forEach((m) => {
-          page1Items.push(m);
-          usedIds.add(m.id);
-        });
+  const recommendedProducts = useMemo(() => {
+    const page1Config = [
+      { prefix: "led:indoor:", count: 2 },
+      { prefix: "led:outdoor:", count: 2 },
+      { prefix: "conference:", count: 2 },
+      { prefix: "ifp:", count: 1 },
+      { prefix: "podium:", count: 1 },
+      { prefix: "pa:", count: 2 },
+      { prefix: "turnstile:", count: 2 },
+    ];
+    const featured: HomeProduct[] = [];
+    const usedIds = new Set<string>();
+    page1Config.forEach(({ prefix, count }) => {
+      products.filter((product) => product.id.startsWith(prefix)).slice(0, count).forEach((product) => {
+        featured.push(product);
+        usedIds.add(product.id);
       });
+    });
+    return [...featured, ...products.filter((product) => !usedIds.has(product.id))];
+  }, [products]);
 
-      const remaining = products.filter((p) => !usedIds.has(p.id));
-      return [...page1Items, ...remaining];
+  const categoryProducts = useMemo(
+    () => recommendedProducts.filter((product) => matchesHomeCategory(product, category)),
+    [category, recommendedProducts],
+  );
+
+  const filteredProducts = useMemo(() => {
+    const normalizedQuery = query.trim().toLowerCase();
+    const matched = categoryProducts.filter((product) => {
+      const searchMatches = !normalizedQuery || [
+        product.title,
+        product.subtitle,
+        product.badge,
+        product.pitch,
+        product.productTypeLabel,
+        product.brandName,
+        ...(product.tags ?? []),
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase()
+        .includes(normalizedQuery);
+      const priceMatches = !selectedPriceBands.length || selectedPriceBands.some((band) => homePriceMatchesBand(product, band));
+      return searchMatches && priceMatches;
+    });
+
+    if (sort === "recommended") return matched;
+    if (sort === "name-asc" || sort === "name-desc") {
+      return [...matched].sort((a, b) =>
+        sort === "name-asc" ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title),
+      );
     }
+    const highToLow = sort === "price-desc";
+    return [...matched].sort((a, b) => {
+      const aPrice = getHomeProductNumericPrice(a, highToLow);
+      const bPrice = getHomeProductNumericPrice(b, highToLow);
+      if (aPrice === null || bPrice === null) {
+        if (aPrice === bPrice) return 0;
+        return aPrice === null ? 1 : -1;
+      }
+      return highToLow ? bPrice - aPrice : aPrice - bPrice;
+    });
+  }, [categoryProducts, query, selectedPriceBands, sort]);
 
-    const matchPrefix =
-      filter === "indoor"
-        ? "led:indoor:"
-        : filter === "outdoor"
-          ? "led:outdoor:"
-          : filter === "rental"
-            ? "led:rental:"
-          : filter === "receiving-card"
-            ? "acc:receiving:"
-            : filter === "controller"
-              ? "acc:controller:"
-              : filter === "power-supply"
-                ? "acc:psu:"
-                : filter === "led-accessories"
-                  ? "acc:led-accessories:"
-                  : filter === "pa-system"
-                    ? "pa:"
-                    : filter === "digital-podium"
-                      ? "podium:"
-                      : filter === "interactive-flat-panel"
-                        ? "ifp:"
-                        : "turnstile:";
-
-    return products.filter((p) => p.id.startsWith(matchPrefix));
-  }, [filter, products]);
-
-  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / pageSize));
   const currentPage = Math.min(Math.max(1, page), totalPages);
-  const startIndex = (currentPage - 1) * PAGE_SIZE;
-  const endIndex = Math.min(filteredProducts.length, startIndex + PAGE_SIZE);
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = Math.min(filteredProducts.length, startIndex + pageSize);
   const paged = filteredProducts.slice(startIndex, endIndex);
   const paginationItems = useMemo(() => getPaginationItems(currentPage, totalPages), [currentPage, totalPages]);
 
@@ -478,95 +664,83 @@ export default function HomeAllProductsGrid() {
     gridTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [currentPage]);
 
-  const filters: Array<{ key: HomeFilterKey; label: string }> = [
-    { key: "all", label: "All" },
-    { key: "indoor", label: "Indoor LED" },
-    { key: "outdoor", label: "Outdoor LED" },
-    { key: "rental", label: "Rental LED" },
-    { key: "interactive-flat-panel", label: "Interactive Panel" },
-    { key: "digital-podium", label: "Digital Podium" },
-    { key: "receiving-card", label: "Receiving Card" },
-    { key: "controller", label: "Controller" },
-    { key: "power-supply", label: "Power Supply" },
-    { key: "pa-system", label: "PA System" },
-    { key: "turnstile-gate", label: "Turnstile Gate" },
-    { key: "led-accessories", label: "LED Accessories" },
-  ];
+  const categories = useMemo<Array<{ key: HomeCategoryKey; label: string }>>(
+    () => [
+      { key: "all", label: "All Products" },
+      { key: "led-display", label: "LED Display" },
+      { key: "conference-system", label: "Conference System" },
+      { key: "pa-system", label: "PA System" },
+      { key: "turnstile-gate", label: "Turnstile Gate" },
+      { key: "interactive-flat-panel", label: "Interactive Panel" },
+      { key: "digital-podium", label: "Digital Podium" },
+      { key: "accessories", label: "Accessories" },
+    ],
+    [],
+  );
 
-  const filterLabelMap = useMemo(
+  const categoryCounts = useMemo(
     () =>
-      Object.fromEntries(filters.map((item) => [item.key, item.label])) as Record<HomeFilterKey, string>,
-    [filters],
+      Object.fromEntries(
+        categories.map((item) => [item.key, products.filter((product) => matchesHomeCategory(product, item.key)).length]),
+      ) as Record<HomeCategoryKey, number>,
+    [categories, products],
+  );
+
+  const priceCounts = useMemo(
+    () => Object.fromEntries(HOME_PRICE_OPTIONS.map(([value]) => [value, categoryProducts.filter((product) => homePriceMatchesBand(product, value)).length])),
+    [categoryProducts],
+  );
+
+  const activeFilterCount = (category === "all" ? 0 : 1) + selectedPriceBands.length;
+
+  const selectCategory = (nextCategory: HomeCategoryKey) => {
+    setCategory(nextCategory);
+    setPage(1);
+  };
+
+  const toggleListValue = (setter: Dispatch<SetStateAction<string[]>>, value: string) => {
+    setter((current) => current.includes(value) ? current.filter((item) => item !== value) : [...current, value]);
+    setPage(1);
+  };
+
+  const toggleFilterGroup = (group: SimpleFilterGroup) => {
+    setOpenFilterGroups((current) =>
+      current.includes(group) ? current.filter((item) => item !== group) : [...current, group],
+    );
+  };
+
+  const clearAllFilters = () => {
+    setCategory("all");
+    setSelectedPriceBands([]);
+    setQuery("");
+    setPage(1);
+  };
+
+  const categoryLabelMap = useMemo(
+    () =>
+      Object.fromEntries(categories.map((item) => [item.key, item.label])) as Record<HomeCategoryKey, string>,
+    [categories],
   );
 
   const mobileSections = useMemo(() => {
-    const mobileConfig = filter === "all"
-      ? [
-          { key: "indoor" as HomeFilterKey, title: "Indoor LED Screens", prefix: "led:indoor:", href: "/led-display/indoor-led/" },
-          { key: "outdoor" as HomeFilterKey, title: "Outdoor LED Billboards", prefix: "led:outdoor:", href: "/led-display/outdoor/" },
-          { key: "rental" as HomeFilterKey, title: "Rental LED Screens", prefix: "led:rental:", href: "/led-display/rental-display/" },
-          { key: "pa-system" as HomeFilterKey, title: "PA Sound Systems", prefix: "pa:", href: "/pa-system/" },
-        ]
-      : [
-          {
-            key: filter,
-            title: filterLabelMap[filter],
-            prefix:
-              filter === "indoor"
-                ? "led:indoor:"
-                : filter === "outdoor"
-                  ? "led:outdoor:"
-                  : filter === "rental"
-                    ? "led:rental:"
-                  : filter === "receiving-card"
-                    ? "acc:receiving:"
-                    : filter === "controller"
-                      ? "acc:controller:"
-                      : filter === "power-supply"
-                        ? "acc:psu:"
-                        : filter === "led-accessories"
-                          ? "acc:led-accessories:"
-                          : filter === "pa-system"
-                            ? "pa:"
-                            : filter === "digital-podium"
-                              ? "podium:"
-                              : filter === "interactive-flat-panel"
-                                ? "ifp:"
-                                : "turnstile:",
-            href:
-              filter === "indoor"
-                ? "/led-display/indoor-led/"
-                : filter === "outdoor"
-                  ? "/led-display/outdoor/"
-                  : filter === "rental"
-                    ? "/led-display/rental-display/"
-                    : filter === "receiving-card"
-                      ? "/led-display/accessories/receiving-card/"
-                      : filter === "controller"
-                        ? "/led-display/accessories/controller/"
-                        : filter === "power-supply"
-                          ? "/led-display/accessories/power-supply/"
-                          : filter === "led-accessories"
-                            ? "/led-display/accessories/led-accessories/"
-                            : filter === "pa-system"
-                              ? "/pa-system/"
-                              : filter === "digital-podium"
-                                ? "/digital-podium/"
-                                : filter === "interactive-flat-panel"
-                                  ? "/interactive-flat-panel/"
-                                  : "/turnstile-gate/",
-          },
-        ];
+    const hasFocusedFilters = category !== "all" || selectedPriceBands.length > 0 || query.trim();
+    if (hasFocusedFilters) {
+      const href = category === "conference-system" ? "/conference-system/"
+        : category === "pa-system" ? "/pa-system/"
+          : category === "turnstile-gate" ? "/turnstile-gate/"
+            : category === "interactive-flat-panel" ? "/interactive-flat-panel/"
+              : category === "digital-podium" ? "/digital-podium/"
+                : "/led-display/";
+      return [{ id: "matches", title: category === "all" ? "Matching Products" : categoryLabelMap[category], href, products: filteredProducts }];
+    }
 
-    return mobileConfig
-      .map((section) => ({
-        id: section.key,
-        title: section.title,
-        href: section.href,
-        products: products.filter((p) => p.id.startsWith(section.prefix)),
-      }))
-      .filter((section) => section.products.length);
-  }, [filter, filterLabelMap, products]);
+    return [
+      { id: "led-display", title: "LED Displays", href: "/led-display/", products: products.filter((product) => product.kind === "led") },
+      { id: "conference-system", title: "Conference Systems", href: "/conference-system/", products: products.filter((product) => product.kind === "conference") },
+      { id: "pa-system", title: "PA Sound Systems", href: "/pa-system/", products: products.filter((product) => product.kind === "pa") },
+      { id: "turnstile-gate", title: "Turnstile Gates", href: "/turnstile-gate/", products: products.filter((product) => product.kind === "turnstile") },
+    ].filter((section) => section.products.length);
+  }, [category, categoryLabelMap, filteredProducts, products, query, selectedPriceBands]);
 
   const scrollMobileCarousel = (sectionId: string, direction: 1 | -1) => {
     const track = mobileCarouselRefs.current[sectionId];
@@ -576,10 +750,6 @@ export default function HomeAllProductsGrid() {
   };
 
   const renderProductCard = (p: HomeProduct, compactMobile = false) => {
-    const imageClassName = compactMobile
-      ? "object-cover object-center transition duration-300 group-hover:scale-[1.03]"
-      : "object-cover object-center transition duration-300 group-hover:scale-[1.03]";
-
     const bullets =
       p.kind === "led"
         ? getLedCardBullets(p)
@@ -589,57 +759,101 @@ export default function HomeAllProductsGrid() {
             ? p.tags.slice(0, 4)
             : subtitleToBullets(p.subtitle);
 
-    const chips = p.bestFor?.length ? p.bestFor.slice(0, 3) : (p.tags ?? []).slice(0, 3);
-
-    const topRightBadge =
-      p.kind === "turnstile"
-        ? { text: getTurnstileKindLabel(p.turnstileKind ?? "tripod_turnstile"), tone: "dark" as const }
+    const topRightLabel =
+      p.kind === "conference"
+        ? p.productTypeLabel
+        : p.kind === "turnstile"
+        ? getTurnstileKindLabel(p.turnstileKind ?? "tripod_turnstile")
         : p.kind === "podium"
-          ? { text: "Control", tone: "dark" as const }
-          : p.kind === "accessory"
-            ? { text: "Accessories", tone: "dark" as const }
-            : p.kind === "interactive-flat-panel" && p.ifpBrand && p.ifpSize
-              ? { text: `${getInteractiveFlatPanelBrandLabel(p.ifpBrand)} ... ${p.ifpSize}"`, tone: "dark" as const }
-              : p.kind === "led" && p.pitch
-                ? { text: p.pitch, tone: "dark" as const }
-                : undefined;
-
-    const metaLines: Array<{ text: string; className?: string }> = [];
-    if (p.kind === "led" && p.priceLine) metaLines.push({ text: p.priceLine, className: "mt-1 text-sm font-semibold text-sky-700" });
-    if (p.kind === "accessory" && p.priceLine) metaLines.push({ text: p.priceLine, className: "mt-1 text-sm font-semibold text-sky-700" });
-
-    if (p.kind === "interactive-flat-panel") {
-      if (p.priceLabel) {
-        metaLines.push({ text: p.priceLabel, className: "mt-1 text-sm font-semibold text-sky-700" });
-      }
-      metaLines.push({ text: p.subtitle, className: "mt-2 text-sm leading-7 text-slate-600 line-clamp-3" });
-    } else if (p.kind === "pa" && p.priceLabel) {
-      const cardPrice = getPaSystemCardPriceLabel({ priceLabel: p.priceLabel });
-      if (cardPrice) {
-        metaLines.push({ text: `Price: ${cardPrice}`, className: "mt-1 text-sm font-semibold text-sky-700" });
-      }
-    } else if ((p.kind === "turnstile" || p.kind === "podium") && p.priceLabel) {
-      metaLines.push({ text: `Price: ${p.priceLabel}`, className: "mt-1 text-sm font-semibold text-sky-700" });
-    }
+          ? "Control"
+          : p.kind === "interactive-flat-panel" && p.ifpBrand && p.ifpSize
+            ? `${getInteractiveFlatPanelBrandLabel(p.ifpBrand)} · ${p.ifpSize}\"`
+            : p.kind === "led" && p.pitch
+              ? formatPitchDisplay(p.pitch)
+              : undefined;
+    const displayTitle = p.title.replace(/\s*&\s*/g, " and ");
+    const priceLabel = getHomeProductPrice(p);
 
     return (
-      <ProductGridCard
+      <article
         key={p.id}
-        href={p.href}
-        title={p.title}
-        image={<Image src={p.image} alt={p.title} fill sizes={compactMobile ? "50vw" : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"} className={imageClassName} />}
-        imageContainerClassName="bg-white"
-        borderColor={`${BRAND.maroon}12`}
-        topLeftBadge={p.kind === "led" ? undefined : { text: p.badge, tone: "light" }}
-        topRightBadge={p.kind === "led" ? undefined : topRightBadge}
-        metaLines={metaLines}
-        bullets={bullets}
-        chips={chips}
-        accentColor={BRAND.maroon}
-        contactHref="/contact"
-        compactMobile={compactMobile}
-        viewDetailsLabel="View details ->"
-      />
+        className="group flex h-full min-w-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_2px_12px_rgba(15,23,42,0.045)] transition-[transform,border-color,box-shadow] duration-200 motion-safe:hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_7px_20px_rgba(15,23,42,0.09)] focus-within:border-slate-400 focus-within:ring-2 focus-within:ring-slate-900/10 motion-reduce:transition-none"
+      >
+        <Link
+          prefetch={false}
+          href={p.href}
+          aria-label={`View details: ${displayTitle}`}
+          className="relative block h-[190px] shrink-0 overflow-hidden border-b border-slate-100 bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-500 sm:h-[205px]"
+        >
+          <Image
+            src={p.image}
+            alt={displayTitle}
+            fill
+            sizes={compactMobile ? "50vw" : "(max-width: 1023px) 50vw, 28vw"}
+            className="object-contain p-4 transition-transform duration-300 motion-safe:group-hover:scale-[1.035] motion-reduce:transition-none sm:p-5"
+          />
+          <span className={`absolute left-3 top-3 z-10 inline-flex max-w-[58%] truncate rounded-[5px] px-2 py-1 text-[10px] font-extrabold uppercase leading-none tracking-[0.025em] text-white shadow-sm ${getBadgeClass(p.kind, p.badge)}`}>
+            {p.badge}
+          </span>
+          {topRightLabel ? (
+            <span className="absolute right-3 top-3 z-10 inline-flex max-w-[42%] truncate rounded-[5px] bg-[#071936] px-2 py-1 text-[10px] font-extrabold leading-none text-white shadow-sm">
+              {topRightLabel}
+            </span>
+          ) : null}
+        </Link>
+
+        <div className="flex flex-1 flex-col px-3.5 pb-3.5 pt-3">
+          <p className="text-left text-[11px] font-bold uppercase leading-4 tracking-[0.055em] text-slate-500">
+            {p.kind === "accessory" ? "System accessory" : p.productTypeLabel ?? p.badge}
+          </p>
+          <h3 className="mt-1 line-clamp-2 min-h-10 text-left text-[15px] font-extrabold leading-5 text-[#071936]">
+            <Link
+              prefetch={false}
+              href={p.href}
+              className="rounded-sm underline-offset-4 transition-colors hover:text-orange-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45"
+            >
+              {displayTitle}
+            </Link>
+          </h3>
+
+          <ul className="mt-3 min-h-[4rem] space-y-1.5" aria-label={`Key features of ${displayTitle}`}>
+            {bullets.slice(0, 3).map((feature) => (
+              <li key={feature} className="flex min-w-0 items-center gap-2 text-left text-[11.5px] font-medium leading-4 text-slate-700">
+                <svg viewBox="0 0 16 16" aria-hidden="true" className="h-4 w-4 shrink-0 fill-none text-emerald-600">
+                  <circle cx="8" cy="8" r="6.25" stroke="currentColor" strokeWidth="1.5" />
+                  <path d="m5.2 8 1.7 1.7 3.9-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span className="line-clamp-1 min-w-0" title={feature}>{feature}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-auto pt-3">
+            <p className="min-h-6 break-words text-left text-base font-extrabold leading-6 tracking-tight text-[#ef4a00] [font-variant-numeric:tabular-nums]">
+              {priceLabel}
+            </p>
+            <p className="mt-0.5 text-left text-[10px] font-medium leading-4 text-slate-500">
+              {priceLabel === "Request quotation" ? "Project-based configuration" : "Indicative product price"}
+            </p>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <Link
+                prefetch={false}
+                href={p.href}
+                className="inline-flex min-h-10 min-w-0 items-center justify-center rounded-md border border-[#102542] bg-white px-2 py-2 text-center text-xs font-bold text-[#071936] transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/35"
+              >
+                View Details
+              </Link>
+              <Link
+                prefetch={false}
+                href={p.kind === "conference" ? `/contact/?project=conference-system&product=${p.id.replace("conference:", "")}` : "/contact/"}
+                className="inline-flex min-h-10 min-w-0 items-center justify-center rounded-md border border-[#071936] bg-[#071936] px-2 py-2 text-center text-xs font-bold text-white transition-colors hover:border-[#102b52] hover:bg-[#102b52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/45 focus-visible:ring-offset-2"
+              >
+                Get a Quote<span className="sr-only"> for {displayTitle}</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </article>
     );
   };
 
@@ -648,32 +862,39 @@ export default function HomeAllProductsGrid() {
 
     return (
       <article
-        className="flex h-full flex-col overflow-hidden rounded-md border bg-white shadow-sm"
-        style={{ borderColor: `${BRAND.maroon}12` }}
+        className="flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_2px_10px_rgba(15,23,42,0.06)]"
       >
-        <Link prefetch={false} href={p.href} className="relative block aspect-[4/3] overflow-hidden bg-slate-50" aria-label={`View details: ${displayTitle}`}>
+        <Link prefetch={false} href={p.href} className="relative block aspect-[4/3] overflow-hidden border-b border-slate-100 bg-white" aria-label={`View details: ${displayTitle}`}>
           <Image
             src={p.image}
             alt={displayTitle}
             fill
             sizes="50vw"
-            className="object-cover object-center transition duration-300"
+            className="object-contain p-2.5 transition duration-300"
           />
+          <span className={`absolute left-2 top-2 inline-flex max-w-[72%] truncate rounded-[4px] px-1.5 py-1 text-[8px] font-extrabold uppercase leading-none text-white ${getBadgeClass(p.kind, p.badge)}`}>
+            {p.badge}
+          </span>
         </Link>
 
         <div className="flex flex-1 flex-col p-3">
+          <p className="mb-1 text-left text-[9px] font-bold uppercase tracking-[0.05em] text-slate-500">{p.productTypeLabel ?? p.badge}</p>
           <div className="min-h-[2.55rem] line-clamp-2 text-[13px] font-bold leading-snug text-slate-900">
             {displayTitle}
           </div>
+
+          <p className="mt-2 line-clamp-1 text-left text-[11px] font-extrabold text-[#ef4a00]">
+            {getHomeProductPrice(p)}
+          </p>
 
           <div className="mt-auto pt-3">
             <Link
               prefetch={false}
               href={p.href}
-              className="inline-flex min-h-8 w-full items-center justify-between rounded-md border border-[#F56605]/20 bg-[#FFF7F1] pl-3 pr-1 py-1 text-[10px] font-bold leading-tight text-[#C84B00] shadow-sm transition hover:border-[#F56605]/35 hover:bg-[#FFF1E8]"
+              className="inline-flex min-h-9 w-full items-center justify-between rounded-md border border-[#102542] bg-white py-1 pl-3 pr-1 text-[10px] font-bold leading-tight text-[#071936] transition hover:bg-slate-50"
             >
-              <span>View details -&gt;</span>
-              <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#F56605] text-white shadow-[0_5px_12px_rgba(245,102,5,0.22)]">
+              <span>View Details</span>
+              <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded bg-[#071936] text-white">
                 <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" aria-hidden="true">
                   <path d="m10 7 5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -685,37 +906,180 @@ export default function HomeAllProductsGrid() {
     );
   };
 
+  const simpleFilterGroups: Array<{
+    id: SimpleFilterGroup;
+    label: string;
+    selectedCount: number;
+    options: Array<{ value: string; label: string; count: number; active: boolean }>;
+  }> = [
+    {
+      id: "category",
+      label: "Product Category",
+      selectedCount: category === "all" ? 0 : 1,
+      options: categories.map((item) => ({
+        value: item.key,
+        label: item.label,
+        count: categoryCounts[item.key],
+        active: category === item.key,
+      })),
+    },
+    {
+      id: "price",
+      label: "Price Range",
+      selectedCount: selectedPriceBands.length,
+      options: HOME_PRICE_OPTIONS
+        .map(([value, label]) => ({ value, label, count: priceCounts[value] ?? 0, active: selectedPriceBands.includes(value) }))
+        .filter((option) => option.count > 0 || option.active),
+    },
+  ];
+
+  const renderSimpleFilterGroups = (mobile = false, includeCategory = true) => (
+    <div className={mobile ? "rounded-xl border border-slate-200 bg-white px-3" : "mt-3 border-t border-slate-100"}>
+      {simpleFilterGroups.filter((group) => includeCategory || group.id !== "category").map((group) => {
+        const isOpen = openFilterGroups.includes(group.id);
+        return (
+          <div key={group.id} className="border-b border-slate-100 last:border-b-0">
+            <button
+              type="button"
+              aria-expanded={isOpen}
+              onClick={() => toggleFilterGroup(group.id)}
+              className="flex min-h-11 w-full items-center justify-between gap-3 py-2 text-left text-[11px] font-extrabold text-slate-700 transition hover:text-[#071936] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-500/40"
+            >
+              <span className="flex min-w-0 items-center gap-2">
+                <span className="truncate">{group.label}</span>
+                {group.selectedCount ? (
+                  <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-orange-100 px-1 text-[9px] text-orange-700">{group.selectedCount}</span>
+                ) : null}
+              </span>
+              <svg viewBox="0 0 16 16" aria-hidden="true" className={`h-3.5 w-3.5 shrink-0 fill-none transition-transform ${isOpen ? "rotate-180" : ""}`}>
+                <path d="m3 6 5 5 5-5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+
+            {isOpen ? (
+              <div className={`space-y-0.5 pb-3 ${mobile ? `grid gap-x-2 space-y-0 ${group.id === "price" ? "grid-cols-1" : "grid-cols-2"}` : ""}`}>
+                {group.options.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    aria-pressed={option.active}
+                    onClick={() => {
+                      if (group.id === "category") selectCategory(option.value as HomeCategoryKey);
+                      else toggleListValue(setSelectedPriceBands, option.value);
+                    }}
+                    className={`group/option flex min-h-8 w-full items-center gap-2 rounded-md px-1.5 py-1 text-left text-[11px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/35 ${option.active ? "bg-orange-50 text-orange-700" : "text-slate-600 hover:bg-slate-50 hover:text-[#071936]"}`}
+                  >
+                    <span className={`inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-[3px] border ${option.active ? "border-[#ef4a00] bg-[#ef4a00] text-white" : "border-slate-300 bg-white text-transparent group-hover/option:border-slate-400"}`} aria-hidden="true">
+                      <svg viewBox="0 0 12 12" className="h-2 w-2 fill-none">
+                        <path d="m2.5 6 2.1 2.1 4.9-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </span>
+                    <span className="min-w-0 flex-1 truncate" title={option.label}>{option.label}</span>
+                    <span className="shrink-0 text-[9px] text-slate-400">({option.count})</span>
+                  </button>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        );
+      })}
+    </div>
+  );
+
+  const activeFilterChips: Array<{ key: string; label: string; onRemove: () => void }> = [
+    ...(category !== "all"
+      ? [{ key: `category:${category}`, label: categoryLabelMap[category], onRemove: () => selectCategory("all") }]
+      : []),
+    ...selectedPriceBands.map((value) => ({
+      key: `price:${value}`,
+      label: HOME_PRICE_OPTIONS.find(([optionValue]) => optionValue === value)?.[1] ?? value,
+      onRemove: () => toggleListValue(setSelectedPriceBands, value),
+    })),
+    ...(query.trim()
+      ? [{ key: "search", label: `Search: ${query.trim()}`, onRemove: () => { setQuery(""); setPage(1); } }]
+      : []),
+  ];
+
+  const renderActiveFilterChips = () => activeFilterChips.length ? (
+    <div className="flex flex-wrap items-center gap-1.5" aria-label="Active filters">
+      {activeFilterChips.map((chip) => (
+        <button
+          key={chip.key}
+          type="button"
+          onClick={chip.onRemove}
+          className="inline-flex min-h-7 max-w-full items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-2.5 py-1 text-[10px] font-bold text-orange-700 transition hover:border-orange-300 hover:bg-orange-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/35"
+          aria-label={`Remove ${chip.label} filter`}
+        >
+          <span className="truncate">{chip.label}</span>
+          <span aria-hidden="true" className="text-sm leading-none">&times;</span>
+        </button>
+      ))}
+      <button
+        type="button"
+        onClick={clearAllFilters}
+        className="min-h-7 rounded-full px-2 text-[10px] font-bold text-slate-500 underline-offset-4 hover:text-[#ef4a00] hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/35"
+      >
+        Clear all
+      </button>
+    </div>
+  ) : null;
+
   return (
     <div>
       <div ref={gridTopRef} className="scroll-mt-24" />
 
-      <section className="md:hidden">
-        <div className="overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-          <div className="flex w-max min-w-full flex-nowrap gap-2">
-            {filters.map((f) => {
-              const active = filter === f.key;
-              return (
-                <button
-                  key={f.key}
-                  type="button"
-                  onClick={() => {
-                    setFilter(f.key);
-                    setPage(1);
-                  }}
-                  className="rounded-full border px-4 py-2 text-[11px] font-bold whitespace-nowrap transition"
-                  style={{
-                    borderColor: active ? "rgba(255,106,0,0.65)" : "rgba(103,232,249,0.28)",
-                    background: active ? "linear-gradient(135deg, rgba(228,87,0,0.98), rgba(255,106,0,0.98))" : "rgba(103,232,249,0.10)",
-                    color: active ? "#fff" : "#0f172a",
-                    boxShadow: active ? "0 8px 18px rgba(255,106,0,0.22)" : "none",
-                  }}
-                >
-                  {f.key === "all" ? "All Products" : f.label}
-                </button>
-              );
-            })}
-          </div>
+      <section className="lg:hidden">
+        <label htmlFor={`${searchInputId}-mobile`} className="sr-only">Search products</label>
+        <div className="mb-4 grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:grid-cols-[minmax(0,1fr)_auto]">
+        <div className="relative">
+          <svg viewBox="0 0 24 24" aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 fill-none text-slate-400">
+            <circle cx="11" cy="11" r="6.5" stroke="currentColor" strokeWidth="1.8" />
+            <path d="m16 16 4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+          </svg>
+          <input
+            id={`${searchInputId}-mobile`}
+            type="search"
+            value={query}
+            onChange={(event) => {
+              setQuery(event.target.value);
+              setPage(1);
+            }}
+            placeholder="Search all products..."
+            className="h-11 w-full rounded-xl border border-slate-300 bg-white py-2 pl-9 pr-3 text-sm font-medium text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/15"
+          />
         </div>
+
+        <button
+          type="button"
+          aria-expanded={mobileFilterDrawerOpen}
+          aria-controls={`${searchInputId}-responsive-filters`}
+          onClick={() => setMobileFilterDrawerOpen((open) => !open)}
+          className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 text-sm font-extrabold text-[#071936] shadow-sm transition hover:border-orange-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40 sm:w-auto"
+        >
+          Filters{activeFilterCount ? ` (${activeFilterCount})` : ""}
+        </button>
+        </div>
+
+        <aside
+          id={`${searchInputId}-responsive-filters`}
+          aria-label="Product filters"
+          className={`${mobileFilterDrawerOpen ? "block" : "hidden"} mt-3 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_3px_16px_rgba(15,23,42,0.045)]`}
+        >
+          <div className="flex items-center justify-between gap-3 px-3 pb-2 pt-3">
+            <h3 className="text-base font-extrabold text-[#071936]">Filter Products</h3>
+            <div className="flex items-center gap-2">
+              {activeFilterCount ? <button type="button" onClick={clearAllFilters} className="text-[11px] font-bold text-orange-700 hover:underline">Clear All</button> : null}
+              <button type="button" aria-label="Close product filters" onClick={() => setMobileFilterDrawerOpen(false)} className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-lg text-slate-500 hover:bg-slate-100">&times;</button>
+            </div>
+          </div>
+          <div className="px-3 pb-2">{renderSimpleFilterGroups(true)}</div>
+          <div className="mx-3 mb-3 mt-1 grid grid-cols-2 gap-2">
+            <button type="button" onClick={clearAllFilters} className="min-h-10 rounded-xl border border-slate-300 bg-white px-3 text-sm font-bold text-slate-700">Clear All</button>
+            <button type="button" onClick={() => setMobileFilterDrawerOpen(false)} className="min-h-10 rounded-xl bg-[#FD6900] px-3 text-sm font-extrabold text-white">Show {filteredProducts.length} Products</button>
+          </div>
+        </aside>
+
+        {activeFilterChips.length ? <div className="mt-3">{renderActiveFilterChips()}</div> : null}
 
         <div className="mt-4 space-y-4">
           {mobileSections.map((section) => (
@@ -762,7 +1126,7 @@ export default function HomeAllProductsGrid() {
                     className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
                   >
                     {section.products.map((p) => (
-                      <div key={p.id} className="min-w-[calc((100%-0.75rem)/2)] shrink-0 basis-[calc((100%-0.75rem)/2)] snap-start">
+                      <div key={p.id} className="min-w-[calc(100%-1.5rem)] shrink-0 basis-[calc(100%-1.5rem)] snap-start sm:min-w-[calc((100%-0.75rem)/2)] sm:basis-[calc((100%-0.75rem)/2)]">
                         {renderMobileProductCard(p)}
                       </div>
                     ))}
@@ -782,112 +1146,192 @@ export default function HomeAllProductsGrid() {
               </div>
             </div>
           ))}
+          {!mobileSections.length ? (
+            <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-5 py-8 text-center">
+              <p className="text-sm font-extrabold text-[#071936]">No matching products found</p>
+              <p className="mt-1 text-xs font-medium text-slate-500">Try another search or clear the selected filters.</p>
+              <button
+                type="button"
+                onClick={clearAllFilters}
+                className="mt-3 rounded-md bg-[#071936] px-4 py-2 text-[11px] font-bold text-white"
+              >
+                Clear All Filters
+              </button>
+            </div>
+          ) : null}
         </div>
 
-        <div className="mt-4">
+        {category !== "all" ? <div className="mt-4">
           <Link
             prefetch={false}
-            href="/led-display/"
+            href={getHomeCategoryHref(category)}
             className="inline-flex w-full items-center justify-center rounded-2xl px-4 py-2.5 text-[13px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
             style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
           >
-            View All Products
+            View All {categoryLabelMap[category]} Products
           </Link>
-        </div>
+        </div> : null}
       </section>
 
-      <div className="mb-4 hidden flex-wrap gap-2 md:flex">
-        {filters.map((f) => {
-          const active = filter === f.key;
-          return (
-            <button
-              key={f.key}
-              type="button"
-              onClick={() => {
-                setFilter(f.key);
-                setPage(1);
-              }}
-              className="rounded-2xl border px-4 py-2 text-xs font-semibold transition hover:-translate-y-0.5 hover:shadow-sm"
-              style={{
-                borderColor: active ? "rgba(122,18,52,0.45)" : "rgba(15,23,42,0.10)",
-                background: active ? "rgba(122,18,52,0.10)" : "white",
-                color: active ? "#FF6A00" : "#0f172a",
-              }}
-            >
-              {f.label}
-            </button>
-          );
-        })}
-      </div>
-
-      <section className="product-grid-3 hidden items-stretch gap-[10px] sm:grid-cols-2 lg:grid-cols-3 md:grid">
-        {paged.map((p) => renderProductCard(p))}
-      </section>
-
-      {filteredProducts.length > PAGE_SIZE ? (
-        <section className="mt-4 hidden md:block">
-          <div className="flex flex-col items-center gap-3">
-            <nav aria-label="Products pagination" className="flex flex-wrap items-center justify-center gap-2">
+      <div className="hidden gap-4 lg:grid lg:grid-cols-[15.5rem_minmax(0,1fr)]">
+        <aside className="self-start overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_2px_12px_rgba(15,23,42,0.04)] lg:sticky lg:top-24 lg:flex lg:max-h-[calc(100dvh-7rem)] lg:flex-col" aria-label="Product filters">
+          <div className="flex shrink-0 items-center justify-between gap-3 px-4 pb-2 pt-4">
+            <h3 className="text-lg font-extrabold tracking-tight text-[#071936]">Filter Products</h3>
+            {activeFilterCount || query ? (
               <button
                 type="button"
-                onClick={() => {
-                  scrollToGridOnNextPageChangeRef.current = true;
-                  setPage((p) => Math.max(1, p - 1));
-                }}
-                disabled={currentPage === 1}
-                className="rounded-xl border bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition enabled:hover:-translate-y-0.5 enabled:hover:bg-slate-50 enabled:hover:shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
-                style={{ borderColor: "rgba(15,23,42,0.12)" }}
+                onClick={clearAllFilters}
+                className="text-[11px] font-bold text-[#ef4a00] underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45"
               >
-                Previous
+                Clear
               </button>
+            ) : null}
+          </div>
 
-              {paginationItems.map((item, idx) =>
-                item === "..." ? (
-                  <span key={`ellipsis-${idx}`} className="px-1 text-sm font-bold text-slate-500">
-                    ...
-                  </span>
-                ) : (
+          <label htmlFor={searchInputId} className="sr-only">Search products</label>
+          <div className="relative mx-4 mb-2 shrink-0">
+            <svg viewBox="0 0 24 24" aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 fill-none text-slate-400">
+              <circle cx="11" cy="11" r="6.5" stroke="currentColor" strokeWidth="1.8" />
+              <path d="m16 16 4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+            </svg>
+            <input
+              id={searchInputId}
+              type="search"
+              value={query}
+              onChange={(event) => {
+                setQuery(event.target.value);
+                setPage(1);
+              }}
+              placeholder="Search products..."
+              className="h-11 w-full rounded-lg border border-slate-300 bg-white py-2 pl-9 pr-3 text-sm font-medium text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/15"
+            />
+          </div>
+
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-3 [scrollbar-gutter:stable] [scrollbar-width:thin]">
+            {renderSimpleFilterGroups()}
+          </div>
+        </aside>
+
+        <section className="min-w-0 rounded-xl border border-slate-200 bg-white p-4 shadow-[0_2px_12px_rgba(15,23,42,0.04)] sm:p-5" aria-labelledby="home-featured-products-title">
+          <div className="flex flex-col gap-3 border-b border-slate-100 pb-4 xl:flex-row xl:items-end xl:justify-between">
+            <div>
+              <h3 id="home-featured-products-title" className="text-xl font-extrabold tracking-tight text-[#071936]">Featured Technology Products</h3>
+              <p className="mt-1 text-left text-xs font-medium text-slate-600" aria-live="polite">
+                Showing {filteredProducts.length ? startIndex + 1 : 0}&ndash;{endIndex} of {filteredProducts.length} products
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-end gap-3">
+              <label className="flex items-center gap-2 text-xs font-bold text-slate-700">
+                <span>Sort by</span>
+                <select
+                  value={sort}
+                  onChange={(event) => {
+                    setSort(event.target.value as HomeSortKey);
+                    setPage(1);
+                  }}
+                  className="h-10 rounded-lg border border-slate-300 bg-white px-3 text-xs font-semibold text-[#071936] outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-500/15"
+                >
+                  <option value="recommended">Recommended</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                  <option value="name-asc">Name A–Z</option>
+                  <option value="name-desc">Name Z–A</option>
+                </select>
+              </label>
+              <label className="flex items-center gap-2 text-xs font-bold text-slate-700">
+                <span>Show</span>
+                <select
+                  value={pageSize}
+                  onChange={(event) => {
+                    setPageSize(Number(event.target.value));
+                    setPage(1);
+                  }}
+                  className="h-10 rounded-lg border border-slate-300 bg-white px-3 text-xs font-semibold text-[#071936] outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-500/15"
+                >
+                  <option value={12}>12</option>
+                  <option value={24}>24</option>
+                  <option value={36}>36</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          {activeFilterChips.length ? <div className="mt-3">{renderActiveFilterChips()}</div> : null}
+
+          {paged.length ? (
+            <div className="mt-4 grid items-stretch gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              {paged.map((product) => renderProductCard(product))}
+            </div>
+          ) : (
+            <div className="mt-4 flex min-h-56 flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50/70 px-6 text-center">
+              <p className="text-base font-extrabold text-[#071936]">No matching products found</p>
+              <p className="mt-1 text-sm text-slate-600">Try another keyword or clear the selected filters.</p>
+              <button
+                type="button"
+                onClick={clearAllFilters}
+                className="mt-4 rounded-md bg-[#071936] px-4 py-2 text-xs font-bold text-white transition hover:bg-[#102b52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/45 focus-visible:ring-offset-2"
+              >
+                Reset filters
+              </button>
+            </div>
+          )}
+
+          {filteredProducts.length > pageSize ? (
+            <div className="mt-6 border-t border-slate-100 pt-5">
+              <div className="flex flex-col items-center gap-3">
+                <nav aria-label="Products pagination" className="flex flex-wrap items-center justify-center gap-1.5">
                   <button
-                    key={item}
                     type="button"
                     onClick={() => {
                       scrollToGridOnNextPageChangeRef.current = true;
-                      setPage(item);
+                      setPage((current) => Math.max(1, current - 1));
                     }}
-                    className="min-w-10 rounded-xl border px-3 py-2 text-sm font-semibold transition hover:-translate-y-0.5 hover:shadow-sm"
-                    style={{
-                      borderColor: item === currentPage ? "rgba(14,116,144,0.75)" : "rgba(15,23,42,0.12)",
-                      background: item === currentPage ? "rgba(14,116,144,0.12)" : "white",
-                      color: item === currentPage ? "#0f172a" : "#0f172a",
-                      boxShadow: item === currentPage ? "inset 0 0 0 2px rgba(14,116,144,0.65)" : undefined,
-                    }}
-                    aria-current={item === currentPage ? "page" : undefined}
+                    disabled={currentPage === 1}
+                    className="inline-flex min-h-10 items-center justify-center rounded-md border border-slate-300 bg-white px-3 text-xs font-bold text-slate-800 transition enabled:hover:border-orange-300 enabled:hover:bg-orange-50 enabled:hover:text-orange-700 disabled:cursor-not-allowed disabled:opacity-40"
                   >
-                    {item}
+                    Previous
                   </button>
-                ),
-              )}
 
-              <button
-                type="button"
-                onClick={() => {
-                  scrollToGridOnNextPageChangeRef.current = true;
-                  setPage((p) => Math.min(totalPages, p + 1));
-                }}
-                disabled={currentPage === totalPages}
-                className="rounded-xl border bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition enabled:hover:-translate-y-0.5 enabled:hover:bg-slate-50 enabled:hover:shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
-                style={{ borderColor: "rgba(15,23,42,0.12)" }}
-              >
-                Next
-              </button>
-            </nav>
+                  {paginationItems.map((item, index) =>
+                    item === "..." ? (
+                      <span key={`ellipsis-${index}`} className="px-1 text-sm font-bold text-slate-400">&hellip;</span>
+                    ) : (
+                      <button
+                        key={item}
+                        type="button"
+                        onClick={() => {
+                          scrollToGridOnNextPageChangeRef.current = true;
+                          setPage(item);
+                        }}
+                        className={`inline-flex min-h-10 min-w-10 items-center justify-center rounded-md border px-2 text-xs font-extrabold transition ${item === currentPage ? "border-[#071936] bg-[#071936] text-white" : "border-slate-300 bg-white text-slate-700 hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700"}`}
+                        aria-current={item === currentPage ? "page" : undefined}
+                      >
+                        {item}
+                      </button>
+                    ),
+                  )}
 
-            <div className="text-sm font-medium text-slate-600">
-              Showing {startIndex + 1}-{endIndex} of {filteredProducts.length} products
+                  <button
+                    type="button"
+                    onClick={() => {
+                      scrollToGridOnNextPageChangeRef.current = true;
+                      setPage((current) => Math.min(totalPages, current + 1));
+                    }}
+                    disabled={currentPage === totalPages}
+                    className="inline-flex min-h-10 items-center justify-center rounded-md border border-slate-300 bg-white px-3 text-xs font-bold text-slate-800 transition enabled:hover:border-orange-300 enabled:hover:bg-orange-50 enabled:hover:text-orange-700 disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    Next
+                  </button>
+                </nav>
+                <p className="text-xs font-medium text-slate-500">
+                  Page {currentPage} of {totalPages}
+                </p>
+              </div>
             </div>
-          </div>
+          ) : null}
         </section>
-      ) : null}
+      </div>
     </div>
   );
 }

@@ -11,7 +11,8 @@ import ProjectProposalCtaSection from "@/components/home/ProjectProposalCtaSecti
 import ProjectWorkflowSection from "@/components/home/ProjectWorkflowSection";
 import TrustedTechnologyPartnersSection from "@/components/home/TrustedTechnologyPartnersSection";
 import WhyChooseSection from "@/components/home/WhyChooseSection";
-import HeroBackground, { mobileImagePositions } from "@/components/home/HeroBackground";
+import HomeHeroCarousel from "@/components/home/HomeHeroCarousel";
+import HomeTrustServiceStrip from "@/components/home/HomeTrustServiceStrip";
 
 export const metadata: Metadata = {
   title: { absolute: BRAND_NAME },
@@ -54,13 +55,6 @@ const trustedBadges = [
   "Clean installation planning",
   "Safety-first wiring & protection",
   "Support and maintenance guidance",
-];
-
-const heroServiceHighlights = [
-  "Site survey",
-  "Installation",
-  "Calibration & training",
-  "Scope-based warranty guidance",
 ];
 
 const trustedInstitutions: Array<{
@@ -108,11 +102,11 @@ function SectionHeader({
   return (
     <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <div className="max-w-4xl">
-        <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
+        <h2 className="flex items-center gap-2 !pb-0 text-xl font-extrabold leading-7 tracking-tight text-[#071936] after:!hidden lg:text-[22px]">
           {icon ? <span className="inline-flex">{icon}</span> : null}
           <span>{title}</span>
         </h2>
-        {desc ? <p className="mt-2 text-slate-600 leading-7">{desc}</p> : null}
+        {desc ? <p className="mt-1 text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">{desc}</p> : null}
       </div>
       {right ? <div className="shrink-0">{right}</div> : null}
     </div>
@@ -185,30 +179,6 @@ function TitleIcon({ kind }: { kind: "price" | "trust" | "area" | "faq" | "cta" 
   );
 }
 
-function NationwideSupportIcon() {
-  return (
-    <span
-      aria-hidden="true"
-      className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#0069A8]/20 bg-white/75 text-[#0069A8] shadow-[inset_0_1px_0_rgba(255,255,255,0.78)]"
-    >
-      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none">
-        <path
-          d="M12 21s6-4.7 6-10a6 6 0 1 0-12 0c0 5.3 6 10 6 10Z"
-          stroke="currentColor"
-          strokeWidth="1.9"
-        />
-        <path
-          d="m9.5 11.4 1.8 1.8 3.4-3.7"
-          stroke="currentColor"
-          strokeWidth="1.9"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </span>
-  );
-}
-
 function Section({
   children,
   tone = "white",
@@ -243,7 +213,10 @@ export default function HomePage() {
   };
 
   return (
-    <div className="home-underlined mx-auto w-full max-w-7xl px-4 pt-0 pb-0 md:pb-8 md:px-6">
+    <div
+      className="home-underlined mx-auto w-full max-w-[clamp(80rem,90vw,108rem)] px-4 pb-10 pt-0 [box-shadow:0_0_0_100vmax_#f4f7fb] [clip-path:inset(0_-100vmax)] md:px-6"
+      data-home-route-kind="hub"
+    >
       <style>{`
         .card-butterfly {
           pointer-events: none;
@@ -379,160 +352,12 @@ export default function HomePage() {
           }
         }
       `}</style>
-      <div className="space-y-3 md:space-y-8">
+      <div className="space-y-4">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
         {/* 1) HERO */}
-        <section className="relative left-1/2 right-1/2 -mx-[50vw] min-h-[250px] w-screen overflow-hidden border-b bg-white md:min-h-[clamp(520px,calc(100svh-64px),720px)] md:border-y md:bg-amber-900">
-          <div className="relative z-20 w-full px-0 py-0 md:hidden">
-            <div
-              className="relative overflow-hidden"
-              style={{
-                minHeight: "250px",
-                background: "transparent",
-              }}
-            >
-              <HeroBackground showArrows imageSize="cover" imagePositions={mobileImagePositions} dotsClassName="bottom-1.5 gap-2" />
-
-              <div className="pointer-events-none absolute inset-x-0 top-0 z-20 p-4">
-                <div className="max-w-[280px]">
-                  <span
-                    className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[10px] font-semibold text-[#0069A8] shadow-[0_10px_24px_rgba(15,23,42,0.16)] ring-1 ring-white/55 backdrop-blur-xl"
-                    style={{
-                      background: "linear-gradient(135deg, rgba(255,255,255,0.88), rgba(255,255,255,0.58))",
-                      borderColor: "rgba(255,255,255,0.68)",
-                    }}
-                  >
-                    <NationwideSupportIcon />
-                    <span>Nationwide Support</span>
-                  </span>
-                  <h1 className="sr-only">Sasha Corporation - Smart technology solutions in Bangladesh</h1>
-                  <h2 className="mt-3 text-[27px] font-extrabold leading-[1.02] tracking-tight text-white after:hidden">
-                    Smart Technology Solutions in Bangladesh.
-                  </h2>
-                </div>
-              </div>
-
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 px-4 pb-11">
-                <div className="pointer-events-auto flex flex-nowrap gap-2">
-                  <Link
-                    prefetch={false}
-                    href="/led-display/"
-                    className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-1.5 text-[11px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-lg"
-                    style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-                  >
-                    Browse Products
-                  </Link>
-
-                  <a
-                    href={wa}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex min-h-9 items-center justify-center rounded-md border border-emerald-300/40 bg-emerald-600 px-3 py-1.5 text-[11px] font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-lg"
-                    aria-label="Request a quotation on WhatsApp"
-                  >
-                    WhatsApp Quote
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="hidden md:block">
-            <HeroBackground />
-          </div>
-
-          <div className="pointer-events-none relative z-20 mx-auto hidden w-full max-w-7xl flex-col justify-center px-5 py-10 md:flex md:px-10 md:py-12">
-            <div className="flex flex-wrap items-center gap-3">
-              <span
-                className="inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold text-[#0069A8] shadow-[0_12px_28px_rgba(15,23,42,0.18)] ring-1 ring-white/55 backdrop-blur-xl"
-                style={{
-                  background: "linear-gradient(135deg, rgba(255,255,255,0.88), rgba(255,255,255,0.58))",
-                  borderColor: "rgba(255,255,255,0.68)",
-                }}
-              >
-                <NationwideSupportIcon />
-                <span>Nationwide Support</span>
-              </span>
-            </div>
-
-            <div className="mt-6 max-w-4xl">
-              <h2 className="text-3xl font-extrabold tracking-tight text-white md:text-4xl">
-                Smart Technology Solutions in Bangladesh.
-              </h2>
-
-              <p className="mt-4 text-sm leading-6 text-white/85 md:text-base text-justify [text-align-last:auto]">
-                Sasha Corporation supports projects across Bangladesh with LED display solutions (indoor, outdoor, rental and accessories) plus
-                PA sound systems, turnstile gate access control, digital podiums, and interactive flat panels for classrooms, offices, showrooms
-                and institutions. We handle BOQ and scope clarity, supply, installation, commissioning and after-sales support - so you get a
-                reliable setup with clear specifications and project-based pricing.
-              </p>
-
-                            <div className="pointer-events-auto mt-7 flex flex-wrap gap-3">
-                <Link prefetch={false} href="/led-display/"
-                  className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:shadow-lg"
-                  style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-                >
-                  <span>Browse Products</span>
-                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
-                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" />
-                    <path d="M10 8l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </Link>
-
-                <a
-                  href={wa}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-xl border border-emerald-300/40 bg-emerald-600 px-6 py-3 text-sm font-extrabold text-white shadow-md transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-lg"
-                  aria-label="Request a quotation on WhatsApp"
-                >
-                  Request Quote on WhatsApp
-                </a>
-
-                <a
-                  href={`tel:${siteConfig.phone}`}
-                  className="inline-flex items-center gap-2 rounded-xl border border-white/30 bg-white/10 px-6 py-3 text-sm font-extrabold text-white shadow-md backdrop-blur-sm transition hover:-translate-y-0.5 hover:bg-white/20 hover:shadow-lg"
-                >
-                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l2.27-2.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                  </svg>
-                  <span>Call: {siteConfig.phone}</span>
-                </a>
-              </div>
-
-              <div className="mt-6 flex flex-wrap gap-2 text-xs font-semibold text-white/90">
-                {heroServiceHighlights.map((x) => (
-                  <span
-                    key={x}
-                    className="inline-flex items-center gap-1.5 rounded-full border bg-white/10 px-4 py-2 shadow-sm"
-                    style={{ borderColor: `rgba(255,255,255,0.22)` }}
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-white/14 text-white/95"
-                    >
-                      <svg
-                        viewBox="0 0 24 24"
-                        className="h-2.5 w-2.5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M7 12.5 10.2 15.5 17 8.7" />
-                      </svg>
-                    </span>
-                    {x}
-                  </span>
-                ))}
-              </div>
-
-            </div>
-
-          </div>
-        </section>
+        <HomeHeroCarousel />
+        <HomeTrustServiceStrip />
 
         {/* 2) CATEGORY NAV */}
         <section>
@@ -540,7 +365,7 @@ export default function HomePage() {
             const categories = [
               {
                 title: "LED Display",
-                desc: "Showroom, office, conference & control room models",
+                desc: "Indoor, outdoor, rental and complete LED display solutions",
                 href: "/led-display/",
                 icon: "/icons/outdoor-billboard.svg",
                 tone:
@@ -550,10 +375,10 @@ export default function HomePage() {
                 iconBackground: "linear-gradient(145deg, rgba(255,255,255,0.96), rgba(224,242,254,0.94))",
               },
               {
-                title: "PA Sound System",
-                desc: "Billboard, shop signage & weather-proof solutions",
-                href: "/pa-system/",
-                icon: "/icons/pa-speaker.svg",
+                title: "Conference System",
+                desc: "Wired, wireless, digital and hybrid meeting-room systems",
+                href: "/conference-system/",
+                icon: "/icons/hand-mic.svg",
                 tone:
                   "radial-gradient(circle at 22% 18%, rgba(253,186,116,0.44) 0%, rgba(253,186,116,0) 34%), linear-gradient(145deg, rgba(255,251,235,0.98) 0%, rgba(254,243,199,0.96) 48%, rgba(253,230,138,0.9) 100%)",
                 borderColor: "rgba(245,158,11,0.76)",
@@ -561,10 +386,10 @@ export default function HomePage() {
                 iconBackground: "linear-gradient(145deg, rgba(255,255,255,0.96), rgba(255,237,213,0.94))",
               },
               {
-                title: "Security Solutions",
-                desc: "Stage, event & program rental Digital Sinage",
-                href: "/turnstile-gate/",
-                icon: "/icons/turnstile-gate.svg",
+                title: "PA Sound System",
+                desc: "Amplifiers, microphones and speakers for every venue",
+                href: "/pa-system/",
+                icon: "/icons/pa-speaker.svg",
                 tone:
                   "radial-gradient(circle at 18% 20%, rgba(196,181,253,0.42) 0%, rgba(196,181,253,0) 34%), linear-gradient(145deg, rgba(250,245,255,0.98) 0%, rgba(237,233,254,0.96) 46%, rgba(216,180,254,0.9) 100%)",
                 borderColor: "rgba(168,85,247,0.74)",
@@ -572,10 +397,10 @@ export default function HomePage() {
                 iconBackground: "linear-gradient(145deg, rgba(255,255,255,0.96), rgba(243,232,255,0.94))",
               },
               {
-                title: "Accessories",
-                desc: "Controller, receiving card, power supply & more",
-                href: "/led-display/accessories/",
-                icon: "/icons/accessories-toolbox.svg",
+                title: "Turnstile Gate",
+                desc: "Secure entrance gates with access-control integration",
+                href: "/turnstile-gate/",
+                icon: "/icons/turnstile-gate.svg",
                 tone:
                   "radial-gradient(circle at 20% 18%, rgba(110,231,183,0.44) 0%, rgba(110,231,183,0) 34%), linear-gradient(145deg, rgba(240,253,250,0.98) 0%, rgba(204,251,241,0.96) 50%, rgba(153,246,228,0.88) 100%)",
                 borderColor: "rgba(20,184,166,0.74)",
@@ -585,47 +410,33 @@ export default function HomePage() {
             ];
 
             return (
-              <div className="grid grid-cols-4 gap-1 sm:gap-4 lg:grid-cols-4">
-                {categories.map((c) => (
-                  <Link key={c.title}
+              <div className="grid grid-cols-2 gap-2 rounded-2xl border border-slate-200/90 bg-white p-2 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:grid-cols-4 sm:gap-2.5 sm:p-3">
+                {categories.map((category) => (
+                  <Link
+                    key={category.title}
                     prefetch={false}
-                    href={c.href}
-                    className="home-category-card group relative isolate block h-[64px] border-[0.75px] bg-white px-0.5 py-0.5 sm:h-auto sm:p-2 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-md card-hover"
-                    style={{ borderColor: c.borderColor, background: c.tone }}
+                    href={category.href}
+                    className="group relative isolate flex min-h-[88px] min-w-0 flex-col items-center justify-center overflow-hidden rounded-xl border bg-white px-1.5 py-2 text-center shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-md sm:min-h-[108px] sm:p-2"
+                    style={{ borderColor: category.borderColor, background: category.tone }}
                   >
-                    <div className="card-butterfly">
-                      <span style={{ top: "45%", left: "18%" }} />
-                      <span style={{ top: "55%", left: "32%" }} />
-                      <span style={{ top: "42%", left: "60%" }} />
-                    </div>
-                    <div className="h-full w-full">
-                      <div className="home-category-card-inner h-full">
-                        <div className="card-fireflies">
-                          <span style={{ top: "72%", left: "18%" }} />
-                          <span style={{ top: "56%", left: "35%" }} />
-                          <span style={{ top: "42%", left: "62%" }} />
-                          <span style={{ top: "30%", left: "28%" }} />
-                          <span style={{ top: "18%", left: "52%" }} />
-                          <span style={{ top: "68%", left: "76%" }} />
-                        </div>
-                        <div className="relative flex h-full min-h-0 flex-col items-center justify-center text-center sm:min-h-[128px]">
-	                          <div
-	                            className="flex h-9 w-9 items-center justify-center border text-sm shadow-sm transition duration-300 group-hover:scale-105 sm:h-11 sm:w-11 sm:text-[18px]"
-	                            style={{ borderColor: c.iconBorderColor, background: c.iconBackground }}
-	                          >
-	                            {c.icon.startsWith("/") ? (
-	                              <Image src={c.icon} alt={`${c.title} icon`} width={26} height={26} className="h-5 w-5 object-contain sm:h-6 sm:w-6" />
-	                            ) : (
-	                              <span className="leading-none">{c.icon}</span>
-	                            )}
-	                          </div>
-	
-	                          <div className="mt-0.5 min-w-0 sm:mt-4">
-	                            <div className="text-[8.5px] font-extrabold leading-[1.05] text-slate-900 sm:text-sm">{c.title}</div>
-	                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <span
+                      className="flex h-9 w-9 items-center justify-center rounded-lg border shadow-sm transition duration-300 group-hover:scale-105"
+                      style={{ borderColor: category.iconBorderColor, background: category.iconBackground }}
+                    >
+                      <Image
+                        src={category.icon}
+                        alt=""
+                        width={26}
+                        height={26}
+                        className="h-5 w-5 object-contain"
+                      />
+                    </span>
+                    <span className="mt-1.5 text-[10px] font-extrabold leading-tight text-[#071936] sm:text-[13px]">
+                      {category.title}
+                    </span>
+                    <span className="mt-0.5 hidden text-[9.5px] font-medium leading-3.5 text-slate-600 sm:block">
+                      {category.desc}
+                    </span>
                   </Link>
                 ))}
               </div>
@@ -634,11 +445,11 @@ export default function HomePage() {
         </section>
 
         {/* 2.5) BROWSE PRODUCTS (PAGINATED) */}
-        <section className="mobile-browse-products w-full py-5 md:py-6">
+        <section className="mobile-browse-products w-full rounded-2xl border border-slate-200/90 bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6">
           <div className="md:hidden">
             <details className="group">
               <summary className="flex list-none items-center justify-between gap-3 cursor-pointer">
-                <div className="flex items-center gap-2 text-2xl font-bold text-slate-900">
+                <div className="flex items-center gap-2 text-xl font-extrabold text-[#071936]">
                   <TitleIcon kind="price" />
                   <span>Browse Products</span>
                 </div>
@@ -653,7 +464,7 @@ export default function HomePage() {
                 </span>
               </summary>
               <p className="mt-3 text-slate-600 leading-7">
-                Explore LED display modules, accessories, PA sound systems, and turnstile gate solutions - organized in one paginated grid.
+                Explore LED displays, conference systems, PA sound systems, turnstile gates, and related accessories in one product explorer.
               </p>
             </details>
           </div>
@@ -662,15 +473,15 @@ export default function HomePage() {
             <SectionHeader
               icon={<TitleIcon kind="price" />}
               title="Browse Products"
-              desc="Explore LED display modules, accessories, PA sound systems, and turnstile gate solutions - organized in one paginated grid."
+              desc="Explore LED displays, conference systems, PA sound systems, turnstile gates, and related accessories in one product explorer."
               right={
                 <Link
                   prefetch={false}
                   href="/led-display/"
-                  className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                  className="rounded-lg px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
                   style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
                 >
-                  LED display ?
+                  View LED Displays →
                 </Link>
               }
             />

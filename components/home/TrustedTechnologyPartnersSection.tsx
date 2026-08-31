@@ -171,20 +171,20 @@ export default function TrustedTechnologyPartnersSection() {
   }, []);
 
   return (
-    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-slate-50/80 py-5 md:py-6">
-      <div className="mx-auto w-full max-w-7xl px-4 py-1 md:px-6">
-        <div className="text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-[#0069A8]/20 bg-white px-4 py-2 text-[12px] font-semibold text-[#0069A8] shadow-[0_10px_24px_rgba(15,23,42,0.06)] ring-1 ring-[#0069A8]/10">
+    <section id="home-technology-partners" className="scroll-mt-24 rounded-2xl border border-slate-200/90 bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6">
+      <div className="w-full">
+        <div className="text-left">
+          <span className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#ef4a00]">
             <TechnologyBrandsBadgeIcon />
             <span>Technology Partners</span>
           </span>
         </div>
-        <h2 className="mx-auto mt-3 block max-w-[300px] pb-0 text-center text-[20px] font-bold leading-tight text-slate-900 after:hidden md:flex md:max-w-5xl md:items-center md:justify-center md:gap-2 md:text-2xl md:leading-[1.25]">
+        <h2 className="mt-2 flex items-center gap-2 !pb-0 text-xl font-extrabold leading-7 tracking-tight text-[#071936] after:!hidden lg:text-[22px]">
           <TechnologyBrandsTitleIcon />
           <span className="min-w-0 text-balance">LED Technology &amp; Component Brands</span>
         </h2>
 
-        <div className="mx-auto mt-2 max-w-5xl text-center text-sm leading-6 text-slate-600">
+        <div className="mt-1 max-w-5xl text-left text-[12.5px] font-medium leading-5 text-slate-600 md:text-[13px]">
           <p className="hidden md:block">{trustedPartnersSubtitleContent}</p>
 
           <div className="md:hidden">
@@ -205,7 +205,7 @@ export default function TrustedTechnologyPartnersSection() {
           </div>
         </div>
 
-        <div className="mt-4 -mx-4 rounded-none bg-white/95 p-3 shadow-[0_14px_40px_rgba(15,23,42,0.06)] ring-1 ring-slate-200/70 md:mx-0 md:rounded-[28px] md:p-5">
+        <div className="mt-4 rounded-xl border border-slate-200/80 bg-slate-50/55 p-3 shadow-[0_4px_16px_rgba(15,23,42,0.035)] md:p-4">
           <div className="relative overflow-hidden">
             <div
               className="pointer-events-none absolute left-0 top-0 z-10 h-full w-8 md:w-14"

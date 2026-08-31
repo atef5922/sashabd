@@ -490,7 +490,7 @@ export default function Header({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const useConferenceTabletHeader = pathname.startsWith("/conference-system");
+  const useConferenceTabletHeader = pathname === "/" || pathname.startsWith("/conference-system");
   const normalizedPathname = pathname.replace(/\/+$/, "");
   const hasFlushConferenceHero = [
     "/conference-system/audio-conference-system",

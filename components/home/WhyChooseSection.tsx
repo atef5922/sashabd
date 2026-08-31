@@ -214,18 +214,18 @@ export default function WhyChooseSection() {
   };
 
   return (
-    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(248,250,252,0.92)_48%,rgba(255,255,255,1)_100%)] py-6 md:py-7">
-      <div className="mx-auto w-full max-w-7xl px-4 md:px-6">
-        <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-[#0069A8]/20 bg-white px-4 py-2 text-[12px] font-semibold text-[#0069A8] shadow-[0_10px_24px_rgba(15,23,42,0.06)] ring-1 ring-[#0069A8]/10">
+    <section id="why-choose-sasha" className="scroll-mt-24 rounded-2xl border border-slate-200/90 bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6">
+      <div className="w-full">
+        <div className="max-w-5xl text-left">
+          <span className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#ef4a00]">
             <WhyChooseBadgeIcon />
             <span>Why Choose Sasha Corporation</span>
           </span>
-          <h2 className="mt-3 pb-0 text-[25px] font-extrabold leading-tight tracking-tight text-slate-900 after:hidden md:text-[40px]">
+          <h2 className="mt-2 flex items-center gap-2 !pb-0 text-xl font-extrabold leading-7 tracking-tight text-[#071936] after:!hidden lg:text-[22px]">
             <WhyChooseTitleIcon />
             <span>Why businesses in Bangladesh choose our technology solutions</span>
           </h2>
-          <div className="mt-2 text-sm leading-7 text-slate-600 md:text-[15px]">
+          <div className="mt-1 text-[12.5px] font-medium leading-5 text-slate-600 md:text-[13px]">
             <p className="hidden md:block">
               We combine planning clarity, dependable components, installation execution and long-term support to help LED display,
               PA system, conference and access-control projects move faster with better confidence.
@@ -261,7 +261,7 @@ export default function WhyChooseSection() {
             {whyChooseItems.map((item) => (
               <article
                 key={item.title}
-                className={`group flex min-h-[16.25rem] w-[89%] shrink-0 snap-start flex-col rounded-[20px] border p-4 transition duration-300 motion-reduce:transition-none ${getMobileCardClassName(item.accentClassName)}`}
+                className={`group flex min-h-[16.25rem] w-[89%] shrink-0 snap-start flex-col rounded-[20px] border p-4 text-left transition duration-300 motion-reduce:transition-none ${getMobileCardClassName(item.accentClassName)}`}
               >
                 <div className="flex items-start gap-3">
                   <span className={`inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] border border-white/70 bg-white/80 shadow-sm ${item.accentClassName}`}>
@@ -304,11 +304,11 @@ export default function WhyChooseSection() {
           </div>
         </div>
 
-        <div className="mt-5 hidden gap-4 md:grid md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-4 hidden gap-3 md:grid md:grid-cols-2 xl:grid-cols-3">
           {whyChooseItems.map((item) => (
             <article
               key={item.title}
-              className="group flex h-full flex-col rounded-[18px] border border-slate-200/80 bg-white/96 p-4 shadow-[0_12px_28px_rgba(15,23,42,0.055)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(15,23,42,0.08)] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+              className={`group flex h-full flex-col rounded-xl border p-4 text-left transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(15,23,42,0.08)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 ${getMobileCardClassName(item.accentClassName)}`}
             >
               <div className="flex items-start gap-3">
                 <span className={`inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] border border-slate-200 bg-slate-50 ${item.accentClassName}`}>

@@ -80,19 +80,19 @@ export default function LedSolutionsChipsSection() {
   ];
 
   return (
-    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-[linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(248,250,252,0.82)_100%)] py-5 md:py-6">
-      <div className="mx-auto w-full max-w-7xl px-4 py-1 md:px-6">
-        <div className="text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-[#0069A8]/20 bg-white px-4 py-2 text-[12px] font-semibold text-[#0069A8] shadow-[0_10px_24px_rgba(15,23,42,0.06)] ring-1 ring-[#0069A8]/10">
+    <section id="home-solutions" className="scroll-mt-24 rounded-2xl border border-slate-200/90 bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6">
+      <div className="w-full">
+        <div className="text-left">
+          <span className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#ef4a00]">
             <SolutionsBadgeIcon />
             <span>Commercial Solutions</span>
           </span>
         </div>
-        <h2 className="mx-auto mt-3 flex max-w-[340px] items-center justify-center gap-2 pb-0 text-center text-[19px] font-extrabold leading-tight tracking-tight text-slate-900 after:hidden md:max-w-5xl md:text-[24px]">
+        <h2 className="mt-2 flex items-center gap-2 !pb-0 text-xl font-extrabold leading-7 tracking-tight text-[#071936] after:!hidden lg:text-[22px]">
           <SolutionsTitleIcon />
           <span>Commercial Display, Audio & Smart Technology Solutions in Bangladesh</span>
         </h2>
-        <div className="mx-auto mt-1.5 max-w-5xl text-center text-[12.5px] font-medium leading-6 text-slate-600 md:text-[13.5px]">
+        <div className="mt-1 max-w-5xl text-left text-[12.5px] font-medium leading-5 text-slate-600 md:text-[13px]">
           <p className="hidden md:block">
             Explore our <strong className="font-extrabold text-slate-800">LED Displays</strong>,{" "}
             <strong className="font-extrabold text-slate-800">Rental LED Screens</strong>,{" "}

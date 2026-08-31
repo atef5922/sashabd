@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site";
 
@@ -35,44 +36,62 @@ export default function ProjectProposalCtaSection() {
   const whatsappHref = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
 
   return (
-    <section className="relative left-1/2 right-1/2 -mx-[50vw] w-screen border-t border-slate-200/80 bg-[linear-gradient(180deg,rgba(248,250,252,0.88)_0%,rgba(255,255,255,1)_100%)] py-3.5 md:py-6">
-      <div className="mx-auto w-full max-w-7xl px-4 md:px-6">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="pb-0 text-[22px] font-extrabold leading-tight tracking-tight text-slate-900 after:hidden md:text-[34px]">
+    <section id="home-project-proposal" className="relative scroll-mt-24 overflow-hidden rounded-2xl border border-[#172c53] bg-[#071936] px-4 py-6 shadow-[0_8px_28px_rgba(7,25,54,0.18)] sm:px-6 md:py-8">
+      <Image
+        src="/images/project-page/Project-hero.webp"
+        alt=""
+        fill
+        sizes="(max-width: 1023px) 100vw, 90vw"
+        className="pointer-events-none absolute inset-0 object-cover object-center"
+        style={{ opacity: 0.82 }}
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(7,25,54,.38) 0%, rgba(7,25,54,.2) 50%, transparent 78%), linear-gradient(90deg, rgba(7,25,54,.82) 0%, rgba(7,25,54,.72) 38%, rgba(7,25,54,.58) 66%, rgba(7,25,54,.48) 100%)",
+        }}
+        aria-hidden="true"
+      />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_85%_15%,rgba(59,130,246,0.24),transparent_30%),linear-gradient(120deg,transparent_0%,rgba(255,106,0,0.08)_100%)]" aria-hidden="true" />
+      <div className="relative z-10 mx-auto w-full max-w-4xl">
+        <div className="mx-auto text-center">
+          <h2 className="!pb-0 text-[22px] font-extrabold leading-tight tracking-tight text-white after:!hidden md:text-[30px]">
             <ProposalTitleIcon />
             <span>Planning a new LED screen, audio or access project?</span>
           </h2>
-          <div className="mt-2 text-[13px] leading-7 text-slate-600 md:text-[15px]">
-            <p className="hidden md:block">
+          <div className="mt-2 text-[13px] leading-7 text-slate-200 md:text-[15px]">
+            <p className="hidden md:block text-slate-200">
               Share your BOQ, screen size target or project concept and we will recommend a practical solution path covering
               display type, pixel pitch, controller, power and installation direction.
             </p>
             <div className="md:hidden">
               {mobileExpanded ? (
-                <p className="text-[13px] leading-5 text-slate-600">
+                <p className="text-[13px] leading-5 text-slate-200">
                   Share your BOQ, screen size target or project concept and we will recommend a practical solution path
                   covering display type, pixel pitch, controller, power and installation direction.
                 </p>
               ) : (
-                <p className="mx-auto max-w-full truncate text-[13px] leading-5">
+                <p className="mx-auto max-w-full truncate text-[13px] leading-5 text-slate-200">
                   Share your BOQ, screen size target or project concept and we will recommend a practical solution path...
                 </p>
               )}
               <button
                 type="button"
                 onClick={() => setMobileExpanded((prev) => !prev)}
-                className="mt-1 inline-flex items-center justify-center text-[12px] font-semibold text-[#F56605]"
+                  className="mt-1 inline-flex items-center justify-center text-[12px] font-semibold text-orange-300"
               >
                 {mobileExpanded ? "Show less" : "Learn more"}
               </button>
             </div>
           </div>
 
-          <div className="mt-3 grid grid-cols-2 gap-2 sm:flex sm:flex-row sm:items-center sm:justify-center sm:gap-3">
+          <div className="mt-3 flex flex-col items-center justify-center gap-2 sm:flex-row sm:gap-2.5">
             <Link
               href="/contact/"
               prefetch={false}
-              className="inline-flex min-h-[2.85rem] w-full min-w-0 items-center justify-center rounded-[12px] bg-[linear-gradient(135deg,#0f7d99,#0f6a90)] px-2.5 py-2.5 text-center text-[11px] font-extrabold leading-[1.2] text-white shadow-[0_10px_24px_rgba(14,116,144,0.20)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(14,116,144,0.26)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:min-w-[252px] sm:rounded-[16px] sm:px-6 sm:py-3.5 sm:text-sm"
+              className="inline-flex min-h-10 w-full min-w-0 items-center justify-center rounded-md bg-gradient-to-r from-[#ef4a00] to-[#ff6a00] px-4 py-2.5 text-center text-[11px] font-extrabold leading-[1.2] text-white shadow-[0_8px_20px_rgba(255,94,0,0.22)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_26px_rgba(255,94,0,0.28)] motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:w-auto sm:min-w-[230px] sm:text-xs"
             >
               Get a custom project proposal
             </Link>
@@ -81,13 +100,13 @@ export default function ProjectProposalCtaSection() {
               href={whatsappHref}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex min-h-[2.85rem] w-full min-w-0 items-center justify-center rounded-[12px] border border-slate-300 bg-white px-2.5 py-2.5 text-center text-[11px] font-extrabold leading-[1.2] text-slate-800 transition hover:-translate-y-0.5 hover:border-slate-400 hover:bg-slate-50 motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:min-w-[252px] sm:rounded-[16px] sm:px-6 sm:py-3.5 sm:text-sm"
+              className="inline-flex min-h-10 w-full min-w-0 items-center justify-center rounded-md border border-white/45 bg-white/10 px-4 py-2.5 text-center text-[11px] font-extrabold leading-[1.2] text-white backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-white/60 hover:bg-white/20 motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:w-auto sm:min-w-[230px] sm:text-xs"
             >
               WhatsApp our engineering team
             </a>
           </div>
 
-          <p className="mt-2 text-[12px] leading-6 text-slate-500 md:text-[13px]">
+          <p className="mt-3 text-[12px] leading-6 text-slate-300 md:text-[13px]">
             You can also send BOQ, tender scope or e-GP-related project details by email or WhatsApp for faster review.
           </p>
         </div>
