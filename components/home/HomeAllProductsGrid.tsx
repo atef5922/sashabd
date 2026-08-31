@@ -790,7 +790,7 @@ export default function HomeAllProductsGrid() {
             alt={displayTitle}
             fill
             sizes={compactMobile ? "50vw" : "(max-width: 1023px) 50vw, 28vw"}
-            className="object-contain p-4 transition-transform duration-300 motion-safe:group-hover:scale-[1.035] motion-reduce:transition-none sm:p-5"
+            className="object-cover object-center transition-transform duration-300 motion-safe:group-hover:scale-[1.035] motion-reduce:transition-none"
           />
           <span className={`absolute left-3 top-3 z-10 inline-flex max-w-[58%] truncate rounded-[5px] px-2 py-1 text-[10px] font-extrabold uppercase leading-none tracking-[0.025em] text-white shadow-sm ${getBadgeClass(p.kind, p.badge)}`}>
             {p.badge}
@@ -870,7 +870,7 @@ export default function HomeAllProductsGrid() {
             alt={displayTitle}
             fill
             sizes="50vw"
-            className="object-contain p-2.5 transition duration-300"
+            className="object-cover object-center transition duration-300"
           />
           <span className={`absolute left-2 top-2 inline-flex max-w-[72%] truncate rounded-[4px] px-1.5 py-1 text-[8px] font-extrabold uppercase leading-none text-white ${getBadgeClass(p.kind, p.badge)}`}>
             {p.badge}
