@@ -33,7 +33,7 @@ function ServiceIcon({ icon }: { icon: (typeof serviceHighlights)[number]["icon"
 export default function HomeTrustServiceStrip() {
   return (
     <section aria-labelledby="home-trust-heading" className="relative z-20 -mt-px">
-      <div className="overflow-hidden rounded-xl border border-slate-200/90 bg-white px-4 py-3 shadow-[0_4px_16px_rgba(15,23,42,0.035)] sm:px-5 xl:min-h-[80px] xl:px-7 xl:py-2">
+      <div className="home-trust-service-card overflow-hidden rounded-xl border border-slate-200/90 bg-white px-4 py-3 shadow-[0_4px_16px_rgba(15,23,42,0.035)] sm:px-5 xl:min-h-[80px] xl:px-7 xl:py-2">
         <div className="grid items-center gap-4 lg:grid-cols-[12rem_minmax(0,1fr)] xl:min-h-[62px] xl:grid-cols-[minmax(205px,0.9fr)_1px_minmax(440px,2.4fr)_1px_minmax(350px,1.8fr)] xl:gap-0">
           <div className="min-w-0 pr-2 text-left">
             <p id="home-trust-heading" role="heading" aria-level={2} className="text-[11px] font-black leading-4 tracking-[-0.02em] text-[#071936]">

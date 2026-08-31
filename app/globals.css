@@ -66,20 +66,24 @@ body {
 @media (min-width: 1440px) {
   .home-hero-shell,
   .home-hero-frame {
-    min-height: clamp(410px, 23vw, 455px) !important;
+    min-height: clamp(445px, 25vw, 500px) !important;
   }
 
   .home-hero-content {
-    transform: translateY(26px) !important;
+    transform: translateY(30px) !important;
+  }
+
+  .home-hero-content > p:first-child {
+    font-size: 0.75rem !important;
   }
 
   .home-hero-title {
-    font-size: 2.5rem !important;
+    font-size: 2.65rem !important;
   }
 
   .home-hero-description {
-    font-size: 0.95rem !important;
-    line-height: 1.55rem !important;
+    font-size: 1rem !important;
+    line-height: 1.65rem !important;
   }
 
   .home-hero-actions {
@@ -88,17 +92,52 @@ body {
 
   .home-hero-actions > a {
     flex: 0 0 auto;
-    padding-left: 20px;
-    padding-right: 20px;
+    min-height: 46px;
+    padding-left: 22px;
+    padding-right: 22px;
+    font-size: 0.8rem;
   }
 
   .home-hero-features > li {
     border: 1px solid rgba(255, 255, 255, 0.58);
     border-radius: 5px;
     background: rgba(255, 255, 255, 0.72);
-    padding: 4px 10px;
+    min-height: 32px;
+    padding: 5px 10px;
     box-shadow: 0 3px 10px rgba(7, 25, 54, 0.05);
     backdrop-filter: blur(2px);
+  }
+
+  .home-hero-features > li > span:last-child {
+    font-size: 0.68rem !important;
+    line-height: 0.85rem !important;
+  }
+
+  .home-trust-service-card {
+    min-height: 88px !important;
+    padding: 10px 30px !important;
+  }
+
+  .home-category-grid {
+    gap: 12px !important;
+    padding: 14px !important;
+  }
+
+  .home-overview-category-card {
+    min-height: 116px !important;
+    padding: 10px !important;
+  }
+
+  .mobile-browse-products,
+  #home-solutions,
+  #home-technology-partners,
+  #home-project-workflow,
+  #why-choose-sasha {
+    padding: 26px 28px !important;
+  }
+
+  #home-project-proposal {
+    padding: 36px 30px !important;
   }
 }
 
