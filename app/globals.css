@@ -66,7 +66,7 @@ body {
 @media (min-width: 1440px) {
   .home-hero-shell,
   .home-hero-frame {
-    min-height: clamp(445px, 25vw, 500px) !important;
+    min-height: clamp(470px, 27vw, 540px) !important;
   }
 
   .home-hero-content {
@@ -114,18 +114,22 @@ body {
   }
 
   .home-trust-service-card {
-    min-height: 88px !important;
-    padding: 10px 30px !important;
+    min-height: 98px !important;
+    padding: 14px 30px !important;
   }
 
   .home-category-grid {
-    gap: 12px !important;
-    padding: 14px !important;
+    gap: 14px !important;
+    padding: 16px !important;
   }
 
   .home-overview-category-card {
-    min-height: 116px !important;
-    padding: 10px !important;
+    min-height: 134px !important;
+    padding: 14px 10px !important;
+  }
+
+  .home-page-stack > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 22px !important;
   }
 
   .mobile-browse-products,
@@ -133,11 +137,11 @@ body {
   #home-technology-partners,
   #home-project-workflow,
   #why-choose-sasha {
-    padding: 26px 28px !important;
+    padding: 32px 30px !important;
   }
 
   #home-project-proposal {
-    padding: 36px 30px !important;
+    padding: 42px 32px !important;
   }
 }
 
@@ -345,30 +349,6 @@ label {
   border-radius: 9999px;
   background: #FF6A00;
   opacity: 0.75;
-}
-
-.home-category-card {
-  min-height: 0;
-  overflow: hidden;
-  border-radius: 6px;
-}
-
-@media (min-width: 640px) {
-  .home-category-card {
-    min-height: 150px;
-    border-radius: 10px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .home-category-card {
-    min-height: 160px;
-    transform: skewX(-20deg);
-  }
-
-  .home-category-card-inner {
-    transform: skewX(20deg);
-  }
 }
 
 @keyframes renexMarquee {
