@@ -104,7 +104,7 @@ export default function HomeConferenceSolutionSection() {
           <div className="home-conference-features mt-5">
             {features.map((feature) => (
               <div key={feature.title} className="flex items-center gap-3">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-blue-100 bg-[#f2f7ff] text-[#1256d9]">
+                <span className="home-conference-feature-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-blue-100 bg-[#f2f7ff] text-[#1256d9]">
                   <LineIcon kind={feature.icon} />
                 </span>
                 <div className="min-w-0">
@@ -182,7 +182,10 @@ export default function HomeConferenceSolutionSection() {
         .home-conference-solution p, .home-conference-solution h2, .home-conference-solution h3, .home-conference-solution h4 { white-space: normal !important; overflow-wrap: anywhere; }
         .home-conference-solution-grid { display: grid; grid-template-columns: minmax(0, 1fr); }
         .home-conference-panel-wrap { padding: 12px; }
+        .home-conference-eyebrow { color: #1456d9 !important; }
         .home-conference-features { display: grid; row-gap: 10px; }
+        .home-conference-feature-icon { color: #1456d9 !important; background-color: #edf4ff !important; border-color: #d9e7fb !important; }
+        .home-conference-feature-icon svg { color: #1456d9 !important; }
         .home-conference-equipment-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
         .home-conference-equipment-image { height: 64px !important; }
         .home-conference-visual { height: 245px !important; }
@@ -195,7 +198,8 @@ export default function HomeConferenceSolutionSection() {
         .home-conference-cta { padding-left: 10px !important; padding-right: 10px !important; white-space: nowrap !important; }
         .home-conference-primary { background: #071936 !important; box-shadow: 0 7px 16px rgba(7,25,54,.15); }
         .home-conference-secondary { color: #1456d9 !important; background: #fff !important; }
-        .home-conference-benefit-icon { display: flex !important; width: 32px !important; height: 32px !important; border-radius: 999px !important; background: #edf4ff !important; color: #1456d9 !important; align-items: center; justify-content: center; }
+        .home-conference-benefit-icon { display: flex !important; width: 32px !important; height: 32px !important; border: 1px solid #d9e7fb !important; border-radius: 999px !important; background: #edf4ff !important; color: #1456d9 !important; align-items: center; justify-content: center; }
+        .home-conference-benefit-icon svg { color: #1456d9 !important; }
         @media (max-width: 639px) {
           .home-conference-actions { display: grid !important; grid-template-columns: minmax(0, 1fr) !important; }
           .home-conference-cta { width: 100%; }

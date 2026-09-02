@@ -46,7 +46,7 @@ function TechnologyBrandsTitleIcon() {
   return (
     <span
       aria-hidden="true"
-      className="hidden h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#0069A8]/20 bg-sky-50 text-[#0069A8] shadow-[0_10px_22px_rgba(0,105,168,0.12)] md:inline-flex"
+      className="technology-brands-title-icon hidden h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#0069A8]/20 bg-sky-50 text-[#0069A8] shadow-[0_10px_22px_rgba(0,105,168,0.12)] md:inline-flex"
     >
       <svg viewBox="0 0 24 24" fill="none" className="h-4.5 w-4.5">
         <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" strokeWidth="1.8" />
@@ -66,7 +66,7 @@ function TechnologyBrandsBadgeIcon() {
   return (
     <span
       aria-hidden="true"
-      className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#0069A8]/20 bg-sky-50 text-[#0069A8] shadow-[inset_0_1px_0_rgba(255,255,255,0.92)]"
+      className="technology-brands-badge-icon inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#0069A8]/20 bg-sky-50 text-[#0069A8] shadow-[inset_0_1px_0_rgba(255,255,255,0.92)]"
     >
       <svg viewBox="0 0 24 24" fill="none" className="h-3.5 w-3.5">
         <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" strokeWidth="1.8" />
@@ -177,7 +177,7 @@ export default function TrustedTechnologyPartnersSection() {
     <section id="home-technology-partners" className="scroll-mt-24 rounded-2xl border border-slate-200/90 bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6">
       <div className="w-full">
         <div className="text-left">
-          <span className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#ef4a00]">
+          <span className="technology-partners-eyebrow inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#ef4a00]">
             <TechnologyBrandsBadgeIcon />
             <span>Technology Partners</span>
           </span>
@@ -277,6 +277,17 @@ export default function TrustedTechnologyPartnersSection() {
           </div>
         </div>
       </div>
+      <style>{`
+        .technology-partners-eyebrow { color: #1456d9 !important; }
+        .technology-brands-badge-icon,
+        .technology-brands-title-icon {
+          color: #1456d9 !important;
+          background-color: #edf4ff !important;
+          border-color: #d9e7fb !important;
+        }
+        .technology-brands-badge-icon svg,
+        .technology-brands-title-icon svg { color: #1456d9 !important; }
+      `}</style>
     </section>
   );
 }

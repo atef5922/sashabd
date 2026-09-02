@@ -136,7 +136,7 @@ export default function CoreSolutionsSection() {
             <Link
               href={solution.href}
               prefetch={false}
-              className="mt-3 inline-flex w-fit items-center gap-1 text-[10px] font-extrabold text-[#1d4ed8] transition hover:text-[#153ca5] focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+              className="core-solution-explore-link mt-3 inline-flex w-fit items-center gap-1 text-[10px] font-extrabold text-[#1d4ed8] transition hover:text-[#153ca5] focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
               aria-label={`Explore ${solution.title}`}
             >
               Explore
@@ -161,6 +161,11 @@ export default function CoreSolutionsSection() {
           ))}
         </div>
       </nav>
+      <style>{`
+        .core-solution-explore-link { color: #1456d9 !important; }
+        .core-solution-explore-link:hover { color: #0f3f9f !important; }
+        .core-solution-explore-link svg { color: inherit !important; }
+      `}</style>
     </section>
   );
 }
