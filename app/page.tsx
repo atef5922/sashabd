@@ -4,11 +4,12 @@ import { siteConfig } from "../lib/site";
 import { absoluteUrl, socialImageUrl } from "../lib/seo";
 import { BRAND_NAME } from "@/lib/brand";
 import HomeAllProductsGrid from "@/components/home/HomeAllProductsGrid";
-import LedSolutionsChipsSection from "@/components/home/LedSolutionsChipsSection";
+import CoreSolutionsSection from "@/components/home/CoreSolutionsSection";
+import HomeFeaturedProductsSection from "@/components/home/HomeFeaturedProductsSection";
+import HomeWhyChoosePromiseSection from "@/components/home/HomeWhyChoosePromiseSection";
 import ProjectProposalCtaSection from "@/components/home/ProjectProposalCtaSection";
 import ProjectWorkflowSection from "@/components/home/ProjectWorkflowSection";
 import TrustedTechnologyPartnersSection from "@/components/home/TrustedTechnologyPartnersSection";
-import WhyChooseSection from "@/components/home/WhyChooseSection";
 import HomeHeroCarousel from "@/components/home/HomeHeroCarousel";
 import HomeTrustServiceStrip from "@/components/home/HomeTrustServiceStrip";
 
@@ -358,7 +359,7 @@ export default function HomePage() {
         <HomeTrustServiceStrip />
 
         {/* 2.5) BROWSE PRODUCTS (PAGINATED) */}
-        <section className="mobile-browse-products w-full rounded-2xl border border-slate-200/90 bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6">
+        <section id="browse-products" className="mobile-browse-products w-full scroll-mt-24 rounded-2xl border border-slate-200/90 bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6">
           <div className="md:hidden">
             <details className="group">
               <summary className="flex list-none items-center justify-between gap-3 cursor-pointer">
@@ -395,10 +396,13 @@ export default function HomePage() {
           </div>
         </section>
 
-        <LedSolutionsChipsSection />
+        <CoreSolutionsSection />
+        <div className="overflow-hidden rounded-2xl border border-slate-200/90 shadow-[0_5px_20px_rgba(15,23,42,0.035)]">
+          <HomeWhyChoosePromiseSection />
+          <HomeFeaturedProductsSection />
+        </div>
         <TrustedTechnologyPartnersSection />
         <ProjectWorkflowSection />
-        <WhyChooseSection />
         <ProjectProposalCtaSection />
 
         {/* 6) TRUST */}
