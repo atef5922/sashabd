@@ -1,6 +1,4 @@
 // src/app/page.tsx
-import Image from "next/image";
-import Link from "next/link";
 import type { Metadata } from "next";
 import { siteConfig } from "../lib/site";
 import { absoluteUrl, socialImageUrl } from "../lib/seo";
@@ -359,91 +357,6 @@ export default function HomePage() {
         <HomeHeroCarousel />
         <HomeTrustServiceStrip />
 
-        {/* 2) CATEGORY NAV */}
-        <section>
-          {(() => {
-            const categories = [
-              {
-                title: "LED Display",
-                desc: "Indoor, outdoor, rental and complete LED display solutions",
-                href: "/led-display/",
-                icon: "/icons/outdoor-billboard.svg",
-                tone:
-                  "radial-gradient(circle at 18% 20%, rgba(125,211,252,0.46) 0%, rgba(125,211,252,0) 34%), linear-gradient(145deg, rgba(240,249,255,0.98) 0%, rgba(219,234,254,0.95) 48%, rgba(191,219,254,0.88) 100%)",
-                borderColor: "rgba(56,189,248,0.78)",
-                iconBorderColor: "rgba(14,165,233,0.34)",
-                iconBackground: "linear-gradient(145deg, rgba(255,255,255,0.96), rgba(224,242,254,0.94))",
-              },
-              {
-                title: "Conference System",
-                desc: "Wired, wireless, digital and hybrid meeting-room systems",
-                href: "/conference-system/",
-                icon: "/icons/hand-mic.svg",
-                tone:
-                  "radial-gradient(circle at 22% 18%, rgba(253,186,116,0.44) 0%, rgba(253,186,116,0) 34%), linear-gradient(145deg, rgba(255,251,235,0.98) 0%, rgba(254,243,199,0.96) 48%, rgba(253,230,138,0.9) 100%)",
-                borderColor: "rgba(245,158,11,0.76)",
-                iconBorderColor: "rgba(217,119,6,0.32)",
-                iconBackground: "linear-gradient(145deg, rgba(255,255,255,0.96), rgba(255,237,213,0.94))",
-              },
-              {
-                title: "PA Sound System",
-                desc: "Amplifiers, microphones and speakers for every venue",
-                href: "/pa-system/",
-                icon: "/icons/pa-speaker.svg",
-                tone:
-                  "radial-gradient(circle at 18% 20%, rgba(196,181,253,0.42) 0%, rgba(196,181,253,0) 34%), linear-gradient(145deg, rgba(250,245,255,0.98) 0%, rgba(237,233,254,0.96) 46%, rgba(216,180,254,0.9) 100%)",
-                borderColor: "rgba(168,85,247,0.74)",
-                iconBorderColor: "rgba(147,51,234,0.3)",
-                iconBackground: "linear-gradient(145deg, rgba(255,255,255,0.96), rgba(243,232,255,0.94))",
-              },
-              {
-                title: "Turnstile Gate",
-                desc: "Secure entrance gates with access-control integration",
-                href: "/turnstile-gate/",
-                icon: "/icons/turnstile-gate.svg",
-                tone:
-                  "radial-gradient(circle at 20% 18%, rgba(110,231,183,0.44) 0%, rgba(110,231,183,0) 34%), linear-gradient(145deg, rgba(240,253,250,0.98) 0%, rgba(204,251,241,0.96) 50%, rgba(153,246,228,0.88) 100%)",
-                borderColor: "rgba(20,184,166,0.74)",
-                iconBorderColor: "rgba(13,148,136,0.3)",
-                iconBackground: "linear-gradient(145deg, rgba(255,255,255,0.96), rgba(204,251,241,0.94))",
-              },
-            ];
-
-            return (
-              <div className="home-category-grid grid grid-cols-2 gap-2 rounded-2xl border border-slate-200/90 bg-white p-2 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:grid-cols-4 sm:gap-2.5 sm:p-3">
-                {categories.map((category) => (
-                  <Link
-                    key={category.title}
-                    prefetch={false}
-                    href={category.href}
-                    className="home-overview-category-card group relative isolate flex min-h-[88px] min-w-0 flex-col items-center justify-center overflow-hidden rounded-xl border bg-white px-1.5 py-2 text-center shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-md sm:min-h-[108px] sm:p-2"
-                    style={{ borderColor: category.borderColor, background: category.tone }}
-                  >
-                    <span
-                      className="flex h-9 w-9 items-center justify-center rounded-lg border shadow-sm transition duration-300 group-hover:scale-105"
-                      style={{ borderColor: category.iconBorderColor, background: category.iconBackground }}
-                    >
-                      <Image
-                        src={category.icon}
-                        alt=""
-                        width={26}
-                        height={26}
-                        className="h-5 w-5 object-contain"
-                      />
-                    </span>
-                    <span className="mt-1.5 text-[10px] font-extrabold leading-tight text-[#071936] sm:text-[13px]">
-                      {category.title}
-                    </span>
-                    <span className="mt-0.5 hidden text-[9.5px] font-medium leading-3.5 text-slate-600 sm:block">
-                      {category.desc}
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            );
-          })()}
-        </section>
-
         {/* 2.5) BROWSE PRODUCTS (PAGINATED) */}
         <section className="mobile-browse-products w-full rounded-2xl border border-slate-200/90 bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6">
           <div className="md:hidden">
@@ -474,16 +387,6 @@ export default function HomePage() {
               icon={<TitleIcon kind="price" />}
               title="Browse Products"
               desc="Explore LED displays, conference systems, PA sound systems, turnstile gates, and related accessories in one product explorer."
-              right={
-                <Link
-                  prefetch={false}
-                  href="/led-display/"
-                  className="rounded-lg px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-                  style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-                >
-                  View LED Displays →
-                </Link>
-              }
             />
           </div>
 

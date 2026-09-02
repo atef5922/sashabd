@@ -197,7 +197,7 @@ export default function HomeHeroCarousel() {
       ))}
 
       <div
-        className="absolute inset-0 z-10 bg-[linear-gradient(90deg,#fff_0%,rgba(255,255,255,.97)_38%,rgba(255,255,255,.58)_52%,rgba(255,255,255,.08)_66%,transparent_74%)] sm:bg-[linear-gradient(90deg,#fff_0%,rgba(255,255,255,.96)_34%,rgba(255,255,255,.48)_46%,rgba(255,255,255,.05)_60%,transparent_68%)] lg:bg-[linear-gradient(90deg,#fff_0%,rgba(255,255,255,.94)_27%,rgba(255,255,255,.46)_38%,rgba(255,255,255,.04)_52%,transparent_60%)]"
+        className="absolute inset-0 z-10 bg-[linear-gradient(90deg,#fff_0%,rgba(255,255,255,.98)_45%,rgba(255,255,255,.86)_68%,rgba(255,255,255,.35)_100%)] md:bg-[linear-gradient(90deg,#fff_0%,rgba(255,255,255,.96)_34%,rgba(255,255,255,.48)_46%,rgba(255,255,255,.05)_60%,transparent_68%)] lg:bg-[linear-gradient(90deg,#fff_0%,rgba(255,255,255,.94)_27%,rgba(255,255,255,.46)_38%,rgba(255,255,255,.04)_52%,transparent_60%)]"
         aria-hidden="true"
       />
 
@@ -247,7 +247,7 @@ export default function HomeHeroCarousel() {
 
               <ul className="home-hero-features mt-auto grid max-w-[39rem] grid-cols-2 gap-x-3 gap-y-2.5 pb-9 pt-5 sm:grid-cols-2 sm:gap-x-5 sm:pb-10 lg:w-[56%] lg:max-w-none lg:grid-cols-4 lg:gap-x-7 lg:pb-0 lg:pt-3">
                 {activeSlide.features.map((feature) => (
-                  <li key={feature} className="flex min-w-0 items-center gap-2 text-left text-[#071936]">
+                  <li key={feature} className="flex min-w-0 items-center gap-2 rounded-md border border-white/60 bg-white/75 px-2 py-1.5 text-left text-[#071936] shadow-sm backdrop-blur-[2px] md:border-0 md:bg-transparent md:px-0 md:py-0 md:shadow-none md:backdrop-blur-none">
                     <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-[#071936]/15 bg-white/80 text-[#ef4a00] shadow-sm">
                       <svg viewBox="0 0 20 20" className="h-3 w-3" fill="none" aria-hidden="true">
                         <path d="m5.5 10 2.7 2.7 6.2-6.1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

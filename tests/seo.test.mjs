@@ -2417,9 +2417,15 @@ test("Conference project case studies use canonical data, SEO, schema, breadcrum
   }
   assert.equal(occurrences(data, 'category: "conference-system"'), 3);
   assert.match(data, /categoryLabel: "Conference System"/);
-  assert.match(data, /Corporate Boardroom Conference System Installation in Dhaka \| Sasha Corporation/);
+  assert.match(data, /Padma WASA Conference System Installation in Munshiganj \| Sasha Corporation/);
   assert.match(data, /Smart Meeting Room Conference System Installation in Dhaka \| Sasha Corporation/);
   assert.match(data, /Large Conference Room System Installation in Dhaka \| Sasha Corporation/);
+  assert.match(data, /organization: "Padma WASA"/);
+  assert.match(data, /completedIso: "2025-12-07"/);
+  assert.match(data, /organization: "Sustainable and Renewable Energy Development Authority \(SREDA\)"/);
+  assert.match(data, /completedIso: "2026-02-25"/);
+  assert.match(data, /organization: "Department of Environment \(DoE\), Bangladesh"/);
+  assert.match(data, /completedIso: "2026-05-15"/);
   assert.match(data, /image: "\/images\/conference_system_projects\/conference_p3\.webp"/);
   assert.match(data, /Large conference room digital conference system installation in Dhaka by Sasha Corporation/);
   assert.match(detail, /export const dynamicParams = false/);

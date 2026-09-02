@@ -176,6 +176,14 @@ body {
   }
 }
 
+@media (min-width: 2200px) {
+  [data-home-header="true"] .site-header-inner,
+  .home-hero-frame,
+  [data-home-route-kind="hub"] {
+    max-width: min(90vw, 128rem) !important;
+  }
+}
+
 .conference-product-card-image {
   transform: scale(1);
   transform-origin: center;

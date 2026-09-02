@@ -11,7 +11,7 @@ const homeBrandLogos = [
   { name: "Colorlight", src: "/images/logo/colorlight.webp", href: "/led-display/accessories/controller/", className: "h-6 sm:h-7" },
   { name: "Mean Well", src: "/images/logo/mean-well.webp", href: "/led-display/", className: "h-6 sm:h-7" },
   { name: "Mugnee", src: "/images/logo/mugnee.webp", href: "/led-display/", className: "h-6 sm:h-7" },
-  { name: "Renex Digital", src: "/images/brands/renex-exact.webp", href: "/led-display/", className: "h-7 sm:h-8" },
+  { name: "Renex Digital", src: "/images/brands/renex-exact.webp", href: "/led-display/", className: "h-7 translate-y-[4px] scale-[4] sm:h-8" },
   { name: "Synoveta", src: "/images/brands/synoveta-logo.jpeg", href: "/led-display/", className: "h-7 sm:h-8" },
   { name: "Bosch", src: "/images/brands/audio/bosch-logo.svg", href: "/conference-system/brands/bosch/", className: "h-6 sm:h-7" },
   { name: "TOA", src: "/images/brands/audio/toa-logo.png", href: "/conference-system/brands/toa/", className: "h-6 sm:h-7" },
@@ -43,8 +43,8 @@ function ServiceIcon({ icon }: { icon: (typeof serviceHighlights)[number]["icon"
 export default function HomeTrustServiceStrip() {
   return (
     <section aria-labelledby="home-trust-heading" className="relative z-20 -mt-px">
-      <div className="home-trust-service-card overflow-hidden rounded-xl border border-slate-200/90 bg-white px-4 py-3 shadow-[0_4px_16px_rgba(15,23,42,0.035)] sm:px-5 xl:min-h-[80px] xl:px-7 xl:py-2">
-        <div className="grid items-center gap-4 lg:grid-cols-[12rem_minmax(0,1fr)] xl:min-h-[62px] xl:grid-cols-[minmax(205px,0.9fr)_1px_minmax(440px,2.4fr)_1px_minmax(350px,1.8fr)] xl:gap-0">
+      <div className="home-trust-service-card overflow-hidden rounded-xl border border-slate-200/90 bg-white px-4 py-3 shadow-[0_4px_16px_rgba(15,23,42,0.035)] sm:px-5 min-[1120px]:min-h-[80px] min-[1120px]:px-7 min-[1120px]:py-2">
+        <div className="grid items-center gap-4 min-[1024px]:max-[1119px]:grid-cols-[12rem_minmax(0,1fr)] min-[1120px]:min-h-[62px] min-[1120px]:grid-cols-[minmax(205px,0.9fr)_1px_minmax(440px,2.4fr)_1px_minmax(350px,1.8fr)] min-[1120px]:gap-0">
           <div className="min-w-0 pr-2 text-left">
             <p id="home-trust-heading" role="heading" aria-level={2} className="text-[11px] font-black leading-4 tracking-[-0.02em] text-[#071936]">
               Trusted Technology Solutions
@@ -54,9 +54,9 @@ export default function HomeTrustServiceStrip() {
             </p>
           </div>
 
-          <div className="hidden h-12 w-px bg-slate-200 xl:block" aria-hidden="true" />
+          <div className="hidden h-12 w-px bg-slate-200 min-[1120px]:block" aria-hidden="true" />
 
-          <div className="group relative min-w-0 overflow-hidden border-t border-slate-100 px-1 pt-4 lg:border-t-0 lg:pt-0 xl:mx-5 xl:px-0 2xl:mx-7">
+          <div className="group relative min-w-0 overflow-hidden border-t border-slate-100 px-1 pt-4 lg:border-t-0 lg:pt-0 min-[1120px]:mx-5 min-[1120px]:px-0 2xl:mx-7">
             <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-5 bg-gradient-to-r from-white to-transparent sm:w-8" aria-hidden="true" />
             <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-5 bg-gradient-to-l from-white to-transparent sm:w-8" aria-hidden="true" />
 
@@ -70,14 +70,14 @@ export default function HomeTrustServiceStrip() {
                       href={brand.href}
                       aria-label={groupIndex === 0 ? `Browse ${brand.name} solutions` : undefined}
                       tabIndex={groupIndex === 1 ? -1 : undefined}
-                      className="flex h-10 w-[96px] shrink-0 items-center justify-center transition duration-200 hover:scale-[1.03] hover:opacity-80 focus-visible:rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 sm:w-[108px] xl:w-[100px] 2xl:w-[112px]"
+                      className="flex h-10 w-[96px] shrink-0 items-center justify-center overflow-hidden transition duration-200 hover:scale-[1.03] hover:opacity-80 focus-visible:rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 sm:w-[108px] xl:w-[100px] 2xl:w-[112px]"
                     >
                       <Image
                         src={brand.src}
                         alt={groupIndex === 0 ? `${brand.name} logo` : ""}
                         width={120}
                         height={36}
-                        className={`${brand.className} w-auto max-w-[90px] object-contain sm:max-w-[102px] xl:max-h-[23px] xl:max-w-[90px] 2xl:max-w-[102px]`}
+                        className={`${brand.className} w-auto max-w-[90px] object-contain sm:max-w-[102px] min-[1120px]:max-h-[23px] min-[1120px]:max-w-[90px] 2xl:max-w-[102px]`}
                       />
                     </Link>
                   ))}
@@ -86,9 +86,9 @@ export default function HomeTrustServiceStrip() {
             </div>
           </div>
 
-          <div className="hidden h-12 w-px bg-slate-200 xl:block" aria-hidden="true" />
+          <div className="hidden h-12 w-px bg-slate-200 min-[1120px]:block" aria-hidden="true" />
 
-          <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 border-t border-slate-100 pt-4 lg:col-span-2 xl:col-span-1 xl:border-t-0 xl:pl-7 xl:pt-0 2xl:gap-x-7">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 border-t border-slate-100 pt-4 min-[1024px]:max-[1119px]:col-span-2 min-[1120px]:col-span-1 min-[1120px]:border-t-0 min-[1120px]:pl-7 min-[1120px]:pt-0 2xl:gap-x-7">
             {serviceHighlights.map((feature) => (
               <div key={feature.title} className="flex min-w-0 items-center gap-2 text-[#071936]">
                 <span className="inline-flex h-[18px] w-[18px] shrink-0 items-center justify-center text-orange-600 [&>svg]:h-4 [&>svg]:w-4">
