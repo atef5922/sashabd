@@ -819,7 +819,7 @@ export default function HomeAllProductsGrid() {
           <ul className="mt-3 min-h-[4rem] space-y-1.5" aria-label={`Key features of ${displayTitle}`}>
             {bullets.slice(0, 3).map((feature) => (
               <li key={feature} className="flex min-w-0 items-center gap-2 text-left text-[11.5px] font-medium leading-4 text-slate-700">
-                <svg viewBox="0 0 16 16" aria-hidden="true" className="h-4 w-4 shrink-0 fill-none text-emerald-600">
+                <svg viewBox="0 0 16 16" aria-hidden="true" className="h-4 w-4 shrink-0 fill-none text-slate-700">
                   <circle cx="8" cy="8" r="6.25" stroke="currentColor" strokeWidth="1.5" />
                   <path d="m5.2 8 1.7 1.7 3.9-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -943,7 +943,7 @@ export default function HomeAllProductsGrid() {
               type="button"
               aria-expanded={isOpen}
               onClick={() => toggleFilterGroup(group.id)}
-              className="flex min-h-11 w-full items-center justify-between gap-3 py-2 text-left text-[11px] font-extrabold text-slate-700 transition hover:text-[#071936] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-500/40"
+              className="flex min-h-11 w-full cursor-pointer items-center justify-between gap-3 py-2 text-left text-[11px] font-extrabold text-slate-700 transition hover:text-[#071936] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-500/40"
             >
               <span className="flex min-w-0 items-center gap-2">
                 <span className="truncate">{group.label}</span>
@@ -967,7 +967,7 @@ export default function HomeAllProductsGrid() {
                       if (group.id === "category") selectCategory(option.value as HomeCategoryKey);
                       else toggleListValue(setSelectedPriceBands, option.value);
                     }}
-                    className={`group/option flex min-h-8 w-full items-center gap-2 rounded-md px-1.5 py-1 text-left text-[11px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/35 ${option.active ? "bg-orange-50 text-orange-700" : "text-slate-600 hover:bg-slate-50 hover:text-[#071936]"}`}
+                    className={`group/option flex min-h-8 w-full cursor-pointer items-center gap-2 rounded-md px-1.5 py-1 text-left text-[11px] font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/35 ${option.active ? "bg-orange-50 text-orange-700" : "text-slate-600 hover:bg-slate-50 hover:text-[#071936]"}`}
                   >
                     <span className={`inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-[3px] border ${option.active ? "border-[#ef4a00] bg-[#ef4a00] text-white" : "border-slate-300 bg-white text-transparent group-hover/option:border-slate-400"}`} aria-hidden="true">
                       <svg viewBox="0 0 12 12" className="h-2 w-2 fill-none">
@@ -1054,7 +1054,7 @@ export default function HomeAllProductsGrid() {
           aria-expanded={mobileFilterDrawerOpen}
           aria-controls={`${searchInputId}-responsive-filters`}
           onClick={() => setMobileFilterDrawerOpen((open) => !open)}
-          className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 text-sm font-extrabold text-[#071936] shadow-sm transition hover:border-orange-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40 sm:w-auto"
+          className="inline-flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 text-sm font-extrabold text-[#071936] shadow-sm transition hover:border-orange-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40 sm:w-auto"
         >
           Filters{activeFilterCount ? ` (${activeFilterCount})` : ""}
         </button>

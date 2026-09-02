@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
+import HomeSectionHeadingIcon from "./HomeSectionHeadingIcon";
 
 const featuredProducts = [
   {
@@ -160,9 +161,13 @@ export default function HomeFeaturedProductsSection() {
       `}</style>
       <div className="flex items-end justify-between gap-4">
         <div>
-          <p className="home-section-eyebrow text-[9px] font-black uppercase tracking-[0.13em] sm:text-[10px]">Featured Products</p>
-          <h2 id="home-featured-products-heading" className="mt-1 !pb-0 text-[22px] font-black tracking-[-0.025em] text-[#071936] after:!hidden sm:text-2xl">
-            Explore Our Best Products
+          <p className="home-section-eyebrow inline-flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.13em] sm:text-[10px]">
+            <HomeSectionHeadingIcon kind="products" size="badge" />
+            <span>Featured Products</span>
+          </p>
+          <h2 id="home-featured-products-heading" className="mt-2 flex items-center gap-2 !pb-0 text-[22px] font-black tracking-[-0.025em] text-[#071936] after:!hidden sm:text-2xl">
+            <HomeSectionHeadingIcon kind="products" />
+            <span>Explore Our Best Products</span>
           </h2>
         </div>
         <Link

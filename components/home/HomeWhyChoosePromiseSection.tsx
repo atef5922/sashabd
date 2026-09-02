@@ -1,3 +1,5 @@
+import HomeSectionHeadingIcon from "./HomeSectionHeadingIcon";
+
 const promiseItems = [
   {
     title: "Engineering-Based Solutions",
@@ -145,11 +147,13 @@ export default function HomeWhyChoosePromiseSection() {
       `}</style>
       <div className="grid items-stretch gap-5 lg:grid-cols-4 lg:gap-6">
         <div className="min-w-0 lg:col-span-3">
-          <p className="home-section-eyebrow text-[9px] font-black uppercase tracking-[0.13em] sm:text-[10px]">
-            Why Choose Sasha Corporation
+          <p className="home-section-eyebrow inline-flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.13em] sm:text-[10px]">
+            <HomeSectionHeadingIcon kind="promise" size="badge" />
+            <span>Why Choose Sasha Corporation</span>
           </p>
-          <h2 id="why-choose-sasha-heading" className="mt-1 max-w-xl !pb-0 text-[22px] font-black leading-[1.08] tracking-[-0.025em] text-[#071936] after:!hidden sm:text-2xl">
-            Technology, Quality, Support –<br className="hidden sm:block" /> That&apos;s Our Promise
+          <h2 id="why-choose-sasha-heading" className="mt-2 flex max-w-xl items-start gap-2 !pb-0 text-[22px] font-black leading-[1.08] tracking-[-0.025em] text-[#071936] after:!hidden sm:text-2xl">
+            <HomeSectionHeadingIcon kind="promise" />
+            <span>Technology, Quality, Support –<br className="hidden sm:block" /> That&apos;s Our Promise</span>
           </h2>
           <p className="mt-2 max-w-xl text-[11px] font-medium leading-5 text-slate-600 sm:text-xs">
             We don&apos;t just supply products—we deliver complete solutions with engineering, installation and dependable after-sales support.

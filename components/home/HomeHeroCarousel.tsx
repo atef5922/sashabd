@@ -197,7 +197,7 @@ export default function HomeHeroCarousel() {
       ))}
 
       <div
-        className="absolute inset-0 z-10 bg-[linear-gradient(90deg,#fff_0%,rgba(255,255,255,.98)_45%,rgba(255,255,255,.86)_68%,rgba(255,255,255,.35)_100%)] md:bg-[linear-gradient(90deg,#fff_0%,rgba(255,255,255,.96)_34%,rgba(255,255,255,.48)_46%,rgba(255,255,255,.05)_60%,transparent_68%)] lg:bg-[linear-gradient(90deg,#fff_0%,rgba(255,255,255,.94)_27%,rgba(255,255,255,.46)_38%,rgba(255,255,255,.04)_52%,transparent_60%)]"
+        className="pointer-events-none absolute inset-0 z-10 bg-[linear-gradient(90deg,#fff_0%,rgba(255,255,255,.98)_45%,rgba(255,255,255,.86)_68%,rgba(255,255,255,.35)_100%)] md:bg-[linear-gradient(90deg,#fff_0%,rgba(255,255,255,.96)_34%,rgba(255,255,255,.48)_46%,rgba(255,255,255,.05)_60%,transparent_68%)] lg:bg-[linear-gradient(90deg,#fff_0%,rgba(255,255,255,.94)_27%,rgba(255,255,255,.46)_38%,rgba(255,255,255,.04)_52%,transparent_60%)]"
         aria-hidden="true"
       />
 
@@ -262,7 +262,7 @@ export default function HomeHeroCarousel() {
       <button
         type="button"
         onClick={showPrevious}
-        className="absolute left-2 top-1/2 z-30 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200/80 bg-white/90 text-[#071936] opacity-100 shadow-[0_8px_24px_rgba(15,23,42,0.12)] backdrop-blur transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 sm:left-4 sm:inline-flex lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100"
+        className="pointer-events-auto absolute left-2 top-1/2 z-30 hidden h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-slate-200/80 bg-white/90 text-[#071936] opacity-100 shadow-[0_8px_24px_rgba(15,23,42,0.12)] backdrop-blur transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 sm:left-4 sm:inline-flex lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100"
         aria-label="Show previous solution"
       >
         <ArrowIcon direction="left" />
@@ -270,19 +270,19 @@ export default function HomeHeroCarousel() {
       <button
         type="button"
         onClick={showNext}
-        className="absolute right-2 top-1/2 z-30 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200/80 bg-white/90 text-[#071936] opacity-100 shadow-[0_8px_24px_rgba(15,23,42,0.12)] backdrop-blur transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 sm:right-4 sm:inline-flex lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100"
+        className="pointer-events-auto absolute right-2 top-1/2 z-30 hidden h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-slate-200/80 bg-white/90 text-[#071936] opacity-100 shadow-[0_8px_24px_rgba(15,23,42,0.12)] backdrop-blur transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 sm:right-4 sm:inline-flex lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100"
         aria-label="Show next solution"
       >
         <ArrowIcon direction="right" />
       </button>
 
-      <div className="absolute bottom-1.5 left-1/2 z-30 flex -translate-x-1/2 items-center justify-center gap-2 sm:bottom-2">
+      <div className="pointer-events-auto absolute bottom-1.5 left-1/2 z-30 flex -translate-x-1/2 items-center justify-center gap-2 sm:bottom-2">
         {heroSlides.map((slide, index) => (
           <button
             key={slide.id}
             type="button"
             onClick={() => selectSlide(index)}
-            className={`h-2 rounded-full border backdrop-blur-md transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 motion-reduce:transition-none ${
+            className={`h-2 cursor-pointer rounded-full border backdrop-blur-md transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 motion-reduce:transition-none ${
               index === activeIndex
                 ? "w-9 border-white/75 bg-gradient-to-r from-[#ef4a00]/90 to-[#ff8a32]/85 shadow-[0_2px_10px_rgba(239,74,0,0.38)]"
                 : "w-2 border-white/70 bg-slate-900/20 shadow-[0_2px_8px_rgba(15,23,42,0.20)] hover:bg-white/65"

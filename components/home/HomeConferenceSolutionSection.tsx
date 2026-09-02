@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import HomeSectionHeadingIcon from "./HomeSectionHeadingIcon";
 
 type LineIconKind =
   | "microphone"
@@ -93,9 +94,13 @@ export default function HomeConferenceSolutionSection() {
     <section id="conference-room-solutions" className="home-conference-solution scroll-mt-24 overflow-hidden" aria-labelledby="conference-solution-title">
       <div className="home-conference-solution-grid">
         <div className="home-conference-copy flex flex-col justify-center px-5 py-7 sm:px-7">
-          <p className="home-conference-eyebrow text-[10px] font-extrabold uppercase tracking-[0.08em] text-[#1456d9]">Featured Solution</p>
-          <h2 id="conference-solution-title" className="home-conference-title mt-2 !pb-0 font-extrabold tracking-[-0.025em] text-[#071936] after:!hidden">
-            Complete Conference<br className="hidden sm:block" /> Room Solutions
+          <p className="home-conference-eyebrow inline-flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[#1456d9]">
+            <HomeSectionHeadingIcon kind="conference" size="badge" />
+            <span>Featured Solution</span>
+          </p>
+          <h2 id="conference-solution-title" className="home-conference-title mt-2 flex items-start gap-2 !pb-0 font-extrabold tracking-[-0.025em] text-[#071936] after:!hidden">
+            <HomeSectionHeadingIcon kind="conference" />
+            <span>Complete Conference<br className="hidden sm:block" /> Room Solutions</span>
           </h2>
           <p className="home-conference-description mt-3 max-w-[390px] font-medium text-slate-600">
             Integrated audio, video and control solutions for modern meeting rooms with Zoom / Microsoft Teams compatibility.

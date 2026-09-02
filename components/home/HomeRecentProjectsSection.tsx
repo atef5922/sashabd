@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import HomeSectionHeadingIcon from "./HomeSectionHeadingIcon";
 
 type Project = {
   badge: string;
@@ -113,9 +114,13 @@ export default function HomeRecentProjectsSection() {
     <section id="recent-project-installations" className="home-recent-projects scroll-mt-24 bg-[#f8faff] px-5 py-7" aria-labelledby="recent-projects-title">
       <div className="flex items-end justify-between gap-4">
         <div>
-          <p className="home-projects-eyebrow text-[10px] font-extrabold uppercase tracking-[0.08em] text-[#1456d9]">Recent Projects</p>
-          <h2 id="recent-projects-title" className="home-projects-title mt-1.5 !pb-0 font-extrabold leading-tight tracking-[-0.02em] text-[#071936] after:!hidden">
-            Our Successful Installations
+          <p className="home-projects-eyebrow inline-flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[#1456d9]">
+            <HomeSectionHeadingIcon kind="projects" size="badge" />
+            <span>Recent Projects</span>
+          </p>
+          <h2 id="recent-projects-title" className="home-projects-title mt-2 flex items-center gap-2 !pb-0 font-extrabold leading-tight tracking-[-0.02em] text-[#071936] after:!hidden">
+            <HomeSectionHeadingIcon kind="projects" />
+            <span>Our Successful Installations</span>
           </h2>
         </div>
         <Link href="/projects/" className="home-projects-view-all hidden min-h-[31px] shrink-0 items-center justify-center gap-2 rounded-md border border-[#1456d9] bg-white px-3 text-[9px] font-extrabold text-[#1456d9] transition hover:bg-blue-50 sm:inline-flex">

@@ -1,3 +1,5 @@
+import HomeSectionHeadingIcon from "./HomeSectionHeadingIcon";
+
 type ProcessIconKind = "consultation" | "survey" | "design" | "installation" | "support";
 
 type ProcessStep = {
@@ -84,8 +86,14 @@ export default function ProjectWorkflowSection() {
   return (
     <section id="home-project-workflow" className="home-process-section scroll-mt-24" aria-labelledby="home-process-title">
       <div className="home-process-heading">
-        <p className="home-process-eyebrow">Our Process</p>
-        <h2 id="home-process-title" className="home-process-title !pb-0 after:!hidden">How We Work</h2>
+        <p className="home-process-eyebrow inline-flex items-center gap-2">
+          <HomeSectionHeadingIcon kind="process" size="badge" />
+          <span>Our Process</span>
+        </p>
+        <h2 id="home-process-title" className="home-process-title flex items-center gap-2 !pb-0 after:!hidden">
+          <HomeSectionHeadingIcon kind="process" />
+          <span>How We Work</span>
+        </h2>
         <p className="home-process-intro">A simple, transparent process that ensures the best results for your project.</p>
       </div>
 

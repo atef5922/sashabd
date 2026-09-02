@@ -208,7 +208,7 @@ export default function TrustedTechnologyPartnersSection() {
           </div>
         </div>
 
-        <div className="mt-4 rounded-xl border border-slate-200/80 bg-slate-50/55 p-3 shadow-[0_4px_16px_rgba(15,23,42,0.035)] md:p-4">
+        <div className="mt-4 rounded-xl bg-slate-50/55 p-3 shadow-[0_4px_16px_rgba(15,23,42,0.035)] md:p-4">
           <div className="relative overflow-hidden">
             <div
               className="pointer-events-none absolute left-0 top-0 z-10 h-full w-8 md:w-14"
