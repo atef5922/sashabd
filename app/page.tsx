@@ -6,6 +6,8 @@ import { BRAND_NAME } from "@/lib/brand";
 import HomeAllProductsGrid from "@/components/home/HomeAllProductsGrid";
 import CoreSolutionsSection from "@/components/home/CoreSolutionsSection";
 import HomeFeaturedProductsSection from "@/components/home/HomeFeaturedProductsSection";
+import HomeConferenceSolutionSection from "@/components/home/HomeConferenceSolutionSection";
+import HomeRecentProjectsSection from "@/components/home/HomeRecentProjectsSection";
 import HomeWhyChoosePromiseSection from "@/components/home/HomeWhyChoosePromiseSection";
 import ProjectProposalCtaSection from "@/components/home/ProjectProposalCtaSection";
 import ProjectWorkflowSection from "@/components/home/ProjectWorkflowSection";
@@ -401,6 +403,8 @@ export default function HomePage() {
           <HomeWhyChoosePromiseSection />
           <HomeFeaturedProductsSection />
         </div>
+        <HomeConferenceSolutionSection />
+        <HomeRecentProjectsSection />
         <TrustedTechnologyPartnersSection />
         <ProjectWorkflowSection />
         <ProjectProposalCtaSection />
