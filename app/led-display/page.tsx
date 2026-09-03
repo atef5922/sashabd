@@ -3,9 +3,10 @@ import ProductsPage from "@/modules/routes/catalog/products-page";
 import { socialImageUrl } from "@/lib/seo";
 import { BRAND_NAME } from "@/lib/brand";
 
-const PAGE_TITLE = "LED Display Price in Bangladesh 2026 | Sasha Corporation";
+const CURRENT_YEAR = new Date().getFullYear();
+const PAGE_TITLE = `LED Display Price in Bangladesh ${CURRENT_YEAR} | Sasha Corporation`;
 const PAGE_DESCRIPTION =
-  "Compare 2026 LED display prices in Bangladesh for indoor, outdoor, and rental screens. Review specifications, installation guidance, and request a quotation.";
+  `Compare ${CURRENT_YEAR} LED display prices in Bangladesh for indoor, outdoor, and rental screens. Review specifications, installation guidance, and request a quotation.`;
 
 export const metadata: Metadata = {
   title: { absolute: PAGE_TITLE },
@@ -53,7 +54,7 @@ const collectionPageSchema = {
 export default function LedDisplayPage() {
   return (
     <>
-      <ProductsPage />
+      <ProductsPage currentYear={CURRENT_YEAR} />
 
       <script
         type="application/ld+json"

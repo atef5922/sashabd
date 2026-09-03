@@ -2468,9 +2468,15 @@ test("Batch 3 removes unverified social profiles and relationship claims", () =>
 test("Batch 3 keeps main LED SERP intent factual and authority links focused", () => {
   const page = read("app/led-display/page.tsx");
   const landing = read("modules/routes/catalog/products-page.tsx");
+  const hero = read("components/led-display/LedDisplayHero.tsx");
 
-  assert.match(page, /LED Display Price in Bangladesh 2026 \| Sasha Corporation/);
-  assert.match(page, /Compare 2026 LED display prices in Bangladesh/);
+  assert.match(page, /const CURRENT_YEAR = new Date\(\)\.getFullYear\(\)/);
+  assert.match(page, /LED Display Price in Bangladesh \$\{CURRENT_YEAR\} \| Sasha Corporation/);
+  assert.match(page, /Compare \$\{CURRENT_YEAR\} LED display prices in Bangladesh/);
+  assert.match(page, /<ProductsPage currentYear=\{CURRENT_YEAR\}/);
+  assert.match(hero, /in Bangladesh \{currentYear\}/);
+  assert.match(landing, /text: `\$\{currentYear\} price guidance`/);
+  assert.doesNotMatch(landing, /<h3[^>]*>Filter Products<\/h3>/);
   assert.match(landing, /\/blog\/led-display-price-in-bangladesh-complete-buying-guide\//);
   assert.match(landing, /href="\/services-support\/"/);
   assert.doesNotMatch(landing, /1-3 year warranty|24\/7 customer support|nationwide after-sales service/i);

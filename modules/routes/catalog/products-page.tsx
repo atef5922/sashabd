@@ -694,9 +694,11 @@ function getPaginationItems(current: number, total: number): Array<number | "...
 function ProductsPageContent({
   ledOnly = false,
   basePath,
+  currentYear,
 }: {
   ledOnly?: boolean;
   basePath: "/led-display";
+  currentYear: number;
 }) {
   const gridTopRef = useRef<HTMLDivElement | null>(null);
   const scrollToGridOnNextPageChangeRef = useRef<ScrollBehavior | null>(null);
@@ -1584,7 +1586,7 @@ function ProductsPageContent({
         {ledOnly ? (
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(landingFaqSchema) }} />
         ) : null}
-        {ledOnly ? <LedDisplayHero /> : null}
+        {ledOnly ? <LedDisplayHero currentYear={currentYear} /> : null}
         {!ledOnly ? <div>
           <h1 className="text-[1.75rem] font-extrabold leading-[1.2] text-slate-900 md:text-4xl">
           All LED Products &amp; Accessories
@@ -1702,7 +1704,7 @@ function ProductsPageContent({
                 className={`${mobileFiltersOpen ? "flex" : "hidden"} flex-col self-start overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_3px_16px_rgba(15,23,42,0.045)] lg:sticky lg:top-20 lg:flex lg:max-h-[calc(100dvh-6rem)]`}
               >
                 <div className="flex shrink-0 items-center justify-between gap-3 px-3 pb-2 pt-3">
-                  <h3 className="text-base font-extrabold leading-5 tracking-tight text-[#071936]">Filter Products</h3>
+                  <div className="text-base font-extrabold leading-5 tracking-tight text-[#071936]">Filter Products</div>
                   <div className="flex items-center gap-2">
                     {ledActiveFilterCount || query ? (
                       <button type="button" onClick={clearLedFilters} className="cursor-pointer text-[11px] font-bold text-orange-700 hover:underline">Clear All</button>
@@ -2069,7 +2071,7 @@ function ProductsPageContent({
                 {[
                   { icon: "structure", title: "Indoor LED", text: "Fine pitch for close viewing", active: true },
                   { icon: "cost", title: "Outdoor LED", text: "High brightness & durability" },
-                  { icon: "guide", title: "Updated Pricing", text: "2026 price guidance" },
+                  { icon: "guide", title: "Updated Pricing", text: `${currentYear} price guidance` },
                   { icon: "maintenance", title: "Installation Support", text: "Service across Bangladesh" },
                 ].map((item, index) => (
                   <div key={item.title} className={`flex min-h-[78px] items-center gap-3 px-4 py-3 ${index ? "border-t border-slate-200 sm:border-t-0 sm:[&:nth-child(2n)]:border-l lg:border-l" : ""}`}>
@@ -2513,6 +2515,103 @@ function ProductsPageContent({
 
           </section>
 
+          <section className={ledInformationSectionClass} aria-labelledby="led-projector-video-wall-comparison-heading">
+            <LedSectionHeading id="led-projector-video-wall-comparison-heading" icon="compare">LED Display vs Projector vs LCD Video Wall in Bangladesh</LedSectionHeading>
+            <MobileIntroText
+              teaser="Compare LED display vs projector vs LCD video wall in Bangladesh to choose the right display solution for your business or project."
+              className="mt-2"
+              teaserClassName="w-full"
+              expandedClassName="text-sm leading-7 text-slate-600"
+              desktopClassName="text-sm leading-7 text-slate-600"
+            >
+              <>
+                Compare LED display vs projector vs LCD video wall in Bangladesh to choose the right display solution
+                for your business, showroom, office, conference room, control room, retail space, or event setup. This
+                quick comparison highlights brightness, image clarity, viewing distance, maintenance needs, and long-term
+                operating cost so you can choose the best option for digital signage, presentation, advertising, or video
+                wall use.
+              </>
+            </MobileIntroText>
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              {ledCompare.map((item) => (
+                <div key={item.t} className="rounded-2xl border border-[#dbe5f2] bg-white p-4 shadow-[0_5px_18px_rgba(15,37,70,0.04)] transition hover:border-[#b9d1fb] hover:shadow-md md:p-5">
+                  <h3 className="text-[1rem] font-semibold leading-[1.3] text-slate-900 md:text-lg">{item.t}</h3>
+                  <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">{item.d}</p>
+                  <ul className="mt-4 space-y-2 text-[13px] text-slate-700 md:text-sm">
+                    {item.points.map((point) => (
+                      <li key={point} className="flex items-start gap-2">
+                        <span className="mt-2 inline-block h-2 w-2 rounded-full bg-[#1458e5]" />
+                        <span className="text-justify leading-6 md:text-left md:leading-7">{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className={ledFeatureSectionClass} aria-labelledby="led-display-solutions-heading">
+            <LedSectionHeading id="led-display-solutions-heading" icon="solutions">LED Display Solutions in Bangladesh</LedSectionHeading>
+            <MobileIntroText
+              teaser="Sasha corporation provides complete LED Screen solutions in Bangladesh covering planning, product selection, installation, configuration, and ongoing support."
+              className="mt-2"
+              teaserClassName="w-full"
+              expandedClassName="text-sm leading-7 text-slate-600"
+              desktopClassName="text-sm leading-7 text-slate-600"
+            >
+              <>
+                Sasha corporation provides complete LED Screen solutions in Bangladesh covering planning, product selection, installation,
+                configuration, and ongoing support for indoor LED panel, outdoor LED Billboard, rental LED display,
+                and LED video wall projects. From commercial advertising and retail branding to corporate,
+                institutional, and event environments, our team focuses on practical specifications, stable
+                performance, and long-term service support for consistent visual impact.
+              </>
+            </MobileIntroText>
+
+            <div className="mt-6 grid gap-4 md:mt-8 md:gap-6 md:grid-cols-2">
+              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 md:p-6">
+                <div className="text-[1rem] font-semibold text-slate-900 md:text-lg">End-to-End LED Screen Implementation</div>
+                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
+                  We help clients select the correct LED configuration based on viewing distance, environment, content type, and operational
+                  requirements. Each project is planned with attention to power stability, structure safety, and long-term usability. Pricing is
+                  specification-driven and clearly explained-covering modules, cabinets, control systems, structure, installation and calibration.
+                </p>
+
+                <ul className="mt-4 space-y-2 text-[13px] text-slate-700 md:text-sm">
+                  {ledEndToEndBullets.map((bullet) => (
+                    <li key={bullet} className="flex items-start gap-2">
+                      <span className="mt-2 inline-block h-2 w-2 rounded-full bg-[#1458e5]" />
+                      <span className="text-justify leading-6 md:text-left md:leading-7">{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <Link prefetch={false} href="/contact/" className="rounded-xl bg-[#071a42] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0b2c67]">
+                    Request a Free Quotation -&gt;
+                  </Link>
+                </div>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-2">
+                {ledReliabilityCards.map((card) => (
+                  <div
+                    key={card.t}
+                    className="rounded-2xl border border-[#dbe5f2] bg-white p-5 shadow-[0_5px_18px_rgba(15,37,70,0.045)] transition hover:-translate-y-0.5 hover:border-[#b9d1fb] hover:shadow-md"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#cfe0ff] bg-[#edf4ff] text-[#1458e5] shadow-sm">
+                        <UiIcon name={card.icon} className="h-5 w-5" />
+                      </div>
+                    <div className="text-[15px] font-semibold leading-5 text-slate-900 md:text-base">{card.t}</div>
+                    </div>
+                    <p className="mt-2.5 text-justify text-[13px] leading-6 text-slate-600 md:mt-3 md:text-left md:text-sm md:leading-7">{card.d}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
           <section
             className="mt-4 rounded-2xl border border-[#d9e4f2] bg-white px-4 py-5 shadow-[0_12px_34px_rgba(15,37,70,0.055)] sm:px-5 md:px-6 md:py-6"
             aria-labelledby="recent-led-projects-heading"
@@ -2598,134 +2697,6 @@ function ProductsPageContent({
               </div>
           </section>
 
-          <section
-            className="mt-4 rounded-2xl border border-[#d9e4f2] bg-[linear-gradient(135deg,#fbfdff_0%,#f3f7ff_100%)] px-4 py-7 shadow-[0_12px_34px_rgba(15,37,70,0.05)] sm:px-5 md:px-6 md:py-8"
-            aria-labelledby="led-how-we-work-heading"
-          >
-              <div>
-                <div className="text-[9px] font-extrabold uppercase tracking-[0.12em] text-[#1458e5]">Our Process</div>
-                <h2 id="led-how-we-work-heading" className="mt-1 text-xl font-extrabold tracking-tight text-[#071a42] sm:text-2xl">How We Work</h2>
-                <p className="mt-1 text-[11px] leading-5 text-slate-600 sm:text-xs">A clear, structured workflow from consultation to project handover.</p>
-              </div>
-
-              <div className="mt-6 grid gap-4 lg:grid-cols-6 lg:items-stretch">
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:col-span-5 lg:grid-cols-6">
-                  {[
-                    ["support", "Consultation", "We understand your needs and project requirements."],
-                    ["guide", "Site Survey", "Our team visits the site for measurement & analysis."],
-                    ["compare", "Design & BOQ", "We design the solution and prepare detailed BOQ."],
-                    ["install", "Installation", "Professional installation with safety & neat work."],
-                    ["display", "Testing & Calibration", "Complete testing, calibration & performance check."],
-                    ["support", "Handover & Support", "We hand over the project and provide ongoing support."],
-                  ].map(([icon, title, detail], index) => (
-                    <article
-                      key={title}
-                      className="relative flex min-w-0 flex-col rounded-xl border bg-white p-3.5 shadow-[0_7px_20px_rgba(15,37,70,0.055)] transition duration-300 hover:-translate-y-0.5 hover:shadow-md"
-                      style={{ minHeight: "166px", borderColor: "#dce6f3" }}
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#edf4ff] text-[#1458e5] ring-1 ring-[#d6e4fb]">
-                          <UiIcon name={icon} className="h-5 w-5" />
-                        </span>
-                        <span className="rounded-full bg-[#1458e5] px-2 py-1 text-[8px] font-extrabold tracking-wide text-white">STEP {String(index + 1).padStart(2, "0")}</span>
-                      </div>
-                      <div className="mt-3 text-[12px] font-extrabold leading-4 text-[#071a42] sm:text-[13px]">{title}</div>
-                      <div className="mt-1.5 text-[9px] leading-4 text-slate-600 sm:text-[10px]">{detail}</div>
-                      {index < 5 ? (
-                        <span
-                          className="absolute z-10 hidden h-7 w-7 items-center justify-center rounded-full border border-blue-100 bg-white text-sm font-bold text-[#6f9fea] shadow-sm lg:flex"
-                          style={{ right: "-20px", top: "69px" }}
-                          aria-hidden="true"
-                        >
-                          →
-                        </span>
-                      ) : null}
-                    </article>
-                  ))}
-                </div>
-
-                <aside
-                  className="flex flex-col justify-between rounded-xl p-4 text-white shadow-[0_14px_30px_rgba(7,26,66,0.2)] lg:col-span-1"
-                  style={{ minHeight: "166px", background: "linear-gradient(145deg, #0b2a63 0%, #06183b 100%)" }}
-                >
-                  <div className="flex items-start gap-3">
-                    <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/15">
-                      <UiIcon name="support" className="h-5 w-5 text-white" />
-                    </span>
-                    <div>
-                      <div className="text-[12px] font-extrabold leading-4">Need Expert Help?</div>
-                      <div className="mt-1.5 text-[9px] leading-4 text-blue-100">Our technical team is ready to help you.</div>
-                    </div>
-                  </div>
-                  <a href={wa} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg bg-white px-3 text-[10px] font-extrabold text-[#071a42] shadow-sm transition hover:bg-blue-50">
-                    <span className="text-[#1458e5]" aria-hidden="true">◉</span> Chat on WhatsApp
-                  </a>
-                </aside>
-              </div>
-          </section>
-
-          <section className={ledFeatureSectionClass} aria-labelledby="led-display-solutions-heading">
-            <LedSectionHeading id="led-display-solutions-heading" icon="solutions">LED Display Solutions in Bangladesh</LedSectionHeading>
-            <MobileIntroText
-              teaser="Sasha corporation provides complete LED Screen solutions in Bangladesh covering planning, product selection, installation, configuration, and ongoing support."
-              className="mt-2"
-              teaserClassName="w-full"
-              expandedClassName="text-sm leading-7 text-slate-600"
-              desktopClassName="text-sm leading-7 text-slate-600"
-            >
-              <>
-                Sasha corporation provides complete LED Screen solutions in Bangladesh covering planning, product selection, installation,
-                configuration, and ongoing support for indoor LED panel, outdoor LED Billboard, rental LED display,
-                and LED video wall projects. From commercial advertising and retail branding to corporate,
-                institutional, and event environments, our team focuses on practical specifications, stable
-                performance, and long-term service support for consistent visual impact.
-              </>
-            </MobileIntroText>
-
-            <div className="mt-6 grid gap-4 md:mt-8 md:gap-6 md:grid-cols-2">
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 md:p-6">
-                <div className="text-[1rem] font-semibold text-slate-900 md:text-lg">End-to-End LED Screen Implementation</div>
-                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
-                  We help clients select the correct LED configuration based on viewing distance, environment, content type, and operational
-                  requirements. Each project is planned with attention to power stability, structure safety, and long-term usability. Pricing is
-                  specification-driven and clearly explained-covering modules, cabinets, control systems, structure, installation and calibration.
-                </p>
-
-                <ul className="mt-4 space-y-2 text-[13px] text-slate-700 md:text-sm">
-                  {ledEndToEndBullets.map((bullet) => (
-                    <li key={bullet} className="flex items-start gap-2">
-                      <span className="mt-2 inline-block h-2 w-2 rounded-full bg-[#1458e5]" />
-                      <span className="text-justify leading-6 md:text-left md:leading-7">{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <Link prefetch={false} href="/contact/" className="rounded-xl bg-[#071a42] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0b2c67]">
-                    Request a Free Quotation -&gt;
-                  </Link>
-                </div>
-              </div>
-
-              <div className="grid gap-4 md:grid-cols-2">
-                {ledReliabilityCards.map((card) => (
-                  <div
-                    key={card.t}
-                    className="rounded-2xl border border-[#dbe5f2] bg-white p-5 shadow-[0_5px_18px_rgba(15,37,70,0.045)] transition hover:-translate-y-0.5 hover:border-[#b9d1fb] hover:shadow-md"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#cfe0ff] bg-[#edf4ff] text-[#1458e5] shadow-sm">
-                        <UiIcon name={card.icon} className="h-5 w-5" />
-                      </div>
-                    <div className="text-[15px] font-semibold leading-5 text-slate-900 md:text-base">{card.t}</div>
-                    </div>
-                    <p className="mt-2.5 text-justify text-[13px] leading-6 text-slate-600 md:mt-3 md:text-left md:text-sm md:leading-7">{card.d}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
           <section className={ledInformationSectionClass} aria-labelledby="why-choose-sasha-led-heading">
             <div ref={whyChooseSectionRef}>
               <div>
@@ -2784,6 +2755,72 @@ function ProductsPageContent({
 
               </div>
             </div>
+          </section>
+
+          <section
+            className="mt-4 rounded-2xl border border-[#d9e4f2] bg-[linear-gradient(135deg,#fbfdff_0%,#f3f7ff_100%)] px-4 py-7 shadow-[0_12px_34px_rgba(15,37,70,0.05)] sm:px-5 md:px-6 md:py-8"
+            aria-labelledby="led-how-we-work-heading"
+          >
+              <div>
+                <div className="text-[9px] font-extrabold uppercase tracking-[0.12em] text-[#1458e5]">Our Process</div>
+                <h2 id="led-how-we-work-heading" className="mt-1 text-xl font-extrabold tracking-tight text-[#071a42] sm:text-2xl">Our LED Display Project Process</h2>
+                <p className="mt-1 text-[11px] leading-5 text-slate-600 sm:text-xs">A clear, structured workflow from consultation to project handover.</p>
+              </div>
+
+              <div className="mt-6 grid gap-4 lg:grid-cols-6 lg:items-stretch">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:col-span-5 lg:grid-cols-6">
+                  {[
+                    ["support", "Consultation", "We understand your needs and project requirements."],
+                    ["guide", "Site Survey", "Our team visits the site for measurement & analysis."],
+                    ["compare", "Design & BOQ", "We design the solution and prepare detailed BOQ."],
+                    ["install", "Installation", "Professional installation with safety & neat work."],
+                    ["display", "Testing & Calibration", "Complete testing, calibration & performance check."],
+                    ["support", "Handover & Support", "We hand over the project and provide ongoing support."],
+                  ].map(([icon, title, detail], index) => (
+                    <article
+                      key={title}
+                      className="relative flex min-w-0 flex-col rounded-xl border bg-white p-3.5 shadow-[0_7px_20px_rgba(15,37,70,0.055)] transition duration-300 hover:-translate-y-0.5 hover:shadow-md"
+                      style={{ minHeight: "166px", borderColor: "#dce6f3" }}
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#edf4ff] text-[#1458e5] ring-1 ring-[#d6e4fb]">
+                          <UiIcon name={icon} className="h-5 w-5" />
+                        </span>
+                        <span className="rounded-full bg-[#1458e5] px-2 py-1 text-[8px] font-extrabold tracking-wide text-white">STEP {String(index + 1).padStart(2, "0")}</span>
+                      </div>
+                      <div className="mt-3 text-[12px] font-extrabold leading-4 text-[#071a42] sm:text-[13px]">{title}</div>
+                      <div className="mt-1.5 text-[9px] leading-4 text-slate-600 sm:text-[10px]">{detail}</div>
+                      {index < 5 ? (
+                        <span
+                          className="absolute z-10 hidden h-7 w-7 items-center justify-center rounded-full border border-blue-100 bg-white text-sm font-bold text-[#6f9fea] shadow-sm lg:flex"
+                          style={{ right: "-20px", top: "69px" }}
+                          aria-hidden="true"
+                        >
+                          →
+                        </span>
+                      ) : null}
+                    </article>
+                  ))}
+                </div>
+
+                <aside
+                  className="flex flex-col justify-between rounded-xl p-4 text-white shadow-[0_14px_30px_rgba(7,26,66,0.2)] lg:col-span-1"
+                  style={{ minHeight: "166px", background: "linear-gradient(145deg, #0b2a63 0%, #06183b 100%)" }}
+                >
+                  <div className="flex items-start gap-3">
+                    <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/15">
+                      <UiIcon name="support" className="h-5 w-5 text-white" />
+                    </span>
+                    <div>
+                      <div className="text-[12px] font-extrabold leading-4">Need Expert Help?</div>
+                      <div className="mt-1.5 text-[9px] leading-4 text-blue-100">Our technical team is ready to help you.</div>
+                    </div>
+                  </div>
+                  <a href={wa} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg bg-white px-3 text-[10px] font-extrabold text-[#071a42] shadow-sm transition hover:bg-blue-50">
+                    <span className="text-[#1458e5]" aria-hidden="true">◉</span> Chat on WhatsApp
+                  </a>
+                </aside>
+              </div>
           </section>
 
 	          <section className={ledInformationSectionClass} aria-label="LED display system guide">
@@ -3065,41 +3102,6 @@ function ProductsPageContent({
             </div>
           </section>
 
-          <section className={ledInformationSectionClass} aria-labelledby="led-projector-video-wall-comparison-heading">
-            <LedSectionHeading id="led-projector-video-wall-comparison-heading" icon="compare">LED Display vs Projector vs LCD Video Wall in Bangladesh</LedSectionHeading>
-            <MobileIntroText
-              teaser="Compare LED display vs projector vs LCD video wall in Bangladesh to choose the right display solution for your business or project."
-              className="mt-2"
-              teaserClassName="w-full"
-              expandedClassName="text-sm leading-7 text-slate-600"
-              desktopClassName="text-sm leading-7 text-slate-600"
-            >
-              <>
-                Compare LED display vs projector vs LCD video wall in Bangladesh to choose the right display solution
-                for your business, showroom, office, conference room, control room, retail space, or event setup. This
-                quick comparison highlights brightness, image clarity, viewing distance, maintenance needs, and long-term
-                operating cost so you can choose the best option for digital signage, presentation, advertising, or video
-                wall use.
-              </>
-            </MobileIntroText>
-            <div className="mt-6 grid gap-4 md:grid-cols-3">
-              {ledCompare.map((item) => (
-                <div key={item.t} className="rounded-2xl border border-[#dbe5f2] bg-white p-4 shadow-[0_5px_18px_rgba(15,37,70,0.04)] transition hover:border-[#b9d1fb] hover:shadow-md md:p-5">
-                  <h3 className="text-[1rem] font-semibold leading-[1.3] text-slate-900 md:text-lg">{item.t}</h3>
-                  <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">{item.d}</p>
-                  <ul className="mt-4 space-y-2 text-[13px] text-slate-700 md:text-sm">
-                    {item.points.map((point) => (
-                      <li key={point} className="flex items-start gap-2">
-                        <span className="mt-2 inline-block h-2 w-2 rounded-full bg-[#1458e5]" />
-                        <span className="text-justify leading-6 md:text-left md:leading-7">{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </section>
-
           <section className={ledFeatureSectionClass} aria-labelledby="led-advertising-benefits-heading">
             <LedSectionHeading id="led-advertising-benefits-heading" icon="cost">Benefits of Digital LED Display for Advertising</LedSectionHeading>
             <MobileIntroText
@@ -3170,7 +3172,7 @@ function ProductsPageContent({
               </>
             </MobileIntroText>
 
-            <div className="mt-6 rounded-3xl border bg-white p-4 md:p-5" style={{ borderColor: "rgba(20,88,229,0.14)" }}>
+            <div className="mt-6 rounded-3xl bg-white p-4 md:p-5">
               <div className="relative overflow-hidden">
                 <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-14" style={{ background: "linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
                 <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-14" style={{ background: "linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
@@ -3283,7 +3285,7 @@ function ProductsPageContent({
               ))}
             </div>
 
-            <div className="mt-6 rounded-3xl border bg-white p-4 md:p-5" style={{ borderColor: "rgba(20,88,229,0.14)" }}>
+            <div className="mt-6 rounded-3xl bg-white p-4 md:p-5">
               <div className="relative overflow-hidden">
                 <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-10 md:w-14" style={{ background: "linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
                 <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-10 md:w-14" style={{ background: "linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
@@ -3333,35 +3335,88 @@ function ProductsPageContent({
 
           </section>
 
-          <section className="relative mt-4 min-h-[250px] overflow-hidden rounded-2xl border border-[#172c53] bg-[#071936] shadow-[0_8px_28px_rgba(7,25,54,0.18)]" aria-labelledby="led-final-cta">
-            <Image src="/images/led hero/indoor-led-hero.webp" alt="" fill sizes="100vw" className="object-cover object-center opacity-80" />
-            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,25,54,0.99)_0%,rgba(7,25,54,0.96)_37%,rgba(7,25,54,0.68)_60%,rgba(7,25,54,0.18)_100%)]" aria-hidden="true" />
-            <div className="relative z-10 flex min-h-[250px] max-w-[540px] flex-col justify-center px-5 py-6 sm:px-7 md:px-9">
-              <h2 id="led-final-cta" className="max-w-[420px] !text-[24px] font-black leading-[1.08] tracking-tight text-white sm:!text-[28px]">
-                Need a Complete LED Display Solution?
-              </h2>
-              <p className="mt-2 max-w-[420px] text-left text-[11px] font-medium leading-[1.15rem] text-blue-100 sm:text-xs">
-                Share your screen size, location, viewing distance, and project scope for a practical LED display recommendation and clear BOQ.
-              </p>
-              <div className="mt-4 flex flex-col gap-2 sm:flex-row">
-                <Link href="/contact/?project=led-display" className="inline-flex min-h-9 items-center justify-center rounded-md bg-[#f45b18] px-5 text-[10px] font-extrabold text-white shadow-sm transition hover:bg-[#db490d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400/60">
-                  Get Free BOQ <span aria-hidden="true" className="ml-1.5">→</span>
-                </Link>
-                <a
-                  href={wa}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex min-h-9 items-center justify-center gap-2 rounded-md border border-white/45 bg-white/10 px-5 text-[10px] font-extrabold text-white backdrop-blur-sm transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
-                >
-                  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.4 9.4 0 0 1-3.8-.9L3 21l1.8-5a8.5 8.5 0 1 1 16.2-4.5Z" /><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" /></svg>
-                  WhatsApp Project Details
-                </a>
+          <section className="mt-4 overflow-hidden rounded-2xl border border-[#d9e4f2] bg-white shadow-[0_10px_30px_rgba(7,25,54,0.10)]" aria-labelledby="led-final-cta">
+            <div className="relative overflow-hidden bg-[#06183b]">
+              <div className="absolute inset-y-0 right-0 hidden w-1/3 md:block" aria-hidden="true">
+                <Image
+                  src="/images/led hero/indoor-led-hero.webp"
+                  alt=""
+                  fill
+                  sizes="32vw"
+                  className="object-cover object-center"
+                />
+                <div
+                  className="absolute inset-0"
+                  style={{ background: "linear-gradient(90deg, #06183b 0%, rgba(6,24,59,0.45) 28%, rgba(6,24,59,0.05) 72%, rgba(6,24,59,0) 100%)" }}
+                />
               </div>
-              <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-[8px] font-semibold text-blue-100 sm:text-[9px]">
-                {["Site Survey", "Pixel Pitch Planning", "Clear BOQ Pricing", "Installation & Support"].map((item) => (
-                  <li key={item} className="flex items-center gap-1.5"><span className="inline-flex h-3 w-3 items-center justify-center rounded-full border border-blue-200/60 text-[7px]" aria-hidden="true">✓</span>{item}</li>
-                ))}
-              </ul>
+
+              <div className="relative z-10 grid gap-5 px-5 py-5 sm:px-7 md:grid-cols-12 md:items-center md:gap-6 lg:px-8">
+                <div className="min-w-0 md:col-span-7">
+                  <div className="flex items-center gap-4">
+                    <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#1458e5] text-white shadow-[0_8px_24px_rgba(20,88,229,0.35)]" aria-hidden="true">
+                      <UiIcon name="support" className="h-7 w-7" />
+                    </span>
+                    <div className="min-w-0">
+                      <h2 id="led-final-cta" className="!text-[21px] font-black leading-tight tracking-tight text-white sm:!text-[24px]">
+                        Planning an LED Display Project?
+                      </h2>
+                      <p className="mt-1 !text-left text-[10px] font-medium leading-4 text-blue-100 sm:text-[11px]">
+                        Get clear recommendations, accurate pricing and professional support from our experts.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-4">
+                    {[
+                      ["guide", "Site Survey", "On-site assessment"],
+                      ["controller", "Custom BOQ", "Detailed cost estimation"],
+                      ["install", "Professional Installation", "By experienced engineers"],
+                      ["maintenance", "After-Sales Support", "Nationwide assistance"],
+                    ].map(([icon, title, detail], index) => (
+                      <div key={title} className={`flex min-w-0 items-start gap-2 ${index ? "sm:border-l sm:border-blue-300/35 sm:pl-4" : ""}`}>
+                        <span className="mt-0.5 shrink-0 text-blue-300" aria-hidden="true"><UiIcon name={icon} className="h-4 w-4" /></span>
+                        <div className="min-w-0">
+                          <div className="text-[9px] font-extrabold leading-4 text-white sm:text-[10px]">{title}</div>
+                          <div className="text-[8px] leading-3.5 text-blue-100/85 sm:text-[9px]">{detail}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="grid gap-2.5 md:col-span-2">
+                  <Link href="/contact/?project=led-display" className="inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-[#1458e5] px-4 text-[11px] font-extrabold text-white shadow-md transition hover:bg-[#0f49c6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300">
+                    <UiIcon name="guide" className="h-4 w-4" /> Request Free BOQ
+                  </Link>
+                  <a href={`tel:${siteConfig.phone}`} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-md border border-slate-200 bg-white px-4 text-[11px] font-extrabold text-[#071a42] shadow-sm transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300">
+                    <UiIcon name="support" className="h-4 w-4" /> Talk to an Engineer
+                  </a>
+                </div>
+
+                <div className="hidden md:col-span-3 md:block" aria-hidden="true" />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-y-4 px-4 py-4 sm:grid-cols-3 sm:px-6 lg:grid-cols-6 lg:gap-y-0 lg:px-7">
+              {[
+                ["solutions", "500+", "Projects Completed"],
+                ["guide", "10+ Years", "Industry Experience"],
+                ["shield", "20+", "Global Brands"],
+                ["delivery", "64", "Districts Covered"],
+                ["install", "Expert Team", "Design & Installation"],
+                ["support", "After-Sales", "Technical Support"],
+              ].map(([icon, value, label], index) => (
+                <div key={label} className={`flex min-w-0 items-center gap-2.5 px-2 sm:px-3 ${index ? "lg:border-l lg:border-slate-200" : ""}`}>
+                  <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#edf4ff] text-[#1458e5]" aria-hidden="true">
+                    <UiIcon name={icon} className="h-[18px] w-[18px]" />
+                  </span>
+                  <div className="min-w-0">
+                    <div className="text-[11px] font-extrabold leading-4 text-[#071a42] sm:text-xs">{value}</div>
+                    <div className="text-[8px] leading-3.5 text-slate-600 sm:text-[9px]">{label}</div>
+                  </div>
+                </div>
+              ))}
             </div>
           </section>
         </>
@@ -3370,10 +3425,10 @@ function ProductsPageContent({
   );
 }
 
-export default function ProductsPage() {
+export default function ProductsPage({ currentYear }: { currentYear: number }) {
   const pathname = usePathname();
   const ledOnly = pathname === "/led-display" || pathname === "/led-display/";
   const basePath = "/led-display" as const;
 
-  return <ProductsPageContent ledOnly={ledOnly} basePath={basePath} />;
+  return <ProductsPageContent ledOnly={ledOnly} basePath={basePath} currentYear={currentYear} />;
 }

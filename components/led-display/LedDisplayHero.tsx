@@ -107,7 +107,7 @@ function ArrowIcon({ direction }: { direction: "previous" | "next" }) {
   );
 }
 
-export default function LedDisplayHero() {
+export default function LedDisplayHero({ currentYear }: { currentYear: number }) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const showSlide = useCallback((nextIndex: number) => {
@@ -176,7 +176,7 @@ export default function LedDisplayHero() {
             className="mt-2 text-[1.75rem] font-black leading-[1.08] tracking-[-0.03em] text-[#071936] sm:text-[2rem] lg:text-[2.125rem] xl:text-4xl"
           >
             LED Display Price
-            <span className="block">in Bangladesh 2026</span>
+            <span className="block">in Bangladesh {currentYear}</span>
           </h1>
           <p className="mt-3 max-w-[39rem] text-[13px] font-medium leading-5 text-slate-700 sm:text-sm sm:leading-6 lg:text-[clamp(0.78rem,0.9vw,0.95rem)]">
             Compare indoor, outdoor and rental LED displays with expert guidance on pixel pitch, controllers, installation and project-based pricing.
