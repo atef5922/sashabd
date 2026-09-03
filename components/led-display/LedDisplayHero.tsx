@@ -129,7 +129,7 @@ export default function LedDisplayHero({ currentYear }: { currentYear: number })
 
   return (
     <section
-      className="led-display-hero-shell group/ledhero relative left-1/2 right-1/2 isolate -mx-[50vw] -mt-2 min-h-[430px] w-screen overflow-hidden bg-[#f7f9fc] sm:min-h-[420px] lg:min-h-[clamp(20rem,25vw,23rem)]"
+      className="led-display-hero-shell relative left-1/2 right-1/2 isolate -mx-[50vw] -mt-2 min-h-[430px] w-screen overflow-hidden bg-[#f7f9fc] sm:min-h-[420px] lg:min-h-[clamp(20rem,25vw,23rem)]"
       aria-labelledby="led-display-hero-heading"
       aria-roledescription="carousel"
       aria-label="LED display solutions"
@@ -226,7 +226,7 @@ export default function LedDisplayHero({ currentYear }: { currentYear: number })
       <button
         type="button"
         onClick={showPrevious}
-        className="absolute left-3 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white/95 text-[#071936] opacity-100 shadow-[0_6px_20px_rgba(15,23,42,0.14)] transition hover:scale-105 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b5bdd] sm:inline-flex lg:left-5 lg:opacity-0 lg:group-hover/ledhero:opacity-100 lg:group-focus-within/ledhero:opacity-100"
+        className="led-display-hero-arrow pointer-events-auto absolute left-3 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white/95 text-[#071936] opacity-100 shadow-[0_6px_20px_rgba(15,23,42,0.14)] transition hover:scale-105 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b5bdd] sm:inline-flex lg:left-5"
         aria-label="Show previous LED display banner"
       >
         <ArrowIcon direction="previous" />
@@ -234,7 +234,7 @@ export default function LedDisplayHero({ currentYear }: { currentYear: number })
       <button
         type="button"
         onClick={showNext}
-        className="absolute right-3 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white/95 text-[#071936] opacity-100 shadow-[0_6px_20px_rgba(15,23,42,0.14)] transition hover:scale-105 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b5bdd] sm:inline-flex lg:right-5 lg:opacity-0 lg:group-hover/ledhero:opacity-100 lg:group-focus-within/ledhero:opacity-100"
+        className="led-display-hero-arrow pointer-events-auto absolute right-3 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white/95 text-[#071936] opacity-100 shadow-[0_6px_20px_rgba(15,23,42,0.14)] transition hover:scale-105 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b5bdd] sm:inline-flex lg:right-5"
         aria-label="Show next LED display banner"
       >
         <ArrowIcon direction="next" />

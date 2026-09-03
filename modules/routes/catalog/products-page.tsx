@@ -101,22 +101,30 @@ const LED_PRICE_BANDS: ReadonlyArray<{ id: LedPriceBand; label: string; min?: nu
   { id: "request", label: "Request Price" },
 ];
 
-function getProductStartingPrice(product: UnifiedProduct): number | null {
+function getProductPriceRange(product: UnifiedProduct): { min: number; max: number } | null {
   const priceText = product.priceLine ?? product.priceLabel ?? "";
   if (!priceText || /request|contact|call/i.test(priceText)) return null;
-  const match = priceText.match(/\d[\d,]*(?:\.\d+)?/);
-  if (!match) return null;
-  const price = Number(match[0].replace(/,/g, ""));
-  return Number.isFinite(price) ? price : null;
+  const prices = [...priceText.matchAll(/\d[\d,]*(?:\.\d+)?/g)]
+    .map((match) => Number(match[0].replace(/,/g, "")))
+    .filter(Number.isFinite);
+  if (!prices.length) return null;
+  return { min: Math.min(...prices), max: Math.max(...prices) };
+}
+
+function getProductStartingPrice(product: UnifiedProduct): number | null {
+  return getProductPriceRange(product)?.min ?? null;
 }
 
 function matchesLedPriceBand(product: UnifiedProduct, band: LedPriceBand): boolean {
-  const price = getProductStartingPrice(product);
-  if (band === "request") return price === null;
-  if (price === null) return false;
+  const productRange = getProductPriceRange(product);
+  if (band === "request") return productRange === null;
+  if (productRange === null) return false;
   const range = LED_PRICE_BANDS.find((item) => item.id === band);
   if (!range) return true;
-  return (range.min === undefined || price >= range.min) && (range.max === undefined || price <= range.max);
+  return (
+    (range.min === undefined || productRange.max >= range.min) &&
+    (range.max === undefined || productRange.min <= range.max)
+  );
 }
 
 function isLedExplorerProduct(product: UnifiedProduct): boolean {
@@ -776,10 +784,11 @@ function ProductsPageContent({
       }
 
       if (ledOnly && (ledMinPrice !== null || ledMaxPrice !== null)) {
-        const productPrice = getProductStartingPrice(p);
-        if (productPrice === null) return false;
-        if (ledMinPrice !== null && productPrice < ledMinPrice) return false;
-        if (ledMaxPrice !== null && productPrice > ledMaxPrice) return false;
+        if (ledMinPrice !== null && ledMaxPrice !== null && ledMinPrice > ledMaxPrice) return false;
+        const productRange = getProductPriceRange(p);
+        if (productRange === null) return false;
+        if (ledMinPrice !== null && productRange.max < ledMinPrice) return false;
+        if (ledMaxPrice !== null && productRange.min > ledMaxPrice) return false;
       }
 
       if (!q) return true;
@@ -828,10 +837,14 @@ function ProductsPageContent({
   const ledCatalogProducts = useMemo(() => allProducts.filter(isLedExplorerProduct), [allProducts]);
   const ledCustomPriceActive = ledMinPrice !== null || ledMaxPrice !== null;
   const ledCustomPriceInvalid = ledMinPrice !== null && ledMaxPrice !== null && ledMinPrice > ledMaxPrice;
-  const ledSliderMinValue = Math.min(ledMinPrice ?? 0, LED_PRICE_SLIDER_MAX);
-  const ledSliderMaxValue = Math.max(ledSliderMinValue, Math.min(ledMaxPrice ?? LED_PRICE_SLIDER_MAX, LED_PRICE_SLIDER_MAX));
-  const ledSliderMinPercent = (ledSliderMinValue / LED_PRICE_SLIDER_MAX) * 100;
-  const ledSliderMaxPercent = (ledSliderMaxValue / LED_PRICE_SLIDER_MAX) * 100;
+  const ledManualPriceCeiling = Math.max(ledMinPrice ?? 0, ledMaxPrice ?? 0);
+  const ledSliderScaleMax = ledManualPriceCeiling > LED_PRICE_SLIDER_MAX
+    ? Math.ceil((ledManualPriceCeiling * 1.1) / 500) * 500
+    : LED_PRICE_SLIDER_MAX;
+  const ledSliderMinValue = Math.min(ledMinPrice ?? 0, ledSliderScaleMax);
+  const ledSliderMaxValue = Math.min(ledMaxPrice ?? ledSliderScaleMax, ledSliderScaleMax);
+  const ledSliderLowerPercent = (Math.min(ledSliderMinValue, ledSliderMaxValue) / ledSliderScaleMax) * 100;
+  const ledSliderUpperPercent = (Math.max(ledSliderMinValue, ledSliderMaxValue) / ledSliderScaleMax) * 100;
   const ledActiveFilterCount = (filter === "all" ? 0 : 1) + ledPriceBands.length + (ledCustomPriceActive ? 1 : 0);
   const categoryCount = (category: FilterKey) => category === "all"
     ? ledCatalogProducts.length
@@ -846,7 +859,7 @@ function ProductsPageContent({
   };
   const changeLedCustomPrice = (field: "min" | "max", rawValue: string) => {
     const parsed = rawValue === "" ? null : Number(rawValue);
-    const value = parsed !== null && Number.isSafeInteger(parsed) && parsed >= 0 && parsed <= LED_PRICE_SLIDER_MAX
+    const value = parsed !== null && Number.isSafeInteger(parsed) && parsed >= 0
       ? parsed
       : null;
     if (field === "min") setLedMinPrice(value);
@@ -1388,26 +1401,6 @@ function ProductsPageContent({
   const desktopPaginationItems = shouldPaginate ? getPaginationItems(desktopCurrentPage, desktopTotalPages) : [];
   const showDesktopPagination = shouldPaginate && filtered.length > 0 && desktopTotalPages > 1;
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (!ledOnly) return;
-
-    const prevScrollRestoration =
-      "scrollRestoration" in window.history ? window.history.scrollRestoration : undefined;
-
-    if ("scrollRestoration" in window.history) window.history.scrollRestoration = "manual";
-
-    requestAnimationFrame(() => {
-      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    });
-
-    return () => {
-      if ("scrollRestoration" in window.history && prevScrollRestoration) {
-        window.history.scrollRestoration = prevScrollRestoration;
-      }
-    };
-  }, [ledOnly]);
-
   useLayoutEffect(() => {
     if (!gridTopRef.current) return;
     const behavior = scrollToGridOnNextPageChangeRef.current;
@@ -1791,13 +1784,13 @@ function ProductsPageContent({
                         <div className="absolute inset-x-1 top-2 h-1 rounded-full bg-slate-200" aria-hidden="true" />
                         <div
                           className="absolute top-2 h-1 rounded-full bg-[#F56605]"
-                          style={{ left: `calc(${ledSliderMinPercent}% + 0.25rem)`, right: `calc(${100 - ledSliderMaxPercent}% + 0.25rem)` }}
+                          style={{ left: `calc(${ledSliderLowerPercent}% + 0.25rem)`, right: `calc(${100 - ledSliderUpperPercent}% + 0.25rem)` }}
                           aria-hidden="true"
                         />
                         <input
                           type="range"
                           min={0}
-                          max={LED_PRICE_SLIDER_MAX}
+                          max={ledSliderScaleMax}
                           step={500}
                           value={ledSliderMinValue}
                           onChange={(event) => changeLedCustomPrice("min", event.currentTarget.value === "0" ? "" : event.currentTarget.value)}
@@ -1807,10 +1800,10 @@ function ProductsPageContent({
                         <input
                           type="range"
                           min={0}
-                          max={LED_PRICE_SLIDER_MAX}
+                          max={ledSliderScaleMax}
                           step={500}
                           value={ledSliderMaxValue}
-                          onChange={(event) => changeLedCustomPrice("max", event.currentTarget.value === String(LED_PRICE_SLIDER_MAX) ? "" : event.currentTarget.value)}
+                          onChange={(event) => changeLedCustomPrice("max", event.currentTarget.value === String(ledSliderScaleMax) ? "" : event.currentTarget.value)}
                           aria-label="Maximum LED product price"
                           className="pointer-events-none absolute inset-x-0 top-0 h-5 w-full appearance-none bg-transparent [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:bg-[#F56605] [&::-moz-range-thumb]:shadow [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-0.5 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-[#F56605] [&::-webkit-slider-thumb]:shadow"
                         />
@@ -1824,7 +1817,6 @@ function ProductsPageContent({
                             type="number"
                             inputMode="numeric"
                             min={0}
-                            max={LED_PRICE_SLIDER_MAX}
                             step={500}
                             value={ledMinPrice ?? ""}
                             onChange={(event) => changeLedCustomPrice("min", event.currentTarget.value)}
@@ -1840,11 +1832,10 @@ function ProductsPageContent({
                             type="number"
                             inputMode="numeric"
                             min={0}
-                            max={LED_PRICE_SLIDER_MAX}
                             step={500}
                             value={ledMaxPrice ?? ""}
                             onChange={(event) => changeLedCustomPrice("max", event.currentTarget.value)}
-                            placeholder={`${LED_PRICE_SLIDER_MAX.toLocaleString("en-BD")}+`}
+                            placeholder="Any"
                             aria-describedby={ledCustomPriceInvalid ? "led-price-range-error" : undefined}
                             className="h-8 w-full rounded-md border border-slate-300 bg-white pl-5 pr-1.5 text-[11px] font-semibold tabular-nums text-slate-800 outline-none placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/15"
                           />
@@ -2656,7 +2647,7 @@ function ProductsPageContent({
                 </Link>
               </div>
 
-              <div className="mt-5 grid gap-4 md:grid-cols-3">
+              <div className="mt-5 grid items-stretch gap-4 md:grid-cols-3 lg:gap-5">
                 {[
                   {
                     title: "Indoor LED Video Wall Installation",
@@ -2669,8 +2660,8 @@ function ProductsPageContent({
                   },
                   {
                     title: "Outdoor LED Billboard Project",
-                    image: "/images/project-page/project-chattogram-card.webp",
-                    alt: "Outdoor LED billboard project in Chattogram",
+                    image: "/images/blog/Chattogram-project.webp",
+                    alt: "Outdoor LED billboard installation in Chattogram",
                     icon: "solutions",
                     color: "#0aa65a",
                     meta: ["Chattogram", "Pixel Pitch: P6", "Size: 20ft × 10ft"],
@@ -2686,18 +2677,25 @@ function ProductsPageContent({
                     tags: ["Hanging System", "Lightweight Cabinet", "Quick Setup"],
                   },
                 ].map((project) => (
-                  <article key={project.title} className="group overflow-hidden rounded-xl border bg-white shadow-[0_7px_20px_rgba(15,37,70,0.065)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(15,37,70,0.1)]" style={{ borderColor: "#dbe4f0" }}>
-                    <div className="relative overflow-hidden bg-slate-100" style={{ height: "176px" }}>
-                      <Image src={project.image} alt={project.alt} fill sizes="(max-width: 767px) 100vw, 33vw" className="object-cover transition duration-500 group-hover:scale-[1.025]" />
+                  <article key={project.title} className="group flex h-full flex-col overflow-hidden rounded-xl border bg-white shadow-[0_7px_20px_rgba(15,37,70,0.065)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(15,37,70,0.1)]" style={{ borderColor: "#dbe4f0" }}>
+                    <div className="relative aspect-video w-full shrink-0 overflow-hidden bg-slate-100">
+                      <Image
+                        src={project.image}
+                        alt={project.alt}
+                        fill
+                        quality={95}
+                        sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw"
+                        className={`object-cover transition duration-500 group-hover:scale-[1.025] ${project.title === "Outdoor LED Billboard Project" ? "object-[center_25%]" : "object-center"}`}
+                      />
                     </div>
-                    <div className="relative px-4 pb-4 pt-5">
+                    <div className="relative flex flex-1 flex-col px-4 pb-5 pt-6 sm:px-5">
                       <div className="flex items-start gap-3">
                         <span className="-mt-10 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-[4px] border-white text-white shadow-md" style={{ backgroundColor: project.color }}>
                           <UiIcon name={project.icon} className="h-5 w-5" />
                         </span>
-                        <div className="min-h-10 min-w-0 flex-1 text-[15px] font-extrabold leading-5 text-[#071a42] sm:text-base">{project.title}</div>
+                        <div className="min-h-10 min-w-0 flex-1 text-base font-extrabold leading-5 text-[#071a42] sm:text-[17px] sm:leading-6">{project.title}</div>
                       </div>
-                      <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1.5 text-[10px] leading-4 text-slate-600">
+                      <div className="mt-2.5 flex flex-wrap gap-x-3 gap-y-1.5 text-[11px] leading-4 text-slate-600 sm:text-xs">
                         {project.meta.map((item, index) => (
                           <span key={item} className="inline-flex items-center gap-1.5">
                             {index === 0 ? <UiIcon name="guide" className="h-3.5 w-3.5 shrink-0 text-[#1458e5]" /> : null}
@@ -2706,11 +2704,11 @@ function ProductsPageContent({
                           </span>
                         ))}
                       </div>
-                      <div className="mt-3 flex flex-wrap gap-2">
+                      <div className="mt-auto flex flex-wrap gap-2 pt-4">
                         {project.tags.map((tag) => (
                           <span
                             key={tag}
-                            className="rounded-full border px-2.5 py-1 text-[9px] font-bold leading-none"
+                            className="rounded-full border px-2.5 py-1 text-[10px] font-bold leading-none sm:text-[11px]"
                             style={{
                               borderColor: `${project.color}24`,
                               backgroundColor: `${project.color}10`,

@@ -69,6 +69,19 @@ body {
   }
 }
 
+@media (min-width: 1024px) and (hover: hover) {
+  .led-display-hero-arrow {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .led-display-hero-shell:hover .led-display-hero-arrow,
+  .led-display-hero-shell:focus-within .led-display-hero-arrow {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
 @media (min-width: 1440px) {
   [data-home-header="true"] .site-header-inner {
     height: clamp(72px, 5.27vw, 108px) !important;
