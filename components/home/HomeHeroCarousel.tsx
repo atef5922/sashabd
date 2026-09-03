@@ -82,7 +82,7 @@ const heroSlides: readonly HeroSlide[] = [
   },
 ] as const;
 
-const AUTO_PLAY_DELAY = 3000;
+const AUTO_PLAY_DELAY = 5000;
 
 function ArrowIcon({ direction }: { direction: "left" | "right" }) {
   return (
@@ -120,7 +120,6 @@ function DocumentIcon() {
 
 export default function HomeHeroCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const activeSlide = heroSlides[activeIndex];
 
@@ -138,11 +137,11 @@ export default function HomeHeroCarousel() {
 
   useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (isPaused || reduceMotion.matches) return;
+    if (reduceMotion.matches) return;
 
     const timer = window.setInterval(showNext, AUTO_PLAY_DELAY);
     return () => window.clearInterval(timer);
-  }, [activeIndex, isPaused, showNext]);
+  }, [activeIndex, showNext]);
 
   return (
     <section
@@ -150,12 +149,6 @@ export default function HomeHeroCarousel() {
       className="home-hero-shell group relative left-1/2 right-1/2 isolate -mx-[50vw] -mt-2 min-h-[430px] w-screen overflow-hidden bg-[#f7f9fc] sm:min-h-[420px] lg:min-h-[clamp(20rem,25vw,23rem)]"
       aria-roledescription="carousel"
       aria-label="Sasha Corporation technology solutions"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-      onFocusCapture={() => setIsPaused(true)}
-      onBlurCapture={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget)) setIsPaused(false);
-      }}
       onKeyDown={(event) => {
         if (event.key === "ArrowLeft") {
           event.preventDefault();
@@ -189,7 +182,7 @@ export default function HomeHeroCarousel() {
           priority={index === 0}
           loading={index === 0 ? "eager" : "lazy"}
           sizes="100vw"
-          className={`h-full w-full object-cover object-[var(--mobile-position)] transition-opacity duration-300 ease-out motion-reduce:transition-none sm:object-[62%_center] lg:object-center ${
+          className={`h-full w-full object-cover object-[var(--mobile-position)] transition-opacity duration-700 ease-in-out motion-reduce:transition-none sm:object-[62%_center] lg:object-center ${
             index === activeIndex ? "z-0 opacity-100" : "pointer-events-none -z-10 opacity-0"
           }`}
           style={{ "--mobile-position": slide.mobilePosition } as React.CSSProperties}

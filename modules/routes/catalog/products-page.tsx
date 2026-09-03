@@ -4,7 +4,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { siteConfig } from "@/lib/site";
 import { normalizeDisplayedPriceText } from "@/lib/price";
@@ -12,9 +12,8 @@ import { buildLedProductCardHighlights } from "@/lib/productCardHighlights";
 import ProductGridCard from "@/components/products/ProductGridCard";
 import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
 import FaqAccordion from "@/components/common/FaqAccordion";
-import Breadcrumbs from "@/components/common/Breadcrumbs";
 import MobileIntroText from "@/components/common/MobileIntroText";
-import { homeBreadcrumb } from "@/lib/breadcrumbs";
+import LedDisplayHero from "@/components/led-display/LedDisplayHero";
 import {
   indoorCatalog,
   outdoorCatalog,
@@ -77,6 +76,149 @@ type UnifiedProduct = {
   ifpBrand?: (typeof interactiveFlatPanelCatalog)[number]["brand"];
   ifpSize?: (typeof interactiveFlatPanelCatalog)[number]["sizeInch"];
 };
+
+type LedSortOption = "recommended" | "price-asc" | "price-desc" | "name-asc";
+type LedPriceBand = "under-5k" | "5k-10k" | "10k-20k" | "20k-50k" | "50k-75k" | "request";
+
+const LED_RESULT_LIMITS = [12, 24, 36] as const;
+const LED_PRICE_SLIDER_MAX = 75_000;
+const LED_PRICE_BANDS: ReadonlyArray<{ id: LedPriceBand; label: string; min?: number; max?: number }> = [
+  { id: "under-5k", label: "Under ৳5,000", max: 4_999 },
+  { id: "5k-10k", label: "৳5,000–৳9,999", min: 5_000, max: 9_999 },
+  { id: "10k-20k", label: "৳10,000–৳19,999", min: 10_000, max: 19_999 },
+  { id: "20k-50k", label: "৳20,000–৳49,999", min: 20_000, max: 49_999 },
+  { id: "50k-75k", label: "৳50,000–৳74,999", min: 50_000, max: 74_999 },
+  { id: "request", label: "Request Price" },
+];
+
+function getProductStartingPrice(product: UnifiedProduct): number | null {
+  const priceText = product.priceLine ?? product.priceLabel ?? "";
+  if (!priceText || /request|contact|call/i.test(priceText)) return null;
+  const match = priceText.match(/\d[\d,]*(?:\.\d+)?/);
+  if (!match) return null;
+  const price = Number(match[0].replace(/,/g, ""));
+  return Number.isFinite(price) ? price : null;
+}
+
+function matchesLedPriceBand(product: UnifiedProduct, band: LedPriceBand): boolean {
+  const price = getProductStartingPrice(product);
+  if (band === "request") return price === null;
+  if (price === null) return false;
+  const range = LED_PRICE_BANDS.find((item) => item.id === band);
+  if (!range) return true;
+  return (range.min === undefined || price >= range.min) && (range.max === undefined || price <= range.max);
+}
+
+function isLedExplorerProduct(product: UnifiedProduct): boolean {
+  const kind = product.id.split(":")[0] as FilterKey;
+  return LED_DISPLAY_INTERNAL_LINK_KINDS.includes(kind);
+}
+
+function LedExplorerProductCard({ product, priority = false }: { product: UnifiedProduct; priority?: boolean }) {
+  const isLedDisplay = product.id.startsWith("indoor:") || product.id.startsWith("outdoor:") || product.id.startsWith("rental:");
+  const features = (isLedDisplay
+    ? getLedCardBullets(product)
+    : product.quickFeatures?.length
+      ? product.quickFeatures
+      : subtitleToBullets(product.subtitle)
+  ).slice(0, 3);
+  const priceText = normalizeDisplayedPriceText(product.priceLine ?? product.priceLabel ?? "Request Price");
+  const isRequestPrice = /request|contact|call/i.test(priceText);
+  const productKey = product.id.split(":").slice(1).join(":");
+  const quoteHref = `/contact/?project=led-display&product=${encodeURIComponent(productKey)}`;
+
+  const imageClassName = isLedDisplay
+    ? product.id === "indoor:p2-5-indoor-led-display"
+      ? "object-cover object-[58%_center] transition duration-300 group-hover:scale-[1.025]"
+      : "object-cover object-center transition duration-300 group-hover:scale-[1.025]"
+    : "object-contain p-5 transition duration-300 group-hover:scale-[1.035]";
+
+  return (
+    <article
+      data-led-product-card
+      data-product-id={product.id}
+      className="group relative flex h-full min-w-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_2px_12px_rgba(15,23,42,0.045)] transition-[transform,border-color,box-shadow] duration-200 motion-safe:hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_7px_20px_rgba(15,23,42,0.09)] focus-within:border-slate-400 focus-within:ring-2 focus-within:ring-slate-900/10 motion-reduce:transition-none"
+    >
+      <Link
+        prefetch={false}
+        href={product.href}
+        aria-label={`View ${product.title}`}
+        className={`relative block h-[210px] shrink-0 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-500 sm:h-[220px] ${isLedDisplay ? "bg-slate-100" : "bg-white"}`}
+      >
+        <span className="absolute left-3 top-3 z-10 inline-flex rounded-[5px] px-2 py-1 text-[10px] font-extrabold uppercase leading-none tracking-[0.025em] text-white shadow-sm" style={{ backgroundColor: "#f4510b" }}>
+          {product.badge}
+        </span>
+        {product.pitch ? (
+          <span className="absolute right-3 top-3 z-10 inline-flex rounded-[5px] bg-[#071936] px-2 py-1 text-[10px] font-extrabold leading-none text-white shadow-sm">
+            {formatPitchDisplay(product.pitch)}
+          </span>
+        ) : null}
+        <Image
+          src={product.image}
+          alt={product.title}
+          fill
+          sizes="(max-width: 639px) 92vw, (max-width: 1279px) 50vw, 30vw"
+          className={imageClassName}
+          priority={priority}
+        />
+      </Link>
+
+      <div className="flex flex-1 flex-col px-3.5 pb-3.5 pt-2.5">
+        <p className="text-left text-[10px] font-extrabold uppercase leading-4 tracking-[0.08em] text-slate-500">
+          {product.badge}
+        </p>
+        <h3 className="mt-1 line-clamp-2 min-h-10 text-base font-extrabold leading-5 text-[#071936]">
+          <Link
+            prefetch={false}
+            href={product.href}
+            className="rounded-sm underline-offset-4 transition-colors hover:text-orange-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45"
+          >
+            {product.title}
+          </Link>
+        </h3>
+
+        <ul className="mt-3 min-h-[4.25rem] space-y-1.5" aria-label={`Key features of ${product.title}`}>
+          {features.map((feature) => (
+            <li key={feature} className="flex min-w-0 items-center gap-2 !text-left text-[12px] font-medium leading-4 text-slate-700">
+              <svg viewBox="0 0 16 16" aria-hidden="true" className="h-4 w-4 shrink-0 fill-none text-slate-700">
+                <circle cx="8" cy="8" r="5.75" stroke="currentColor" strokeWidth="1.4" />
+                <path d="m5.3 8.1 1.7 1.7 3.7-3.9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <span className="line-clamp-1 min-w-0" style={{ textAlign: "left", textAlignLast: "left" }} title={feature}>{feature}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-auto pt-3">
+          <p className="min-w-0 break-words text-left text-lg font-extrabold leading-6 tracking-tight text-[#f05a19] [font-variant-numeric:tabular-nums]">
+            {priceText}
+          </p>
+          <p className="mt-0.5 text-left text-[11px] font-normal leading-4 text-slate-500">
+            {isRequestPrice ? "Contact for project pricing" : "Indicative product price"}
+          </p>
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            <Link
+              prefetch={false}
+              href={product.href}
+              aria-label={`View details for ${product.title}`}
+              className="inline-flex min-h-10 min-w-0 items-center justify-center rounded-md border border-[#102542] bg-white px-2 py-2 text-center text-xs font-bold text-[#071936] transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/35"
+            >
+              View Details
+            </Link>
+            <Link
+              prefetch={false}
+              href={quoteHref}
+              aria-label={`Get a quote for ${product.title}`}
+              className="inline-flex min-h-10 min-w-0 items-center justify-center rounded-md border border-[#071936] bg-[#071936] px-2 py-2 text-center text-xs font-bold text-white transition-colors hover:border-[#102b52] hover:bg-[#102b52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/45 focus-visible:ring-offset-2"
+            >
+              Get a Quote
+            </Link>
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
 
 function getLedCardBullets(product: UnifiedProduct): string[] {
   return buildLedProductCardHighlights({
@@ -510,8 +652,7 @@ function ProductsPageContent({
   basePath: "/led-display";
 }) {
   const gridTopRef = useRef<HTMLDivElement | null>(null);
-  const scrollToGridOnNextPageChangeRef = useRef(false);
-  const mobileCarouselRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const scrollToGridOnNextPageChangeRef = useRef<ScrollBehavior | null>(null);
   const componentCarouselRef = useRef<HTMLDivElement | null>(null);
   const componentSectionRef = useRef<HTMLDivElement | null>(null);
   const whyChooseCarouselRef = useRef<HTMLDivElement | null>(null);
@@ -546,73 +687,19 @@ function ProductsPageContent({
   );
   const waPhone = siteConfig.whatsapp.replace(/\D/g, "");
   const wa = `https://api.whatsapp.com/send/?phone=${waPhone}&text&type=phone_number&app_absent=0`;
-  const shareUrl = `https://${siteConfig.domain}${basePath}/`;
-  const shareTitle = ledOnly ? "LED Display Price in Bangladesh 2026" : "All LED Products & Accessories";
-  const encodedShareUrl = encodeURIComponent(shareUrl);
-  const encodedShareTitle = encodeURIComponent(shareTitle);
-  const socialShareLinks = [
-    {
-      label: "Facebook",
-      href: `https://www.facebook.com/sharer/sharer.php?u=${encodedShareUrl}`,
-      className: "border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100",
-    },
-    {
-      label: "WhatsApp",
-      href: `https://api.whatsapp.com/send?text=${encodedShareTitle}%20${encodedShareUrl}`,
-      className: "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100",
-    },
-    {
-      label: "LinkedIn",
-      href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedShareUrl}`,
-      className: "border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100",
-    },
-  ];
-  const ledQuickActions = [
-    {
-      label: "WhatsApp for quotation",
-      href: wa,
-      icon: "support",
-      kind: "external" as const,
-      primary: true,
-    },
-    {
-      label: "Request BOQ-based proposal",
-      href: "/contact/",
-      icon: "guide",
-      kind: "internal" as const,
-    },
-    {
-      label: "Jump to price table",
-      href: "#led-price-table",
-      icon: "cost",
-      kind: "anchor" as const,
-    },
-    {
-      label: "Jump to FAQ",
-      href: "#led-faq",
-      icon: "faq",
-      kind: "anchor" as const,
-    },
-  ];
-  const ledCategoryQuickLinks = [
-    { label: "Indoor LED Display", href: "/led-display/indoor-led/", icon: "display", tone: "text-amber-600 bg-amber-50 border-amber-100" },
-    { label: "Outdoor LED Display", href: "/led-display/outdoor/", icon: "display", tone: "text-sky-600 bg-sky-50 border-sky-100" },
-    { label: "Rental LED Display", href: "/led-display/rental-display/", icon: "display", tone: "text-rose-600 bg-rose-50 border-rose-100" },
-    { label: "Receiving Card", href: "/led-display/accessories/receiving-card/", icon: "receiving", tone: "text-emerald-600 bg-emerald-50 border-emerald-100" },
-    { label: "Controller", href: "/led-display/accessories/controller/", icon: "controller", tone: "text-orange-600 bg-orange-50 border-orange-100" },
-    { label: "Power Supply", href: "/led-display/accessories/power-supply/", icon: "power", tone: "text-cyan-600 bg-cyan-50 border-cyan-100" },
-    { label: "LED Accessories", href: "/led-display/accessories/led-accessories/", icon: "cable", tone: "text-indigo-600 bg-indigo-50 border-indigo-100" },
-    { label: "LED Buying Guide", href: "/blog/led-display-price-in-bangladesh-complete-buying-guide/", icon: "guide", tone: "text-slate-600 bg-slate-50 border-slate-200" },
-  ];
-
   const [filter, setFilter] = useState<FilterKey>("all");
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
-  const [mobilePage, setMobilePage] = useState(1);
+  const [ledSort, setLedSort] = useState<LedSortOption>("recommended");
+  const [ledPageSize, setLedPageSize] = useState<(typeof LED_RESULT_LIMITS)[number]>(12);
+  const [ledPriceBands, setLedPriceBands] = useState<LedPriceBand[]>([]);
+  const [ledMinPrice, setLedMinPrice] = useState<number | null>(null);
+  const [ledMaxPrice, setLedMaxPrice] = useState<number | null>(null);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [openLedFilterGroups, setOpenLedFilterGroups] = useState<Array<"category" | "price">>(["category", "price"]);
   const [activeComponentSlide, setActiveComponentSlide] = useState(0);
   const [activeWhyChooseSlide, setActiveWhyChooseSlide] = useState(0);
-  const desktopPageSize = ledOnly ? 21 : 20;
-  const mobilePageSize = ledOnly ? 8 : desktopPageSize;
+  const desktopPageSize = ledOnly ? ledPageSize : 20;
   const productImageSizes = "(max-width: 1024px) 100vw, 25vw";
   const componentMobileCardStyles = [
     "border-sky-200/70 bg-[linear-gradient(180deg,#eff6ff_0%,#ffffff_48%,#dbeafe_100%)] shadow-[0_14px_34px_rgba(59,130,246,0.10)]",
@@ -625,37 +712,54 @@ function ProductsPageContent({
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
 
-    return allProducts.filter((p) => {
+    const matchingProducts = allProducts.filter((p) => {
       const kind = p.id.split(":")[0] as FilterKey;
 
       const passFilter = ledOnly
         ? filter === "all"
-          ? kind === "indoor" ||
-            kind === "outdoor" ||
-            kind === "rental" ||
-            kind === "receiving-card" ||
-            kind === "controller" ||
-            kind === "power-supply" ||
-            kind === "led-accessories"
+          ? isLedExplorerProduct(p)
           : kind === filter
         : filter === "all"
           ? true
           : kind === filter;
       if (!passFilter) return false;
 
+      if (ledOnly && ledPriceBands.length && !ledPriceBands.some((band) => matchesLedPriceBand(p, band))) {
+        return false;
+      }
+
+      if (ledOnly && (ledMinPrice !== null || ledMaxPrice !== null)) {
+        const productPrice = getProductStartingPrice(p);
+        if (productPrice === null) return false;
+        if (ledMinPrice !== null && productPrice < ledMinPrice) return false;
+        if (ledMaxPrice !== null && productPrice > ledMaxPrice) return false;
+      }
+
       if (!q) return true;
 
       const blob = `${p.title} ${p.subtitle} ${p.badge} ${p.pitch ?? ""}`.toLowerCase();
       return blob.includes(q);
     });
-  }, [allProducts, filter, query, ledOnly]);
+
+    if (!ledOnly || ledSort === "recommended") return matchingProducts;
+
+    return [...matchingProducts].sort((a, b) => {
+      if (ledSort === "name-asc") return a.title.localeCompare(b.title);
+      const priceA = getProductStartingPrice(a);
+      const priceB = getProductStartingPrice(b);
+      if (priceA === null && priceB === null) return a.title.localeCompare(b.title);
+      if (priceA === null) return 1;
+      if (priceB === null) return -1;
+      return ledSort === "price-asc" ? priceA - priceB : priceB - priceA;
+    });
+  }, [allProducts, filter, query, ledOnly, ledMaxPrice, ledMinPrice, ledPriceBands, ledSort]);
 
   const filters: Array<{ key: FilterKey; label: string }> = ledOnly
     ? [
-        { key: "all", label: "All" },
-        { key: "indoor", label: "Indoor LED" },
-        { key: "outdoor", label: "Outdoor LED" },
-        { key: "rental", label: "Rental LED" },
+        { key: "all", label: "All Products" },
+        { key: "indoor", label: "Indoor LED Display" },
+        { key: "outdoor", label: "Outdoor LED Display" },
+        { key: "rental", label: "Rental LED Display" },
         { key: "receiving-card", label: "Receiving Card" },
         { key: "controller", label: "Controller" },
         { key: "power-supply", label: "Power Supply" },
@@ -674,66 +778,43 @@ function ProductsPageContent({
         { key: "led-accessories", label: "LED Accessories" },
       ];
 
-  const mobileLedSections = useMemo(() => {
-    if (!ledOnly) return [];
-
-    const mobileConfig = [
-      { key: "indoor" as FilterKey, title: "Indoor LED Display", prefix: "indoor:", href: "/led-display/indoor-led/", viewAllLabel: "View Indoor" },
-      { key: "outdoor" as FilterKey, title: "Outdoor LED Display", prefix: "outdoor:", href: "/led-display/outdoor/", viewAllLabel: "View Outdoor" },
-      { key: "rental" as FilterKey, title: "Rental LED Display", prefix: "rental:", href: "/led-display/rental-display/", viewAllLabel: "View Rental" },
-      { key: "receiving-card" as FilterKey, title: "Receiving Card", prefix: "receiving-card:", href: "/led-display/accessories/receiving-card/", viewAllLabel: "View Cards" },
-      { key: "controller" as FilterKey, title: "Controller", prefix: "controller:", href: "/led-display/accessories/controller/", viewAllLabel: "View Controllers" },
-      { key: "power-supply" as FilterKey, title: "Power Supply", prefix: "power-supply:", href: "/led-display/accessories/power-supply/", viewAllLabel: "View PSUs" },
-      { key: "led-accessories" as FilterKey, title: "LED Accessories", prefix: "led-accessories:", href: "/led-display/accessories/led-accessories/", viewAllLabel: "View Accessories" },
-    ];
-
-    const visibleConfig = filter === "all" ? mobileConfig : mobileConfig.filter((section) => section.key === filter);
-
-    return visibleConfig
-      .map((section) => ({
-        id: section.key,
-        title: section.title,
-        href: section.href,
-        viewAllLabel: section.viewAllLabel,
-        products: filtered.filter((p) => p.id.startsWith(section.prefix)),
-      }))
-      .filter((section) => section.products.length > 0);
-  }, [filtered, filter, ledOnly]);
-
-  const scrollMobileCarousel = (sectionId: string, direction: 1 | -1) => {
-    const track = mobileCarouselRefs.current[sectionId];
-    if (!track) return;
-    const amount = Math.max(track.clientWidth - 64, 220) * direction;
-    track.scrollBy({ left: amount, behavior: "smooth" });
+  const ledCatalogProducts = useMemo(() => allProducts.filter(isLedExplorerProduct), [allProducts]);
+  const ledCustomPriceActive = ledMinPrice !== null || ledMaxPrice !== null;
+  const ledCustomPriceInvalid = ledMinPrice !== null && ledMaxPrice !== null && ledMinPrice > ledMaxPrice;
+  const ledSliderMinValue = Math.min(ledMinPrice ?? 0, LED_PRICE_SLIDER_MAX);
+  const ledSliderMaxValue = Math.max(ledSliderMinValue, Math.min(ledMaxPrice ?? LED_PRICE_SLIDER_MAX, LED_PRICE_SLIDER_MAX));
+  const ledSliderMinPercent = (ledSliderMinValue / LED_PRICE_SLIDER_MAX) * 100;
+  const ledSliderMaxPercent = (ledSliderMaxValue / LED_PRICE_SLIDER_MAX) * 100;
+  const ledActiveFilterCount = (filter === "all" ? 0 : 1) + ledPriceBands.length + (ledCustomPriceActive ? 1 : 0);
+  const categoryCount = (category: FilterKey) => category === "all"
+    ? ledCatalogProducts.length
+    : ledCatalogProducts.filter((product) => product.id.startsWith(`${category}:`)).length;
+  const priceBandCount = (band: LedPriceBand) => ledCatalogProducts.filter((product) => {
+    const matchesCategory = filter === "all" || product.id.startsWith(`${filter}:`);
+    return matchesCategory && matchesLedPriceBand(product, band);
+  }).length;
+  const resetResultsToFirstPage = () => {
+    scrollToGridOnNextPageChangeRef.current = "auto";
+    setPage(1);
   };
-
-  const ledWhyChoose = [
-    "LED modules combine to form a scalable screen for text, video, and live visuals",
-    "Pixel pitch and viewing distance together decide clarity and reading comfort",
-    "Indoor, outdoor, and rental formats are chosen based on environment and usage time",
-    "Controller and content software enable scheduled updates without reprinting media",
-    "Proper installation, calibration, and maintenance keep long-term performance stable",
-  ];
-
-  const ledHighlights = [
-    {
-      t: "Reliable Sourcing",
-      d: "China import + BD stock. Genuine modules, controllers and accessories.",
-      icon: "compare",
-    },
-    {
-      t: "Expert Installation",
-      d: "Site survey, structure, wiring, calibration - complete end-to-end service.",
-      icon: "process",
-    },
-    {
-      t: "After-Sales Support",
-      d: "Maintenance, spare parts and troubleshooting - long-term peace of mind.",
-      icon: "faq",
-    },
-  ];
-
-
+  const changeLedCustomPrice = (field: "min" | "max", rawValue: string) => {
+    const parsed = rawValue === "" ? null : Number(rawValue);
+    const value = parsed !== null && Number.isSafeInteger(parsed) && parsed >= 0 && parsed <= LED_PRICE_SLIDER_MAX
+      ? parsed
+      : null;
+    if (field === "min") setLedMinPrice(value);
+    else setLedMaxPrice(value);
+    if (value !== null) setLedPriceBands((bands) => bands.filter((band) => band !== "request"));
+    resetResultsToFirstPage();
+  };
+  const clearLedFilters = () => {
+    setFilter("all");
+    setLedPriceBands([]);
+    setLedMinPrice(null);
+    setLedMaxPrice(null);
+    setQuery("");
+    resetResultsToFirstPage();
+  };
 
   const ledDisplayComponentCards = [
     {
@@ -1014,24 +1095,6 @@ function ProductsPageContent({
     },
   ];
 
-  const trustedByBusinessesPoints = [
-    {
-      t: "Correct spec matching",
-      d: "We match module scan/IC, receiving card, PSU capacity and processor, reducing common issues like flicker and shifting.",
-      bullets: ["Mapping accuracy", "PSU sizing", "Processor compatibility"],
-    },
-    {
-      t: "Professional installation",
-      d: "Structure safety, neat cabling, earthing, and commissioning tests are done with a checklist-driven approach.",
-      bullets: ["Structure & cable routing", "Grounding & SPD planning", "Burn-in + testing"],
-    },
-    {
-      t: "After-sales support",
-      d: "Spare planning guidance and troubleshooting support helps reduce downtime and keeps screens running.",
-      bullets: ["Spare modules/PSU", "Remote support (system dependent)", "Maintenance schedule"],
-    },
-  ];
-
   const outdoorSignageBenefits = [
     {
       t: "Daylight Visibility That Stays Clear",
@@ -1107,26 +1170,6 @@ function ProductsPageContent({
       href: `${basePath}/indoor-led/${p.slug}/`,
       price: getLedDisplayTablePrice(p.slug) ?? "Request updated quote",
     }));
-
-  const imageFitFixIds = new Set<string>([
-    "indoor:p1-25-indoor-led-display",
-    "indoor:p1-53-indoor-led-display",
-    "indoor:p1-667-indoor-led-display",
-    "indoor:p1-86-indoor-led-display",
-    "indoor:p2-indoor-led-display",
-    "indoor:p2-5-indoor-led-display",
-    "indoor:p3-indoor-led-display",
-    "indoor:p3-076-indoor-led-display",
-    "outdoor:p2-5-outdoor-led-display-module",
-    "outdoor:p3-outdoor-led-display-module",
-    "outdoor:p3-076-outdoor-led-display-module",
-    "outdoor:p4-outdoor-led-display",
-    "outdoor:p5-outdoor-led-display",
-    "outdoor:p6-outdoor-led-display",
-    "outdoor:p6-67-outdoor-led-display-module-320x160mm",
-    "outdoor:p8-outdoor-led-display-module",
-    "outdoor:p10-outdoor-led-display-module",
-  ]);
 
   const renderCatalogCard = (p: UnifiedProduct) => {
     if (p.kind === "interactive-flat-panel" || p.kind === "podium") {
@@ -1262,18 +1305,8 @@ function ProductsPageContent({
   const desktopStartIndex = shouldPaginate ? (desktopCurrentPage - 1) * desktopPageSize : 0;
   const desktopEndIndex = shouldPaginate ? Math.min(desktopStartIndex + desktopPageSize, filtered.length) : filtered.length;
   const desktopPagedProducts = shouldPaginate ? filtered.slice(desktopStartIndex, desktopEndIndex) : filtered;
-  const desktopPagedProductIds = new Set(desktopPagedProducts.map((product) => product.id));
-  const desktopProductOrderById = new Map(filtered.map((product, index) => [product.id, index]));
   const desktopPaginationItems = shouldPaginate ? getPaginationItems(desktopCurrentPage, desktopTotalPages) : [];
   const showDesktopPagination = shouldPaginate && filtered.length > 0 && desktopTotalPages > 1;
-  const mobileTotalPages = ledOnly ? Math.max(1, Math.ceil(filtered.length / mobilePageSize)) : desktopTotalPages;
-  const mobileCurrentPage = ledOnly ? Math.min(Math.max(1, mobilePage), mobileTotalPages) : desktopCurrentPage;
-  const mobileStartIndex = ledOnly ? (mobileCurrentPage - 1) * mobilePageSize : desktopStartIndex;
-  const mobileEndIndex = ledOnly ? Math.min(mobileStartIndex + mobilePageSize, filtered.length) : desktopEndIndex;
-  const mobilePagedProducts = ledOnly ? filtered.slice(mobileStartIndex, mobileEndIndex) : desktopPagedProducts;
-  const mobilePaginationItems = ledOnly ? getPaginationItems(mobileCurrentPage, mobileTotalPages) : desktopPaginationItems;
-  const showMobilePagination = ledOnly && filtered.length > 0 && mobileTotalPages > 1;
-  const showFullList = ledOnly && fullListGroups.length > 0;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -1295,20 +1328,23 @@ function ProductsPageContent({
     };
   }, [ledOnly]);
 
-  useEffect(() => {
-    if (!shouldPaginate) return;
+  useLayoutEffect(() => {
     if (!gridTopRef.current) return;
-    if (!scrollToGridOnNextPageChangeRef.current) return;
+    const behavior = scrollToGridOnNextPageChangeRef.current;
+    if (!behavior) return;
 
-    const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
-    const behavior: ScrollBehavior = prefersReducedMotion ? "auto" : "smooth";
+    scrollToGridOnNextPageChangeRef.current = null;
+    gridTopRef.current.scrollIntoView({ behavior, block: "start" });
+  }, [desktopCurrentPage, filter, ledMaxPrice, ledMinPrice, ledPageSize, ledPriceBands, ledSort, query]);
 
-    requestAnimationFrame(() => {
-      gridTopRef.current?.scrollIntoView({ behavior, block: "start" });
-    });
-
-    scrollToGridOnNextPageChangeRef.current = false;
-  }, [desktopCurrentPage, mobileCurrentPage, shouldPaginate]);
+  useEffect(() => {
+    if (!mobileFiltersOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileFiltersOpen(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [mobileFiltersOpen]);
 
   useEffect(() => {
     if (!ledOnly) return;
@@ -1372,7 +1408,7 @@ function ProductsPageContent({
     }, 3200);
 
     return () => window.clearInterval(timer);
-  }, [ledOnly]);
+  }, [ledOnly, sashaWhyChooseCards.length]);
 
   const handleComponentCarouselScroll = () => {
     const container = componentCarouselRef.current;
@@ -1457,7 +1493,7 @@ function ProductsPageContent({
     >
       {/* HEADER */}
       <section
-        className={ledOnly ? "py-2" : "rounded-3xl border p-8 shadow-sm"}
+        className={ledOnly ? "py-0" : "rounded-3xl border p-8 shadow-sm"}
         style={
           ledOnly
             ? undefined
@@ -1472,125 +1508,15 @@ function ProductsPageContent({
         {ledOnly ? (
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(landingFaqSchema) }} />
         ) : null}
-        {ledOnly ? (
-          <Breadcrumbs
-            items={[homeBreadcrumb(), { href: "/led-display/", label: "LED Display", current: true }]}
-            className="mb-3 pt-3 text-sm text-slate-600"
-          />
-        ) : null}
-        <div
-          className={
-            ledOnly
-              ? "mobile-page-intro-card bg-transparent px-0 py-0 text-left shadow-none md:rounded-[28px] md:border md:border-slate-200 md:bg-white md:px-8 md:py-7 md:text-center md:shadow-[0_10px_28px_rgba(15,23,42,0.08)]"
-              : ""
-          }
-        >
-          <h1 className={`${ledOnly ? "text-left md:text-center " : ""}text-[1.75rem] font-extrabold leading-[1.2] text-slate-900 md:text-4xl`}>
-          {ledOnly ? "LED Display Price in Bangladesh 2026" : "All LED Products & Accessories"}
+        {ledOnly ? <LedDisplayHero /> : null}
+        {!ledOnly ? <div>
+          <h1 className="text-[1.75rem] font-extrabold leading-[1.2] text-slate-900 md:text-4xl">
+          All LED Products &amp; Accessories
         </h1>
-          {ledOnly ? (
-            <MobileIntroText
-              teaser="Compare LED display prices in Bangladesh across indoor, outdoor, and rental options in one place."
-              expandedClassName="mx-auto mt-4 max-w-6xl"
-              desktopClassName="mx-auto mt-4 max-w-6xl"
-            >
-              <p className="text-justify text-[14px] leading-7 text-slate-700 md:text-[16px] md:leading-8">
-                Compare <strong>LED display prices in Bangladesh</strong> for <strong>indoor LED displays</strong> from <strong>P0.9-P3</strong> and <strong>outdoor LED screens</strong> from <strong>P2.5-P10</strong>. Sasha Corporation supplies LED video walls, digital LED billboards, advertising displays, rental LED screen panels, and digital signage systems for commercial, corporate, event, education, and institutional requirements. Installation, controller and CMS setup, maintenance guidance, and after-sales support are provided according to the agreed project scope.
-              </p>
-            </MobileIntroText>
-          ) : (
-            <p className="mt-3 max-w-3xl text-slate-600">
-              Indoor, Outdoor, Rental LED Displays, Receiving Cards, Controllers, and Power Supplies - all models in one place.
-            </p>
-          )}
-        </div>
-        {ledOnly ? (
-            <div className="mt-3.5 rounded-[22px] border border-slate-200 bg-slate-50/90 p-2 shadow-sm md:p-2.5">
-            <div className="grid gap-2 lg:grid-cols-4">
-              {ledQuickActions.map((action) => {
-                const content = (
-                  <>
-                    <span
-                      className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
-                        action.primary
-                          ? "border-white/20 bg-white/12 text-white"
-                          : "border-slate-200 bg-slate-100 text-slate-600"
-                      }`}
-                    >
-                      <UiIcon name={action.icon} className="h-3 w-3" />
-                    </span>
-                    <span className="min-w-0 flex-1 truncate text-left">{action.label}</span>
-                    <span className={action.primary ? "text-white/80" : "text-slate-400"} aria-hidden="true">
-                      <svg viewBox="0 0 24 24" className="h-3 w-3 fill-none">
-                        <path d="m9 6 6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </span>
-                  </>
-                );
-
-                const className = `group ${
-                  action.primary || action.label === "Request BOQ-based proposal" ? "inline-flex" : "hidden md:inline-flex"
-                } min-h-[36px] items-center gap-2 rounded-[16px] border px-3 py-2 text-[11.5px] font-semibold transition hover:-translate-y-0.5 ${
-                  action.primary
-                    ? "border-transparent bg-[linear-gradient(135deg,#11a7c9_0%,#169bd5_58%,#1f7ae0_100%)] text-white shadow-[0_10px_24px_rgba(14,165,233,0.28)]"
-                    : "border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50 hover:shadow-sm"
-                }`;
-
-                if (action.kind === "internal") {
-                  return (
-                    <Link key={action.label} prefetch={false} href={action.href} className={className}>
-                      {content}
-                    </Link>
-                  );
-                }
-
-                return (
-                  <a
-                    key={action.label}
-                    href={action.href}
-                    className={className}
-                    target={action.kind === "external" ? "_blank" : undefined}
-                    rel={action.kind === "external" ? "noreferrer" : undefined}
-                  >
-                    {content}
-                  </a>
-                );
-              })}
-            </div>
-
-            <div className="mt-3 rounded-[20px] border border-slate-200 bg-white p-3 md:p-3.5">
-              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                <h2 className="text-[15px] font-extrabold text-slate-900 md:text-[16px]">
-                  Explore LED Display Categories & Related Services
-                </h2>
-                <span className="inline-flex w-fit items-center rounded-full border border-cyan-200 bg-cyan-50 px-2.5 py-1 text-[10px] font-semibold text-cyan-700">
-                  Quick Links
-                </span>
-              </div>
-
-              <div className="mt-3 -mx-1 flex snap-x snap-mandatory gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-4 md:gap-0 md:overflow-visible md:px-0 md:pb-0 xl:grid-cols-8">
-                {ledCategoryQuickLinks.map((item) => (
-                  <Link
-                    key={item.href}
-                    prefetch={false}
-                    href={item.href}
-                    className="group inline-flex min-w-[146px] shrink-0 snap-start items-center gap-1.5 rounded-[14px] border border-slate-200 bg-white px-2.5 py-2 text-[10px] font-semibold leading-tight text-slate-700 transition hover:-translate-y-0.5 hover:border-slate-300 hover:bg-slate-50 hover:shadow-sm md:min-w-0 md:shrink md:rounded-[16px] md:px-2.5 md:py-2 md:text-[10.5px]"
-                  >
-                    <span className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${item.tone} md:h-5.5 md:w-5.5`}>
-                      <UiIcon name={item.icon} className="h-2.5 w-2.5 md:h-3 md:w-3" />
-                    </span>
-                    <span className="min-w-0 flex-1 truncate">{item.label}</span>
-                    <span className="text-slate-400 transition group-hover:translate-x-0.5 group-hover:text-slate-600" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" className="h-2.5 w-2.5 fill-none md:h-3 md:w-3">
-                        <path d="m9 6 6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : null}
+          <p className="mt-3 max-w-3xl text-slate-600">
+            Indoor, Outdoor, Rental LED Displays, Receiving Cards, Controllers, and Power Supplies - all models in one place.
+          </p>
+        </div> : null}
         {!ledOnly ? (
           <div className="mt-4">
             <Link
@@ -1600,37 +1526,6 @@ function ProductsPageContent({
             >
               LED Display
             </Link>
-          </div>
-        ) : null}
-        {ledOnly ? (
-          <div className="mt-5 md:hidden">
-            <div className="overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-              <div className="flex w-max min-w-full flex-nowrap gap-2">
-                {filters.map((f) => {
-                  const active = filter === f.key;
-                  return (
-                    <button
-                      key={f.key}
-                      type="button"
-                      onClick={() => {
-                        setFilter(f.key);
-                        setPage(1);
-                        setMobilePage(1);
-                      }}
-                      className="rounded-full border px-4 py-2 text-[11px] font-bold whitespace-nowrap transition"
-                      style={{
-                        borderColor: active ? "rgba(255,106,0,0.65)" : "rgba(103,232,249,0.28)",
-                        background: active ? "linear-gradient(135deg, rgba(228,87,0,0.98), rgba(255,106,0,0.98))" : "rgba(103,232,249,0.10)",
-                        color: active ? "#fff" : "#0f172a",
-                        boxShadow: active ? "0 8px 18px rgba(255,106,0,0.22)" : "none",
-                      }}
-                    >
-                      {f.key === "all" ? "All Products" : f.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
           </div>
         ) : null}
         {!ledOnly ? (
@@ -1645,8 +1540,7 @@ function ProductsPageContent({
                   type="button"
                   onClick={() => {
                     setFilter(f.key);
-                    setPage(1);
-                    setMobilePage(1);
+                    resetResultsToFirstPage();
                   }}
                   className="rounded-2xl border px-4 py-2 text-xs font-semibold transition hover:-translate-y-0.5 hover:shadow-sm"
                   style={{
@@ -1667,8 +1561,7 @@ function ProductsPageContent({
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
-                setPage(1);
-                setMobilePage(1);
+                resetResultsToFirstPage();
               }}
               placeholder='Search (e.g. "P1.86", "R-712", "VP820", "5V 40A")'
               className="w-full rounded-2xl border bg-white px-4 py-2 text-sm font-semibold text-slate-900 outline-none transition focus:ring-2 sm:w-[380px]"
@@ -1679,8 +1572,7 @@ function ProductsPageContent({
                 type="button"
                 onClick={() => {
                   setQuery("");
-                  setPage(1);
-                  setMobilePage(1);
+                  resetResultsToFirstPage();
                 }}
                 className="rounded-2xl border bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm"
                 style={{ borderColor: "rgba(15,23,42,0.12)" }}
@@ -1694,204 +1586,326 @@ function ProductsPageContent({
       </section>
 
       {/* PRODUCTS GRID */}
-      <div ref={gridTopRef} className="scroll-mt-24" />
+      <div id="led-products" ref={gridTopRef} className="scroll-mt-24" />
       <section className="mt-3 space-y-3 !bg-transparent !p-0 !shadow-none">
         {ledOnly ? (
-          <>
-            <div className="space-y-4 md:grid md:grid-cols-2 md:gap-[10px] md:space-y-0 lg:grid-cols-3">
-              {mobileLedSections.map((section) => (
-                <div key={section.id} className="md:contents">
-                  <div className="mb-2 flex items-center justify-between gap-3 md:hidden">
-                    <div className="text-sm font-extrabold leading-tight text-slate-900">{section.title}</div>
-                    <Link
-                      prefetch={false}
-                      href={section.href}
-                      className="inline-flex shrink-0 items-center gap-1 text-[11px] font-bold text-slate-800"
-                    >
-                      <span>{section.viewAllLabel}</span>
-                      <span className="text-[#F56605]">
-                        <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" aria-hidden="true">
-                          <path d="M5 12h11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                          <path d="m12 7 5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </span>
-                    </Link>
-                  </div>
+          <div data-led-product-explorer>
+            <div className="mb-4 grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:grid-cols-[minmax(0,1fr)_auto] lg:hidden">
+              <label className="relative block min-w-0">
+                <span className="sr-only">Search LED display products</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true" className="absolute left-3 top-3 h-5 w-5 fill-none text-slate-400">
+                  <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
+                  <path d="m16 16 4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+                <input
+                  type="search"
+                  value={query}
+                  onChange={(event) => { setQuery(event.target.value); resetResultsToFirstPage(); }}
+                  placeholder="Search LED products..."
+                  className="h-11 w-full rounded-xl border border-slate-300 bg-white pl-10 pr-10 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/15"
+                />
+                {query ? (
+                  <button type="button" aria-label="Clear product search" onClick={() => { setQuery(""); resetResultsToFirstPage(); }} className="absolute right-2 top-1.5 inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-lg text-slate-500 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">×</button>
+                ) : null}
+              </label>
+              <button
+                type="button"
+                aria-expanded={mobileFiltersOpen}
+                aria-controls="led-product-filters"
+                onClick={() => setMobileFiltersOpen((open) => !open)}
+                className="inline-flex min-h-10 cursor-pointer items-center justify-center rounded-xl border border-slate-300 bg-white px-4 text-sm font-bold text-slate-700 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45"
+              >
+                Filters{ledActiveFilterCount ? ` (${ledActiveFilterCount})` : ""}
+              </button>
+            </div>
 
-                  <div className="relative md:contents">
-                    <button
-                      type="button"
-                      onClick={() => scrollMobileCarousel(section.id, -1)}
-                      className="absolute -left-2 top-[28%] z-20 inline-flex -translate-y-1/2 items-center justify-center p-0 text-[#F56605] transition active:scale-95 md:hidden"
-                      aria-label={`Previous ${section.title} products`}
-                    >
-                      <svg viewBox="0 0 24 24" className="h-7 w-7 drop-shadow-[0_2px_4px_rgba(255,255,255,0.55)]" fill="none" aria-hidden="true">
-                        <path d="m14 7-5 5 5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </button>
-
-                    <div className="overflow-hidden px-1 md:contents">
-                      <div
-                        ref={(node) => {
-                          mobileCarouselRefs.current[section.id] = node;
-                        }}
-                        className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:contents"
-                      >
-                        {section.products.map((product) => (
-                          <div
-                            key={product.id}
-                            data-led-product-id={product.id}
-                            className={`min-w-[calc((100%-0.75rem)/2)] shrink-0 basis-[calc((100%-0.75rem)/2)] snap-start md:min-w-0 md:basis-auto md:shrink ${
-                              desktopPagedProductIds.has(product.id) ? "" : "md:hidden"
-                            }`}
-                            style={{ order: desktopProductOrderById.get(product.id) }}
-                          >
-                            {renderCatalogCard(product)}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => scrollMobileCarousel(section.id, 1)}
-                      className="absolute -right-2 top-[28%] z-20 inline-flex -translate-y-1/2 items-center justify-center p-0 text-[#F56605] transition active:scale-95 md:hidden"
-                      aria-label={`Next ${section.title} products`}
-                    >
-                      <svg viewBox="0 0 24 24" className="h-7 w-7 drop-shadow-[0_2px_4px_rgba(255,255,255,0.55)]" fill="none" aria-hidden="true">
-                        <path d="m10 7 5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </button>
+            <div className="grid gap-4 lg:grid-cols-[16rem_minmax(0,1fr)]">
+              <aside
+                id="led-product-filters"
+                aria-label="LED display product filters"
+                className={`${mobileFiltersOpen ? "flex" : "hidden"} flex-col self-start overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_3px_16px_rgba(15,23,42,0.045)] lg:sticky lg:top-20 lg:flex lg:max-h-[calc(100dvh-6rem)]`}
+              >
+                <div className="flex shrink-0 items-center justify-between gap-3 px-3 pb-2 pt-3">
+                  <h3 className="text-base font-extrabold leading-5 tracking-tight text-[#071936]">Filter Products</h3>
+                  <div className="flex items-center gap-2">
+                    {ledActiveFilterCount || query ? (
+                      <button type="button" onClick={clearLedFilters} className="cursor-pointer text-[11px] font-bold text-orange-700 hover:underline">Clear All</button>
+                    ) : null}
+                    <button type="button" aria-label="Close product filters" onClick={() => setMobileFiltersOpen(false)} className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-lg text-slate-500 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40 lg:hidden">×</button>
                   </div>
                 </div>
-              ))}
+
+                <div className="hidden shrink-0 px-3 pb-2 lg:block">
+                  <label className="relative block min-w-0">
+                    <span className="sr-only">Search LED display products</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" className="absolute left-2.5 top-2.5 h-4 w-4 fill-none text-slate-400">
+                      <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
+                      <path d="m16 16 4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                    <input
+                      type="search"
+                      value={query}
+                      onChange={(event) => { setQuery(event.target.value); resetResultsToFirstPage(); }}
+                      placeholder="Search products..."
+                      className="h-9 w-full rounded-lg border border-slate-300 bg-white pl-8 pr-8 text-xs text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/15"
+                    />
+                    {query ? (
+                      <button type="button" aria-label="Clear product search" onClick={() => { setQuery(""); resetResultsToFirstPage(); }} className="absolute right-1 top-1 inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md text-base text-slate-500 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">×</button>
+                    ) : null}
+                  </label>
+                </div>
+
+                <div className="min-h-0 px-3 pb-2 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:[scrollbar-gutter:stable]">
+                  <div className="border-b border-slate-200/80">
+                    <button
+                      type="button"
+                      aria-expanded={openLedFilterGroups.includes("category")}
+                      aria-controls="led-filter-category"
+                      onClick={() => setOpenLedFilterGroups((groups) => groups.includes("category") ? groups.filter((group) => group !== "category") : [...groups, "category"])}
+                      className="flex min-h-9 w-full cursor-pointer items-center gap-2 rounded-md px-1.5 text-left text-[12px] font-extrabold text-slate-800 transition hover:bg-slate-50 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/35"
+                    >
+                      <span className="min-w-0 flex-1">Product Category</span>
+                      {filter !== "all" ? <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-orange-50 px-1.5 py-0.5 text-[10px] font-extrabold text-orange-700">1</span> : null}
+                      <svg viewBox="0 0 16 16" aria-hidden="true" className={`h-3.5 w-3.5 shrink-0 fill-none text-slate-600 transition-transform duration-200 ${openLedFilterGroups.includes("category") ? "rotate-180" : ""}`}>
+                        <path d="m4.5 6 3.5 3.5L11.5 6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+                    <div id="led-filter-category" hidden={!openLedFilterGroups.includes("category")} className="px-0.5 pb-2 pt-0.5">
+                      {filters.map((item) => (
+                        <label key={item.key} className="group/option flex min-h-7 cursor-pointer items-center gap-2 rounded-md px-1.5 text-[12px] leading-4 text-slate-700 transition hover:bg-orange-50">
+                          <input
+                            type="checkbox"
+                            checked={filter === item.key}
+                            onChange={() => { setFilter(item.key); resetResultsToFirstPage(); }}
+                            className="h-3.5 w-3.5 shrink-0 rounded-[3px] border-slate-300 accent-[#F56605] focus-visible:ring-2 focus-visible:ring-[#F56605]/35"
+                          />
+                          <span className="min-w-0 flex-1 font-semibold text-slate-700 group-hover/option:text-slate-950">{item.label}</span>
+                          <span className="shrink-0 text-[10px] font-medium tabular-nums text-slate-400">({categoryCount(item.key)})</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="border-b border-slate-200/80 last:border-b-0">
+                    <button
+                      type="button"
+                      aria-expanded={openLedFilterGroups.includes("price")}
+                      aria-controls="led-filter-price"
+                      onClick={() => setOpenLedFilterGroups((groups) => groups.includes("price") ? groups.filter((group) => group !== "price") : [...groups, "price"])}
+                      className="flex min-h-9 w-full cursor-pointer items-center gap-2 rounded-md px-1.5 text-left text-[12px] font-extrabold text-slate-800 transition hover:bg-slate-50 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/35"
+                    >
+                      <span className="min-w-0 flex-1">Price Range (৳)</span>
+                      {ledPriceBands.length || ledCustomPriceActive ? <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-orange-50 px-1.5 py-0.5 text-[10px] font-extrabold text-orange-700">{ledPriceBands.length + (ledCustomPriceActive ? 1 : 0)}</span> : null}
+                      <svg viewBox="0 0 16 16" aria-hidden="true" className={`h-3.5 w-3.5 shrink-0 fill-none text-slate-600 transition-transform duration-200 ${openLedFilterGroups.includes("price") ? "rotate-180" : ""}`}>
+                        <path d="m4.5 6 3.5 3.5L11.5 6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+                    <div id="led-filter-price" hidden={!openLedFilterGroups.includes("price")} className="px-1 pb-2 pt-0.5">
+                      <div className="relative mt-1 h-5">
+                        <div className="absolute inset-x-1 top-2 h-1 rounded-full bg-slate-200" aria-hidden="true" />
+                        <div
+                          className="absolute top-2 h-1 rounded-full bg-[#F56605]"
+                          style={{ left: `calc(${ledSliderMinPercent}% + 0.25rem)`, right: `calc(${100 - ledSliderMaxPercent}% + 0.25rem)` }}
+                          aria-hidden="true"
+                        />
+                        <input
+                          type="range"
+                          min={0}
+                          max={LED_PRICE_SLIDER_MAX}
+                          step={500}
+                          value={ledSliderMinValue}
+                          onChange={(event) => changeLedCustomPrice("min", event.currentTarget.value === "0" ? "" : event.currentTarget.value)}
+                          aria-label="Minimum LED product price"
+                          className="pointer-events-none absolute inset-x-0 top-0 h-5 w-full appearance-none bg-transparent [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:bg-[#F56605] [&::-moz-range-thumb]:shadow [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-0.5 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-[#F56605] [&::-webkit-slider-thumb]:shadow"
+                        />
+                        <input
+                          type="range"
+                          min={0}
+                          max={LED_PRICE_SLIDER_MAX}
+                          step={500}
+                          value={ledSliderMaxValue}
+                          onChange={(event) => changeLedCustomPrice("max", event.currentTarget.value === String(LED_PRICE_SLIDER_MAX) ? "" : event.currentTarget.value)}
+                          aria-label="Maximum LED product price"
+                          className="pointer-events-none absolute inset-x-0 top-0 h-5 w-full appearance-none bg-transparent [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:bg-[#F56605] [&::-moz-range-thumb]:shadow [&::-webkit-slider-runnable-track]:bg-transparent [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:mt-0.5 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:bg-[#F56605] [&::-webkit-slider-thumb]:shadow"
+                        />
+                      </div>
+
+                      <div className="mt-1 grid grid-cols-2 gap-2">
+                        <label className="relative block">
+                          <span className="sr-only">Minimum price in BDT</span>
+                          <span className="pointer-events-none absolute left-2 top-2 text-[11px] font-bold text-slate-500">৳</span>
+                          <input
+                            type="number"
+                            inputMode="numeric"
+                            min={0}
+                            max={LED_PRICE_SLIDER_MAX}
+                            step={500}
+                            value={ledMinPrice ?? ""}
+                            onChange={(event) => changeLedCustomPrice("min", event.currentTarget.value)}
+                            placeholder="0"
+                            aria-describedby={ledCustomPriceInvalid ? "led-price-range-error" : undefined}
+                            className="h-8 w-full rounded-md border border-slate-300 bg-white pl-5 pr-1.5 text-[11px] font-semibold tabular-nums text-slate-800 outline-none placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/15"
+                          />
+                        </label>
+                        <label className="relative block">
+                          <span className="sr-only">Maximum price in BDT</span>
+                          <span className="pointer-events-none absolute left-2 top-2 text-[11px] font-bold text-slate-500">৳</span>
+                          <input
+                            type="number"
+                            inputMode="numeric"
+                            min={0}
+                            max={LED_PRICE_SLIDER_MAX}
+                            step={500}
+                            value={ledMaxPrice ?? ""}
+                            onChange={(event) => changeLedCustomPrice("max", event.currentTarget.value)}
+                            placeholder={`${LED_PRICE_SLIDER_MAX.toLocaleString("en-BD")}+`}
+                            aria-describedby={ledCustomPriceInvalid ? "led-price-range-error" : undefined}
+                            className="h-8 w-full rounded-md border border-slate-300 bg-white pl-5 pr-1.5 text-[11px] font-semibold tabular-nums text-slate-800 outline-none placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/15"
+                          />
+                        </label>
+                      </div>
+
+                      {ledCustomPriceInvalid ? (
+                        <p id="led-price-range-error" role="alert" className="mt-1.5 text-left text-[10px] font-semibold leading-4 text-red-700">
+                          Minimum price cannot exceed maximum price.
+                        </p>
+                      ) : null}
+
+                      <details className="mt-2 rounded-md border border-slate-200 bg-slate-50/70 px-2 py-1.5">
+                        <summary className="cursor-pointer text-[10px] font-bold text-slate-600 marker:text-orange-600">
+                          Quick price ranges{ledPriceBands.length ? ` (${ledPriceBands.length} selected)` : ""}
+                        </summary>
+                        <div className="mt-1.5 border-t border-slate-200 pt-1.5">
+                          {LED_PRICE_BANDS.map((band) => {
+                            const count = priceBandCount(band.id);
+                            const selected = ledPriceBands.includes(band.id);
+                            return (
+                              <label key={band.id} className={`group/option flex min-h-7 items-center gap-2 rounded-md px-1.5 text-[12px] leading-4 text-slate-700 transition ${count === 0 && !selected ? "cursor-not-allowed opacity-45" : "cursor-pointer hover:bg-orange-50"}`}>
+                                <input
+                                  type="checkbox"
+                                  checked={selected}
+                                  disabled={count === 0 && !selected}
+                                  onChange={() => {
+                                    setLedPriceBands((bands) => selected ? bands.filter((item) => item !== band.id) : [...bands, band.id]);
+                                    if (band.id === "request" && !selected) {
+                                      setLedMinPrice(null);
+                                      setLedMaxPrice(null);
+                                    }
+                                    resetResultsToFirstPage();
+                                  }}
+                                  className="h-3.5 w-3.5 shrink-0 rounded-[3px] border-slate-300 accent-[#F56605] focus-visible:ring-2 focus-visible:ring-[#F56605]/35"
+                                />
+                                <span className="min-w-0 flex-1 font-semibold text-slate-700 group-hover/option:text-slate-950">{band.label}</span>
+                                <span className="shrink-0 text-[10px] font-medium tabular-nums text-slate-400">({count})</span>
+                              </label>
+                            );
+                          })}
+                        </div>
+                      </details>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mx-3 mb-3 mt-1 grid grid-cols-2 gap-2 lg:hidden">
+                  <button type="button" onClick={clearLedFilters} className="min-h-10 cursor-pointer rounded-xl border border-slate-300 bg-white px-3 text-sm font-bold text-slate-700">Clear All</button>
+                  <button type="button" onClick={() => setMobileFiltersOpen(false)} className="min-h-10 cursor-pointer rounded-xl bg-[#FD6900] px-3 text-sm font-extrabold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50">Show {filtered.length} Products</button>
+                </div>
+              </aside>
+
+              <div data-led-product-listing className="min-w-0 rounded-xl border border-slate-200 bg-white p-3 shadow-[0_3px_16px_rgba(15,23,42,0.045)] sm:p-4">
+                <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+                  <div className="min-w-0">
+                    <h2 className="!text-xl font-extrabold leading-7 tracking-tight text-[#071936] lg:!text-[22px]">Featured LED Display Products</h2>
+                    <div className="mt-1 flex flex-wrap items-center gap-3">
+                      <p className="text-left text-xs font-semibold leading-4 text-slate-600" aria-live="polite">
+                        {filtered.length ? `Showing ${desktopStartIndex + 1}–${desktopEndIndex} of ${filtered.length}` : "0"} LED {filtered.length === 1 ? "Product" : "Products"}
+                      </p>
+                      {ledActiveFilterCount || query ? (
+                        <button type="button" onClick={clearLedFilters} className="cursor-pointer text-sm font-bold text-orange-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">Clear All</button>
+                      ) : null}
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                    <label className="flex items-center gap-2 text-xs font-bold text-slate-700">
+                      <span className="whitespace-nowrap">Sort by</span>
+                      <select value={ledSort} onChange={(event) => { setLedSort(event.target.value as LedSortOption); resetResultsToFirstPage(); }} className="h-10 cursor-pointer rounded-lg border border-slate-300 bg-white px-3 text-xs focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20">
+                        <option value="recommended">Recommended</option>
+                        <option value="price-asc">Price: Low to High</option>
+                        <option value="price-desc">Price: High to Low</option>
+                        <option value="name-asc">Name: A–Z</option>
+                      </select>
+                    </label>
+                    <label className="flex items-center gap-2 text-xs font-bold text-slate-700">
+                      <span className="whitespace-nowrap">Show</span>
+                      <select value={ledPageSize} onChange={(event) => { setLedPageSize(Number(event.target.value) as (typeof LED_RESULT_LIMITS)[number]); resetResultsToFirstPage(); }} className="h-10 cursor-pointer rounded-lg border border-slate-300 bg-white px-3 text-xs focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20" aria-label="LED products per page">
+                        {LED_RESULT_LIMITS.map((limit) => <option key={limit} value={limit}>{limit}</option>)}
+                      </select>
+                    </label>
+                  </div>
+                </div>
+
+                {ledActiveFilterCount ? (
+                  <div className="mb-4 flex flex-wrap gap-2" aria-label="Active LED product filters">
+                    {filter !== "all" ? (
+                      <button type="button" onClick={() => { setFilter("all"); resetResultsToFirstPage(); }} className="inline-flex min-h-9 cursor-pointer items-center gap-1 rounded-full border border-orange-200 bg-orange-50 px-3 text-xs font-bold text-orange-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">
+                        {filters.find((item) => item.key === filter)?.label}<span aria-hidden="true">×</span>
+                      </button>
+                    ) : null}
+                    {ledPriceBands.map((bandId) => (
+                      <button key={bandId} type="button" onClick={() => { setLedPriceBands((bands) => bands.filter((item) => item !== bandId)); resetResultsToFirstPage(); }} className="inline-flex min-h-9 cursor-pointer items-center gap-1 rounded-full border border-orange-200 bg-orange-50 px-3 text-xs font-bold text-orange-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">
+                        {LED_PRICE_BANDS.find((band) => band.id === bandId)?.label}<span aria-hidden="true">×</span>
+                      </button>
+                    ))}
+                    {ledCustomPriceActive ? (
+                      <button type="button" onClick={() => { setLedMinPrice(null); setLedMaxPrice(null); resetResultsToFirstPage(); }} className="inline-flex min-h-9 cursor-pointer items-center gap-1 rounded-full border border-orange-200 bg-orange-50 px-3 text-xs font-bold text-orange-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">
+                        {ledMinPrice === null ? "Any" : `৳${ledMinPrice.toLocaleString("en-BD")}`}–{ledMaxPrice === null ? "Any" : `৳${ledMaxPrice.toLocaleString("en-BD")}`}<span aria-hidden="true">×</span>
+                      </button>
+                    ) : null}
+                  </div>
+                ) : null}
+
+                {desktopPagedProducts.length ? (
+                  <div className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                    {desktopPagedProducts.map((product, index) => <LedExplorerProductCard key={product.id} product={product} priority={index === 0} />)}
+                  </div>
+                ) : (
+                  <div className="rounded-2xl border border-slate-200 bg-white px-5 py-10 text-center">
+                    <h3 className="font-extrabold text-slate-950">No LED products found</h3>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">No products match your current search and filters.</p>
+                    <button type="button" onClick={clearLedFilters} className="mt-5 inline-flex min-h-10 items-center justify-center rounded-xl border border-slate-300 bg-white px-4 text-sm font-bold text-slate-700 hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700">Clear Search &amp; Filters</button>
+                  </div>
+                )}
+
+                {showDesktopPagination ? (
+                  <nav aria-label="LED product pages" className="mt-6 flex flex-wrap items-center justify-center gap-1.5 border-t border-slate-100 pt-5">
+                    <button type="button" onClick={() => { scrollToGridOnNextPageChangeRef.current = "smooth"; setPage((current) => Math.max(1, current - 1)); }} disabled={desktopCurrentPage === 1} className="inline-flex min-h-10 cursor-pointer items-center justify-center rounded-xl border border-slate-300 bg-white px-3 text-sm font-bold text-slate-700 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700 disabled:cursor-not-allowed disabled:opacity-40">Prev</button>
+                    {desktopPaginationItems.map((item, index) => item === "..." ? (
+                      <span key={`ellipsis-${index}`} className="px-1 text-slate-400">…</span>
+                    ) : (
+                      <button
+                        key={item}
+                        type="button"
+                        aria-label={`Go to LED product page ${item}`}
+                        aria-current={item === desktopCurrentPage ? "page" : undefined}
+                        onClick={() => { scrollToGridOnNextPageChangeRef.current = "smooth"; setPage(item); }}
+                        className={item === desktopCurrentPage
+                          ? "inline-flex min-h-10 min-w-10 cursor-pointer items-center justify-center rounded-xl border border-orange-600 bg-orange-600 px-3 text-sm font-extrabold text-white shadow-sm"
+                          : "inline-flex min-h-10 min-w-10 cursor-pointer items-center justify-center rounded-xl border border-slate-300 bg-white px-3 text-sm font-bold text-slate-700 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700"}
+                      >
+                        {item}
+                      </button>
+                    ))}
+                    <button type="button" onClick={() => { scrollToGridOnNextPageChangeRef.current = "smooth"; setPage((current) => Math.min(desktopTotalPages, current + 1)); }} disabled={desktopCurrentPage === desktopTotalPages} className="inline-flex min-h-10 cursor-pointer items-center justify-center rounded-xl border border-slate-300 bg-white px-3 text-sm font-bold text-slate-700 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700 disabled:cursor-not-allowed disabled:opacity-40">Next</button>
+                  </nav>
+                ) : null}
+              </div>
             </div>
-          </>
+          </div>
         ) : (
           <ResponsiveProductCarousel className="product-grid-3" desktopClassName="md:grid-cols-2 lg:grid-cols-3" mobileGapClassName="gap-[10px]">
             {desktopPagedProducts.map(renderCatalogCard)}
           </ResponsiveProductCarousel>
         )}
-
-        {showMobilePagination && !ledOnly ? (
-          <div className="flex flex-col items-center gap-2 md:hidden">
-            <nav aria-label="Products pagination" className="flex flex-wrap items-center justify-center gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  scrollToGridOnNextPageChangeRef.current = true;
-                  setMobilePage((p) => Math.max(1, p - 1));
-                }}
-                disabled={mobileCurrentPage === 1}
-                className="rounded-xl border bg-white px-3 py-2 text-xs font-semibold text-slate-900 transition enabled:hover:-translate-y-0.5 enabled:hover:bg-slate-50 enabled:hover:shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
-                style={{ borderColor: "rgba(15,23,42,0.12)" }}
-              >
-                Previous
-              </button>
-
-              {mobilePaginationItems.map((item, idx) =>
-                item === "..." ? (
-                  <span key={`mobile-ellipsis-${idx}`} className="px-1 text-sm font-bold text-slate-500">
-                    ...
-                  </span>
-                ) : (
-                  <button
-                    key={`mobile-${item}`}
-                    type="button"
-                    onClick={() => {
-                      scrollToGridOnNextPageChangeRef.current = true;
-                      setMobilePage(item);
-                    }}
-                    className="min-w-9 rounded-xl border px-2.5 py-2 text-xs font-semibold transition hover:-translate-y-0.5 hover:shadow-sm"
-                    style={{
-                      borderColor: item === mobileCurrentPage ? "rgba(14,116,144,0.75)" : "rgba(15,23,42,0.12)",
-                      background: item === mobileCurrentPage ? "rgba(14,116,144,0.12)" : "white",
-                      color: "#0f172a",
-                      boxShadow: item === mobileCurrentPage ? "inset 0 0 0 2px rgba(14,116,144,0.65)" : undefined,
-                    }}
-                    aria-current={item === mobileCurrentPage ? "page" : undefined}
-                  >
-                    {item}
-                  </button>
-                ),
-              )}
-
-              <button
-                type="button"
-                onClick={() => {
-                  scrollToGridOnNextPageChangeRef.current = true;
-                  setMobilePage((p) => Math.min(mobileTotalPages, p + 1));
-                }}
-                disabled={mobileCurrentPage === mobileTotalPages}
-                className="rounded-xl border bg-white px-3 py-2 text-xs font-semibold text-slate-900 transition enabled:hover:-translate-y-0.5 enabled:hover:bg-slate-50 enabled:hover:shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
-                style={{ borderColor: "rgba(15,23,42,0.12)" }}
-              >
-                Next
-              </button>
-            </nav>
-          </div>
-        ) : null}
-
-        {showDesktopPagination ? (
-          <div className="hidden flex-col items-center gap-2 md:flex">
-            <nav aria-label="Products pagination" className="flex flex-wrap items-center justify-center gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  scrollToGridOnNextPageChangeRef.current = true;
-                  setPage((p) => Math.max(1, p - 1));
-                }}
-                disabled={desktopCurrentPage === 1}
-                className="rounded-xl border bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition enabled:hover:-translate-y-0.5 enabled:hover:bg-slate-50 enabled:hover:shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
-                style={{ borderColor: "rgba(15,23,42,0.12)" }}
-              >
-                Previous
-              </button>
-
-              {desktopPaginationItems.map((item, idx) =>
-                item === "..." ? (
-                  <span key={`ellipsis-${idx}`} className="px-1 text-sm font-bold text-slate-500">
-                    ...
-                  </span>
-                ) : (
-                  <button
-                    key={item}
-                    type="button"
-                    onClick={() => {
-                      scrollToGridOnNextPageChangeRef.current = true;
-                      setPage(item);
-                    }}
-                    className="min-w-10 rounded-xl border px-3 py-2 text-sm font-semibold transition hover:-translate-y-0.5 hover:shadow-sm"
-                    style={{
-                      borderColor: item === desktopCurrentPage ? "rgba(14,116,144,0.75)" : "rgba(15,23,42,0.12)",
-                      background: item === desktopCurrentPage ? "rgba(14,116,144,0.12)" : "white",
-                      color: item === desktopCurrentPage ? "#0f172a" : "#0f172a",
-                      boxShadow: item === desktopCurrentPage ? "inset 0 0 0 2px rgba(14,116,144,0.65)" : undefined,
-                    }}
-                    aria-current={item === desktopCurrentPage ? "page" : undefined}
-                  >
-                    {item}
-                  </button>
-                ),
-              )}
-
-              <button
-                type="button"
-                onClick={() => {
-                  scrollToGridOnNextPageChangeRef.current = true;
-                  setPage((p) => Math.min(desktopTotalPages, p + 1));
-                }}
-                disabled={desktopCurrentPage === desktopTotalPages}
-                className="rounded-xl border bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition enabled:hover:-translate-y-0.5 enabled:hover:bg-slate-50 enabled:hover:shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
-                style={{ borderColor: "rgba(15,23,42,0.12)" }}
-              >
-                Next
-              </button>
-            </nav>
-
-          </div>
-        ) : null}
-
       </section>
 
       {ledOnly ? (
@@ -1949,7 +1963,7 @@ function ProductsPageContent({
       ) : null}
 
       {/* Empty state */}
-	      {filtered.length === 0 && (
+	      {!ledOnly && filtered.length === 0 && (
 	        <section className={ledOnly ? "py-8 text-center text-slate-700" : "rounded-3xl border bg-white p-8 text-center text-slate-700"}>
 	          <div className="text-lg font-bold text-slate-900">No products found</div>
 	          <div className="mt-2 text-sm text-slate-600">Try changing the filter or search keyword.</div>
