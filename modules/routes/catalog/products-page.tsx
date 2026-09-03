@@ -4,7 +4,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { siteConfig } from "@/lib/site";
 import { normalizeDisplayedPriceText } from "@/lib/price";
@@ -35,6 +36,15 @@ import {
 import { digitalPodiumCatalog } from "./control-systems/digital-podium/catalog";
 
 const BRAND = { maroon: "#FF6A00", maroonDark: "#E45700" };
+
+const ledInformationSectionClass =
+  "mt-4 rounded-2xl border border-[#dbe5f2] bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.04)] sm:px-5 md:px-6";
+
+const ledFeatureSectionClass =
+  "mt-4 rounded-2xl border border-[#dce7f6] bg-[linear-gradient(110deg,#f5f8fd_0%,#fbfcfe_52%,#f1f6fd_100%)] px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6";
+
+const ledSectionTitleClass =
+  "!text-xl font-extrabold leading-7 tracking-tight text-[#071936] lg:!text-[22px]";
 
 type FilterKey =
   | "all"
@@ -397,6 +407,28 @@ function UiIcon({ name, className = "h-5 w-5" }: { name: string; className?: str
     default:
       return null;
   }
+}
+
+function LedSectionHeading({
+  icon,
+  children,
+  id,
+}: {
+  icon: string;
+  children: ReactNode;
+  id?: string;
+}) {
+  return (
+    <h2 id={id} className={`${ledSectionTitleClass} flex items-center gap-2.5`}>
+      <span
+        aria-hidden="true"
+        className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-orange-200 bg-gradient-to-br from-orange-50 to-white text-orange-600 shadow-sm"
+      >
+        <UiIcon name={icon} className="h-5 w-5" />
+      </span>
+      <span className="min-w-0 text-balance">{children}</span>
+    </h2>
+  );
 }
 
 function buildProducts(basePath: "/led-display"): UnifiedProduct[] {
@@ -1143,6 +1175,37 @@ function ProductsPageContent({
     return product.pitchLabel || "Outdoor";
   };
 
+  const pitchValueFromLabel = (label: string): number => {
+    const value = Number(label.match(/\d+(?:\.\d+)?/)?.[0]);
+    return Number.isFinite(value) ? value : Number.POSITIVE_INFINITY;
+  };
+
+  const formatPriceTablePitch = (pitch: string): string => {
+    const match = pitch.match(/(\d+(?:\.\d+)?)/);
+    if (!match?.[1]) return pitch;
+    return `P${match[1].replace(/\.0$/, "")}`;
+  };
+
+  const indoorBestUse = (pitch: string): string => {
+    const value = Number(pitch.match(/\d+(?:\.\d+)?/)?.[0]);
+    if (value <= 1.53) return "Control rooms, studios";
+    if (value <= 1.86) return "Conference rooms, retail";
+    if (value <= 2) return "Meeting rooms, showrooms";
+    if (value <= 2.5) return "Offices, classrooms";
+    if (value <= 3.1) return "Auditoriums, halls";
+    return "Large halls, stage backdrops";
+  };
+
+  const outdoorBestUse = (pitch: string): string => {
+    const value = Number(pitch.match(/\d+(?:\.\d+)?/)?.[0]);
+    if (value <= 2.5) return "Storefronts, premium billboards";
+    if (value <= 3.1) return "Outdoor ads, commercial facades";
+    if (value <= 4) return "Roadside screens";
+    if (value <= 5) return "Highways, stadiums";
+    if (value <= 6) return "Large outdoor screens";
+    return "Billboards, stages, long viewing";
+  };
+
   const hiddenOutdoorPriceSlugs = new Set<string>([
     "p3-076-outdoor-led-display-module",
     "p8-outdoor-led-display-module",
@@ -1151,22 +1214,24 @@ function ProductsPageContent({
 
   const outdoorPriceRows = [...outdoorCatalog]
     .filter((p) => !hiddenOutdoorPriceSlugs.has(p.slug))
-    .sort((a, b) => pitchValueFromTitle(a.title) - pitchValueFromTitle(b.title))
+    .sort((a, b) => pitchValueFromLabel(pitchLabelForOutdoorPriceRow(a)) - pitchValueFromLabel(pitchLabelForOutdoorPriceRow(b)))
     .map((p) => ({
       title: p.title,
       pitch: pitchLabelForOutdoorPriceRow(p),
+      bestUse: outdoorBestUse(pitchLabelForOutdoorPriceRow(p)),
       href: `${basePath}/outdoor/${p.slug}/`,
       price: getLedDisplayTablePrice(p.slug) ?? "Request updated quote",
     }));
 
-  const hiddenIndoorPriceSlugs = new Set<string>(["p1-667-indoor-led-display"]);
+  const hiddenIndoorPriceSlugs = new Set<string>(["p1-667-indoor-led-display", "p3-076-indoor-led-display"]);
 
   const indoorPriceRows = [...indoorCatalog]
     .filter((p) => !hiddenIndoorPriceSlugs.has(p.slug))
-    .sort((a, b) => pitchValueFromTitle(b.title) - pitchValueFromTitle(a.title))
+    .sort((a, b) => pitchValueFromTitle(a.title) - pitchValueFromTitle(b.title))
     .map((p) => ({
       title: p.title,
       pitch: pitchLabelFromTitle(p.title),
+      bestUse: indoorBestUse(pitchLabelFromTitle(p.title)),
       href: `${basePath}/indoor-led/${p.slug}/`,
       price: getLedDisplayTablePrice(p.slug) ?? "Request updated quote",
     }));
@@ -1487,7 +1552,7 @@ function ProductsPageContent({
       <div
       className={`mx-auto w-full max-w-7xl ${
         ledOnly
-          ? "led-display-page mb-[25px] space-y-2 [&>section]:mt-0 [&>section:not(:first-child)]:rounded-3xl [&>section:not(:first-child)]:bg-white [&>section:not(:first-child)]:p-[10px] [&>section:not(:first-child)]:shadow-sm [&>section:not(:first-child)]:border-0 md:[&>section:not(:first-child)]:p-6"
+          ? "led-display-page mb-6"
           : "space-y-12"
       } px-[10px] md:px-6`}
     >
@@ -1587,7 +1652,7 @@ function ProductsPageContent({
 
       {/* PRODUCTS GRID */}
       <div id="led-products" ref={gridTopRef} className="scroll-mt-24" />
-      <section className="mt-3 space-y-3 !bg-transparent !p-0 !shadow-none">
+      <section className="mt-3 space-y-3 bg-transparent p-0 shadow-none">
         {ledOnly ? (
           <div data-led-product-explorer>
             <div className="mb-4 grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:grid-cols-[minmax(0,1fr)_auto] lg:hidden">
@@ -1909,27 +1974,27 @@ function ProductsPageContent({
       </section>
 
       {ledOnly ? (
-        <section className="mt-3 !bg-transparent !p-0 !shadow-none">
-          <details className="group overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm">
+        <section className="mt-4 bg-transparent p-0 shadow-none" aria-labelledby="led-full-product-list-heading">
+          <details className="group overflow-hidden rounded-2xl border border-[#dbe5f2] bg-white shadow-[0_5px_20px_rgba(15,23,42,0.04)]">
             <summary className="flex cursor-pointer list-none items-start justify-between gap-3 px-4 py-4 md:px-5 md:py-4 [&::-webkit-details-marker]:hidden">
               <div className="flex min-w-0 items-start gap-3">
                 <span
-                  className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-cyan-200 bg-cyan-50 text-cyan-700"
+                  className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-orange-200 bg-gradient-to-br from-orange-50 to-white text-orange-600 shadow-sm"
                   aria-hidden="true"
                 >
                   <UiIcon name="display" className="h-5 w-5" />
                 </span>
                 <div className="min-w-0">
-                  <div className="text-[1.15rem] font-extrabold leading-tight text-slate-900 md:text-[1.35rem]">
+                  <div id="led-full-product-list-heading" className={`${ledSectionTitleClass}`}>
                     Browse all products (full list)
                   </div>
                   <p className="mt-1 hidden text-sm leading-6 text-slate-600 md:block">
-                    Open to jump to any product page. This helps product discovery and internal site navigation.
+                    Open the complete LED product directory to compare models and visit any product page directly.
                   </p>
                 </div>
               </div>
               <span
-                className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-cyan-50 text-cyan-700 transition group-open:rotate-180"
+                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 transition group-open:rotate-180"
                 aria-hidden="true"
               >
                 <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none">
@@ -1940,7 +2005,7 @@ function ProductsPageContent({
 
             <div className="border-t border-slate-200 px-4 py-4 md:px-5 md:py-5">
               <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-slate-500">
-                Internal Product Links
+                LED Product Directory
               </p>
               <nav aria-label="Full LED display product list" className="mt-4">
                 <div className="grid gap-x-8 gap-y-2 md:grid-cols-2 xl:grid-cols-4">
@@ -1972,494 +2037,624 @@ function ProductsPageContent({
 	
 	      {ledOnly && (
 	        <>
-	          <section id="led-price-table" className="scroll-mt-24 py-8">
-	            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-                <UiIcon name="cost" className="h-6 w-6 text-slate-800" />
-	              <span>LED Display Price List in Bangladesh</span>
-	            </h2>
-            <MobileIntroText
-              teaser="LED display price in Bangladesh varies based on pixel pitch, screen size, display type, brightness, cabinet quality, controller system, and installation complexity."
-              className="mt-3"
-              teaserClassName="w-full"
-              expandedClassName="space-y-4 text-sm leading-7 text-slate-600"
-              desktopClassName="space-y-4 text-sm leading-7 text-slate-600"
+	          <section
+              id="led-price-table"
+              className="relative mt-4 scroll-mt-24 overflow-hidden rounded-2xl border border-[#dbe5f2] bg-white px-4 py-6 shadow-[0_5px_20px_rgba(15,23,42,0.04)] sm:px-5 md:px-6 lg:px-8"
+              aria-labelledby="led-price-list-heading"
             >
-              <>
-                <p>
-                  LED display price in Bangladesh varies based on pixel pitch, screen size, display type, brightness,
-                  cabinet quality, controller system, and installation complexity. Generally, LED screen price starts from
-                  around {normalizeDisplayedPriceText("4,000 - 23,000 BDT")} per square foot for indoor LED displays, outdoor LED billboards, advertising LED
-                  screens, and high-resolution video wall solutions.
+              <div className="mx-auto max-w-5xl text-center">
+                <span className="inline-flex rounded-full bg-[#eaf2ff] px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.1em] text-blue-700">
+                  Pricing Guide
+                </span>
+                <h2 id="led-price-list-heading" className="mt-3 text-balance !text-[27px] font-black leading-[1.1] tracking-[-0.025em] text-[#071936] md:!text-[36px]">
+                  LED Display Price List in Bangladesh
+                </h2>
+                <p className="mx-auto mt-3 max-w-4xl text-center text-[13px] leading-6 text-slate-600 md:text-[15px]">
+                  LED display prices vary based on pixel pitch, panel type, brightness, controller system, installation complexity, and project scope.
                 </p>
-                <p>
-                  For outdoor advertising, P10, P8, P6, P5, P4, and P2.5 LED displays are popular choices for roadside
-                  billboards, shopping malls, stadiums, building facades, public information displays, and large digital
-                  signage projects. Outdoor LED screens need high brightness, waterproof cabinets, strong structure, proper
-                  ventilation, and reliable power distribution for stable long-term performance.
-                </p>
-                <p>
-                  For indoor applications, P3, P2.5, P2, P1.86, P1.53, and P1.25 LED displays are commonly used in conference
-                  rooms, corporate offices, control rooms, retail shops, showrooms, mosques, universities, and event venues.
-                  These fine-pitch LED displays provide sharper image quality, smooth video playback, and better viewing comfort
-                  from a short distance.
-                </p>
-              </>
-            </MobileIntroText>
+              </div>
 
-            <div className="mt-6 space-y-6">
-              <div className="rounded-2xl border border-slate-200 bg-white p-4 md:p-5">
-                <h3 className="text-[1rem] font-semibold text-slate-900 md:text-lg">Indoor LED Display Price (P1.25-P3.076)</h3>
-                <details className="group mt-4 md:hidden">
-                  <summary
-                    className="list-none cursor-pointer rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900 [::-webkit-details-marker]:hidden"
-                    style={{
-                      borderColor: `${BRAND.maroon}14`,
-                      background: "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)",
-                    }}
-                  >
-                    Tap To Expand Indoor Price List
-                  </summary>
-                  <div className="mt-3 space-y-2">
-                    {indoorPriceRows.map((row) => (
-                      <Link
-                        key={row.href}
-                        prefetch={false}
-                        href={row.href}
-                        className="flex items-center justify-between gap-3 rounded-[14px] border border-slate-200 bg-slate-50 px-3 py-3"
-                      >
-                        <span className="min-w-0 flex-1 text-[12px] font-semibold leading-5 text-slate-900">{row.title}</span>
-                        <span className="shrink-0 text-[11px] font-extrabold text-[#F56605]">{row.price}</span>
-                      </Link>
-                    ))}
+              <div className="mx-auto mt-6 grid max-w-5xl overflow-hidden rounded-xl border border-[#cfdcf0] bg-white shadow-[0_4px_14px_rgba(15,23,42,0.035)] sm:grid-cols-2 lg:grid-cols-4">
+                {[
+                  { icon: "structure", title: "Indoor LED", text: "Fine pitch for close viewing", active: true },
+                  { icon: "cost", title: "Outdoor LED", text: "High brightness & durability" },
+                  { icon: "guide", title: "Updated Pricing", text: "2026 price guidance" },
+                  { icon: "maintenance", title: "Installation Support", text: "Service across Bangladesh" },
+                ].map((item, index) => (
+                  <div key={item.title} className={`flex min-h-[78px] items-center gap-3 px-4 py-3 ${index ? "border-t border-slate-200 sm:border-t-0 sm:[&:nth-child(2n)]:border-l lg:border-l" : ""}`}>
+                    <span className={`inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${item.active ? "bg-blue-600 text-white" : "bg-[#eaf2ff] text-blue-600"}`} aria-hidden="true">
+                      <UiIcon name={item.icon} className="h-5 w-5" />
+                    </span>
+                    <div className="min-w-0">
+                      <div className="text-[12px] font-extrabold leading-5 text-[#071936] sm:text-[13px]">{item.title}</div>
+                      <p className="!text-left text-[10px] leading-4 text-slate-600 sm:text-[11px]">{item.text}</p>
+                    </div>
                   </div>
-                </details>
-                <div className="mt-4 hidden overflow-x-auto md:block">
-                  <table className="min-w-full border-collapse text-left text-sm">
-                    <thead className="bg-slate-50 text-xs font-bold uppercase tracking-wide text-slate-600">
-                      <tr>
-                        <th className="border border-slate-200 px-3 py-3">LED Display Model</th>
-                        <th className="border border-slate-200 px-3 py-3 text-right">Price Per Sqft (BDT)</th>
-                      </tr>
-                    </thead>
-                    <tbody className="text-slate-700">
+                ))}
+              </div>
+
+              <div className="mt-6 grid gap-4 xl:grid-cols-2">
+                <div className="min-w-0 rounded-2xl border border-[#cfdcf0] bg-white p-3 shadow-[0_5px_16px_rgba(15,23,42,0.04)] sm:p-4">
+                  <h3 className="flex items-center gap-3 text-[16px] font-extrabold leading-6 text-[#071936] sm:text-lg">
+                    <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-700 text-white" aria-hidden="true"><UiIcon name="display" className="h-5 w-5" /></span>
+                    Indoor LED Display Price (P1.25–P4)
+                  </h3>
+                  <details className="group mt-4 md:hidden">
+                    <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg border border-blue-200 bg-blue-50 px-3 py-2.5 text-[12px] font-extrabold text-blue-800 [&::-webkit-details-marker]:hidden">
+                      View Indoor Price List <span className="transition group-open:rotate-180" aria-hidden="true">⌄</span>
+                    </summary>
+                    <div className="mt-2 space-y-2">
                       {indoorPriceRows.map((row) => (
-                        <tr key={row.href}>
-                          <td className="border border-slate-200 px-3 py-3">
-                            <Link prefetch={false} href={row.href} className="font-semibold text-slate-900 hover:underline">
-                              {row.title}
-                            </Link>
-                          </td>
-                          <td className="border border-slate-200 px-3 py-3 text-right whitespace-nowrap">{row.price}</td>
-                        </tr>
+                        <article key={row.href} className="rounded-lg border border-slate-200 bg-white p-3">
+                          <div className="flex items-start justify-between gap-3">
+                            <Link prefetch={false} href={row.href} className="font-extrabold text-blue-700 hover:underline">{formatPriceTablePitch(row.pitch)}</Link>
+                            <span className="text-right text-[11px] font-extrabold text-slate-800">{row.price}</span>
+                          </div>
+                          <p className="mt-1 !text-left text-[11px] leading-4 text-slate-600">{row.bestUse}</p>
+                          <Link href={`/contact/?project=led-display&product=${encodeURIComponent(row.title)}`} className="mt-2 inline-flex min-h-8 items-center justify-center rounded-md border border-blue-400 px-3 text-[10px] font-extrabold text-blue-700">Get Quote</Link>
+                        </article>
                       ))}
-                    </tbody>
-                  </table>
+                    </div>
+                  </details>
+                  <div className="mt-4 hidden overflow-hidden rounded-lg border border-slate-200 md:block">
+                    <table className="w-full border-collapse text-left text-[11px] lg:text-xs">
+                      <thead className="bg-slate-50 font-extrabold text-[#071936]">
+                        <tr>
+                          <th className="border-b border-r border-slate-200 px-3 py-3">Pixel Pitch</th>
+                          <th className="border-b border-r border-slate-200 px-3 py-3">Best Use</th>
+                          <th className="border-b border-r border-slate-200 px-3 py-3">Estimated Price / Sqft</th>
+                          <th className="border-b border-slate-200 px-3 py-3 text-center">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody className="text-slate-700">
+                        {indoorPriceRows.map((row) => (
+                          <tr key={row.href} className="transition hover:bg-blue-50/40">
+                            <td className="border-b border-r border-slate-200 px-3 py-2.5"><Link prefetch={false} href={row.href} title={row.title} className="font-extrabold text-blue-700 hover:underline">{formatPriceTablePitch(row.pitch)}</Link></td>
+                            <td className="border-b border-r border-slate-200 px-3 py-2.5">{row.bestUse}</td>
+                            <td className="whitespace-nowrap border-b border-r border-slate-200 px-3 py-2.5 font-semibold">{row.price}</td>
+                            <td className="border-b border-slate-200 px-2 py-2 text-center"><Link href={`/contact/?project=led-display&product=${encodeURIComponent(row.title)}`} className="inline-flex min-h-8 items-center justify-center rounded-md border border-blue-400 px-3 text-[10px] font-extrabold text-blue-700 transition hover:bg-blue-600 hover:text-white">Get Quote</Link></td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div className="min-w-0 rounded-2xl border border-[#cfdcf0] bg-white p-3 shadow-[0_5px_16px_rgba(15,23,42,0.04)] sm:p-4">
+                  <h3 className="flex items-center gap-3 text-[16px] font-extrabold leading-6 text-[#071936] sm:text-lg">
+                    <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-700 text-white" aria-hidden="true"><UiIcon name="cost" className="h-5 w-5" /></span>
+                    Outdoor LED Display Price (P2.5–P10)
+                  </h3>
+                  <details className="group mt-4 md:hidden">
+                    <summary className="flex cursor-pointer list-none items-center justify-between rounded-lg border border-blue-200 bg-blue-50 px-3 py-2.5 text-[12px] font-extrabold text-blue-800 [&::-webkit-details-marker]:hidden">
+                      View Outdoor Price List <span className="transition group-open:rotate-180" aria-hidden="true">⌄</span>
+                    </summary>
+                    <div className="mt-2 space-y-2">
+                      {outdoorPriceRows.map((row) => (
+                        <article key={row.href} className="rounded-lg border border-slate-200 bg-white p-3">
+                          <div className="flex items-start justify-between gap-3">
+                            <Link prefetch={false} href={row.href} className="font-extrabold text-blue-700 hover:underline">{formatPriceTablePitch(row.pitch)}</Link>
+                            <span className="text-right text-[11px] font-extrabold text-slate-800">{row.price}</span>
+                          </div>
+                          <p className="mt-1 !text-left text-[11px] leading-4 text-slate-600">{row.bestUse}</p>
+                          <Link href={`/contact/?project=led-display&product=${encodeURIComponent(row.title)}`} className="mt-2 inline-flex min-h-8 items-center justify-center rounded-md border border-blue-400 px-3 text-[10px] font-extrabold text-blue-700">Get Quote</Link>
+                        </article>
+                      ))}
+                    </div>
+                  </details>
+                  <div className="mt-4 hidden overflow-hidden rounded-lg border border-slate-200 md:block">
+                    <table className="w-full border-collapse text-left text-[11px] lg:text-xs">
+                      <thead className="bg-slate-50 font-extrabold text-[#071936]">
+                        <tr>
+                          <th className="border-b border-r border-slate-200 px-3 py-3">Pixel Pitch</th>
+                          <th className="border-b border-r border-slate-200 px-3 py-3">Best Use</th>
+                          <th className="border-b border-r border-slate-200 px-3 py-3">Estimated Price / Sqft</th>
+                          <th className="border-b border-slate-200 px-3 py-3 text-center">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody className="text-slate-700">
+                        {outdoorPriceRows.map((row) => (
+                          <tr key={row.href} className="transition hover:bg-blue-50/40">
+                            <td className="border-b border-r border-slate-200 px-3 py-2.5"><Link prefetch={false} href={row.href} title={row.title} className="font-extrabold text-blue-700 hover:underline">{formatPriceTablePitch(row.pitch)}</Link></td>
+                            <td className="border-b border-r border-slate-200 px-3 py-2.5">{row.bestUse}</td>
+                            <td className="whitespace-nowrap border-b border-r border-slate-200 px-3 py-2.5 font-semibold">{row.price}</td>
+                            <td className="border-b border-slate-200 px-2 py-2 text-center"><Link href={`/contact/?project=led-display&product=${encodeURIComponent(row.title)}`} className="inline-flex min-h-8 items-center justify-center rounded-md border border-blue-400 px-3 text-[10px] font-extrabold text-blue-700 transition hover:bg-blue-600 hover:text-white">Get Quote</Link></td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-slate-200 bg-white p-4 md:p-5">
-                <h3 className="text-[1rem] font-semibold text-slate-900 md:text-lg">Outdoor LED Display Price (P2.5-P10)</h3>
-                <details className="group mt-4 md:hidden">
-                  <summary
-                    className="list-none cursor-pointer rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900 [::-webkit-details-marker]:hidden"
-                    style={{
-                      borderColor: `${BRAND.maroon}14`,
-                      background: "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
-                    }}
-                  >
-                    Tap To Expand Outdoor Price List
-                  </summary>
-                  <div className="mt-3 space-y-2">
-                    {outdoorPriceRows.map((row) => (
-                      <Link
-                        key={row.href}
-                        prefetch={false}
-                        href={row.href}
-                        className="flex items-center justify-between gap-3 rounded-[14px] border border-slate-200 bg-slate-50 px-3 py-3"
-                      >
-                        <span className="min-w-0 flex-1 text-[12px] font-semibold leading-5 text-slate-900">{row.title}</span>
-                        <span className="shrink-0 text-[11px] font-extrabold text-[#F56605]">{row.price}</span>
-                      </Link>
-                    ))}
-                  </div>
-                </details>
-                <div className="mt-4 hidden overflow-x-auto md:block">
-                  <table className="min-w-full border-collapse text-left text-sm">
-                    <thead className="bg-slate-50 text-xs font-bold uppercase tracking-wide text-slate-600">
-                      <tr>
-                        <th className="border border-slate-200 px-3 py-3">LED Display Model</th>
-                        <th className="border border-slate-200 px-3 py-3 text-right">Price Per Sqft (BDT)</th>
-                      </tr>
-                    </thead>
-                    <tbody className="text-slate-700">
-                      {outdoorPriceRows.map((row) => (
-                        <tr key={row.href}>
-                          <td className="border border-slate-200 px-3 py-3">
-                            <Link prefetch={false} href={row.href} className="font-semibold text-slate-900 hover:underline">
-                              {row.title}
-                            </Link>
-                          </td>
-                          <td className="border border-slate-200 px-3 py-3 text-right whitespace-nowrap">{row.price}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+              <p className="mt-4 flex items-center justify-center gap-2 !text-center text-[11px] leading-5 text-slate-500 sm:text-xs">
+                <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-slate-400 text-[9px] font-bold" aria-hidden="true">i</span>
+                Prices may vary depending on configuration, installation scope, exchange rate, and order quantity.
+              </p>
+
+              <div className="relative mt-6 overflow-hidden rounded-2xl border border-blue-200 bg-[linear-gradient(105deg,#ffffff_0%,#f7fbff_58%,#eef5ff_100%)] px-4 py-5 shadow-[0_5px_16px_rgba(15,23,42,0.035)] sm:px-5 lg:grid lg:grid-cols-[220px_minmax(0,1fr)_auto] lg:items-center lg:gap-6">
+                <div className="hidden h-24 items-center justify-center lg:flex" aria-hidden="true">
+                  <span className="relative inline-flex h-20 w-20 items-center justify-center rounded-full bg-blue-100 text-blue-700">
+                    <UiIcon name="guide" className="h-11 w-11" />
+                    <span className="absolute -right-5 bottom-0 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-blue-700 text-white shadow-md"><UiIcon name="cost" className="h-5 w-5" /></span>
+                  </span>
+                </div>
+                <div className="min-w-0 text-center lg:text-left">
+                  <h3 className="text-balance text-[20px] font-black leading-6 text-[#071936] md:text-[24px]">Need an Accurate LED Display Quotation?</h3>
+                  <p className="mt-2 !text-center text-[12px] leading-5 text-slate-600 lg:!text-left sm:text-[13px]">Share your requirement. We provide BOQ, size calculation, and installation planning with practical pricing for Bangladesh.</p>
+                </div>
+                <div className="mt-4 flex flex-col gap-2.5 sm:flex-row sm:justify-center lg:mt-0">
+                  <Link href="/contact/?project=led-display" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-blue-700 px-5 text-[12px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-blue-800"><UiIcon name="guide" className="h-4 w-4" />Request Free BOQ</Link>
+                  <a href={wa} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-5 text-[12px] font-extrabold text-[#071936] shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:text-emerald-700"><svg viewBox="0 0 24 24" className="h-5 w-5 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.4 9.4 0 0 1-3.8-.9L3 21l1.8-5a8.5 8.5 0 1 1 16.2-4.5Z" /><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" /></svg>WhatsApp</a>
                 </div>
               </div>
+            </section>
+
+          <section
+            className="relative mt-4 overflow-hidden rounded-2xl border border-[#dbe5f2] bg-white px-4 py-6 shadow-[0_5px_20px_rgba(15,23,42,0.04)] sm:px-5 md:px-6 lg:px-8"
+            aria-labelledby="led-display-buying-guide-heading"
+          >
+            <span className="pointer-events-none absolute left-6 top-5 h-14 w-24 opacity-55 [background-image:radial-gradient(#bfdbfe_1.5px,transparent_1.5px)] [background-size:10px_10px]" aria-hidden="true" />
+            <span className="pointer-events-none absolute right-6 top-5 h-14 w-24 opacity-55 [background-image:radial-gradient(#bfdbfe_1.5px,transparent_1.5px)] [background-size:10px_10px]" aria-hidden="true" />
+
+            <div className="relative mx-auto max-w-5xl text-center">
+              <h2 id="led-display-buying-guide-heading" className="text-balance !text-[26px] font-black leading-[1.12] tracking-[-0.025em] text-[#071936] md:!text-[34px]">
+                How to Choose the Right LED Display Screen in Bangladesh
+              </h2>
+              <p className="mx-auto mt-2 max-w-4xl text-center text-[13px] leading-6 text-slate-600 md:text-[15px]">
+                Choose the right pixel pitch, brightness, size, and controller based on your viewing distance, environment, and application.
+              </p>
             </div>
 
-            <p className="mt-2 text-justify text-[13px] leading-6 text-slate-600 md:mt-1 md:text-left md:text-sm md:leading-7">
-              Note: Prices may vary depending on configuration, installation scope, and order quantity.
-            </p>
-          </section>
-
-          <section className="pt-8 pb-[25px]">
-            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-              <UiIcon name="check" className="h-6 w-6 text-slate-800" />
-              <span>How to Choose the Right LED Display Screen in Bangladesh</span>
-            </h2>
-            <MobileIntroText
-              teaser="Choosing the right LED display screen depends on screen size, viewing distance, installation area, brightness, controller setup, and long-term operating cost."
-              className="mt-3"
-              teaserClassName="w-full text-center"
-              expandedClassName="text-sm leading-7 text-slate-600"
-              desktopClassName="text-center text-sm leading-7 text-slate-600 md:text-[15px]"
-            >
-              <>
-                Choosing the right <strong>LED display screen</strong> depends on screen size, viewing distance,
-                installation area, brightness, controller setup, and long-term operating cost. Whether you need an
-                <strong> indoor LED display</strong> for a corporate office, a <strong>digital signage display</strong>{" "}
-                for a showroom, or an <strong>outdoor LED billboard</strong> for advertising, this guide helps you
-                shortlist the right <strong>LED display solution in Bangladesh</strong>.
-              </>
-            </MobileIntroText>
-
-            <div className="mt-6 grid gap-4 lg:grid-cols-2">
-                {[
-                  {
-                    no: "01",
-                    title: "Pixel Pitch & Viewing Distance",
-                    text: "Pixel pitch directly affects image sharpness and comfortable viewing distance. Lower pixel pitch gives higher resolution for close viewing, while higher pixel pitch is suitable for larger viewing areas and long-distance visibility.",
-                    bullets: [
-                      "P1.5-P2.5: control room, boardroom, studio, and premium showroom LED display",
-                      "P2.5-P4: indoor advertising display, retail branding, and lobby video wall",
-                      "P4-P6: shopping mall, hall room, stage backdrop, and mixed-content commercial display",
-                      "P6-P10: outdoor LED screen, roadside billboard, and far-distance public advertising",
-                    ],
-                  },
-                  {
-                    no: "02",
-                    title: "Indoor vs Outdoor Installation",
-                    text: "Installation environment directly impacts brightness requirement, cabinet protection, maintenance planning, and long-term durability. Always choose the LED screen according to the real application area and exposure condition.",
-                    bullets: [
-                      "Indoor LED Display: high resolution, comfortable brightness, and close-view detail",
-                      "Outdoor LED Display: higher brightness, cabinet sealing, and weather-ready durability",
-                      "Semi-outdoor LED Display: suitable for covered commercial frontage and entrance areas",
-                      "Use cases: office, showroom, shopping mall, roadside, mosque, stage, and stadium",
-                    ],
-                  },
-                  {
-                    no: "03",
-                    title: "Screen Size & Resolution Planning",
-                    text: "The right LED screen size depends on wall space, content type, audience distance, and target visual impact. Proper planning improves readability, branding visibility, and overall project value.",
-                    bullets: [
-                      "Measure available installation area carefully before finalizing cabinet layout",
-                      "Match screen aspect ratio with your content source and playback workflow",
-                      "Consider presentation, video, branding, menu board, or live data use",
-                      "Plan width, height, and total pixel resolution together for better results",
-                    ],
-                  },
-                  {
-                    no: "04",
-                    title: "Brightness & Visibility",
-                    text: "Display brightness measured in nits determines how clearly the LED screen remains visible in indoor lighting, semi-outdoor conditions, or direct sunlight. Proper brightness selection protects both visual quality and budget.",
-                    bullets: [
-                      "Indoor LED display: 800-1500 nits for comfortable close-view visibility",
-                      "Semi-outdoor LED display: 2000-3500 nits for shaded but bright commercial areas",
-                      "Outdoor LED billboard: 5000-8000 nits for sunlight-facing visibility",
-                      "Higher brightness improves daytime visibility and advertising performance",
-                    ],
-                  },
-                  {
-                    no: "05",
-                    title: "Controller System & Connectivity",
-                    text: "A reliable LED display controller ensures stable signal transmission, accurate mapping, smooth video playback, and flexible content management. Controller choice also affects future maintenance and content workflow.",
-                    bullets: [
-                      "NovaStar controller solutions for professional video wall and rental projects",
-                      "Colorlight control system options for scalable commercial LED display setups",
-                      "Huidu asynchronous controller options for signage and scheduled playback",
-                      "Support for video processing, calibration, and remote content management",
-                    ],
-                  },
-                  {
-                    no: "06",
-                    title: "Power Consumption & Maintenance",
-                    text: "Long-term operating cost depends on LED quality, screen size, brightness level, controller ecosystem, and power supply efficiency. Maintenance planning is also important for stable LED screen performance in Bangladesh.",
-                    bullets: [
-                      "Check average and maximum power consumption before installation",
-                      "Use quality power supply, controller, and signal components for reliability",
-                      "Schedule regular cleaning, calibration, and preventive servicing",
-                      "Good LED systems can support long service life with proper maintenance",
-                    ],
-                  },
-	                ].map((item) => (
-	                  <article key={item.no} className="rounded-2xl border border-slate-200 bg-slate-50 p-4 md:p-5">
-	                    <div className="flex items-center gap-3">
-	                      <div className="inline-flex h-8 min-w-8 shrink-0 items-center justify-center rounded-lg bg-blue-600 px-2 text-xs font-extrabold text-white">
-	                        {item.no}
-	                      </div>
-	                      <h3 className="text-[1rem] font-extrabold leading-[1.3] text-slate-900 md:text-xl">{item.title}</h3>
-	                    </div>
-	                    <p className="mt-3 hidden text-sm leading-7 text-slate-600 md:block">{item.text}</p>
-                    <ul className="mt-4 space-y-2 text-[13px] leading-6 text-slate-700 md:text-sm md:leading-7">
+            <div className="relative mt-6 grid gap-3 md:grid-cols-2 md:gap-4">
+              {[
+                {
+                  no: "1",
+                  icon: "module",
+                  title: "Pixel Pitch & Viewing Distance",
+                  bullets: [
+                    "P1.5–P2: close viewing distance, premium indoor LED displays",
+                    "P2.5: boardrooms, classrooms, control rooms, and high-end indoor walls",
+                    "P2.86: advertising displays, rental staging, and mid-range commercial use",
+                    "P4–P10: outdoor LED screens, billboards, and long-distance visibility",
+                  ],
+                },
+                {
+                  no: "2",
+                  icon: "structure",
+                  title: "Indoor vs Outdoor Installation",
+                  bullets: [
+                    "Indoor: fine pitch, lower brightness for comfortable viewing",
+                    "Outdoor: high brightness, IP-rated cabinets, and weather resistance",
+                    "Semi-outdoor: protected spaces like canopies and entrance areas",
+                    "Use cases: offices, showrooms, shopping malls, roadsides, and stadiums",
+                  ],
+                },
+                {
+                  no: "3",
+                  icon: "display",
+                  title: "Screen Size & Resolution Planning",
+                  bullets: [
+                    "Match screen size with room size, viewing distance, and content type",
+                    "Ensure content resolution fits the screen for sharp, clear visuals",
+                    "Choose the right aspect ratio for your content and playback workflow",
+                    "Consider installation-area limits, structure, and maintenance access",
+                  ],
+                },
+                {
+                  no: "4",
+                  icon: "cost",
+                  title: "Brightness & Visibility",
+                  bullets: [
+                    "Indoor: 800–1,500 nits for comfortable indoor visibility",
+                    "Semi-outdoor: 2,000–3,500 nits for shaded or semi-open areas",
+                    "Outdoor daylight: 5,000–8,000 nits for clear visibility",
+                    "Higher brightness is required for direct-sunlight environments",
+                  ],
+                },
+                {
+                  no: "5",
+                  icon: "controller",
+                  title: "Controller System & Connectivity",
+                  bullets: [
+                    "Trusted controller solutions: NovaStar, Colorlight, and Huidu",
+                    "Support for multiple input sources and easy content management",
+                    "Stable signal transmission and seamless playback performance",
+                    "Suitable control capacity for fixed installations or rental projects",
+                  ],
+                },
+                {
+                  no: "6",
+                  icon: "power",
+                  title: "Power Consumption & Maintenance",
+                  bullets: [
+                    "Check total power load and plan the proper power supply",
+                    "Energy-efficient panels reduce long-term operating cost",
+                    "Front or rear maintenance access simplifies servicing",
+                    "Good cooling and scheduled maintenance help ensure long service life",
+                  ],
+                },
+              ].map((item) => (
+                <article key={item.no} className="grid grid-cols-[48px_minmax(0,1fr)] gap-3 rounded-2xl border border-[#dbe5f2] bg-white p-4 shadow-[0_5px_16px_rgba(15,23,42,0.045)] sm:grid-cols-[58px_minmax(0,1fr)] sm:p-5">
+                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#eaf2ff] text-[#1262df] sm:h-14 sm:w-14" aria-hidden="true">
+                    <UiIcon name={item.icon} className="h-6 w-6 sm:h-7 sm:w-7" />
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="text-[15px] font-extrabold leading-5 text-[#071936] sm:text-base">
+                      {item.no})&nbsp; {item.title}
+                    </h3>
+                    <span className="mt-2 block h-0.5 w-10 rounded-full bg-blue-600" aria-hidden="true" />
+                    <ul className="mt-3 space-y-2 text-[12px] leading-5 text-slate-600 sm:text-[13px]">
                       {item.bullets.map((bullet) => (
-                        <li key={bullet} className="flex items-start gap-3">
-                          <span className="mt-2 inline-block h-2 w-2 shrink-0 rounded-full bg-[#FF6A00]" />
-                          <span className="text-justify md:text-left">{bullet}</span>
+                        <li key={bullet} className="flex items-start gap-2.5 !text-left">
+                          {Number(item.no) >= 5 ? (
+                            <span className="mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-blue-600 text-[9px] font-black text-white" aria-hidden="true">✓</span>
+                          ) : (
+                            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-600" aria-hidden="true" />
+                          )}
+                          <span>{bullet}</span>
                         </li>
                       ))}
                     </ul>
-                  </article>
-                ))}
-              </div>
+                  </div>
+                </article>
+              ))}
+            </div>
 
-            <div className="mt-5 grid gap-3 md:grid-cols-3 md:gap-4">
-                {[
-                  {
-                    t: "Step 1: Confirm screen category",
-                    d: "Shortlist indoor, outdoor, or rental LED display first so brightness, cabinet type, and service method match the real application.",
-                  },
-                  {
-                    t: "Step 2: Plan power + structure safely",
-                    d: "Stable power supply, grounding, surge protection, and a safe mounting frame reduce downtime, hidden cost, and long-term service issues.",
-                  },
-                  {
-                    t: "Step 3: Match controller capacity",
-                    d: "Match sending controller, receiving card, and processor capacity to target resolution and refresh requirement for smooth playback.",
-                  },
-                ].map((x, index) => (
-                  <article
-                    key={x.t}
-                    className={`rounded-2xl border p-5 md:border-slate-200 md:bg-white ${
-                      index === 0
-                        ? "border-sky-200/80 bg-[linear-gradient(180deg,#f0f9ff_0%,#ffffff_52%,#e0f2fe_100%)]"
-                        : index === 1
-                          ? "border-violet-200/80 bg-[linear-gradient(180deg,#f5f3ff_0%,#ffffff_52%,#ede9fe_100%)]"
-                          : "border-cyan-200/80 bg-[linear-gradient(180deg,#ecfeff_0%,#ffffff_52%,#cffafe_100%)]"
-                    }`}
-                  >
-                    <div className="text-[15px] font-extrabold leading-5 text-slate-900 md:text-base">{x.t}</div>
-                    <p className="mt-2 text-justify text-[13px] leading-6 text-slate-600 md:text-left md:text-sm md:leading-7">{x.d}</p>
+            <div className="relative mt-4 grid items-center gap-2 md:grid-cols-[minmax(0,1fr)_28px_minmax(0,1fr)_28px_minmax(0,1fr)]">
+              {[
+                { icon: "structure", title: "Step 1: Choose environment", text: "Decide whether the screen will be used indoor, outdoor, or semi-outdoor." },
+                { icon: "power", title: "Step 2: Plan power + structure", text: "Confirm power availability, supporting structure, and safe installation access." },
+                { icon: "controller", title: "Step 3: Match controller capacity", text: "Select a controller that matches screen size and resolution for smooth performance." },
+              ].map((step, index) => (
+                <div key={step.title} className="contents">
+                  <article className="grid min-h-[92px] grid-cols-[52px_minmax(0,1fr)] items-center gap-3 rounded-2xl border border-[#cfdcf0] bg-white p-3.5 shadow-[0_4px_14px_rgba(15,23,42,0.035)]">
+                    <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-blue-600 text-white shadow-sm" aria-hidden="true">
+                      <UiIcon name={step.icon} className="h-6 w-6" />
+                    </span>
+                    <div className="min-w-0">
+                      <h3 className="text-[13px] font-extrabold leading-5 text-[#071936] sm:text-sm">{step.title}</h3>
+                      <p className="mt-0.5 !text-left text-[11px] leading-[1.15rem] text-slate-600 sm:text-xs">{step.text}</p>
+                    </div>
                   </article>
-                ))}
-              </div>
+                  {index < 2 ? <span className="hidden text-center text-3xl font-light text-blue-600 md:block" aria-hidden="true">→</span> : null}
+                </div>
+              ))}
+            </div>
 
-            <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-5">
-              <h3 className="text-[15px] font-extrabold leading-5 text-slate-900 md:text-base">What to share for an accurate LED display quotation</h3>
-              <MobileIntroText
-                teaser="A quick site survey or clear project information helps avoid mismatched size, incorrect pixel pitch, power issues, and hidden installation cost."
-                className="mt-2"
-                teaserClassName="w-full"
-                expandedClassName="text-sm leading-7 text-slate-600"
-                desktopClassName="text-sm leading-7 text-slate-600"
-              >
-                <>
-                  A quick site survey or clear project information helps avoid mismatched size, incorrect pixel pitch,
-                  power issues, and hidden installation cost. Sharing the right details early helps us recommend the
-                  correct LED screen price in Bangladesh with better accuracy.
-                </>
-              </MobileIntroText>
-              <ul className="mt-4 grid gap-2 text-[13px] leading-6 text-slate-700 md:grid-cols-2 md:text-sm md:leading-7">
+            <div className="relative mt-4 overflow-hidden rounded-2xl border border-[#cfdcf0] bg-[linear-gradient(110deg,#ffffff_0%,#fbfdff_72%,#f2f7ff_100%)] p-4 shadow-[0_5px_16px_rgba(15,23,42,0.04)] sm:p-5">
+              <span className="pointer-events-none absolute bottom-4 right-7 hidden text-blue-100 lg:block" aria-hidden="true">
+                <UiIcon name="guide" className="h-24 w-24" />
+              </span>
+              <div className="relative flex items-start gap-3">
+                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-blue-600 text-2xl font-black text-white shadow-sm" aria-hidden="true">“</span>
+                <div>
+                  <h3 className="text-[15px] font-extrabold leading-5 text-[#071936] sm:text-base">What to share for an accurate LED display quotation</h3>
+                  <p className="mt-1 !text-left text-[12px] leading-5 text-slate-600 sm:text-[13px]">Providing these details helps us recommend the most suitable LED display solution for your project.</p>
+                </div>
+              </div>
+              <ul className="relative mt-4 grid gap-x-5 gap-y-3 text-[12px] leading-5 text-slate-700 md:grid-cols-2 lg:grid-cols-3">
                 {[
-                  "Location type: indoor, outdoor, showroom, event, or roadside advertising",
-                  "Target screen size (W x H) or available wall, frame, or stage space",
-                  "Content type: mostly text, video ads, live camera, menu board, or mixed content",
-                  "Power situation: available line, generator / UPS, and distance to DB panel",
-                  "Mounting: wall mount, stand, hanging, rooftop, cabinet frame, or structure needed",
-                  "Preferred control: laptop, USB, Wi-Fi, LAN, or cloud CMS scheduling workflow",
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-2">
-                    <span className="mt-2 inline-block h-2 w-2 rounded-full" style={{ background: "#FF6A00" }} />
-                    <span className="text-justify md:text-left">{item}</span>
+                  "Location: city, indoor/outdoor, and elevation",
+                  "Mounting method: wall, truss, hanging, or structure",
+                  "Power available: single phase or three phase",
+                  "Content type: video, ads, live feed, or mixed content",
+                  "Target screen size (W × H) or available wall space",
+                  "Preferred control: HDMI, LAN, Wi-Fi, 4G, or cloud CMS",
+                ].map((item, index) => (
+                  <li key={item} className={`flex items-start gap-2 !text-left ${index % 3 ? "lg:border-l lg:border-slate-200 lg:pl-5" : ""}`}>
+                    <span className="mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-blue-600 text-[9px] font-black text-white" aria-hidden="true">✓</span>
+                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
-              <div className="mt-5 flex flex-wrap gap-3">
-                <Link
-                  href="/contact/"
-                  className="inline-flex rounded-xl bg-[#FF6A00] px-6 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#E45700] hover:shadow-md"
-                >
-                  Get Buying Help -&gt;
+              <div className="relative mt-5 flex flex-col justify-center gap-2.5 sm:flex-row">
+                <Link href="/contact/" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[#ff6500] px-6 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#e85b00] hover:shadow-md">
+                  <UiIcon name="support" className="h-5 w-5" /> Get Buying Help
                 </Link>
-                <a
-                  href={wa}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex rounded-xl bg-emerald-600 px-6 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md"
-                >
+                <a href={wa} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[#0cab63] px-6 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#079555] hover:shadow-md">
+                  <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.4 9.4 0 0 1-3.8-.9L3 21l1.8-5a8.5 8.5 0 1 1 16.2-4.5Z" /><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" /></svg>
                   WhatsApp
                 </a>
               </div>
             </div>
           </section>
 
-          <section className="py-8">
-            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-              <UiIcon name="compare" className="h-6 w-6 text-slate-800" />
-              <span>Indoor vs Outdoor LED display in Bangladesh</span>
-            </h2>
-            <MobileIntroText
-              teaser="Indoor and outdoor LED displays solve different problems based on viewing distance, brightness, and installation environment."
-              className="mt-2"
-              teaserClassName="w-full"
-              expandedClassName="text-sm leading-7 text-slate-600"
-              desktopClassName="text-sm leading-7 text-slate-600"
-            >
-              <>
-                Indoor and outdoor LED displays solve different problems. Indoor setups focus on close-view clarity and comfortable brightness,
-                while outdoor setups prioritize daylight visibility, weather protection, and structural safety. Use this guide to shortlist the right
-                direction before requesting a site-specific quotation.
-              </>
-            </MobileIntroText>
+          <section
+            className="mt-4 overflow-hidden rounded-2xl border border-[#d9e4f2] bg-white px-3.5 py-4 shadow-[0_12px_34px_rgba(15,37,70,0.05)] sm:px-5 sm:py-5 md:px-6"
+            aria-labelledby="indoor-outdoor-led-comparison-heading"
+          >
+            <div className="grid gap-6 xl:grid-cols-[0.83fr_1.17fr] xl:gap-7">
+              <div className="min-w-0">
+                <h2 id="indoor-outdoor-led-comparison-heading" className="text-xl font-extrabold tracking-tight text-[#071a42] sm:text-2xl">
+                  Indoor vs Outdoor LED Display
+                </h2>
+                <p className="mt-1 text-[11px] leading-5 text-slate-600 sm:text-xs">Choose the right LED display for your environment</p>
 
-            <div className="mt-5 grid gap-3 md:mt-6 md:gap-4 md:grid-cols-2">
-              <article className="rounded-2xl border border-slate-200 bg-white p-4 md:p-5">
-                <h3 className="text-[1rem] font-semibold leading-[1.3] text-slate-900 md:text-lg">Indoor LED display: best for close viewing</h3>
-                <p className="mt-2 text-justify text-[13px] leading-6 text-slate-600 md:text-left md:text-sm md:leading-7">
-                  Suitable for showrooms, offices, lobbies, studios, and meeting rooms where text and fine details need to stay sharp at short distances.
-                </p>
-                <ul className="mt-4 space-y-2 text-[13px] leading-6 text-slate-700 md:text-sm md:leading-7">
-                  {[
-                    "Finer pixel pitch for crisp text and high detail.",
-                    "Higher refresh rate options for clean camera capture (events/streaming).",
-                    "Front-service vs rear-service planning based on access behind the wall.",
-                    "Lower brightness target than outdoor, optimized for indoor comfort.",
-                    "Color uniformity and calibration matter more for premium indoor walls.",
-                  ].map((item) => (
-                    <li key={item} className="flex items-start gap-2">
-                      <span className="mt-2 inline-block h-2 w-2 rounded-full" style={{ background: "#FF6A00" }} />
-                      <span className="text-justify md:text-left">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </article>
+                <div className="mt-4 overflow-x-auto rounded-xl border border-[#d9e4f2]">
+                  <table className="w-full min-w-0 table-fixed text-left text-[7px] leading-3 text-slate-700 min-[430px]:text-[8px] sm:text-[10px] sm:leading-4">
+                    <thead>
+                      <tr>
+                        <th className="w-[29%] bg-[#f7faff] px-1.5 py-2.5 font-bold text-[#071a42] sm:px-3">Key Factor</th>
+                        <th className="w-[35.5%] bg-[#2563eb] px-1.5 py-2.5 text-center font-bold text-white sm:px-3">
+                          <span className="inline-flex items-center justify-center gap-1"><UiIcon name="display" className="h-3 w-3 sm:h-3.5 sm:w-3.5" /><span className="sm:hidden">Indoor LED</span><span className="hidden sm:inline">Indoor LED Display</span></span>
+                        </th>
+                        <th className="w-[35.5%] bg-[#08a64a] px-1.5 py-2.5 text-center font-bold text-white sm:px-3">
+                          <span className="inline-flex items-center justify-center gap-1"><UiIcon name="solutions" className="h-3 w-3 sm:h-3.5 sm:w-3.5" /><span className="sm:hidden">Outdoor LED</span><span className="hidden sm:inline">Outdoor LED Display</span></span>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#e5edf7]">
+                      {[
+                        ["display", "Brightness", "600–1,500 nits", "5,000–8,000 nits"],
+                        ["module", "Pixel Pitch", "P1.25–P4", "P2.5–P10"],
+                        ["compare", "Viewing Distance", "1–8 meters", "3–30+ meters"],
+                        ["cabinet", "Protection", "IP20 (Indoor Use)", "IP65 (Weatherproof)"],
+                        ["maintenance", "Maintenance", "Front / Rear Access", "Front / Rear Access"],
+                        ["guide", "Best For", "Meeting Rooms, Retail, Control Rooms, Auditoriums", "Billboards, Stadiums, Streets, Outdoor Ads"],
+                        ["support", "Service Life", "Depends on model & usage", "Depends on model & usage"],
+                      ].map(([icon, factor, indoor, outdoor]) => (
+                        <tr key={factor} className="bg-white">
+                          <th className="px-1.5 py-2 font-bold text-[#071a42] sm:px-3">
+                            <span className="flex items-center gap-1 sm:gap-2"><UiIcon name={icon} className="h-3 w-3 shrink-0 text-[#1d5fe9] sm:h-3.5 sm:w-3.5" />{factor}</span>
+                          </th>
+                          <td className="border-l border-[#e5edf7] px-1.5 py-2 text-center sm:px-2.5" style={{ textAlign: "center" }}>{indoor}</td>
+                          <td className="border-l border-[#e5edf7] px-1.5 py-2 text-center sm:px-2.5" style={{ textAlign: "center" }}>{outdoor}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
 
-              <article className="rounded-2xl border border-slate-200 bg-white p-4 md:p-5">
-                <h3 className="text-[1rem] font-semibold leading-[1.3] text-slate-900 md:text-lg">Outdoor LED display: built for daylight and weather</h3>
-                <p className="mt-2 text-justify text-[13px] leading-6 text-slate-600 md:text-left md:text-sm md:leading-7">
-                  Recommended for roadside branding, shopfront signs, building facades, and public screens where sunlight, rain, and dust are key factors.
-                </p>
-                <ul className="mt-4 space-y-2 text-[13px] leading-6 text-slate-700 md:text-sm md:leading-7">
-                  {[
-                    "Higher brightness planning for daylight readability.",
-                    "Cabinet protection level (IP) and waterproof cable routing.",
-                    "Heat management and power stability for long running hours.",
-                    "Wind-load and mounting structure checks for safety.",
-                    "Service access strategy to keep maintenance fast and safe.",
-                  ].map((item) => (
-                    <li key={item} className="flex items-start gap-2">
-                      <span className="mt-2 inline-block h-2 w-2 rounded-full" style={{ background: "#FF6A00" }} />
-                      <span className="text-justify md:text-left">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            </div>
+                <div className="mt-3 flex flex-col gap-2 rounded-lg border border-[#cfe0fb] bg-[#f4f8ff] px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between">
+                  <p className="flex min-w-0 items-start gap-2 text-[10px] font-medium leading-4 text-slate-600">
+                    <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-blue-200 bg-white font-extrabold text-[#1458e5]" aria-hidden="true">i</span>
+                    <span className="min-w-0">Need help choosing? Our experts will recommend the right display for your project.</span>
+                  </p>
+                  <a href={wa} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-7 shrink-0 items-center justify-center gap-1.5 rounded-md border border-[#2d6af1] bg-white px-3 text-[10px] font-extrabold text-[#1458e5] transition hover:bg-[#1458e5] hover:text-white">
+                    Talk to an Engineer <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
+              </div>
 
-            <details className="group mt-5 md:hidden">
-              <summary
-                className="list-none cursor-pointer rounded-[12px] border px-4 py-3 text-center text-[12px] font-extrabold text-slate-900 [::-webkit-details-marker]:hidden"
-                style={{
-                  borderColor: `${BRAND.maroon}14`,
-                  background: "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)",
-                }}
-              >
-                Tap To Expand Comparison Factors
-              </summary>
-              <div className="mt-3 grid gap-2">
-                {[
-                  ["Viewing distance", "Short-to-mid (detail focused)", "Mid-to-long (visibility focused)"],
-                  ["Brightness target", "Comfortable indoor levels", "High brightness for daylight"],
-                  ["Cabinet protection", "Standard indoor cabinet", "Weather-ready cabinet (IP planning)"],
-                  ["Maintenance access", "Front/rear service based on wall setup", "Service access with safety constraints"],
-                  ["Power & safety", "Stable supply + grounding", "Surge protection + outdoor power distribution"],
-                  ["Typical use cases", "Video walls, dashboards, meeting rooms", "Signage, billboards, public screens"],
-                ].map((row) => (
-                  <div key={row[0]} className="rounded-[16px] border border-slate-200 bg-white p-3.5">
-                    <div className="text-[12px] font-extrabold uppercase tracking-[0.08em] text-[#F56605]">{row[0]}</div>
-                    <div className="mt-2 grid grid-cols-2 gap-2">
-                      <div className="rounded-[12px] bg-slate-50 px-3 py-2">
-                        <div className="text-[11px] font-bold text-slate-900">Indoor</div>
-                        <div className="mt-1 text-[12px] leading-5 text-slate-700">{row[1]}</div>
-                      </div>
-                      <div className="rounded-[12px] bg-slate-50 px-3 py-2">
-                        <div className="text-[11px] font-bold text-slate-900">Outdoor</div>
-                        <div className="mt-1 text-[12px] leading-5 text-slate-700">{row[2]}</div>
+              <div className="min-w-0">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <h2 className="text-xl font-extrabold tracking-tight text-[#071a42] sm:text-2xl">Complete LED Display Solution</h2>
+                    <p className="mt-1 text-[11px] leading-5 text-slate-600 sm:text-xs">From planning to installation & after-sales support</p>
+                  </div>
+                  <Link prefetch={false} href="/contact/?project=led-display" className="inline-flex min-h-8 w-fit shrink-0 items-center justify-center gap-2 rounded-md bg-[#071a42] px-3.5 text-[10px] font-extrabold text-white shadow-sm transition hover:bg-[#12326b]">
+                    <UiIcon name="guide" className="h-3.5 w-3.5" />Design My LED Display
+                  </Link>
+                </div>
+
+                <div className="mt-4 grid gap-3 lg:grid-cols-[minmax(0,1.25fr)_minmax(220px,.75fr)]">
+                  <div className="rounded-xl bg-[radial-gradient(circle_at_50%_35%,#0d3470_0%,#071c42_48%,#04132d_100%)] p-2.5 text-white shadow-[inset_0_0_0_1px_rgba(96,165,250,0.22)] sm:p-4">
+                    <h3 className="text-[11px] font-extrabold sm:text-xs">Complete LED System</h3>
+                    <div className="mt-3 grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-1 sm:gap-1.5">
+                      {[
+                        ["/images/led hero/indoor-led-hero.webp", "Video Source"],
+                        ["/images/controller/Huidu-HD-VP820-LED-Video-Processor.webp", "Video Processor"],
+                        ["/images/controller/Huidu-HD-A5L-LED-Controller.webp", "LED Controller"],
+                      ].map(([src, label], index) => (
+                        <Fragment key={label}>
+                          <div className="min-w-0 text-center">
+                            <div className="relative mx-auto h-9 w-full max-w-[56px] overflow-hidden rounded-md border border-blue-300/25 bg-white/95 min-[430px]:max-w-[64px] sm:h-14 sm:max-w-[92px]">
+                              <Image src={src} alt="" fill sizes="92px" className="object-contain p-1" />
+                            </div>
+                            <div className="mt-1 text-[8px] font-bold leading-3 text-blue-50 sm:text-[9px]">{label}</div>
+                          </div>
+                          {index < 2 ? <span className="text-center text-sm font-bold text-cyan-400" aria-hidden="true">→</span> : null}
+                        </Fragment>
+                      ))}
+                    </div>
+
+                    <div className="my-2 flex justify-center" aria-hidden="true"><span className="h-3 border-l border-dashed border-cyan-400/80" /></div>
+                    <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-1 sm:gap-1.5">
+                      {[
+                        ["/images/receiving-card/NovaStar-MRV336-Receiving-Card.webp", "Receiving Cards"],
+                        ["/images/indoor/P2-Indoor-LED-Display.webp", "LED Modules"],
+                        ["/images/led hero/indoor-led-hero.webp", "LED Screen"],
+                      ].map(([src, label], index) => (
+                        <Fragment key={label}>
+                          <div className="min-w-0 text-center">
+                            <div className="relative mx-auto h-9 w-full max-w-[56px] overflow-hidden rounded-md border border-blue-300/25 bg-white/95 min-[430px]:max-w-[64px] sm:h-14 sm:max-w-[92px]">
+                              <Image src={src} alt="" fill sizes="92px" className="object-contain p-1" />
+                            </div>
+                            <div className="mt-1 text-[8px] font-bold leading-3 text-blue-50 sm:text-[9px]">{label}</div>
+                          </div>
+                          {index < 2 ? <span className="text-center text-sm font-bold text-cyan-400" aria-hidden="true">→</span> : null}
+                        </Fragment>
+                      ))}
+                    </div>
+
+                    <div className="mt-3 flex items-center justify-center gap-3 border-t border-blue-300/15 pt-3">
+                      <div className="flex items-center gap-1.5 text-[8px] font-bold text-amber-300 sm:text-[9px]"><UiIcon name="power" className="h-4 w-4" />Power Input</div>
+                      <span className="text-cyan-400" aria-hidden="true">→</span>
+                      <div className="flex items-center gap-2">
+                        <div className="relative h-9 w-16 overflow-hidden rounded bg-white/95"><Image src="/images/power-supply/G-Energy-5V-40A-LED-Display-Power-Supply.webp" alt="" fill sizes="64px" className="object-contain p-1" /></div>
+                        <span className="text-[8px] font-bold text-blue-50 sm:text-[9px]">Power Supply (SMPS)</span>
                       </div>
                     </div>
                   </div>
-                ))}
+
+                  <div className="rounded-xl border border-[#d9e4f2] bg-[#fbfdff] px-3 py-2 shadow-[0_7px_18px_rgba(15,37,70,0.04)]">
+                    {[
+                      ["guide", "Site Survey & Consultation", "We analyze your space and requirements"],
+                      ["compare", "Screen Design & BOQ", "Custom design, size calculation & BOQ"],
+                      ["structure", "Structure & Power Planning", "Safe structure design & electrical planning"],
+                      ["install", "Professional Installation", "Neat installation by experienced engineers"],
+                      ["controller", "Calibration & Testing", "Color calibration, brightness & performance test"],
+                      ["support", "After-Sales Support", "Maintenance, spare parts & technical support"],
+                    ].map(([icon, title, detail]) => (
+                      <div key={title} className="flex gap-2.5 border-b border-slate-100 py-2 last:border-b-0">
+                        <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#edf4ff] text-[#1458e5]"><UiIcon name={icon} className="h-3.5 w-3.5" /></span>
+                        <div className="min-w-0">
+                          <div className="text-[9px] font-extrabold leading-4 text-[#071a42] sm:text-[10px]">{title}</div>
+                          <div className="text-[8px] leading-3.5 text-slate-500 sm:text-[9px]">{detail}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </details>
-
-            <div className="mt-6 hidden overflow-hidden rounded-2xl border border-slate-200 bg-white md:block">
-              <table className="w-full text-left text-sm text-slate-700">
-                <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-600">
-                  <tr>
-                    <th className="px-4 py-3">Key factor</th>
-                    <th className="px-4 py-3">Indoor</th>
-                    <th className="px-4 py-3">Outdoor</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {[
-                    ["Viewing distance", "Short-to-mid (detail focused)", "Mid-to-long (visibility focused)"],
-                    ["Brightness target", "Comfortable indoor levels", "High brightness for daylight"],
-                    ["Cabinet protection", "Standard indoor cabinet", "Weather-ready cabinet (IP planning)"],
-                    ["Maintenance access", "Front/rear service based on wall setup", "Service access with safety constraints"],
-                    ["Power & safety", "Stable supply + grounding", "Surge protection + outdoor power distribution"],
-                    ["Typical use cases", "Video walls, dashboards, meeting rooms", "Signage, billboards, public screens"],
-                  ].map((row) => (
-                    <tr key={row[0]}>
-                      <td className="px-4 py-3 font-semibold text-slate-900">{row[0]}</td>
-                      <td className="px-4 py-3">{row[1]}</td>
-                      <td className="px-4 py-3">{row[2]}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
             </div>
 
-            <div className="mt-6 flex gap-2 md:flex-wrap md:gap-3">
-              <Link
-                prefetch={false}
-                href={`${basePath}/indoor-led/`}
-                className="inline-flex min-w-0 flex-1 items-center justify-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-center text-[11px] font-extrabold leading-tight text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm md:flex-none md:rounded-xl md:px-5 md:text-sm"
-              >
-                Explore Indoor Models -&gt;
-              </Link>
-              <Link
-                prefetch={false}
-                href={`${basePath}/outdoor/`}
-                className="inline-flex min-w-0 flex-1 items-center justify-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-center text-[11px] font-extrabold leading-tight text-slate-900 transition hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-sm md:flex-none md:rounded-xl md:px-5 md:text-sm"
-              >
-                Explore Outdoor Models -&gt;
-              </Link>
-              <Link
-                prefetch={false}
-                href="/contact/"
-                className="hidden rounded-xl bg-[#FF6A00] px-6 py-2 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#E45700] hover:shadow-md md:inline-flex"
-              >
-                Get a Recommendation -&gt;
-              </Link>
-            </div>
           </section>
 
-          <section className="py-8 mb-[25px]">
-            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-              <UiIcon name="solutions" className="h-6 w-6 text-slate-800" />
-              <span>LED Display Solutions in Bangladesh</span>
-            </h2>
+          <section
+            className="mt-4 rounded-2xl border border-[#d9e4f2] bg-white px-4 py-5 shadow-[0_12px_34px_rgba(15,37,70,0.055)] sm:px-5 md:px-6 md:py-6"
+            aria-labelledby="recent-led-projects-heading"
+          >
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h2 id="recent-led-projects-heading" className="text-xl font-extrabold tracking-tight text-[#071a42] sm:text-2xl">Our Recent LED Display Projects</h2>
+                  <p className="mt-1 text-[11px] leading-5 text-slate-600 sm:text-xs">Delivering high-performance LED screens across Bangladesh.</p>
+                </div>
+                <Link prefetch={false} href="/projects/" className="inline-flex min-h-8 w-fit items-center justify-center gap-2 rounded-md border border-[#2d6af1] bg-white px-3.5 text-[10px] font-extrabold text-[#1458e5] transition hover:bg-[#1458e5] hover:text-white">
+                  View All Projects <span aria-hidden="true">→</span>
+                </Link>
+              </div>
+
+              <div className="mt-5 grid gap-4 md:grid-cols-3">
+                {[
+                  {
+                    title: "Indoor LED Video Wall Installation",
+                    image: "/images/project-page/project-indoor-wall.webp",
+                    alt: "Indoor LED video wall installation in a corporate office",
+                    icon: "display",
+                    color: "#1458e5",
+                    meta: ["Corporate Office, Dhaka", "Pixel Pitch: P1.56", "Size: 16ft × 9ft"],
+                    tags: ["NovaStar Controller", "4K Processor", "Front Access"],
+                  },
+                  {
+                    title: "Outdoor LED Billboard Project",
+                    image: "/images/project-page/project-chattogram-card.webp",
+                    alt: "Outdoor LED billboard project in Chattogram",
+                    icon: "solutions",
+                    color: "#0aa65a",
+                    meta: ["Chattogram", "Pixel Pitch: P6", "Size: 20ft × 10ft"],
+                    tags: ["IP65 Waterproof", "High Brightness", "Steel Structure"],
+                  },
+                  {
+                    title: "Rental LED for Concert Event",
+                    image: "/images/project-page/project-rental.webp",
+                    alt: "Rental LED screen setup for a concert event",
+                    icon: "module",
+                    color: "#7138e8",
+                    meta: ["International Convention City, Bashundhara", "Pixel Pitch: P3.91"],
+                    tags: ["Hanging System", "Lightweight Cabinet", "Quick Setup"],
+                  },
+                ].map((project) => (
+                  <article key={project.title} className="group overflow-hidden rounded-xl border bg-white shadow-[0_7px_20px_rgba(15,37,70,0.065)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(15,37,70,0.1)]" style={{ borderColor: "#dbe4f0" }}>
+                    <div className="relative overflow-hidden bg-slate-100" style={{ height: "176px" }}>
+                      <Image src={project.image} alt={project.alt} fill sizes="(max-width: 767px) 100vw, 33vw" className="object-cover transition duration-500 group-hover:scale-[1.025]" />
+                    </div>
+                    <div className="relative px-4 pb-4 pt-5">
+                      <div className="flex items-start gap-3">
+                        <span className="-mt-10 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-[4px] border-white text-white shadow-md" style={{ backgroundColor: project.color }}>
+                          <UiIcon name={project.icon} className="h-5 w-5" />
+                        </span>
+                        <div className="min-h-10 min-w-0 flex-1 text-[15px] font-extrabold leading-5 text-[#071a42] sm:text-base">{project.title}</div>
+                      </div>
+                      <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1.5 text-[10px] leading-4 text-slate-600">
+                        {project.meta.map((item, index) => (
+                          <span key={item} className="inline-flex items-center gap-1.5">
+                            {index === 0 ? <UiIcon name="guide" className="h-3.5 w-3.5 shrink-0 text-[#1458e5]" /> : null}
+                            {index > 0 ? <span className="h-3 border-l border-slate-300" aria-hidden="true" /> : null}
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {project.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-full border px-2.5 py-1 text-[9px] font-bold leading-none"
+                            style={{
+                              borderColor: `${project.color}24`,
+                              backgroundColor: `${project.color}10`,
+                              color: project.color,
+                            }}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+          </section>
+
+          <section
+            className="mt-4 rounded-2xl border border-[#d9e4f2] bg-[linear-gradient(135deg,#fbfdff_0%,#f3f7ff_100%)] px-4 py-7 shadow-[0_12px_34px_rgba(15,37,70,0.05)] sm:px-5 md:px-6 md:py-8"
+            aria-labelledby="led-how-we-work-heading"
+          >
+              <div>
+                <div className="text-[9px] font-extrabold uppercase tracking-[0.12em] text-[#1458e5]">Our Process</div>
+                <h2 id="led-how-we-work-heading" className="mt-1 text-xl font-extrabold tracking-tight text-[#071a42] sm:text-2xl">How We Work</h2>
+                <p className="mt-1 text-[11px] leading-5 text-slate-600 sm:text-xs">A clear, structured workflow from consultation to project handover.</p>
+              </div>
+
+              <div className="mt-6 grid gap-4 lg:grid-cols-6 lg:items-stretch">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:col-span-5 lg:grid-cols-6">
+                  {[
+                    ["support", "Consultation", "We understand your needs and project requirements."],
+                    ["guide", "Site Survey", "Our team visits the site for measurement & analysis."],
+                    ["compare", "Design & BOQ", "We design the solution and prepare detailed BOQ."],
+                    ["install", "Installation", "Professional installation with safety & neat work."],
+                    ["display", "Testing & Calibration", "Complete testing, calibration & performance check."],
+                    ["support", "Handover & Support", "We hand over the project and provide ongoing support."],
+                  ].map(([icon, title, detail], index) => (
+                    <article
+                      key={title}
+                      className="relative flex min-w-0 flex-col rounded-xl border bg-white p-3.5 shadow-[0_7px_20px_rgba(15,37,70,0.055)] transition duration-300 hover:-translate-y-0.5 hover:shadow-md"
+                      style={{ minHeight: "166px", borderColor: "#dce6f3" }}
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#edf4ff] text-[#1458e5] ring-1 ring-[#d6e4fb]">
+                          <UiIcon name={icon} className="h-5 w-5" />
+                        </span>
+                        <span className="rounded-full bg-[#1458e5] px-2 py-1 text-[8px] font-extrabold tracking-wide text-white">STEP {String(index + 1).padStart(2, "0")}</span>
+                      </div>
+                      <div className="mt-3 text-[12px] font-extrabold leading-4 text-[#071a42] sm:text-[13px]">{title}</div>
+                      <div className="mt-1.5 text-[9px] leading-4 text-slate-600 sm:text-[10px]">{detail}</div>
+                      {index < 5 ? (
+                        <span
+                          className="absolute z-10 hidden h-7 w-7 items-center justify-center rounded-full border border-blue-100 bg-white text-sm font-bold text-[#6f9fea] shadow-sm lg:flex"
+                          style={{ right: "-20px", top: "69px" }}
+                          aria-hidden="true"
+                        >
+                          →
+                        </span>
+                      ) : null}
+                    </article>
+                  ))}
+                </div>
+
+                <aside
+                  className="flex flex-col justify-between rounded-xl p-4 text-white shadow-[0_14px_30px_rgba(7,26,66,0.2)] lg:col-span-1"
+                  style={{ minHeight: "166px", background: "linear-gradient(145deg, #0b2a63 0%, #06183b 100%)" }}
+                >
+                  <div className="flex items-start gap-3">
+                    <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/15">
+                      <UiIcon name="support" className="h-5 w-5 text-white" />
+                    </span>
+                    <div>
+                      <div className="text-[12px] font-extrabold leading-4">Need Expert Help?</div>
+                      <div className="mt-1.5 text-[9px] leading-4 text-blue-100">Our technical team is ready to help you.</div>
+                    </div>
+                  </div>
+                  <a href={wa} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg bg-white px-3 text-[10px] font-extrabold text-[#071a42] shadow-sm transition hover:bg-blue-50">
+                    <span className="text-[#1458e5]" aria-hidden="true">◉</span> Chat on WhatsApp
+                  </a>
+                </aside>
+              </div>
+          </section>
+
+          <section className={ledFeatureSectionClass} aria-labelledby="led-display-solutions-heading">
+            <LedSectionHeading id="led-display-solutions-heading" icon="solutions">LED Display Solutions in Bangladesh</LedSectionHeading>
             <MobileIntroText
               teaser="Sasha corporation provides complete LED Screen solutions in Bangladesh covering planning, product selection, installation, configuration, and ongoing support."
               className="mt-2"
@@ -2526,16 +2721,13 @@ function ProductsPageContent({
             </div>
           </section>
 
-          <section className="py-3">
-            <div ref={whyChooseSectionRef} className="sc-led-why-section">
-              <div className="sc-led-why-head">
-                <h2 className="sc-led-why-title flex items-center gap-2 text-[1.45rem] font-extrabold leading-[1.25] md:text-4xl">
-                  <UiIcon name="support" className="h-6 w-6 shrink-0 text-slate-800 md:h-7 md:w-7" />
-                  <span>Why Choose Sasha Corporation for LED Display Solutions?</span>
-                </h2>
+          <section className={ledInformationSectionClass} aria-labelledby="why-choose-sasha-led-heading">
+            <div ref={whyChooseSectionRef}>
+              <div>
+                <LedSectionHeading id="why-choose-sasha-led-heading" icon="support">Why Choose Sasha Corporation for LED Display Solutions?</LedSectionHeading>
                 <MobileIntroText
                   teaser="Sasha Corporation supplies, installs, configures, and supports LED display solutions across Bangladesh."
-                  className="sc-led-why-intro mt-3"
+                  className="mt-3 text-slate-600"
                   teaserClassName="w-full"
                   expandedClassName="text-sm leading-7 md:text-base md:leading-8"
                   desktopClassName="text-sm leading-7 md:text-base md:leading-8"
@@ -2546,26 +2738,26 @@ function ProductsPageContent({
                 </MobileIntroText>
               </div>
 
-              <div className="sc-led-why-grid-wrap">
+              <div>
                 <div
                   ref={whyChooseCarouselRef}
                   onScroll={handleWhyChooseCarouselScroll}
                   className="mt-4 -mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:snap-none md:grid-cols-2 md:gap-[0.65rem] md:overflow-visible md:px-0 md:pb-0 md:pt-0 xl:grid-cols-4"
                 >
-	                {sashaWhyChooseCards.map((item, index) => (
+                {sashaWhyChooseCards.map((item) => (
 	                  <article
                       key={item.title}
-                      className={`group flex w-[86%] shrink-0 snap-start flex-col rounded-[20px] border px-3.5 py-3 transition duration-300 md:relative md:min-h-full md:min-w-0 md:w-auto md:shrink md:snap-normal md:overflow-hidden md:rounded-[24px] md:border-white/10 md:bg-[linear-gradient(180deg,rgba(255,255,255,0.1),rgba(255,255,255,0.05))] md:p-[0.9rem] md:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_14px_34px_rgba(15,23,42,0.22)] md:backdrop-blur-[14px] md:transition-[transform,border-color,box-shadow,background] md:duration-[220ms] md:ease-in-out md:after:absolute md:after:inset-x-0 md:after:bottom-0 md:after:h-[3px] md:after:bg-[linear-gradient(90deg,rgba(255,106,0,0),rgba(255,106,0,0.95),rgba(255,140,0,0))] md:after:opacity-[0.88] md:hover:-translate-y-1 md:hover:border-[rgba(255,106,0,0.58)] md:hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.13),rgba(255,255,255,0.07))] md:hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_18px_38px_rgba(15,23,42,0.28),0_0_0_1px_rgba(255,106,0,0.18),0_0_24px_rgba(255,106,0,0.16)] ${componentMobileCardStyles[index % componentMobileCardStyles.length]}`}
+                      className="group flex w-[86%] shrink-0 snap-start flex-col rounded-xl border border-[#dbe5f2] bg-white px-3.5 py-3 shadow-[0_3px_14px_rgba(15,23,42,0.035)] transition duration-300 md:min-h-full md:min-w-0 md:w-auto md:shrink md:snap-normal md:p-4 md:hover:-translate-y-0.5 md:hover:border-orange-200 md:hover:shadow-md"
                     >
                       <div className="flex min-w-0 items-center gap-2.5 md:gap-3">
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] border border-white/75 bg-white/85 text-[#F56605] shadow-sm md:h-12 md:w-12 md:rounded-full md:border-[rgba(255,106,0,0.32)] md:bg-[linear-gradient(180deg,rgba(255,106,0,0.2),rgba(255,106,0,0.08))] md:text-[#FF6A00] md:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_10px_24px_rgba(255,106,0,0.16)]">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-orange-200 bg-gradient-to-br from-orange-50 to-white text-orange-600 shadow-sm">
                           <UiIcon name={item.icon} className="h-5 w-5" />
                         </div>
-                        <h3 className="min-w-0 flex-1 whitespace-normal break-words text-[16px] font-extrabold leading-tight tracking-tight text-slate-900 md:mt-0 md:text-[1.02rem] md:font-semibold md:leading-[1.5] md:tracking-normal">
+                        <h3 className="min-w-0 flex-1 whitespace-normal break-words text-[15px] font-extrabold leading-tight tracking-tight text-[#071936] md:text-base md:leading-5">
                           {item.title}
                         </h3>
                       </div>
-                      <p className="mt-2.5 whitespace-normal break-words text-[12.5px] leading-[1.55] text-slate-700 md:mt-[0.7rem] md:text-[0.94rem] md:leading-[1.8] md:text-[#475569]">{item.text}</p>
+                      <p className="mt-2.5 whitespace-normal break-words text-[12.5px] leading-5 text-slate-600 md:text-sm md:leading-6">{item.text}</p>
 	                  </article>
 	                ))}
                 </div>
@@ -2589,144 +2781,10 @@ function ProductsPageContent({
             </div>
           </section>
 
-          <section className="py-8">
-            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-              <UiIcon name="process" className="h-6 w-6 text-slate-800" />
-              <span>LED Display Installation Process in Bangladesh</span>
-            </h2>
-            <MobileIntroText
-              teaser="A proper LED display installation process improves visual performance, operational safety, and long-term reliability."
-              className="mt-3"
-              teaserClassName="w-full"
-              expandedClassName="text-sm leading-7 text-slate-600"
-              desktopClassName="text-sm leading-7 text-slate-600"
-            >
-              <>
-                A proper LED display installation process improves visual performance, operational safety, and long-term
-                reliability. The workflow below gives a simple and practical overview so buyers can understand how a
-                professional LED screen project is planned, installed, tested, and handed over in Bangladesh. Review our{" "}
-                <Link href="/services-support/" className="font-semibold text-slate-900 underline underline-offset-2">
-                  installation and support services
-                </Link>{" "}
-                for scope planning.
-              </>
-            </MobileIntroText>
-
-            <div className="mt-6 -mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 md:pb-0 md:pt-0">
-              {[
-                {
-                  t: "Step 1: Site Survey and Requirement Collection",
-                  d: "The team checks location dimensions, viewing distance, ambient light, structural condition, and electrical readiness. At this stage, project goals and content type are finalized.",
-                  points: [
-                    "Measure screen area and audience viewing zones.",
-                    "Confirm indoor, outdoor, or rental operating environment.",
-                    "Identify content source: HDMI, media server, live feed, or remote control.",
-                  ],
-                },
-                {
-                  t: "Step 2: System Design and BOQ Planning",
-                  d: "Based on survey findings, the technical team prepares pixel pitch recommendation, cabinet layout, controller architecture, and power distribution plan with a clear scope of work.",
-                  points: [
-                    "Select suitable LED modules and cabinet structure.",
-                    "Define controller, sending card, and receiving card compatibility.",
-                    "Prepare itemized BOQ including installation and calibration scope.",
-                  ],
-                },
-                {
-                  t: "Step 3: Structure, Cabling, and Power Preparation",
-                  d: "Before mounting panels, the support frame, cable routes, and distribution board setup are prepared for safety and serviceability. This step reduces future downtime and maintenance risks.",
-                  points: [
-                    "Install mounting frame with alignment and load safety checks.",
-                    "Set AC power lines, earthing, and protection devices.",
-                    "Complete data and power cable routing with clean labeling.",
-                  ],
-                },
-                {
-                  t: "Step 4: Panel Mounting and Controller Configuration",
-                  d: "LED cabinets/modules are installed in sequence, followed by mapping and signal configuration. Accurate addressing and controller setup are critical for stable output.",
-                  points: [
-                    "Mount panels with proper lock and flatness adjustment.",
-                    "Configure receiving card mapping and communication chain.",
-                    "Set sender/controller resolution and input signal parameters.",
-                  ],
-                },
-                {
-                  t: "Step 5: Testing, Calibration, and Quality Check",
-                  d: "The display is tested under real content conditions to validate brightness balance, color consistency, and signal stability. Any mismatch is corrected before handover.",
-                  points: [
-                    "Run test patterns for pixel, line, and color uniformity checks.",
-                    "Tune brightness, grayscale, and playback smoothness.",
-                    "Perform burn-in and stability testing for operational readiness.",
-                  ],
-                },
-                {
-                  t: "Step 6: Client Handover and Support Orientation",
-                  d: "After final approval, operators receive basic training on content update, routine checks, and issue reporting. Documentation is shared for daily use and future support.",
-                  points: [
-                    "Provide operation guide and controller usage workflow.",
-                    "Explain preventive maintenance and cleaning frequency.",
-                    "Share support channel for troubleshooting and service response.",
-                  ],
-                },
-              ].map((step) => (
-                <article key={step.t} className="w-[89%] shrink-0 snap-start rounded-2xl border border-slate-200 bg-white p-4 md:w-auto md:shrink md:snap-none md:p-5">
-                  <h3 className="text-[15px] font-extrabold leading-5 text-slate-900 md:text-base">{step.t}</h3>
-                  <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">{step.d}</p>
-                  <ul className="mt-4 space-y-2 text-[13px] text-slate-700 md:text-sm">
-                    {step.points.map((point) => (
-                      <li key={point} className="flex items-start gap-2">
-                        <span className="mt-2 inline-block h-2 w-2 rounded-full bg-slate-900" />
-                        <span className="text-justify leading-6 md:text-left md:leading-7">{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </article>
-              ))}
-            </div>
-
-            <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-5">
-              <h3 className="text-base font-extrabold text-slate-900">Simple Timeline Overview</h3>
-              <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
-                Project duration varies by screen size, site readiness, and installation complexity. A common workflow
-                timeline is shown below for planning clarity.
-              </p>
-              <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-6">
-                {[
-                  { label: "Survey", icon: "guide" },
-                  { label: "Design", icon: "compare" },
-                  { label: "Preparation", icon: "structure" },
-                  { label: "Installation", icon: "install" },
-                  { label: "Calibration", icon: "controller" },
-                  { label: "Handover", icon: "support" },
-                ].map((step, i) => (
-                  <div
-                    key={step.label}
-                    className={`rounded-xl border px-2.5 py-2.5 text-center shadow-sm md:border-slate-200 md:bg-white md:p-3 md:shadow-none ${
-                      i % 3 === 0
-                        ? "border-sky-200/80 bg-[linear-gradient(180deg,#f0f9ff_0%,#ffffff_52%,#e0f2fe_100%)]"
-                        : i % 3 === 1
-                          ? "border-violet-200/80 bg-[linear-gradient(180deg,#f5f3ff_0%,#ffffff_52%,#ede9fe_100%)]"
-                          : "border-orange-200/80 bg-[linear-gradient(180deg,#fff7ed_0%,#ffffff_52%,#ffedd5_100%)]"
-                    }`}
-                  >
-                    <div className="mx-auto inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[#FF6A00] ring-1 ring-[#FF6A00]/10 md:h-10 md:w-10 md:bg-slate-50">
-                      <UiIcon name={step.icon} className="h-4 w-4 md:h-4.5 md:w-4.5" />
-                    </div>
-                    <div className="mt-1.5 text-[10px] font-bold uppercase tracking-[0.08em] text-[#FF6A00] md:mt-2 md:text-xs md:normal-case md:tracking-normal">Phase {i + 1}</div>
-                    <div className="mt-1 text-[12px] font-semibold leading-4 text-slate-800 md:text-sm md:leading-5">{step.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-	          <section className="py-8">
+	          <section className={ledInformationSectionClass} aria-label="LED display system guide">
 	            <div className="space-y-10">
 	              <div>
-	                <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-                    <UiIcon name="display" className="h-6 w-6 text-slate-800" />
-                    <span>What Is an LED Display?</span>
-                  </h2>
+	                <LedSectionHeading icon="display">What Is an LED Display?</LedSectionHeading>
                 <MobileIntroText
                   teaser="An LED Display is a modular digital screen built from many light-emitting diode pixels that create images, videos, text, and live visual content."
                   teaserLines={2}
@@ -2772,10 +2830,7 @@ function ProductsPageContent({
 	              </div>
 
 	              <div ref={componentSectionRef}>
-	                <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-                    <UiIcon name="module" className="h-6 w-6 text-slate-800" />
-                    <span>Main Components of an LED Display System</span>
-                  </h2>
+	                <LedSectionHeading icon="module">Main Components of an LED Display System</LedSectionHeading>
                   <MobileIntroText
                     teaser="Every professional LED display system is built using several essential hardware components."
                     className="mt-3 max-w-5xl"
@@ -2827,10 +2882,7 @@ function ProductsPageContent({
 	              </div>
 
 	              <div>
-	                <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-                    <UiIcon name="process" className="h-6 w-6 text-slate-800" />
-                    <span>How an LED Display System Works</span>
-                  </h2>
+	                <LedSectionHeading icon="process">How an LED Display System Works</LedSectionHeading>
 	                <MobileIntroText
                     teaser="A professional LED display operates through the seamless communication of multiple hardware components."
                     className="mt-3 max-w-5xl"
@@ -2912,11 +2964,8 @@ function ProductsPageContent({
 	            </div>
 	          </section>
 
-          <section className="py-8">
-            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-              <UiIcon name="display" className="h-6 w-6 text-slate-800" />
-              <span>Types of LED Display Technology</span>
-            </h2>
+          <section className={ledFeatureSectionClass} aria-labelledby="led-display-technology-types-heading">
+            <LedSectionHeading id="led-display-technology-types-heading" icon="display">Types of LED Display Technology</LedSectionHeading>
             <MobileIntroText
               teaser="Choosing the right LED display technology helps improve visual quality, durability, and long-term value."
               className="mt-3"
@@ -2999,11 +3048,8 @@ function ProductsPageContent({
             </p>
           </section>
 
-          <section className="py-8">
-            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-              <UiIcon name="compare" className="h-6 w-6 text-slate-800" />
-              <span>LED Display vs Projector vs LCD Video Wall in Bangladesh</span>
-            </h2>
+          <section className={ledInformationSectionClass} aria-labelledby="led-projector-video-wall-comparison-heading">
+            <LedSectionHeading id="led-projector-video-wall-comparison-heading" icon="compare">LED Display vs Projector vs LCD Video Wall in Bangladesh</LedSectionHeading>
             <MobileIntroText
               teaser="Compare LED display vs projector vs LCD video wall in Bangladesh to choose the right display solution for your business or project."
               className="mt-2"
@@ -3037,11 +3083,8 @@ function ProductsPageContent({
             </div>
           </section>
 
-          <section className="pt-8 pb-[25px]">
-            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-              <UiIcon name="cost" className="h-6 w-6 text-slate-800" />
-              <span>Benefits of Digital LED Display for Advertising</span>
-            </h2>
+          <section className={ledFeatureSectionClass} aria-labelledby="led-advertising-benefits-heading">
+            <LedSectionHeading id="led-advertising-benefits-heading" icon="cost">Benefits of Digital LED Display for Advertising</LedSectionHeading>
             <MobileIntroText
               teaser="Digital LED signage for outdoor advertising improves visibility, message control, and campaign performance for brands in Bangladesh."
               className="mt-3"
@@ -3087,11 +3130,8 @@ function ProductsPageContent({
             </div>
           </section>
 
-          <section className="py-8">
-            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-              <UiIcon name="solutions" className="h-6 w-6 text-slate-800" />
-              <span>LED Technology &amp; Component Brands</span>
-            </h2>
+          <section className={ledInformationSectionClass} aria-labelledby="led-technology-brands-heading">
+            <LedSectionHeading id="led-technology-brands-heading" icon="solutions">LED Technology &amp; Component Brands</LedSectionHeading>
             <MobileIntroText
               teaser="We use globally trusted LED display components in Bangladesh projects to ensure stable performance, reliable power, and long-term support."
               className="mt-2"
@@ -3192,26 +3232,14 @@ function ProductsPageContent({
             </div>
           </section>
 
-          <section className="py-8">
-            <div className="text-sm font-semibold" style={{ color: "#FF6A00" }}>
+          <section className={ledInformationSectionClass} aria-labelledby="valuable-led-clients-heading">
+            <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-orange-600">
               Reliability, Compliance, Long-Term Support
             </div>
 
             <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
               <div className="w-full">
-                <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-                  <span
-                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border bg-slate-50 text-slate-700"
-                    style={{ borderColor: "rgba(255,106,0,0.2)" }}
-                    aria-hidden="true"
-                  >
-                    <svg viewBox="0 0 24 24" className="h-4.5 w-4.5">
-                      <path d="M12 3 5 6v6c0 4.2 2.7 7.2 7 9 4.3-1.8 7-4.8 7-9V6l-7-3Z" stroke="currentColor" strokeWidth="1.8" fill="none" />
-                      <path d="m9 12 2 2 4-4" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </span>
-                  <span>Our Valuable Clients</span>
-                </h2>
+                <LedSectionHeading id="valuable-led-clients-heading" icon="support">Our Valuable Clients</LedSectionHeading>
                 <MobileIntroText
                   teaser="We provide professional LED display and LED screen solutions designed for institutional requirements with clear visibility, stable performance, and dependable after-sales support."
                   className="mt-2 w-full"
@@ -3280,40 +3308,43 @@ function ProductsPageContent({
             </div>
           </section>
 
-          <section id="led-faq" className="scroll-mt-24 pt-8 pb-[25px]">
-            <h2 className="flex items-center gap-2 text-[1.45rem] font-bold leading-[1.25] text-slate-900 md:text-2xl">
-              <UiIcon name="faq" className="h-6 w-6 text-slate-800" />
-              <span>Frequently Asked Questions About LED Display</span>
-            </h2>
+          <section id="led-faq" className={`${ledInformationSectionClass} scroll-mt-24`} aria-labelledby="led-display-faq-heading">
+            <LedSectionHeading id="led-display-faq-heading" icon="faq">Frequently Asked Questions About LED Display</LedSectionHeading>
             <div className="mt-5">
               <FaqAccordion accent={BRAND.maroon} density="compact" items={ledFaqs} columns={2} />
             </div>
 
           </section>
 
-          <section className="pb-[25px] pt-2">
-            <div
-              className="rounded-[24px] px-4 py-6 text-center md:px-5 md:py-7"
-            >
-              <div className="mx-auto max-w-3xl">
-                <h2 className="text-[26px] font-extrabold leading-tight tracking-tight text-slate-900 md:text-[32px]">
-                  Need a complete LED display solution?
-                </h2>
-                <p className="mx-auto mt-3 max-w-2xl text-justify text-[13px] leading-6 text-slate-600 md:text-center md:text-[15px] md:leading-8">
-                  Share your requirement or BOQ and we will suggest a practical solution path covering screen type,
-                  controller, power, structure, installation scope, and support planning for your project.
-                </p>
-                <div className="mt-5 flex justify-center">
-                  <a
-                    href={wa}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex min-h-11 items-center justify-center rounded-[14px] bg-[#081B44] px-5 py-3 text-sm font-extrabold text-white shadow-[0_14px_30px_rgba(8,27,68,0.22)] transition hover:-translate-y-0.5 hover:bg-[#0B255B] hover:shadow-[0_18px_34px_rgba(8,27,68,0.26)]"
-                  >
-                    WhatsApp project details
-                  </a>
-                </div>
+          <section className="relative mt-4 min-h-[250px] overflow-hidden rounded-2xl border border-[#172c53] bg-[#071936] shadow-[0_8px_28px_rgba(7,25,54,0.18)]" aria-labelledby="led-final-cta">
+            <Image src="/images/led hero/indoor-led-hero.webp" alt="" fill sizes="100vw" className="object-cover object-center opacity-80" />
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,25,54,0.99)_0%,rgba(7,25,54,0.96)_37%,rgba(7,25,54,0.68)_60%,rgba(7,25,54,0.18)_100%)]" aria-hidden="true" />
+            <div className="relative z-10 flex min-h-[250px] max-w-[540px] flex-col justify-center px-5 py-6 sm:px-7 md:px-9">
+              <h2 id="led-final-cta" className="max-w-[420px] !text-[24px] font-black leading-[1.08] tracking-tight text-white sm:!text-[28px]">
+                Need a Complete LED Display Solution?
+              </h2>
+              <p className="mt-2 max-w-[420px] text-left text-[11px] font-medium leading-[1.15rem] text-blue-100 sm:text-xs">
+                Share your screen size, location, viewing distance, and project scope for a practical LED display recommendation and clear BOQ.
+              </p>
+              <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+                <Link href="/contact/?project=led-display" className="inline-flex min-h-9 items-center justify-center rounded-md bg-[#f45b18] px-5 text-[10px] font-extrabold text-white shadow-sm transition hover:bg-[#db490d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400/60">
+                  Get Free BOQ <span aria-hidden="true" className="ml-1.5">→</span>
+                </Link>
+                <a
+                  href={wa}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-9 items-center justify-center gap-2 rounded-md border border-white/45 bg-white/10 px-5 text-[10px] font-extrabold text-white backdrop-blur-sm transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+                >
+                  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.4 9.4 0 0 1-3.8-.9L3 21l1.8-5a8.5 8.5 0 1 1 16.2-4.5Z" /><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" /></svg>
+                  WhatsApp Project Details
+                </a>
               </div>
+              <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-[8px] font-semibold text-blue-100 sm:text-[9px]">
+                {["Site Survey", "Pixel Pitch Planning", "Clear BOQ Pricing", "Installation & Support"].map((item) => (
+                  <li key={item} className="flex items-center gap-1.5"><span className="inline-flex h-3 w-3 items-center justify-center rounded-full border border-blue-200/60 text-[7px]" aria-hidden="true">✓</span>{item}</li>
+                ))}
+              </ul>
             </div>
           </section>
         </>
