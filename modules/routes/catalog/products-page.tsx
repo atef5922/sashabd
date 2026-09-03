@@ -373,6 +373,21 @@ function UiIcon({ name, className = "h-5 w-5" }: { name: string; className?: str
           <path d="M3 9v6M21 9v6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
         </svg>
       );
+    case "shield":
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={base} aria-hidden="true">
+          <path d="M12 3.5 19 6v5.4c0 4.3-2.8 7.4-7 9.1-4.2-1.7-7-4.8-7-9.1V6l7-2.5Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+          <path d="m9.2 12 1.8 1.8 3.8-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+    case "chip":
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={base} aria-hidden="true">
+          <rect x="6" y="6" width="12" height="12" rx="2" stroke="currentColor" strokeWidth="1.8" />
+          <rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        </svg>
+      );
     case "support":
       return (
         <svg viewBox="0 0 24 24" fill="none" className={base} aria-hidden="true">
@@ -422,7 +437,7 @@ function LedSectionHeading({
     <h2 id={id} className={`${ledSectionTitleClass} flex items-center gap-2.5`}>
       <span
         aria-hidden="true"
-        className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-orange-200 bg-gradient-to-br from-orange-50 to-white text-orange-600 shadow-sm"
+        className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#cfe0ff] bg-gradient-to-br from-[#eaf2ff] to-white text-[#1458e5] shadow-sm"
       >
         <UiIcon name={icon} className="h-5 w-5" />
       </span>
@@ -734,11 +749,7 @@ function ProductsPageContent({
   const desktopPageSize = ledOnly ? ledPageSize : 20;
   const productImageSizes = "(max-width: 1024px) 100vw, 25vw";
   const componentMobileCardStyles = [
-    "border-sky-200/70 bg-[linear-gradient(180deg,#eff6ff_0%,#ffffff_48%,#dbeafe_100%)] shadow-[0_14px_34px_rgba(59,130,246,0.10)]",
-    "border-emerald-200/70 bg-[linear-gradient(180deg,#ecfdf5_0%,#ffffff_48%,#d1fae5_100%)] shadow-[0_14px_34px_rgba(16,185,129,0.10)]",
-    "border-orange-200/80 bg-[linear-gradient(180deg,#fff7ed_0%,#ffffff_48%,#ffedd5_100%)] shadow-[0_14px_34px_rgba(249,115,22,0.11)]",
-    "border-violet-200/70 bg-[linear-gradient(180deg,#f5f3ff_0%,#ffffff_48%,#ede9fe_100%)] shadow-[0_14px_34px_rgba(139,92,246,0.10)]",
-    "border-cyan-200/70 bg-[linear-gradient(180deg,#ecfeff_0%,#ffffff_48%,#cffafe_100%)] shadow-[0_14px_34px_rgba(6,182,212,0.10)]",
+    "border-[#d5e3f8] bg-[linear-gradient(180deg,#f3f7ff_0%,#ffffff_50%,#eaf2ff_100%)] shadow-[0_14px_34px_rgba(20,88,229,0.09)]",
   ];
 
   const filtered = useMemo(() => {
@@ -2210,7 +2221,7 @@ function ProductsPageContent({
               {[
                 {
                   no: "1",
-                  icon: "module",
+                  icon: "cabinet",
                   title: "Pixel Pitch & Viewing Distance",
                   bullets: [
                     "P1.5–P2: close viewing distance, premium indoor LED displays",
@@ -2683,33 +2694,27 @@ function ProductsPageContent({
                 <ul className="mt-4 space-y-2 text-[13px] text-slate-700 md:text-sm">
                   {ledEndToEndBullets.map((bullet) => (
                     <li key={bullet} className="flex items-start gap-2">
-                      <span className="mt-2 inline-block h-2 w-2 rounded-full bg-slate-900" />
+                      <span className="mt-2 inline-block h-2 w-2 rounded-full bg-[#1458e5]" />
                       <span className="text-justify leading-6 md:text-left md:leading-7">{bullet}</span>
                     </li>
                   ))}
                 </ul>
 
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <Link prefetch={false} href="/contact/" className="rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800">
+                  <Link prefetch={false} href="/contact/" className="rounded-xl bg-[#071a42] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0b2c67]">
                     Request a Free Quotation -&gt;
                   </Link>
                 </div>
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
-                {ledReliabilityCards.map((card, index) => (
+                {ledReliabilityCards.map((card) => (
                   <div
                     key={card.t}
-                    className={`rounded-2xl border p-5 md:border-slate-200 md:bg-white ${
-                      index % 3 === 0
-                        ? "border-sky-200/80 bg-[linear-gradient(180deg,#f0f9ff_0%,#ffffff_52%,#e0f2fe_100%)]"
-                        : index % 3 === 1
-                          ? "border-emerald-200/80 bg-[linear-gradient(180deg,#ecfdf5_0%,#ffffff_52%,#d1fae5_100%)]"
-                          : "border-orange-200/80 bg-[linear-gradient(180deg,#fff7ed_0%,#ffffff_52%,#ffedd5_100%)]"
-                    }`}
+                    className="rounded-2xl border border-[#dbe5f2] bg-white p-5 shadow-[0_5px_18px_rgba(15,37,70,0.045)] transition hover:-translate-y-0.5 hover:border-[#b9d1fb] hover:shadow-md"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white shadow-sm">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#cfe0ff] bg-[#edf4ff] text-[#1458e5] shadow-sm">
                         <UiIcon name={card.icon} className="h-5 w-5" />
                       </div>
                     <div className="text-[15px] font-semibold leading-5 text-slate-900 md:text-base">{card.t}</div>
@@ -2747,10 +2752,10 @@ function ProductsPageContent({
                 {sashaWhyChooseCards.map((item) => (
 	                  <article
                       key={item.title}
-                      className="group flex w-[86%] shrink-0 snap-start flex-col rounded-xl border border-[#dbe5f2] bg-white px-3.5 py-3 shadow-[0_3px_14px_rgba(15,23,42,0.035)] transition duration-300 md:min-h-full md:min-w-0 md:w-auto md:shrink md:snap-normal md:p-4 md:hover:-translate-y-0.5 md:hover:border-orange-200 md:hover:shadow-md"
+                      className="group flex w-[86%] shrink-0 snap-start flex-col rounded-xl border border-[#dbe5f2] bg-white px-3.5 py-3 shadow-[0_3px_14px_rgba(15,23,42,0.035)] transition duration-300 md:min-h-full md:min-w-0 md:w-auto md:shrink md:snap-normal md:p-4 md:hover:-translate-y-0.5 md:hover:border-[#b9d1fb] md:hover:shadow-md"
                     >
                       <div className="flex min-w-0 items-center gap-2.5 md:gap-3">
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-orange-200 bg-gradient-to-br from-orange-50 to-white text-orange-600 shadow-sm">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-[#cfe0ff] bg-gradient-to-br from-[#eaf2ff] to-white text-[#1458e5] shadow-sm">
                           <UiIcon name={item.icon} className="h-5 w-5" />
                         </div>
                         <h3 className="min-w-0 flex-1 whitespace-normal break-words text-[15px] font-extrabold leading-tight tracking-tight text-[#071936] md:text-base md:leading-5">
@@ -2771,7 +2776,7 @@ function ProductsPageContent({
                         scrollWhyChooseCarouselToIndex(index);
                         setActiveWhyChooseSlide(index);
                       }}
-                      className={`h-1.5 rounded-full transition-all ${activeWhyChooseSlide === index ? "w-6 bg-[#F56605]" : "w-1.5 bg-slate-300"}`}
+                      className={`h-1.5 rounded-full transition-all ${activeWhyChooseSlide === index ? "w-6 bg-[#1458e5]" : "w-1.5 bg-slate-300"}`}
                       aria-label={`Go to ${item.title}`}
                     />
                   ))}
@@ -2817,7 +2822,7 @@ function ProductsPageContent({
                   </>
                 </MobileIntroText>
 
-	                <aside className="mt-5 rounded-[18px] border border-[#FF6A00]/20 bg-orange-50/70 p-4 shadow-sm md:mt-6 md:rounded-2xl md:p-5">
+	                <aside className="mt-5 rounded-[18px] border border-[#cfe0ff] bg-[#f3f7ff] p-4 shadow-sm md:mt-6 md:rounded-2xl md:p-5">
 	                  <h3 className="text-[1rem] font-extrabold leading-[1.3] text-slate-900 md:text-lg">
 	                    Every LED Display Is Built Using Multiple Hardware Components
 	                  </h3>
@@ -2849,10 +2854,10 @@ function ProductsPageContent({
                     {ledDisplayComponentCards.map((component, index) => (
                       <article
                         key={component.name}
-                        className={`group flex w-[86%] shrink-0 snap-start flex-col rounded-[20px] border px-3.5 py-3 transition duration-300 md:h-full md:w-auto md:shrink md:snap-normal md:rounded-2xl md:border-slate-200 md:bg-none md:bg-white md:p-5 md:shadow-sm md:hover:-translate-y-1 md:hover:border-[#FF6A00]/50 md:hover:shadow-md ${componentMobileCardStyles[index % componentMobileCardStyles.length]}`}
+                        className={`led-component-card group flex w-[86%] shrink-0 snap-start flex-col rounded-[20px] border px-3.5 py-3 transition duration-300 md:h-full md:w-auto md:shrink md:snap-normal md:rounded-2xl md:border-[#dbe5f2] md:bg-none md:bg-white md:p-5 md:shadow-sm md:hover:-translate-y-1 md:hover:border-[#b9d1fb] md:hover:shadow-md ${componentMobileCardStyles[index % componentMobileCardStyles.length]}`}
                       >
                         <div className="flex items-center gap-2.5">
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] border border-white/75 bg-white/85 text-[#F56605] shadow-sm md:h-12 md:w-12 md:rounded-2xl md:border-[#FF6A00]/20 md:bg-orange-50 md:text-[#FF6A00] md:shadow-none md:transition md:group-hover:bg-[#FF6A00] md:group-hover:text-white">
+                          <div className="led-component-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] border border-[#cfe0ff] bg-white/90 text-[#1458e5] shadow-sm transition-colors duration-200 md:h-12 md:w-12 md:rounded-2xl md:bg-[#edf4ff] md:shadow-none">
                             <UiIcon name={component.icon} className="h-5 w-5 md:h-6 md:w-6" />
                           </div>
                           <h3 className="min-w-0 flex-1 text-[16px] font-extrabold leading-tight tracking-tight text-slate-900 md:flex-none md:text-lg md:leading-snug md:tracking-normal">
@@ -2873,7 +2878,7 @@ function ProductsPageContent({
                           scrollComponentCarouselToIndex(index);
                           setActiveComponentSlide(index);
                         }}
-                        className={`h-1.5 rounded-full transition-all ${activeComponentSlide === index ? "w-6 bg-[#F56605]" : "w-1.5 bg-slate-300"}`}
+                        className={`h-1.5 rounded-full transition-all ${activeComponentSlide === index ? "w-6 bg-[#1458e5]" : "w-1.5 bg-slate-300"}`}
                         aria-label={`Go to ${component.name}`}
                       />
                     ))}
@@ -2898,26 +2903,16 @@ function ProductsPageContent({
                   </MobileIntroText>
 
 	                <div className="mt-6 grid gap-4 lg:grid-cols-[1.4fr_.8fr]">
-	                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+	                  <div className="rounded-2xl border border-[#dbe5f2] bg-[#f7faff] p-5">
 	                    <h3 className="text-[1rem] font-extrabold text-slate-900 md:text-lg">Signal Flow</h3>
 	                    <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
 	                      {ledDisplaySignalFlow.map((step, index) => (
 	                        <div key={step} className="flex items-stretch gap-2 md:gap-3">
-	                          <div
-                              className={`flex min-h-[3.55rem] flex-1 items-center justify-center rounded-xl border px-2.5 py-3 text-center text-[12px] font-bold leading-5 text-slate-800 shadow-sm md:min-h-16 md:rounded-2xl md:px-3 md:py-4 md:text-sm md:leading-6 ${
-                                index % 4 === 0
-                                  ? "border-sky-200/80 bg-[linear-gradient(180deg,#f0f9ff_0%,#ffffff_52%,#e0f2fe_100%)]"
-                                  : index % 4 === 1
-                                    ? "border-violet-200/80 bg-[linear-gradient(180deg,#f5f3ff_0%,#ffffff_52%,#ede9fe_100%)]"
-                                    : index % 4 === 2
-                                      ? "border-emerald-200/80 bg-[linear-gradient(180deg,#ecfdf5_0%,#ffffff_52%,#d1fae5_100%)]"
-                                      : "border-orange-200/80 bg-[linear-gradient(180deg,#fff7ed_0%,#ffffff_52%,#ffedd5_100%)]"
-                              }`}
-                            >
+	                          <div className="flex min-h-[3.55rem] flex-1 items-center justify-center rounded-xl border border-[#cfe0ff] bg-[linear-gradient(180deg,#f4f8ff_0%,#ffffff_52%,#eaf2ff_100%)] px-2.5 py-3 text-center text-[12px] font-bold leading-5 text-slate-800 shadow-sm md:min-h-16 md:rounded-2xl md:px-3 md:py-4 md:text-sm md:leading-6">
 	                            {step}
 	                          </div>
 	                          {index < ledDisplaySignalFlow.length - 1 ? (
-	                            <div className="hidden items-center text-sm font-extrabold text-[#FF6A00] sm:flex">
+	                            <div className="hidden items-center text-sm font-extrabold text-[#1458e5] sm:flex">
 	                              -&gt;
 	                            </div>
 	                          ) : null}
@@ -2926,7 +2921,7 @@ function ProductsPageContent({
 	                    </div>
 	                  </div>
 
-	                  <div className="self-start rounded-2xl border border-slate-200 bg-slate-50 p-4">
+	                  <div className="self-start rounded-2xl border border-[#dbe5f2] bg-[#f7faff] p-4">
 	                    <h3 className="text-[1rem] font-extrabold text-slate-900 md:text-lg">Power Flow</h3>
 	                    <div className="mt-3 grid gap-2">
 	                      {ledDisplayPowerFlow.map((step, index) => (
@@ -2936,12 +2931,12 @@ function ProductsPageContent({
                               index < ledDisplayPowerFlow.length - 1 ? "pb-3.5 md:pb-4" : ""
                             }`}
                           >
-	                          <div className="mx-auto flex min-h-11 w-full max-w-[17.5rem] items-center justify-center rounded-lg border border-cyan-200/75 bg-[linear-gradient(180deg,#ecfeff_0%,#ffffff_54%,#cffafe_100%)] px-2 py-2 text-center text-[11px] font-bold leading-4 text-slate-800 shadow-sm md:mx-0 md:min-h-12 md:max-w-none md:flex-1 md:rounded-2xl md:border-slate-200 md:bg-white md:px-3 md:text-sm md:leading-6">
+	                          <div className="mx-auto flex min-h-11 w-full max-w-[17.5rem] items-center justify-center rounded-lg border border-[#cfe0ff] bg-[linear-gradient(180deg,#f4f8ff_0%,#ffffff_54%,#eaf2ff_100%)] px-2 py-2 text-center text-[11px] font-bold leading-4 text-slate-800 shadow-sm md:mx-0 md:min-h-12 md:max-w-none md:flex-1 md:rounded-2xl md:px-3 md:text-sm md:leading-6">
 	                            {step}
 	                          </div>
                             {index < ledDisplayPowerFlow.length - 1 ? (
 	                            <div
-                                className="absolute bottom-0 left-1/2 flex h-4 w-4 -translate-x-1/2 items-center justify-center text-base font-extrabold leading-none text-[#FF6A00] md:h-5 md:w-5 md:text-lg"
+                                className="absolute bottom-0 left-1/2 flex h-4 w-4 -translate-x-1/2 items-center justify-center text-base font-extrabold leading-none text-[#1458e5] md:h-5 md:w-5 md:text-lg"
                                 aria-hidden="true"
                               >
                                 ↓
@@ -2964,88 +2959,110 @@ function ProductsPageContent({
 	            </div>
 	          </section>
 
-          <section className={ledFeatureSectionClass} aria-labelledby="led-display-technology-types-heading">
-            <LedSectionHeading id="led-display-technology-types-heading" icon="display">Types of LED Display Technology</LedSectionHeading>
-            <MobileIntroText
-              teaser="Choosing the right LED display technology helps improve visual quality, durability, and long-term value."
-              className="mt-3"
-              teaserClassName="w-full"
-              expandedClassName="text-sm leading-7 text-slate-600"
-              desktopClassName="text-sm leading-7 text-slate-600"
-            >
-              <>
-                Choosing the right LED display technology helps improve visual quality, durability, and long-term value.
-                Below is a practical comparison of common technologies used in Bangladesh for indoor, outdoor, rental,
-                and commercial LED screen projects.
-              </>
-            </MobileIntroText>
-
-            <div className="mt-5 grid gap-3 md:mt-6 md:gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <article className="rounded-2xl border border-slate-200 bg-white p-5">
-                <h3 className="text-lg font-semibold text-slate-900">SMD LED</h3>
-                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
-                  SMD (Surface-Mounted Device) is the most common LED display technology where red, green, and blue
-                  LEDs are integrated into a single package. It offers vibrant colors, wide viewing angles, and excellent
-                  image quality for indoor and commercial LED displays.
-                </p>
-                <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                  <li>Good viewing angle and color uniformity for indoor and semi-outdoor usage.</li>
-                  <li>Popular for retail branding, conference rooms, showrooms, and stage backdrops.</li>
-                  <li>Supports a wide range of pixel pitch options for different viewing distances.</li>
-                  <li>Cost-effective and widely available for new installation and maintenance support.</li>
-                </ul>
-              </article>
-
-              <article className="rounded-2xl border border-slate-200 bg-white p-5">
-                <h3 className="text-lg font-semibold text-slate-900">GOB LED</h3>
-                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
-                  GOB (Glue-on-Board) is an LED technology that adds a transparent protective layer over the LED surface.
-                  This improves resistance to dust, moisture, and impact, making it ideal for durable indoor LED display
-                  applications.
-                </p>
-                <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                  <li>Better physical protection compared with standard exposed LED module surfaces.</li>
-                  <li>Useful for schools, shopping malls, transport hubs, and high-traffic indoor zones.</li>
-                  <li>Helps reduce risk of dead pixels caused by accidental touch or minor impact.</li>
-                  <li>A practical option when reliability and panel safety are top priorities.</li>
-                </ul>
-              </article>
-
-              <article className="rounded-2xl border border-slate-200 bg-white p-5">
-                <h3 className="text-lg font-semibold text-slate-900">COB LED</h3>
-                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
-                  COB (Chip-on-Board) mounts LED chips directly onto the circuit board, enabling finer pixel pitch and
-                  better visual performance. It is widely used in premium indoor LED video walls, control rooms, and
-                  corporate display solutions.
-                </p>
-                <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                  <li>Suitable for fine-pitch indoor LED wall requirements and close-distance viewing.</li>
-                  <li>Offers strong black level performance and improved perceived contrast in many setups.</li>
-                  <li>Common in control rooms, corporate lobbies, studios, and command center environments.</li>
-                  <li>Typically considered for premium projects with long-term professional usage goals.</li>
-                </ul>
-              </article>
-
-              <article className="rounded-2xl border border-slate-200 bg-white p-5">
-                <h3 className="text-lg font-semibold text-slate-900">Micro LED</h3>
-                <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">
-                  Micro LED uses ultra-small LED chips to deliver exceptional brightness, contrast, and image clarity. It is
-                  considered one of the most advanced display technologies for high-end indoor visual experiences.
-                </p>
-                <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-slate-700">
-                  <li>Excellent brightness uniformity and contrast for flagship indoor installs.</li>
-                  <li>Very fine pixel pitch options for close-view premium environments.</li>
-                  <li>Energy-efficient with long service life for enterprise-grade deployments.</li>
-                  <li>Used in luxury showrooms, broadcast studios, and high-end control rooms.</li>
-                </ul>
-              </article>
+          <section
+            className="mt-4 rounded-2xl border border-[#d9e4f2] bg-[linear-gradient(135deg,#fbfdff_0%,#f5f8ff_100%)] px-4 py-6 shadow-[0_12px_34px_rgba(15,37,70,0.05)] sm:px-5 md:px-6 md:py-7"
+            aria-labelledby="led-display-technology-types-heading"
+          >
+            <div>
+              <h2 id="led-display-technology-types-heading" className="text-xl font-extrabold tracking-tight text-[#071a42] sm:text-2xl">LED Technology Guide</h2>
+              <p className="mt-1 text-[12px] font-semibold leading-5 text-slate-600 sm:text-sm">Different LED technologies for different needs</p>
             </div>
 
-            <p className="mt-5 hidden text-sm leading-7 text-slate-600 md:block">
-              Final technology selection depends on location, viewing distance, expected brightness, maintenance plan,
-              and budget. For best results, compare SMD, GOB, and COB options based on real project conditions instead
-              of choosing only by headline specification.
-            </p>
+            <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                {
+                  title: "SMD",
+                  subtitle: "Standard LED",
+                  image: "/images/indoor/P2.5-Indoor-LED-Display.webp",
+                  alt: "SMD indoor LED display technology",
+                  icon: "module",
+                  benefits: ["Cost-effective solution", "Wide viewing angle", "Indoor & outdoor use"],
+                  href: "/contact/?project=led-display&technology=smd",
+                },
+                {
+                  title: "GOB",
+                  subtitle: "Glue on Board",
+                  image: "/images/outdoor/P5-Outdoor-LED-Display.webp",
+                  alt: "GOB protected LED display technology",
+                  icon: "shield",
+                  benefits: ["Better surface protection", "Water & dust resistant", "High durability"],
+                  href: "/contact/?project=led-display&technology=gob",
+                },
+                {
+                  title: "COB",
+                  subtitle: "Chip on Board",
+                  image: "/images/indoor/P1.53-Indoor-LED-Display.webp",
+                  alt: "COB fine-pitch LED display technology",
+                  icon: "chip",
+                  benefits: ["Superior visual performance", "Better heat dissipation", "Ultra-fine pixel pitch"],
+                  href: "/contact/?project=led-display&technology=cob",
+                },
+                {
+                  title: "Micro LED",
+                  subtitle: "Next Generation",
+                  image: "/images/led hero/indoor-led-hero.webp",
+                  alt: "Micro LED next-generation display technology",
+                  icon: "module",
+                  benefits: ["Ultra-high brightness", "Outstanding contrast", "Premium display solution"],
+                  href: "/contact/?project=led-display&technology=micro-led",
+                },
+              ].map((technology) => (
+                <article
+                  key={technology.title}
+                  className="group flex min-w-0 flex-col overflow-hidden rounded-xl border bg-white shadow-[0_8px_22px_rgba(15,37,70,0.065)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(15,37,70,0.11)]"
+                  style={{ borderColor: "#dbe4f0" }}
+                >
+                  <div className="relative overflow-hidden bg-[#eaf0f8]" style={{ height: "142px" }}>
+                    <Image
+                      src={technology.image}
+                      alt={technology.alt}
+                      fill
+                      loading="eager"
+                      unoptimized
+                      sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 25vw"
+                      className="object-cover transition duration-500 group-hover:scale-[1.035]"
+                    />
+                  </div>
+                  <div className="relative flex flex-1 flex-col px-4 pb-4 pt-5">
+                    <div className="flex items-start gap-3">
+                      <span className="-mt-10 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-[4px] border-white bg-[#edf4ff] text-[#1458e5] shadow-md">
+                        <UiIcon name={technology.icon} className="h-5 w-5" />
+                      </span>
+                      <div className="min-h-10 min-w-0 flex-1">
+                        <div className="text-[18px] font-extrabold leading-5 text-[#071a42]">{technology.title}</div>
+                        <div className="mt-1 text-[11px] font-bold leading-4 text-slate-700">{technology.subtitle}</div>
+                      </div>
+                    </div>
+                    <ul className="mt-3 space-y-2 text-[11px] leading-4 text-slate-700 sm:text-xs">
+                      {technology.benefits.map((benefit) => (
+                        <li key={benefit} className="flex items-start gap-2">
+                          <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rotate-45 bg-[#1458e5]" aria-hidden="true" />
+                          <span>{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <Link
+                      prefetch={false}
+                      href={technology.href}
+                      className="mt-4 inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg border border-[#2d6af1] bg-white px-3 text-[12px] font-extrabold text-[#1458e5] transition hover:bg-[#1458e5] hover:text-white"
+                    >
+                      Learn More <span className="text-base leading-none" aria-hidden="true">→</span>
+                    </Link>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="mt-5 flex justify-center">
+              <Link
+                prefetch={false}
+                href="/contact/?project=led-display&request=technology-comparison"
+                className="inline-flex min-h-11 w-full max-w-[300px] items-center justify-center gap-3 rounded-lg border border-[#2d6af1] bg-white px-5 text-[12px] font-extrabold text-[#1458e5] shadow-sm transition hover:bg-[#1458e5] hover:text-white"
+                style={{ maxWidth: "300px" }}
+              >
+                Compare All Technologies <span className="text-lg leading-none" aria-hidden="true">→</span>
+              </Link>
+            </div>
           </section>
 
           <section className={ledInformationSectionClass} aria-labelledby="led-projector-video-wall-comparison-heading">
@@ -3067,13 +3084,13 @@ function ProductsPageContent({
             </MobileIntroText>
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               {ledCompare.map((item) => (
-                <div key={item.t} className="rounded-2xl border border-slate-200 bg-white p-4 md:p-5">
+                <div key={item.t} className="rounded-2xl border border-[#dbe5f2] bg-white p-4 shadow-[0_5px_18px_rgba(15,37,70,0.04)] transition hover:border-[#b9d1fb] hover:shadow-md md:p-5">
                   <h3 className="text-[1rem] font-semibold leading-[1.3] text-slate-900 md:text-lg">{item.t}</h3>
                   <p className="mt-2 hidden text-sm leading-7 text-slate-600 md:block">{item.d}</p>
                   <ul className="mt-4 space-y-2 text-[13px] text-slate-700 md:text-sm">
                     {item.points.map((point) => (
                       <li key={point} className="flex items-start gap-2">
-                        <span className="mt-2 inline-block h-2 w-2 rounded-full bg-slate-900" />
+                        <span className="mt-2 inline-block h-2 w-2 rounded-full bg-[#1458e5]" />
                         <span className="text-justify leading-6 md:text-left md:leading-7">{point}</span>
                       </li>
                     ))}
@@ -3105,12 +3122,12 @@ function ProductsPageContent({
                 <div
                   key={item.t}
                   className="rounded-[20px] border bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-3xl md:p-5"
-                  style={{ borderColor: "rgba(255,106,0,0.16)" }}
+                  style={{ borderColor: "rgba(20,88,229,0.18)" }}
                 >
                   <div className="flex items-center gap-2">
                     <span
                       className="inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold text-white"
-                      style={{ backgroundColor: "#FF6A00" }}
+                      style={{ backgroundColor: "#1458e5" }}
                     >
                       {idx + 1}
                     </span>
@@ -3120,7 +3137,7 @@ function ProductsPageContent({
                   <ul className="mt-3 space-y-2">
                     {item.points.map((point) => (
                       <li key={point} className="flex items-start gap-2 text-[13px] text-slate-700 md:text-sm">
-                        <span className="mt-2 inline-block h-1.5 w-1.5 rounded-full bg-[#FF6A00]" />
+                        <span className="mt-2 inline-block h-1.5 w-1.5 rounded-full bg-[#1458e5]" />
                         <span className="text-justify leading-6 md:text-left">{point}</span>
                       </li>
                     ))}
@@ -3153,7 +3170,7 @@ function ProductsPageContent({
               </>
             </MobileIntroText>
 
-            <div className="mt-6 rounded-3xl border bg-white p-4 md:p-5" style={{ borderColor: "rgba(255,106,0,0.12)" }}>
+            <div className="mt-6 rounded-3xl border bg-white p-4 md:p-5" style={{ borderColor: "rgba(20,88,229,0.14)" }}>
               <div className="relative overflow-hidden">
                 <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-14" style={{ background: "linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
                 <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-14" style={{ background: "linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
@@ -3172,7 +3189,7 @@ function ProductsPageContent({
                           <div
                             key={`${b.name}-${isClone ? "visual-clone" : "canonical"}`}
                             className="flex h-16 w-40 shrink-0 items-center justify-center rounded-[20px] border bg-white px-4 shadow-sm"
-                            style={{ borderColor: "rgba(255,106,0,0.12)" }}
+                            style={{ borderColor: "rgba(20,88,229,0.14)" }}
                             title={isClone ? undefined : b.name}
                             aria-label={isClone ? undefined : b.name}
                           >
@@ -3219,10 +3236,10 @@ function ProductsPageContent({
                 ].map((t) => (
                   <span
                     key={t}
-                    className="shrink-0 rounded-full border px-3.5 py-2 text-[11px] font-semibold text-[#9A3412] shadow-sm md:text-xs"
+                    className="shrink-0 rounded-full border px-3.5 py-2 text-[11px] font-semibold text-[#174ea6] shadow-sm md:text-xs"
                     style={{
-                      borderColor: "rgba(255,106,0,0.14)",
-                      background: "linear-gradient(180deg, rgba(255,247,237,1) 0%, rgba(255,237,213,0.92) 100%)",
+                      borderColor: "rgba(20,88,229,0.16)",
+                      background: "linear-gradient(180deg, rgba(244,248,255,1) 0%, rgba(234,242,255,0.94) 100%)",
                     }}
                   >
                     {t}
@@ -3233,7 +3250,7 @@ function ProductsPageContent({
           </section>
 
           <section className={ledInformationSectionClass} aria-labelledby="valuable-led-clients-heading">
-            <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-orange-600">
+            <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#1458e5]">
               Reliability, Compliance, Long-Term Support
             </div>
 
@@ -3259,14 +3276,14 @@ function ProductsPageContent({
                 <div
                   key={x}
                   className="rounded-2xl border bg-slate-50 p-4 text-sm font-semibold text-slate-800"
-                  style={{ borderColor: "rgba(255,106,0,0.07)" }}
+                  style={{ borderColor: "rgba(20,88,229,0.10)" }}
                 >
                   {x}
                 </div>
               ))}
             </div>
 
-            <div className="mt-6 rounded-3xl border bg-white p-4 md:p-5" style={{ borderColor: "rgba(255,106,0,0.12)" }}>
+            <div className="mt-6 rounded-3xl border bg-white p-4 md:p-5" style={{ borderColor: "rgba(20,88,229,0.14)" }}>
               <div className="relative overflow-hidden">
                 <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-10 md:w-14" style={{ background: "linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
                 <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-10 md:w-14" style={{ background: "linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
@@ -3285,7 +3302,7 @@ function ProductsPageContent({
                           <div
                             key={`${ins.name}-${isClone ? "visual-clone" : "canonical"}`}
                             className="flex h-[112px] w-[136px] shrink-0 flex-col items-center justify-center rounded-[20px] border bg-slate-50 px-3 py-3 text-center shadow-sm md:h-[124px] md:w-[168px] md:px-4"
-                            style={{ borderColor: "rgba(255,106,0,0.10)" }}
+                            style={{ borderColor: "rgba(20,88,229,0.12)" }}
                             title={isClone ? undefined : ins.name}
                             aria-label={isClone ? undefined : ins.name}
                           >
@@ -3311,7 +3328,7 @@ function ProductsPageContent({
           <section id="led-faq" className={`${ledInformationSectionClass} scroll-mt-24`} aria-labelledby="led-display-faq-heading">
             <LedSectionHeading id="led-display-faq-heading" icon="faq">Frequently Asked Questions About LED Display</LedSectionHeading>
             <div className="mt-5">
-              <FaqAccordion accent={BRAND.maroon} density="compact" items={ledFaqs} columns={2} />
+              <FaqAccordion accent="#1458e5" density="compact" items={ledFaqs} columns={2} />
             </div>
 
           </section>

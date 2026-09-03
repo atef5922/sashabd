@@ -231,6 +231,20 @@ main :where(p, li, dd, blockquote).text-right {
   text-justify: inter-word;
 }
 
+.led-display-page .led-component-icon {
+  border-color: #cfe0ff;
+  background-color: #edf4ff;
+  color: #1458e5;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .led-display-page .led-component-card:hover .led-component-icon {
+    border-color: #1458e5 !important;
+    background-color: #1458e5 !important;
+    color: #ffffff !important;
+  }
+}
+
 h1,
 h2,
 h3,
