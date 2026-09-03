@@ -153,7 +153,7 @@ function LedExplorerProductCard({ product, priority = false }: { product: Unifie
         prefetch={false}
         href={product.href}
         aria-label={`View ${product.title}`}
-        className={`relative block h-[210px] shrink-0 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-500 sm:h-[220px] ${isLedDisplay ? "bg-slate-100" : "bg-white"}`}
+        className={`relative block h-[190px] shrink-0 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-500 sm:h-[205px] ${isLedDisplay ? "bg-slate-100" : "bg-white"}`}
       >
         <span className="absolute left-3 top-3 z-10 inline-flex rounded-[5px] px-2 py-1 text-[10px] font-extrabold uppercase leading-none tracking-[0.025em] text-white shadow-sm" style={{ backgroundColor: "#f4510b" }}>
           {product.badge}
@@ -173,11 +173,11 @@ function LedExplorerProductCard({ product, priority = false }: { product: Unifie
         />
       </Link>
 
-      <div className="flex flex-1 flex-col px-3.5 pb-3.5 pt-2.5">
-        <p className="text-left text-[10px] font-extrabold uppercase leading-4 tracking-[0.08em] text-slate-500">
+      <div className="flex flex-1 flex-col px-3.5 pb-3.5 pt-3">
+        <p className="text-left text-[11px] font-extrabold uppercase leading-4 tracking-[0.055em] text-slate-500">
           {product.badge}
         </p>
-        <h3 className="mt-1 line-clamp-2 min-h-10 text-base font-extrabold leading-5 text-[#071936]">
+        <h3 className="mt-1 line-clamp-2 min-h-10 text-left text-[15px] font-extrabold leading-5 text-[#071936]">
           <Link
             prefetch={false}
             href={product.href}
@@ -187,7 +187,7 @@ function LedExplorerProductCard({ product, priority = false }: { product: Unifie
           </Link>
         </h3>
 
-        <ul className="mt-3 min-h-[4.25rem] space-y-1.5" aria-label={`Key features of ${product.title}`}>
+        <ul className="mt-3 min-h-[4rem] space-y-1.5" aria-label={`Key features of ${product.title}`}>
           {features.map((feature) => (
             <li key={feature} className="flex min-w-0 items-center gap-2 !text-left text-[12px] font-medium leading-4 text-slate-700">
               <svg viewBox="0 0 16 16" aria-hidden="true" className="h-4 w-4 shrink-0 fill-none text-slate-700">
@@ -435,14 +435,20 @@ function LedSectionHeading({
 }) {
   return (
     <h2 id={id} className={`${ledSectionTitleClass} flex items-center gap-2.5`}>
-      <span
-        aria-hidden="true"
-        className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#cfe0ff] bg-gradient-to-br from-[#eaf2ff] to-white text-[#1458e5] shadow-sm"
-      >
-        <UiIcon name={icon} className="h-5 w-5" />
-      </span>
+      <LedPremiumTitleIcon icon={icon} />
       <span className="min-w-0 text-balance">{children}</span>
     </h2>
+  );
+}
+
+function LedPremiumTitleIcon({ icon }: { icon: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#cfe0ff] bg-gradient-to-br from-[#eaf2ff] to-white text-[#1458e5] shadow-sm"
+    >
+      <UiIcon name={icon} className="h-5 w-5" />
+    </span>
   );
 }
 
@@ -730,10 +736,6 @@ function ProductsPageContent({
       })
       .filter((g) => g.items.length > 0);
   }, [allProducts]);
-  const ledFullListLinks = useMemo(
-    () => fullListGroups.flatMap((group) => group.items.map((item) => ({ ...item, groupLabel: group.label }))),
-    [fullListGroups]
-  );
   const waPhone = siteConfig.whatsapp.replace(/\D/g, "");
   const wa = `https://api.whatsapp.com/send/?phone=${waPhone}&text&type=phone_number&app_absent=0`;
   const [filter, setFilter] = useState<FilterKey>("all");
@@ -1563,12 +1565,12 @@ function ProductsPageContent({
 
   return (
       <div
-      className={`mx-auto w-full max-w-7xl ${
-        ledOnly
-          ? "led-display-page mb-6"
-          : "space-y-12"
-      } px-[10px] md:px-6`}
-    >
+        className={
+          ledOnly
+            ? "led-display-page mx-auto mb-6 w-full max-w-[clamp(80rem,90vw,108rem)] px-4 md:px-6"
+            : "mx-auto w-full max-w-7xl space-y-12 px-[10px] md:px-6"
+        }
+      >
       {/* HEADER */}
       <section
         className={ledOnly ? "py-0" : "rounded-3xl border p-8 shadow-sm"}
@@ -1665,7 +1667,13 @@ function ProductsPageContent({
 
       {/* PRODUCTS GRID */}
       <div id="led-products" ref={gridTopRef} className="scroll-mt-24" />
-      <section className="mt-3 space-y-3 bg-transparent p-0 shadow-none">
+      <section
+        className={
+          ledOnly
+            ? "mt-4 w-full px-4 py-5 sm:px-5 md:px-6"
+            : "mt-3 space-y-3 bg-transparent p-0 shadow-none"
+        }
+      >
         {ledOnly ? (
           <div data-led-product-explorer>
             <div className="mb-4 grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 sm:grid-cols-[minmax(0,1fr)_auto] lg:hidden">
@@ -1697,14 +1705,14 @@ function ProductsPageContent({
               </button>
             </div>
 
-            <div className="grid gap-4 lg:grid-cols-[16rem_minmax(0,1fr)]">
+            <div className="grid gap-4 lg:grid-cols-[15.5rem_minmax(0,1fr)]">
               <aside
                 id="led-product-filters"
                 aria-label="LED display product filters"
                 className={`${mobileFiltersOpen ? "flex" : "hidden"} flex-col self-start overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_3px_16px_rgba(15,23,42,0.045)] lg:sticky lg:top-20 lg:flex lg:max-h-[calc(100dvh-6rem)]`}
               >
-                <div className="flex shrink-0 items-center justify-between gap-3 px-3 pb-2 pt-3">
-                  <div className="text-base font-extrabold leading-5 tracking-tight text-[#071936]">Filter Products</div>
+                <div className="flex shrink-0 items-center justify-between gap-3 px-4 pb-2 pt-4">
+                  <div className="text-lg font-extrabold leading-5 tracking-tight text-[#071936]">Filter Products</div>
                   <div className="flex items-center gap-2">
                     {ledActiveFilterCount || query ? (
                       <button type="button" onClick={clearLedFilters} className="cursor-pointer text-[11px] font-bold text-orange-700 hover:underline">Clear All</button>
@@ -1713,10 +1721,10 @@ function ProductsPageContent({
                   </div>
                 </div>
 
-                <div className="hidden shrink-0 px-3 pb-2 lg:block">
+                <div className="hidden shrink-0 px-4 pb-2 lg:block">
                   <label className="relative block min-w-0">
                     <span className="sr-only">Search LED display products</span>
-                    <svg viewBox="0 0 24 24" aria-hidden="true" className="absolute left-2.5 top-2.5 h-4 w-4 fill-none text-slate-400">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" className="absolute left-3 top-3.5 h-4 w-4 fill-none text-slate-400">
                       <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
                       <path d="m16 16 4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                     </svg>
@@ -1725,15 +1733,15 @@ function ProductsPageContent({
                       value={query}
                       onChange={(event) => { setQuery(event.target.value); resetResultsToFirstPage(); }}
                       placeholder="Search products..."
-                      className="h-9 w-full rounded-lg border border-slate-300 bg-white pl-8 pr-8 text-xs text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/15"
+                      className="h-11 w-full rounded-lg border border-slate-300 bg-white pl-9 pr-8 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-orange-400 focus:ring-2 focus:ring-orange-500/15"
                     />
                     {query ? (
-                      <button type="button" aria-label="Clear product search" onClick={() => { setQuery(""); resetResultsToFirstPage(); }} className="absolute right-1 top-1 inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md text-base text-slate-500 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">×</button>
+                      <button type="button" aria-label="Clear product search" onClick={() => { setQuery(""); resetResultsToFirstPage(); }} className="absolute right-2 top-2 inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md text-base text-slate-500 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40">×</button>
                     ) : null}
                   </label>
                 </div>
 
-                <div className="min-h-0 px-3 pb-2 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:[scrollbar-gutter:stable]">
+                <div className="min-h-0 px-4 pb-3 lg:flex-1 lg:overflow-y-auto lg:overscroll-contain lg:[scrollbar-gutter:stable]">
                   <div className="border-b border-slate-200/80">
                     <button
                       type="button"
@@ -1890,8 +1898,8 @@ function ProductsPageContent({
                 </div>
               </aside>
 
-              <div data-led-product-listing className="min-w-0 rounded-xl border border-slate-200 bg-white p-3 shadow-[0_3px_16px_rgba(15,23,42,0.045)] sm:p-4">
-                <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+              <div data-led-product-listing className="min-w-0 rounded-xl border border-slate-200 bg-white p-4 shadow-[0_2px_12px_rgba(15,23,42,0.04)] sm:p-5">
+                <div className="flex flex-col gap-3 border-b border-slate-100 pb-4 xl:flex-row xl:items-end xl:justify-between">
                   <div className="min-w-0">
                     <h2 className="!text-xl font-extrabold leading-7 tracking-tight text-[#071936] lg:!text-[22px]">Featured LED Display Products</h2>
                     <div className="mt-1 flex flex-wrap items-center gap-3">
@@ -1943,7 +1951,7 @@ function ProductsPageContent({
                 ) : null}
 
                 {desktopPagedProducts.length ? (
-                  <div className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                  <div className="mt-4 grid grid-cols-1 items-stretch gap-3 sm:grid-cols-2 xl:grid-cols-3">
                     {desktopPagedProducts.map((product, index) => <LedExplorerProductCard key={product.id} product={product} priority={index === 0} />)}
                   </div>
                 ) : (
@@ -1987,55 +1995,65 @@ function ProductsPageContent({
       </section>
 
       {ledOnly ? (
-        <section className="mt-4 bg-transparent p-0 shadow-none" aria-labelledby="led-full-product-list-heading">
-          <details className="group overflow-hidden rounded-2xl border border-[#dbe5f2] bg-white shadow-[0_5px_20px_rgba(15,23,42,0.04)]">
-            <summary className="flex cursor-pointer list-none items-start justify-between gap-3 px-4 py-4 md:px-5 md:py-4 [&::-webkit-details-marker]:hidden">
-              <div className="flex min-w-0 items-start gap-3">
-                <span
-                  className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-orange-200 bg-gradient-to-br from-orange-50 to-white text-orange-600 shadow-sm"
-                  aria-hidden="true"
-                >
-                  <UiIcon name="display" className="h-5 w-5" />
+        <section className={ledInformationSectionClass} aria-labelledby="led-full-product-list-heading">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div className="min-w-0">
+              <LedSectionHeading id="led-full-product-list-heading" icon="display">
+                Browse All LED Display Products
+              </LedSectionHeading>
+              <p className="mt-2 max-w-3xl text-left text-sm leading-6 text-slate-600">
+                Explore the complete LED display directory by category and open any model page directly.
+              </p>
+            </div>
+            <span className="inline-flex w-fit shrink-0 items-center rounded-full border border-[#cfe0ff] bg-[#edf4ff] px-3 py-1.5 text-xs font-extrabold text-[#1458e5]">
+              {ledCatalogProducts.length} products
+            </span>
+          </div>
+
+          <details className="group mt-4 overflow-hidden rounded-xl border border-[#dbe5f2] bg-[#f8fbff]">
+            <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 transition hover:bg-[#f1f6fd] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#1458e5]/40 sm:px-5 [&::-webkit-details-marker]:hidden">
+              <span className="flex min-w-0 items-center gap-3">
+                <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#1458e5] text-white shadow-[0_5px_14px_rgba(20,88,229,0.22)]" aria-hidden="true">
+                  <UiIcon name="guide" className="h-[18px] w-[18px]" />
                 </span>
-                <div className="min-w-0">
-                  <div id="led-full-product-list-heading" className={`${ledSectionTitleClass}`}>
-                    Browse all products (full list)
-                  </div>
-                  <p className="mt-1 hidden text-sm leading-6 text-slate-600 md:block">
-                    Open the complete LED product directory to compare models and visit any product page directly.
-                  </p>
-                </div>
-              </div>
-              <span
-                className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 transition group-open:rotate-180"
-                aria-hidden="true"
-              >
+                <span className="min-w-0">
+                  <span className="block text-sm font-extrabold text-[#071936]">View complete product directory</span>
+                  <span className="mt-0.5 hidden text-xs leading-5 text-slate-600 sm:block">{fullListGroups.length} categories with direct links to every LED product</span>
+                </span>
+              </span>
+              <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#cfe0ff] bg-white text-[#1458e5] shadow-sm transition-transform duration-200 group-open:rotate-180" aria-hidden="true">
                 <svg viewBox="0 0 24 24" className="h-5 w-5 fill-none">
                   <path d="m6 9 6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </span>
             </summary>
 
-            <div className="border-t border-slate-200 px-4 py-4 md:px-5 md:py-5">
-              <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-slate-500">
-                LED Product Directory
-              </p>
-              <nav aria-label="Full LED display product list" className="mt-4">
-                <div className="grid gap-x-8 gap-y-2 md:grid-cols-2 xl:grid-cols-4">
-                  {ledFullListLinks.map((item) => (
-                    <Link
-                      key={item.href}
-                      prefetch={false}
-                      href={item.href}
-                      className="inline-flex min-w-0 items-start text-[14px] leading-7 text-slate-700 transition hover:text-[#F56605]"
-                      title={`${item.title} - ${item.groupLabel}`}
-                    >
-                      <span className="truncate">{item.title}</span>
-                    </Link>
-                  ))}
-                </div>
-              </nav>
-            </div>
+            <nav aria-label="Full LED display product list" className="border-t border-[#dbe5f2] bg-white p-3 sm:p-4 md:p-5">
+              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                {fullListGroups.map((group) => (
+                  <div key={group.kind} className="min-w-0 rounded-xl border border-[#dce7f6] bg-[linear-gradient(145deg,#ffffff_0%,#f7faff_100%)] p-3.5 shadow-[0_3px_12px_rgba(15,23,42,0.035)]">
+                    <div className="flex items-center justify-between gap-3 border-b border-[#e5edf8] pb-2.5">
+                      <h3 className="!text-[15px] font-extrabold leading-5 text-[#071936]">{group.label}</h3>
+                      <span className="inline-flex min-w-6 items-center justify-center rounded-full bg-[#eaf2ff] px-2 py-1 text-[10px] font-extrabold tabular-nums text-[#1458e5]">{group.items.length}</span>
+                    </div>
+                    <ul className="mt-2 grid gap-0.5">
+                      {group.items.map((item) => (
+                        <li key={item.href} className="min-w-0">
+                          <Link
+                            prefetch={false}
+                            href={item.href}
+                            className="group/link flex min-h-8 min-w-0 items-center justify-between gap-2 rounded-lg px-2 text-[12px] font-semibold leading-5 text-slate-700 transition hover:bg-[#edf4ff] hover:text-[#1458e5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1458e5]/35"
+                          >
+                            <span className="min-w-0 truncate">{item.title}</span>
+                            <span className="shrink-0 text-[#1458e5] opacity-0 transition group-hover/link:translate-x-0.5 group-hover/link:opacity-100" aria-hidden="true">→</span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </nav>
           </details>
         </section>
       ) : null}
@@ -2056,7 +2074,10 @@ function ProductsPageContent({
               aria-labelledby="led-price-list-heading"
             >
               <div className="mx-auto max-w-5xl text-center">
-                <span className="inline-flex rounded-full bg-[#eaf2ff] px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.1em] text-blue-700">
+                <span className="inline-flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.1em] text-blue-700">
+                  <span aria-hidden="true" className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/90 text-[#1458e5] shadow-sm ring-1 ring-[#cfe0ff]">
+                    <UiIcon name="cost" className="h-3.5 w-3.5" />
+                  </span>
                   Pricing Guide
                 </span>
                 <h2 id="led-price-list-heading" className="mt-3 text-balance !text-[27px] font-black leading-[1.1] tracking-[-0.025em] text-[#071936] md:!text-[36px]">
@@ -2211,7 +2232,13 @@ function ProductsPageContent({
             <span className="pointer-events-none absolute right-6 top-5 h-14 w-24 opacity-55 [background-image:radial-gradient(#bfdbfe_1.5px,transparent_1.5px)] [background-size:10px_10px]" aria-hidden="true" />
 
             <div className="relative mx-auto max-w-5xl text-center">
-              <h2 id="led-display-buying-guide-heading" className="text-balance !text-[26px] font-black leading-[1.12] tracking-[-0.025em] text-[#071936] md:!text-[34px]">
+              <span className="inline-flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.1em] text-blue-700">
+                <span aria-hidden="true" className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/90 text-[#1458e5] shadow-sm ring-1 ring-[#cfe0ff]">
+                  <UiIcon name="guide" className="h-3.5 w-3.5" />
+                </span>
+                LED Buying Guide
+              </span>
+              <h2 id="led-display-buying-guide-heading" className="mt-3 text-balance !text-[26px] font-black leading-[1.12] tracking-[-0.025em] text-[#071936] md:!text-[34px]">
                 How to Choose the Right LED Display Screen in Bangladesh
               </h2>
               <p className="mx-auto mt-2 max-w-4xl text-center text-[13px] leading-6 text-slate-600 md:text-[15px]">
@@ -2618,7 +2645,10 @@ function ProductsPageContent({
           >
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h2 id="recent-led-projects-heading" className="text-xl font-extrabold tracking-tight text-[#071a42] sm:text-2xl">Our Recent LED Display Projects</h2>
+                  <h2 id="recent-led-projects-heading" className="flex items-center gap-2.5 text-xl font-extrabold tracking-tight text-[#071a42] sm:text-2xl">
+                    <LedPremiumTitleIcon icon="display" />
+                    <span className="min-w-0 text-balance">Our Recent LED Display Projects</span>
+                  </h2>
                   <p className="mt-1 text-[11px] leading-5 text-slate-600 sm:text-xs">Delivering high-performance LED screens across Bangladesh.</p>
                 </div>
                 <Link prefetch={false} href="/projects/" className="inline-flex min-h-8 w-fit items-center justify-center gap-2 rounded-md border border-[#2d6af1] bg-white px-3.5 text-[10px] font-extrabold text-[#1458e5] transition hover:bg-[#1458e5] hover:text-white">
@@ -2763,7 +2793,10 @@ function ProductsPageContent({
           >
               <div>
                 <div className="text-[9px] font-extrabold uppercase tracking-[0.12em] text-[#1458e5]">Our Process</div>
-                <h2 id="led-how-we-work-heading" className="mt-1 text-xl font-extrabold tracking-tight text-[#071a42] sm:text-2xl">Our LED Display Project Process</h2>
+                <h2 id="led-how-we-work-heading" className="mt-1 flex items-center gap-2.5 text-xl font-extrabold tracking-tight text-[#071a42] sm:text-2xl">
+                  <LedPremiumTitleIcon icon="process" />
+                  <span className="min-w-0 text-balance">Our LED Display Project Process</span>
+                </h2>
                 <p className="mt-1 text-[11px] leading-5 text-slate-600 sm:text-xs">A clear, structured workflow from consultation to project handover.</p>
               </div>
 
@@ -3001,7 +3034,10 @@ function ProductsPageContent({
             aria-labelledby="led-display-technology-types-heading"
           >
             <div>
-              <h2 id="led-display-technology-types-heading" className="text-xl font-extrabold tracking-tight text-[#071a42] sm:text-2xl">LED Technology Guide</h2>
+              <h2 id="led-display-technology-types-heading" className="flex items-center gap-2.5 text-xl font-extrabold tracking-tight text-[#071a42] sm:text-2xl">
+                <LedPremiumTitleIcon icon="chip" />
+                <span className="min-w-0 text-balance">LED Technology Guide</span>
+              </h2>
               <p className="mt-1 text-[12px] font-semibold leading-5 text-slate-600 sm:text-sm">Different LED technologies for different needs</p>
             </div>
 

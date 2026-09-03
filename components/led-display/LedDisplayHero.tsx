@@ -129,7 +129,7 @@ export default function LedDisplayHero({ currentYear }: { currentYear: number })
 
   return (
     <section
-      className="relative left-1/2 right-1/2 isolate -mx-[50vw] -mt-2 min-h-[500px] w-screen overflow-hidden bg-[#f7f9fc] sm:min-h-[438px] lg:min-h-[clamp(18.5rem,25vw,21.5rem)]"
+      className="led-display-hero-shell group/ledhero relative left-1/2 right-1/2 isolate -mx-[50vw] -mt-2 min-h-[430px] w-screen overflow-hidden bg-[#f7f9fc] sm:min-h-[420px] lg:min-h-[clamp(20rem,25vw,23rem)]"
       aria-labelledby="led-display-hero-heading"
       aria-roledescription="carousel"
       aria-label="LED display solutions"
@@ -147,45 +147,38 @@ export default function LedDisplayHero({ currentYear }: { currentYear: number })
             alt={index === activeIndex ? slide.alt : ""}
             fill
             priority={index === 0}
+            quality={95}
             sizes="100vw"
-            className="object-cover object-[69%_center] sm:object-[62%_center] lg:object-center"
+            className="object-cover object-[70%_center] md:object-center"
           />
         </div>
       ))}
 
       <div
-        className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/45 sm:via-white/85 sm:to-white/5 lg:hidden"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute inset-0 hidden bg-gradient-to-r from-white/70 via-white/35 to-transparent lg:block"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute bottom-0 left-0 hidden h-[4.75rem] w-[64%] bg-gradient-to-r from-white via-white/90 to-transparent lg:block"
+        className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/20 md:hidden"
         aria-hidden="true"
       />
 
-      <div className="relative mx-auto flex min-h-[500px] w-full max-w-[clamp(80rem,90vw,108rem)] flex-col px-5 py-6 sm:min-h-[438px] sm:px-8 sm:py-7 lg:min-h-[clamp(18.5rem,25vw,21.5rem)] lg:px-10 lg:py-[clamp(1.5rem,2vw,2rem)]">
-        <div className="max-w-[35rem] sm:translate-y-2 lg:max-w-[38%] lg:translate-y-3">
+      <div className="led-display-hero-frame relative mx-auto flex min-h-[430px] w-full max-w-[clamp(80rem,90vw,108rem)] flex-col px-5 py-7 sm:min-h-[420px] sm:px-8 lg:min-h-[clamp(20rem,25vw,23rem)] lg:px-10 lg:py-[clamp(1.5rem,2vw,2rem)]">
+        <div className="led-display-hero-content max-w-[19rem] text-left sm:max-w-[34rem] lg:max-w-[39%] lg:translate-y-1">
           <p className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-[#ef4a00] sm:text-[11px]">
             Commercial LED Display Solutions
           </p>
           <h1
             id="led-display-hero-heading"
-            className="mt-2 text-[1.75rem] font-black leading-[1.08] tracking-[-0.03em] text-[#071936] sm:text-[2rem] lg:text-[2.125rem] xl:text-4xl"
+            className="led-display-hero-title mt-2 text-[1.75rem] font-black leading-[1.08] tracking-[-0.03em] text-[#071936] sm:text-[2rem] lg:text-[2.125rem] xl:text-4xl"
           >
             LED Display Price
             <span className="block">in Bangladesh {currentYear}</span>
           </h1>
-          <p className="mt-3 max-w-[39rem] text-[13px] font-medium leading-5 text-slate-700 sm:text-sm sm:leading-6 lg:text-[clamp(0.78rem,0.9vw,0.95rem)]">
+          <p className="led-display-hero-description mt-3 max-w-[38rem] text-[13px] font-medium leading-5 text-slate-700 sm:text-sm sm:leading-6 lg:text-[clamp(0.78rem,0.9vw,0.95rem)]">
             Compare indoor, outdoor and rental LED displays with expert guidance on pixel pitch, controllers, installation and project-based pricing.
           </p>
 
-          <div className="mt-4 flex flex-col gap-2.5 min-[430px]:flex-row sm:mt-5">
+          <div className="led-display-hero-actions mt-4 flex flex-col gap-2.5 min-[430px]:flex-row sm:mt-5 lg:grid lg:max-w-[23rem] lg:grid-cols-2 xl:flex xl:max-w-none">
             <Link
               href="/contact/?project=led-display"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-[#ef4a00] to-[#ff6a00] px-5 text-[13px] font-extrabold text-white shadow-[0_8px_22px_rgba(255,94,0,0.22)] transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
+              className="inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-gradient-to-r from-[#ef4a00] to-[#ff6a00] px-5 text-[12px] font-extrabold text-white shadow-[0_8px_22px_rgba(255,94,0,0.22)] transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 sm:text-[13px] lg:px-2.5 lg:text-[10px] xl:px-5 xl:text-[13px]"
             >
               <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M6 3h9l4 4v14H6z" />
@@ -195,7 +188,7 @@ export default function LedDisplayHero({ currentYear }: { currentYear: number })
             </Link>
             <a
               href="#led-products"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[#071936] px-5 text-[13px] font-extrabold text-white shadow-[0_8px_22px_rgba(7,25,54,0.18)] transition hover:-translate-y-0.5 hover:bg-[#102b52] hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2"
+              className="inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-[#071936] px-5 text-[12px] font-extrabold text-white shadow-[0_8px_22px_rgba(7,25,54,0.18)] transition hover:-translate-y-0.5 hover:bg-[#102b52] hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 sm:text-[13px] lg:px-2.5 lg:text-[10px] xl:px-5 xl:text-[13px]"
             >
               <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <rect x="4" y="4" width="6" height="6" rx="1" />
@@ -208,20 +201,20 @@ export default function LedDisplayHero({ currentYear }: { currentYear: number })
           </div>
         </div>
 
-        <ul className="mt-auto grid max-w-[42rem] grid-cols-2 gap-x-4 gap-y-3 pb-7 pt-5 sm:grid-cols-4 sm:gap-x-6 sm:pb-6 lg:w-[56%] lg:max-w-none lg:gap-x-7 lg:pb-0 lg:pt-3">
+        <ul className="led-display-hero-features mt-auto grid max-w-[39rem] grid-cols-2 gap-x-3 gap-y-2.5 pb-9 pt-5 sm:grid-cols-2 sm:gap-x-5 sm:pb-10 lg:w-[56%] lg:max-w-none lg:grid-cols-4 lg:gap-x-7 lg:pb-0 lg:pt-3">
           {heroFeatures.map((feature) => (
             <li
               key={feature.title}
-              className="flex min-w-0 items-center gap-2 text-[#071936] [text-shadow:0_1px_2px_rgb(255_255_255/95%)]"
+              className="flex min-w-0 items-center gap-2 rounded-md border border-white/60 bg-white/75 px-2 py-1.5 text-left text-[#071936] shadow-sm backdrop-blur-[2px] md:border-0 md:bg-transparent md:px-0 md:py-0 md:shadow-none md:backdrop-blur-none"
             >
               <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center text-[#071936] drop-shadow-[0_1px_1px_rgba(255,255,255,0.95)] [&>svg]:h-5 [&>svg]:w-5 lg:[&>svg]:h-[22px] lg:[&>svg]:w-[22px]">
                 <FeatureIcon icon={feature.icon} />
               </span>
               <span className="min-w-0">
-                <strong className="block whitespace-nowrap text-[9px] font-black leading-3 tracking-[-0.015em] sm:text-[9.5px] lg:text-[10px]">
+                <strong className="block text-[9px] font-black leading-3 tracking-[-0.015em] sm:whitespace-nowrap sm:text-[9.5px] lg:text-[10px]">
                   {feature.title}
                 </strong>
-                <span className="mt-0.5 block whitespace-nowrap text-[7.5px] font-bold leading-3 text-slate-600 sm:text-[8px] lg:text-[8.5px]">
+                <span className="mt-0.5 block text-[7.5px] font-bold leading-3 text-slate-600 sm:text-[8px] md:whitespace-nowrap lg:text-[8.5px]">
                   {feature.description}
                 </span>
               </span>
@@ -233,7 +226,7 @@ export default function LedDisplayHero({ currentYear }: { currentYear: number })
       <button
         type="button"
         onClick={showPrevious}
-        className="absolute left-3 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white/95 text-[#071936] shadow-[0_6px_20px_rgba(15,23,42,0.14)] transition hover:scale-105 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b5bdd] sm:inline-flex lg:left-5"
+        className="absolute left-3 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white/95 text-[#071936] opacity-100 shadow-[0_6px_20px_rgba(15,23,42,0.14)] transition hover:scale-105 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b5bdd] sm:inline-flex lg:left-5 lg:opacity-0 lg:group-hover/ledhero:opacity-100 lg:group-focus-within/ledhero:opacity-100"
         aria-label="Show previous LED display banner"
       >
         <ArrowIcon direction="previous" />
@@ -241,7 +234,7 @@ export default function LedDisplayHero({ currentYear }: { currentYear: number })
       <button
         type="button"
         onClick={showNext}
-        className="absolute right-3 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white/95 text-[#071936] shadow-[0_6px_20px_rgba(15,23,42,0.14)] transition hover:scale-105 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b5bdd] sm:inline-flex lg:right-5"
+        className="absolute right-3 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-slate-200 bg-white/95 text-[#071936] opacity-100 shadow-[0_6px_20px_rgba(15,23,42,0.14)] transition hover:scale-105 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0b5bdd] sm:inline-flex lg:right-5 lg:opacity-0 lg:group-hover/ledhero:opacity-100 lg:group-focus-within/ledhero:opacity-100"
         aria-label="Show next LED display banner"
       >
         <ArrowIcon direction="next" />

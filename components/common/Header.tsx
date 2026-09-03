@@ -481,6 +481,137 @@ function ConferenceDesktopNavItem({
   );
 }
 
+function LedDesktopNavItem({
+  item,
+  active,
+  isScrolled,
+  onNavigate,
+  isItemCurrent,
+}: {
+  item: Extract<NavItem, { type: "dropdown" }>;
+  active: boolean;
+  isScrolled: boolean;
+  onNavigate: (href: string) => (event: React.MouseEvent) => void;
+  isItemCurrent: (href: string, parentHref: string) => boolean;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLAnchorElement>(null);
+  const suppressFocusOpenRef = useRef(false);
+  const panelId = "led-display-desktop-menu";
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const closeOnOutsidePointer = (event: PointerEvent) => {
+      if (!wrapperRef.current?.contains(event.target as Node)) setIsOpen(false);
+    };
+    document.addEventListener("pointerdown", closeOnOutsidePointer);
+    return () => document.removeEventListener("pointerdown", closeOnOutsidePointer);
+  }, [isOpen]);
+
+  const closeAndNavigate = (href: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
+    setIsOpen(false);
+    event.currentTarget.blur();
+    onNavigate(href)(event);
+  };
+
+  return (
+    <div
+      ref={wrapperRef}
+      className="group relative"
+      onMouseEnter={() => setIsOpen(true)}
+      onMouseLeave={() => setIsOpen(false)}
+      onFocusCapture={(event) => {
+        if (suppressFocusOpenRef.current) {
+          suppressFocusOpenRef.current = false;
+          return;
+        }
+        if ((event.target as EventTarget) !== triggerRef.current) setIsOpen(true);
+      }}
+      onBlurCapture={() => {
+        window.requestAnimationFrame(() => {
+          if (!wrapperRef.current?.contains(document.activeElement)) setIsOpen(false);
+        });
+      }}
+      onKeyDown={(event) => {
+        if (event.key !== "Escape") return;
+        event.preventDefault();
+        const shouldMoveFocus = document.activeElement !== triggerRef.current;
+        suppressFocusOpenRef.current = shouldMoveFocus;
+        setIsOpen(false);
+        if (shouldMoveFocus) triggerRef.current?.focus();
+      }}
+    >
+      <Link
+        ref={triggerRef}
+        prefetch={false}
+        href={item.href}
+        aria-haspopup="true"
+        aria-expanded={isOpen}
+        aria-controls={panelId}
+        onFocus={() => {
+          if (suppressFocusOpenRef.current) {
+            suppressFocusOpenRef.current = false;
+            return;
+          }
+          setIsOpen(true);
+        }}
+        onClick={closeAndNavigate(item.href)}
+        className={cn(
+          "inline-flex items-center gap-1 whitespace-nowrap rounded-lg px-2 py-2 text-sm font-medium transition xl:px-3",
+          active
+            ? isScrolled
+              ? "bg-[#FD6900] text-white"
+              : "bg-slate-900 text-white"
+            : isScrolled
+              ? "text-slate-100 hover:bg-white/10"
+              : "text-black hover:bg-slate-100",
+        )}
+      >
+        {item.label}
+        <MenuTriggerChevron className={isOpen ? "rotate-180" : undefined} />
+      </Link>
+
+      <div className="absolute left-0 top-full h-3 w-56" aria-hidden="true" />
+
+      <div
+        id={panelId}
+        aria-label="LED display navigation"
+        className={cn(
+          "absolute left-0 top-full z-50 mt-3 w-[306px] p-2",
+          MENU_PANEL_CLASS,
+          "transition duration-200 ease-out",
+          isOpen
+            ? "visible translate-y-0 opacity-100"
+            : "pointer-events-none invisible translate-y-1 opacity-0",
+        )}
+      >
+        {item.groups.map((group) => (
+          <ul key={group.title} className="space-y-0.5">
+            {group.items.map((menuItem) => {
+              const isCurrent = isItemCurrent(menuItem.href, item.href);
+              return (
+                <li key={menuItem.href}>
+                  <Link
+                    prefetch={false}
+                    href={menuItem.href}
+                    aria-current={isCurrent ? "page" : undefined}
+                    onClick={closeAndNavigate(menuItem.href)}
+                    className={menuCardClass(isCurrent)}
+                  >
+                    {menuItem.label}
+                    <MenuCardChevron isCurrent={isCurrent} />
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function Header({
   conferenceNavigationGroups,
   conferenceBrandsHubLink,
@@ -490,8 +621,10 @@ export default function Header({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const useConferenceTabletHeader = pathname === "/" || pathname.startsWith("/conference-system");
   const normalizedPathname = pathname.replace(/\/+$/, "");
+  const isLedDisplayLanding = normalizedPathname === "/led-display";
+  const useConferenceTabletHeader =
+    pathname === "/" || pathname.startsWith("/conference-system") || isLedDisplayLanding;
   const hasFlushConferenceHero = [
     "/conference-system/audio-conference-system",
     "/conference-system/digital-conference-system",
@@ -664,7 +797,7 @@ export default function Header({
 
   return (
     <header
-      data-home-header={pathname === "/" ? "true" : undefined}
+      data-home-header={pathname === "/" || isLedDisplayLanding ? "true" : undefined}
       className={cn(
         "sticky inset-x-0 top-0 z-[80] w-full transition-colors duration-300",
         isScrolled
@@ -764,6 +897,18 @@ export default function Header({
 
             // hover dropdown
             const isAboutDropdown = item.href === "/about/";
+            if (!isAboutDropdown) {
+              return (
+                <LedDesktopNavItem
+                  key={item.href}
+                  item={item}
+                  active={activeHref(item.href)}
+                  isScrolled={isScrolled}
+                  onNavigate={(href) => handleNavClick(href)}
+                  isItemCurrent={activeDropdownItemHref}
+                />
+              );
+            }
             const dropdownActiveClass = isScrolled ? "bg-[#FD6900] text-white" : "bg-slate-900 text-white";
             return (
               <div key={item.href} className="relative group">

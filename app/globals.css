@@ -45,20 +45,26 @@ body {
 
 /* Home hero geometry is static CSS so the first paint matches the hydrated UI. */
 .home-hero-shell,
-.home-hero-frame {
+.home-hero-frame,
+.led-display-hero-shell,
+.led-display-hero-frame {
   min-height: 445px !important;
 }
 
 @media (min-width: 640px) {
   .home-hero-shell,
-  .home-hero-frame {
+  .home-hero-frame,
+  .led-display-hero-shell,
+  .led-display-hero-frame {
     min-height: 435px !important;
   }
 }
 
 @media (min-width: 1024px) {
   .home-hero-shell,
-  .home-hero-frame {
+  .home-hero-frame,
+  .led-display-hero-shell,
+  .led-display-hero-frame {
     min-height: clamp(360px, 27vw, 560px) !important;
   }
 }
@@ -93,35 +99,42 @@ body {
     padding-right: clamp(12px, 0.88vw, 18px) !important;
   }
 
-  .home-hero-frame {
+  .home-hero-frame,
+  .led-display-hero-frame {
     padding-left: clamp(40px, 3vw, 60px) !important;
     padding-right: clamp(40px, 3vw, 60px) !important;
     padding-top: clamp(24px, 2vw, 40px) !important;
     padding-bottom: clamp(24px, 2vw, 40px) !important;
   }
 
-  .home-hero-content {
+  .home-hero-content,
+  .led-display-hero-content {
     transform: translateY(clamp(24px, 2vw, 40px)) !important;
   }
 
-  .home-hero-content > p:first-child {
+  .home-hero-content > p:first-child,
+  .led-display-hero-content > p:first-child {
     font-size: clamp(0.6875rem, 0.8vw, 1rem) !important;
   }
 
-  .home-hero-title {
+  .home-hero-title,
+  .led-display-hero-title {
     font-size: clamp(2.25rem, 2.65vw, 3.35rem) !important;
   }
 
-  .home-hero-description {
+  .home-hero-description,
+  .led-display-hero-description {
     font-size: clamp(0.875rem, 1vw, 1.25rem) !important;
     line-height: 1.65 !important;
   }
 
-  .home-hero-actions {
+  .home-hero-actions,
+  .led-display-hero-actions {
     width: max-content;
   }
 
-  .home-hero-actions > a {
+  .home-hero-actions > a,
+  .led-display-hero-actions > a {
     flex: 0 0 auto;
     min-height: clamp(44px, 3.22vw, 66px);
     padding-left: clamp(20px, 1.6vw, 32px);
@@ -129,7 +142,8 @@ body {
     font-size: clamp(0.75rem, 0.88vw, 1.1rem);
   }
 
-  .home-hero-features > li {
+  .home-hero-features > li,
+  .led-display-hero-features > li {
     border: 1px solid rgba(255, 255, 255, 0.58);
     border-radius: 5px;
     background: rgba(255, 255, 255, 0.72);
@@ -139,7 +153,8 @@ body {
     backdrop-filter: blur(2px);
   }
 
-  .home-hero-features > li > span:last-child {
+  .home-hero-features > li > span:last-child,
+  .led-display-hero-features > li > span:last-child {
     font-size: clamp(0.625rem, 0.73vw, 0.9rem) !important;
     line-height: 1.25 !important;
   }
@@ -179,7 +194,9 @@ body {
 @media (min-width: 2200px) {
   [data-home-header="true"] .site-header-inner,
   .home-hero-frame,
-  [data-home-route-kind="hub"] {
+  .led-display-hero-frame,
+  [data-home-route-kind="hub"],
+  .led-display-page {
     max-width: min(90vw, 128rem) !important;
   }
 }
