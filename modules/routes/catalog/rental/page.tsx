@@ -6,6 +6,7 @@ import { ledAccessoriesCatalog, rentalCatalog, type LedAccessoryProduct, type Pr
 import FaqAccordion from "@/components/common/FaqAccordion";
 import { absoluteUrl, socialImageUrl } from "@/lib/seo";
 import styles from "./rental-responsive.module.css";
+import RentalProjectsSection from "./RentalProjectsSection";
 
 export const metadata: Metadata = {
   title: { absolute: "Rental LED Display in Bangladesh | Stage & Concert LED" },
@@ -1195,6 +1196,7 @@ export default function RentalProductsPage() {
       <RentalPackageShowcase />
       <RentalPitchGuide />
       <RentalWhyChoose />
+      <RentalProjectsSection />
       <RentalProcessTimeline />
 
       <RentalPlanningChecklist whatsappHref={wa} />
