@@ -2010,8 +2010,13 @@ test("rental LED duplicate-prone groups render one canonical semantic set", () =
   const sectionWrapper = sectionBetween(source, "const Section = ({", "function responsiveCardStyle");
   const cardGrid = sectionBetween(source, "const CardGrid", "export default function RentalProductsPage");
 
-  assert.equal(occurrences(source, "singleDom"), 2);
+  assert.equal(occurrences(source, "singleDom"), 1);
   assert.match(sectionWrapper, /singleDom/);
+  assert.equal(occurrences(source, "<RentalLedHero />"), 1);
+  assert.match(source, /rental-led-hero-banner\.webp/);
+  assert.match(source, /quality=\{95\}/);
+  assert.match(source, /Make Your Event/);
+  assert.match(source, /Bigger &amp;.*Brighter/);
   assert.equal(occurrences(source, "mobileDisplayRows.map((row, index)"), 1);
   assert.equal(occurrences(source, "displayCards.map((p) => renderDisplayCard(p))"), 0);
   assert.match(source, /desktopContents/);

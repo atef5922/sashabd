@@ -1,13 +1,12 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site";
 import { ledAccessoriesCatalog, rentalCatalog, type LedAccessoryProduct, type ProductItem } from "@/lib/productsCatalog";
-import Breadcrumbs from "@/components/common/Breadcrumbs";
 import FaqAccordion from "@/components/common/FaqAccordion";
 import MobileIntroText from "@/components/common/MobileIntroText";
 import ProductGridCard from "@/components/products/ProductGridCard";
 import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
-import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import { absoluteUrl, socialImageUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -140,6 +139,106 @@ const CardGrid = ({ items }: { items: { t: string; d: string; bullets?: string[]
     ))}
   </div>
 );
+
+type RentalHeroIconName = "range" | "lock" | "stack" | "processor" | "headset" | "events" | "location" | "setup" | "shield" | "arrow";
+
+function RentalHeroIcon({ name, className = "h-5 w-5" }: { name: RentalHeroIconName; className?: string }) {
+  const paths: Record<RentalHeroIconName, React.ReactNode> = {
+    range: <><rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="8" cy="9" r="2" /><circle cx="16" cy="15" r="2" /><path d="M10 9h7M7 15h7" /></>,
+    lock: <><circle cx="12" cy="12" r="8" /><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3" /></>,
+    stack: <><path d="m12 3 9 5-9 5-9-5 9-5Z" /><path d="m3 12 9 5 9-5M3 16l9 5 9-5" /></>,
+    processor: <><rect x="3" y="4" width="18" height="13" rx="1.5" /><path d="M8 21h8M12 17v4M7 8h4v4H7zM14 8h3M14 11h3" /></>,
+    headset: <><path d="M4 14v-2a8 8 0 0 1 16 0v2" /><path d="M4 14h3v6H5a1 1 0 0 1-1-1zM20 14h-3v6h2a1 1 0 0 0 1-1zM17 20c0 1-1.2 2-3 2" /></>,
+    events: <><circle cx="9" cy="8" r="3" /><circle cx="17" cy="9" r="2.5" /><path d="M3 20v-2a6 6 0 0 1 12 0v2M15 15a5 5 0 0 1 6 4.8" /></>,
+    location: <><path d="M12 21s6-5 6-11a6 6 0 1 0-12 0c0 6 6 11 6 11Z" /><circle cx="12" cy="10" r="2" /></>,
+    setup: <><circle cx="12" cy="12" r="3" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1" /></>,
+    shield: <><path d="M12 3 5 6v6c0 4.2 2.7 7.2 7 9 4.3-1.8 7-4.8 7-9V6z" /><path d="m9 12 2 2 4-4" /></>,
+    arrow: <path d="M5 12h14m-5-5 5 5-5 5" />,
+  };
+  return <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>;
+}
+
+function RentalLedHero() {
+  const features: Array<{ title: string; detail: string; icon: RentalHeroIconName }> = [
+    { title: "P2.6 – P4.81", detail: "Wide Range", icon: "range" },
+    { title: "Quick-Lock", detail: "Rental Cabinet", icon: "lock" },
+    { title: "Hanging /", detail: "Stacking Setup", icon: "stack" },
+    { title: "Processor &", detail: "Live Camera Support", icon: "processor" },
+    { title: "On-Site Operator", detail: "& Technical Team", icon: "headset" },
+  ];
+  const trustItems: Array<{ title: string; detail: string; icon: RentalHeroIconName }> = [
+    { title: "Event-Ready", detail: "Rental Solutions", icon: "events" },
+    { title: "Nationwide", detail: "Service Coverage", icon: "location" },
+    { title: "Professional", detail: "Setup & Support", icon: "setup" },
+    { title: "Reliable", detail: "On-Time Service", icon: "shield" },
+  ];
+
+  return (
+    <section className="relative left-1/2 right-1/2 -mx-[50vw] -mt-2 min-h-[720px] w-screen overflow-hidden bg-[#001229] text-white sm:min-h-[630px] lg:min-h-[clamp(22rem,28.5vw,27rem)]" aria-labelledby="rental-led-hero-heading">
+      <Image
+        src="/images/rental/hero/rental-led-hero-banner.webp"
+        alt="Large rental LED display at a live concert stage"
+        fill
+        priority
+        quality={95}
+        sizes="100vw"
+        className="object-cover object-[67%_center] sm:object-[62%_center] lg:object-center"
+      />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,17,38,0.99)_0%,rgba(0,17,38,0.92)_36%,rgba(0,17,38,0.42)_66%,rgba(0,17,38,0.12)_100%)] sm:bg-[linear-gradient(90deg,rgba(0,17,38,0.98)_0%,rgba(0,17,38,0.88)_39%,rgba(0,17,38,0.2)_74%,rgba(0,17,38,0.08)_100%)]" aria-hidden="true" />
+      <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(0,11,27,0.96)_0%,rgba(0,11,27,0.18)_28%,transparent_52%)]" aria-hidden="true" />
+
+      <div className="relative mx-auto flex min-h-[720px] w-full max-w-[clamp(80rem,90vw,108rem)] flex-col px-5 pb-5 pt-7 sm:min-h-[630px] sm:px-8 lg:min-h-[clamp(22rem,28.5vw,27rem)] lg:px-10 lg:pb-5 lg:pt-7 xl:px-12">
+        <div className="max-w-[38rem] text-left lg:max-w-[43%]">
+          <p className="flex items-center gap-3 !text-left text-[9px] font-extrabold uppercase tracking-[0.32em] text-white/90 sm:text-[10px]">
+            <span className="h-0.5 w-6 bg-[#ff6a00]" aria-hidden="true" />
+            Rental LED Display Solutions
+          </p>
+          <h1 id="rental-led-hero-heading" className="mt-3 !text-[36px] font-black leading-[0.98] tracking-[-0.035em] text-white sm:!text-[42px] lg:!text-[clamp(2.2rem,3.15vw,3rem)]">
+            Make Your Event
+            <span className="mt-1 block">Bigger &amp; <span className="text-[#ff4f8b]">Brighter</span></span>
+          </h1>
+          <p className="mt-3 max-w-[34rem] !text-left text-[13px] font-medium leading-5 text-slate-100 sm:text-sm sm:leading-6 lg:text-[clamp(0.76rem,0.95vw,0.92rem)]">
+            Rental LED Display in Bangladesh for Concerts, Corporate Events, Weddings, Stage Shows, Exhibitions and More.
+          </p>
+        </div>
+
+        <ul className="mt-5 grid max-w-[42rem] grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-3 lg:mt-5 lg:grid-cols-5 lg:gap-x-5">
+          {features.map((feature) => (
+            <li key={feature.title} className="flex min-w-0 items-center gap-2.5 text-left">
+              <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center text-[#ff6a00]"><RentalHeroIcon name={feature.icon} className="h-7 w-7" /></span>
+              <span className="min-w-0 text-[9px] font-bold leading-[1.25] text-white sm:text-[9.5px]"><strong className="block font-extrabold">{feature.title}</strong><span className="block text-white/85">{feature.detail}</span></span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="pointer-events-none absolute left-[88%] top-[17%] hidden -rotate-6 text-center font-serif text-[17px] italic leading-5 text-white xl:block" aria-hidden="true">
+          Events<br />Look Better<br />on LED
+          <span className="mx-auto mt-2 block h-0.5 w-10 rotate-[-8deg] bg-[#ff6a00]" />
+        </div>
+
+        <div className="mt-auto grid items-end gap-5 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-8">
+          <div className="grid grid-cols-1 gap-3 sm:flex">
+            <Link href="/contact/?project=rental-led-display" className="inline-flex min-h-11 min-w-0 items-center justify-center gap-2 rounded-lg px-3 text-center text-[10px] font-extrabold text-white shadow-[0_9px_24px_rgba(255,101,15,0.28)] transition hover:-translate-y-0.5 sm:px-6 sm:text-xs" style={{ backgroundColor: "#ff650f" }}>
+              Get Rental Price <RentalHeroIcon name="arrow" className="h-4 w-4" />
+            </Link>
+            <Link href="/contact/?project=rental-led-display&service=event-consultation" className="inline-flex min-h-11 min-w-0 items-center justify-center rounded-lg border border-white/75 px-2 text-center text-[10px] font-extrabold leading-4 text-white backdrop-blur-sm transition hover:-translate-y-0.5 sm:px-6 sm:text-xs" style={{ backgroundColor: "rgba(5, 24, 47, 0.72)" }}>
+              Book Event Consultation
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 gap-x-3 gap-y-3 border-t border-white/15 pt-4 sm:grid-cols-4 lg:border-l lg:border-t-0 lg:pl-7 lg:pt-0">
+            {trustItems.map((item) => (
+              <div key={item.title} className="flex min-w-0 items-center gap-2.5 text-left">
+                <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-sky-500/35 bg-[#002b52]/80 text-[#00a8ff] shadow-[0_0_18px_rgba(0,168,255,0.18)]"><RentalHeroIcon name={item.icon} className="h-5 w-5" /></span>
+                <span className="min-w-0"><strong className="block text-[10px] font-extrabold leading-4 text-white sm:text-[11px]">{item.title}</strong><span className="block text-[8px] font-medium leading-3 text-white/75 sm:text-[8.5px]">{item.detail}</span></span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function RentalProductsPage() {
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
@@ -280,91 +379,8 @@ export default function RentalProductsPage() {
   };
 
   return (
-    <div className="rental-led-page mx-auto w-full max-w-7xl px-3 pb-8 pt-0 md:px-6">
-      <Breadcrumbs
-        items={[
-          homeBreadcrumb(),
-          { href: "/led-display/", label: "LED Display" },
-          { href: "/led-display/rental-display/", label: "Rental LED Display", current: true },
-        ]}
-        className="mb-4 pt-3 text-sm text-slate-600"
-      />
-      <section
-        className="mobile-page-intro-card rounded-none border-0 bg-transparent p-0 shadow-none md:rounded-3xl md:border md:bg-white md:p-6 md:shadow-sm"
-        style={{ borderColor: `${BRAND.maroon}12` }}
-      >
-        {/* HERO (boxed like /led-display/) */}
-        <header className="pb-2">
-          <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 md:text-3xl">
-            Rental LED Display in Bangladesh
-          </h1>
-
-        <MobileIntroText
-          teaser="Rental LED displays are designed for quick setup, repeat use and reliable event performance across Bangladesh."
-          expandedClassName="mt-3"
-          desktopClassName="mt-3"
-          singleDom
-        >
-          <p className="w-full text-justify text-slate-600 leading-7">
-            <strong>Rental LED displays</strong> are built for quick setup, repeat use, and reliable live-event performance across Bangladesh.
-            If you are searching for <strong>rental LED display</strong> in Bangladesh, <strong>stage LED screen rental</strong>, <strong>wedding LED wall</strong>, <strong>concert backdrop LED panel</strong>{" "}
-            or <strong>corporate event LED display</strong> service, choosing the right cabinet system makes the biggest difference in show quality
-            and setup speed. A proper rental workflow includes quick-lock cabinets, stable controller and processor configuration, clean
-            power planning, safe rigging, and on-site technical support so your visuals stay smooth from opening to closing. From indoor
-            stage programs to semi-outdoor event venues, a well-planned <strong>rental LED screen</strong> setup helps reduce downtime, supports fast
-            install/dismantle, and keeps your event communication clear, bright, and professional.
-          </p>
-        </MobileIntroText>
-
-        <div className="mobile-intro-actions mt-4 flex flex-nowrap gap-2.5 md:mt-5 md:flex-wrap md:gap-3">
-          <Link
-            href="/contact/"
-            className="inline-flex min-h-9 items-center justify-center rounded-md px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
-            style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-          >
-            Request a Quotation -&gt;
-          </Link>
-          <a
-            href={wa}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex min-h-9 items-center justify-center rounded-md bg-emerald-600 px-3 py-2 text-[11px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
-          >
-            WhatsApp
-          </a>
-        </div>
-
-          <div className="mt-4 hidden flex-wrap gap-2 text-xs font-semibold text-slate-700 md:flex">
-            {["Quick lock cabinets", "Fast setup and dismantle", "Hanging or stacking", "Operator guidance"].map(
-            (t) => (
-              <span
-                key={t}
-                className="rounded-full border bg-slate-50 px-4 py-2"
-                style={{ borderColor: `${BRAND.maroon}14` }}
-              >
-                {t}
-              </span>
-            )
-          )}
-        </div>
-
-        <div className="mt-3 hidden flex-wrap gap-x-4 gap-y-2 text-xs font-semibold text-slate-600 md:flex">
-          <span className="text-slate-500">Related:</span>
-          <Link href="/led-display/" className="underline underline-offset-4 hover:text-slate-900">
-            LED display price hub
-          </Link>
-          <Link href="/led-display/rent-guide/" className="underline underline-offset-4 hover:text-slate-900">
-            Rental price guide
-          </Link>
-          <Link href="/services-support/" className="underline underline-offset-4 hover:text-slate-900">
-            Services & support
-          </Link>
-          <Link href="/projects/" className="underline underline-offset-4 hover:text-slate-900">
-            Projects
-          </Link>
-        </div>
-        </header>
-      </section>
+    <div className="rental-led-page mx-auto w-full max-w-7xl px-3 pb-8 pt-0 md:px-6" data-rental-led-route-kind="hub">
+      <RentalLedHero />
 
       <section
         className="mt-5 rounded-[24px] border bg-white p-4 shadow-sm md:mt-6 md:rounded-3xl md:p-6"
