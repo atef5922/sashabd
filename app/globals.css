@@ -209,6 +209,8 @@ body {
   .home-hero-frame,
   .led-display-hero-frame,
   [data-home-route-kind="hub"],
+  [data-indoor-led-route-kind="hub"],
+  [data-outdoor-led-route-kind="hub"],
   .led-display-page {
     max-width: min(90vw, 128rem) !important;
   }
@@ -324,6 +326,16 @@ label {
   .indoor-led-page :is(p, li, td, dd, blockquote) {
     text-align: justify;
     text-justify: inter-word;
+  }
+
+  [data-indoor-led-route-kind="hub"] :is(p, li) {
+    text-align: left;
+    text-justify: auto;
+  }
+
+  [data-outdoor-led-route-kind="hub"] :is(p, li) {
+    text-align: left;
+    text-justify: auto;
   }
 
   .led-display-page .mt-6.rounded-3xl.border.bg-white.p-4,
@@ -665,11 +677,15 @@ label {
 }
 
 [data-conference-route-kind] :where(a[href], button:not(:disabled), [role="button"]:not([aria-disabled="true"])),
+[data-indoor-led-route-kind] :where(a[href], button:not(:disabled), [role="button"]:not([aria-disabled="true"])),
+[data-outdoor-led-route-kind] :where(a[href], button:not(:disabled), [role="button"]:not([aria-disabled="true"])),
 [data-conference-product-explorer] :where(a[href], button:not(:disabled), [role="button"]:not([aria-disabled="true"])) {
   cursor: pointer !important;
 }
 
 [data-conference-route-kind] :where(button:disabled, [aria-disabled="true"]),
+[data-indoor-led-route-kind] :where(button:disabled, [aria-disabled="true"]),
+[data-outdoor-led-route-kind] :where(button:disabled, [aria-disabled="true"]),
 [data-conference-product-explorer] :where(button:disabled, [aria-disabled="true"]) {
   cursor: not-allowed !important;
 }

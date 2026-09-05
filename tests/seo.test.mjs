@@ -1950,16 +1950,14 @@ test("LED product detail hero is LCP-ready and Product schema stays factual", ()
 
 test("outdoor LED price and category sections use one responsive semantic source", () => {
   const source = read("modules/routes/catalog/outdoor/page.tsx");
-  const sectionWrapper = sectionBetween(source, "const Section = ({", "function responsiveCardStyle");
-  const categoryData = sectionBetween(source, "const outdoorCategoryLinks", "function getPitchLabel");
-  const priceSection = sectionBetween(source, "Outdoor LED Display Price Per Square Feet in Bangladesh", "Explore LED Display Categories");
-  const categorySection = sectionBetween(source, "Explore LED Display Categories", "City Wise Outdoor LED Display Deployment");
+  const categoryData = sectionBetween(source, "const categoryLinks", "const pitchCards");
 
-  assert.match(sectionWrapper, /singleDom/);
-  assert.equal(occurrences(source, "singleDom"), 2);
-  assert.equal(occurrences(priceSection, "outdoorPriceRows.map"), 1);
-  assert.match(priceSection, /<MobileDisclosure/);
-  assert.equal(occurrences(categorySection, "outdoorCategoryLinks.map"), 1);
+  assert.match(source, /data-outdoor-led-route-kind="hub"/);
+  assert.match(source, /quality=\{95\}/);
+  assert.match(source, /sizes="100vw"/);
+  assert.match(source, /<MobileDisclosure/);
+  assert.equal(occurrences(source, "priceRows.map"), 1);
+  assert.equal(occurrences(source, "categoryLinks.map"), 1);
   for (const label of ["Indoor LED Displays", "Outdoor LED Displays", "Rental LED Displays"]) {
     assert.equal(occurrences(categoryData, label), 1);
   }
@@ -1968,70 +1966,43 @@ test("outdoor LED price and category sections use one responsive semantic source
 test("outdoor LED duplicate-prone groups render one canonical semantic set", () => {
   const source = read("modules/routes/catalog/outdoor/page.tsx");
   const filter = read("components/products/OutdoorFilterSection.tsx");
-  const cardGrid = sectionBetween(source, "const CardGrid", "export default function OutdoorProductsPage");
+  const sharedFilter = read("components/products/IndoorFilterSection.tsx");
+  const headings = [
+    "Outdoor LED Display Solutions for Professional Spaces",
+    "Outdoor LED Display Price Per Square Feet in Bangladesh",
+    "Outdoor LED Pixel Pitch Guide for Bangladesh (P2.5 to P10)",
+    "How to Choose the Right Outdoor LED Display",
+    "Key Features of Outdoor LED Display",
+    "Applications of Outdoor LED Displays",
+    "Main Components of an Outdoor LED Display",
+    "Outdoor LED Display Technical Specifications Explained",
+    "Outdoor vs Indoor LED Display Comparison",
+    "Outdoor LED Screen Waterproof & Durability",
+    "Outdoor LED Display Project Consultation in Bangladesh",
+    "Recent Outdoor LED Projects",
+    "Outdoor LED Display Maintenance and Performance Tips",
+    "Explore High-Performance LED Display in Bangladesh",
+    "Why Choose Sasha Corporation for Outdoor LED Display in Bangladesh",
+    "Outdoor LED Display Installation Process",
+    "City Wise Outdoor LED Display Deployment",
+    "FAQs About Outdoor LED Display in Bangladesh",
+  ];
 
-  assert.equal(occurrences(filter, "mobileDisplayRows.map((row, index)"), 1);
-  assert.equal(occurrences(filter, "displayCards.map((p) => renderDisplayCard(p))"), 0);
-  assert.match(filter, /desktopContents/);
-  assert.equal(occurrences(cardGrid, "items.map((x, index)"), 1);
-
-  for (const [start, end, labels] of [
-    [
-      "Key Features of Outdoor LED Display",
-      "Why Choose Outdoor LED Display",
-      ["High Brightness Visibility", "Weather-Resistant Build", "Long-Distance Readability", "Stable Power & Protection"],
-    ],
-    [
-      "Why Choose Outdoor LED Display",
-      "Outdoor vs Indoor LED Display Comparison",
-      ["Sunlight readable high brightness", "IP65 / IP66 weather protection", "Long-distance visibility", "24/7 operation support", "Energy-efficient design", "Remote content management", "Power protection and voltage stability", "Serviceable modular maintenance", "Advertisement and announcement in one screen"],
-    ],
-    [
-      "Outdoor vs Indoor LED Display Comparison",
-      "Applications of outdoor LED Displays",
-      ["Brightness", "Waterproof rating", "Viewing distance", "Pixel pitch range", "Installation area", "Cabinet protection", "Use case", "Price range"],
-    ],
-    [
-      "Applications of outdoor LED Displays",
-      "Outdoor LED Display Installation Process",
-      ["Roadside advertising LED billboard", "Rooftop LED display", "Shopping mall outdoor signage", "Corporate branding display", "Petrol pump digital signage", "Hotel / restaurant front signage", "Government notice display", "Event & stadium perimeter display"],
-    ],
-    [
-      "Outdoor LED Display Installation Process",
-      "Outdoor LED Display Project Consultation in Bangladesh",
-      ["Site survey", "Screen size planning", "Structure design", "Electrical planning", "LED cabinet installation", "Configuration & calibration", "Testing & handover", "After-sales support"],
-    ],
-    [
-      "Outdoor LED Display Project Consultation in Bangladesh",
-      "Outdoor LED Installation Checklist (Weather + Safety)",
-      ["Location + environment: rooftop / roadside / market / highway", "Viewing distance (near & far) + audience angle", "Target screen size (ft) or wall size (W x H)", "Content source: live HDMI / scheduled playback / remote control", "Power: single/three phase + backup (IPS/Generator)", "Weatherproof structure + service access (front/rear)", "Safety: earthing + surge protection (SPD) planning"],
-    ],
-    [
-      "Outdoor LED Installation Checklist (Weather + Safety)",
-      "Outdoor LED Pixel Pitch Guide for Bangladesh (P2.5 to P10)",
-      ["Weatherproof build", "Power & protection", "Signal & control", "Commissioning"],
-    ],
-    [
-      "Outdoor LED Pixel Pitch Guide for Bangladesh (P2.5 to P10)",
-      "Outdoor LED Display Maintenance and Performance Tips",
-      ["Close roadside branding (P2.5-P4)", "Mid-range city visibility (P5-P6.67)", "Long-distance highways (P8-P10)", "Selection checklist before purchase"],
-    ],
-    [
-      "Outdoor LED Screen Waterproof & Durability",
-      "Outdoor LED Display Price Per Square Feet in Bangladesh",
-      ["Rain protection", "Dust protection", "Heat resistance", "Rust-resistant structure", "Stable outdoor performance", "Wind load considerations", "24/7 reliability"],
-    ],
-    [
-      "City Wise Outdoor LED Display Deployment",
-      "FAQs About Outdoor LED Display in Bangladesh",
-      ["Outdoor LED Display in Dhaka", "Outdoor LED Display in Chattogram", "Outdoor LED Billboard in Sylhet", "Outdoor Advertising Screen in Khulna", "Outdoor LED Display in Rajshahi", "Outdoor LED Display in Barishal", "Outdoor LED Display in Rangpur", "Outdoor LED Display in Mymensingh"],
-    ],
-  ]) {
-    const section = sectionBetween(source, start, end);
-    for (const label of labels) {
-      assert.equal(occurrences(section, label), 1, `${label} must appear once in ${start}`);
-    }
+  assert.match(filter, /variant="outdoor"/);
+  assert.match(sharedFilter, /type="search"/);
+  assert.match(sharedFilter, /Price: Low to High/);
+  assert.match(sharedFilter, /selectedPitches/);
+  assert.match(sharedFilter, /selectedUseCases/);
+  assert.equal(occurrences(source, "items.map((item)"), 1);
+  let previous = -1;
+  for (const heading of headings) {
+    const position = source.indexOf(heading);
+    assert.ok(position > previous, `${heading} must follow the prior outdoor section`);
+    previous = position;
   }
+  const sectionCalls = [...source.matchAll(/<Section\s+([^>]+)>/g)];
+  assert.ok(sectionCalls.length >= headings.length);
+  for (const call of sectionCalls) assert.match(call[1], /icon="[^"]+"/);
 });
 
 test("rental LED duplicate-prone groups render one canonical semantic set", () => {
@@ -2127,42 +2098,42 @@ test("indoor LED page duplicate-prone groups render from one semantic source", (
     ],
     [
       "Main Components of an Indoor LED Display",
-      "Applications of Indoor LED Displays",
+      "Indoor LED Display Technical Specifications Explained",
       ["LED module", "Receiving card", "Power supply", "LED cabinet", "Sending card", "Video processor"],
     ],
     [
       "Applications of Indoor LED Displays",
-      "Indoor LED Display Project Consultation in Bangladesh",
+      "Main Components of an Indoor LED Display",
       ["Corporate Boardroom", "Control Room", "Television Studio", "Shopping Mall Advertising", "Conference Hall", "Command & Control Center", "Airport Display", "Exhibition Center"],
     ],
     [
       "Indoor vs Outdoor LED Display Quick Comparison",
-      "Indoor LED Display Technical Specifications Explained",
+      "Indoor LED Display vs LCD Video Wall",
       ["Brightness", "Protection", "Pixel Pitch", "Cabinet Service", "Power/Surge"],
     ],
     [
       "Indoor LED Display Technical Specifications Explained",
-      "Indoor LED Display Maintenance Guide",
+      "Indoor vs Outdoor LED Display Quick Comparison",
       ["Pixel Pitch", "Refresh Rate", "Brightness & Grayscale"],
     ],
     [
       "Indoor LED Display Maintenance Guide",
-      "Indoor LED Display vs LCD Video Wall",
+      "Explore High-Performance LED Display in Bangladesh",
       ["Cleaning", "Calibration", "Power safety", "Cooling"],
     ],
     [
       "Indoor LED Display vs LCD Video Wall",
-      "Explore High-Performance LED Display in Bangladesh",
+      "Indoor LED Display Project Consultation in Bangladesh",
       ["Seam Visibility", "Scalability", "Viewing Experience", "Long-Hour Operation", "Maintenance", "Best Use Case"],
     ],
     [
       "Explore High-Performance LED Display in Bangladesh",
-      "How to Choose the Right Pixel Pitch for Indoor LED Display",
+      "Why Choose Sasha Corporation for Indoor LED Display in Bangladesh",
       ["Indoor LED Displays", "Outdoor LED Displays", "Rental LED Displays"],
     ],
     [
       "How to Choose the Right Pixel Pitch for Indoor LED Display",
-      "Indoor LED Display Price Per Square Feet",
+      "How to Choose the Right Digital LED Display in Bangladesh",
       ["1.5m to 2.5m", "2.5m to 4m", "4m to 6m", "6m+", "Step 1: Measure real viewing distance", "Step 2: Define dominant content", "Step 3: Balance clarity with lifecycle cost"],
     ],
   ]) {
