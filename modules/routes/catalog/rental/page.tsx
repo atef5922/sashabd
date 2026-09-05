@@ -5,8 +5,6 @@ import { siteConfig } from "@/lib/site";
 import { ledAccessoriesCatalog, rentalCatalog, type LedAccessoryProduct, type ProductItem } from "@/lib/productsCatalog";
 import FaqAccordion from "@/components/common/FaqAccordion";
 import MobileIntroText from "@/components/common/MobileIntroText";
-import ProductGridCard from "@/components/products/ProductGridCard";
-import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
 import { absoluteUrl, socialImageUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -50,20 +48,6 @@ function getPitchDisplay(p: ProductItem): string {
   if (mm) return `${mm} mm`;
   const pVal = spec.match(/p\s?(\d+(?:\.\d+)?)/i)?.[1];
   return pVal ? `${pVal} mm` : getPitchLabel(p);
-}
-
-type RentalBadgeCategory = "Stage" | "Wedding" | "Corporate" | "Concert" | "Semi-Outdoor" | "Indoor";
-
-function inferRentalCategory(p: ProductItem): RentalBadgeCategory {
-  const s = `${p.bestFor.join(" ")} ${p.subtitle} ${p.title}`.toLowerCase();
-
-  if (s.includes("concert") || s.includes("dj") || s.includes("music")) return "Concert";
-  if (s.includes("wedding") || s.includes("holud") || s.includes("reception")) return "Wedding";
-  if (s.includes("corporate") || s.includes("conference") || s.includes("program") || s.includes("seminar"))
-    return "Corporate";
-  if (s.includes("stage") || s.includes("backdrop") || s.includes("event")) return "Stage";
-  if (s.includes("semi") || s.includes("outdoor")) return "Semi-Outdoor";
-  return "Indoor";
 }
 
 const Section = ({
@@ -240,229 +224,367 @@ function RentalLedHero() {
   );
 }
 
+function RentalSectionHeading({
+  id,
+  eyebrow,
+  title,
+  description,
+  action,
+}: {
+  id: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  action: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <p className="flex items-center gap-2 text-[9px] font-extrabold uppercase tracking-[0.22em] text-slate-500">
+          <span className="h-0.5 w-5 bg-[#ff6a00]" aria-hidden="true" />
+          {eyebrow}
+        </p>
+        <h2 id={id} className="mt-1.5 text-[22px] font-black leading-tight tracking-[-0.025em] text-[#071a35] md:text-[26px]">
+          {title}
+        </h2>
+        <p className="mt-1 text-xs leading-5 text-slate-500 md:text-[13px]">{description}</p>
+      </div>
+      <div className="shrink-0 text-xs font-bold text-[#e45700]">{action}</div>
+    </div>
+  );
+}
+
+const rentalModelCardImages: Record<string, string> = {
+  "p2-6-rental-led-display": "/images/rental/cards/p2-6-rental-led-card.webp",
+  "p3-rental-led-display": "/images/rental/cards/p3-rental-led-card.webp",
+  "p3-91-rental-led-display": "/images/rental/cards/p3-91-rental-led-card.webp",
+  "p4-81-rental-led-display": "/images/rental/cards/p4-81-rental-led-card.webp",
+};
+
+function RentalModelShowcase({
+  products,
+  accessories,
+}: {
+  products: ProductItem[];
+  accessories: LedAccessoryProduct[];
+}) {
+  const hasAccessories = accessories.length > 0;
+
+  return (
+    <section className="mt-6" aria-labelledby="rental-model-showcase-heading">
+      {hasAccessories ? (
+        <input
+          id="rental-solutions-toggle"
+          type="checkbox"
+          className="sr-only"
+          aria-label="Show or hide the complete rental package"
+          aria-controls="rental-expanded-solutions"
+        />
+      ) : null}
+      {hasAccessories ? (
+        <style>{`
+          #rental-expanded-solutions {
+            display: grid;
+            grid-template-rows: 0fr;
+            margin-top: 0;
+            opacity: 0;
+            transition: grid-template-rows 300ms ease, margin-top 300ms ease, opacity 220ms ease;
+          }
+          #rental-solutions-toggle:checked ~ #rental-expanded-solutions {
+            grid-template-rows: 1fr;
+            margin-top: 1rem;
+            opacity: 1;
+          }
+          #rental-solutions-toggle:checked ~ * label[for="rental-solutions-toggle"] .rental-toggle-open-label {
+            display: none;
+          }
+          #rental-solutions-toggle:checked ~ * label[for="rental-solutions-toggle"] .rental-toggle-close-label {
+            display: inline;
+          }
+          #rental-solutions-toggle:checked ~ * label[for="rental-solutions-toggle"] .rental-toggle-arrow {
+            transform: rotate(-90deg);
+          }
+        `}</style>
+      ) : null}
+      <RentalSectionHeading
+        id="rental-model-showcase-heading"
+        eyebrow="Our Rental LED Models"
+        title="Choose the Right LED Display for Your Event"
+        description="High-performance rental LED screens with vibrant visuals, seamless structure and reliable performance."
+        action={
+          hasAccessories ? (
+            <label
+              htmlFor="rental-solutions-toggle"
+              className="inline-flex cursor-pointer items-center gap-1 transition hover:text-[#ff6a00]"
+            >
+              <span className="rental-toggle-open-label">View Complete Rental Package</span>
+              <span className="rental-toggle-close-label hidden">Show Less</span>
+              <RentalHeroIcon name="arrow" className="rental-toggle-arrow h-3.5 w-3.5 transition-transform duration-300" />
+            </label>
+          ) : null
+        }
+      />
+
+      <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {products.map((product) => {
+          const pitch = getPitchDisplay(product);
+          const cardImage = rentalModelCardImages[product.slug] ?? product.image;
+          const detailLines = [
+            `Pixel Pitch: ${pitch}`,
+            product.quickFeatures[1],
+            product.installationNotes[1],
+            `Best For: ${product.bestFor.slice(0, 2).join(", ")}`,
+          ].filter(Boolean);
+
+          return (
+            <article
+              key={product.slug}
+              className="group grid min-h-[220px] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_5px_18px_rgba(15,35,60,0.06)] transition duration-300 hover:-translate-y-0.5 hover:border-orange-200 hover:shadow-[0_10px_24px_rgba(15,35,60,0.10)]"
+              style={{ gridTemplateColumns: "124px minmax(0, 1fr)" }}
+            >
+              <Link
+                href={`/led-display/rental-display/${product.slug}/`}
+                className="relative m-2 mr-0 overflow-hidden rounded-lg bg-white"
+                aria-label={`View ${product.title}`}
+              >
+                <Image
+                  src={cardImage}
+                  alt={product.title}
+                  fill
+                  sizes="(max-width: 639px) 124px, (max-width: 1279px) 124px, 9vw"
+                  className="object-contain transition duration-300 group-hover:scale-[1.025]"
+                />
+              </Link>
+
+              <div className="flex min-w-0 flex-col px-3 pb-2.5 pt-3">
+                <Link href={`/led-display/rental-display/${product.slug}/`} className="text-[13px] font-extrabold leading-4 text-[#071a35] transition hover:text-[#e45700]">
+                  {product.title}
+                </Link>
+                <p className="mt-1 line-clamp-2 text-[9px] leading-[1.45] text-slate-500">{product.subtitle}</p>
+                <ul className="mt-2 space-y-1.5">
+                  {detailLines.map((detail, index) => (
+                    <li key={`${product.slug}-${detail}`} className="flex items-start gap-1.5 text-[9px] font-medium leading-[1.35] text-slate-600">
+                      <span className="mt-px inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center text-[#071a35]" aria-hidden="true">
+                        <RentalHeroIcon name={index === 0 ? "range" : index === 1 ? "lock" : index === 2 ? "stack" : "events"} className="h-3 w-3" />
+                      </span>
+                      <span>{detail}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href={`/contact/?project=rental-led-display&model=${product.slug}`}
+                  className="mt-auto inline-flex min-h-8 items-center justify-center gap-1 rounded-lg bg-[#fff0e5] px-3 text-[10px] font-extrabold text-[#e45700] transition hover:bg-[#ff6a00] hover:text-white"
+                >
+                  Get Quote <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+
+      {hasAccessories ? (
+        <div id="rental-expanded-solutions">
+          <div className="min-h-0 overflow-hidden">
+            <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_8px_24px_rgba(15,35,60,0.06)] md:p-4">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-[9px] font-extrabold uppercase tracking-[0.2em] text-[#e45700]">Rental Accessories</p>
+                  <h3 className="mt-1 text-lg font-black text-[#071a35] md:text-xl">Complete Your Rental Setup</h3>
+                  <p className="mt-1 text-xs leading-5 text-slate-500">
+                    Add transport protection and safe power distribution to complete your event-ready LED package.
+                  </p>
+                </div>
+                <Link
+                  href="/contact/?project=complete-rental-led-package"
+                  className="inline-flex min-h-9 shrink-0 items-center justify-center gap-1.5 rounded-lg bg-[#ff6a00] px-4 text-[11px] font-extrabold text-white shadow-[0_7px_18px_rgba(255,106,0,0.22)] transition hover:bg-[#e45700]"
+                >
+                  Get Complete Rental Package <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+
+              <div className="mt-4 grid gap-3 md:grid-cols-2">
+                {accessories.map((accessory) => (
+                  <article
+                    key={accessory.slug}
+                    className="group flex min-h-[148px] overflow-hidden rounded-xl border border-slate-200 bg-slate-50 transition duration-300 hover:border-orange-200 hover:shadow-[0_8px_20px_rgba(15,35,60,0.08)]"
+                  >
+                    <Link
+                      href={`/led-display/accessories/led-accessories/${accessory.slug}/`}
+                      className="relative w-28 shrink-0 overflow-hidden bg-slate-100 sm:w-40"
+                      aria-label={`View ${accessory.title}`}
+                    >
+                      <Image
+                        src={accessory.image}
+                        alt={accessory.title}
+                        fill
+                        sizes="(max-width: 639px) 112px, 160px"
+                        className="object-cover transition duration-500 group-hover:scale-[1.035]"
+                      />
+                    </Link>
+                    <div className="flex min-w-0 flex-1 flex-col p-3">
+                      <span className="text-[9px] font-extrabold uppercase tracking-[0.12em] text-[#e45700]">
+                        {accessory.badge}
+                      </span>
+                      <Link
+                        href={`/led-display/accessories/led-accessories/${accessory.slug}/`}
+                        className="mt-1 text-[13px] font-extrabold leading-4 text-[#071a35] transition hover:text-[#e45700]"
+                      >
+                        {accessory.title}
+                      </Link>
+                      <p className="mt-1 line-clamp-2 text-[10px] leading-4 text-slate-500">{accessory.subtitle}</p>
+                      {accessory.cardPrice ? (
+                        <p className="mt-1 text-[10px] font-bold text-sky-700">{accessory.cardPrice}</p>
+                      ) : null}
+                      <Link
+                        href={`/led-display/accessories/led-accessories/${accessory.slug}/`}
+                        className="mt-auto inline-flex items-center gap-1 text-[10px] font-extrabold text-[#e45700]"
+                      >
+                        View Details <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" />
+                      </Link>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
+type RentalOccasion = {
+  title: string;
+  description: string;
+  image: string;
+  imagePosition?: string;
+  icon: RentalHeroIconName;
+  query: string;
+};
+
+const rentalOccasions: RentalOccasion[] = [
+  {
+    title: "Corporate Event",
+    description: "Conferences, product launches and seminars",
+    image: "/images/project-page/project-pa-system.webp",
+    icon: "events",
+    query: "corporate-event",
+  },
+  {
+    title: "Concert & Live Show",
+    description: "Music concerts, stage shows and festivals",
+    image: "/images/rental/hero/rental-led-hero-banner.webp",
+    imagePosition: "62% center",
+    icon: "processor",
+    query: "concert-live-show",
+  },
+  {
+    title: "Wedding Event",
+    description: "Wedding ceremonies, receptions and special events",
+    image: "/images/rental/P2.6-Rental-LED-Display.webp",
+    icon: "events",
+    query: "wedding-event",
+  },
+  {
+    title: "Stage Backdrop",
+    description: "Stage programs, cultural events and college fests",
+    image: "/images/rental/hero/rental-led-hero-banner.webp",
+    imagePosition: "78% center",
+    icon: "stack",
+    query: "stage-backdrop",
+  },
+  {
+    title: "Exhibition & Trade Show",
+    description: "Exhibitions, product displays and brand promotions",
+    image: "/images/project-page/Project-indoor-showroom.webp",
+    icon: "setup",
+    query: "exhibition-trade-show",
+  },
+  {
+    title: "Outdoor & Festival",
+    description: "Public events, outdoor festivals and large gatherings",
+    image: "/images/project-page/project-rental.webp",
+    imagePosition: "center 42%",
+    icon: "location",
+    query: "outdoor-festival",
+  },
+];
+
+function RentalOccasionShowcase() {
+  return (
+    <section className="mt-7" aria-labelledby="rental-occasion-showcase-heading">
+      <RentalSectionHeading
+        id="rental-occasion-showcase-heading"
+        eyebrow="Choose by Event Type"
+        title="LED Display Rental for Every Occasion"
+        description="From corporate conferences to massive concerts, we provide the right LED screen solution for your event."
+        action={
+          <span className="inline-flex flex-wrap items-center gap-1 text-slate-500">
+            <span className="font-semibold">Need a custom solution?</span>
+            <Link href="/contact/?project=rental-led-display" className="inline-flex items-center gap-1 text-[#e45700] transition hover:text-[#ff6a00]">
+              Contact Our Team <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" />
+            </Link>
+          </span>
+        }
+      />
+
+      <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
+        {rentalOccasions.map((occasion) => (
+          <Link
+            key={occasion.title}
+            href={`/contact/?project=rental-led-display&event=${occasion.query}`}
+            className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_5px_18px_rgba(15,35,60,0.06)] transition duration-300 hover:-translate-y-0.5 hover:border-orange-200 hover:shadow-[0_10px_24px_rgba(15,35,60,0.10)]"
+          >
+            <div className="relative h-24 overflow-hidden bg-slate-100 sm:h-28 xl:h-[92px]">
+              <Image
+                src={occasion.image}
+                alt={`${occasion.title} LED display rental solution`}
+                fill
+                sizes="(max-width: 767px) 50vw, (max-width: 1279px) 33vw, 16vw"
+                className="object-cover transition duration-500 group-hover:scale-105"
+                style={occasion.imagePosition ? { objectPosition: occasion.imagePosition } : undefined}
+              />
+              <span className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black/40 to-transparent" aria-hidden="true" />
+            </div>
+            <div className="flex min-h-[92px] gap-2.5 p-2.5">
+              <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#002f58] text-sky-300 shadow-sm" aria-hidden="true">
+                <RentalHeroIcon name={occasion.icon} className="h-4 w-4" />
+              </span>
+              <span className="flex min-w-0 flex-1 flex-col">
+                <strong className="text-[11px] font-extrabold leading-4 text-[#071a35]">{occasion.title}</strong>
+                <span className="mt-1 text-[9px] leading-[1.4] text-slate-500">{occasion.description}</span>
+                <span className="mt-auto self-end text-[#071a35] transition group-hover:translate-x-0.5 group-hover:text-[#e45700]">
+                  <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" />
+                </span>
+              </span>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default function RentalProductsPage() {
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
  // ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Add one more rental product card locally (no change to productsCatalog needed)
-  const extra: ProductItem = {
-    category: "rental",
-    slug: "p3-91-rental-led-display",
-    title: "P3.91 Rental LED Display",
-    subtitle: "250x250mm rental LED module with SMD1921 lamp, 64x64 resolution, 4500 cd/m2 brightness, and 7680Hz refresh support.",
-    image: "/images/rental/P3.91-Rental-LED-Display.webp",
-    quickFeatures: ["250x250mm universal module", "4500 cd/m2 high brightness", "7680Hz high refresh", "500x500 / 500x1000 rental cabinet ready"],
-    bestFor: ["Stage backdrop", "Wedding events", "Corporate programs", "Concert visuals"],
-    keySpecs: [
-      { k: "Pixel Pitch", v: "P3.91 (3.91mm)" },
-      { k: "LED Type", v: "SMD1921" },
-      { k: "Module Resolution", v: "64 x 64 = 4096 pixels" },
-      { k: "Pixel Density", v: "68,267 dots/m2" },
-      { k: "Module Size", v: "250 x 250 x 15.6 mm" },
-      { k: "Module Weight", v: "0.49 +- 0.02 kg" },
-      { k: "HUB Type", v: "HUB75" },
-      { k: "Brightness", v: "4500 cd/m2" },
-      { k: "Viewing Angle", v: "140 / 120 deg" },
-      { k: "Refresh Rate", v: "7680Hz" },
-      { k: "Video Support", v: "2K, 4K" },
-    ],
-    buildQuality: ["Bottom case texture design improves exterior texture", "New PCB board design for stronger reliability", "Waterproof and moisture-proof front-side gluing treatment"],
-    controlSystem: ["Single-dot brightness calibration supported", "6500K color temperature with 1000K-9500K adjustable range", "Supports 2K / 4K playback with 12-14bit processing depth"],
-    installationNotes: ["Suitable for 500x500mm and 500x1000mm rental cabinets", "Hanging or ground stacking with safety check", "Fast assembly, calibration, and pre-show testing recommended"],
-    supportNotes: ["High brightness with strong heat dissipation for event duty", "Supports 7680Hz refresh for camera-friendly output", "Customized selection recommended for coastal, low-temperature, or high-humidity environments"],
-    faqs: [
-      {
-        q: "Is P3.91 good for stage events?",
-        a: "Yes, P3.91 is widely used for stage rental because it balances clarity, 4500 cd/m2 brightness, and fast setup compatibility with common rental cabinet sizes.",
-      },
-    ],
-  };
-
-  const base = [...rentalCatalog];
 
  // ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ only push extra if slug not already present
-  const list: ProductItem[] = base.some((p) => p.slug === extra.slug) ? base : [...base, extra];
 
-  const uniquePitches = Array.from(new Set(list.map(getPitchLabel))).sort((a, b) =>
-    a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" })
-  );
-  const pitches = ["All", ...uniquePitches] as const;
-
-  const activePitch = "All" as (typeof pitches)[number];
-
-  const buildHref = (pitch: string) => {
-    if (pitch === "All") return "/led-display/rental-display/";
-    const matched = list.find((p) => getPitchLabel(p) === pitch);
-    return matched ? `/led-display/rental-display/${matched.slug}` : "/led-display/rental-display/";
-  };
-
-  const filtered = list.filter((p) => {
-    const pitchOk = activePitch === "All" ? true : getPitchLabel(p) === activePitch;
-    return pitchOk;
-  });
   const stickyAccessorySlugs = ["heavy-duty-flight-case", "power-distribution-box-63a"] as const;
   const stickyAccessories = stickyAccessorySlugs
     .map((slug) => ledAccessoriesCatalog.find((p) => p.slug === slug))
     .filter((x): x is NonNullable<typeof x> => Boolean(x));
-  const displayCards: Array<ProductItem | LedAccessoryProduct> = [...filtered, ...stickyAccessories].filter(
-    (p, idx, arr) => arr.findIndex((x) => x.slug === p.slug) === idx
-  );
-  const mobileDisplayRows = Array.from({ length: Math.ceil(displayCards.length / 4) }, (_, index) =>
-    displayCards.slice(index * 4, index * 4 + 4)
-  );
-
-  const renderDisplayCard = (p: ProductItem | LedAccessoryProduct) => {
-    if ("badge" in p) {
-      const chips = (p.tags?.length ? p.tags : p.quickFeatures?.length ? p.quickFeatures : [p.badge]).slice(0, 3);
-      const bullets = (p.quickFeatures?.length ? p.quickFeatures : p.tags?.length ? p.tags : [p.subtitle]).slice(0, 4);
-
-      return (
-        <ProductGridCard
-          key={p.slug}
-          href={`/led-display/accessories/led-accessories/${p.slug}/`}
-          title={p.title}
-          image={
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={p.image}
-              alt={p.title}
-              className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
-              loading="lazy"
-            />
-          }
-          imageContainerClassName="bg-slate-100"
-          borderColor={`${BRAND.maroon}12`}
-          topLeftBadge={{ text: p.badge, tone: "light" }}
-          topRightBadge={{ text: "Accessories", tone: "dark" }}
-          metaLines={p.cardPrice ? [{ text: p.cardPrice, className: "mt-1 text-sm font-semibold text-sky-700" }] : []}
-          bullets={bullets}
-          chips={chips}
-          accentColor={BRAND.maroon}
-          contactHref="/contact"
-          compactMobile
-          viewDetailsLabel="View details ->"
-        />
-      );
-    }
-
-    const pitchDisplay = getPitchDisplay(p);
-    const category = inferRentalCategory(p);
-
-    return (
-      <ProductGridCard
-        key={p.slug}
-        href={`/led-display/rental-display/${p.slug}/`}
-        title={p.title}
-        image={
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={p.image}
-            alt={p.title}
-            className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
-            loading="lazy"
-          />
-        }
-        imageContainerClassName="bg-slate-100"
-        borderColor={`${BRAND.maroon}12`}
-        topLeftBadge={{ text: "Rental", tone: "light" }}
-        topRightBadge={{ text: category, tone: "dark" }}
-        metaLines={[
-          { text: `Pixel pitch: ${pitchDisplay}` },
-          ...(p.cardPrice ? [{ text: p.cardPrice, className: "mt-1 text-sm font-semibold text-sky-700" }] : []),
-        ]}
-        bullets={p.quickFeatures.slice(0, 4)}
-        chips={p.bestFor.slice(0, 3)}
-        accentColor={BRAND.maroon}
-        contactHref="/contact"
-        compactMobile
-        viewDetailsLabel="View details ->"
-      />
-    );
-  };
-
   return (
     <div className="rental-led-page mx-auto w-full max-w-7xl px-3 pb-8 pt-0 md:px-6" data-rental-led-route-kind="hub">
       <RentalLedHero />
 
-      <section
-        className="mt-5 rounded-[24px] border bg-white p-4 shadow-sm md:mt-6 md:rounded-3xl md:p-6"
-        style={{ borderColor: `${BRAND.maroon}12` }}
-      >
-        {/* PRODUCT GRID (boxed like /led-display/) */}
-        <div className="[&>section:first-child]:mt-0">
-
-      {/* Filters (Indoor-style) */}
-      <section className="mt-8 bg-transparent p-0">
-        <h2 className="hidden text-xl font-bold text-slate-900 md:block">Filter Rental LED Display Options</h2>
-        <p className="mt-2 hidden text-sm text-slate-600 leading-7 md:block">
- Quick navigation by pixel pitch and event type. (Visual filtering links only-no price/stock shown.)
-        </p>
-
-        <div className="mt-4">
-          <div>
-            <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-600">Pixel Pitch</div>
-            <div className="mt-2 flex flex-nowrap items-center gap-2 overflow-x-auto pb-1.5 pt-0.5 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-              {pitches.map((p) => (
-                <Link
-                  key={p}
-                  href={buildHref(p)}
-                  className={`group relative isolate inline-flex min-h-9 shrink-0 items-center justify-center overflow-hidden whitespace-nowrap rounded-full border px-3.5 text-[11px] font-bold leading-none tracking-tight transition-all duration-300 ${
-                    activePitch === p
-                      ? "border-[rgba(255,106,0,0.65)] text-white shadow-[0_8px_18px_rgba(255,106,0,0.22)]"
-                      : "border-cyan-100/70 bg-[rgba(103,232,249,0.10)] text-slate-700 shadow-none hover:border-orange-200 hover:text-slate-900"
-                  }`}
-                  style={
-                    activePitch === p
-                      ? { background: "linear-gradient(135deg, rgba(228,87,0,0.98), rgba(255,106,0,0.98))" }
-                      : undefined
-                  }
-                >
-                  {activePitch === p ? (
-                    <span
-                      className="pointer-events-none absolute inset-0 -z-10 opacity-70"
-                      style={{ background: "linear-gradient(110deg, rgba(255,255,255,0.26), rgba(255,255,255,0.02) 45%, rgba(255,255,255,0.22))" }}
-                    />
-                  ) : null}
-                  {activePitch !== p ? (
-                    <span
-                      className="pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                      style={{ background: "linear-gradient(120deg, rgba(14,165,233,0.15), rgba(37,99,235,0.20), rgba(255,106,0,0.14))" }}
-                    />
-                  ) : null}
-                  {p}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Product Grid (same products, same cards) */}
-      <section className="mt-8">
-        <h2 className="text-2xl font-bold text-slate-900">Rental LED Display Models and Features</h2>
-        <p className="mt-2 hidden text-slate-600 leading-7 md:block">
-          Choose a model based on viewing distance, camera needs, and event setup method. Open any model to see detailed
-          specs and setup notes.
-        </p>
-
-        <div className="space-y-4 md:mt-6 md:grid md:grid-cols-2 md:gap-3 md:space-y-0 lg:grid-cols-3">
-          {mobileDisplayRows.map((row, index) => (
-            <ResponsiveProductCarousel
-              key={`mobile-row-${index}`}
-              className={index === 0 ? "mt-6 md:mt-0" : "mt-4 md:mt-0"}
-              desktopContents
-            >
-              {row.map((p) => renderDisplayCard(p))}
-            </ResponsiveProductCarousel>
-          ))}
-        </div>
-
-        {filtered.length === 0 && (
-          <div className="mt-6 rounded-2xl border bg-white p-6 text-sm text-slate-700">
-            No models found for this filter. Try selecting <b>All</b>.
-          </div>
-        )}
-      </section>
-        </div>
-      </section>
+      <RentalModelShowcase
+        products={rentalCatalog}
+        accessories={stickyAccessories}
+      />
+      <RentalOccasionShowcase />
 
       <Section
         title="Types of LED Display Rental Solutions"

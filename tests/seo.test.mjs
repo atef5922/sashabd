@@ -2017,9 +2017,19 @@ test("rental LED duplicate-prone groups render one canonical semantic set", () =
   assert.match(source, /quality=\{95\}/);
   assert.match(source, /Make Your Event/);
   assert.match(source, /Bigger &amp;.*Brighter/);
-  assert.equal(occurrences(source, "mobileDisplayRows.map((row, index)"), 1);
+  assert.equal(occurrences(source, "Filter Rental LED Display Options"), 0);
+  assert.equal(occurrences(source, "Rental LED Display Models and Features"), 0);
+  assert.equal(occurrences(source, "mobileDisplayRows.map((row, index)"), 0);
   assert.equal(occurrences(source, "displayCards.map((p) => renderDisplayCard(p))"), 0);
-  assert.match(source, /desktopContents/);
+  assert.match(source, /id="rental-solutions-toggle"/);
+  assert.match(source, /htmlFor="rental-solutions-toggle"/);
+  assert.match(source, /View Complete Rental Package/);
+  assert.match(source, /Show Less/);
+  assert.match(source, /Complete Your Rental Setup/);
+  assert.match(source, /Get Complete Rental Package/);
+  assert.match(source, /#rental-solutions-toggle:checked ~ #rental-expanded-solutions/);
+  assert.match(source, /accessories=\{stickyAccessories\}/);
+  assert.doesNotMatch(source, /<ProductGridCard/);
   assert.equal(occurrences(cardGrid, "items.map((x, index)"), 1);
 
   for (const [start, end, labels] of [
