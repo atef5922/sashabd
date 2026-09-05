@@ -1450,6 +1450,7 @@ label {
   .rental-explore-grid {
     grid-template-columns: 1fr;
   }
+
 }
 
 @media (max-width: 639px) {
@@ -1547,6 +1548,7 @@ label {
   .rental-explore-image {
     min-height: 7.6rem;
   }
+
 }
 
 @media (min-width: 1024px) {

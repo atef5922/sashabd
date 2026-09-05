@@ -1127,6 +1127,84 @@ function RentalExploreCategories() {
   );
 }
 
+function RentalFinalCta({ whatsappHref }: { whatsappHref: string }) {
+  const reassuranceItems: Array<{ title: string; icon: RentalHeroIconName }> = [
+    { title: "Fast Response", icon: "truck" },
+    { title: "Reliable Service", icon: "shield" },
+    { title: "Expert Support", icon: "headset" },
+  ];
+
+  return (
+    <section
+      className="relative left-1/2 right-1/2 -mx-[50vw] -mb-8 mt-8 min-h-[140px] w-screen overflow-hidden bg-[#03162f] text-white"
+      style={{ position: "relative", overflow: "hidden", backgroundColor: "#03162f" }}
+      aria-labelledby="rental-final-cta-heading"
+    >
+      <Image
+        src="/images/rental/hero/rental-led-hero-banner.webp"
+        alt=""
+        fill
+        sizes="100vw"
+        quality={90}
+        className="object-cover"
+        style={{ objectPosition: "center 54%" }}
+      />
+      <span
+        className="absolute inset-0"
+        style={{ background: "linear-gradient(90deg, rgba(2,18,42,.98) 0%, rgba(3,25,57,.94) 43%, rgba(8,24,54,.72) 70%, rgba(10,17,40,.84) 100%)" }}
+        aria-hidden="true"
+      />
+
+      <div className="relative z-10 mx-auto grid min-h-[140px] w-full max-w-7xl items-center gap-5 px-3 py-6 md:px-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-10">
+        <div className="min-w-0 text-left">
+          <p className="flex items-center gap-2.5 !text-left text-[9px] font-black uppercase leading-3 tracking-[0.22em] text-white/75">
+            <span className="block h-0.5 w-5 shrink-0 rounded-full bg-[#ff6a00]" aria-hidden="true" />
+            Ready to Plan Your Event?
+          </p>
+          <h2 id="rental-final-cta-heading" className="mt-1.5 !text-left text-[23px] font-black leading-[1.08] tracking-[-0.025em] text-white md:text-[28px]">
+            Let&apos;s Create an <strong className="font-black text-[#ff6a00]">Amazing LED Event</strong> Together
+          </h2>
+          <p className="mt-1.5 max-w-2xl !text-left text-[11px] font-medium leading-4 text-white/80 md:text-xs">
+            Get the right rental LED display solution for your next event. Our team is ready to help.
+          </p>
+        </div>
+
+        <div className="w-full lg:w-[560px]">
+          <div className="grid gap-2.5 sm:grid-cols-2">
+            <Link
+              href="/contact/?project=rental-led-display&service=rental-quotation"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#ff6a00] bg-[#ff650f] px-5 text-[11px] font-black text-white shadow-[0_8px_20px_rgba(255,106,0,0.24)] transition hover:-translate-y-0.5 hover:bg-[#e45700]"
+            >
+              Request Rental Quote <RentalHeroIcon name="arrow" className="h-4 w-4" />
+            </Link>
+            <a
+              href={whatsappHref}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-white/70 bg-[#011027]/65 px-5 text-[11px] font-black text-white backdrop-blur-md transition hover:-translate-y-0.5 hover:border-[#24d366] hover:bg-emerald-900/70"
+            >
+              <svg viewBox="0 0 24 24" className="h-4 w-4 text-[#24d366]" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M20 11.6a8 8 0 0 1-11.7 7.1L4 20l1.3-4.1A8 8 0 1 1 20 11.6Z" />
+                <path d="M9 8.7c.2 2.8 2.4 5 5.2 5.3M14.2 14l1.1-1.2M9 8.7l1.1-.9" />
+              </svg>
+              Chat on WhatsApp
+            </a>
+          </div>
+
+          <ul className="mt-3 grid grid-cols-3 gap-1.5" aria-label="Rental service benefits">
+            {reassuranceItems.map((item) => (
+              <li key={item.title} className="flex min-w-0 items-center justify-center gap-1.5 text-center text-[8px] font-bold leading-3 text-white/80 sm:text-[9px]">
+                <RentalHeroIcon name={item.icon} className="h-4 w-4 shrink-0 text-[#d8e9ff]" />
+                <span>{item.title}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function RentalProductsPage() {
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
  // ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Add one more rental product card locally (no change to productsCatalog needed)
@@ -1197,25 +1275,9 @@ export default function RentalProductsPage() {
             },
           ]}
         />
-
-        <div className="mt-7 grid grid-cols-2 gap-3 md:flex md:flex-wrap">
-          <Link
-            href="/contact/"
-            className="inline-flex min-h-10 items-center justify-center rounded-[10px] px-3 py-2 text-center text-[12px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-6 md:py-3 md:text-sm"
-            style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-          >
-            Get Event Consultation -&gt;
-          </Link>
-          <a
-            href={wa}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex min-h-10 items-center justify-center rounded-[10px] bg-emerald-600 px-3 py-2 text-center text-[12px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md md:rounded-xl md:px-6 md:py-3 md:text-sm"
-          >
-            WhatsApp for Booking
-          </a>
-        </div>
       </Section>
+
+      <RentalFinalCta whatsappHref={wa} />
     </div>
   );
 }

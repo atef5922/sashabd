@@ -2013,7 +2013,8 @@ test("rental LED duplicate-prone groups render one canonical semantic set", () =
   const whyChoose = sectionBetween(source, "const whyChooseRental", "const rentalProcessSteps");
   const process = sectionBetween(source, "const rentalProcessSteps", "const rentalPlanningGroups");
   const planning = sectionBetween(source, "const rentalPlanningGroups", "const rentalExploreCategories");
-  const explore = sectionBetween(source, "const rentalExploreCategories", "export default function RentalProductsPage");
+  const explore = sectionBetween(source, "const rentalExploreCategories", "function RentalFinalCta");
+  const finalCta = sectionBetween(source, "function RentalFinalCta", "export default function RentalProductsPage");
 
   assert.equal(occurrences(source, "singleDom"), 1);
   assert.match(sectionWrapper, /singleDom/);
@@ -2052,6 +2053,7 @@ test("rental LED duplicate-prone groups render one canonical semantic set", () =
     "<RentalProcessTimeline />",
     "<RentalPlanningChecklist whatsappHref={wa} />",
     "<RentalExploreCategories />",
+    "<RentalFinalCta whatsappHref={wa} />",
   ]) {
     assert.equal(occurrences(source, heading), 1, `${heading} must render once`);
   }
@@ -2075,6 +2077,11 @@ test("rental LED duplicate-prone groups render one canonical semantic set", () =
   for (const label of ["Indoor LED Displays", "Outdoor LED Displays", "Rental LED Displays"]) {
     assert.equal(occurrences(explore, label), 1, `${label} must appear once in Explore`);
   }
+  for (const label of ["Request Rental Quote", "Chat on WhatsApp", "Fast Response", "Reliable Service", "Expert Support"]) {
+    assert.equal(occurrences(finalCta, label), 1, `${label} must appear once in the final rental CTA`);
+  }
+  assert.equal(occurrences(source, "Get Event Consultation -&gt;"), 0);
+  assert.equal(occurrences(source, "WhatsApp for Booking"), 0);
 });
 
 test("indoor LED page duplicate-prone groups render from one semantic source", () => {
