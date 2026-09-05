@@ -1,0 +1,177 @@
+/* Keep the existing 1280px design; use the home page's container limits above it. */
+.page {
+  --rental-width: clamp(80rem, 90vw, 108rem);
+  --rental-unit: 1px;
+  max-width: var(--rental-width);
+}
+
+.page > section > :global(.mx-auto),
+.page :global(.rental-process-inner) {
+  max-width: var(--rental-width);
+}
+
+.sectionHeading > div:first-child {
+  min-width: 0;
+}
+
+/* FAQ questions must wrap before pushing their controls out of the card. */
+.page [aria-labelledby="rental-faq-heading"] button > div:first-child > div:last-child {
+  white-space: normal;
+}
+
+.page [aria-labelledby="rental-faq-heading"] button > div:last-child,
+.page [aria-labelledby="rental-faq-heading"] button > div:first-child > div:first-child {
+  flex-shrink: 0;
+}
+
+@media (min-width: 1440px) {
+  .page {
+    --rental-unit: calc(var(--rental-width) / 1280);
+    --spacing: calc(4 * var(--rental-unit));
+    --text-xs: calc(12 * var(--rental-unit));
+    --text-sm: calc(14 * var(--rental-unit));
+    --text-base: calc(16 * var(--rental-unit));
+    --text-lg: calc(18 * var(--rental-unit));
+    --text-xl: calc(20 * var(--rental-unit));
+    --radius-lg: calc(8 * var(--rental-unit));
+    --radius-xl: calc(12 * var(--rental-unit));
+    --radius-2xl: calc(16 * var(--rental-unit));
+    --container-2xl: calc(672 * var(--rental-unit));
+    --site-h2-size: calc(26 * var(--rental-unit));
+    --site-h3-size: calc(20 * var(--rental-unit));
+  }
+
+  .hero,
+  .heroFrame {
+    min-height: clamp(22rem, 28.5vw, calc(432 * var(--rental-unit)));
+  }
+
+  .heroFrame > div:first-child > h1 {
+    font-size: clamp(2.2rem, 3.15vw, calc(48 * var(--rental-unit))) !important;
+  }
+
+  .heroFrame > div:first-child > p:last-child {
+    max-width: calc(544 * var(--rental-unit));
+    font-size: calc(13 * var(--rental-unit));
+  }
+
+  .heroFrame > ul {
+    max-width: calc(672 * var(--rental-unit));
+  }
+
+  .modelsGrid > article {
+    min-height: calc(220 * var(--rental-unit));
+  }
+
+  .page :global(#rental-expanded-solutions) article {
+    min-height: calc(148 * var(--rental-unit));
+  }
+
+  .page [aria-labelledby="rental-occasion-showcase-heading"] > div > :global(.grid) > a > div:first-child {
+    height: calc(92 * var(--rental-unit));
+  }
+
+  .page [aria-labelledby="rental-occasion-showcase-heading"] > div > :global(.grid) > a > div:last-child {
+    min-height: calc(92 * var(--rental-unit));
+  }
+
+  .page :global(.rental-trust-strip-inner) {
+    max-width: var(--rental-width);
+  }
+
+  .page [aria-labelledby="rental-final-cta-heading"] > :global(.mx-auto) {
+    min-height: calc(140 * var(--rental-unit));
+  }
+
+  .page [aria-labelledby="rental-final-cta-heading"] > :global(.mx-auto) > div:last-child {
+    width: calc(560 * var(--rental-unit));
+  }
+
+  /* Arbitrary Tailwind text sizes need the same scale as spacing and icons. */
+  .page :global(.text-\[8px\]) { font-size: calc(8 * var(--rental-unit)); }
+  .page :global(.text-\[9px\]) { font-size: calc(9 * var(--rental-unit)); }
+  .page :global(.text-\[10px\]) { font-size: calc(10 * var(--rental-unit)); }
+  .page :global(.text-\[10\.5px\]) { font-size: calc(10.5 * var(--rental-unit)); }
+  .page :global(.text-\[11px\]) { font-size: calc(11 * var(--rental-unit)); }
+  .page :global(.text-\[12px\]) { font-size: calc(12 * var(--rental-unit)); }
+  .page :global(.text-\[13px\]) { font-size: calc(13 * var(--rental-unit)); }
+  .page :global(.text-\[14px\]) { font-size: calc(14 * var(--rental-unit)); }
+  .page :global(.text-\[17px\]) { font-size: calc(17 * var(--rental-unit)); }
+  .page :global(.sm\:text-\[8\.5px\]) { font-size: calc(8.5 * var(--rental-unit)); }
+  .page :global(.sm\:text-\[9px\]) { font-size: calc(9 * var(--rental-unit)); }
+  .page :global(.sm\:text-\[9\.5px\]) { font-size: calc(9.5 * var(--rental-unit)); }
+  .page :global(.sm\:text-\[10px\]) { font-size: calc(10 * var(--rental-unit)); }
+  .page :global(.sm\:text-\[11px\]) { font-size: calc(11 * var(--rental-unit)); }
+  .page :global(.sm\:text-xs),
+  .page :global(.md\:text-xs) { font-size: var(--text-xs); }
+  .page :global(.md\:text-\[13px\]) { font-size: calc(13 * var(--rental-unit)); }
+}
+
+@media (min-width: 2200px) {
+  .page {
+    --rental-width: min(90vw, 128rem);
+  }
+}
+
+/* Retain the desktop rows at 110% zoom on a 1366px display. */
+@media (min-width: 1200px) and (max-width: 1279px) {
+  .modelsGrid,
+  .page :global(.rental-pitch-guide-grid) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .packagesGrid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .page [aria-labelledby="rental-occasion-showcase-heading"] > div > :global(.grid),
+  .page [aria-labelledby="rental-why-choose-heading"] > div > :global(.grid) {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .modelsGrid > article {
+    grid-template-columns: 40% minmax(0, 1fr) !important;
+  }
+
+  .page :global(.rental-pitch-card-content) {
+    padding-left: 1.4rem;
+  }
+
+  .page :global(.rental-pitch-distance) {
+    font-size: clamp(17px, 1.5vw, 20px) !important;
+  }
+
+  .page [aria-labelledby="rental-why-choose-heading"] article > div {
+    gap: 0.5rem;
+  }
+
+  .page [aria-labelledby="rental-why-choose-heading"] article h3 {
+    font-size: 18px !important;
+  }
+}
+
+/* Avoid scrollbar-width drift in full-bleed bands on smaller viewports. */
+@media (max-width: 1279px) {
+  .page {
+    --rental-gutter: 12px;
+  }
+
+  .page > section:is(:global(.w-screen), :global(.rental-process-section)) {
+    left: auto;
+    right: auto;
+    width: calc(100% + 2 * var(--rental-gutter));
+    margin-left: calc(-1 * var(--rental-gutter));
+    margin-right: calc(-1 * var(--rental-gutter));
+  }
+
+  .page :global(.rental-trust-copy) > strong,
+  .page :global(.rental-trust-copy) > span {
+    white-space: normal;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .page {
+    --rental-gutter: 24px;
+  }
+}

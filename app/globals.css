@@ -740,11 +740,12 @@ label {
 }
 
 /* Rental pixel-pitch guide: fixed card geometry keeps media and copy separated. */
+/* Rental dimensions share a page-scoped fluid unit; 1px preserves the base design. */
 .rental-pitch-guide-grid {
   display: flex;
-  gap: 0.75rem;
-  margin: 1rem -0.125rem 0;
-  padding: 0.125rem 0.125rem 0.25rem;
+  gap: calc(12 * var(--rental-unit, 1px));
+  margin: calc(16 * var(--rental-unit, 1px)) calc(-2 * var(--rental-unit, 1px)) 0;
+  padding: calc(2 * var(--rental-unit, 1px)) calc(2 * var(--rental-unit, 1px)) calc(4 * var(--rental-unit, 1px));
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
@@ -759,11 +760,11 @@ label {
   position: relative;
   display: flex;
   flex: 0 0 90%;
-  min-height: 9.5rem;
+  min-height: calc(152 * var(--rental-unit, 1px));
   overflow: hidden;
   scroll-snap-align: start;
   border: 1px solid #dce7f4;
-  border-radius: 0.75rem;
+  border-radius: calc(12 * var(--rental-unit, 1px));
   background: #ffffff;
   box-shadow: 0 7px 22px rgba(8, 31, 62, 0.08);
   transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
@@ -778,7 +779,7 @@ label {
 .rental-pitch-media {
   position: relative;
   flex: 0 0 42%;
-  min-height: 9.5rem;
+  min-height: calc(152 * var(--rental-unit, 1px));
   overflow: hidden;
   background: #eaf1f8;
 }
@@ -794,11 +795,11 @@ label {
 .rental-pitch-card-icon {
   position: absolute;
   z-index: 2;
-  top: 0.75rem;
+  top: calc(12 * var(--rental-unit, 1px));
   left: 42%;
   display: inline-flex;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: calc(40 * var(--rental-unit, 1px));
+  height: calc(40 * var(--rental-unit, 1px));
   align-items: center;
   justify-content: center;
   color: #0876ef;
@@ -812,42 +813,42 @@ label {
 .rental-pitch-card-content {
   flex: 1 1 auto;
   min-width: 0;
-  padding: 0.75rem 0.625rem 0.75rem 1.75rem;
+  padding: calc(12 * var(--rental-unit, 1px)) calc(10 * var(--rental-unit, 1px)) calc(12 * var(--rental-unit, 1px)) calc(28 * var(--rental-unit, 1px));
   text-align: left;
 }
 
 .rental-pitch-distance {
   margin: 0;
   color: #071a35;
-  font-size: 0.875rem;
+  font-size: calc(14 * var(--rental-unit, 1px));
   font-weight: 900;
-  line-height: 1.125rem;
+  line-height: calc(18 * var(--rental-unit, 1px));
   white-space: nowrap;
 }
 
 .rental-pitch-name {
-  margin: 0.125rem 0 0 !important;
+  margin: calc(2 * var(--rental-unit, 1px)) 0 0 !important;
   color: #0769e8;
-  font-size: 1.3rem !important;
+  font-size: calc(20.8 * var(--rental-unit, 1px)) !important;
   font-weight: 900;
-  line-height: 1.45rem !important;
+  line-height: calc(23.2 * var(--rental-unit, 1px)) !important;
   text-align: left !important;
 }
 
 .rental-pitch-points {
-  margin-top: 0.55rem;
+  margin-top: calc(8.8 * var(--rental-unit, 1px));
   display: grid;
-  gap: 0.4rem;
+  gap: calc(6.4 * var(--rental-unit, 1px));
 }
 
 .rental-pitch-point {
   display: flex;
   align-items: flex-start;
-  gap: 0.4rem;
+  gap: calc(6.4 * var(--rental-unit, 1px));
   color: #475569;
-  font-size: 0.64rem;
+  font-size: calc(10.24 * var(--rental-unit, 1px));
   font-weight: 500;
-  line-height: 0.88rem;
+  line-height: calc(14.08 * var(--rental-unit, 1px));
   text-align: left !important;
 }
 
@@ -855,7 +856,7 @@ label {
   flex: 0 0 auto;
   color: #075fd7;
   font-weight: 900;
-  line-height: 0.88rem;
+  line-height: calc(14.08 * var(--rental-unit, 1px));
 }
 
 @media (min-width: 640px) {
@@ -902,9 +903,9 @@ label {
 
 .rental-trust-strip-inner {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(15.5rem, 28%);
+  grid-template-columns: minmax(0, 1fr) minmax(calc(248 * var(--rental-unit, 1px)), 28%);
   width: 100%;
-  max-width: min(120rem, calc(100vw - 2.5rem));
+  max-width: min(calc(1920 * var(--rental-unit, 1px)), calc(100vw - calc(40 * var(--rental-unit, 1px))));
   margin: 0 auto;
 }
 
@@ -917,10 +918,10 @@ label {
 .rental-trust-item {
   display: flex;
   min-width: 0;
-  min-height: 6rem;
+  min-height: calc(96 * var(--rental-unit, 1px));
   align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 1.15rem;
+  gap: calc(12 * var(--rental-unit, 1px));
+  padding: calc(16 * var(--rental-unit, 1px)) calc(18.4 * var(--rental-unit, 1px));
 }
 
 .rental-trust-item + .rental-trust-item {
@@ -929,9 +930,9 @@ label {
 
 .rental-trust-icon {
   display: inline-flex;
-  width: 2.75rem;
-  height: 2.75rem;
-  flex: 0 0 2.75rem;
+  width: calc(44 * var(--rental-unit, 1px));
+  height: calc(44 * var(--rental-unit, 1px));
+  flex: 0 0 calc(44 * var(--rental-unit, 1px));
   align-items: center;
   justify-content: center;
   color: #0876ef;
@@ -950,25 +951,25 @@ label {
 .rental-trust-copy strong {
   display: block;
   color: #071a35;
-  font-size: 1rem;
+  font-size: calc(16 * var(--rental-unit, 1px));
   font-weight: 900;
-  line-height: 1.15rem;
+  line-height: calc(18.4 * var(--rental-unit, 1px));
   white-space: nowrap;
 }
 
 .rental-trust-copy > span {
   display: block;
-  margin-top: 0.2rem;
+  margin-top: calc(3.2 * var(--rental-unit, 1px));
   color: #475569;
-  font-size: 0.62rem;
+  font-size: calc(9.92 * var(--rental-unit, 1px));
   font-weight: 500;
-  line-height: 0.82rem;
+  line-height: calc(13.12 * var(--rental-unit, 1px));
   white-space: nowrap;
 }
 
 .rental-trust-visual {
   position: relative;
-  min-height: 6rem;
+  min-height: calc(96 * var(--rental-unit, 1px));
   overflow: hidden;
 }
 
@@ -986,10 +987,10 @@ label {
   margin: 0 !important;
   color: #071a35;
   font-family: "Segoe Print", "Comic Sans MS", cursive;
-  font-size: 0.95rem !important;
+  font-size: calc(15.2 * var(--rental-unit, 1px)) !important;
   font-style: italic;
   font-weight: 700;
-  line-height: 1.12rem !important;
+  line-height: calc(17.92 * var(--rental-unit, 1px)) !important;
   text-align: center !important;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
   transform: translateY(-50%) rotate(-4deg);
@@ -1001,9 +1002,9 @@ label {
 
 .rental-trust-message > i {
   display: block;
-  width: 3.2rem;
-  height: 0.15rem;
-  margin: 0.4rem auto 0;
+  width: calc(51.2 * var(--rental-unit, 1px));
+  height: calc(2.4 * var(--rental-unit, 1px));
+  margin: calc(6.4 * var(--rental-unit, 1px)) auto 0;
   background: #ff6a00;
   border-radius: 9999px;
   transform: rotate(-7deg);
@@ -1015,7 +1016,7 @@ label {
   }
 
   .rental-trust-visual {
-    min-height: 6.5rem;
+    min-height: calc(104 * var(--rental-unit, 1px));
     border-top: 1px solid rgba(126, 151, 184, 0.24);
   }
 
@@ -1026,7 +1027,7 @@ label {
 
 @media (max-width: 639px) {
   .rental-trust-strip-inner {
-    max-width: calc(100vw - 1.5rem);
+    max-width: calc(100vw - calc(24 * var(--rental-unit, 1px)));
   }
 
   .rental-trust-items {
@@ -1034,9 +1035,9 @@ label {
   }
 
   .rental-trust-item {
-    min-height: 5rem;
-    gap: 0.55rem;
-    padding: 0.75rem 0.5rem;
+    min-height: calc(80 * var(--rental-unit, 1px));
+    gap: calc(8.8 * var(--rental-unit, 1px));
+    padding: calc(12 * var(--rental-unit, 1px)) calc(8 * var(--rental-unit, 1px));
   }
 
   .rental-trust-item:nth-child(odd) {
@@ -1052,24 +1053,24 @@ label {
   }
 
   .rental-trust-icon {
-    width: 2.35rem;
-    height: 2.35rem;
-    flex-basis: 2.35rem;
+    width: calc(37.6 * var(--rental-unit, 1px));
+    height: calc(37.6 * var(--rental-unit, 1px));
+    flex-basis: calc(37.6 * var(--rental-unit, 1px));
   }
 
   .rental-trust-copy strong {
-    font-size: 0.78rem;
-    line-height: 0.95rem;
+    font-size: calc(12.48 * var(--rental-unit, 1px));
+    line-height: calc(15.2 * var(--rental-unit, 1px));
   }
 
   .rental-trust-copy > span {
-    font-size: 0.52rem;
-    line-height: 0.7rem;
+    font-size: calc(8.32 * var(--rental-unit, 1px));
+    line-height: calc(11.2 * var(--rental-unit, 1px));
     white-space: normal;
   }
 
   .rental-trust-visual {
-    min-height: 5.5rem;
+    min-height: calc(88 * var(--rental-unit, 1px));
   }
 }
 
@@ -1078,7 +1079,7 @@ label {
   position: relative;
   left: 50%;
   width: 100vw;
-  margin-top: 2rem;
+  margin-top: calc(32 * var(--rental-unit, 1px));
   margin-left: -50vw;
   color: #071a35;
   border-top: 1px solid #dbeafb;
@@ -1088,16 +1089,16 @@ label {
 
 .rental-process-inner {
   width: 100%;
-  max-width: 80rem;
+  max-width: calc(1280 * var(--rental-unit, 1px));
   margin: 0 auto;
-  padding: 1.4rem 1.5rem 1.6rem;
+  padding: calc(22.4 * var(--rental-unit, 1px)) calc(24 * var(--rental-unit, 1px)) calc(25.6 * var(--rental-unit, 1px));
 }
 
 .rental-process-timeline {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 0;
-  margin: 1.15rem 0 0;
+  margin: calc(18.4 * var(--rental-unit, 1px)) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -1105,7 +1106,7 @@ label {
 .rental-process-step {
   position: relative;
   min-width: 0;
-  padding: 0 0.7rem;
+  padding: 0 calc(11.2 * var(--rental-unit, 1px));
   list-style: none;
   text-align: center;
 }
@@ -1114,9 +1115,9 @@ label {
   content: "";
   position: absolute;
   z-index: 0;
-  top: 1.55rem;
-  left: calc(50% + 2.15rem);
-  width: calc(100% - 4.3rem);
+  top: calc(24.8 * var(--rental-unit, 1px));
+  left: calc(50% + calc(34.4 * var(--rental-unit, 1px)));
+  width: calc(100% - calc(68.8 * var(--rental-unit, 1px)));
   border-top: 2px dotted #a8caf0;
 }
 
@@ -1124,18 +1125,18 @@ label {
   position: relative;
   z-index: 1;
   display: flex;
-  min-height: 3.2rem;
+  min-height: calc(51.2 * var(--rental-unit, 1px));
   align-items: flex-start;
   justify-content: center;
 }
 
 .rental-process-number {
   position: absolute;
-  top: 0.8rem;
-  left: calc(50% - 3.1rem);
+  top: calc(12.8 * var(--rental-unit, 1px));
+  left: calc(50% - calc(49.6 * var(--rental-unit, 1px)));
   display: inline-flex;
-  width: 1.35rem;
-  height: 1.35rem;
+  width: calc(21.6 * var(--rental-unit, 1px));
+  height: calc(21.6 * var(--rental-unit, 1px));
   align-items: center;
   justify-content: center;
   color: #ffffff;
@@ -1143,15 +1144,15 @@ label {
   border-radius: 9999px;
   background: #126be2;
   box-shadow: 0 3px 8px rgba(18, 107, 226, 0.2);
-  font-size: 0.62rem;
+  font-size: calc(9.92 * var(--rental-unit, 1px));
   font-weight: 900;
   line-height: 1;
 }
 
 .rental-process-icon {
   display: inline-flex;
-  width: 3.1rem;
-  height: 3.1rem;
+  width: calc(49.6 * var(--rental-unit, 1px));
+  height: calc(49.6 * var(--rental-unit, 1px));
   align-items: center;
   justify-content: center;
   color: #0876ef;
@@ -1162,43 +1163,43 @@ label {
 }
 
 .rental-process-copy {
-  margin-top: 0.45rem;
+  margin-top: calc(7.2 * var(--rental-unit, 1px));
   text-align: center;
 }
 
 .rental-process-copy h3 {
   display: flex;
-  min-height: 2rem;
+  min-height: calc(32 * var(--rental-unit, 1px));
   align-items: flex-start;
   justify-content: center;
   margin: 0;
   color: #071a35;
-  font-size: 0.78rem;
+  font-size: calc(12.48 * var(--rental-unit, 1px));
   font-weight: 900;
-  line-height: 1rem;
+  line-height: calc(16 * var(--rental-unit, 1px));
 }
 
 .rental-process-copy p {
-  max-width: 10.5rem;
-  margin: 0.3rem auto 0 !important;
+  max-width: calc(168 * var(--rental-unit, 1px));
+  margin: calc(4.8 * var(--rental-unit, 1px)) auto 0 !important;
   color: #64748b;
-  font-size: 0.61rem !important;
+  font-size: calc(9.76 * var(--rental-unit, 1px)) !important;
   font-weight: 500;
-  line-height: 0.84rem !important;
+  line-height: calc(13.44 * var(--rental-unit, 1px)) !important;
   text-align: center !important;
 }
 
 /* Consolidated planning and setup checklist. */
 .rental-planning-section {
-  margin-top: 2rem;
-  scroll-margin-top: 6rem;
+  margin-top: calc(32 * var(--rental-unit, 1px));
+  scroll-margin-top: calc(96 * var(--rental-unit, 1px));
 }
 
 .rental-planning-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.8rem;
-  margin-top: 1rem;
+  gap: calc(12.8 * var(--rental-unit, 1px));
+  margin-top: calc(16 * var(--rental-unit, 1px));
 }
 
 .rental-planning-card {
@@ -1206,10 +1207,10 @@ label {
   min-width: 0;
   overflow: hidden;
   border: 1px solid #dce7f4;
-  border-radius: 0.9rem;
+  border-radius: calc(14.4 * var(--rental-unit, 1px));
   background: #ffffff;
   box-shadow: 0 6px 18px rgba(8, 31, 62, 0.05);
-  padding: 1rem;
+  padding: calc(16 * var(--rental-unit, 1px));
   transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
 }
 
@@ -1222,22 +1223,22 @@ label {
 .rental-planning-card-header {
   position: relative;
   display: flex;
-  min-height: 4.35rem;
+  min-height: calc(69.6 * var(--rental-unit, 1px));
   min-width: 0;
   align-items: flex-start;
-  gap: 0.7rem;
-  padding-right: 1.5rem;
+  gap: calc(11.2 * var(--rental-unit, 1px));
+  padding-right: calc(24 * var(--rental-unit, 1px));
 }
 
 .rental-planning-icon {
   display: inline-flex;
-  width: 2.5rem;
-  height: 2.5rem;
-  flex: 0 0 2.5rem;
+  width: calc(40 * var(--rental-unit, 1px));
+  height: calc(40 * var(--rental-unit, 1px));
+  flex: 0 0 calc(40 * var(--rental-unit, 1px));
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  border-radius: 0.7rem;
+  border-radius: calc(11.2 * var(--rental-unit, 1px));
   background: linear-gradient(135deg, #1686f8, #075fd7);
   box-shadow: 0 7px 16px rgba(7, 95, 215, 0.2);
 }
@@ -1245,33 +1246,33 @@ label {
 .rental-planning-card-header h3 {
   margin: 0;
   color: #071a35;
-  font-size: 0.82rem;
+  font-size: calc(13.12 * var(--rental-unit, 1px));
   font-weight: 900;
-  line-height: 1.05rem;
+  line-height: calc(16.8 * var(--rental-unit, 1px));
 }
 
 .rental-planning-card-header p {
-  margin: 0.25rem 0 0 !important;
+  margin: calc(4 * var(--rental-unit, 1px)) 0 0 !important;
   color: #64748b;
-  font-size: 0.59rem !important;
-  line-height: 0.8rem !important;
+  font-size: calc(9.44 * var(--rental-unit, 1px)) !important;
+  line-height: calc(12.8 * var(--rental-unit, 1px)) !important;
   text-align: left !important;
 }
 
 .rental-planning-index {
   position: absolute;
-  top: -0.15rem;
-  right: -0.1rem;
+  top: calc(-2.4 * var(--rental-unit, 1px));
+  right: calc(-1.6 * var(--rental-unit, 1px));
   color: #d8e8fb;
-  font-size: 1rem;
+  font-size: calc(16 * var(--rental-unit, 1px));
   font-weight: 900;
   line-height: 1;
 }
 
 .rental-planning-card > ul {
   display: grid;
-  gap: 0.5rem;
-  margin: 0.9rem 0 0;
+  gap: calc(8 * var(--rental-unit, 1px));
+  margin: calc(14.4 * var(--rental-unit, 1px)) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -1279,11 +1280,11 @@ label {
 .rental-planning-card > ul > li {
   display: flex;
   align-items: flex-start;
-  gap: 0.5rem;
+  gap: calc(8 * var(--rental-unit, 1px));
   color: #475569;
-  font-size: 0.66rem;
+  font-size: calc(10.56 * var(--rental-unit, 1px));
   font-weight: 500;
-  line-height: 0.9rem;
+  line-height: calc(14.4 * var(--rental-unit, 1px));
   text-align: left;
 }
 
@@ -1297,39 +1298,39 @@ label {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  margin-top: 0.9rem;
-  padding: 0.8rem 0.9rem;
+  gap: calc(16 * var(--rental-unit, 1px));
+  margin-top: calc(14.4 * var(--rental-unit, 1px));
+  padding: calc(12.8 * var(--rental-unit, 1px)) calc(14.4 * var(--rental-unit, 1px));
   border: 1px solid #dce8f7;
-  border-radius: 0.75rem;
+  border-radius: calc(12 * var(--rental-unit, 1px));
   background: rgba(239, 246, 255, 0.74);
 }
 
 .rental-planning-actions > p {
   margin: 0 !important;
   color: #475569;
-  font-size: 0.66rem !important;
-  line-height: 0.95rem !important;
+  font-size: calc(10.56 * var(--rental-unit, 1px)) !important;
+  line-height: calc(15.2 * var(--rental-unit, 1px)) !important;
   text-align: left !important;
 }
 
 .rental-planning-actions > div {
   display: flex;
   flex: 0 0 auto;
-  gap: 0.5rem;
+  gap: calc(8 * var(--rental-unit, 1px));
 }
 
 .rental-planning-actions a {
   display: inline-flex;
-  min-height: 2.2rem;
+  min-height: calc(35.2 * var(--rental-unit, 1px));
   align-items: center;
   justify-content: center;
   border: 1px solid #126be2;
-  border-radius: 0.55rem;
-  padding: 0.45rem 0.9rem;
+  border-radius: calc(8.8 * var(--rental-unit, 1px));
+  padding: calc(7.2 * var(--rental-unit, 1px)) calc(14.4 * var(--rental-unit, 1px));
   color: #ffffff;
   background: #126be2;
-  font-size: 0.64rem;
+  font-size: calc(10.24 * var(--rental-unit, 1px));
   font-weight: 800;
   line-height: 1;
   transition: transform 180ms ease, background-color 180ms ease;
@@ -1353,24 +1354,24 @@ label {
 
 /* Compact category links aligned with the rental page's visual-card system. */
 .rental-explore-section {
-  margin-top: 2rem;
+  margin-top: calc(32 * var(--rental-unit, 1px));
 }
 
 .rental-explore-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.8rem;
-  margin-top: 1rem;
+  gap: calc(12.8 * var(--rental-unit, 1px));
+  margin-top: calc(16 * var(--rental-unit, 1px));
 }
 
 .rental-explore-card {
   display: flex;
   min-width: 0;
-  min-height: 8.6rem;
+  min-height: calc(137.6 * var(--rental-unit, 1px));
   overflow: hidden;
   color: #071a35;
   border: 1px solid #dce7f4;
-  border-radius: 0.9rem;
+  border-radius: calc(14.4 * var(--rental-unit, 1px));
   background: #f9fbfe;
   box-shadow: 0 5px 16px rgba(8, 31, 62, 0.045);
   transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
@@ -1386,7 +1387,7 @@ label {
   position: relative;
   display: block;
   flex: 0 0 42%;
-  min-height: 8.6rem;
+  min-height: calc(137.6 * var(--rental-unit, 1px));
   overflow: hidden;
   background: #e7eef7;
 }
@@ -1402,33 +1403,33 @@ label {
   min-width: 0;
   flex: 1 1 auto;
   flex-direction: column;
-  padding: 0.85rem;
+  padding: calc(13.6 * var(--rental-unit, 1px));
   text-align: left;
 }
 
 .rental-explore-copy > strong {
   color: #071a35;
-  font-size: 0.86rem;
+  font-size: calc(13.76 * var(--rental-unit, 1px));
   font-weight: 900;
-  line-height: 1.08rem;
+  line-height: calc(17.28 * var(--rental-unit, 1px));
 }
 
 .rental-explore-copy > span {
-  margin-top: 0.35rem;
+  margin-top: calc(5.6 * var(--rental-unit, 1px));
   color: #64748b;
-  font-size: 0.62rem;
+  font-size: calc(9.92 * var(--rental-unit, 1px));
   font-weight: 500;
-  line-height: 0.86rem;
+  line-height: calc(13.76 * var(--rental-unit, 1px));
 }
 
 .rental-explore-copy > b {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: calc(4 * var(--rental-unit, 1px));
   margin-top: auto;
-  padding-top: 0.6rem;
+  padding-top: calc(9.6 * var(--rental-unit, 1px));
   color: #e45700;
-  font-size: 0.64rem;
+  font-size: calc(10.24 * var(--rental-unit, 1px));
   font-weight: 900;
   line-height: 1;
 }
@@ -1436,7 +1437,7 @@ label {
 @media (min-width: 640px) and (max-width: 1023px) {
   .rental-process-timeline {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    row-gap: 1.5rem;
+    row-gap: calc(24 * var(--rental-unit, 1px));
   }
 
   .rental-process-step:nth-child(3)::after {
@@ -1456,48 +1457,48 @@ label {
 @media (max-width: 639px) {
   .rental-process-inner {
     max-width: 100%;
-    padding: 1.1rem 0.75rem 1.2rem;
+    padding: calc(17.6 * var(--rental-unit, 1px)) calc(12 * var(--rental-unit, 1px)) calc(19.2 * var(--rental-unit, 1px));
   }
 
   .rental-process-timeline {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 0.8rem;
-    margin-top: 1rem;
+    gap: calc(12.8 * var(--rental-unit, 1px));
+    margin-top: calc(16 * var(--rental-unit, 1px));
   }
 
   .rental-process-step {
     display: grid;
-    grid-template-columns: 3.6rem minmax(0, 1fr);
+    grid-template-columns: calc(57.6 * var(--rental-unit, 1px)) minmax(0, 1fr);
     align-items: center;
     padding: 0;
     text-align: left;
   }
 
   .rental-process-step:not(:last-child)::after {
-    top: 2.9rem;
-    bottom: -0.85rem;
-    left: 1.55rem;
+    top: calc(46.4 * var(--rental-unit, 1px));
+    bottom: calc(-13.6 * var(--rental-unit, 1px));
+    left: calc(24.8 * var(--rental-unit, 1px));
     width: 0;
     border-top: 0;
     border-left: 2px dotted #a8caf0;
   }
 
   .rental-process-marker {
-    min-height: 3.2rem;
+    min-height: calc(51.2 * var(--rental-unit, 1px));
     align-items: center;
     justify-content: flex-start;
   }
 
   .rental-process-number {
     z-index: 2;
-    top: -0.05rem;
-    left: -0.15rem;
+    top: calc(-0.8 * var(--rental-unit, 1px));
+    left: calc(-2.4 * var(--rental-unit, 1px));
   }
 
   .rental-process-icon {
-    width: 3.1rem;
-    height: 3.1rem;
+    width: calc(49.6 * var(--rental-unit, 1px));
+    height: calc(49.6 * var(--rental-unit, 1px));
   }
 
   .rental-process-copy {
@@ -1508,21 +1509,21 @@ label {
   .rental-process-copy h3 {
     min-height: 0;
     justify-content: flex-start;
-    font-size: 0.8rem;
-    line-height: 1rem;
+    font-size: calc(12.8 * var(--rental-unit, 1px));
+    line-height: calc(16 * var(--rental-unit, 1px));
   }
 
   .rental-process-copy p {
     max-width: none;
-    margin: 0.25rem 0 0 !important;
-    font-size: 0.61rem !important;
-    line-height: 0.84rem !important;
+    margin: calc(4 * var(--rental-unit, 1px)) 0 0 !important;
+    font-size: calc(9.76 * var(--rental-unit, 1px)) !important;
+    line-height: calc(13.44 * var(--rental-unit, 1px)) !important;
     text-align: left !important;
   }
 
   .rental-planning-section,
   .rental-explore-section {
-    margin-top: 1rem;
+    margin-top: calc(16 * var(--rental-unit, 1px));
   }
 
   .rental-planning-card-header {
@@ -1546,7 +1547,7 @@ label {
 
   .rental-explore-card,
   .rental-explore-image {
-    min-height: 7.6rem;
+    min-height: calc(121.6 * var(--rental-unit, 1px));
   }
 
 }

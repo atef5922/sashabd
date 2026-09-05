@@ -623,8 +623,10 @@ export default function Header({
   const router = useRouter();
   const normalizedPathname = pathname.replace(/\/+$/, "");
   const isLedDisplayLanding = normalizedPathname === "/led-display";
+  const isRentalDisplayLanding = normalizedPathname === "/led-display/rental-display";
+  const useHomeResponsiveHeader = pathname === "/" || isLedDisplayLanding || isRentalDisplayLanding;
   const useConferenceTabletHeader =
-    pathname === "/" || pathname.startsWith("/conference-system") || isLedDisplayLanding;
+    useHomeResponsiveHeader || pathname.startsWith("/conference-system");
   const hasFlushConferenceHero = [
     "/conference-system/audio-conference-system",
     "/conference-system/digital-conference-system",
@@ -797,7 +799,7 @@ export default function Header({
 
   return (
     <header
-      data-home-header={pathname === "/" || isLedDisplayLanding ? "true" : undefined}
+      data-home-header={useHomeResponsiveHeader ? "true" : undefined}
       className={cn(
         "sticky inset-x-0 top-0 z-[80] w-full transition-colors duration-300",
         isScrolled

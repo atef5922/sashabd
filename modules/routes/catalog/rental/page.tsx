@@ -5,6 +5,7 @@ import { siteConfig } from "@/lib/site";
 import { ledAccessoriesCatalog, rentalCatalog, type LedAccessoryProduct, type ProductItem } from "@/lib/productsCatalog";
 import FaqAccordion from "@/components/common/FaqAccordion";
 import { absoluteUrl, socialImageUrl } from "@/lib/seo";
+import styles from "./rental-responsive.module.css";
 
 export const metadata: Metadata = {
   title: { absolute: "Rental LED Display in Bangladesh | Stage & Concert LED" },
@@ -85,7 +86,7 @@ function RentalLedHero() {
   ];
 
   return (
-    <section className="relative left-1/2 right-1/2 -mx-[50vw] -mt-2 min-h-[720px] w-screen overflow-hidden bg-[#001229] text-white sm:min-h-[630px] lg:min-h-[clamp(22rem,28.5vw,27rem)]" aria-labelledby="rental-led-hero-heading">
+    <section className={`${styles.hero} relative left-1/2 right-1/2 -mx-[50vw] -mt-2 min-h-[720px] w-screen overflow-hidden bg-[#001229] text-white sm:min-h-[630px] lg:min-h-[clamp(22rem,28.5vw,27rem)]`} aria-labelledby="rental-led-hero-heading">
       <Image
         src="/images/rental/hero/rental-led-hero-banner.webp"
         alt="Large rental LED display at a live concert stage"
@@ -98,7 +99,7 @@ function RentalLedHero() {
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,17,38,0.99)_0%,rgba(0,17,38,0.92)_36%,rgba(0,17,38,0.42)_66%,rgba(0,17,38,0.12)_100%)] sm:bg-[linear-gradient(90deg,rgba(0,17,38,0.98)_0%,rgba(0,17,38,0.88)_39%,rgba(0,17,38,0.2)_74%,rgba(0,17,38,0.08)_100%)]" aria-hidden="true" />
       <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(0,11,27,0.96)_0%,rgba(0,11,27,0.18)_28%,transparent_52%)]" aria-hidden="true" />
 
-      <div className="relative mx-auto flex min-h-[720px] w-full max-w-[clamp(80rem,90vw,108rem)] flex-col px-5 pb-5 pt-7 sm:min-h-[630px] sm:px-8 lg:min-h-[clamp(22rem,28.5vw,27rem)] lg:px-10 lg:pb-5 lg:pt-7 xl:px-12">
+      <div className={`${styles.heroFrame} relative mx-auto flex min-h-[720px] w-full max-w-[clamp(80rem,90vw,108rem)] flex-col px-5 pb-5 pt-7 sm:min-h-[630px] sm:px-8 lg:min-h-[clamp(22rem,28.5vw,27rem)] lg:px-10 lg:pb-5 lg:pt-7 xl:px-12`}>
         <div className="max-w-[38rem] text-left lg:max-w-[43%]">
           <p className="flex items-center gap-3 !text-left text-[9px] font-extrabold uppercase tracking-[0.32em] text-white/90 sm:text-[10px]">
             <span className="h-0.5 w-6 bg-[#ff6a00]" aria-hidden="true" />
@@ -165,7 +166,7 @@ function RentalSectionHeading({
   action: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <div className={`${styles.sectionHeading} flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between`}>
       <div>
         <p className="flex items-center gap-2 text-[9px] font-extrabold uppercase tracking-[0.22em] text-slate-500">
           <span className="h-0.5 w-5 bg-[#ff6a00]" aria-hidden="true" />
@@ -252,7 +253,7 @@ function RentalModelShowcase({
         }
       />
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <div className={`${styles.modelsGrid} mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4`}>
         {products.map((product) => {
           const pitch = getPitchDisplay(product);
           const cardImage = rentalModelCardImages[product.slug] ?? product.image;
@@ -267,7 +268,7 @@ function RentalModelShowcase({
             <article
               key={product.slug}
               className="group grid min-h-[220px] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_5px_18px_rgba(15,35,60,0.06)] transition duration-300 hover:-translate-y-0.5 hover:border-orange-200 hover:shadow-[0_10px_24px_rgba(15,35,60,0.10)]"
-              style={{ gridTemplateColumns: "124px minmax(0, 1fr)" }}
+              style={{ gridTemplateColumns: "calc(124 * var(--rental-unit, 1px)) minmax(0, 1fr)" }}
             >
               <Link
                 href={`/led-display/rental-display/${product.slug}/`}
@@ -605,7 +606,7 @@ function RentalPackageShowcase() {
         }
       />
 
-      <div className="-mx-0.5 mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3 xl:grid-cols-5">
+      <div className={`${styles.packagesGrid} -mx-0.5 mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3 xl:grid-cols-5`}>
         {rentalPackages.map((rentalPackage) => (
           <article
             key={rentalPackage.title}
@@ -613,7 +614,7 @@ function RentalPackageShowcase() {
               rentalPackage.featured ? "border-[#ff7a22] ring-1 ring-[#ff7a22]/25" : "border-slate-200 hover:border-orange-200"
             }`}
           >
-            <div className="relative shrink-0 overflow-hidden bg-slate-100" style={{ height: 118 }}>
+            <div className="relative shrink-0 overflow-hidden bg-slate-100" style={{ height: "calc(118 * var(--rental-unit, 1px))" }}>
               <Image
                 src={rentalPackage.image}
                 alt={`${rentalPackage.title} rental LED display package`}
@@ -1183,7 +1184,7 @@ export default function RentalProductsPage() {
     .map((slug) => ledAccessoriesCatalog.find((p) => p.slug === slug))
     .filter((x): x is NonNullable<typeof x> => Boolean(x));
   return (
-    <div className="rental-led-page mx-auto w-full max-w-7xl px-3 pb-8 pt-0 md:px-6" data-rental-led-route-kind="hub">
+    <div className={`${styles.page} rental-led-page mx-auto w-full max-w-7xl px-3 pb-8 pt-0 md:px-6`} data-rental-led-route-kind="hub">
       <RentalLedHero />
 
       <RentalModelShowcase
