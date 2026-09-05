@@ -2008,7 +2008,9 @@ test("outdoor LED duplicate-prone groups render one canonical semantic set", () 
 test("rental LED duplicate-prone groups render one canonical semantic set", () => {
   const source = read("modules/routes/catalog/rental/page.tsx");
   const sectionWrapper = sectionBetween(source, "const Section = ({", "function responsiveCardStyle");
-  const cardGrid = sectionBetween(source, "const CardGrid", "export default function RentalProductsPage");
+  const packages = sectionBetween(source, "const rentalPackages", "const pitchGuide");
+  const pitchGuide = sectionBetween(source, "const pitchGuide", "const whyChooseRental");
+  const whyChoose = sectionBetween(source, "const whyChooseRental", "export default function RentalProductsPage");
 
   assert.equal(occurrences(source, "singleDom"), 1);
   assert.match(sectionWrapper, /singleDom/);
@@ -2030,32 +2032,41 @@ test("rental LED duplicate-prone groups render one canonical semantic set", () =
   assert.match(source, /#rental-solutions-toggle:checked ~ #rental-expanded-solutions/);
   assert.match(source, /accessories=\{stickyAccessories\}/);
   assert.doesNotMatch(source, /<ProductGridCard/);
-  assert.equal(occurrences(cardGrid, "items.map((x, index)"), 1);
+  assert.equal(occurrences(source, "Types of LED Display Rental Solutions"), 0);
+  assert.equal(occurrences(source, "Why Choose Our Rental LED Display"), 0);
+  assert.equal(occurrences(source, "LED Screen Rental for Events"), 0);
+  assert.equal(occurrences(source, "Rental LED Display Applications in Bangladesh"), 0);
+  assert.equal(occurrences(source, "Rental LED Display Cost Drivers in Bangladesh"), 0);
+
+  for (const heading of [
+    "<RentalOccasionShowcase />",
+    "<RentalPackageShowcase />",
+    "<RentalPitchGuide />",
+    "<RentalWhyChoose />",
+    'title="LED Display Rental Process"',
+  ]) {
+    assert.equal(occurrences(source, heading), 1, `${heading} must render once`);
+  }
+
+  for (const label of ["Small Indoor Event", "Corporate Stage Package", "Concert & Live Show", "Wedding LED Wall", "Custom Large Event"]) {
+    assert.equal(occurrences(packages, label), 1, `${label} must appear once in rental packages`);
+  }
+  for (const label of ["P2.6", "P3", "P3.91", "P4.81"]) {
+    assert.equal(occurrences(pitchGuide, `pitch: "${label}"`), 1, `${label} must appear once in the pitch guide`);
+  }
+  for (const label of ["Quick-Lock Rental Cabinets", "Professional Rigging & Safety", "NovaStar / Processor Configuration", "Live Camera & AV Integration", "On-Site Operator Support", "Fast Setup & Dismantling"]) {
+    assert.equal(occurrences(whyChoose, label), 1, `${label} must appear once in Why Choose`);
+  }
 
   for (const [start, end, labels] of [
     [
-      "Types of LED Display Rental Solutions",
-      "Why Choose Our Rental LED Display",
-      ["Indoor Rental LED Display", "Outdoor Rental LED Screen", "Stage Background LED Screen", "Concert LED Video Wall", "Wedding LED Display", "Corporate Event LED Screen", "Exhibition LED Display"],
-    ],
-    [
-      "Why Choose Our Rental LED Display",
-      "LED Screen Rental for Events",
-      ["High brightness LED panels", "Seamless video wall display", "Professional installation", "On-site technical support", "Flexible screen sizes", "Fast setup and dismantling"],
-    ],
-    [
-      "LED Screen Rental for Events",
       "LED Display Rental Process",
-      ["Concert", "Wedding", "Political Event", "Corporate Event", "Trade Show", "Product Launch", "Live Streaming Event", "Stage Backdrop"],
-    ],
-    [
-      "LED Display Rental Process",
-      "Rental LED Display Applications in Bangladesh",
+      "Fast Setup Checklist (Rental LED Screen)",
       ["Contact us", "Share event details", "Choose screen size", "Installation by our engineers", "Event support & operation"],
     ],
     [
       "Fast Setup Checklist (Rental LED Screen)",
-      "Rental LED Display Cost Drivers in Bangladesh",
+      "Rental LED Event Booking Planner",
       ["Structure & safety", "Power planning", "Signal & mapping", "Show readiness"],
     ],
     [

@@ -97,33 +97,6 @@ function responsiveCardStyle(index: number, desktopBorderColor = `${BRAND.maroon
   } as React.CSSProperties;
 }
 
-const CardGrid = ({ items }: { items: { t: string; d: string; bullets?: string[] }[] }) => (
-  <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible md:px-0 md:pb-0 md:pt-0">
-    {items.map((x, index) => (
-      <div
-        key={x.t}
-        className="w-[89%] shrink-0 snap-start rounded-[14px] border border-[var(--mobile-border-color)] bg-[var(--mobile-bg)] px-4 py-4 md:w-auto md:rounded-3xl md:border-[var(--desktop-border-color)] md:bg-slate-50 md:p-6"
-        style={responsiveCardStyle(index)}
-      >
-        <div className="text-[17px] font-extrabold leading-snug text-slate-900 md:overflow-hidden md:text-ellipsis md:whitespace-nowrap md:text-[15px] md:tracking-tight lg:text-[16px]">
-          {x.t}
-        </div>
-        <p className="mt-2 text-[13px] leading-6 text-slate-700 md:text-sm md:leading-7 md:text-slate-600">{x.d}</p>
-        {x.bullets?.length ? (
-          <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700 md:text-sm">
-            {x.bullets.map((b) => (
-              <li key={b} className="flex items-start gap-2">
-                <span className="mt-1.5 inline-block h-2 w-2 rounded-full md:mt-2" style={{ background: BRAND.maroon }} />
-                <span className="leading-6 md:leading-7">{b}</span>
-              </li>
-            ))}
-          </ul>
-        ) : null}
-      </div>
-    ))}
-  </div>
-);
-
 type RentalHeroIconName = "range" | "lock" | "stack" | "processor" | "headset" | "events" | "location" | "setup" | "shield" | "arrow";
 
 function RentalHeroIcon({ name, className = "h-5 w-5" }: { name: RentalHeroIconName; className?: string }) {
@@ -271,7 +244,7 @@ function RentalModelShowcase({
   const hasAccessories = accessories.length > 0;
 
   return (
-    <section className="mt-6" aria-labelledby="rental-model-showcase-heading">
+    <section id="rental-led-models" className="mt-6 scroll-mt-24" aria-labelledby="rental-model-showcase-heading">
       {hasAccessories ? (
         <input
           id="rental-solutions-toggle"
@@ -566,6 +539,362 @@ function RentalOccasionShowcase() {
   );
 }
 
+type RentalPackage = {
+  title: string;
+  badge: string;
+  description: string;
+  image: string;
+  imagePosition?: string;
+  screenSize: string;
+  pixelPitch: string;
+  duration: string;
+  setup: string;
+  includes: string;
+  query: string;
+  featured?: boolean;
+};
+
+const rentalPackages: RentalPackage[] = [
+  {
+    title: "Small Indoor Event",
+    badge: "Small Event",
+    description: "A compact LED solution for meetings, seminars and small indoor gatherings.",
+    image: "/images/project-page/project-pa-system.webp",
+    screenSize: "Planned for compact venues",
+    pixelPitch: "P2.6 - P3.91",
+    duration: "Single or multi-day",
+    setup: "Floor stacking",
+    includes: "Setup and basic support",
+    query: "small-indoor-event",
+  },
+  {
+    title: "Corporate Stage Package",
+    badge: "Corporate Event",
+    description: "Professional visuals for conferences, product launches and annual events.",
+    image: "/images/project-page/Project-indoor-showroom.webp",
+    screenSize: "Scaled to stage and audience",
+    pixelPitch: "P2.6 - P3.91",
+    duration: "Single or multi-day",
+    setup: "Stacking or hanging",
+    includes: "Processor and operator options",
+    query: "corporate-stage-package",
+  },
+  {
+    title: "Concert & Live Show",
+    badge: "Most Popular",
+    description: "High-impact LED visuals for concerts, live stages, cultural shows and festivals.",
+    image: "/images/rental/hero/rental-led-hero-banner.webp",
+    imagePosition: "65% center",
+    screenSize: "Configured for the production",
+    pixelPitch: "P3.91 - P4.81",
+    duration: "Based on show schedule",
+    setup: "Hanging or ground support",
+    includes: "Full technical-team options",
+    query: "concert-live-show-package",
+    featured: true,
+  },
+  {
+    title: "Wedding LED Wall",
+    badge: "Wedding Event",
+    description: "Vibrant stage visuals for wedding ceremonies, receptions and special moments.",
+    image: "/images/rental/P2.6-Rental-LED-Display.webp",
+    screenSize: "Matched to stage layout",
+    pixelPitch: "P2.6 - P3.91",
+    duration: "Single or multi-day",
+    setup: "Stacking or hanging",
+    includes: "Setup and operator options",
+    query: "wedding-led-wall-package",
+  },
+  {
+    title: "Custom Large Event",
+    badge: "Large Event",
+    description: "A tailored rental plan for exhibitions, festivals, outdoor stages and large venues.",
+    image: "/images/project-page/project-rental.webp",
+    imagePosition: "center 42%",
+    screenSize: "Custom to venue requirements",
+    pixelPitch: "P3.91 - P4.81",
+    duration: "As required",
+    setup: "Hanging or truss structure",
+    includes: "End-to-end support options",
+    query: "custom-large-event",
+  },
+];
+
+function PackageDetail({ icon, children }: { icon: RentalHeroIconName; children: React.ReactNode }) {
+  return (
+    <li className="flex items-start gap-2 text-[11px] leading-[1.35] text-slate-600">
+      <span className="mt-px inline-flex h-4 w-4 shrink-0 items-center justify-center text-[#09234a]" aria-hidden="true">
+        <RentalHeroIcon name={icon} className="h-3.5 w-3.5" />
+      </span>
+      <span>{children}</span>
+    </li>
+  );
+}
+
+function RentalPackageShowcase() {
+  return (
+    <section className="mt-8" aria-labelledby="rental-package-heading">
+      <RentalSectionHeading
+        id="rental-package-heading"
+        eyebrow="Rental Packages"
+        title="Flexible Rental Packages for Every Event"
+        description="Choose a practical starting point based on your event, venue and technical requirements; every package is finalized through a tailored quotation."
+        action={
+          <span className="inline-flex flex-wrap items-center gap-1 text-slate-500">
+            <span className="font-semibold">Need a custom package?</span>
+            <Link href="/contact/?project=custom-rental-led-package" className="inline-flex items-center gap-1 text-[#e45700] transition hover:text-[#ff6a00]">
+              Get a Quote <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" />
+            </Link>
+          </span>
+        }
+      />
+
+      <div className="-mx-0.5 mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3 xl:grid-cols-5">
+        {rentalPackages.map((rentalPackage) => (
+          <article
+            key={rentalPackage.title}
+            className={`group flex min-h-full w-[86%] shrink-0 snap-start flex-col overflow-hidden rounded-xl border bg-white shadow-[0_6px_20px_rgba(8,31,62,0.07)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(8,31,62,0.12)] sm:w-auto ${
+              rentalPackage.featured ? "border-[#ff7a22] ring-1 ring-[#ff7a22]/25" : "border-slate-200 hover:border-orange-200"
+            }`}
+          >
+            <div className="relative shrink-0 overflow-hidden bg-slate-100" style={{ height: 118 }}>
+              <Image
+                src={rentalPackage.image}
+                alt={`${rentalPackage.title} rental LED display package`}
+                fill
+                sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, (max-width: 1279px) 33vw, 20vw"
+                className="object-cover transition duration-500 group-hover:scale-105"
+                style={rentalPackage.imagePosition ? { objectPosition: rentalPackage.imagePosition } : undefined}
+              />
+              <span className={`absolute right-2 top-2 rounded-full px-2.5 py-1 text-[9px] font-extrabold shadow-sm ${rentalPackage.featured ? "bg-[#ff6a00] text-white" : "bg-white text-[#071a35]"}`}>
+                {rentalPackage.badge}
+              </span>
+              <span className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-[#071a35]/35 to-transparent" aria-hidden="true" />
+            </div>
+
+            <div className="flex flex-1 flex-col p-3.5">
+              <h3 className="text-[14px] font-black leading-5 text-[#071a35]">{rentalPackage.title}</h3>
+              <p className="mt-1 min-h-10 !text-left text-[10.5px] leading-[1.45] text-slate-500">{rentalPackage.description}</p>
+              <ul className="mt-3 space-y-2">
+                <PackageDetail icon="range"><strong className="font-semibold text-slate-700">Screen:</strong> {rentalPackage.screenSize}</PackageDetail>
+                <PackageDetail icon="processor"><strong className="font-semibold text-slate-700">Pixel Pitch:</strong> {rentalPackage.pixelPitch}</PackageDetail>
+                <PackageDetail icon="events"><strong className="font-semibold text-slate-700">Duration:</strong> {rentalPackage.duration}</PackageDetail>
+                <PackageDetail icon="stack"><strong className="font-semibold text-slate-700">Setup:</strong> {rentalPackage.setup}</PackageDetail>
+                <PackageDetail icon="headset"><strong className="font-semibold text-slate-700">Includes:</strong> {rentalPackage.includes}</PackageDetail>
+              </ul>
+
+              <div className="mt-auto pt-3.5">
+                <p className="text-[10px] font-medium text-slate-500">Package quotation</p>
+                <p className="mt-0.5 text-[17px] font-black leading-5 text-[#075fd7]">Based on Requirements</p>
+                <Link
+                  href={`/contact/?project=rental-led-display&package=${rentalPackage.query}`}
+                  className={`mt-3 inline-flex min-h-9 w-full items-center justify-center gap-1.5 rounded-lg border text-[11px] font-extrabold transition ${
+                    rentalPackage.featured
+                      ? "border-[#ff6a00] bg-[#ff6a00] text-white hover:bg-[#e45700]"
+                      : "border-[#0b67f0] text-[#075fd7] hover:bg-[#075fd7] hover:text-white"
+                  }`}
+                >
+                  Get Quote <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p className="mt-3 text-[10px] leading-4 text-slate-500">
+        Final pricing depends on screen size, pixel pitch, event duration, venue access, rigging, power distribution and on-site support requirements.
+      </p>
+    </section>
+  );
+}
+
+const pitchGuide = [
+  {
+    distance: "1 - 2.5 Meter",
+    pitch: "P2.6",
+    image: "/images/project-page/project-pa-system.webp",
+    imagePosition: "center",
+    points: ["Ideal for close viewing", "High-definition clarity", "Best for indoor events"],
+  },
+  {
+    distance: "2.5 - 4 Meter",
+    pitch: "P3",
+    image: "/images/project-page/project-redirect.webp",
+    imagePosition: "center",
+    points: ["Perfect for medium distance", "Clear and vibrant visuals", "Suitable for most events"],
+  },
+  {
+    distance: "4 - 6 Meter",
+    pitch: "P3.91",
+    image: "/images/rental/hero/rental-led-hero-banner.webp",
+    imagePosition: "65% center",
+    points: ["Great for larger audiences", "Excellent stage visibility", "Ideal for indoor or outdoor use"],
+  },
+  {
+    distance: "6 Meter+",
+    pitch: "P4.81",
+    image: "/images/project-page/project-rental.webp",
+    imagePosition: "center 42%",
+    points: ["Best for long-distance viewing", "Cost-effective screen coverage", "Perfect for outdoor events"],
+  },
+];
+
+function RentalPitchGuide() {
+  return (
+    <section
+      className="relative left-1/2 right-1/2 -mx-[50vw] mt-8 w-screen border-y border-sky-100 py-7"
+      style={{ background: "linear-gradient(110deg, #f4faff 0%, #ffffff 48%, #eef8ff 100%)" }}
+      aria-labelledby="rental-pitch-guide-heading"
+    >
+      <div className="mx-auto w-full max-w-7xl px-3 md:px-6">
+        <RentalSectionHeading
+          id="rental-pitch-guide-heading"
+          eyebrow="Pixel Pitch Guide"
+          title="Choose Pixel Pitch by Viewing Distance"
+          description="Use viewing distance as a practical starting point, then confirm the final pitch based on screen size, content, camera use and venue conditions."
+          action={
+            <Link href="#rental-led-models" className="inline-flex items-center gap-1 text-[#e45700] transition hover:text-[#ff6a00]">
+              Learn More About Pixel Pitch <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" />
+            </Link>
+          }
+        />
+
+        <div className="rental-pitch-guide-grid">
+          {pitchGuide.map((item) => (
+            <article
+              key={item.pitch}
+              className="rental-pitch-card group"
+            >
+              <div className="rental-pitch-media">
+                <Image
+                  src={item.image}
+                  alt={`${item.pitch} rental LED display viewing distance example`}
+                  fill
+                  sizes="(max-width: 639px) 42vw, (max-width: 1279px) 21vw, 11vw"
+                  className="object-cover transition duration-500 group-hover:scale-105"
+                  style={{ objectPosition: item.imagePosition }}
+                />
+              </div>
+
+              <span className="rental-pitch-card-icon" aria-hidden="true">
+                <RentalHeroIcon name="events" className="h-5 w-5" />
+              </span>
+
+              <div className="rental-pitch-card-content">
+                <h3 className="rental-pitch-distance">{item.distance}</h3>
+                <p className="rental-pitch-name">{item.pitch}</p>
+                <ul className="rental-pitch-points">
+                  {item.points.map((point) => (
+                    <li key={point} className="rental-pitch-point">
+                      <span className="rental-pitch-check" aria-hidden="true">&#10003;</span>
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const whyChooseRental = [
+  { title: "Quick-Lock Rental Cabinets", description: "Fast, secure cabinet alignment for efficient event setup.", icon: "stack" as const, color: "linear-gradient(135deg, #ff3b5f, #ff176d)" },
+  { title: "Professional Rigging & Safety", description: "Structured hanging and stacking plans for stable deployment.", icon: "setup" as const, color: "linear-gradient(135deg, #22a7ff, #0868ef)" },
+  { title: "NovaStar / Processor Configuration", description: "Professional mapping, calibration and content setup.", icon: "processor" as const, color: "linear-gradient(135deg, #33dc77, #08a94f)" },
+  { title: "Live Camera & AV Integration", description: "Planned signal workflow for camera, audio and stage feeds.", icon: "range" as const, color: "linear-gradient(135deg, #ff9d25, #ff680d)" },
+  { title: "On-Site Operator Support", description: "Technical assistance throughout the event when included.", icon: "headset" as const, color: "linear-gradient(135deg, #b84dff, #7c31da)" },
+  { title: "Fast Setup & Dismantling", description: "Rental-ready hardware helps reduce setup and teardown time.", icon: "lock" as const, color: "linear-gradient(135deg, #17d4d0, #039f9d)" },
+];
+
+function RentalWhyChoose() {
+  const trustItems: Array<{ title: string; detail: string; icon: RentalHeroIconName }> = [
+    { title: "500+", detail: "Projects Completed", icon: "events" },
+    { title: "Nationwide", detail: "Service Coverage", icon: "location" },
+    { title: "Expert Team", detail: "Setup & On-Site Support", icon: "headset" },
+    { title: "Reliable", detail: "Planned Event Delivery", icon: "shield" },
+  ];
+
+  return (
+    <section
+      className="relative left-1/2 right-1/2 -mx-[50vw] w-screen overflow-hidden text-white"
+      style={{ background: "radial-gradient(circle at 62% 0%, #073c78 0%, #062750 22%, #031a38 52%, #02142d 100%)" }}
+      aria-labelledby="rental-why-choose-heading"
+    >
+      <div className="mx-auto w-full max-w-7xl px-3 py-7 md:px-6 md:py-8">
+        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="flex items-center gap-2 text-[9px] font-extrabold uppercase tracking-[0.22em] text-slate-300">
+              <span className="h-0.5 w-5 bg-[#ff6a00]" aria-hidden="true" />
+              Why Choose Us
+            </p>
+            <h2 id="rental-why-choose-heading" className="mt-1.5 text-[22px] font-black uppercase leading-tight tracking-[-0.025em] text-white md:text-[26px]">
+              Why Choose Sasha Corporation for LED Rental?
+            </h2>
+            <p className="mt-1 text-xs leading-5 text-slate-300 md:text-[13px]">
+              Reliable rental LED systems, professional configuration and practical event-day support for every production.
+            </p>
+          </div>
+          <Link href="/contact/?project=rental-led-display&service=event-consultation" className="inline-flex min-h-10 w-fit shrink-0 items-center justify-center gap-2 rounded-lg border border-white/70 px-4 text-[11px] font-extrabold text-white transition hover:border-[#ff6a00] hover:bg-[#ff6a00]">
+            Discuss Your Event <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" />
+          </Link>
+        </div>
+
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          {whyChooseRental.map((item) => (
+            <article key={item.title} className="rounded-xl border border-white/15 bg-white/[0.035] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-white/25 hover:bg-white/[0.06]">
+              <div className="flex items-start gap-3">
+                <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-white shadow-lg" style={{ background: item.color }} aria-hidden="true">
+                  <RentalHeroIcon name={item.icon} className="h-5 w-5" />
+                </span>
+                <h3 className="pt-1 text-[12px] font-extrabold leading-4 text-white">{item.title}</h3>
+              </div>
+              <p className="mt-3 text-[10px] leading-[1.5] text-slate-300">{item.description}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <div className="rental-trust-strip">
+        <div className="rental-trust-strip-inner">
+          <div className="rental-trust-items">
+            {trustItems.map((item) => (
+              <div key={item.title} className="rental-trust-item">
+                <span className="rental-trust-icon" aria-hidden="true">
+                  <RentalHeroIcon name={item.icon} className="h-5 w-5" />
+                </span>
+                <span className="rental-trust-copy">
+                  <strong>{item.title}</strong>
+                  <span>{item.detail}</span>
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="rental-trust-visual" aria-hidden="true">
+            <Image
+              src="/images/rental/hero/rental-led-hero-banner.webp"
+              alt=""
+              fill
+              sizes="(max-width: 767px) 100vw, 28vw"
+              className="object-cover"
+              style={{ objectPosition: "72% center" }}
+            />
+            <span className="rental-trust-visual-fade" />
+            <p className="rental-trust-message">
+              Your Event
+              <span>Our Priority</span>
+              <i />
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function RentalProductsPage() {
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
  // ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Add one more rental product card locally (no change to productsCatalog needed)
@@ -585,154 +914,9 @@ export default function RentalProductsPage() {
         accessories={stickyAccessories}
       />
       <RentalOccasionShowcase />
-
-      <Section
-        title="Types of LED Display Rental Solutions"
-        titleIcon={
-          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="4" y="5" width="7" height="6" rx="1" />
-            <rect x="13" y="5" width="7" height="6" rx="1" />
-            <rect x="8.5" y="13" width="7" height="6" rx="1" />
-          </svg>
-        }
-        subtitle="Choose the right rental LED setup by event type, venue condition, and visual requirement to ensure smooth setup and clear audience communication."
-      >
-        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 md:pb-0 md:pt-0 lg:grid-cols-3">
-          {[
-            {
-              t: "Indoor Rental LED Display",
-              d: "Best for conference halls, indoor stages, and corporate venues where fine detail and close-view clarity are important.",
-            },
-            {
-              t: "Outdoor Rental LED Screen",
-              d: "Built for open-air events with higher brightness and weather-ready cabinet design for stable visibility in daylight.",
-            },
-            {
-              t: "Stage Background LED Screen",
-              d: "Creates a dynamic backdrop for live programs, product launches, and cultural events with high visual impact.",
-            },
-            {
-              t: "Concert LED Video Wall",
-              d: "Supports performance visuals, live feed integration, and high-energy motion content for concert environments.",
-            },
-            {
-              t: "Wedding LED Display",
-              d: "Used for ceremony visuals, couple highlights, and themed presentation content with fast event-day setup.",
-            },
-            {
-              t: "Corporate Event LED Screen",
-              d: "Ideal for brand presentations, keynote sessions, and hybrid business events requiring professional image delivery.",
-            },
-            {
-              t: "Exhibition LED Display",
-              d: "Helps booths and product zones attract visitors with rotating promotional media and high-visibility messaging.",
-            },
-          ].map((x, index) => (
-            <div
-              key={x.t}
-              className="w-[89%] shrink-0 snap-start rounded-[14px] border border-[var(--mobile-border-color)] bg-[var(--mobile-bg)] px-4 py-4 md:w-auto md:rounded-3xl md:border-[var(--desktop-border-color)] md:bg-slate-50 md:p-6"
-              style={responsiveCardStyle(index)}
-            >
-              <h3 className="text-[17px] font-extrabold leading-snug text-slate-900 md:text-base">{x.t}</h3>
-              <p className="mt-2 text-[13px] leading-6 text-slate-700 md:text-sm md:leading-7 md:text-slate-600">{x.d}</p>
-            </div>
-          ))}
-        </div>
-
-      </Section>
-
-      <Section
-        title="Why Choose Our Rental LED Display"
-        titleIcon={
-          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 3v3" />
-            <path d="M18.36 5.64 16.24 7.76" />
-            <path d="M21 12h-3" />
-            <path d="M18.36 18.36 16.24 16.24" />
-            <path d="M5.64 18.36 7.76 16.24" />
-            <path d="M3 12h3" />
-            <path d="M5.64 5.64 7.76 7.76" />
-            <circle cx="12" cy="12" r="4" />
-          </svg>
-        }
-        subtitle="A practical advantage overview to help event teams choose a rental LED setup that stays visually strong, operationally smooth, and technically reliable."
-      >
-        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 md:pb-0 md:pt-0 lg:grid-cols-3">
-          {[
-            {
-              t: "High brightness LED panels",
-              d: "Ensures clear and vivid content visibility across indoor stages and semi-outdoor event environments.",
-            },
-            {
-              t: "Seamless video wall display",
-              d: "Creates a continuous visual canvas for presentations, performances, and brand storytelling without distracting gaps.",
-            },
-            {
-              t: "Professional installation",
-              d: "Structured setup workflow helps maintain alignment, safe cabling, and stable output from start to finish.",
-            },
-            {
-              t: "On-site technical support",
-              d: "Dedicated technical presence helps resolve live signal or playback issues quickly during event operation.",
-            },
-            {
-              t: "Flexible screen sizes",
-              d: "Screen dimensions can be adapted to venue layout, audience distance, and content format requirements.",
-            },
-            {
-              t: "Fast setup and dismantling",
-              d: "Rental-ready cabinet systems support quick deployment and teardown, reducing event turnaround time.",
-            },
-          ].map((x, index) => (
-            <div
-              key={x.t}
-              className="w-[89%] shrink-0 snap-start rounded-[14px] border border-[var(--mobile-border-color)] bg-[var(--mobile-bg)] px-4 py-4 md:w-auto md:rounded-3xl md:border-[var(--desktop-border-color)] md:bg-slate-50 md:p-6"
-              style={responsiveCardStyle(index)}
-            >
-              <h3 className="text-[17px] font-extrabold leading-snug text-slate-900 md:text-base">{x.t}</h3>
-              <p className="mt-2 text-[13px] leading-6 text-slate-700 md:text-sm md:leading-7 md:text-slate-600">{x.d}</p>
-            </div>
-          ))}
-        </div>
-
-      </Section>
-
-      <Section
-        title="LED Screen Rental for Events"
-        titleIcon={
-          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M5 7h14" />
-            <path d="M7 5v4" />
-            <path d="M17 5v4" />
-            <rect x="4" y="9" width="16" height="10" rx="2" />
-            <path d="m10 13 4 2-4 2z" />
-          </svg>
-        }
-        subtitle="Event-specific rental LED configurations to match audience size, content type, and production setup requirements."
-      >
-        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 md:pb-0 md:pt-0 lg:grid-cols-4">
-          {[
-            { t: "Concert", d: "High-energy stage visuals and live performance content display." },
-            { t: "Wedding", d: "Ceremony highlights, couple visuals, and reception-stage presentation." },
-            { t: "Political Event", d: "Campaign messaging, live speeches, and crowd-facing communication." },
-            { t: "Corporate Event", d: "Keynote decks, brand content, and professional event presentation." },
-            { t: "Trade Show", d: "Booth branding, rotating promotions, and attention-grabbing display zones." },
-            { t: "Product Launch", d: "Hero product reveal visuals with synchronized media playback." },
-            { t: "Live Streaming Event", d: "Broadcast-support display for live feed and audience engagement." },
-            { t: "Stage Backdrop", d: "Seamless background wall for shows, seminars, and live programs." },
-          ].map((x, index) => (
-            <div
-              key={x.t}
-              className="w-[89%] shrink-0 snap-start rounded-[14px] border border-[var(--mobile-border-color)] bg-[var(--mobile-bg)] px-4 py-4 md:w-auto md:rounded-3xl md:border-[var(--desktop-border-color)] md:bg-slate-50 md:p-6"
-              style={responsiveCardStyle(index)}
-            >
-              <h3 className="text-[17px] font-extrabold leading-snug text-slate-900 md:text-base">{x.t}</h3>
-              <p className="mt-2 text-[13px] leading-6 text-slate-700 md:text-sm md:leading-7 md:text-slate-600">{x.d}</p>
-            </div>
-          ))}
-        </div>
-
-      </Section>
+      <RentalPackageShowcase />
+      <RentalPitchGuide />
+      <RentalWhyChoose />
 
       <Section
         title="LED Display Rental Process"
@@ -768,39 +952,6 @@ export default function RentalProductsPage() {
           ))}
         </div>
 
-      </Section>
-
-      {/* Applications */}
-      <Section
- title="Rental LED Display Applications in Bangladesh"
-        titleIcon={
-          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M4 19h16" />
-            <path d="M6 16V8l6-3 6 3v8" />
-            <path d="M9 11h6" />
-          </svg>
-        }
-        subtitle="Rental cabinets are built for fast event setup where speed, safety, and visual impact matter."
-      >
-        <CardGrid
-          items={[
-            {
- t: "Stage backdrops",
-              d: "Large background video walls for live programs, conferences, and indoor stages.",
-              bullets: ["Quick lock system", "Clean mapping", "Camera-friendly refresh (setup dependent)"],
-            },
-            {
- t: "Weddings & social events",
-              d: "Holud, wedding reception, brand photo zones, and event highlights.",
-              bullets: ["Vivid visuals", "Fast setup/dismantle", "Clean cabling & safe edges"],
-            },
-            {
- t: "Concerts & live shows",
-              d: "High-impact visuals, IMAG style screens, and dynamic content for performers.",
-              bullets: ["Hanging/stacking options", "Processor + camera planning", "On-site operator support"],
-            },
-          ]}
-        />
       </Section>
 
       {/* Setup checklist */}
@@ -873,32 +1024,6 @@ export default function RentalProductsPage() {
             </a>
           </div>
         </div>
-      </Section>
-
-      {/* Price drivers */}
-      <Section
- title="Rental LED Display Cost Drivers in Bangladesh"
- subtitle="Even if you don't show price on the site, these factors define quotation and event package scope."
-      >
-        <CardGrid
-          items={[
-            {
- t: "Pixel pitch & clarity",
- d: "Smaller pitch gives better close viewing and camera clarity-often used for corporate and premium stages.",
-              bullets: ["Close stage: smaller pitch", "Large venue: balanced pitch", "Budget vs clarity trade-off"],
-            },
-            {
- t: "Cabinet system",
-              d: "Die-cast, quick locks, corner protection, and flatness affect build quality and speed.",
-              bullets: ["Quick lock cabinet", "Touring durability", "Service-friendly modules"],
-            },
-            {
- t: "Support scope",
-              d: "Operator, processor, rigging, power DB/MCB, and on-site standby can be included in a package.",
-              bullets: ["Operator + mapping", "Power & safety", "On-site standby option"],
-            },
-          ]}
-        />
       </Section>
 
       {/* Booking planner */}
