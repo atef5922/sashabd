@@ -10,6 +10,7 @@ import { buildWhatsAppHref } from "@/lib/contact";
 import ContactForm from "./ContactForm";
 import EmailReveal from "@/components/common/EmailReveal";
 import { conferenceSystemCatalog } from "@/app/conference-system/catalog";
+import { rentalCatalog } from "@/lib/productsCatalog";
 
 
 export const metadata: Metadata = {
@@ -48,6 +49,7 @@ const conferenceQuoteProducts = conferenceSystemCatalog.map((product) => ({
   name: product.name,
   model: product.model,
 }));
+const rentalQuoteProducts = rentalCatalog.map(({ slug, title }) => ({ slug, title }));
 
 function SectionTitle({
   title,
@@ -179,7 +181,7 @@ export default function AboutPage() {
               </span>
             </div>
 
-            <ContactForm maroon={MAROON} maroonDark={MAROON_DARK} conferenceProducts={conferenceQuoteProducts} />
+            <ContactForm maroon={MAROON} maroonDark={MAROON_DARK} conferenceProducts={conferenceQuoteProducts} rentalProducts={rentalQuoteProducts} />
           </div>
 
           <div className="mt-6 grid grid-cols-2 gap-2 md:mt-8 md:flex md:flex-wrap md:gap-3">

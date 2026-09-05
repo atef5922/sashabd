@@ -11,18 +11,22 @@ import {
   type ConferencePackageInquiry,
   type ConferenceRoomSizeInquiry,
 } from "@/app/conference-system/conferenceInquiry";
+import { resolveRentalInquiry, type RentalInquiryContext, type RentalInquiryProduct } from "./rentalInquiry";
 
 type SubmitState = "idle" | "submitting" | "success" | "error";
 const DEFAULT_PROJECT_TYPE = "";
+const NO_RENTAL_PRODUCTS: readonly RentalInquiryProduct[] = [];
 
 export default function ContactForm({
   maroon,
   maroonDark,
   conferenceProducts = [],
+  rentalProducts = NO_RENTAL_PRODUCTS,
 }: {
   maroon: string;
   maroonDark: string;
   conferenceProducts?: readonly ConferenceInquiryProduct[];
+  rentalProducts?: readonly RentalInquiryProduct[];
 }) {
   const formRef = useRef<HTMLFormElement | null>(null);
   const [state, setState] = useState<SubmitState>("idle");
@@ -33,6 +37,7 @@ export default function ContactForm({
   const [selectedConferencePackage, setSelectedConferencePackage] = useState<ConferencePackageInquiry | null>(null);
   const [selectedConferenceRoomSize, setSelectedConferenceRoomSize] = useState<ConferenceRoomSizeInquiry | null>(null);
   const [inquiryProjectKey, setInquiryProjectKey] = useState("");
+  const [selectedRentalInquiry, setSelectedRentalInquiry] = useState<RentalInquiryContext | null>(null);
 
   const email = `${siteConfig.emailUser}@${siteConfig.emailDomain}`;
   const actionUrl = `https://formsubmit.co/ajax/${encodeURIComponent(email)}`;
@@ -40,11 +45,22 @@ export default function ContactForm({
   useEffect(() => {
     let cancelled = false;
     const params = new URLSearchParams(window.location.search);
+    const rentalContext = resolveRentalInquiry(params, rentalProducts);
     const context = resolveConferenceInquiry(params, conferenceProducts);
 
-    if (!context.projectType) return;
+    if (!rentalContext && !context.projectType) return;
     queueMicrotask(() => {
       if (cancelled) return;
+      setSelectedRentalInquiry(rentalContext);
+      if (rentalContext) {
+        setProjectType(rentalContext.projectType);
+        setInquiryProjectKey(rentalContext.projectKey);
+        setSelectedConferenceProducts([]);
+        setSelectedConferencePackage(null);
+        setSelectedConferenceRoomSize(null);
+        setMessage((current) => current || rentalContext.message);
+        return;
+      }
       setProjectType(context.projectType);
       setInquiryProjectKey(context.projectKey);
       setSelectedConferenceProducts(context.products);
@@ -53,7 +69,7 @@ export default function ContactForm({
       if (context.message) setMessage((current) => current || context.message);
     });
     return () => { cancelled = true; };
-  }, [conferenceProducts]);
+  }, [conferenceProducts, rentalProducts]);
 
   const subject = projectType
     ? `${BRAND_NAME} — New ${projectType} inquiry`
@@ -107,6 +123,19 @@ export default function ContactForm({
       <input type="hidden" name="_captcha" value="false" />
       <input type="text" name="_honey" className="hidden" tabIndex={-1} autoComplete="off" />
       {inquiryProjectKey ? <input type="hidden" name="inquiry_project" value={inquiryProjectKey} /> : null}
+      {selectedRentalInquiry ? (
+        <>
+          {(["package", "model", "event", "service"] as const).map((field) => {
+            const detail = selectedRentalInquiry[`${field}Inquiry`];
+            return detail ? (
+              <span key={field} hidden>
+                <input type="hidden" name={`rental_${field}_key`} value={detail.key} />
+                <input type="hidden" name={`rental_${field}`} value={detail.label} />
+              </span>
+            ) : null;
+          })}
+        </>
+      ) : null}
       {selectedConferenceProducts.length ? (
         <>
           <input type="hidden" name="conference_product_slugs" value={selectedConferenceProducts.map((product) => product.slug).join(", ")} />
