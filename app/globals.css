@@ -1073,6 +1073,497 @@ label {
   }
 }
 
+/* Rental workflow: reference-style numbered icon timeline. */
+.rental-process-section {
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  margin-top: 2rem;
+  margin-left: -50vw;
+  color: #071a35;
+  border-top: 1px solid #dbeafb;
+  border-bottom: 1px solid #dbeafb;
+  background: linear-gradient(108deg, #f2f8ff 0%, #ffffff 46%, #eef7ff 100%);
+}
+
+.rental-process-inner {
+  width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 1.4rem 1.5rem 1.6rem;
+}
+
+.rental-process-timeline {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0;
+  margin: 1.15rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rental-process-step {
+  position: relative;
+  min-width: 0;
+  padding: 0 0.7rem;
+  list-style: none;
+  text-align: center;
+}
+
+.rental-process-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 1.55rem;
+  left: calc(50% + 2.15rem);
+  width: calc(100% - 4.3rem);
+  border-top: 2px dotted #a8caf0;
+}
+
+.rental-process-marker {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 3.2rem;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.rental-process-number {
+  position: absolute;
+  top: 0.8rem;
+  left: calc(50% - 3.1rem);
+  display: inline-flex;
+  width: 1.35rem;
+  height: 1.35rem;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  border: 2px solid #f3f8ff;
+  border-radius: 9999px;
+  background: #126be2;
+  box-shadow: 0 3px 8px rgba(18, 107, 226, 0.2);
+  font-size: 0.62rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.rental-process-icon {
+  display: inline-flex;
+  width: 3.1rem;
+  height: 3.1rem;
+  align-items: center;
+  justify-content: center;
+  color: #0876ef;
+  border: 1px solid #d7e9ff;
+  border-radius: 9999px;
+  background: #e8f3ff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 6px 16px rgba(29, 112, 210, 0.08);
+}
+
+.rental-process-copy {
+  margin-top: 0.45rem;
+  text-align: center;
+}
+
+.rental-process-copy h3 {
+  display: flex;
+  min-height: 2rem;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 0;
+  color: #071a35;
+  font-size: 0.78rem;
+  font-weight: 900;
+  line-height: 1rem;
+}
+
+.rental-process-copy p {
+  max-width: 10.5rem;
+  margin: 0.3rem auto 0 !important;
+  color: #64748b;
+  font-size: 0.61rem !important;
+  font-weight: 500;
+  line-height: 0.84rem !important;
+  text-align: center !important;
+}
+
+/* Consolidated planning and setup checklist. */
+.rental-planning-section {
+  margin-top: 2rem;
+  scroll-margin-top: 6rem;
+}
+
+.rental-planning-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.rental-planning-card {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #dce7f4;
+  border-radius: 0.9rem;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(8, 31, 62, 0.05);
+  padding: 1rem;
+  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.rental-planning-card:hover {
+  transform: translateY(-2px);
+  border-color: #bad9ff;
+  box-shadow: 0 12px 26px rgba(8, 31, 62, 0.09);
+}
+
+.rental-planning-card-header {
+  position: relative;
+  display: flex;
+  min-height: 4.35rem;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding-right: 1.5rem;
+}
+
+.rental-planning-icon {
+  display: inline-flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 2.5rem;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  border-radius: 0.7rem;
+  background: linear-gradient(135deg, #1686f8, #075fd7);
+  box-shadow: 0 7px 16px rgba(7, 95, 215, 0.2);
+}
+
+.rental-planning-card-header h3 {
+  margin: 0;
+  color: #071a35;
+  font-size: 0.82rem;
+  font-weight: 900;
+  line-height: 1.05rem;
+}
+
+.rental-planning-card-header p {
+  margin: 0.25rem 0 0 !important;
+  color: #64748b;
+  font-size: 0.59rem !important;
+  line-height: 0.8rem !important;
+  text-align: left !important;
+}
+
+.rental-planning-index {
+  position: absolute;
+  top: -0.15rem;
+  right: -0.1rem;
+  color: #d8e8fb;
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.rental-planning-card > ul {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rental-planning-card > ul > li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  color: #475569;
+  font-size: 0.66rem;
+  font-weight: 500;
+  line-height: 0.9rem;
+  text-align: left;
+}
+
+.rental-planning-card > ul > li > span:first-child {
+  flex: 0 0 auto;
+  color: #0876ef;
+  font-weight: 900;
+}
+
+.rental-planning-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.9rem;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid #dce8f7;
+  border-radius: 0.75rem;
+  background: rgba(239, 246, 255, 0.74);
+}
+
+.rental-planning-actions > p {
+  margin: 0 !important;
+  color: #475569;
+  font-size: 0.66rem !important;
+  line-height: 0.95rem !important;
+  text-align: left !important;
+}
+
+.rental-planning-actions > div {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.5rem;
+}
+
+.rental-planning-actions a {
+  display: inline-flex;
+  min-height: 2.2rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #126be2;
+  border-radius: 0.55rem;
+  padding: 0.45rem 0.9rem;
+  color: #ffffff;
+  background: #126be2;
+  font-size: 0.64rem;
+  font-weight: 800;
+  line-height: 1;
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.rental-planning-actions a:last-child {
+  color: #087443;
+  border-color: #8ed8b4;
+  background: #ffffff;
+}
+
+.rental-planning-actions a:hover {
+  transform: translateY(-1px);
+  background: #075fd7;
+}
+
+.rental-planning-actions a:last-child:hover {
+  color: #ffffff;
+  background: #079455;
+}
+
+/* Compact category links aligned with the rental page's visual-card system. */
+.rental-explore-section {
+  margin-top: 2rem;
+}
+
+.rental-explore-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.rental-explore-card {
+  display: flex;
+  min-width: 0;
+  min-height: 8.6rem;
+  overflow: hidden;
+  color: #071a35;
+  border: 1px solid #dce7f4;
+  border-radius: 0.9rem;
+  background: #f9fbfe;
+  box-shadow: 0 5px 16px rgba(8, 31, 62, 0.045);
+  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.rental-explore-card:hover {
+  transform: translateY(-2px);
+  border-color: #ffbd8f;
+  box-shadow: 0 11px 24px rgba(8, 31, 62, 0.09);
+}
+
+.rental-explore-image {
+  position: relative;
+  display: block;
+  flex: 0 0 42%;
+  min-height: 8.6rem;
+  overflow: hidden;
+  background: #e7eef7;
+}
+
+.rental-explore-image > i {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 70%, rgba(255, 255, 255, 0.18));
+}
+
+.rental-explore-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  padding: 0.85rem;
+  text-align: left;
+}
+
+.rental-explore-copy > strong {
+  color: #071a35;
+  font-size: 0.86rem;
+  font-weight: 900;
+  line-height: 1.08rem;
+}
+
+.rental-explore-copy > span {
+  margin-top: 0.35rem;
+  color: #64748b;
+  font-size: 0.62rem;
+  font-weight: 500;
+  line-height: 0.86rem;
+}
+
+.rental-explore-copy > b {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: auto;
+  padding-top: 0.6rem;
+  color: #e45700;
+  font-size: 0.64rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .rental-process-timeline {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 1.5rem;
+  }
+
+  .rental-process-step:nth-child(3)::after {
+    display: none;
+  }
+
+  .rental-planning-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rental-explore-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 639px) {
+  .rental-process-inner {
+    max-width: 100%;
+    padding: 1.1rem 0.75rem 1.2rem;
+  }
+
+  .rental-process-timeline {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+    margin-top: 1rem;
+  }
+
+  .rental-process-step {
+    display: grid;
+    grid-template-columns: 3.6rem minmax(0, 1fr);
+    align-items: center;
+    padding: 0;
+    text-align: left;
+  }
+
+  .rental-process-step:not(:last-child)::after {
+    top: 2.9rem;
+    bottom: -0.85rem;
+    left: 1.55rem;
+    width: 0;
+    border-top: 0;
+    border-left: 2px dotted #a8caf0;
+  }
+
+  .rental-process-marker {
+    min-height: 3.2rem;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .rental-process-number {
+    z-index: 2;
+    top: -0.05rem;
+    left: -0.15rem;
+  }
+
+  .rental-process-icon {
+    width: 3.1rem;
+    height: 3.1rem;
+  }
+
+  .rental-process-copy {
+    margin-top: 0;
+    text-align: left;
+  }
+
+  .rental-process-copy h3 {
+    min-height: 0;
+    justify-content: flex-start;
+    font-size: 0.8rem;
+    line-height: 1rem;
+  }
+
+  .rental-process-copy p {
+    max-width: none;
+    margin: 0.25rem 0 0 !important;
+    font-size: 0.61rem !important;
+    line-height: 0.84rem !important;
+    text-align: left !important;
+  }
+
+  .rental-planning-section,
+  .rental-explore-section {
+    margin-top: 1rem;
+  }
+
+  .rental-planning-card-header {
+    min-height: 0;
+  }
+
+  .rental-planning-grid,
+  .rental-explore-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rental-planning-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .rental-planning-actions > div {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rental-explore-card,
+  .rental-explore-image {
+    min-height: 7.6rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .rental-process-step:nth-child(3)::after {
+    display: block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rental-process-step,
+  .rental-planning-card,
+  .rental-explore-card,
+  .rental-explore-card img {
+    transition: none !important;
+  }
+}
+
 @layer utilities {
   .max-w-7xl {
     max-width: min(120rem, calc(100vw - 2.5rem));

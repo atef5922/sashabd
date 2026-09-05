@@ -2007,10 +2007,13 @@ test("outdoor LED duplicate-prone groups render one canonical semantic set", () 
 
 test("rental LED duplicate-prone groups render one canonical semantic set", () => {
   const source = read("modules/routes/catalog/rental/page.tsx");
-  const sectionWrapper = sectionBetween(source, "const Section = ({", "function responsiveCardStyle");
+  const sectionWrapper = sectionBetween(source, "const Section = ({", "type RentalHeroIconName");
   const packages = sectionBetween(source, "const rentalPackages", "const pitchGuide");
   const pitchGuide = sectionBetween(source, "const pitchGuide", "const whyChooseRental");
-  const whyChoose = sectionBetween(source, "const whyChooseRental", "export default function RentalProductsPage");
+  const whyChoose = sectionBetween(source, "const whyChooseRental", "const rentalProcessSteps");
+  const process = sectionBetween(source, "const rentalProcessSteps", "const rentalPlanningGroups");
+  const planning = sectionBetween(source, "const rentalPlanningGroups", "const rentalExploreCategories");
+  const explore = sectionBetween(source, "const rentalExploreCategories", "export default function RentalProductsPage");
 
   assert.equal(occurrences(source, "singleDom"), 1);
   assert.match(sectionWrapper, /singleDom/);
@@ -2037,13 +2040,18 @@ test("rental LED duplicate-prone groups render one canonical semantic set", () =
   assert.equal(occurrences(source, "LED Screen Rental for Events"), 0);
   assert.equal(occurrences(source, "Rental LED Display Applications in Bangladesh"), 0);
   assert.equal(occurrences(source, "Rental LED Display Cost Drivers in Bangladesh"), 0);
+  assert.equal(occurrences(source, "LED Display Rental Process"), 0);
+  assert.equal(occurrences(source, "Fast Setup Checklist (Rental LED Screen)"), 0);
+  assert.equal(occurrences(source, "Rental LED Event Booking Planner"), 0);
 
   for (const heading of [
     "<RentalOccasionShowcase />",
     "<RentalPackageShowcase />",
     "<RentalPitchGuide />",
     "<RentalWhyChoose />",
-    'title="LED Display Rental Process"',
+    "<RentalProcessTimeline />",
+    "<RentalPlanningChecklist whatsappHref={wa} />",
+    "<RentalExploreCategories />",
   ]) {
     assert.equal(occurrences(source, heading), 1, `${heading} must render once`);
   }
@@ -2058,32 +2066,14 @@ test("rental LED duplicate-prone groups render one canonical semantic set", () =
     assert.equal(occurrences(whyChoose, label), 1, `${label} must appear once in Why Choose`);
   }
 
-  for (const [start, end, labels] of [
-    [
-      "LED Display Rental Process",
-      "Fast Setup Checklist (Rental LED Screen)",
-      ["Contact us", "Share event details", "Choose screen size", "Installation by our engineers", "Event support & operation"],
-    ],
-    [
-      "Fast Setup Checklist (Rental LED Screen)",
-      "Rental LED Event Booking Planner",
-      ["Structure & safety", "Power planning", "Signal & mapping", "Show readiness"],
-    ],
-    [
-      "Rental LED Event Booking Planner",
-      "Explore LED Display Categories",
-      ["Event & Screen Scope", "Technical Inputs", "Rigging & Safety", "Handover Checklist"],
-    ],
-    [
-      "Explore LED Display Categories",
-      "FAQs About Rental LED Display",
-      ["Indoor LED Displays", "Outdoor LED Displays", "Rental LED Displays"],
-    ],
-  ]) {
-    const section = sectionBetween(source, start, end);
-    for (const label of labels) {
-      assert.equal(occurrences(section, label), 1, `${label} must appear once in ${start}`);
-    }
+  for (const label of ["Share Your Requirements", "Venue Review", "Quote & BOQ", "Setup & Testing", "Event-Day Support", "Dismantling"]) {
+    assert.equal(occurrences(process, label), 1, `${label} must appear once in the rental process`);
+  }
+  for (const label of ["Event & Venue Details", "Screen & Content Requirements", "Rigging, Power & Safety", "Testing, Support & Handover"]) {
+    assert.equal(occurrences(planning, label), 1, `${label} must appear once in the planning checklist`);
+  }
+  for (const label of ["Indoor LED Displays", "Outdoor LED Displays", "Rental LED Displays"]) {
+    assert.equal(occurrences(explore, label), 1, `${label} must appear once in Explore`);
   }
 });
 

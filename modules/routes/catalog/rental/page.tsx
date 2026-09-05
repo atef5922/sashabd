@@ -86,18 +86,7 @@ const Section = ({
   </section>
 );
 
-function responsiveCardStyle(index: number, desktopBorderColor = `${BRAND.maroon}10`) {
-  return {
-    "--mobile-border-color": index % 2 === 0 ? "rgba(103,232,249,0.6)" : "rgba(255,214,170,0.8)",
-    "--mobile-bg":
-      index % 2 === 0
-        ? "linear-gradient(180deg, rgba(248,251,255,1) 0%, rgba(239,246,255,1) 100%)"
-        : "linear-gradient(180deg, rgba(255,250,245,1) 0%, rgba(255,242,233,1) 100%)",
-    "--desktop-border-color": desktopBorderColor,
-  } as React.CSSProperties;
-}
-
-type RentalHeroIconName = "range" | "lock" | "stack" | "processor" | "headset" | "events" | "location" | "setup" | "shield" | "arrow";
+type RentalHeroIconName = "range" | "lock" | "stack" | "processor" | "headset" | "events" | "location" | "setup" | "shield" | "clipboard" | "truck" | "arrow";
 
 function RentalHeroIcon({ name, className = "h-5 w-5" }: { name: RentalHeroIconName; className?: string }) {
   const paths: Record<RentalHeroIconName, React.ReactNode> = {
@@ -110,6 +99,8 @@ function RentalHeroIcon({ name, className = "h-5 w-5" }: { name: RentalHeroIconN
     location: <><path d="M12 21s6-5 6-11a6 6 0 1 0-12 0c0 6 6 11 6 11Z" /><circle cx="12" cy="10" r="2" /></>,
     setup: <><circle cx="12" cy="12" r="3" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1" /></>,
     shield: <><path d="M12 3 5 6v6c0 4.2 2.7 7.2 7 9 4.3-1.8 7-4.8 7-9V6z" /><path d="m9 12 2 2 4-4" /></>,
+    clipboard: <><rect x="5" y="4" width="14" height="17" rx="2" /><path d="M9 4.5h6V7H9zM8.5 11h7M8.5 15h7" /></>,
+    truck: <><path d="M3 6h11v10H3zM14 10h4l3 3v3h-7" /><circle cx="7" cy="18" r="2" /><circle cx="18" cy="18" r="2" /></>,
     arrow: <path d="M5 12h14m-5-5 5 5-5 5" />,
   };
   return <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>;
@@ -895,6 +886,247 @@ function RentalWhyChoose() {
   );
 }
 
+const rentalProcessSteps: Array<{
+  title: string;
+  description: string;
+  icon: RentalHeroIconName;
+}> = [
+  {
+    title: "Share Your Requirements",
+    description: "Tell us your event details, venue, audience and display needs.",
+    icon: "clipboard",
+  },
+  {
+    title: "Venue Review",
+    description: "We assess the venue, viewing distance and technical requirements.",
+    icon: "location",
+  },
+  {
+    title: "Quote & BOQ",
+    description: "Receive a customized quotation with a clear Bill of Quantity.",
+    icon: "clipboard",
+  },
+  {
+    title: "Setup & Testing",
+    description: "Our team handles installation, configuration and pre-event testing.",
+    icon: "setup",
+  },
+  {
+    title: "Event-Day Support",
+    description: "On-site operator and technical support keep the event running smoothly.",
+    icon: "headset",
+  },
+  {
+    title: "Dismantling",
+    description: "We safely dismantle the screen and remove the rental equipment.",
+    icon: "truck",
+  },
+];
+
+function RentalProcessTimeline() {
+  return (
+    <section className="rental-process-section" aria-labelledby="rental-process-heading">
+      <div className="rental-process-inner">
+        <RentalSectionHeading
+          id="rental-process-heading"
+          eyebrow="Simple & Hassle-Free"
+          title="How LED Display Rental Works"
+          description="From your initial inquiry to final dismantling, we make the rental process simple, clear and reliable."
+          action={
+            <Link href="#rental-planning-checklist" className="inline-flex items-center gap-1 text-[#e45700] transition hover:text-[#ff6a00]">
+              Learn More About Our Process <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" />
+            </Link>
+          }
+        />
+
+        <ol className="rental-process-timeline">
+          {rentalProcessSteps.map((step, index) => (
+            <li key={step.title} className="rental-process-step">
+              <div className="rental-process-marker" aria-hidden="true">
+                <span className="rental-process-number">{index + 1}</span>
+                <span className="rental-process-icon">
+                  <RentalHeroIcon name={step.icon} className="h-5 w-5" />
+                </span>
+              </div>
+              <div className="rental-process-copy">
+                <h3>{step.title}</h3>
+                <p>{step.description}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+const rentalPlanningGroups: Array<{
+  title: string;
+  description: string;
+  icon: RentalHeroIconName;
+  items: string[];
+}> = [
+  {
+    title: "Event & Venue Details",
+    description: "Confirm the operating environment and access plan.",
+    icon: "location",
+    items: [
+      "Event date, venue and setup time window",
+      "Audience size and expected viewing distance",
+      "Indoor, semi-outdoor or outdoor conditions",
+      "Venue access and dismantling schedule",
+    ],
+  },
+  {
+    title: "Screen & Content Requirements",
+    description: "Match the LED configuration to the production.",
+    icon: "processor",
+    items: [
+      "Target screen size and stage placement",
+      "Pixel pitch, content detail and camera use",
+      "Laptop, media server or live-camera source",
+      "Required HDMI, SDI or other signal inputs",
+    ],
+  },
+  {
+    title: "Rigging, Power & Safety",
+    description: "Plan a stable structure and reliable power path.",
+    icon: "stack",
+    items: [
+      "Hanging or ground-stacking arrangement",
+      "Truss capacity and venue approval",
+      "Power load, DB/MCB, earthing and backup",
+      "Safe cable routes and audience barriers",
+    ],
+  },
+  {
+    title: "Testing, Support & Handover",
+    description: "Prepare every system before the audience arrives.",
+    icon: "setup",
+    items: [
+      "Controller mapping and spare signal cable",
+      "Brightness, content and playback test",
+      "Operator, standby support and show contact",
+      "Final handover and teardown confirmation",
+    ],
+  },
+];
+
+function RentalPlanningChecklist({ whatsappHref }: { whatsappHref: string }) {
+  return (
+    <section id="rental-planning-checklist" className="rental-planning-section" aria-labelledby="rental-planning-heading">
+      <RentalSectionHeading
+        id="rental-planning-heading"
+        eyebrow="Plan Before Booking"
+        title="Rental LED Event Planning & Setup Checklist"
+        description="Prepare these event, screen, rigging and support details to receive an accurate quotation and avoid show-day delays."
+        action={
+          <Link href="/contact/?project=rental-led-display&service=event-planning" className="inline-flex items-center gap-1 text-[#e45700] transition hover:text-[#ff6a00]">
+            Start Event Planning <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" />
+          </Link>
+        }
+      />
+
+      <div className="rental-planning-grid">
+        {rentalPlanningGroups.map((group, index) => (
+          <article key={group.title} className="rental-planning-card">
+            <div className="rental-planning-card-header">
+              <span className="rental-planning-icon" aria-hidden="true">
+                <RentalHeroIcon name={group.icon} className="h-5 w-5" />
+              </span>
+              <div>
+                <h3>{group.title}</h3>
+                <p>{group.description}</p>
+              </div>
+              <span className="rental-planning-index" aria-hidden="true">0{index + 1}</span>
+            </div>
+            <ul>
+              {group.items.map((item) => (
+                <li key={item}>
+                  <span aria-hidden="true">&#10003;</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+
+      <div className="rental-planning-actions">
+        <p>Have your event details ready? Our team can help finalize the screen size, setup method and technical scope.</p>
+        <div>
+          <Link href="/contact/?project=rental-led-display&service=event-planning">Request Event BOQ</Link>
+          <a href={whatsappHref} target="_blank" rel="noreferrer">WhatsApp Our Team</a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const rentalExploreCategories = [
+  {
+    title: "Indoor LED Displays",
+    description: "Fine-pitch LED solutions for showrooms, conference rooms and control spaces.",
+    image: "/images/project-page/Project-indoor-wall.webp",
+    href: "/led-display/indoor-led/",
+    cta: "Explore Indoor LED",
+  },
+  {
+    title: "Outdoor LED Displays",
+    description: "High-brightness displays for billboards, facades, rooftops and public spaces.",
+    image: "/images/project-page/project-redirects.webp",
+    href: "/led-display/outdoor/",
+    cta: "Explore Outdoor LED",
+  },
+  {
+    title: "Rental LED Displays",
+    description: "Quick-lock cabinets for stages, concerts, exhibitions and event productions.",
+    image: "/images/rental/hero/rental-led-hero-banner.webp",
+    href: "#rental-led-models",
+    cta: "View Rental Models",
+  },
+] as const;
+
+function RentalExploreCategories() {
+  return (
+    <section className="rental-explore-section" aria-labelledby="rental-explore-heading">
+      <RentalSectionHeading
+        id="rental-explore-heading"
+        eyebrow="Explore More"
+        title="Explore LED Display Categories"
+        description="Compare indoor, outdoor and rental LED solutions, then choose the right category for your project."
+        action={
+          <Link href="/products/" className="inline-flex items-center gap-1 text-[#e45700] transition hover:text-[#ff6a00]">
+            View All LED Products <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" />
+          </Link>
+        }
+      />
+
+      <div className="rental-explore-grid">
+        {rentalExploreCategories.map((category) => (
+          <Link key={category.title} href={category.href} className="rental-explore-card">
+            <span className="rental-explore-image">
+              <Image
+                src={category.image}
+                alt={`${category.title} solution`}
+                fill
+                sizes="(max-width: 767px) 42vw, 16vw"
+                className="object-cover"
+              />
+              <i aria-hidden="true" />
+            </span>
+            <span className="rental-explore-copy">
+              <strong>{category.title}</strong>
+              <span>{category.description}</span>
+              <b>{category.cta} <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" /></b>
+            </span>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default function RentalProductsPage() {
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
  // ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Add one more rental product card locally (no change to productsCatalog needed)
@@ -917,212 +1149,11 @@ export default function RentalProductsPage() {
       <RentalPackageShowcase />
       <RentalPitchGuide />
       <RentalWhyChoose />
+      <RentalProcessTimeline />
 
-      <Section
-        title="LED Display Rental Process"
-        titleIcon={
-          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M4 7h9" />
-            <path d="M4 12h7" />
-            <path d="M4 17h5" />
-            <path d="m14 6 6 6-6 6" />
-          </svg>
-        }
-        subtitle="A simple step-by-step workflow to plan, install, and run your rental LED screen smoothly."
-      >
-        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 md:pb-0 md:pt-0 lg:grid-cols-5">
-          {[
-            { t: "Contact us", d: "Reach out with your event date, location, and basic LED screen requirement." },
-            { t: "Share event details", d: "Provide stage layout, audience distance, content type, and timing plan." },
-            { t: "Choose screen size", d: "Finalize suitable LED size and setup format based on venue and visibility needs." },
-            { t: "Installation by our engineers", d: "Our team handles safe setup, alignment, cabling, and system configuration." },
-            { t: "Event support & operation", d: "On-site technical support ensures stable playback and smooth show execution." },
-          ].map((x, idx) => (
-            <div
-              key={x.t}
-              className="w-[89%] shrink-0 snap-start rounded-[14px] border border-[var(--mobile-border-color)] bg-[var(--mobile-bg)] px-4 py-4 md:w-auto md:rounded-3xl md:border-[var(--desktop-border-color)] md:bg-slate-50 md:p-5"
-              style={responsiveCardStyle(idx)}
-            >
-              <div className="text-xs font-extrabold uppercase tracking-wide" style={{ color: BRAND.maroon }}>
-                Step {idx + 1}
-              </div>
-              <h3 className="mt-2 text-[17px] font-extrabold leading-snug text-slate-900 md:text-base">{x.t}</h3>
-              <p className="mt-2 text-[13px] leading-6 text-slate-700 md:text-sm md:leading-7 md:text-slate-600">{x.d}</p>
-            </div>
-          ))}
-        </div>
+      <RentalPlanningChecklist whatsappHref={wa} />
 
-      </Section>
-
-      {/* Setup checklist */}
-      <Section
- title="Fast Setup Checklist (Rental LED Screen)"
-        titleIcon={
-          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="9" />
-            <path d="m8.2 12.2 2.4 2.4 5.2-5.2" />
-          </svg>
-        }
-        subtitle="A simple checklist used by event teams to avoid common issues during live programs."
-      >
-        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:rounded-3xl md:border md:bg-slate-50 md:p-6" style={{ borderColor: `${BRAND.maroon}10` }}>
-          {[
-            {
- t: "Structure & safety",
-              items: [
-                "Hanging points / truss load check",
-                "Ground stacking base leveling",
-                "Safety locks & corner protection",
-                "Cable routing to avoid trip hazards",
-              ],
-            },
-            {
- t: "Power planning",
-              items: ["Load estimate (W) & DB/MCB", "Proper earthing", "Backup power (IPS/Generator)", "Stable PSU"],
-            },
-            {
- t: "Signal & mapping",
-              items: ["Sender/controller setup", "Correct mapping order", "Spare data cable ready", "Test patterns"],
-            },
-            {
- t: "Show readiness",
-              items: ["Brightness tuning", "Content playback test", "Burn-in before show", "Operator briefing"],
-            },
-          ].map((b, index) => (
-            <div
-              key={b.t}
-              className="w-[89%] shrink-0 snap-start rounded-[14px] border border-[var(--mobile-border-color)] bg-[var(--mobile-bg)] px-4 py-4 md:w-auto md:rounded-2xl md:border-[var(--desktop-border-color)] md:bg-white md:p-5"
-              style={responsiveCardStyle(index, `${BRAND.maroon}12`)}
-            >
-              <div className="text-[16px] font-extrabold text-slate-900 md:text-sm">{b.t}</div>
-              <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700 md:text-sm">
-                {b.items.map((i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="mt-1.5 inline-block h-2 w-2 rounded-full md:mt-2" style={{ background: BRAND.maroon }} />
-                    <span className="leading-6 md:leading-7">{i}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-
-          <div className="hidden md:col-span-2 md:mt-2 md:flex md:flex-wrap md:gap-3">
-            <Link
-              href="/contact/"
-              className="inline-flex min-h-10 items-center justify-center rounded-[10px] px-3 py-2 text-center text-[12px] font-extrabold text-white transition hover:-translate-y-0.5 hover:shadow-md md:rounded-xl md:px-5 md:py-3 md:text-sm"
-              style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-            >
-              Book Event Support -&gt;
-            </Link>
-            <a
-              href={wa}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex min-h-10 items-center justify-center rounded-[10px] bg-emerald-600 px-3 py-2 text-center text-[12px] font-extrabold text-white transition hover:-translate-y-0.5 hover:bg-emerald-700 md:rounded-xl md:px-5 md:py-3 md:text-sm"
-            >
-              WhatsApp Now
-            </a>
-          </div>
-        </div>
-      </Section>
-
-      {/* Booking planner */}
-      <Section
- title="Rental LED Event Booking Planner"
-        subtitle="Use this quick planner before final booking to avoid last-minute delays, wrong sizing, or signal/power issues on show day."
-      >
-        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-2 md:gap-4 md:overflow-visible md:px-0 md:pb-0 md:pt-0">
-          {[
-            {
-              t: "Event & Screen Scope",
-              items: [
-                "Event date, venue, and setup time window",
- "Required screen size (W-H) and placement",
-                "Viewing distance and expected audience area",
-                "Indoor, semi-outdoor, or outdoor exposure",
-              ],
-            },
-            {
-              t: "Technical Inputs",
-              items: [
-                "Content source (laptop, media server, live camera)",
-                "Input ports required (HDMI/SDI/other)",
-                "Power line availability and backup plan",
-                "Need for on-site operator and standby support",
-              ],
-            },
-            {
-              t: "Rigging & Safety",
-              items: [
-                "Hanging or ground-stacking preference",
-                "Truss/load approval from venue authority",
-                "Cable route and audience safety barriers",
-                "Weather plan for semi-outdoor conditions",
-              ],
-            },
-            {
-              t: "Handover Checklist",
-              items: [
-                "Final content and resolution shared in advance",
-                "Test-run completed before audience entry",
-                "Point-of-contact available during live show",
-                "Dismantle timing and access confirmation",
-              ],
-            },
-          ].map((b, index) => (
-            <div
-              key={b.t}
-              className="w-[89%] shrink-0 snap-start rounded-[14px] border border-[var(--mobile-border-color)] bg-[var(--mobile-bg)] px-4 py-4 md:w-auto md:rounded-3xl md:border-[var(--desktop-border-color)] md:bg-slate-50 md:p-6"
-              style={responsiveCardStyle(index)}
-            >
-              <div className="text-[17px] font-extrabold leading-snug text-slate-900 md:text-base">{b.t}</div>
-              <ul className="mt-3 space-y-2 text-[12.5px] text-slate-700 md:text-sm">
-                {b.items.map((i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <span className="mt-1.5 inline-block h-2 w-2 rounded-full md:mt-2" style={{ background: BRAND.maroon }} />
-                    <span className="leading-6 md:leading-7">{i}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-      </Section>
-
-      {/* Explore */}
-      <Section
- title="Explore LED Display Categories"
-        titleIcon={
-          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M4 12h16M12 4v16" />
-            <circle cx="12" cy="12" r="8" />
-          </svg>
-        }
- subtitle="Compare indoor, outdoor and rental options-then choose the best category for your project."
-      >
-        <div className="-mx-0.5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-0.5 pb-1 pt-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible md:px-0 md:pb-0 md:pt-0">
-          {[
-            { t: "Indoor LED Displays", d: "Showroom, conference, control room solutions.", href: "/led-display/indoor-led/" },
-            { t: "Outdoor LED Displays", d: "Billboards, rooftop signage, public screens.", href: "/led-display/outdoor/" },
-            { t: "Rental LED Displays", d: "Stage events, concerts, quick setup cabinets.", href: "/led-display/rental-display/" },
-          ].map((x, index) => (
-            <Link
-              key={x.t}
-              href={x.href}
-              className="group w-[89%] shrink-0 snap-start rounded-[14px] border border-[var(--mobile-border-color)] bg-[var(--mobile-bg)] px-4 py-4 transition md:w-auto md:rounded-3xl md:border-[var(--desktop-border-color)] md:bg-slate-50 md:p-6 md:hover:-translate-y-0.5 md:hover:bg-white md:hover:shadow-md"
-              style={responsiveCardStyle(index, `${BRAND.maroon}12`)}
-            >
-              <div className="text-[17px] font-extrabold leading-snug text-slate-900 md:text-lg">{x.t}</div>
-              <p className="mt-2 text-[13px] leading-6 text-slate-700 md:text-sm md:leading-7 md:text-slate-600">{x.d}</p>
-              <div className="mt-4 text-[12px] font-bold md:text-sm" style={{ color: BRAND.maroon }}>
-                Explore -&gt;
-              </div>
-            </Link>
-          ))}
-        </div>
-
-      </Section>
+      <RentalExploreCategories />
 
       {/* FAQs */}
       <Section
