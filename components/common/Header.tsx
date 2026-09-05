@@ -624,7 +624,8 @@ export default function Header({
   const normalizedPathname = pathname.replace(/\/+$/, "");
   const isLedDisplayLanding = normalizedPathname === "/led-display";
   const isRentalDisplayLanding = normalizedPathname === "/led-display/rental-display";
-  const useHomeResponsiveHeader = pathname === "/" || isLedDisplayLanding || isRentalDisplayLanding;
+  const isIndoorOutdoorLanding = normalizedPathname === "/led-display/indoor-led" || normalizedPathname === "/led-display/outdoor";
+  const useHomeResponsiveHeader = pathname === "/" || isLedDisplayLanding || isRentalDisplayLanding || isIndoorOutdoorLanding;
   const useConferenceTabletHeader =
     useHomeResponsiveHeader || pathname.startsWith("/conference-system");
   const hasFlushConferenceHero = [

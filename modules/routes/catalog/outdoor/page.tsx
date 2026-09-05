@@ -10,6 +10,7 @@ import { projects } from "@/app/projects/projectData";
 import { getLedDisplayTablePrice, ledAccessoriesCatalog, outdoorCatalog } from "@/lib/productsCatalog";
 import { absoluteUrl, socialImageUrl } from "@/lib/seo";
 import { siteConfig } from "@/lib/site";
+import responsiveStyles from "../display-responsive.module.css";
 
 export const metadata: Metadata = {
   title: { absolute: "Outdoor LED Display Price in Bangladesh | Advertising Screen" },
@@ -233,7 +234,7 @@ export default function OutdoorProductsPage() {
   const priceRows = outdoorCatalog.map((product) => { const pitchLabel = getPitchLabel(product); return { product, pitchLabel, pitchNumber: parsePitchNumber(pitchLabel), price: getLedDisplayTablePrice(product.slug) ?? "Request quote" }; }).sort((a, b) => (a.pitchNumber ?? 999) - (b.pitchNumber ?? 999) || a.product.title.localeCompare(b.product.title));
   const outdoorProjects = projects.filter((project) => project.category === "led-display" && project.image && !project.isTemplate);
 
-  return <div className="outdoor-led-page mx-auto w-full max-w-[clamp(80rem,90vw,108rem)] px-4 pb-10 pt-0 [box-shadow:0_0_0_100vmax_#f4f7fb] [clip-path:inset(0_-100vmax)] md:px-6" data-outdoor-led-route-kind="hub">
+  return <div className={`${responsiveStyles.page} outdoor-led-page mx-auto w-full max-w-[clamp(80rem,90vw,108rem)] px-4 pb-10 pt-0 [box-shadow:0_0_0_100vmax_#f4f7fb] [clip-path:inset(0_-100vmax)] md:px-6`} data-outdoor-led-route-kind="hub">
     <OutdoorHero />
     <OutdoorTrustStrip />
 

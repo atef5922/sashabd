@@ -9,6 +9,7 @@ import MobileDisclosure from "@/components/common/MobileDisclosure";
 import MobileIntroText from "@/components/common/MobileIntroText";
 import IndoorFilterSection from "@/components/products/IndoorFilterSection";
 import { absoluteUrl, socialImageUrl } from "@/lib/seo";
+import responsiveStyles from "../display-responsive.module.css";
 
 export const metadata: Metadata = {
   title: { absolute: "Indoor LED Display Price in Bangladesh | Installation" },
@@ -432,7 +433,7 @@ export default function IndoorProductsPage() {
 
   return (
     <div
-      className="indoor-led-page mx-auto w-full max-w-[clamp(80rem,90vw,108rem)] px-4 pb-10 pt-0 [box-shadow:0_0_0_100vmax_#f4f7fb] [clip-path:inset(0_-100vmax)] md:px-6"
+      className={`${responsiveStyles.page} indoor-led-page mx-auto w-full max-w-[clamp(80rem,90vw,108rem)] px-4 pb-10 pt-0 [box-shadow:0_0_0_100vmax_#f4f7fb] [clip-path:inset(0_-100vmax)] md:px-6`}
       data-indoor-led-route-kind="hub"
     >
       <IndoorLedHero />

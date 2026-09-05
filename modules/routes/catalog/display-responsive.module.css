@@ -1,0 +1,155 @@
+/* Only the indoor/outdoor landing pages opt in. Preserve the 1280px design. */
+.page {
+  --display-width: clamp(80rem, 90vw, 108rem);
+  --display-unit: 1px;
+  max-width: var(--display-width);
+}
+
+/* Follow the same wide-screen container and proportional sizing as Rental. */
+@media (min-width: 1440px) {
+  .page {
+    --display-unit: calc(var(--display-width) / 1280);
+    --spacing: calc(4 * var(--display-unit));
+    --text-xs: calc(12 * var(--display-unit));
+    --text-sm: calc(14 * var(--display-unit));
+    --text-base: calc(16 * var(--display-unit));
+    --text-lg: calc(18 * var(--display-unit));
+    --text-xl: calc(20 * var(--display-unit));
+    --radius-sm: calc(4 * var(--display-unit));
+    --radius-md: calc(6 * var(--display-unit));
+    --radius-lg: calc(8 * var(--display-unit));
+    --radius-xl: calc(12 * var(--display-unit));
+    --radius-2xl: calc(16 * var(--display-unit));
+    --site-h2-size: calc(26 * var(--display-unit));
+    --site-h3-size: calc(20 * var(--display-unit));
+    font-size: var(--text-base);
+  }
+
+  /* The main wrapper's top padding stays 8px, independent of page scaling. */
+  .page > :global(.led-display-hero-shell) {
+    margin-top: -8px;
+  }
+
+  .page :global(.led-display-hero-frame) {
+    max-width: var(--display-width);
+  }
+
+  .page :global(.led-display-hero-description) {
+    max-width: calc(608 * var(--display-unit));
+  }
+
+  .page :global(.led-display-hero-features) svg {
+    width: calc(20 * var(--display-unit));
+    height: calc(20 * var(--display-unit));
+  }
+
+  .page[data-indoor-led-route-kind] :global(.led-display-hero-features) svg {
+    width: calc(22 * var(--display-unit));
+    height: calc(22 * var(--display-unit));
+  }
+
+  .page > section[aria-label$="service benefits"] > div {
+    min-height: calc(76 * var(--display-unit));
+  }
+
+  .page > section[aria-label$="service benefits"] > div > div {
+    min-height: calc(58 * var(--display-unit));
+    grid-template-columns: minmax(calc(210 * var(--display-unit)), 0.8fr) minmax(0, 2.6fr);
+  }
+
+  .page [data-led-product-explorer] > div:has(> aside) {
+    grid-template-columns: calc(248 * var(--display-unit)) minmax(0, 1fr);
+  }
+
+  .page [data-led-product-explorer] aside {
+    max-height: calc(100dvh - 96 * var(--display-unit));
+  }
+
+  .page [data-indoor-product-card] > a:first-child {
+    height: calc(205 * var(--display-unit));
+  }
+
+  .page [data-indoor-product-card] ul {
+    min-height: calc(64 * var(--display-unit));
+  }
+
+  /* Keep arbitrary text utilities in step with the scaled spacing and icons.
+     Responsive variants follow Tailwind's order so desktop sizes still win. */
+  .page :global(.text-\[7\.5px\]) { font-size: calc(7.5 * var(--display-unit)); }
+  .page :global(.text-\[8px\]) { font-size: calc(8 * var(--display-unit)); }
+  .page :global(.text-\[9px\]) { font-size: calc(9 * var(--display-unit)); }
+  .page :global(.text-\[10px\]) { font-size: calc(10 * var(--display-unit)); }
+  .page :global(.text-\[11px\]) { font-size: calc(11 * var(--display-unit)); }
+  .page :global(.text-\[12px\]) { font-size: calc(12 * var(--display-unit)); }
+  .page :global(.text-\[12\.5px\]) { font-size: calc(12.5 * var(--display-unit)); }
+  .page :global(.text-\[13px\]) { font-size: calc(13 * var(--display-unit)); }
+  .page :global(.text-\[15px\]) { font-size: calc(15 * var(--display-unit)); }
+  .page :global(.text-\[16px\]) { font-size: calc(16 * var(--display-unit)); }
+  .page :global(.text-\[17px\]) { font-size: calc(17 * var(--display-unit)); }
+  .page :global(.sm\:text-\[8px\]) { font-size: calc(8 * var(--display-unit)); }
+  .page :global(.sm\:text-\[9\.5px\]) { font-size: calc(9.5 * var(--display-unit)); }
+  .page :global(.sm\:text-\[10px\]) { font-size: calc(10 * var(--display-unit)); }
+  .page :global(.sm\:text-\[11px\]) { font-size: calc(11 * var(--display-unit)); }
+  .page :global(.sm\:text-\[13px\]) { font-size: calc(13 * var(--display-unit)); }
+  .page :global(.sm\:text-xs) { font-size: var(--text-xs); }
+  .page :global(.sm\:text-sm) { font-size: var(--text-sm); }
+  .page :global(.md\:text-\[15px\]) { font-size: calc(15 * var(--display-unit)); }
+  .page :global(.md\:text-xs) { font-size: var(--text-xs); }
+  .page :global(.md\:text-sm) { font-size: var(--text-sm); }
+  .page :global(.md\:text-base) { font-size: var(--text-base); }
+  .page :global(.md\:text-lg) { font-size: var(--text-lg); }
+  .page :global(.lg\:text-\[8\.5px\]) { font-size: calc(8.5 * var(--display-unit)); }
+  .page :global(.lg\:text-\[10px\]) { font-size: calc(10 * var(--display-unit)); }
+  .page :global(.lg\:text-\[16px\]) { font-size: calc(16 * var(--display-unit)); }
+  .page :global(.xl\:text-\[13px\]) { font-size: calc(13 * var(--display-unit)); }
+}
+
+@media (min-width: 2200px) {
+  .page {
+    --display-width: min(90vw, 128rem);
+  }
+}
+
+/* Preserve the three-product desktop row at 110% zoom on a 1366px screen. */
+@media (min-width: 1200px) and (max-width: 1279px) {
+  .page [data-led-product-listing] > :global(.grid) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1279px) {
+  .page {
+    --display-gutter: 16px;
+  }
+
+  /* Full-bleed hero must not drift by the browser's scrollbar width. */
+  .page > :global(.led-display-hero-shell) {
+    left: auto;
+    right: auto;
+    width: calc(100% + 2 * var(--display-gutter));
+    margin-left: calc(-1 * var(--display-gutter));
+    margin-right: calc(-1 * var(--display-gutter));
+  }
+
+  .page [id$="-led-faq"] button > div:first-child > div:last-child {
+    white-space: normal;
+  }
+
+  .page [id$="-led-faq"] button > div:last-child,
+  .page [id$="-led-faq"] button > div:first-child > div:first-child {
+    flex-shrink: 0;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .page {
+    --display-gutter: 24px;
+  }
+}
+
+/* Keep the existing mobile contrast layer until the desktop hero columns fit. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .page > :global(.led-display-hero-shell) > div[aria-hidden="true"] {
+    display: block;
+  }
+}
