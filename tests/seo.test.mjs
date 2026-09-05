@@ -2007,7 +2007,6 @@ test("outdoor LED duplicate-prone groups render one canonical semantic set", () 
 
 test("rental LED duplicate-prone groups render one canonical semantic set", () => {
   const source = read("modules/routes/catalog/rental/page.tsx");
-  const sectionWrapper = sectionBetween(source, "const Section = ({", "type RentalHeroIconName");
   const packages = sectionBetween(source, "const rentalPackages", "const pitchGuide");
   const pitchGuide = sectionBetween(source, "const pitchGuide", "const whyChooseRental");
   const whyChoose = sectionBetween(source, "const whyChooseRental", "const rentalProcessSteps");
@@ -2016,8 +2015,6 @@ test("rental LED duplicate-prone groups render one canonical semantic set", () =
   const explore = sectionBetween(source, "const rentalExploreCategories", "function RentalFinalCta");
   const finalCta = sectionBetween(source, "function RentalFinalCta", "export default function RentalProductsPage");
 
-  assert.equal(occurrences(source, "singleDom"), 1);
-  assert.match(sectionWrapper, /singleDom/);
   assert.equal(occurrences(source, "<RentalLedHero />"), 1);
   assert.match(source, /rental-led-hero-banner\.webp/);
   assert.match(source, /quality=\{95\}/);

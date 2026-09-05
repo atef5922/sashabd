@@ -4,7 +4,6 @@ import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site";
 import { ledAccessoriesCatalog, rentalCatalog, type LedAccessoryProduct, type ProductItem } from "@/lib/productsCatalog";
 import FaqAccordion from "@/components/common/FaqAccordion";
-import MobileIntroText from "@/components/common/MobileIntroText";
 import { absoluteUrl, socialImageUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -49,42 +48,6 @@ function getPitchDisplay(p: ProductItem): string {
   const pVal = spec.match(/p\s?(\d+(?:\.\d+)?)/i)?.[1];
   return pVal ? `${pVal} mm` : getPitchLabel(p);
 }
-
-const Section = ({
-  title,
-  subtitle,
-  children,
-  titleIcon,
-}: {
-  title: string;
-  subtitle?: string;
-  children: React.ReactNode;
-  titleIcon?: React.ReactNode;
-}) => (
-  <section className="mt-8 rounded-[24px] border bg-white p-4 md:mt-10 md:rounded-3xl md:p-10" style={{ borderColor: `${BRAND.maroon}12` }}>
-    <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
-      {titleIcon ? (
-        <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-orange-50 text-orange-600" aria-hidden="true">
-          {titleIcon}
-        </span>
-      ) : null}
-      <span>{title}</span>
-    </h2>
-    {subtitle ? (
-      <MobileIntroText
-        teaser={subtitle}
-        className="mt-2"
-        teaserClassName="w-full leading-6"
-        expandedClassName="text-sm leading-7 text-slate-600"
-        desktopClassName="text-slate-600 leading-7"
-        singleDom
-      >
-        <p className="text-slate-600 leading-7">{subtitle}</p>
-      </MobileIntroText>
-    ) : null}
-    <div className="mt-5">{children}</div>
-  </section>
-);
 
 type RentalHeroIconName = "range" | "lock" | "stack" | "processor" | "headset" | "events" | "location" | "setup" | "shield" | "clipboard" | "truck" | "arrow";
 
@@ -1233,21 +1196,24 @@ export default function RentalProductsPage() {
 
       <RentalExploreCategories />
 
-      {/* FAQs */}
-      <Section
- title="FAQs About Rental LED Display"
-        titleIcon={
-          <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="9" />
-            <path d="M9.5 9a2.5 2.5 0 1 1 4.2 1.8c-.9.8-1.7 1.2-1.7 2.2" />
-            <circle cx="12" cy="16.8" r="1" fill="currentColor" stroke="none" />
-          </svg>
-        }
-        subtitle="Common questions before booking a rental LED screen for events and live programs."
-      >
+      <section className="mt-8" aria-labelledby="rental-faq-heading">
+        <RentalSectionHeading
+          id="rental-faq-heading"
+          eyebrow="Rental LED Support"
+          title="FAQs About Rental LED Display"
+          description="Common questions before booking a rental LED screen for events and live programs."
+          action={
+            <Link href="/contact/?project=rental-led-display&service=rental-consultation" className="inline-flex items-center gap-1 text-[#e45700] transition hover:text-[#ff6a00]">
+              Ask a Rental Expert <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" />
+            </Link>
+          }
+        />
+
+        <div className="mt-4">
         <FaqAccordion
           accent={BRAND.maroon}
           density="compact"
+          className="!gap-3 [&>div]:!rounded-xl"
           items={[
             {
               q: "Which rental LED pixel pitch is best for my event?",
@@ -1275,7 +1241,8 @@ export default function RentalProductsPage() {
             },
           ]}
         />
-      </Section>
+        </div>
+      </section>
 
       <RentalFinalCta whatsappHref={wa} />
     </div>
