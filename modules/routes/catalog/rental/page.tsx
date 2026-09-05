@@ -440,54 +440,56 @@ const rentalOccasions: RentalOccasion[] = [
 
 function RentalOccasionShowcase() {
   return (
-    <section className="mt-7" aria-labelledby="rental-occasion-showcase-heading">
-      <RentalSectionHeading
-        id="rental-occasion-showcase-heading"
-        eyebrow="Choose by Event Type"
-        title="LED Display Rental for Every Occasion"
-        description="From corporate conferences to massive concerts, we provide the right LED screen solution for your event."
-        action={
-          <span className="inline-flex flex-wrap items-center gap-1 text-slate-500">
-            <span className="font-semibold">Need a custom solution?</span>
-            <Link href="/contact/?project=rental-led-display" className="inline-flex items-center gap-1 text-[#e45700] transition hover:text-[#ff6a00]">
-              Contact Our Team <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" />
-            </Link>
-          </span>
-        }
-      />
+    <section className="relative left-1/2 right-1/2 -mx-[50vw] mt-7 w-screen border-y border-slate-200/70 bg-white py-7" aria-labelledby="rental-occasion-showcase-heading">
+      <div className="mx-auto w-full max-w-[80rem] px-3 md:px-6">
+        <RentalSectionHeading
+          id="rental-occasion-showcase-heading"
+          eyebrow="Choose by Event Type"
+          title="LED Display Rental for Every Occasion"
+          description="From corporate conferences to massive concerts, we provide the right LED screen solution for your event."
+          action={
+            <span className="inline-flex flex-wrap items-center gap-1 text-slate-500">
+              <span className="font-semibold">Need a custom solution?</span>
+              <Link href="/contact/?project=rental-led-display" className="inline-flex items-center gap-1 text-[#e45700] transition hover:text-[#ff6a00]">
+                Contact Our Team <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" />
+              </Link>
+            </span>
+          }
+        />
 
-      <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
-        {rentalOccasions.map((occasion) => (
-          <Link
-            key={occasion.title}
-            href={`/contact/?project=rental-led-display&event=${occasion.query}`}
-            className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_5px_18px_rgba(15,35,60,0.06)] transition duration-300 hover:-translate-y-0.5 hover:border-orange-200 hover:shadow-[0_10px_24px_rgba(15,35,60,0.10)]"
-          >
-            <div className="relative h-24 overflow-hidden bg-slate-100 sm:h-28 xl:h-[92px]">
-              <Image
-                src={occasion.image}
-                alt={`${occasion.title} LED display rental solution`}
-                fill
-                sizes="(max-width: 767px) 50vw, (max-width: 1279px) 33vw, 16vw"
-                className="object-cover transition duration-500 group-hover:scale-105"
-                style={occasion.imagePosition ? { objectPosition: occasion.imagePosition } : undefined}
-              />
-              <span className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black/40 to-transparent" aria-hidden="true" />
-            </div>
-            <div className="flex min-h-[92px] gap-2.5 p-2.5">
-              <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#002f58] text-sky-300 shadow-sm" aria-hidden="true">
-                <RentalHeroIcon name={occasion.icon} className="h-4 w-4" />
-              </span>
-              <span className="flex min-w-0 flex-1 flex-col">
-                <strong className="text-[11px] font-extrabold leading-4 text-[#071a35]">{occasion.title}</strong>
-                <span className="mt-1 text-[9px] leading-[1.4] text-slate-500">{occasion.description}</span>
-                <span className="mt-auto self-end text-[#071a35] transition group-hover:translate-x-0.5 group-hover:text-[#e45700]">
-                  <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" />
+        <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
+          {rentalOccasions.map((occasion) => (
+            <Link
+              key={occasion.title}
+              href={`/contact/?project=rental-led-display&event=${occasion.query}`}
+              className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_5px_18px_rgba(15,35,60,0.06)] transition duration-300 hover:-translate-y-0.5 hover:border-orange-200 hover:shadow-[0_10px_24px_rgba(15,35,60,0.10)]"
+            >
+              <div className="relative h-24 overflow-hidden bg-slate-100 sm:h-28 xl:h-[92px]">
+                <Image
+                  src={occasion.image}
+                  alt={`${occasion.title} LED display rental solution`}
+                  fill
+                  sizes="(max-width: 767px) 50vw, (max-width: 1279px) 33vw, 16vw"
+                  className="object-cover transition duration-500 group-hover:scale-105"
+                  style={occasion.imagePosition ? { objectPosition: occasion.imagePosition } : undefined}
+                />
+                <span className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black/40 to-transparent" aria-hidden="true" />
+              </div>
+              <div className="flex min-h-[92px] gap-2.5 p-2.5">
+                <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#002f58] text-sky-300 shadow-sm" aria-hidden="true">
+                  <RentalHeroIcon name={occasion.icon} className="h-4 w-4" />
                 </span>
-              </span>
-            </div>
-          </Link>
-        ))}
+                <span className="flex min-w-0 flex-1 flex-col">
+                  <strong className="text-[11px] font-extrabold leading-4 text-[#071a35]">{occasion.title}</strong>
+                  <span className="mt-1 text-[9px] leading-[1.4] text-slate-500">{occasion.description}</span>
+                  <span className="mt-auto self-end text-[#071a35] transition group-hover:translate-x-0.5 group-hover:text-[#e45700]">
+                    <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" />
+                  </span>
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -1052,39 +1054,41 @@ const rentalExploreCategories = [
 
 function RentalExploreCategories() {
   return (
-    <section className="rental-explore-section" aria-labelledby="rental-explore-heading">
-      <RentalSectionHeading
-        id="rental-explore-heading"
-        eyebrow="Explore More"
-        title="Explore LED Display Categories"
-        description="Compare indoor, outdoor and rental LED solutions, then choose the right category for your project."
-        action={
-          <Link href="/products/" className="inline-flex items-center gap-1 text-[#e45700] transition hover:text-[#ff6a00]">
-            View All LED Products <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" />
-          </Link>
-        }
-      />
+    <section className="rental-explore-section relative left-1/2 right-1/2 -mx-[50vw] w-screen border-y border-slate-200/70 bg-white py-8" aria-labelledby="rental-explore-heading">
+      <div className="mx-auto w-full max-w-[80rem] px-3 md:px-6">
+        <RentalSectionHeading
+          id="rental-explore-heading"
+          eyebrow="Explore More"
+          title="Explore LED Display Categories"
+          description="Compare indoor, outdoor and rental LED solutions, then choose the right category for your project."
+          action={
+            <Link href="/products/" className="inline-flex items-center gap-1 text-[#e45700] transition hover:text-[#ff6a00]">
+              View All LED Products <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" />
+            </Link>
+          }
+        />
 
-      <div className="rental-explore-grid">
-        {rentalExploreCategories.map((category) => (
-          <Link key={category.title} href={category.href} className="rental-explore-card">
-            <span className="rental-explore-image">
-              <Image
-                src={category.image}
-                alt={`${category.title} solution`}
-                fill
-                sizes="(max-width: 767px) 42vw, 16vw"
-                className="object-cover"
-              />
-              <i aria-hidden="true" />
-            </span>
-            <span className="rental-explore-copy">
-              <strong>{category.title}</strong>
-              <span>{category.description}</span>
-              <b>{category.cta} <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" /></b>
-            </span>
-          </Link>
-        ))}
+        <div className="rental-explore-grid">
+          {rentalExploreCategories.map((category) => (
+            <Link key={category.title} href={category.href} className="rental-explore-card">
+              <span className="rental-explore-image">
+                <Image
+                  src={category.image}
+                  alt={`${category.title} solution`}
+                  fill
+                  sizes="(max-width: 767px) 42vw, 16vw"
+                  className="object-cover"
+                />
+                <i aria-hidden="true" />
+              </span>
+              <span className="rental-explore-copy">
+                <strong>{category.title}</strong>
+                <span>{category.description}</span>
+                <b>{category.cta} <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" /></b>
+              </span>
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   );
