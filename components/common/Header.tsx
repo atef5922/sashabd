@@ -627,7 +627,10 @@ export default function Header({
   const isIndoorOutdoorLanding = normalizedPathname === "/led-display/indoor-led" || normalizedPathname === "/led-display/outdoor";
   const isInteractiveFlatPanelLanding = normalizedPathname === "/interactive-flat-panel";
   const isDigitalPodiumLanding = normalizedPathname === "/digital-podium";
-  const useHomeResponsiveHeader = pathname === "/" || isLedDisplayLanding || isRentalDisplayLanding || isIndoorOutdoorLanding || isInteractiveFlatPanelLanding || isDigitalPodiumLanding;
+  const isLedAccessoryLanding = ["receiving-card", "controller", "power-supply", "led-accessories"].some(
+    (category) => normalizedPathname === `/led-display/accessories/${category}`,
+  );
+  const useHomeResponsiveHeader = pathname === "/" || isLedDisplayLanding || isRentalDisplayLanding || isIndoorOutdoorLanding || isInteractiveFlatPanelLanding || isDigitalPodiumLanding || isLedAccessoryLanding;
   const useConferenceTabletHeader =
     useHomeResponsiveHeader || pathname.startsWith("/conference-system");
   const hasFlushConferenceHero = [
