@@ -18,14 +18,14 @@ import HomeHeroCarousel from "@/components/home/HomeHeroCarousel";
 import HomeTrustServiceStrip from "@/components/home/HomeTrustServiceStrip";
 
 export const metadata: Metadata = {
-  title: { absolute: BRAND_NAME },
+  title: { absolute: `LED Display & Conference Systems in Bangladesh | ${BRAND_NAME}` },
   description:
-    "Digital display solutions in Bangladesh for indoor, outdoor, and accessory needs with planning, supply, installation, and long-term support from Sasha Corporation.",
+    "Sasha Corporation supplies and installs LED displays and conference systems in Bangladesh, plus PA systems and turnstile gates with dependable support.",
   alternates: { canonical: absoluteUrl("/") },
   openGraph: {
-    title: BRAND_NAME,
+    title: `LED Display & Conference Systems in Bangladesh | ${BRAND_NAME}`,
     description:
-      "Digital display solutions in Bangladesh for indoor, outdoor, and accessory needs with planning, supply, installation, and long-term support from Sasha Corporation.",
+      "Sasha Corporation supplies and installs LED displays and conference systems in Bangladesh, plus PA systems and turnstile gates with dependable support.",
     url: absoluteUrl("/"),
     type: "website",
     images: [
@@ -39,9 +39,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: BRAND_NAME,
+    title: `LED Display & Conference Systems in Bangladesh | ${BRAND_NAME}`,
     description:
-      "LED display solutions in Bangladesh with project planning, installation workflow, and dependable after-sales support.",
+      "Sasha Corporation supplies and installs LED displays and conference systems in Bangladesh, plus PA systems and turnstile gates with dependable support.",
     images: [socialImageUrl()],
   },
 };
