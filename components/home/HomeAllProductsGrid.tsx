@@ -803,9 +803,6 @@ export default function HomeAllProductsGrid() {
         </Link>
 
         <div className="flex flex-1 flex-col px-3.5 pb-3.5 pt-3">
-          <p className="text-left text-[11px] font-bold uppercase leading-4 tracking-[0.055em] text-slate-500">
-            {p.kind === "accessory" ? "System accessory" : p.productTypeLabel ?? p.badge}
-          </p>
           <h3 className="mt-1 line-clamp-2 min-h-10 text-left text-[15px] font-extrabold leading-5 text-[#071936]">
             <Link
               prefetch={false}
@@ -878,7 +875,6 @@ export default function HomeAllProductsGrid() {
         </Link>
 
         <div className="flex flex-1 flex-col p-3">
-          <p className="mb-1 text-left text-[9px] font-bold uppercase tracking-[0.05em] text-slate-500">{p.productTypeLabel ?? p.badge}</p>
           <div className="min-h-[2.55rem] line-clamp-2 text-[13px] font-bold leading-snug text-slate-900">
             {displayTitle}
           </div>

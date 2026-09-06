@@ -625,7 +625,8 @@ export default function Header({
   const isLedDisplayLanding = normalizedPathname === "/led-display";
   const isRentalDisplayLanding = normalizedPathname === "/led-display/rental-display";
   const isIndoorOutdoorLanding = normalizedPathname === "/led-display/indoor-led" || normalizedPathname === "/led-display/outdoor";
-  const useHomeResponsiveHeader = pathname === "/" || isLedDisplayLanding || isRentalDisplayLanding || isIndoorOutdoorLanding;
+  const isInteractiveFlatPanelLanding = normalizedPathname === "/interactive-flat-panel";
+  const useHomeResponsiveHeader = pathname === "/" || isLedDisplayLanding || isRentalDisplayLanding || isIndoorOutdoorLanding || isInteractiveFlatPanelLanding;
   const useConferenceTabletHeader =
     useHomeResponsiveHeader || pathname.startsWith("/conference-system");
   const hasFlushConferenceHero = [

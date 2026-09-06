@@ -182,9 +182,6 @@ function LedExplorerProductCard({ product, priority = false }: { product: Unifie
       </Link>
 
       <div className="flex flex-1 flex-col px-3.5 pb-3.5 pt-3">
-        <p className="text-left text-[11px] font-extrabold uppercase leading-4 tracking-[0.055em] text-slate-500">
-          {product.badge}
-        </p>
         <h3 className="mt-1 line-clamp-2 min-h-10 text-left text-[15px] font-extrabold leading-5 text-[#071936]">
           <Link
             prefetch={false}

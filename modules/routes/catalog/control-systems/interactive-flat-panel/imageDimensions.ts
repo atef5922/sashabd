@@ -1,0 +1,21 @@
+// Actual source dimensions keep the full image visible and reserve space before load.
+export const panelImageDimensions: Record<string, { width: number; height: number }> = {
+  "LG-65-inch-Interactive.webp": { width: 1537, height: 1023 },
+  "LG-75-inch-Interactive.webp": { width: 1536, height: 1024 },
+  "LG-86-inch-Interactive.webp": { width: 1370, height: 1148 },
+  "LG-96-inch-Interactive.webp": { width: 1448, height: 1086 },
+  "LG-110-inch-Interactive.webp": { width: 1448, height: 1086 },
+  "Samsung-65-inch-Interactive.webp": { width: 1370, height: 1148 },
+  "Samsung-75-inch-Interactive.webp": { width: 1372, height: 1147 },
+  "Samsung-86-inch-Interactive.webp": { width: 2047, height: 1716 },
+  "Newline-65-inch-Interactive.webp": { width: 1375, height: 1144 },
+  "Newline-75-inch-Interactive.webp": { width: 1402, height: 1122 },
+  "Newline-86-inch-Interactive.webp": { width: 1402, height: 1122 },
+  "Ingscreen-65-inch-Interactive.webp": { width: 1536, height: 1024 },
+  "Ingscreen-75-inch-Interactive.webp": { width: 1373, height: 1146 },
+  "Ingscreen-86-inch-Interactive.webp": { width: 1375, height: 1144 },
+  "iBoard-65-inch-Interactive.webp": { width: 1374, height: 1145 },
+  "iBoard-75-inch-Interactive.webp": { width: 1374, height: 1145 },
+  "iBoard-86-inch-Interactive.webp": { width: 1373, height: 1146 },
+  "iBoard-98-inch-Interactive.webp": { width: 1374, height: 1145 },
+};
