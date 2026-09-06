@@ -100,6 +100,13 @@ test("Hero image stays inside its frame on desktop and mobile, without oversized
   assert.match(css, /\.heroVisual \{ position: relative;[^}]*aspect-ratio: 2 \/ 1/);
 });
 
+test("LED Accessories banner blends against its actual artwork frame without an inset border", () => {
+  const selector = '\\.page\\[data-accessory-landing="led-accessories"\\] \\.heroVisual';
+  assert.match(css, new RegExp(`${selector} \\{[^}]*height: 100%;[^}]*max-height: 50vw;[^}]*aspect-ratio: 2 / 1`));
+  assert.match(css, new RegExp(`${selector} img \\{ padding: 0; \\}`));
+  assert.match(css, new RegExp(`${selector}::after \\{ background: linear-gradient\\(90deg,#f4f7fb 0%`));
+});
+
 test("Known reused model photos are disclosed rather than presented as exact product images", () => {
   assert.equal(representativeImageSlugs.size, 5);
   const slugs = accessoryCategories.flatMap(c => accessoryPages[c].products.map(p => p.slug));
@@ -107,6 +114,18 @@ test("Known reused model photos are disclosed rather than presented as exact pro
   assert.match(source, /representativeImageSlugs.has\(product.slug\)/);
   assert.match(source, /Representative image/);
   assert.match(source, /exact \$\{product.title\} appearance to be confirmed/);
+});
+
+test("Support and final CTA use decorative backgrounds with scoped, responsive content panels", () => {
+  assert.match(source, /id=\{`\$\{category\}-applications`\} tone="dark" backgroundSrc=\{heroArt.src\}/);
+  assert.match(source, /className=\{styles.sectionBackdrop\} aria-hidden="true"><Image src=\{src\} alt="" fill/);
+  assert.match(source, /SectionBackdrop src="\/images\/project-page\/Project-hero.webp"/);
+  assert.ok(existsSync(path.join(root, "public/images/project-page/Project-hero.webp")));
+  assert.match(source, /className=\{styles.ctaActionPanel\}/);
+  assert.match(css, /\.imageSection \{[^}]*isolation: isolate/);
+  assert.match(css, /\.contextGrid article \{[^}]*border: 1px solid[^}]*border-radius:/);
+  assert.match(css, /\.ctaInner \.actions \{ display: grid; grid-template-columns: repeat\(2,minmax\(0,1fr\)\)/);
+  assert.match(css, /\.ctaInner \.actions \{ grid-template-columns: 1fr; \}/);
 });
 
 test("Each category has distinct, useful selection content and six accessible FAQs", () => {

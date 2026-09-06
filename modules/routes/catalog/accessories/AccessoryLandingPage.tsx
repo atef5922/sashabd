@@ -29,8 +29,11 @@ function Checks({ items, singleLine = false }: { items: readonly string[]; singl
 function Heading({ eyebrow, title, text, link }: { eyebrow: string; title: string; text: string; link?: { href: string; label: string } }) {
   return <div className={styles.heading}><div><p className={styles.eyebrow}>{eyebrow}</p><h2>{title}</h2><p className={styles.description}>{text}</p></div>{link && <Link href={link.href} className={styles.textLink}>{link.label}<Icon name="arrow" /></Link>}</div>;
 }
-function Section({ id, tone, children }: { id: string; tone?: "soft" | "blue" | "dark"; children: ReactNode }) {
-  return <section id={id} className={`${styles.section} ${tone ? styles[tone] : ""}`}><div className={styles.container}>{children}</div></section>;
+function SectionBackdrop({ src }: { src: string }) {
+  return <div className={styles.sectionBackdrop} aria-hidden="true"><Image src={src} alt="" fill sizes="100vw" /></div>;
+}
+function Section({ id, tone, backgroundSrc, children }: { id: string; tone?: "soft" | "blue" | "dark"; backgroundSrc?: string; children: ReactNode }) {
+  return <section id={id} className={`${styles.section} ${tone ? styles[tone] : ""} ${backgroundSrc ? styles.imageSection : ""}`}>{backgroundSrc && <SectionBackdrop src={backgroundSrc} />}<div className={styles.container}>{children}</div></section>;
 }
 
 export default function AccessoryLandingPage({ category }: { category: AccessoryCategory }) {
@@ -80,7 +83,7 @@ export default function AccessoryLandingPage({ category }: { category: Accessory
       <div className={styles.advice}><Icon name="help" /><p><strong>Important:</strong> {page.advice}</p></div>
     </Section>
 
-    <Section id={`${category}-applications`} tone="dark">
+    <Section id={`${category}-applications`} tone="dark" backgroundSrc={heroArt.src}>
       <Heading eyebrow="PLANNED AROUND YOUR PROJECT" title={page.contextTitle} text="Match the parts, installation conditions and support scope to your actual LED system." />
       <div className={styles.contextGrid}>{page.contexts.map(item => <article key={item.title}><Badge name={item.icon} /><div><h3>{item.title}</h3><p>{item.text}</p></div></article>)}</div>
     </Section>
@@ -98,7 +101,18 @@ export default function AccessoryLandingPage({ category }: { category: Accessory
       <nav className={styles.relatedLinks} aria-label="Related LED display solutions"><span>Planning a complete screen?</span><Link href="/led-display/indoor-led/">Indoor LED Displays<Icon name="arrow" /></Link><Link href="/led-display/outdoor/">Outdoor LED Displays<Icon name="arrow" /></Link><Link href="/led-display/rental-display/">Rental LED Displays<Icon name="arrow" /></Link><Link href="/led-display/accessories/">All LED Components<Icon name="arrow" /></Link></nav>
     </Section>
 
-    <section className={styles.finalCta} aria-labelledby={`${category}-cta-title`}><div className={`${styles.container} ${styles.ctaInner}`}><div><p className={styles.eyebrow}>LET’S MATCH YOUR REQUIREMENTS</p><h2 id={`${category}-cta-title`}>{page.cta}</h2><p>Share your equipment details for a clear, project-specific recommendation.</p></div><div><div className={styles.actions}><Link className={styles.primaryButton} href="/contact/">Request a Project Quote<Icon name="arrow" /></Link><a className={styles.ctaWhatsapp} href={wa} target="_blank" rel="noopener noreferrer"><Icon name="chat" />Chat on WhatsApp</a></div><div className={styles.ctaBenefits}><span><Icon name="cpu" />Compatibility Check</span><span><Icon name="clipboard" />BOQ Support</span><span><Icon name="headset" />Technical Guidance</span></div></div></div></section>
+    <section className={styles.ctaSection} aria-labelledby={`${category}-cta-title`}>
+      <div className={styles.container}><div className={styles.finalCta}>
+        <SectionBackdrop src="/images/project-page/Project-hero.webp" />
+        <div className={styles.ctaInner}>
+          <div><p className={styles.eyebrow}>LET’S MATCH YOUR REQUIREMENTS</p><h2 id={`${category}-cta-title`}>{page.cta}</h2><p>Share your equipment details for a clear, project-specific recommendation.</p></div>
+          <div className={styles.ctaActionPanel}>
+            <div className={styles.actions}><Link className={styles.primaryButton} href="/contact/">Request a Project Quote<Icon name="arrow" /></Link><a className={styles.ctaWhatsapp} href={wa} target="_blank" rel="noopener noreferrer"><Icon name="chat" />Chat on WhatsApp</a></div>
+            <div className={styles.ctaBenefits}><span><Icon name="cpu" />Compatibility Check</span><span><Icon name="clipboard" />BOQ Support</span><span><Icon name="headset" />Technical Guidance</span></div>
+          </div>
+        </div>
+      </div></div>
+    </section>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collection).replace(/</g, "\\u003c") }} />
   </div>;
 }
