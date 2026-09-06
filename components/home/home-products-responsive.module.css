@@ -1,0 +1,53 @@
+/* Match Indoor's wide-screen sizing, scoped to Home > Browse Products.
+   Below 1440px the existing desktop, tablet and mobile design is untouched. */
+@media (min-width: 1440px) {
+  .section {
+    --home-product-width: clamp(80rem, 90vw, 108rem);
+    --home-product-unit: calc(var(--home-product-width) / 1280);
+    --spacing: calc(4 * var(--home-product-unit));
+    --text-xs: calc(12 * var(--home-product-unit));
+    --text-sm: calc(14 * var(--home-product-unit));
+    --text-base: calc(16 * var(--home-product-unit));
+    --text-lg: calc(18 * var(--home-product-unit));
+    --text-xl: calc(20 * var(--home-product-unit));
+    --radius-sm: calc(4 * var(--home-product-unit));
+    --radius-md: calc(6 * var(--home-product-unit));
+    --radius-lg: calc(8 * var(--home-product-unit));
+    --radius-xl: calc(12 * var(--home-product-unit));
+    --radius-2xl: calc(16 * var(--home-product-unit));
+    --site-h2-size: calc(26 * var(--home-product-unit));
+    --site-h3-size: calc(20 * var(--home-product-unit));
+    font-size: var(--text-base);
+  }
+
+  .section [data-home-product-layout] {
+    grid-template-columns: calc(248 * var(--home-product-unit)) minmax(0, 1fr);
+  }
+
+  .section [data-home-product-layout] > aside {
+    max-height: calc(100dvh - 112 * var(--home-product-unit));
+  }
+
+  .section [data-home-product-card] > a:first-child {
+    height: calc(205 * var(--home-product-unit));
+  }
+
+  .section [data-home-product-card] ul {
+    min-height: calc(64 * var(--home-product-unit));
+  }
+
+  /* Arbitrary pixel utilities don't inherit Tailwind's scaled text tokens. */
+  .section :global(.text-\[8px\]) { font-size: calc(8 * var(--home-product-unit)); }
+  .section :global(.text-\[9px\]) { font-size: calc(9 * var(--home-product-unit)); }
+  .section :global(.text-\[10px\]) { font-size: calc(10 * var(--home-product-unit)); }
+  .section :global(.text-\[11px\]) { font-size: calc(11 * var(--home-product-unit)); }
+  .section :global(.text-\[11\.5px\]) { font-size: calc(11.5 * var(--home-product-unit)); }
+  .section :global(.text-\[13px\]) { font-size: calc(13 * var(--home-product-unit)); }
+  .section :global(.text-\[15px\]) { font-size: calc(15 * var(--home-product-unit)); }
+  .section :global(.sm\:text-\[13px\]) { font-size: calc(13 * var(--home-product-unit)); }
+  .section :global(.max-w-4xl) { max-width: calc(896 * var(--home-product-unit)); }
+}
+
+@media (min-width: 2200px) {
+  .section { --home-product-width: min(90vw, 128rem); }
+}

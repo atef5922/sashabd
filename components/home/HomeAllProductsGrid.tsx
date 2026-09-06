@@ -777,6 +777,7 @@ export default function HomeAllProductsGrid() {
     return (
       <article
         key={p.id}
+        data-home-product-card
         className="group flex h-full min-w-0 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_2px_12px_rgba(15,23,42,0.045)] transition-[transform,border-color,box-shadow] duration-200 motion-safe:hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_7px_20px_rgba(15,23,42,0.09)] focus-within:border-slate-400 focus-within:ring-2 focus-within:ring-slate-900/10 motion-reduce:transition-none"
       >
         <Link
@@ -1169,7 +1170,7 @@ export default function HomeAllProductsGrid() {
         </div> : null}
       </section>
 
-      <div className="hidden gap-4 lg:grid lg:grid-cols-[15.5rem_minmax(0,1fr)]">
+      <div data-home-product-layout className="hidden gap-4 lg:grid lg:grid-cols-[15.5rem_minmax(0,1fr)]">
         <aside className="self-start overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[0_2px_12px_rgba(15,23,42,0.04)] lg:sticky lg:top-24 lg:flex lg:max-h-[calc(100dvh-7rem)] lg:flex-col" aria-label="Product filters">
           <div className="flex shrink-0 items-center justify-between gap-3 px-4 pb-2 pt-4">
             <h3 className="text-lg font-extrabold tracking-tight text-[#071936]">Filter Products</h3>

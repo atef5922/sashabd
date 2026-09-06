@@ -4,6 +4,8 @@ import { siteConfig } from "../lib/site";
 import { absoluteUrl, socialImageUrl } from "../lib/seo";
 import { BRAND_NAME } from "@/lib/brand";
 import HomeAllProductsGrid from "@/components/home/HomeAllProductsGrid";
+import productResponsiveStyles from "@/components/home/home-products-responsive.module.css";
+import homeResponsiveStyles from "@/components/home/home-responsive.module.css";
 import CoreSolutionsSection from "@/components/home/CoreSolutionsSection";
 import HomeFeaturedProductsSection from "@/components/home/HomeFeaturedProductsSection";
 import HomeConferenceSolutionSection from "@/components/home/HomeConferenceSolutionSection";
@@ -355,13 +357,13 @@ export default function HomePage() {
       `}</style>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="home-page-stack space-y-4">
+      <div className={`${homeResponsiveStyles.page} home-page-stack space-y-4`}>
         {/* 1) HERO */}
         <HomeHeroCarousel />
         <HomeTrustServiceStrip />
 
         {/* 2.5) BROWSE PRODUCTS (PAGINATED) */}
-        <section id="browse-products" className="mobile-browse-products w-full scroll-mt-24 rounded-2xl border border-slate-200/90 bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6">
+        <section id="browse-products" className={`${productResponsiveStyles.section} mobile-browse-products w-full scroll-mt-24 rounded-2xl border border-slate-200/90 bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6`}>
           <div className="md:hidden">
             <details className="group">
               <summary className="flex list-none items-center justify-between gap-3 cursor-pointer">
