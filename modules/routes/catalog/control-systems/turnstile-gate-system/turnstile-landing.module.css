@@ -16,9 +16,12 @@
 .container { width: min(100%, 1440px); padding-inline: 32px; margin-inline: auto; }
 .section { padding-block: 54px; }
 .soft { background: #f3f7fc; }
+.blue { background: linear-gradient(110deg,#edf5ff,#f8fbff); border-block: 1px solid #e4edf9; }
 .heading { max-width: 780px; margin-bottom: 28px; }
 .heading > p:last-child { margin-top: 10px; color: var(--muted); font-size: 14px; line-height: 1.75; }
 .page .eyebrow { color: #a84910; font-size: 10px; line-height: 1.5; letter-spacing: .17em; font-weight: 600; margin-bottom: 12px; }
+.blue .eyebrow { color: #3d5c7d; display: inline-flex; align-items: center; gap: .8em; margin-bottom: .8em; letter-spacing: .2em; font-size: 10px; line-height: 1.6; }
+.blue .eyebrow::before { content: ""; width: 2em; height: 2px; background: #ff6a00; flex: none; }
 .sectionHeader { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 .textLink { display: inline-flex; align-items: center; gap: 9px; color: #c34d05; font-size: 13px; font-weight: 600; }
 .textLink svg { width: 17px; height: 17px; }
@@ -128,7 +131,7 @@
 .typeCard .textLink { margin-top: 16px; font-size: 12px; }
 .applicationGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 18px; }
 .applicationGrid article { border: 1px solid var(--line); border-radius: 13px; background: #fff; padding: 25px; }
-.iconBadge { display: inline-flex; align-items: center; justify-content: center; width: 43px; height: 43px; border: 1px solid #f9ddc8; border-radius: 10px; background: #fff7f0; color: #d15e15; }
+.iconBadge { display: inline-flex; align-items: center; justify-content: center; width: 43px; height: 43px; border: 1px solid #dbe9fb; border-radius: 10px; background: #edf4ff; color: #1567ce; }
 .applicationGrid h3 { margin-top: 17px; }
 .applicationGrid p { margin-top: 9px; color: var(--muted); font-size: 13px; }
 .integrationLayout { display: grid; grid-template-columns: .85fr 1.15fr; gap: 70px; align-items: center; }
@@ -192,19 +195,18 @@
 .supportGrid article > svg { color: #eab088; }
 .page .supportGrid h3 { color: #f1f5fb; font-size: 16px !important; }
 .supportGrid p { color: #b6c7dc; font-size: 12px; margin-top: 11px; }
-.faqLayout { display: grid; grid-template-columns: .7fr 1.3fr; gap: 60px; align-items: start; }
-.faqList { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); align-items: start; gap: 1em; }
-.faqList details { border: 1px solid var(--line); border-radius: .8em; background: #fff; overflow: hidden; }
-.faqList summary { display: flex; align-items: center; gap: .8em; padding: 1.2em; min-height: 5em; list-style: none; cursor: pointer; }
-.faqList summary::-webkit-details-marker { display: none; }
-.page .faqList h3 { font-size: calc(14 * var(--pa-unit)) !important; flex: 1; min-width: 0; line-height: 1.5; }
-.faqList summary > span:first-child { display: grid; place-items: center; width: 2.4em; height: 2.4em; flex: none; border-radius: 50%; background: #fff3e9; color: #c34d05; font-size: .78em; }
+.faqGrid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); align-items: start; gap: 1em; }
+.faqGrid details { border: 1px solid var(--line); border-radius: .8em; background: #fff; overflow: hidden; }
+.faqGrid summary { display: flex; align-items: center; gap: .8em; padding: 1.2em; min-height: 5em; list-style: none; cursor: pointer; }
+.faqGrid summary::-webkit-details-marker { display: none; }
+.page .faqGrid h3 { font-size: calc(14 * var(--pa-unit)) !important; flex: 1; min-width: 0; line-height: 1.5; }
+.faqGrid summary > span:first-child { display: grid; place-items: center; width: 2.4em; height: 2.4em; flex: none; border-radius: 50%; background: #fff3e9; color: #c4570b; font-size: .78em; }
 .faqToggle { position: relative; width: 1.9em; height: 1.9em; border-radius: 50%; background: #f0f5fb; flex: none; }
 .faqToggle::before,.faqToggle::after { content: ""; position: absolute; width: .65em; height: 2px; background: #416084; top: 50%; left: 50%; transform: translate(-50%,-50%); }
 .faqToggle::after { transform: translate(-50%,-50%) rotate(90deg); }
-.faqList details[open] .faqToggle::after { display: none; }
-.faqList details[open] { border-color: #acc3df; }
-.faqList details p { color: var(--muted); font-size: 13px; padding: 0 1.4em 1.4em; }
+.faqGrid details[open] .faqToggle::after { display: none; }
+.faqGrid details[open] { border-color: #acc3df; }
+.faqGrid details p { color: var(--muted); font-size: 13px; padding: 0 1.4em 1.4em; }
 .ctaWrap { padding-block: 35px 25px; }
 .finalCta { display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: 40px; border-radius: 17px; padding: 40px; background: linear-gradient(115deg,#0a1c32,#163552); color: #fff; }
 .finalCta h2 { color: #fff; }
@@ -244,7 +246,6 @@
   .typeGrid,.applicationGrid,.processGrid,.supportGrid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .integrationLayout,.planningLayout,.faqLayout { grid-template-columns: 1fr; gap: 28px; }
   .integrationIntro > p:not(.eyebrow) { max-width: none; }
-  .planningCallout { display: none; }
   .benefitGrid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .priceLayout { grid-template-columns: 1fr; }
   .quotePanel { max-width: none; }
@@ -310,7 +311,6 @@
   .flowPanel ol { grid-template-columns: 1fr; gap: 22px; }
   .flowPanel li { flex-direction: row; }
   .criteriaGrid { gap: 19px; }
-  .criteriaGrid article { padding-bottom: 15px; border-bottom: 1px solid #dfe7f1; }
   .tableWrap th,.tableWrap td { padding: 13px 11px; }
   .tableWrap td { font-size: 11px; }
   .tableWrap td:last-child { min-width: 0; width: 39%; }
@@ -322,9 +322,9 @@
   .processGrid p { grid-column: 2; }
   .supportSection { padding-block: 32px; }
   .supportGrid article { flex-direction: row; padding: 21px; }
-  .faqList summary { padding: 17px; gap: 12px; }
-  .faqList details p { padding: 0 1.1em 1.2em; }
-  .faqList { grid-template-columns: 1fr; }
+  .faqGrid summary { padding: 17px; gap: 12px; }
+  .faqGrid details p { padding: 0 1.1em 1.2em; }
+  .faqGrid { grid-template-columns: 1fr; }
   .finalCta { padding: 25px; gap: 25px; border-radius: 13px; }
   .finalCta .actions { flex-direction: column; }
   .related { gap: 12px 20px; justify-content: flex-start; }
