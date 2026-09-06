@@ -394,7 +394,7 @@ export default function HeaderSearch({
       {isOpen ? (
         <div
           id={resultsId}
-          className="fixed inset-x-3 top-[4.65rem] z-50 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl md:absolute md:inset-x-auto md:left-0 md:top-full md:mt-2 md:w-full md:max-w-[calc(100vw-2rem)]"
+          className="fixed inset-x-3 top-[calc(var(--site-header-height,60px)+8px)] z-50 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl md:absolute md:inset-x-auto md:left-0 md:top-full md:mt-2 md:w-full md:max-w-[calc(100vw-2rem)]"
         >
           <div className="max-h-[calc(100dvh-9.5rem)] overflow-y-auto overscroll-contain p-2 md:max-h-[420px]">
             {results.length ? (

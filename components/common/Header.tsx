@@ -363,7 +363,7 @@ function ConferenceDesktopNavItem({
       {isOpen ? (
         <div
           id={panelId}
-          className="fixed left-1/2 top-14 z-[90] w-[min(660px,calc(100vw-2rem))] -translate-x-1/2 pt-4 lg:w-[min(872px,calc(100vw-3rem))]"
+          className="fixed left-1/2 top-[var(--site-header-height)] z-[90] w-[min(660px,calc(100vw-2rem))] -translate-x-1/2 pt-2 lg:w-[min(872px,calc(100vw-3rem))]"
         >
           <nav aria-label="Conference System navigation" className={cn(MENU_PANEL_CLASS, "p-3")}>
             <div
@@ -803,7 +803,7 @@ export default function Header({
     <header
       data-home-header={useHomeResponsiveHeader ? "true" : undefined}
       className={cn(
-        "sticky inset-x-0 top-0 z-[80] w-full transition-colors duration-300",
+        "site-header sticky inset-x-0 top-0 z-[80] w-full transition-colors duration-300",
         isScrolled
           ? hasFlushConferenceHero ? "bg-[#091931] shadow-none" : "bg-[#091931] shadow-md"
           : hasFlushConferenceHero ? "bg-white shadow-none" : "bg-white"
@@ -811,27 +811,27 @@ export default function Header({
     >
       <div
         className={cn(
-          "site-header-inner mx-auto flex h-[4.15rem] items-center gap-1.5 px-3 py-0 md:h-18 md:gap-0 md:pl-3 md:pr-4",
+          "site-header-inner mx-auto flex h-[var(--site-header-height)] items-center gap-1.5 px-3 py-0 md:gap-0 md:pl-3 md:pr-4",
           useConferenceTabletHeader ? "w-full max-w-[clamp(80rem,90vw,108rem)]" : "max-w-7xl",
         )}
       >
         <Link prefetch={false} href="/" onClick={handleNavClick("/")} className="flex shrink-0 items-center gap-2">
-          <div className="site-header-logo relative h-[2.95rem] w-[5.95rem] shrink-0 overflow-visible rounded-md sm:h-[3.05rem] sm:w-[6.15rem] md:h-24 md:w-40">
+          <div className="site-header-logo relative h-11 w-[88px] shrink-0 overflow-visible rounded-md sm:h-[46px] sm:w-[92px] md:h-20 md:w-36">
             <Image
               src={isScrolled ? "/sasha-corporation-after-scroll.png" : "/sasha-corporation-final-l.webp"}
               alt={`${BRAND_NAME} logo`}
               fill
               className="object-contain object-left scale-100 md:scale-100"
-              sizes="160px"
+              sizes="(min-width: 1440px) 180px, (min-width: 768px) 144px, 92px"
             />
           </div>
         </Link>
 
-        <div className={cn("min-w-0 flex-1", useConferenceTabletHeader ? "lg:hidden" : "md:hidden")}>
+        <div className="min-w-0 flex-1 min-[1200px]:hidden">
           <HeaderSearch isScrolled={isScrolled} inputId="header-search-mobile" className="max-w-none" />
         </div>
 
-        <div className={cn("site-header-search hidden min-w-0 flex-1 items-center px-4", useConferenceTabletHeader ? "lg:flex" : "md:flex")}>
+        <div className="site-header-search hidden min-w-0 flex-1 items-center px-4 min-[1200px]:flex">
           <HeaderSearch isScrolled={isScrolled} inputId="header-search-desktop" />
         </div>
 
@@ -840,7 +840,7 @@ export default function Header({
           aria-label="Call now"
           className={cn(
             "inline-flex h-[2.35rem] w-[2.35rem] shrink-0 items-center justify-center rounded-full border shadow-sm transition",
-            useConferenceTabletHeader ? "lg:hidden" : "md:hidden",
+            "min-[1200px]:hidden",
             isScrolled
               ? "border-cyan-400/50 bg-white/10 text-white"
               : "border-cyan-300/80 bg-white text-slate-900"
@@ -858,7 +858,7 @@ export default function Header({
         </a>
 
         {/* DESKTOP NAV */}
-        <nav className={cn("site-header-nav ml-auto hidden items-center gap-0.5 xl:gap-1", useConferenceTabletHeader ? "lg:flex" : "md:flex")}>
+        <nav className="site-header-nav ml-auto hidden items-center gap-0.5 min-[1200px]:flex xl:gap-1">
           {nav.map((item) => {
             if (item.type === "conference") {
               return (
@@ -985,7 +985,7 @@ export default function Header({
         <button
           className={cn(
             "inline-flex h-[2.35rem] w-[2.35rem] shrink-0 items-center justify-center rounded-full border text-[18px] leading-none shadow-sm",
-            useConferenceTabletHeader ? "lg:hidden" : "md:hidden",
+            "min-[1200px]:hidden",
             isScrolled
               ? "border-cyan-400/50 bg-white/10 text-white"
               : "border-cyan-300/80 bg-white text-slate-900"
@@ -1001,8 +1001,8 @@ export default function Header({
 
       {/* MOBILE NAV */}
       {open && (
-        <div id="mobile-site-navigation" className={cn("border-t bg-white", useConferenceTabletHeader ? "lg:hidden" : "md:hidden")}>
-          <div className="mx-auto max-h-[calc(100svh-72px)] max-w-7xl overflow-y-auto overscroll-contain px-4 pb-24 pt-3">
+        <div id="mobile-site-navigation" className="border-t bg-white min-[1200px]:hidden">
+          <div className="mx-auto max-h-[calc(100svh-var(--site-header-height))] max-w-7xl overflow-y-auto overscroll-contain px-4 pb-24 pt-3">
             <div className="flex flex-col gap-2">
               {/* Home */}
 	              <Link prefetch={false} href="/"

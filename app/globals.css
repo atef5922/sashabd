@@ -82,34 +82,58 @@ body {
   }
 }
 
+.site-header { --site-header-height: 60px; }
+
+@media (min-width: 768px) {
+  .site-header { --site-header-height: 64px; }
+}
+
 @media (min-width: 1440px) {
+  [data-home-header="true"] {
+    --site-header-height: clamp(64px, 4.69vw, 80px);
+  }
+
   [data-home-header="true"] .site-header-inner {
-    height: clamp(72px, 5.27vw, 108px) !important;
-    max-width: clamp(1280px, 93vw, 1900px) !important;
+    height: var(--site-header-height) !important;
+    max-width: clamp(1280px, 90vw, 1728px) !important;
+  }
+
+  /* Keep search bounded and let navigation use the remaining row evenly. */
+  [data-home-header="true"] .site-header-search {
+    flex: 0 0 clamp(180px, 12.5vw, 240px);
+    padding-inline: 0;
+    margin-inline: clamp(16px, 1vw, 20px);
+  }
+
+  [data-home-header="true"] .site-header-nav {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin-left: 0;
+    justify-content: space-between;
   }
 
   [data-home-header="true"] .site-header-logo {
-    width: clamp(160px, 11.72vw, 240px) !important;
-    height: clamp(96px, 7.03vw, 144px) !important;
+    width: clamp(144px, 10.54vw, 180px) !important;
+    height: clamp(80px, 5.86vw, 100px) !important;
   }
 
   [data-home-header="true"] .site-header-search .premium-search-inner > div {
-    min-height: clamp(40px, 2.93vw, 60px);
-    padding-left: clamp(16px, 1.17vw, 24px);
-    padding-right: clamp(16px, 1.17vw, 24px);
+    min-height: clamp(40px, 2.93vw, 48px);
+    padding-left: clamp(16px, 1.17vw, 20px);
+    padding-right: clamp(16px, 1.17vw, 20px);
   }
 
   [data-home-header="true"] .site-header-search input,
   [data-home-header="true"] .site-header-nav > a,
   [data-home-header="true"] .site-header-nav > .group > a,
   [data-home-header="true"] [data-conference-desktop-nav] > div > a {
-    font-size: clamp(14px, 1.025vw, 21px) !important;
+    font-size: clamp(14px, 1vw, 20px) !important;
   }
 
   [data-home-header="true"] .site-header-nav > a,
   [data-home-header="true"] .site-header-nav > .group > a {
-    padding-left: clamp(12px, 0.88vw, 18px) !important;
-    padding-right: clamp(12px, 0.88vw, 18px) !important;
+    padding-left: clamp(8px, 0.6vw, 12px) !important;
+    padding-right: clamp(8px, 0.6vw, 12px) !important;
   }
 
   .home-hero-frame,

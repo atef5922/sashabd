@@ -5,6 +5,30 @@
   max-width: var(--display-width);
 }
 
+/* Keep CTA rows inside the copy column on narrow screens. */
+.page :global(.led-display-hero-actions) {
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+
+.page :global(.led-display-hero-features) > li > span:last-child > * {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Reserve the content's vertical offset in flow so features cannot overlap it. */
+@media (min-width: 1024px) {
+  .page :global(.led-display-hero-content) {
+    translate: none;
+    transform: none !important;
+    margin-top: 4px;
+  }
+
+  .page :global(.led-display-hero-features) {
+    padding-top: clamp(16px, 1.2vw, 24px);
+  }
+}
+
 /* Follow the same wide-screen container and proportional sizing as Rental. */
 @media (min-width: 1440px) {
   .page {
@@ -32,6 +56,10 @@
 
   .page :global(.led-display-hero-frame) {
     max-width: var(--display-width);
+  }
+
+  .page :global(.led-display-hero-content) {
+    margin-top: clamp(24px, 2vw, 40px);
   }
 
   .page :global(.led-display-hero-description) {
