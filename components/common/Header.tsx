@@ -272,6 +272,7 @@ function ConferenceDesktopNavItem({
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const panelId = "conference-desktop-mega-menu";
 
   const groupsById = useMemo(() => {
@@ -292,6 +293,14 @@ function ConferenceDesktopNavItem({
   const packageItem = packageGroup?.items[0];
 
   useEffect(() => {
+    return () => {
+      if (closeTimeoutRef.current !== null) {
+        window.clearTimeout(closeTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     if (!isOpen) return;
     const closeOnOutsidePointer = (event: PointerEvent) => {
       if (!wrapperRef.current?.contains(event.target as Node)) setIsOpen(false);
@@ -299,6 +308,21 @@ function ConferenceDesktopNavItem({
     document.addEventListener("pointerdown", closeOnOutsidePointer);
     return () => document.removeEventListener("pointerdown", closeOnOutsidePointer);
   }, [isOpen]);
+
+  const openMenu = () => {
+    if (closeTimeoutRef.current !== null) {
+      window.clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+    setIsOpen(true);
+  };
+
+  const scheduleCloseMenu = () => {
+    if (closeTimeoutRef.current !== null) {
+      window.clearTimeout(closeTimeoutRef.current);
+    }
+    closeTimeoutRef.current = window.setTimeout(() => setIsOpen(false), 140);
+  };
 
   const closeAndNavigate = (event: React.MouseEvent) => {
     setIsOpen(false);
@@ -310,11 +334,11 @@ function ConferenceDesktopNavItem({
       ref={wrapperRef}
       className="relative"
       data-conference-desktop-nav
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
+      onMouseEnter={openMenu}
+      onMouseLeave={scheduleCloseMenu}
       onFocusCapture={(event) => {
         const focusedElement = event.target as HTMLElement;
-        if (focusedElement !== triggerRef.current) setIsOpen(true);
+        if (focusedElement !== triggerRef.current) openMenu();
       }}
       onBlurCapture={() => {
         window.requestAnimationFrame(() => {
@@ -342,7 +366,7 @@ function ConferenceDesktopNavItem({
           prefetch={false}
           href={href}
           onClick={closeAndNavigate}
-          onFocus={() => setIsOpen(true)}
+          onFocus={openMenu}
           className="inline-flex min-h-9 items-center whitespace-nowrap py-2 pl-2 pr-0 text-sm xl:pl-3 font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-300"
         >
           {label}
@@ -360,123 +384,129 @@ function ConferenceDesktopNavItem({
         </button>
       </div>
 
-      {isOpen ? (
-        <div
-          id={panelId}
-          className="fixed left-1/2 top-[var(--site-header-height)] z-[90] w-[min(660px,calc(100vw-2rem))] -translate-x-1/2 pt-2 lg:w-[min(872px,calc(100vw-3rem))]"
-        >
-          <nav aria-label="Conference System navigation" className={cn(MENU_PANEL_CLASS, "p-3")}>
-            <div
-              className={cn(
-                "grid grid-cols-2 gap-x-3 gap-y-5 lg:gap-y-0",
-                packageItem ? "lg:grid-cols-[1.15fr_0.95fr_0.82fr_1.08fr]" : "lg:grid-cols-3",
-              )}
-            >
-              {linkColumns.map((group) => (
-                <section
-                  key={group.id}
-                  aria-labelledby={`conference-desktop-group-${group.id}`}
-                  className="flex min-w-0 flex-col"
+      <div
+        id={panelId}
+        onMouseEnter={openMenu}
+        onMouseLeave={scheduleCloseMenu}
+        aria-hidden={!isOpen}
+        className={cn(
+          "fixed left-1/2 top-[var(--site-header-height)] z-[90] w-[min(660px,calc(100vw-2rem))] -translate-x-1/2 pt-2 transition-all duration-150 ease-out lg:w-[min(872px,calc(100vw-3rem))]",
+          isOpen
+            ? "pointer-events-auto translate-y-0 opacity-100"
+            : "pointer-events-none -translate-y-1 opacity-0",
+        )}
+      >
+        <nav aria-label="Conference System navigation" className={cn(MENU_PANEL_CLASS, "p-3")}>
+          <div
+            className={cn(
+              "grid grid-cols-2 gap-x-3 gap-y-5 lg:gap-y-0",
+              packageItem ? "lg:grid-cols-[1.15fr_0.95fr_0.82fr_1.08fr]" : "lg:grid-cols-3",
+            )}
+          >
+            {linkColumns.map((group) => (
+              <section
+                key={group.id}
+                aria-labelledby={`conference-desktop-group-${group.id}`}
+                className="flex min-w-0 flex-col"
+              >
+                <MenuSectionHeading
+                  id={`conference-desktop-group-${group.id}`}
+                  icon={CONFERENCE_SECTION_ICONS[group.id]}
                 >
-                  <MenuSectionHeading
-                    id={`conference-desktop-group-${group.id}`}
-                    icon={CONFERENCE_SECTION_ICONS[group.id]}
-                  >
-                    {group.title}
-                  </MenuSectionHeading>
-                  <ul className="mt-1.5 space-y-0.5">
-                    {group.items.map((item) => (
-                      <li key={item.href}>
-                        <Link
-                          prefetch={false}
-                          href={item.href}
-                          aria-current={isItemCurrent(item.href) ? "page" : undefined}
-                          onClick={() => setIsOpen(false)}
-                          className={menuCardClass(isItemCurrent(item.href))}
-                        >
-                          {item.label}
-                          <MenuCardChevron isCurrent={isItemCurrent(item.href)} />
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                  {group.id === "brand" ? (
-                    <div className="mt-1.5 border-t border-slate-100 pt-1.5">
+                  {group.title}
+                </MenuSectionHeading>
+                <ul className="mt-1.5 space-y-0.5">
+                  {group.items.map((item) => (
+                    <li key={item.href}>
                       <Link
                         prefetch={false}
-                        href={brandsHubLink.href}
-                        aria-current={isItemCurrent(brandsHubLink.href) ? "page" : undefined}
+                        href={item.href}
+                        aria-current={isItemCurrent(item.href) ? "page" : undefined}
                         onClick={() => setIsOpen(false)}
-                        className={cn(
-                          "group/hub flex items-center gap-1.5 whitespace-nowrap rounded-lg py-1.5 pl-3 pr-2.5 text-[11.5px] font-extrabold uppercase leading-4 tracking-[0.05em] text-[#C2410C] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FD6900]/45",
-                          isItemCurrent(brandsHubLink.href) ? "bg-orange-50" : "hover:bg-orange-50/80 focus-visible:bg-orange-50/80",
-                        )}
+                        className={menuCardClass(isItemCurrent(item.href))}
                       >
-                        {brandsHubLink.label}
-                        <span
-                          aria-hidden="true"
-                          className="ml-auto text-[#FD6900] transition-transform duration-200 group-hover/hub:translate-x-0.5"
-                        >
-                          {"\u2192"}
-                        </span>
+                        {item.label}
+                        <MenuCardChevron isCurrent={isItemCurrent(item.href)} />
                       </Link>
-                    </div>
-                  ) : null}
-                </section>
-              ))}
-
-              {packageGroup && packageItem ? (
-                <section
-                  aria-labelledby={`conference-desktop-group-${packageGroup.id}`}
-                  className="flex min-w-0 flex-col"
-                >
-                  <MenuSectionHeading
-                    id={`conference-desktop-group-${packageGroup.id}`}
-                    icon={CONFERENCE_SECTION_ICONS[packageGroup.id]}
-                  >
-                    {packageGroup.title}
-                  </MenuSectionHeading>
-                  <Link
-                    prefetch={false}
-                    href={packageItem.href}
-                    aria-label={packageItem.label}
-                    aria-current={isItemCurrent(packageItem.href) ? "page" : undefined}
-                    onClick={() => setIsOpen(false)}
-                    className={cn(
-                      "group/package mt-1.5 flex flex-1 flex-col rounded-lg border p-3 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FD6900]/45",
-                      isItemCurrent(packageItem.href)
-                        ? "border-[#FD6900]/40 bg-orange-50"
-                        : "border-slate-200/90 bg-slate-50/70 hover:border-[#FD6900]/35 hover:bg-orange-50/70 focus-visible:border-[#FD6900]/35 focus-visible:bg-orange-50/70",
-                    )}
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="relative block aspect-[4/3] w-full overflow-hidden rounded-lg bg-white shadow-[0_2px_8px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/80 transition-colors duration-200 group-hover/package:ring-[#FD6900]/30"
+                    </li>
+                  ))}
+                </ul>
+                {group.id === "brand" ? (
+                  <div className="mt-1.5 border-t border-slate-100 pt-1.5">
+                    <Link
+                      prefetch={false}
+                      href={brandsHubLink.href}
+                      aria-current={isItemCurrent(brandsHubLink.href) ? "page" : undefined}
+                      onClick={() => setIsOpen(false)}
+                      className={cn(
+                        "group/hub flex items-center gap-1.5 whitespace-nowrap rounded-lg py-1.5 pl-3 pr-2.5 text-[11.5px] font-extrabold uppercase leading-4 tracking-[0.05em] text-[#C2410C] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FD6900]/45",
+                        isItemCurrent(brandsHubLink.href) ? "bg-orange-50" : "hover:bg-orange-50/80 focus-visible:bg-orange-50/80",
+                      )}
                     >
-                      <Image
-                        src="/images/conference_landing/complete-conference-package-thumbnail.webp"
-                        alt=""
-                        fill
-                        sizes="220px"
-                        className="object-contain"
-                      />
-                    </span>
-                    <span className="mt-auto flex items-center gap-1 pt-3 text-[11.5px] font-extrabold uppercase leading-4 tracking-[0.06em] text-[#C2410C]">
-                      Explore Packages
+                      {brandsHubLink.label}
                       <span
                         aria-hidden="true"
-                        className="text-[#FD6900] transition-transform duration-200 group-hover/package:translate-x-0.5"
+                        className="ml-auto text-[#FD6900] transition-transform duration-200 group-hover/hub:translate-x-0.5"
                       >
                         {"\u2192"}
                       </span>
+                    </Link>
+                  </div>
+                ) : null}
+              </section>
+            ))}
+
+            {packageGroup && packageItem ? (
+              <section
+                aria-labelledby={`conference-desktop-group-${packageGroup.id}`}
+                className="flex min-w-0 flex-col"
+              >
+                <MenuSectionHeading
+                  id={`conference-desktop-group-${packageGroup.id}`}
+                  icon={CONFERENCE_SECTION_ICONS[packageGroup.id]}
+                >
+                  {packageGroup.title}
+                </MenuSectionHeading>
+                <Link
+                  prefetch={false}
+                  href={packageItem.href}
+                  aria-label={packageItem.label}
+                  aria-current={isItemCurrent(packageItem.href) ? "page" : undefined}
+                  onClick={() => setIsOpen(false)}
+                  className={cn(
+                    "group/package mt-1.5 flex flex-1 flex-col rounded-lg border p-3 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FD6900]/45",
+                    isItemCurrent(packageItem.href)
+                      ? "border-[#FD6900]/40 bg-orange-50"
+                      : "border-slate-200/90 bg-slate-50/70 hover:border-[#FD6900]/35 hover:bg-orange-50/70 focus-visible:border-[#FD6900]/35 focus-visible:bg-orange-50/70",
+                  )}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="relative block aspect-[4/3] w-full overflow-hidden rounded-lg bg-white shadow-[0_2px_8px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/80 transition-colors duration-200 group-hover/package:ring-[#FD6900]/30"
+                  >
+                    <Image
+                      src="/images/conference_landing/complete-conference-package-thumbnail.webp"
+                      alt=""
+                      fill
+                      sizes="220px"
+                      className="object-contain"
+                    />
+                  </span>
+                  <span className="mt-auto flex items-center gap-1 pt-3 text-[11.5px] font-extrabold uppercase leading-4 tracking-[0.06em] text-[#C2410C]">
+                    Explore Packages
+                    <span
+                      aria-hidden="true"
+                      className="text-[#FD6900] transition-transform duration-200 group-hover/package:translate-x-0.5"
+                    >
+                      {"\u2192"}
                     </span>
-                  </Link>
-                </section>
-              ) : null}
-            </div>
-          </nav>
-        </div>
-      ) : null}
+                  </span>
+                </Link>
+              </section>
+            ) : null}
+          </div>
+        </nav>
+      </div>
     </div>
   );
 }
