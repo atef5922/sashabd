@@ -14,6 +14,54 @@
   min-width: 0;
 }
 
+/* Quiet, consistent feature cards; the adjacent trust strip is unchanged. */
+.whyChoosePanel { position: relative; isolation: isolate; }
+.whyChoosePanel::before { content: ""; position: absolute; inset-block: 0; left: 50%; width: 100vw; transform: translateX(-50%); z-index: -1; pointer-events: none; background: linear-gradient(90deg,#02142df2 0%,#031a38d9 48%,#031a38b3 100%),url("/images/rental/hero/rental-led-hero-banner.webp") center 48% / cover no-repeat; }
+.whyChooseGrid { align-items: stretch; }
+.whyChooseCard { min-width: 0; padding: calc(16 * var(--rental-unit)); border: 1px solid #adc6e326; border-radius: calc(10 * var(--rental-unit)); background: #ffffff05; }
+.whyChooseCardTop { display: flex; flex-direction: column; align-items: flex-start; gap: calc(12 * var(--rental-unit)); }
+.whyChooseIcon { display: inline-flex; align-items: center; justify-content: center; width: calc(32 * var(--rental-unit)); height: calc(32 * var(--rental-unit)); flex: none; border: 1px solid #9fc9f340; border-radius: calc(8 * var(--rental-unit)); background: #96c5ff0c; color: #b9dcff; }
+.whyChooseIcon svg { width: calc(17 * var(--rental-unit)); height: calc(17 * var(--rental-unit)); }
+.page .whyChooseTitle { width: 100%; min-width: 0; min-height: 2.9em; padding: 0; margin: 0; font-size: calc(14 * var(--rental-unit)) !important; font-weight: 600; line-height: 1.45; letter-spacing: -.01em; text-align: left; color: #f5f8ff; }
+.page .whyChooseDescription { margin-top: calc(9 * var(--rental-unit)); font-size: calc(11 * var(--rental-unit)); line-height: 1.65; font-weight: 400; text-align: left; text-align-last: auto; color: #bdcce0; }
+@media (max-width: 639px) {
+  .whyChooseCard { display: grid; grid-template-columns: calc(32 * var(--rental-unit)) minmax(0,1fr); column-gap: 12px; }
+  .whyChooseCardTop { display: contents; }
+  .whyChooseIcon { grid-column: 1; grid-row: 1 / 3; }
+  .page .whyChooseTitle { grid-column: 2; min-height: 0; }
+  .page .whyChooseDescription { grid-column: 2; margin-top: 5px; }
+}
+
+/* Package cards only: larger photos and shared content tracks within each row. */
+.packageCard, .packageBody { min-width: 0; }
+/* Only the featured package gets a moving highlight; its base border stays intact. */
+@property --rental-featured-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+.featuredPackage { position: relative; isolation: isolate; }
+@supports (mask-composite: exclude) {
+  .featuredPackage::after { content: ""; position: absolute; inset: 0; z-index: 2; border-radius: inherit; padding: 1.5px; pointer-events: none; background: conic-gradient(from var(--rental-featured-angle), transparent 0% 65%, #ffad66 78%, #fff0da 85%, #ff6a00 92%, transparent 98% 100%); mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); mask-composite: exclude; animation: rentalBorderOrbit 6s linear infinite; }
+}
+@keyframes rentalBorderOrbit { to { --rental-featured-angle: 360deg; } }
+@media (prefers-reduced-motion: reduce) {
+  .featuredPackage::after { animation: none; display: none; }
+}
+.packageBody > * { min-width: 0; max-width: 100%; }
+.packageImage { height: calc(156 * var(--rental-unit, 1px)); }
+.page .packageTitle { font-size: calc(16 * var(--rental-unit)) !important; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.packageDescription { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; height: 2.9em; min-height: 2.9em; }
+.packageDetail { min-width: 0; text-align: left; }
+.packageDetail > span:last-child { display: block; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
+@media (min-width: 640px) {
+  @supports (grid-template-rows: subgrid) {
+    .packagesGrid { row-gap: 0; }
+    .packageCard { display: grid; grid-template-rows: subgrid; grid-row: span 5; row-gap: 0; margin-bottom: calc(12 * var(--rental-unit)); }
+    .packageBody { display: grid; grid-template-rows: subgrid; grid-row: span 4; row-gap: 0; }
+  }
+}
+
 /* FAQ questions must wrap before pushing their controls out of the card. */
 .page [aria-labelledby="rental-faq-heading"] button > div:first-child > div:last-child {
   white-space: normal;
@@ -141,13 +189,6 @@
     font-size: clamp(17px, 1.5vw, 20px) !important;
   }
 
-  .page [aria-labelledby="rental-why-choose-heading"] article > div {
-    gap: 0.5rem;
-  }
-
-  .page [aria-labelledby="rental-why-choose-heading"] article h3 {
-    font-size: 18px !important;
-  }
 }
 
 /* Avoid scrollbar-width drift in full-bleed bands on smaller viewports. */

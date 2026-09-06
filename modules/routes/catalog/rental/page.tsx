@@ -578,13 +578,13 @@ const rentalPackages: RentalPackage[] = [
   },
 ];
 
-function PackageDetail({ icon, children }: { icon: RentalHeroIconName; children: React.ReactNode }) {
+function PackageDetail({ icon, label, value }: { icon: RentalHeroIconName; label: string; value: string }) {
   return (
-    <li className="flex items-start gap-2 text-[11px] leading-[1.35] text-slate-600">
+    <li className={`${styles.packageDetail} flex items-start gap-2 text-[11px] leading-[1.35] text-slate-600`}>
       <span className="mt-px inline-flex h-4 w-4 shrink-0 items-center justify-center text-[#09234a]" aria-hidden="true">
         <RentalHeroIcon name={icon} className="h-3.5 w-3.5" />
       </span>
-      <span>{children}</span>
+      <span title={`${label}: ${value}`}><strong className="font-semibold text-slate-700">{label}:</strong> {value}</span>
     </li>
   );
 }
@@ -611,11 +611,11 @@ function RentalPackageShowcase() {
         {rentalPackages.map((rentalPackage) => (
           <article
             key={rentalPackage.title}
-            className={`group flex min-h-full w-[86%] shrink-0 snap-start flex-col overflow-hidden rounded-xl border bg-white shadow-[0_6px_20px_rgba(8,31,62,0.07)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(8,31,62,0.12)] sm:w-auto ${
-              rentalPackage.featured ? "border-[#ff7a22] ring-1 ring-[#ff7a22]/25" : "border-slate-200 hover:border-orange-200"
+            className={`${styles.packageCard} group flex min-h-full w-[86%] shrink-0 snap-start flex-col overflow-hidden rounded-xl border bg-white shadow-[0_6px_20px_rgba(8,31,62,0.07)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(8,31,62,0.12)] sm:w-auto ${
+              rentalPackage.featured ? `${styles.featuredPackage} border-[#ff7a22] ring-1 ring-[#ff7a22]/25` : "border-slate-200 hover:border-orange-200"
             }`}
           >
-            <div className="relative shrink-0 overflow-hidden bg-slate-100" style={{ height: "calc(118 * var(--rental-unit, 1px))" }}>
+            <div className={`${styles.packageImage} relative shrink-0 overflow-hidden bg-slate-100`}>
               <Image
                 src={rentalPackage.image}
                 alt={`${rentalPackage.title} rental LED display package`}
@@ -630,15 +630,15 @@ function RentalPackageShowcase() {
               <span className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-[#071a35]/35 to-transparent" aria-hidden="true" />
             </div>
 
-            <div className="flex flex-1 flex-col p-3.5">
-              <h3 className="text-[14px] font-black leading-5 text-[#071a35]">{rentalPackage.title}</h3>
-              <p className="mt-1 min-h-10 !text-left text-[10.5px] leading-[1.45] text-slate-500">{rentalPackage.description}</p>
+            <div className={`${styles.packageBody} flex flex-1 flex-col p-3.5`}>
+              <h3 className={`${styles.packageTitle} text-[14px] font-black leading-5 text-[#071a35]`} title={rentalPackage.title}>{rentalPackage.title}</h3>
+              <p className={`${styles.packageDescription} mt-1 !text-left text-[10.5px] leading-[1.45] text-slate-500`} title={rentalPackage.description}>{rentalPackage.description}</p>
               <ul className="mt-3 space-y-2">
-                <PackageDetail icon="range"><strong className="font-semibold text-slate-700">Screen:</strong> {rentalPackage.screenSize}</PackageDetail>
-                <PackageDetail icon="processor"><strong className="font-semibold text-slate-700">Pixel Pitch:</strong> {rentalPackage.pixelPitch}</PackageDetail>
-                <PackageDetail icon="events"><strong className="font-semibold text-slate-700">Duration:</strong> {rentalPackage.duration}</PackageDetail>
-                <PackageDetail icon="stack"><strong className="font-semibold text-slate-700">Setup:</strong> {rentalPackage.setup}</PackageDetail>
-                <PackageDetail icon="headset"><strong className="font-semibold text-slate-700">Includes:</strong> {rentalPackage.includes}</PackageDetail>
+                <PackageDetail icon="range" label="Screen" value={rentalPackage.screenSize} />
+                <PackageDetail icon="processor" label="Pixel Pitch" value={rentalPackage.pixelPitch} />
+                <PackageDetail icon="events" label="Duration" value={rentalPackage.duration} />
+                <PackageDetail icon="stack" label="Setup" value={rentalPackage.setup} />
+                <PackageDetail icon="headset" label="Includes" value={rentalPackage.includes} />
               </ul>
 
               <div className="mt-auto pt-3.5">
@@ -759,12 +759,12 @@ function RentalPitchGuide() {
 }
 
 const whyChooseRental = [
-  { title: "Quick-Lock Rental Cabinets", description: "Fast, secure cabinet alignment for efficient event setup.", icon: "stack" as const, color: "linear-gradient(135deg, #ff3b5f, #ff176d)" },
-  { title: "Professional Rigging & Safety", description: "Structured hanging and stacking plans for stable deployment.", icon: "setup" as const, color: "linear-gradient(135deg, #22a7ff, #0868ef)" },
-  { title: "NovaStar / Processor Configuration", description: "Professional mapping, calibration and content setup.", icon: "processor" as const, color: "linear-gradient(135deg, #33dc77, #08a94f)" },
-  { title: "Live Camera & AV Integration", description: "Planned signal workflow for camera, audio and stage feeds.", icon: "range" as const, color: "linear-gradient(135deg, #ff9d25, #ff680d)" },
-  { title: "On-Site Operator Support", description: "Technical assistance throughout the event when included.", icon: "headset" as const, color: "linear-gradient(135deg, #b84dff, #7c31da)" },
-  { title: "Fast Setup & Dismantling", description: "Rental-ready hardware helps reduce setup and teardown time.", icon: "lock" as const, color: "linear-gradient(135deg, #17d4d0, #039f9d)" },
+  { title: "Quick-Lock Rental Cabinets", description: "Fast, secure cabinet alignment for efficient event setup.", icon: "stack" as const },
+  { title: "Professional Rigging & Safety", description: "Structured hanging and stacking plans for stable deployment.", icon: "setup" as const },
+  { title: "NovaStar / Processor Configuration", description: "Professional mapping, calibration and content setup.", icon: "processor" as const },
+  { title: "Live Camera & AV Integration", description: "Planned signal workflow for camera, audio and stage feeds.", icon: "range" as const },
+  { title: "On-Site Operator Support", description: "Technical assistance throughout the event when included.", icon: "headset" as const },
+  { title: "Fast Setup & Dismantling", description: "Rental-ready hardware helps reduce setup and teardown time.", icon: "lock" as const },
 ];
 
 function RentalWhyChoose() {
@@ -781,14 +781,14 @@ function RentalWhyChoose() {
       style={{ background: "radial-gradient(circle at 62% 0%, #073c78 0%, #062750 22%, #031a38 52%, #02142d 100%)" }}
       aria-labelledby="rental-why-choose-heading"
     >
-      <div className="mx-auto w-full max-w-7xl px-3 py-7 md:px-6 md:py-8">
+      <div className={`${styles.whyChoosePanel} mx-auto w-full max-w-7xl px-3 py-7 md:px-6 md:py-8`}>
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="flex items-center gap-2 text-[9px] font-extrabold uppercase tracking-[0.22em] text-slate-300">
               <span className="h-0.5 w-5 bg-[#ff6a00]" aria-hidden="true" />
               Why Choose Us
             </p>
-            <h2 id="rental-why-choose-heading" className="mt-1.5 text-[22px] font-black uppercase leading-tight tracking-[-0.025em] text-white md:text-[26px]">
+            <h2 id="rental-why-choose-heading" className="mt-1.5 text-[22px] font-black leading-tight tracking-[-0.025em] text-white md:text-[26px]">
               Why Choose Sasha Corporation for LED Rental?
             </h2>
             <p className="mt-1 text-xs leading-5 text-slate-300 md:text-[13px]">
@@ -800,16 +800,16 @@ function RentalWhyChoose() {
           </Link>
         </div>
 
-        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        <div className={`${styles.whyChooseGrid} mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6`}>
           {whyChooseRental.map((item) => (
-            <article key={item.title} className="rounded-xl border border-white/15 bg-white/[0.035] p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-white/25 hover:bg-white/[0.06]">
-              <div className="flex items-start gap-3">
-                <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-white shadow-lg" style={{ background: item.color }} aria-hidden="true">
-                  <RentalHeroIcon name={item.icon} className="h-5 w-5" />
+            <article key={item.title} className={styles.whyChooseCard}>
+              <div className={styles.whyChooseCardTop}>
+                <span className={styles.whyChooseIcon} aria-hidden="true">
+                  <RentalHeroIcon name={item.icon} />
                 </span>
-                <h3 className="pt-1 text-[12px] font-extrabold leading-4 text-white">{item.title}</h3>
+                <h3 className={styles.whyChooseTitle}>{item.title}</h3>
               </div>
-              <p className="mt-3 text-[10px] leading-[1.5] text-slate-300">{item.description}</p>
+              <p className={styles.whyChooseDescription}>{item.description}</p>
             </article>
           ))}
         </div>
