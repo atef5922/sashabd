@@ -30,7 +30,6 @@ function ProposalTitleIcon() {
     </span>
   );
 }
-
 export default function ProjectProposalCtaSection() {
   const [mobileExpanded, setMobileExpanded] = useState(false);
   const whatsappHref = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;

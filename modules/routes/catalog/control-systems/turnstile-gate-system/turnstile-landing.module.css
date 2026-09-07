@@ -355,11 +355,25 @@
 .faqGrid details[open] .faqToggle::after { display: none; }
 .faqGrid details[open] { border-color: #acc3df; }
 .faqGrid details p { color: var(--muted); font-size: 13px; padding: 0 1.4em 1.4em; }
-.ctaWrap { padding-block: 35px 25px; }
-.finalCta { display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: 40px; border-radius: 17px; padding: 40px; background: linear-gradient(115deg,#0a1c32,#163552); color: #fff; }
-.finalCta h2 { color: #fff; }
-.finalCta .eyebrow { color: #f7bc8a; }
-.finalCta p:not(.eyebrow) { margin-top: 13px; color: #bccde0; font-size: 13px; }
+.page #gate-faq { padding-bottom: 0; }
+.ctaWrap { max-width: none; padding: 0 0 25px; }
+.finalCta { position: relative; overflow: hidden; min-height: 216px; width: 100%; border-radius: 0; padding: 18px max(24px,calc((100vw - 1280px) / 2 + 24px)); background: #edf6ff url('/images/turnstile-entrance-hero-v2.webp') right center/auto 100% no-repeat; color: #071936; }
+.finalCta::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg,#edf6ff 0%,#edf6ff 48%,rgba(237,246,255,.99) 62%,rgba(237,246,255,.86) 70%,rgba(237,246,255,.32) 87%,rgba(237,246,255,.05)); }
+.finalCtaCopy { position: relative; z-index: 1; max-width: 670px; }
+.finalCta h2 { color: #071936; }
+.finalCta .eyebrow { color: #4b6488; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 2px; letter-spacing: .03em; font-size: 10px; }
+.finalCta .eyebrow::before { content: ''; width: 24px; height: 2px; background: #ff6900; }
+.finalCta h2 { font-size: 31px !important; line-height: 1.12; }
+.finalCta p:not(.eyebrow) { margin-top: 3px; max-width: 610px; color: #4b6488; font-size: 12px; line-height: 1.35; }
+.finalCta .actions { margin-top: 10px; gap: 14px; }
+.finalCta .button,.ctaEngineer { min-height: 40px; min-width: 200px; border-radius: 7px; padding: 9px 18px; font-size: 11px; }
+.ctaEngineer { display: inline-flex; align-items: center; gap: 10px; color: #1260bd; background: rgba(255,255,255,.78); border: 1px solid #74b5ff; font-weight: 600; }
+.ctaBenefits { display: flex; gap: 34px; margin-top: 10px; padding-top: 8px; border-top: 1px solid #c4d8ef; }
+.ctaBenefits span { display: grid; grid-template-columns: 28px 1fr; column-gap: 8px; align-items: center; }
+.ctaBenefits svg { grid-row: span 2; width: 30px; height: 30px; padding: 6px; border-radius: 8px; color: #1268d0; background: #dceeff; }
+.ctaBenefits b,.ctaBenefits small { display: block; }
+.ctaBenefits b { font-size: 10px; color: #071936; }
+.ctaBenefits small { font-size: 9px; color: #6b82a1; }
 .callLink { display: block; margin-top: 15px; font-size: 12px; color: #c2d2e5; }
 .related { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 25px; color: #6c819b; font-size: 12px; }
 .related a { display: inline-flex; align-items: center; gap: 8px; color: #2e527b; }
@@ -493,8 +507,11 @@
   .faqGrid summary { padding: 17px; gap: 12px; }
   .faqGrid details p { padding: 0 1.1em 1.2em; }
   .faqGrid { grid-template-columns: 1fr; }
-  .finalCta { padding: 25px; gap: 25px; border-radius: 13px; }
+  .finalCta { min-height: 0; padding: 25px; border-radius: 13px; background-size: auto 100%; }
   .finalCta .actions { flex-direction: column; }
+  .finalCta h2 { font-size: 26px !important; }
+  .finalCta .button,.ctaEngineer { width: 100%; }
+  .ctaBenefits { flex-direction: column; gap: 10px; }
   .related { gap: 12px 20px; justify-content: flex-start; }
   .related > span { flex-basis: 100%; }
 }
