@@ -129,6 +129,95 @@
 .bestFor { display: grid; gap: 4px; border-top: 1px solid #e9eef5; padding-top: 14px; margin-top: auto; font-size: 11px; color: #425e7e; }
 .bestFor span { color: #93a0b3; font-size: 9px; letter-spacing: .1em; font-weight: 600; }
 .typeCard .textLink { margin-top: 16px; font-size: 12px; }
+.workflowSection { padding-block: 18px 20px; background: linear-gradient(105deg,#f8fbff,#eef6ff); border-block: 1px solid #e1ecf8; }
+.workflowHeader,.compareHeader { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+.workflowHeader .heading,.compareHeader .heading { max-width: 720px; margin-bottom: 10px; }
+.workflowSection .eyebrow,.compareSection .eyebrow { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 4px; color: #536b91; letter-spacing: .08em; }
+.workflowSection .eyebrow::before,.compareSection .eyebrow::before { content: ""; width: 25px; height: 2px; background: #ff6500; }
+.workflowHeader .heading > p:last-child,.compareHeader .heading > p:last-child { margin-top: 2px; line-height: 1.45; }
+.workflowLink { display: inline-flex; align-items: center; justify-content: center; gap: 12px; flex: none; min-height: 34px; margin-top: 2px; padding: 7px 15px; border: 1px solid #79aeff; border-radius: 6px; background: #fff; color: #0764e8; font-size: 9px; font-weight: 700; text-align: center; }
+.workflowLink svg { width: 14px; height: 14px; }
+.workflowLayout { display: grid; grid-template-columns: minmax(0,4fr) minmax(180px,1fr); gap: 14px; }
+.integrationFlow { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 22px; }
+.integrationFlow > li { position: relative; min-width: 0; padding: 10px 12px 12px; border: 1px solid #d7e4f2; border-radius: 7px; background: #fff; box-shadow: 0 3px 10px #17385f08; }
+.integrationFlow > li:not(:last-child)::after { content: "›"; position: absolute; z-index: 2; top: 35px; right: -18px; display: grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; background: #438ff0; color: #fff; font-size: 20px; line-height: 1; box-shadow: 0 2px 5px #1767c52e; }
+.flowTitle { display: flex; align-items: center; gap: 8px; }
+.flowTitle > span { display: grid; place-items: center; width: 23px; height: 23px; border-radius: 50%; background: #388aed; color: #fff; font-size: 10px; font-weight: 700; }
+.page .flowTitle h3 { font-size: 11px !important; }
+.flowVisual { display: flex; align-items: center; justify-content: center; gap: 10px; height: 48px; margin-block: 6px; color: #1474e8; }
+.flowVisual > svg { width: 28px; height: 28px; }
+.flowVisual > span { position: relative; width: 78px; height: 45px; }
+.flowVisual img { object-fit: contain; }
+.integrationFlow > li > p { min-height: 2.8em; color: var(--muted); font-size: 9px; line-height: 1.4; }
+.connectedPanel { padding: 12px 14px; border: 1px solid #d7e5f4; border-radius: 8px; background: linear-gradient(145deg,#e7f2ff,#f7fbff); }
+.connectedIcon { display: grid; place-items: center; width: 35px; height: 35px; margin-bottom: 7px; border-radius: 50%; background: #d8eaff; color: #0769e8; }
+.page .connectedPanel h3 { font-size: 11px !important; }
+.connectedPanel ul { display: grid; gap: 6px; margin-top: 9px; }
+.connectedPanel li { display: flex; align-items: center; gap: 6px; color: #3f5878; font-size: 9px; }
+.connectedPanel li svg { width: 13px; height: 13px; color: #13b86b; }
+.compareSection { padding-block: 14px 22px; background: #fff; }
+.compareLayout { display: grid; grid-template-columns: minmax(0,4.3fr) minmax(210px,1fr); gap: 16px; align-items: stretch; }
+.compareTableWrap { overflow-x: auto; border: 1px solid #d5e2f0; border-radius: 8px; }
+.compareTableWrap table { width: 100%; min-width: 760px; border-collapse: collapse; table-layout: fixed; }
+.compareTableWrap th { padding: 6px 10px; background: #e7f1fd; color: var(--navy); font-size: 8px; text-align: center; }
+.compareTableWrap th:first-child { width: 27%; }.compareTableWrap th:nth-child(2) { width: 16%; }.compareTableWrap th:nth-child(3) { width: 15%; }.compareTableWrap th:nth-child(4) { width: 15%; }.compareTableWrap th:last-child { width: 27%; }
+.compareTableWrap td { height: 29px; padding: 3px 10px; border-top: 1px solid #e1e9f3; color: #385372; font-size: 8px; text-align: center; }
+.compareTableWrap td + td,.compareTableWrap th + th { border-left: 1px solid #e1e9f3; }
+.compareTableWrap td:first-child { text-align: left; }
+.compareTableWrap td:first-child a { display: flex; align-items: center; gap: 10px; }
+.compareTableWrap td:first-child a > span { position: relative; width: 52px; height: 24px; flex: none; }
+.compareTableWrap td:first-child img { object-fit: contain; }
+.compareTableWrap td:first-child strong { color: var(--navy); font-size: 9px; }
+.securityDots { display: inline-flex; gap: 3px; }
+.securityDots i { width: 7px; height: 7px; border-radius: 50%; background: #bbc7d5; }
+.securityDots i[data-active="true"] { background: #1479ef; }
+.recommendationPanel { display: flex; flex-direction: column; padding: 14px 15px; border: 1px solid #d8e6f5; border-radius: 8px; background: linear-gradient(145deg,#eef6ff,#f9fcff); }
+.recommendationPanel > span { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: #ddecff; color: #0870e8; }
+.page .recommendationPanel h3 { margin-top: 7px; font-size: 12px !important; }
+.recommendationPanel p { margin-block: 9px; color: var(--muted); font-size: 9px; line-height: 1.35; }
+.recommendationPanel a { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 31px; margin-top: auto; border-radius: 5px; background: #ff6500; color: #fff; font-size: 9px; font-weight: 700; }
+.recommendationPanel a svg { width: 13px; height: 13px; }
+/* Premium access workflow and gate comparison presentation. */
+.workflowSection { padding-block: 34px 38px; background: linear-gradient(115deg,#f8fbff,#edf6ff); border-color: #dce8f6; }
+.workflowHeader .heading,.compareHeader .heading { max-width: 760px; margin-bottom: 22px; }
+.workflowSection .eyebrow,.compareSection .eyebrow { margin-bottom: 7px; color: #49668d; font-size: 11px; letter-spacing: .14em; }
+.workflowHeader .heading > p:last-child,.compareHeader .heading > p:last-child { margin-top: 4px; font-size: 14px; line-height: 1.55; }
+.workflowLink { min-height: 42px; margin-top: 4px; padding: 9px 17px; border-radius: 8px; box-shadow: 0 4px 12px #0d63c70b; font-size: 11px; }
+.workflowLink svg { width: 15px; height: 15px; }
+.workflowLayout { grid-template-columns: minmax(0,4fr) minmax(220px,1fr); gap: 18px; }
+.integrationFlow { gap: 24px; }
+.integrationFlow > li { display: flex; min-height: 208px; flex-direction: column; padding: 17px; border-color: #cfdeee; border-radius: 12px; background: linear-gradient(160deg,#fff,#fbfdff); box-shadow: 0 8px 24px #163a6310; transition: transform .2s,border-color .2s,box-shadow .2s; }
+.integrationFlow > li:hover { transform: translateY(-2px); border-color: #a9c8eb; box-shadow: 0 12px 28px #163a6318; }
+.integrationFlow > li::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; border-radius: 12px 12px 0 0; background: linear-gradient(90deg,#1a75e8,#63a8ff); }
+.integrationFlow > li:not(:last-child)::after { content: "\2192"; top: 88px; right: -19px; width: 30px; height: 30px; border: 3px solid #edf6ff; font-size: 15px; box-shadow: 0 4px 10px #1767c536; }
+.flowTitle { gap: 10px; }
+.flowTitle > span { width: 29px; height: 29px; flex: none; background: linear-gradient(145deg,#1674e8,#53a0fa); box-shadow: 0 3px 8px #1674e82b; font-size: 12px; font-weight: 800; }
+.page .flowTitle h3 { font-size: 14px !important; }
+.flowVisual { display: grid; grid-template-columns: 40px minmax(0,1fr); height: 82px; gap: 12px; margin-block: 13px 11px; padding: 9px 10px; border: 1px solid #e1ebf6; border-radius: 9px; background: #f5f9fe; }
+.flowVisual > svg { width: 30px; height: 30px; justify-self: center; }
+.flowVisual > span { width: 100%; height: 62px; overflow: hidden; border-radius: 6px; background: #fff; }
+.flowVisual img { object-fit: cover; object-position: center; }
+.integrationFlow > li > p { min-height: 3.2em; margin-top: auto; color: #526984; font-size: 11px; line-height: 1.5; }
+.connectedPanel { display: flex; flex-direction: column; padding: 19px; border-color: #cddff1; border-radius: 12px; box-shadow: 0 8px 24px #163a630d; }
+.connectedIcon { width: 45px; height: 45px; margin-bottom: 13px; box-shadow: inset 0 0 0 1px #c4ddfa; }
+.page .connectedPanel h3 { font-size: 14px !important; }
+.connectedPanel ul { gap: 11px; margin-top: 16px; }
+.connectedPanel li { gap: 8px; font-size: 11px; line-height: 1.4; }
+.connectedPanel li svg { width: 16px; height: 16px; }
+.compareSection { padding-block: 32px 38px; }
+.compareTableWrap { border-color: #cfdeee; border-radius: 11px; box-shadow: 0 7px 20px #17385f0b; }
+.compareTableWrap table { min-width: 830px; }
+.compareTableWrap th { padding: 11px 12px; font-size: 10px; font-weight: 700; }
+.compareTableWrap td { height: 48px; padding: 7px 12px; font-size: 10px; line-height: 1.4; }
+.compareTableWrap td:first-child a > span { width: 66px; height: 36px; overflow: hidden; border: 1px solid #e0e8f1; border-radius: 5px; background: #f7f9fc; }
+.compareTableWrap td:first-child strong { font-size: 11px; }
+.securityDots i { width: 8px; height: 8px; }
+.recommendationPanel { padding: 20px; border-color: #cfdef0; border-radius: 11px; box-shadow: 0 7px 20px #17385f0b; }
+.recommendationPanel > span { width: 46px; height: 46px; box-shadow: inset 0 0 0 1px #cbe1fb; }
+.page .recommendationPanel h3 { margin-top: 12px; font-size: 15px !important; }
+.recommendationPanel p { margin-block: 12px 18px; font-size: 11px; line-height: 1.5; }
+.recommendationPanel a { min-height: 40px; border-radius: 7px; background: linear-gradient(90deg,#f45a00,#ff7200); box-shadow: 0 6px 14px #ff650026; font-size: 11px; }
+
 .applicationGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 18px; }
 .applicationGrid article { border: 1px solid var(--line); border-radius: 13px; background: #fff; padding: 25px; }
 .iconBadge { display: inline-flex; align-items: center; justify-content: center; width: 43px; height: 43px; border: 1px solid #dbe9fb; border-radius: 10px; background: #edf4ff; color: #1567ce; }
@@ -302,6 +391,8 @@
   .processGrid,.supportGrid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 22px 14px; }
   .processGrid::before { display: none; }
   .processGrid li:not(:last-child)::after { display: none; }
+  .workflowLayout,.compareLayout { grid-template-columns: 1fr; }
+  .connectedPanel,.recommendationPanel { max-width: none; }
 }
 @media (max-width: 699px) {
   .hero { display: flex; flex-direction: column; }
@@ -324,6 +415,10 @@
   .trustItem span { font-size: 10px; }
   .trustItem:last-child { grid-column: 1 / -1; }
   .sectionNav > div { gap: 24px; }
+  .workflowHeader,.compareHeader { display: block; }
+  .workflowHeader .workflowLink,.compareHeader .workflowLink { margin-bottom: 14px; }
+  .integrationFlow { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
+  .integrationFlow > li:not(:last-child)::after { display: none; }
 }
 @media (max-width: 599px) {
   .container { padding-inline: 18px; }
@@ -354,6 +449,8 @@
   .typeGrid,.applicationGrid,.processGrid,.supportGrid,.benefitGrid,.criteriaGrid { grid-template-columns: 1fr; }
   .typeCard > div { padding: 20px; }
   .applicationGrid article { padding: 21px; }
+  .integrationFlow { grid-template-columns: 1fr; }
+  .workflowSection,.compareSection { padding-block: 26px; }
   .accessExperience { padding: 22px; border-radius: 16px; }
   .page .integrationTitle { font-size: 32px !important; }
   .integrationDescription { font-size: 14px; }
