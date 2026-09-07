@@ -658,10 +658,11 @@ export default function Header({
   const isInteractiveFlatPanelLanding = normalizedPathname === "/interactive-flat-panel";
   const isDigitalPodiumLanding = normalizedPathname === "/digital-podium";
   const isPaSystemLanding = normalizedPathname === "/pa-system";
+  const isContactPage = normalizedPathname === "/contact";
   const isLedAccessoryLanding = ["receiving-card", "controller", "power-supply", "led-accessories"].some(
     (category) => normalizedPathname === `/led-display/accessories/${category}`,
   );
-  const useHomeResponsiveHeader = pathname === "/" || isLedDisplayLanding || isRentalDisplayLanding || isIndoorOutdoorLanding || isInteractiveFlatPanelLanding || isDigitalPodiumLanding || isLedAccessoryLanding || isPaSystemLanding;
+  const useHomeResponsiveHeader = pathname === "/" || isLedDisplayLanding || isRentalDisplayLanding || isIndoorOutdoorLanding || isInteractiveFlatPanelLanding || isDigitalPodiumLanding || isLedAccessoryLanding || isPaSystemLanding || isContactPage;
   const useConferenceTabletHeader =
     useHomeResponsiveHeader || pathname.startsWith("/conference-system");
   const hasFlushConferenceHero = [
@@ -950,7 +951,16 @@ export default function Header({
             }
             const dropdownActiveClass = isScrolled ? "bg-[#FD6900] text-white" : "bg-slate-900 text-white";
             return (
-              <div key={item.href} className="relative group">
+              <div
+                key={item.href}
+                className="group relative"
+                onMouseLeave={(event) => {
+                  const focusedElement = document.activeElement;
+                  if (focusedElement instanceof HTMLElement && event.currentTarget.contains(focusedElement)) {
+                    focusedElement.blur();
+                  }
+                }}
+              >
                 {/* Trigger */}
                 <Link prefetch={false} href={item.href}
                   onClick={handleNavClick(item.href)}

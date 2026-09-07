@@ -12,10 +12,18 @@ import {
   type ConferenceRoomSizeInquiry,
 } from "@/app/conference-system/conferenceInquiry";
 import { resolveRentalInquiry, type RentalInquiryContext, type RentalInquiryProduct } from "./rentalInquiry";
+import styles from "./contact.module.css";
 
 type SubmitState = "idle" | "submitting" | "success" | "error";
-const DEFAULT_PROJECT_TYPE = "";
 const NO_RENTAL_PRODUCTS: readonly RentalInquiryProduct[] = [];
+
+function SendIcon() {
+  return <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z" /><path d="M22 2 11 13" /></svg>;
+}
+
+function PaperclipIcon() {
+  return <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m20.5 11.5-8.8 8.8a5 5 0 0 1-7.1-7.1l9.2-9.2a3.5 3.5 0 1 1 5 5l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.4-8.4" /></svg>;
+}
 
 export default function ContactForm({
   maroon,
@@ -30,9 +38,10 @@ export default function ContactForm({
 }) {
   const formRef = useRef<HTMLFormElement | null>(null);
   const [state, setState] = useState<SubmitState>("idle");
-  const [errorMessage, setErrorMessage] = useState<string>("");
-  const [projectType, setProjectType] = useState(DEFAULT_PROJECT_TYPE);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [projectType, setProjectType] = useState("");
   const [message, setMessage] = useState("");
+  const [fileName, setFileName] = useState("");
   const [selectedConferenceProducts, setSelectedConferenceProducts] = useState<ConferenceInquiryProduct[]>([]);
   const [selectedConferencePackage, setSelectedConferencePackage] = useState<ConferencePackageInquiry | null>(null);
   const [selectedConferenceRoomSize, setSelectedConferenceRoomSize] = useState<ConferenceRoomSizeInquiry | null>(null);
@@ -47,17 +56,14 @@ export default function ContactForm({
     const params = new URLSearchParams(window.location.search);
     const rentalContext = resolveRentalInquiry(params, rentalProducts);
     const context = resolveConferenceInquiry(params, conferenceProducts);
-
     if (!rentalContext && !context.projectType) return;
+
     queueMicrotask(() => {
       if (cancelled) return;
       setSelectedRentalInquiry(rentalContext);
       if (rentalContext) {
         setProjectType(rentalContext.projectType);
         setInquiryProjectKey(rentalContext.projectKey);
-        setSelectedConferenceProducts([]);
-        setSelectedConferencePackage(null);
-        setSelectedConferenceRoomSize(null);
         setMessage((current) => current || rentalContext.message);
         return;
       }
@@ -71,219 +77,104 @@ export default function ContactForm({
     return () => { cancelled = true; };
   }, [conferenceProducts, rentalProducts]);
 
-  const subject = projectType
-    ? `${BRAND_NAME} — New ${projectType} inquiry`
-    : `${BRAND_NAME} — New project inquiry`;
+  const subject = projectType ? `${BRAND_NAME} — New ${projectType} inquiry` : `${BRAND_NAME} — New project inquiry`;
+  const quotationContext = selectedConferenceProducts.length
+    ? selectedConferenceProducts.map(getConferenceInquiryProductLabel).join(", ")
+    : selectedConferencePackage?.label || selectedConferenceRoomSize?.label || selectedRentalInquiry?.packageInquiry?.label;
+
+  async function submitForm(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!formRef.current || state === "submitting") return;
+    setState("submitting");
+    setErrorMessage("");
+
+    try {
+      const formData = new FormData(formRef.current);
+      if (String(formData.get("_honey") ?? "").trim()) {
+        setState("success");
+        return;
+      }
+      const response = await fetch(actionUrl, { method: "POST", body: formData, headers: { Accept: "application/json" } });
+      if (!response.ok) {
+        const details = await response.text().catch(() => "");
+        throw new Error(details || "Submission failed. Please try again.");
+      }
+      formRef.current.reset();
+      setProjectType("");
+      setMessage("");
+      setFileName("");
+      setState("success");
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "Submission failed. Please try again.");
+      setState("error");
+    }
+  }
 
   return (
-    <form
-      ref={formRef}
-      className="mt-5 grid gap-3 md:grid-cols-2 md:gap-4"
-      onSubmit={async (e) => {
-        e.preventDefault();
-        if (!formRef.current) return;
-        if (state === "submitting") return;
-
-        setState("submitting");
-        setErrorMessage("");
-
-        try {
-          const formData = new FormData(formRef.current);
-          const honey = String(formData.get("_honey") ?? "").trim();
-          if (honey) {
-            setState("success");
-            formRef.current.reset();
-            return;
-          }
-
-          const res = await fetch(actionUrl, {
-            method: "POST",
-            body: formData,
-            headers: { Accept: "application/json" },
-          });
-
-          if (!res.ok) {
-            const text = await res.text().catch(() => "");
-            setErrorMessage(text || "Submission failed. Please try again.");
-            setState("error");
-            return;
-          }
-
-          setState("success");
-          formRef.current.reset();
-        } catch (err) {
-          setErrorMessage(err instanceof Error ? err.message : "Submission failed. Please try again.");
-          setState("error");
-        }
-      }}
-    >
-      {/* FormSubmit config */}
+    <form ref={formRef} className={styles.quoteForm} onSubmit={submitForm} encType="multipart/form-data">
       <input type="hidden" name="_subject" value={subject} />
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_captcha" value="false" />
-      <input type="text" name="_honey" className="hidden" tabIndex={-1} autoComplete="off" />
+      <input type="text" name="_honey" className={styles.honeyField} tabIndex={-1} autoComplete="off" />
       {inquiryProjectKey ? <input type="hidden" name="inquiry_project" value={inquiryProjectKey} /> : null}
-      {selectedRentalInquiry ? (
-        <>
-          {(["package", "model", "event", "service"] as const).map((field) => {
-            const detail = selectedRentalInquiry[`${field}Inquiry`];
-            return detail ? (
-              <span key={field} hidden>
-                <input type="hidden" name={`rental_${field}_key`} value={detail.key} />
-                <input type="hidden" name={`rental_${field}`} value={detail.label} />
-              </span>
-            ) : null;
-          })}
-        </>
-      ) : null}
-      {selectedConferenceProducts.length ? (
-        <>
-          <input type="hidden" name="conference_product_slugs" value={selectedConferenceProducts.map((product) => product.slug).join(", ")} />
-          <input type="hidden" name="conference_products" value={selectedConferenceProducts.map(getConferenceInquiryProductLabel).join(", ")} />
-          <div className="rounded-xl border bg-orange-50/70 px-4 py-3 text-sm text-slate-700 md:col-span-2" style={{ borderColor: `${maroon}22` }} role="status">
-            <span className="font-extrabold text-slate-950">Quotation context:</span>{" "}
-            {selectedConferenceProducts.map(getConferenceInquiryProductLabel).join(", ")}
-          </div>
-        </>
-      ) : null}
-      {selectedConferencePackage ? (
-        <>
-          <input type="hidden" name="conference_package_key" value={selectedConferencePackage.key} />
-          <input type="hidden" name="conference_package" value={selectedConferencePackage.label} />
-          <div className="rounded-xl border bg-orange-50/70 px-4 py-3 text-sm text-slate-700 md:col-span-2" style={{ borderColor: `${maroon}22` }} role="status">
-            <span className="font-extrabold text-slate-950">Quotation context:</span>{" "}
-            {selectedConferencePackage.label}
-          </div>
-        </>
-      ) : null}
-      {selectedConferenceRoomSize ? (
-        <>
-          <input type="hidden" name="conference_room_size" value={selectedConferenceRoomSize.key} />
-          <div className="rounded-xl border bg-orange-50/70 px-4 py-3 text-sm text-slate-700 md:col-span-2" style={{ borderColor: `${maroon}22` }} role="status">
-            <span className="font-extrabold text-slate-950">Room context:</span>{" "}
-            {selectedConferenceRoomSize.label}
-          </div>
-        </>
-      ) : null}
+      {selectedRentalInquiry ? (["package", "model", "event", "service"] as const).map((field) => {
+        const detail = selectedRentalInquiry[`${field}Inquiry`];
+        return detail ? <span key={field} hidden><input type="hidden" name={`rental_${field}_key`} value={detail.key} /><input type="hidden" name={`rental_${field}`} value={detail.label} /></span> : null;
+      }) : null}
+      {selectedConferenceProducts.length ? <><input type="hidden" name="conference_product_slugs" value={selectedConferenceProducts.map((product) => product.slug).join(", ")} /><input type="hidden" name="conference_products" value={selectedConferenceProducts.map(getConferenceInquiryProductLabel).join(", ")} /></> : null}
+      {selectedConferencePackage ? <><input type="hidden" name="conference_package_key" value={selectedConferencePackage.key} /><input type="hidden" name="conference_package" value={selectedConferencePackage.label} /></> : null}
+      {selectedConferenceRoomSize ? <input type="hidden" name="conference_room_size" value={selectedConferenceRoomSize.key} /> : null}
 
-      <div>
-        <label htmlFor="contact-name" className="text-sm font-semibold text-slate-900">
-          Full Name
-        </label>
-        <input
-          id="contact-name"
-          name="name"
-          type="text"
-          required
-          placeholder="Your name"
-          className="mt-2 w-full rounded-[12px] border px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 md:rounded-xl md:py-3"
-          style={{ borderColor: `${maroon}22` }}
-        />
+      {quotationContext ? <div className={styles.formContext} style={{ borderColor: `${maroon}35` }}><b>Quotation context:</b> {quotationContext}</div> : null}
+
+      <div className={styles.formField}>
+        <label htmlFor="contact-name">Full Name <span>*</span></label>
+        <input id="contact-name" name="name" type="text" required autoComplete="name" placeholder="Your full name" />
       </div>
-
-      <div>
-        <label htmlFor="contact-phone" className="text-sm font-semibold text-slate-900">
-          Phone Number
-        </label>
-        <input
-          id="contact-phone"
-          name="phone"
-          type="tel"
-          required
-          placeholder="+8801XXXXXXXXX"
-          className="mt-2 w-full rounded-[12px] border px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 md:rounded-xl md:py-3"
-          style={{ borderColor: `${maroon}22` }}
-        />
+      <div className={styles.formField}>
+        <label htmlFor="contact-phone">Phone Number <span>*</span></label>
+        <input id="contact-phone" name="phone" type="tel" required autoComplete="tel" placeholder="+880" />
       </div>
-
-      <div>
-        <label htmlFor="contact-email" className="text-sm font-semibold text-slate-900">
-          Email (Optional)
-        </label>
-        <input
-          id="contact-email"
-          name="email"
-          type="email"
-          placeholder="you@example.com"
-          className="mt-2 w-full rounded-[12px] border px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 md:rounded-xl md:py-3"
-          style={{ borderColor: `${maroon}22` }}
-        />
+      <div className={styles.formField}>
+        <label htmlFor="contact-email">Email Address</label>
+        <input id="contact-email" name="email" type="email" autoComplete="email" placeholder="your@email.com" />
       </div>
-
-      <div>
-        <label htmlFor="contact-type" className="text-sm font-semibold text-slate-900">
-          Project Type
-        </label>
-        <select
-          id="contact-type"
-          name="project_type"
-          className="mt-2 w-full rounded-[12px] border bg-white px-4 py-2.5 text-sm text-slate-900 outline-none transition focus:ring-2 md:rounded-xl md:py-3"
-          style={{ borderColor: `${maroon}22` }}
-          value={projectType}
-          onChange={(event) => setProjectType(event.currentTarget.value)}
-        >
-          <option value="">Select project type</option>
-          <option>Indoor LED Display</option>
-          <option>Outdoor LED Display</option>
-          <option>Rental LED Display</option>
-          <option>Conference System</option>
-          <option>Hybrid / Video Meeting Room</option>
-          <option>PA Sound System</option>
-          <option>Turnstile Gate System</option>
-          <option>Accessories / Controller</option>
-          <option>Service & Support</option>
+      <div className={styles.formField}>
+        <label htmlFor="contact-type">Solution Type <span>*</span></label>
+        <select id="contact-type" name="project_type" required value={projectType} onChange={(event) => setProjectType(event.currentTarget.value)}>
+          <option value="">Select a solution</option>
+          <option>Indoor LED Display</option><option>Outdoor LED Display</option><option>Rental LED Display</option><option>Conference System</option><option>Hybrid / Video Meeting Room</option><option>PA Sound System</option><option>Turnstile Gate System</option><option>Accessories / Controller</option><option>Service &amp; Support</option>
         </select>
       </div>
-
-      <div className="md:col-span-2">
-        <label htmlFor="contact-message" className="text-sm font-semibold text-slate-900">
-          Requirement Details
-        </label>
-        <textarea
-          id="contact-message"
-          name="message"
-          required
-          rows={5}
-          value={message}
-          onChange={(event) => setMessage(event.currentTarget.value)}
-          placeholder={projectType === "Conference System" || projectType === "Hybrid / Video Meeting Room" ? "Share room size, participant count, quantity and installation requirements..." : "Share location, solution size, quantity and timeline..."}
-          className="mt-2 w-full rounded-[12px] border px-4 py-3 text-sm text-slate-900 outline-none transition focus:ring-2 md:rounded-xl"
-          style={{ borderColor: `${maroon}22` }}
-        />
+      <div className={styles.formField}>
+        <label htmlFor="project-location">Project Location <span>*</span></label>
+        <input id="project-location" name="project_location" type="text" required placeholder="Dhaka" />
+      </div>
+      <div className={styles.formField}>
+        <label htmlFor="project-quantity">Quantity / Room / Screen Size</label>
+        <input id="project-quantity" name="quantity_or_size" type="text" placeholder="e.g. 2 units / 1 room / 10ft × 6ft" />
+      </div>
+      <div className={`${styles.formField} ${styles.formWide}`}>
+        <label htmlFor="project-timeline">Expected Timeline</label>
+        <select id="project-timeline" name="expected_timeline" defaultValue=""><option value="" disabled>Select timeline</option><option>Immediately</option><option>Within 2 weeks</option><option>Within 1 month</option><option>Within 3 months</option><option>Planning stage</option></select>
+      </div>
+      <div className={`${styles.formField} ${styles.formWide}`}>
+        <label htmlFor="contact-message">Requirement Details <span>*</span></label>
+        <textarea id="contact-message" name="message" required rows={4} value={message} onChange={(event) => setMessage(event.currentTarget.value)} placeholder="Tell us about your project, requirements, and any specific details..." />
       </div>
 
-      {state === "success" ? (
-        <div
-          className="md:col-span-2 rounded-xl border px-4 py-3 text-sm font-semibold"
-          style={{ borderColor: `${maroon}22`, background: `${maroon}0D`, color: maroonDark }}
-          role="status"
-        >
-          Your request is submitted.
-        </div>
-      ) : null}
+      <label className={`${styles.fileField} ${styles.formWide}`} htmlFor="contact-attachment">
+        <PaperclipIcon />
+        <span><b>Attach Drawing / BOQ / Reference File (Optional)</b><small>PDF, DWG, JPG, PNG (Max 10MB)</small></span>
+        <em>{fileName || "Choose File"}</em>
+        <input id="contact-attachment" name="attachment" type="file" accept=".pdf,.dwg,.jpg,.jpeg,.png" onChange={(event) => setFileName(event.currentTarget.files?.[0]?.name || "")} />
+      </label>
 
-      {state === "error" ? (
-        <div
-          className="md:col-span-2 rounded-xl border px-4 py-3 text-sm font-semibold text-red-700"
-          style={{ borderColor: "rgba(185,28,28,0.25)", background: "rgba(185,28,28,0.06)" }}
-          role="alert"
-        >
-          Could not submit right now. Please try again or WhatsApp us.
-          {errorMessage ? <div className="mt-1 text-xs font-medium text-red-700/90">{errorMessage}</div> : null}
-        </div>
-      ) : null}
+      {state === "success" ? <div className={`${styles.formStatus} ${styles.formSuccess}`} role="status">Thank you. Your project requirement has been sent successfully.</div> : null}
+      {state === "error" ? <div className={`${styles.formStatus} ${styles.formError}`} role="alert">Could not submit right now. Please try again or WhatsApp us.{errorMessage ? <small>{errorMessage}</small> : null}</div> : null}
 
-      <div className="md:col-span-2 flex flex-col items-start gap-2 md:flex-row md:flex-wrap md:items-center md:gap-3">
-        <button
-          type="submit"
-          disabled={state === "submitting"}
-          className="inline-flex min-h-10 items-center justify-center rounded-md px-4 py-2.5 text-[11px] font-extrabold text-white shadow-sm transition hover:shadow-md disabled:cursor-not-allowed disabled:opacity-70 md:rounded-xl md:px-5 md:py-3 md:text-sm md:font-semibold"
-          style={{ background: maroonDark }}
-        >
-          {state === "submitting" ? "Submitting..." : "Send Inquiry"}
-        </button>
-        <span className="text-xs text-slate-500">Submitting sends your inquiry to our team email.</span>
-      </div>
+      <button type="submit" disabled={state === "submitting"} className={styles.submitButton} style={{ background: `linear-gradient(135deg, ${maroon}, ${maroonDark})` }}><SendIcon /> {state === "submitting" ? "Sending Requirement..." : "Send Project Requirement"}</button>
+      <p className={styles.responseNote}>▣ We usually respond during business hours.</p>
     </form>
   );
 }
