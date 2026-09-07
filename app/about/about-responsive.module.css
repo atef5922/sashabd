@@ -1,0 +1,138 @@
+/* Match Home's 1280px shell after its 24px desktop gutters. Backgrounds stay
+   full bleed while About's inner content uses the same visual measure. */
+.page :global(.max-w-\[1440px\]) { max-width: 77rem; }
+
+/* Consistent section-title scale at every viewport; the hero h1 is excluded. */
+.page :global(#about-who h2),
+.page :global(#about-purpose h2),
+.page :global(#about-brands h2),
+.page :global(#about-commitment h2) {
+  font-size: clamp(23px, 2vw, 30px) !important;
+}
+
+.page :global(#about-journey h2),
+.page :global(#about-solutions h2),
+.page :global(#about-project-cta h2) {
+  font-size: clamp(24px, 2.15vw, 32px) !important;
+}
+
+.page :global(#about-hero h1) {
+  font-size: clamp(34px, 3.2vw, 46px) !important;
+}
+
+/* Keep the Who We Are body copy readable and immune to global justification. */
+.page :global(#about-who > div > div:last-child > p:nth-of-type(2)),
+.page :global(#about-who > div > div:last-child > p:nth-of-type(3)) {
+  width: 72%;
+  max-width: 32rem;
+  text-align: left !important;
+  font-size: clamp(11px, .95vw, 14px) !important;
+  line-height: 1.55 !important;
+  letter-spacing: -.01em;
+}
+
+.page :global(#about-who > div > div:last-child > p:nth-of-type(4)) {
+  right: 7%;
+  top: 13%;
+  width: 15%;
+  font-size: clamp(15px, 1.65vw, 23px) !important;
+  line-height: 1.02 !important;
+}
+
+.page :global(#about-who > div > div:last-child > p:nth-of-type(4) span) {
+  width: 5rem;
+}
+
+.page :global(#about-who article h3) {
+  white-space: nowrap;
+  font-size: clamp(10px, .82vw, 12px) !important;
+  line-height: 1.2 !important;
+  letter-spacing: -.02em;
+}
+
+/* About-only wide viewport scaling, matching Home's browser-zoom behavior. */
+@media (min-width: 1440px) {
+  .page {
+    --about-width: clamp(80rem, 90vw, 108rem);
+    --about-unit: calc(var(--about-width) / 1280);
+    font-size: calc(16 * var(--about-unit));
+  }
+
+  .page :global(.max-w-\[1440px\]) { max-width: calc(var(--about-width) - 48 * var(--about-unit)); }
+  .page :global(.text-\[8px\]) { font-size: calc(8 * var(--about-unit)); }
+  .page :global(.text-\[9px\]) { font-size: calc(9 * var(--about-unit)); }
+  .page :global(.text-\[10px\]) { font-size: calc(10 * var(--about-unit)); }
+  .page :global(.text-\[11px\]) { font-size: calc(11 * var(--about-unit)); }
+  .page :global(.text-\[12px\]) { font-size: calc(12 * var(--about-unit)); }
+  .page :global(.text-\[13px\]) { font-size: calc(13 * var(--about-unit)); }
+  .page :global(.text-\[14px\]) { font-size: calc(14 * var(--about-unit)); }
+  .page :global(.text-\[15px\]) { font-size: calc(15 * var(--about-unit)); }
+  .page :global(.text-base) { font-size: calc(16 * var(--about-unit)); }
+  .page :global(.text-lg) { font-size: calc(18 * var(--about-unit)); }
+  .page :global(.text-xl) { font-size: calc(20 * var(--about-unit)); }
+
+  .page :global(#about-hero > div:last-child) { min-height: calc(340 * var(--about-unit)); padding-block: calc(26 * var(--about-unit)); padding-inline: 0; }
+  .page :global(#about-hero h1) { font-size: calc(42 * var(--about-unit)) !important; }
+  .page :global(#about-hero > div:last-child > div) { max-width: calc(680 * var(--about-unit)); }
+  .page :global(#about-who > div > div:last-child) { padding: calc(30 * var(--about-unit)) calc(56 * var(--about-unit)); }
+  .page :global(.about-who-image) { margin-block: calc(30 * var(--about-unit)); }
+  .page :global(#about-who h2) { font-size: calc(28 * var(--about-unit)) !important; }
+  .page :global(#about-stats) { padding: calc(16 * var(--about-unit)) calc(40 * var(--about-unit)); }
+  .page :global(#about-stats > div) { gap: calc(12 * var(--about-unit)); }
+  .page :global(#about-stats article) { padding: calc(12 * var(--about-unit)) calc(16 * var(--about-unit)); }
+  .page :global(#about-stats article > span:first-child) { width: calc(40 * var(--about-unit)); height: calc(40 * var(--about-unit)); }
+  .page :global(#about-stats strong) { font-size: calc(20 * var(--about-unit)); }
+
+  .page :global(#about-journey) { padding: calc(32 * var(--about-unit)) calc(48 * var(--about-unit)); }
+  .page :global(#about-journey > div:last-child) { grid-template-columns: calc(250 * var(--about-unit)) minmax(0, 1fr); gap: calc(28 * var(--about-unit)); }
+  .page :global(#about-journey h2) { font-size: calc(30 * var(--about-unit)) !important; }
+  .page :global(.about-journey-track) { min-width: calc(920 * var(--about-unit)); gap: calc(12 * var(--about-unit)); }
+  .page :global(.about-journey-image) { height: calc(140 * var(--about-unit)); }
+  .page :global(.about-journey-card) { min-height: calc(270 * var(--about-unit)); border-width: calc(8 * var(--about-unit)); border-radius: calc(8 * var(--about-unit)); }
+
+  .page :global(#about-solutions) { padding: calc(32 * var(--about-unit)) calc(48 * var(--about-unit)); }
+  .page :global(#about-solutions > div) { grid-template-columns: calc(280 * var(--about-unit)) minmax(0, 1fr); gap: calc(24 * var(--about-unit)); }
+  .page :global(#about-solutions h2) { font-size: calc(30 * var(--about-unit)) !important; }
+  .page :global(#about-solutions h2 + p) { font-size: calc(18 * var(--about-unit)); }
+  .page :global(#about-solutions article) { min-height: calc(146 * var(--about-unit)); padding: calc(16 * var(--about-unit)); border-radius: calc(12 * var(--about-unit)); }
+  .page :global(#about-solutions article > div > span:first-child) { width: calc(40 * var(--about-unit)); height: calc(40 * var(--about-unit)); }
+  .page :global(#about-purpose) { padding: calc(24 * var(--about-unit)) calc(48 * var(--about-unit)); }
+  .page :global(#about-purpose > div:last-child) { grid-template-columns: calc(240 * var(--about-unit)) minmax(0, calc(750 * var(--about-unit))); gap: calc(20 * var(--about-unit)); }
+  .page :global(#about-purpose h2) { font-size: calc(28 * var(--about-unit)) !important; }
+  .page :global(#about-purpose article) { padding: calc(14 * var(--about-unit)); border-radius: calc(10 * var(--about-unit)); }
+  .page :global(#about-purpose article > span:first-child) { width: calc(32 * var(--about-unit)); height: calc(32 * var(--about-unit)); }
+
+  .page :global(#about-brands), .page :global(#about-commitment), .page :global(#about-project-cta) { padding: calc(28 * var(--about-unit)) calc(48 * var(--about-unit)); }
+  .page :global(#about-brands h2), .page :global(#about-commitment h2) { font-size: calc(28 * var(--about-unit)) !important; }
+  .page :global(.about-brand-cell) { width: calc(128 * var(--about-unit)); }
+  .page :global(.about-brand-track) { min-height: calc(72 * var(--about-unit)); }
+  .page :global(.about-commitment-grid) { max-width: calc(1080 * var(--about-unit)); }
+  .page :global(.about-commitment-grid article) { gap: calc(12 * var(--about-unit)); padding-inline: calc(20 * var(--about-unit)); }
+  .page :global(.about-commitment-grid article > span:first-child) { width: calc(44 * var(--about-unit)); height: calc(44 * var(--about-unit)); }
+  .page :global(#about-project-cta > div:last-of-type) { grid-template-columns: minmax(0, calc(520 * var(--about-unit))) minmax(calc(260 * var(--about-unit)), 1fr); }
+  .page :global(#about-project-cta h2) { font-size: calc(30 * var(--about-unit)) !important; }
+  .page :global(#about-project-cta a) { height: calc(44 * var(--about-unit)); padding-inline: calc(24 * var(--about-unit)); }
+}
+
+@media (min-width: 2200px) { .page { --about-width: min(90vw, 128rem); } }
+
+@media (max-width: 1023px) {
+  .page :global(.about-who-image) { min-height: clamp(220px, 42vw, 360px); }
+  .page :global(#about-who h2), .page :global(#about-who > div > div:last-child > p) { max-width: 100%; }
+  .page :global(#about-who > div > div:last-child > p:nth-of-type(2)),
+  .page :global(#about-who > div > div:last-child > p:nth-of-type(3)) { width: 100%; }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .page :global(#about-solutions > div) { grid-template-columns: 240px minmax(0, 1fr); }
+  .page :global(#about-solutions article) { min-height: 150px; }
+  .page :global(#about-solutions article h3) { font-size: 13px; }
+  .page :global(#about-solutions article p) { font-size: 9px; }
+}
+
+@media (max-width: 639px) {
+  .page :global(#about-hero > div:last-child) { min-height: 520px; align-items: flex-end; }
+  .page :global(#about-hero > img) { object-position: 62% center; }
+  .page :global(#about-journey), .page :global(#about-solutions), .page :global(#about-purpose), .page :global(#about-brands), .page :global(#about-commitment), .page :global(#about-project-cta) { padding-inline: 18px; }
+  .page :global(#about-stats article) { min-height: 78px; }
+}

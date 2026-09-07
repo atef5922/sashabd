@@ -1,22 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const homeBrandLogos = [
-  { name: "LianTronics", src: "/images/logo/liantronics.png", href: "/led-display/", className: "h-5 sm:h-6" },
-  { name: "NovaStar", src: "/images/logo/novastar.webp", href: "/led-display/accessories/controller/", className: "h-6 sm:h-7" },
-  { name: "AOTO Electronics", src: "/images/logo/aoto-electronics.webp", href: "/led-display/", className: "h-5 sm:h-6" },
+export const homeBrandLogos = [
+  { name: "LianTronics", src: "/images/logo/liantronics.png", href: "/led-display/", className: "h-6 sm:h-7" },
+  { name: "Leyard", src: "/images/logo/leyard.webp", href: "/led-display/", className: "h-6 sm:h-7" },
+  { name: "NovaStar", src: "/images/logo/novastar.webp", href: "/led-display/accessories/controller/", className: "h-7 sm:h-8" },
+  { name: "AOTO Electronics", src: "/images/logo/aoto-electronics.webp", href: "/led-display/", className: "h-6 sm:h-7" },
   { name: "G-Energy", src: "/images/logo/g-energy.webp", href: "/led-display/", className: "h-7 sm:h-8" },
-  { name: "Lampro", src: "/images/logo/lampro.webp", href: "/led-display/", className: "h-5 sm:h-6" },
-  { name: "Huidu", src: "/images/brands/huidu.webp", href: "/led-display/accessories/controller/", className: "h-6 sm:h-7" },
-  { name: "Colorlight", src: "/images/logo/colorlight.webp", href: "/led-display/accessories/controller/", className: "h-6 sm:h-7" },
-  { name: "Mean Well", src: "/images/logo/mean-well.webp", href: "/led-display/", className: "h-6 sm:h-7" },
-  { name: "Mugnee", src: "/images/logo/mugnee.webp", href: "/led-display/", className: "h-6 sm:h-7" },
+  { name: "Lampro", src: "/images/logo/lampro.webp", href: "/led-display/", className: "h-6 sm:h-7" },
+  { name: "Huidu", src: "/images/brands/huidu.webp", href: "/led-display/accessories/controller/", className: "h-7 sm:h-8" },
+  { name: "Colorlight", src: "/images/logo/colorlight.webp", href: "/led-display/accessories/controller/", className: "h-7 sm:h-8" },
+  { name: "Mean Well", src: "/images/logo/mean-well.webp", href: "/led-display/", className: "h-7 sm:h-8" },
+  { name: "Mugnee", src: "/images/logo/mugnee.webp", href: "/led-display/", className: "h-7 sm:h-8" },
   { name: "Renex Digital", src: "/images/brands/renex-exact.webp", href: "/led-display/", className: "h-7 translate-y-[4px] scale-[4] sm:h-8" },
   { name: "Synoveta", src: "/images/brands/synoveta-logo.jpeg", href: "/led-display/", className: "h-7 sm:h-8" },
-  { name: "Bosch", src: "/images/brands/audio/bosch-logo.svg", href: "/conference-system/brands/bosch/", className: "h-6 sm:h-7" },
-  { name: "TOA", src: "/images/brands/audio/toa-logo.png", href: "/conference-system/brands/toa/", className: "h-6 sm:h-7" },
-  { name: "SPON", src: "/images/brands/audio/spon.svg", href: "/conference-system/brands/spon/", className: "h-5 sm:h-6" },
-  { name: "CMX", src: "/images/brands/audio/cmx-logo.png", href: "/conference-system/brands/cmx/", className: "h-7 sm:h-8" },
+  { name: "Bosch", src: "/images/brands/audio/bosch-logo.svg", href: "/conference-system/brands/bosch/", className: "h-7 sm:h-8" },
+  { name: "TOA", src: "/images/brands/audio/toa-logo.png", href: "/conference-system/brands/toa/", className: "h-7 sm:h-8" },
+  { name: "SPON", src: "/images/brands/audio/spon.svg", href: "/conference-system/brands/spon/", className: "h-6 sm:h-7" },
+  { name: "CMX", src: "/images/brands/audio/cmx-logo.png", href: "/conference-system/brands/cmx/", className: "h-8 sm:h-9" },
 ] as const;
 
 const serviceHighlights = [
@@ -25,6 +26,15 @@ const serviceHighlights = [
   { title: "Project-Based Pricing", icon: "tag" },
   { title: "Warranty & After-Sales", icon: "shield" },
 ] as const;
+
+function compactBrandLogoClass(name: string) {
+  if (name === "Renex Digital") return "h-7 w-auto max-w-[76px] translate-y-px scale-[2.1] object-contain";
+  if (name === "CMX") return "h-7 w-7 object-contain";
+  if (name === "AOTO Electronics") return "h-6 w-auto max-w-[72px] object-contain";
+  if (name === "Synoveta") return "h-6 w-auto max-w-[78px] object-contain";
+  if (name === "Leyard" || name === "LianTronics") return "h-6 w-auto max-w-[80px] object-contain";
+  return "max-h-7 w-auto max-w-[82px] object-contain";
+}
 
 function ServiceIcon({ icon }: { icon: (typeof serviceHighlights)[number]["icon"] }) {
   const shared = { stroke: "currentColor", strokeWidth: 1.8, fill: "none" } as const;
@@ -56,13 +66,13 @@ export default function HomeTrustServiceStrip() {
 
           <div className="hidden h-12 w-px bg-slate-200 min-[1120px]:block" aria-hidden="true" />
 
-          <div className="group relative min-w-0 overflow-hidden border-t border-slate-100 px-1 pt-4 lg:border-t-0 lg:pt-0 min-[1120px]:mx-5 min-[1120px]:px-0 2xl:mx-7">
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-5 bg-gradient-to-r from-white to-transparent sm:w-8" aria-hidden="true" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-5 bg-gradient-to-l from-white to-transparent sm:w-8" aria-hidden="true" />
+          <div className="group relative min-w-0 overflow-hidden rounded-lg border border-[#dce9fb] bg-white px-1 shadow-[0_5px_14px_rgba(16,39,90,.04)] min-[1024px]:max-[1119px]:border-t min-[1120px]:mx-5 min-[1120px]:px-0 2xl:mx-7">
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-3 bg-gradient-to-r from-white to-transparent sm:w-5" aria-hidden="true" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-3 bg-gradient-to-l from-white to-transparent sm:w-5" aria-hidden="true" />
 
-            <div className="home-brand-marquee-track flex w-max will-change-transform group-hover:[animation-play-state:paused] motion-reduce:transform-none motion-reduce:animate-none">
+            <div className="home-brand-marquee-track flex min-h-[50px] w-max items-center will-change-transform group-hover:[animation-play-state:paused] motion-reduce:transform-none motion-reduce:animate-none">
               {[0, 1].map((groupIndex) => (
-                <div key={groupIndex} className="flex shrink-0 items-center gap-4 pr-4" aria-hidden={groupIndex === 1 ? "true" : undefined}>
+                <div key={groupIndex} className="flex shrink-0 items-center" aria-hidden={groupIndex === 1 ? "true" : undefined}>
                   {homeBrandLogos.map((brand) => (
                     <Link
                       key={`${groupIndex}-${brand.name}`}
@@ -70,14 +80,14 @@ export default function HomeTrustServiceStrip() {
                       href={brand.href}
                       aria-label={groupIndex === 0 ? `Browse ${brand.name} solutions` : undefined}
                       tabIndex={groupIndex === 1 ? -1 : undefined}
-                      className="flex h-10 w-[96px] shrink-0 items-center justify-center overflow-hidden transition duration-200 hover:scale-[1.03] hover:opacity-80 focus-visible:rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 sm:w-[108px] xl:w-[100px] 2xl:w-[112px]"
+                      className="relative flex h-9 w-[98px] shrink-0 items-center justify-center overflow-hidden border-r border-[#dce9fb] px-2 transition duration-200 hover:bg-[#f8fbff] hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#1465ef] sm:w-[106px] xl:w-[102px] 2xl:w-[110px]"
                     >
                       <Image
                         src={brand.src}
                         alt={groupIndex === 0 ? `${brand.name} logo` : ""}
                         width={120}
                         height={36}
-                        className={`${brand.className} w-auto max-w-[90px] object-contain sm:max-w-[102px] min-[1120px]:max-h-[23px] min-[1120px]:max-w-[90px] 2xl:max-w-[102px]`}
+                        className={compactBrandLogoClass(brand.name)}
                       />
                     </Link>
                   ))}

@@ -1,26 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-
-const trustedTechPartnerLogos: Array<{ name: string; src: string; href?: string }> = [
-  { name: "Absen", src: "/images/logo/absen.webp", href: "https://www.absen.com/" },
-  { name: "Unilumin", src: "/images/logo/unilumin.webp", href: "https://www.unilumin.com/" },
-  { name: "Leyard", src: "/images/logo/leyard.webp", href: "https://www.leyardhk.com/" },
-  { name: "LianTronics", src: "/images/logo/liantronics.png", href: "https://www.liantronics.com/" },
-  { name: "AOTO Electronics", src: "/images/logo/aoto-electronics.webp", href: "https://en.aoto.com/" },
-  { name: "G-Energy", src: "/images/logo/g-energy.webp" },
-  { name: "Lampro", src: "/images/logo/lampro.webp", href: "https://www.lampro.net/" },
-  { name: "NovaStar", src: "/images/logo/novastar.webp", href: "https://www.novastar.tech/" },
-  { name: "Huidu", src: "/images/brands/huidu.webp", href: "https://www.huidu.cn/" },
-  { name: "Colorlight", src: "/images/logo/colorlight.webp", href: "https://en.colorlightinside.com/" },
-  { name: "Mean Well", src: "/images/logo/mean-well.webp", href: "https://www.meanwell.com/" },
-  { name: "Mugnee Multiple Limited", src: "/images/logo/mugnee.webp", href: "https://www.mugnee.com/" },
-  { name: "Renex Digital", src: "/images/brands/renex-exact.webp", href: "https://renex.com.bd/" },
-  { name: "Synoveta", src: "/images/brands/synoveta-logo.jpeg" },
-];
-
-const hiddenPartnerNames = new Set(["Absen", "Unilumin", "Leyard"]);
-const visibleTrustedTechPartnerLogos = trustedTechPartnerLogos.filter((brand) => !hiddenPartnerNames.has(brand.name));
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { homeBrandLogos } from "@/components/home/HomeTrustServiceStrip";
 
 const featureTags = [
   "Quality-focused workflow",
@@ -28,19 +11,6 @@ const featureTags = [
   "Industry-grade components",
   "Project-based support & service",
 ] as const;
-
-function getLogoClassName(name: string) {
-  if (name === "G-Energy") return "h-10 w-auto max-w-[118px] object-contain md:h-12 md:max-w-[152px]";
-  if (name === "LianTronics") return "h-7 w-auto max-w-[108px] object-contain md:h-9 md:max-w-[148px]";
-  if (name === "AOTO Electronics") return "h-8 w-auto max-w-[102px] object-contain md:h-10 md:max-w-[132px]";
-  if (name === "Lampro") return "h-7 w-auto max-w-[104px] object-contain md:h-9 md:max-w-[136px]";
-  if (name === "Huidu") return "h-8 w-auto max-w-[116px] object-contain md:h-10 md:max-w-[145px]";
-  if (name === "NovaStar") return "h-8 w-auto max-w-[118px] object-contain md:h-10 md:max-w-[150px]";
-  if (name === "Mugnee Multiple Limited") return "h-8 w-auto max-w-[122px] object-contain md:h-10 md:max-w-[156px]";
-  if (name === "Renex Digital") return "h-10 w-full max-w-none object-cover object-center md:h-12";
-  if (name === "Synoveta") return "h-9 w-auto max-w-[112px] object-contain md:h-11 md:max-w-[146px]";
-  return "h-8 w-auto max-w-[112px] object-contain md:h-10 md:max-w-[146px]";
-}
 
 function TechnologyBrandsTitleIcon() {
   return (
@@ -83,15 +53,11 @@ function TechnologyBrandsBadgeIcon() {
 
 export default function TrustedTechnologyPartnersSection() {
   const [mobileExpanded, setMobileExpanded] = useState(false);
-  const marqueeTrackRef = useRef<HTMLDivElement | null>(null);
-  const marqueeFrameRef = useRef<number | null>(null);
-  const marqueeOffsetRef = useRef(0);
-  const trustedPartnersSubtitle =
-    "We use globally trusted LED display components in Bangladesh projects with Synoveta, LianTronics, AOTO Electronics, G-Energy, Lampro, NovaStar, Huidu, Colorlight, Mean Well, Mugnee Multiple Limited, and Renex Digital to ensure stable performance, reliable power, and long-term support.";
   const trustedPartnersSubtitleContent = (
     <>
       We use globally trusted LED display components in Bangladesh projects with{" "}
       <span className="font-bold text-slate-900">Synoveta</span>,{" "}
+      <span className="font-bold text-slate-900">Leyard</span>,{" "}
       <span className="font-bold text-slate-900">LianTronics</span>,{" "}
       <span className="font-bold text-slate-900">AOTO Electronics</span>,{" "}
       <span className="font-bold text-slate-900">G-Energy</span>,{" "}
@@ -105,73 +71,6 @@ export default function TrustedTechnologyPartnersSection() {
       long-term support.
     </>
   );
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const mediaQuery = window.matchMedia("(max-width: 767px)");
-
-    const stopMarquee = () => {
-      if (marqueeFrameRef.current !== null) {
-        window.cancelAnimationFrame(marqueeFrameRef.current);
-        marqueeFrameRef.current = null;
-      }
-    };
-
-    const resetMarquee = () => {
-      marqueeOffsetRef.current = 0;
-      if (marqueeTrackRef.current) {
-        marqueeTrackRef.current.style.transform = "";
-      }
-    };
-
-    const startMarquee = () => {
-      const track = marqueeTrackRef.current;
-      if (!track || !mediaQuery.matches) return;
-
-      stopMarquee();
-      let lastTime: number | null = null;
-
-      const tick = (time: number) => {
-        const currentTrack = marqueeTrackRef.current;
-        if (!currentTrack || !mediaQuery.matches) return;
-
-        if (lastTime === null) lastTime = time;
-        const delta = time - lastTime;
-        lastTime = time;
-
-        const loopWidth = currentTrack.scrollWidth / 2;
-        if (loopWidth <= 0) {
-          marqueeFrameRef.current = window.requestAnimationFrame(tick);
-          return;
-        }
-
-        marqueeOffsetRef.current = (marqueeOffsetRef.current + delta * 0.03) % loopWidth;
-        currentTrack.style.transform = `translate3d(-${marqueeOffsetRef.current}px, 0, 0)`;
-        marqueeFrameRef.current = window.requestAnimationFrame(tick);
-      };
-
-      marqueeFrameRef.current = window.requestAnimationFrame(tick);
-    };
-
-    const syncMode = () => {
-      if (mediaQuery.matches) {
-        startMarquee();
-      } else {
-        stopMarquee();
-        resetMarquee();
-      }
-    };
-
-    syncMode();
-    mediaQuery.addEventListener("change", syncMode);
-
-    return () => {
-      mediaQuery.removeEventListener("change", syncMode);
-      stopMarquee();
-      resetMarquee();
-    };
-  }, []);
 
   return (
     <section id="home-technology-partners" className="scroll-mt-24 rounded-2xl border border-slate-200/90 bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6">
@@ -195,7 +94,7 @@ export default function TrustedTechnologyPartnersSection() {
               <p className="mx-auto text-[13px] leading-5 text-slate-600">{trustedPartnersSubtitleContent}</p>
             ) : (
               <p className="mx-auto max-w-full truncate text-[13px] leading-5">
-                We use globally trusted LED display components in Bangladesh projects with Synoveta, LianTronics, AOTO Electronics...
+                We use globally trusted LED display components in Bangladesh projects with Synoveta, Leyard, LianTronics...
               </p>
             )}
             <button
@@ -209,60 +108,19 @@ export default function TrustedTechnologyPartnersSection() {
         </div>
 
         <div className="mt-4 rounded-xl bg-slate-50/55 p-3 shadow-[0_4px_16px_rgba(15,23,42,0.035)] md:p-4">
-          <div className="relative overflow-hidden">
-            <div
-              className="pointer-events-none absolute left-0 top-0 z-10 h-full w-8 md:w-14"
-              style={{ background: "linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0))" }}
-            />
-            <div
-              className="pointer-events-none absolute right-0 top-0 z-10 h-full w-8 md:w-14"
-              style={{ background: "linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0))" }}
-            />
-
-            <div className="group">
-              <div
-                ref={marqueeTrackRef}
-                className="flex w-max gap-2 will-change-transform md:gap-3 md:animate-[renexMarquee_42s_linear_infinite] md:group-hover:[animation-play-state:paused] motion-reduce:animate-none"
-              >
-                {[...visibleTrustedTechPartnerLogos, ...visibleTrustedTechPartnerLogos].map((brand, index) =>
-                  brand.href ? (
-                    <a
-                      key={`${brand.name}-${index}`}
-                      href={brand.href}
-                      target="_blank"
-                      rel="nofollow noreferrer"
-                      className="flex h-[3.25rem] w-[7.75rem] shrink-0 items-center justify-center rounded-2xl border bg-white px-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:h-16 md:w-40 md:rounded-[20px] md:px-4"
-                      style={{ borderColor: "rgba(255,106,0,0.12)" }}
-                      title={brand.name}
-                      aria-label={brand.name}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={brand.src}
-                        alt={brand.name}
-                        className={getLogoClassName(brand.name)}
-                        loading="lazy"
-                      />
-                    </a>
-                  ) : (
-                    <div
-                      key={`${brand.name}-${index}`}
-                      className="flex h-[3.25rem] w-[7.75rem] shrink-0 items-center justify-center rounded-2xl border bg-white px-3 shadow-sm md:h-16 md:w-40 md:rounded-[20px] md:px-4"
-                      style={{ borderColor: "rgba(255,106,0,0.12)" }}
-                      title={brand.name}
-                      aria-label={brand.name}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={brand.src}
-                        alt={brand.name}
-                        className={getLogoClassName(brand.name)}
-                        loading="lazy"
-                      />
-                    </div>
-                  ),
-                )}
-              </div>
+          <div className="group relative min-h-[74px] overflow-hidden rounded-lg border border-[#dce9fb] bg-white px-3 shadow-[0_7px_20px_rgba(16,39,90,.05)]">
+            <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-white via-white/90 to-transparent" />
+            <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-white via-white/90 to-transparent" />
+            <div className="home-brand-marquee-track flex min-h-[72px] w-max items-center will-change-transform group-hover:[animation-play-state:paused] motion-reduce:transform-none motion-reduce:animate-none">
+              {[0, 1].map((groupIndex) => (
+                <div key={groupIndex} aria-hidden={groupIndex === 1 ? "true" : undefined} className="flex shrink-0 items-center">
+                  {homeBrandLogos.map((brand) => (
+                    <Link key={`${groupIndex}-${brand.name}`} href={brand.href} prefetch={false} aria-label={groupIndex === 0 ? `Browse ${brand.name} solutions` : undefined} tabIndex={groupIndex === 1 ? -1 : undefined} className="relative flex h-10 w-[128px] shrink-0 items-center justify-center overflow-hidden border-r border-[#dce9fb] px-4 transition hover:opacity-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#1465ef]">
+                      <Image src={brand.src} alt={groupIndex === 0 ? `${brand.name} logo` : ""} width={128} height={40} className={`${brand.className} w-auto max-w-[108px] object-contain`} />
+                    </Link>
+                  ))}
+                </div>
+              ))}
             </div>
           </div>
 
