@@ -28,7 +28,7 @@
 }
 
 .heroImage { object-fit: cover; object-position: center; z-index: -3; }
-.heroVeil { position: absolute; inset: 0; z-index: -2; background: linear-gradient(90deg, rgba(249,252,255,.99) 0%, rgba(249,252,255,.96) 32%, rgba(249,252,255,.55) 53%, rgba(249,252,255,.02) 72%); }
+.heroVeil { position: absolute; inset: 0; z-index: -2; background: linear-gradient(90deg, rgba(249,252,255,.9) 0%, rgba(249,252,255,.76) 31%, rgba(249,252,255,.36) 50%, rgba(249,252,255,.04) 68%, transparent 76%); }
 .heroContent { width: 52%; padding: 30px 0 20px; }
 .eyebrow { display: flex; align-items: center; gap: 12px; text-transform: uppercase; letter-spacing: .18em; color: #40547a; font-size: .67rem; line-height: 1; font-weight: 800; }
 .eyebrow > span { flex: 0 0 34px; width: 34px; height: 2px; background: var(--orange); }
@@ -153,7 +153,7 @@
 @media (max-width: 850px) {
   .hero { min-height: auto; }
   .heroImage { object-position: 66% center; }
-  .heroVeil { background: linear-gradient(90deg, rgba(249,252,255,.99) 0%, rgba(249,252,255,.95) 56%, rgba(249,252,255,.5) 100%); }
+  .heroVeil { background: linear-gradient(90deg, rgba(249,252,255,.91) 0%, rgba(249,252,255,.76) 56%, rgba(249,252,255,.32) 100%); }
   .heroContent { width: 74%; padding: 30px 0 34px; }
   .heroBrand { display: none; }
   .hero h1 { font-size: clamp(2.25rem, 7vw, 3.5rem); }

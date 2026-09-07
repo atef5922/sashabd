@@ -68,7 +68,7 @@ export default function AboutPage() {
       <div className="mx-auto w-full pb-8 pt-0">
         <section id="about-hero" className="relative isolate overflow-hidden bg-white">
           <Image src="/images/about/about-hero-banner.webp" alt="Modern Sasha Corporation AV and conference showroom" fill priority sizes="100vw" className="object-cover object-center" />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(248,252,255,.96)_0%,rgba(248,252,255,.9)_28%,rgba(248,252,255,.66)_43%,rgba(248,252,255,.16)_64%,transparent_78%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(248,252,255,.88)_0%,rgba(248,252,255,.72)_27%,rgba(248,252,255,.36)_43%,rgba(248,252,255,.06)_60%,transparent_72%)]" />
           <div className="relative mx-auto min-h-[clamp(260px,27vw,420px)] max-w-[1440px] px-6 py-7 md:flex md:items-center md:px-8 lg:px-0">
             <div className="max-w-[680px]">
               <p className="flex items-center gap-3 text-[12px] font-extrabold uppercase tracking-[.14em] text-[#52658f] before:h-[3px] before:w-10 before:bg-[#ff6a00]">About Sasha Corporation</p>
