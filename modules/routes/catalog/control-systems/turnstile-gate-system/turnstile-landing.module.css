@@ -16,7 +16,7 @@
 .container { width: 100%; max-width: var(--turnstile-width); padding-inline: 24px; margin-inline: auto; }
 .section { padding-block: 54px; }
 .soft { background: #f3f7fc; }
-.blue { background: linear-gradient(110deg,#edf5ff,#f8fbff); border-block: 1px solid #e4edf9; }
+.blue { background: linear-gradient(110deg,#edf5ff,#f8fbff); }
 .heading { max-width: 780px; margin-bottom: 28px; }
 .heading > p:last-child { margin-top: 10px; color: var(--muted); font-size: 14px; line-height: 1.75; }
 .page .eyebrow { color: #a84910; font-size: 10px; line-height: 1.5; letter-spacing: .17em; font-weight: 600; margin-bottom: 12px; }
@@ -129,7 +129,7 @@
 .bestFor { display: grid; gap: 4px; border-top: 1px solid #e9eef5; padding-top: 14px; margin-top: auto; font-size: 11px; color: #425e7e; }
 .bestFor span { color: #93a0b3; font-size: 9px; letter-spacing: .1em; font-weight: 600; }
 .typeCard .textLink { margin-top: 16px; font-size: 12px; }
-.workflowSection { padding-block: 18px 20px; background: linear-gradient(105deg,#f8fbff,#eef6ff); border-block: 1px solid #e1ecf8; }
+.workflowSection { padding-block: 18px 20px; background: linear-gradient(105deg,#f8fbff,#eef6ff); }
 .workflowHeader,.compareHeader { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
 .workflowHeader .heading,.compareHeader .heading { max-width: 720px; margin-bottom: 10px; }
 .workflowSection .eyebrow,.compareSection .eyebrow { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 4px; color: #536b91; letter-spacing: .08em; }
@@ -178,7 +178,7 @@
 .recommendationPanel a { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 31px; margin-top: auto; border-radius: 5px; background: #ff6500; color: #fff; font-size: 9px; font-weight: 700; }
 .recommendationPanel a svg { width: 13px; height: 13px; }
 /* Premium access workflow and gate comparison presentation. */
-.workflowSection { padding-block: 34px 38px; background: linear-gradient(115deg,#f8fbff,#edf6ff); border-color: #dce8f6; }
+.workflowSection { padding-block: 34px 38px; background: linear-gradient(115deg,#f8fbff,#edf6ff); }
 .workflowHeader .heading,.compareHeader .heading { max-width: 760px; margin-bottom: 22px; }
 .workflowSection .eyebrow,.compareSection .eyebrow { margin-bottom: 7px; color: #49668d; font-size: 11px; letter-spacing: .14em; }
 .workflowHeader .heading > p:last-child,.compareHeader .heading > p:last-child { margin-top: 4px; font-size: 14px; line-height: 1.55; }
@@ -267,7 +267,7 @@
 .criteriaGrid article > span { color: #b3c0d2; font-size: 12px; font-weight: 600; padding-top: 2px; }
 .page .criteriaGrid h3 { font-size: 15px !important; }
 .criteriaGrid p { color: var(--muted); font-size: 12px; margin-top: 7px; }
-.priceSection { padding-block: 16px 30px; background: linear-gradient(105deg,#f4f9ff,#edf6ff); border-top: 3px solid #17212d; }
+.priceSection { padding-block: 16px 30px; background: linear-gradient(105deg,#f4f9ff,#edf6ff); }
 .priceHeader { display: grid; grid-template-columns: 1fr 1.25fr; gap: 34px; align-items: center; }
 .priceHeader .heading { max-width: 590px; margin-bottom: 14px; }
 .priceHeader .eyebrow { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 4px; color: #536b91; letter-spacing: .08em; }
@@ -324,7 +324,7 @@
 .processGrid li:not(:last-child)::after { content: "›"; position: absolute; top: 20px; right: -12px; display: grid; place-items: center; width: 18px; height: 18px; border: 2px solid #91bdff; border-radius: 50%; background: #fff; color: #3183ef; font-size: 16px; line-height: 1; }
 .page .processGrid h3 { font-size: 13px !important; text-align: center; }
 .processGrid p { max-width: 170px; margin-top: 6px; color: var(--muted); font-size: 11px; line-height: 1.4; text-align: center; }
-.supportSection { padding-block: 16px 28px; background: linear-gradient(105deg,#edf6ff,#f8fbff); border-block: 1px solid #e1edfa; }
+.supportSection { padding-block: 16px 28px; background: linear-gradient(105deg,#edf6ff,#f8fbff); }
 .supportSection .heading { max-width: none; margin-bottom: 8px; }
 .supportGrid { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 12px; }
 .supportGrid article { min-width: 0; padding: 12px 13px 14px; border: 1px solid #d6e3f2; border-radius: 7px; background: #fff; box-shadow: 0 3px 10px #17385f08; }
