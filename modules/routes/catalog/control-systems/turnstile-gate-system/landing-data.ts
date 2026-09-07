@@ -161,61 +161,61 @@ export const turnstileSelectionCriteria = [
 
 export const whyChooseFeatures = [
   {
-    title: "Free Site Survey & BOQ Planning",
-    desc: "Our engineers assess entrance layout, user traffic flow, lane requirements and installation conditions before preparing the final BOQ and implementation plan.",
+    title: "Engineering & BOQ",
+    desc: "Detailed site analysis and accurate bill of quantities for your project.",
   },
   {
     title: "Access Control Integration",
-    desc: "Seamlessly integrate turnstile gates with face recognition, fingerprint attendance, RFID card systems, QR code access, visitor management systems and HR software. Ideal for an access control system with RFID turnstile gate workflows, face recognition turnstile access and attendance management system reporting.",
+    desc: "Seamless integration with RFID, face recognition, attendance and more.",
   },
   {
-    title: "Professional Installation Team",
-    desc: "Certified technicians ensure proper mounting, clean cable management, controller configuration, testing and commissioning for reliable long-term operation.",
+    title: "Professional Installation",
+    desc: "Experienced team for safe, standards-compliant installation.",
   },
   {
-    title: "Software Setup & User Training",
-    desc: "We configure access permissions, attendance settings, reporting functions and provide complete training for administrators, HR teams and security personnel.",
+    title: "Software Configuration",
+    desc: "Setup and integration with your preferred access control software.",
   },
   {
-    title: "1-3 Year Warranty Support",
-    desc: "Selected solutions include warranty coverage, genuine spare parts support and technical assistance to ensure long-term system reliability.",
+    title: "Technical Support",
+    desc: "Ongoing support, remote assistance and maintenance services.",
   },
   {
-    title: "Nationwide Service & Maintenance",
-    desc: "We provide preventive maintenance, troubleshooting, remote assistance and on-site support services for clients throughout Bangladesh.",
+    title: "Nationwide Delivery",
+    desc: "Product delivery and service support across Bangladesh.",
   },
 ];
 
 export const deliveryProcess = [
   {
     step: "01",
-    title: "Site survey & measurement",
-    desc: "We verify lane width, clearance, mounting positions and traffic direction for correct planning.",
+    title: "Site Survey",
+    desc: "We assess your site, traffic flow and security requirements.",
   },
   {
     step: "02",
-    title: "Model + access method selection",
- desc: "Tripod, flap, swing or full-height-plus RFID/face/fingerprint/QR based on flow and security needs.",
+    title: "Model Selection",
+    desc: "We recommend the right gate models for your needs.",
   },
   {
     step: "03",
-    title: "Power & network preparation",
-    desc: "We plan power and LAN routes and confirm controller placement for clean installation.",
+    title: "BOQ & Quotation",
+    desc: "You receive a detailed BOQ and transparent pricing.",
   },
   {
     step: "04",
-    title: "Installation & commissioning",
-    desc: "Gate body, readers, sensors and safety components are installed, tested and tuned.",
+    title: "Installation",
+    desc: "Our team installs and configures the system.",
   },
   {
     step: "05",
-    title: "Software setup & rules",
-    desc: "Groups, schedules, anti-passback (if needed) and reporting are configured for your policy.",
+    title: "Software Integration",
+    desc: "We integrate with your attendance and access software.",
   },
   {
     step: "06",
-    title: "Handover & training",
-    desc: "Admin/security training and documentation so your team can operate the system confidently.",
+    title: "Handover & Training",
+    desc: "We provide user training and complete handover.",
   },
 ];
 
@@ -321,10 +321,21 @@ export const turnstilePriceRows = turnstilePriceSlugs.map((slug) => {
   const item = turnstileCatalog.find((product) => product.slug === slug);
   if (!item) throw new Error(`Missing turnstile product for price table: ${slug}`);
 
+  const details = {
+    "tripod-turnstile-gate-access-control-system": { model: "DS-Q50S", product: "Tripod Turnstile", gateType: "Tripod", bestFor: "Factories, Institutions" },
+    "flap-barrier-access-control-gate": { model: "DS318", product: "Flap Barrier Gate", gateType: "Flap", bestFor: "Corporate Offices" },
+    "swing-barrier-speed-gate-turnstile": { model: "DS2000", product: "Speed Gate", gateType: "Speed / Swing", bestFor: "Office Lobbies, High Traffic" },
+    "full-height-turnstile-gate-for-factory-restricted-entry": { model: "DS-Q20", product: "Full Height Turnstile", gateType: "Full Height", bestFor: "High-Security Areas" },
+    "waist-high-turnstile-gate-single-double-lane": { model: "DS-WH200", product: "Waist High Turnstile", gateType: "Waist High", bestFor: "Controlled Entry Points" },
+    "ai-face-recognition-turnstile-gate": { model: "DS-FR300", product: "AI Face Recognition Gate", gateType: "Speed Gate", bestFor: "Smart Offices, Modern Buildings" },
+    "ds312-flap-turnstile-gate": { model: "DS312", product: "Flap Turnstile", gateType: "Flap", bestFor: "Offices, Banks, Lobbies" },
+    "daosafe-ds112-tripod-turnstile": { model: "DS112", product: "Tripod Turnstile Pro", gateType: "Tripod", bestFor: "Factories, Schools, Institutions" },
+  }[slug];
+
   return {
     slug: item.slug,
-    type: item.title,
+    image: item.image,
+    ...details,
     price: item.priceLabel,
   };
 });
-

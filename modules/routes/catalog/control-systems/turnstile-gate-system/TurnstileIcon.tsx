@@ -17,6 +17,11 @@ const shapes = {
   plan: <><rect x="4" y="4" width="16" height="18" rx="2" /><rect x="8" y="2" width="8" height="4" rx="1" /><path d="M8 11h8m-8 4h8m-8 4h5" /></>,
   settings: <><path d="M4 3v18M12 3v18M20 3v18M1 8h6m2 8h6m2-10h6" /></>,
   support: <><path d="M4 12v-1a8 8 0 0 1 16 0v7a3 3 0 0 1-3 3h-3" /><rect x="2" y="11" width="5" height="8" rx="2" /><rect x="17" y="11" width="5" height="8" rx="2" /></>,
+  tools: <><path d="M14.5 6.5a4 4 0 0 0-5-5l2.2 2.2-2.8 2.8-2.2-2.2a4 4 0 0 0 5 5L20 18a1.4 1.4 0 0 1-2 2l-8.3-8.3" /><path d="m5 13-3 3 6 6 3-3m-7-1 2 2" /></>,
+  monitor: <><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8m-4-4v4M6 7h12" /></>,
+  team: <><circle cx="12" cy="7" r="3" /><circle cx="5" cy="9" r="2.5" /><circle cx="19" cy="9" r="2.5" /><path d="M7 21v-2a5 5 0 0 1 10 0v2M1 20v-1a4 4 0 0 1 5-4m17 5v-1a4 4 0 0 0-5-4" /></>,
+  truck: <><path d="M3 5h11v12H3zM14 9h4l3 3v5h-7z" /><circle cx="7" cy="18" r="2" /><circle cx="18" cy="18" r="2" /></>,
+  link: <><path d="m9.5 14.5 5-5" /><path d="M7 17H5a4 4 0 0 1 0-8h3m9-2h2a4 4 0 0 1 0 8h-3" /></>,
   search: <><circle cx="10" cy="10" r="7" /><path d="m15 15 6 6" /></>,
   chevron: <path d="m6 9 6 6 6-6" />,
 } satisfies Record<string, ReactNode>;
