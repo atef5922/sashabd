@@ -48,7 +48,8 @@ function Heading({ eyebrow, title, text }: { eyebrow?: string; title: string; te
 }
 
 function Section({ id, children, soft = false, tone }: { id: string; children: ReactNode; soft?: boolean; tone?: "soft" | "blue" }) {
-  return <section id={id} className={`${styles.section} ${soft ? styles.soft : ""} ${tone ? styles[tone] : ""}`}><div className={styles.container}>{children}</div></section>;
+  const compact = id === "gate-planning" || id === "gate-benefits";
+  return <section id={id} className={`${styles.section} ${compact ? styles.compactSection : ""} ${soft ? styles.soft : ""} ${tone ? styles[tone] : ""}`}><div className={styles.container}>{children}</div></section>;
 }
 
 const navigation = [
