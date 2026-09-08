@@ -101,6 +101,7 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
   if (!post) {
     return notFound();
   }
+  const hasBeenUpdated = post.updatedAt > post.publishedAt;
 
   const allSections = post.hideCommonSections ? post.uniqueSections : [...post.uniqueSections, ...commonSections];
   const h2SectionLinks = allSections.map((section, index) => ({
@@ -144,14 +145,13 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
       return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
     })
     .slice(0, 3);
-  const summaryPoints = [
-    `Primary focus: ${post.title}.`,
-    `Key intent keywords: ${post.keywords.slice(0, 2).join(" | ")}.`,
-    "Includes practical decision logic, implementation guidance, and FAQ.",
-  ];
-  const seoIntro =
-    `This article on ${post.title.toLowerCase()} is designed to answer high-intent search queries and help buyers make a confident decision. ` +
-    `If you are researching ${post.keywords[0]}, this guide provides practical comparison, real usage context, and implementation-ready direction.`;
+  const summaryPoints = post.uniqueSections.slice(0, 3).map(
+    (section) => section.bullets?.[0] ?? section.paragraphs[0],
+  );
+  const articleIntro =
+    post.slug === "led-display-price-in-bangladesh-complete-buying-guide"
+      ? "Choosing an LED display starts with the viewing environment, audience distance, content requirements, and expected operating schedule. This guide explains how those practical needs influence display type, pixel pitch, components, installation planning, and the overall project budget."
+      : `${post.excerpt} The sections below explain the practical choices, trade-offs, and planning details to review before selecting a solution or requesting a quotation.`;
   const conclusionText =
     post.slug === "led-display-price-in-bangladesh-complete-buying-guide"
       ? "In summary, this LED display buying guide is best used for planning: confirm environment, viewing distance, content priority, and long-term operating needs first. Then compare current product options on the Sasha LED display hub before requesting a BOQ-based quotation."
@@ -588,9 +588,11 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
             <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-center">
               Published {formatDate(post.publishedAt)}
             </span>
-            <span className="col-span-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-center md:col-auto">
-              Updated {formatDate(post.updatedAt)}
-            </span>
+            {hasBeenUpdated ? (
+              <span className="col-span-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-center md:col-auto">
+                Updated {formatDate(post.updatedAt)}
+              </span>
+            ) : null}
           </div>
         </div>
       </article>
@@ -611,7 +613,7 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
 
           <article id="introduction" className="scroll-mt-24 rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm md:rounded-3xl md:p-8">
             <h2 className="text-[1.1rem] font-bold text-slate-900 md:text-2xl">Introduction</h2>
-            <p className="mt-3 text-justify text-[13px] leading-6 text-slate-700 md:mt-4 md:text-left md:text-base md:leading-8">{seoIntro}</p>
+            <p className="mt-3 text-justify text-[13px] leading-6 text-slate-700 md:mt-4 md:text-left md:text-base md:leading-8">{articleIntro}</p>
             {blogInternalLinkBlock}
           </article>
 
@@ -811,7 +813,8 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
                 <span className="font-semibold text-slate-900">Read Time:</span> {post.readTime}
               </p>
               <p>
-                <span className="font-semibold text-slate-900">Updated:</span> {formatDate(post.updatedAt)}
+                <span className="font-semibold text-slate-900">{hasBeenUpdated ? "Updated:" : "Published:"}</span>{" "}
+                {formatDate(hasBeenUpdated ? post.updatedAt : post.publishedAt)}
               </p>
             </div>
           </section>

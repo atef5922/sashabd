@@ -146,7 +146,7 @@ export default function BlogAndCaseStudyPage() {
                 </p>
                 <div className="mt-2 flex items-center justify-between md:mt-4">
                   <span className="hidden text-xs font-semibold text-slate-500 md:block">
-                    Updated {formatDate(item.updatedAt)}
+                    Published {formatDate(item.publishedAt)}
                   </span>
                   <span className="inline-flex items-center gap-2 text-[11px] font-extrabold text-[#FF6A00] md:text-sm md:font-bold">
                     Read

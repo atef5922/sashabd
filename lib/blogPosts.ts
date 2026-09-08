@@ -81,9 +81,9 @@ export const commonSections: BlogSection[] = [
 export const blogPosts: BlogPost[] = [
   {
     slug: "led-display-price-in-bangladesh-complete-buying-guide",
-    title: "LED Display Buying Guide in Bangladesh - Price Factors & Planning",
+    title: "LED Display Buying Guide for Bangladesh | Cost & Selection",
     excerpt:
-      "Educational buying guide for LED display price planning in Bangladesh, including indoor, outdoor, and rental LED screen cost factors.",
+      "Learn how to choose an LED display by comparing pixel pitch, viewing distance, indoor and outdoor use, components, installation needs, and project costs.",
     tag: "Price Guide",
     coverImage: "/assets/blog/blog1.webp",
     coverImagePosition: {
@@ -93,14 +93,14 @@ export const blogPosts: BlogPost[] = [
     hideCommonSections: true,
     readTime: "12 min read",
     publishedAt: "2026-03-02",
-    updatedAt: "2026-03-10",
+    updatedAt: "2026-09-08",
     keywords: [
-      "led display price planning bangladesh",
-      "led screen price bd",
-      "led video wall price",
+      "how to choose led display bangladesh",
+      "led display buying guide",
+      "led screen selection guide",
     ],
     heroIntro:
-      "Use this LED display buying guide as a price-planning roadmap for Bangladesh. It explains display types, cost factors, budget logic, and how to choose the right screen before requesting a BOQ-based quotation.",
+      "Use this practical guide to choose the right LED display for your project in Bangladesh. It explains display types, pixel pitch, viewing distance, component choices, installation requirements, and the factors that shape the total project cost.",
     uniqueSections: [
       {
         heading: "What is LED Display",

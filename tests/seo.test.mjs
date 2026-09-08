@@ -2481,6 +2481,20 @@ test("Batch 3 keeps main LED SERP intent factual and authority links focused", (
   assert.doesNotMatch(landing, /1-3 year warranty|24\/7 customer support|nationwide after-sales service/i);
 });
 
+test("Blog quick summaries and introductions remain reader-focused", () => {
+  const source = read("modules/routes/blog/post-page.tsx");
+  const listing = read("modules/routes/blog/index-page.tsx");
+
+  assert.match(source, /post\.uniqueSections\.slice\(0, 3\)\.map/);
+  assert.match(source, /section\.bullets\?\.\[0\] \?\? section\.paragraphs\[0\]/);
+  assert.match(source, /const articleIntro/);
+  assert.doesNotMatch(source, /Primary focus:|Key intent keywords:|high-intent search queries/i);
+  assert.match(source, /const hasBeenUpdated = post\.updatedAt > post\.publishedAt/);
+  assert.match(source, /hasBeenUpdated \? "Updated:" : "Published:"/);
+  assert.match(listing, /Published \{formatDate\(item\.publishedAt\)\}/);
+  assert.doesNotMatch(listing, /Updated \{formatDate\(item\.updatedAt\)\}/);
+});
+
 test("Batch 3 close-out renders each Projects semantic set once", () => {
   const source = read("app/projects/page.tsx");
 
