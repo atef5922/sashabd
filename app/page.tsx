@@ -14,6 +14,7 @@ import HomeWhyChoosePromiseSection from "@/components/home/HomeWhyChoosePromiseS
 import ProjectProposalCtaSection from "@/components/home/ProjectProposalCtaSection";
 import ProjectWorkflowSection from "@/components/home/ProjectWorkflowSection";
 import TrustedTechnologyPartnersSection from "@/components/home/TrustedTechnologyPartnersSection";
+import HomeClientsProjectsSection from "@/components/home/HomeClientsProjectsSection";
 import HomeHeroCarousel from "@/components/home/HomeHeroCarousel";
 import HomeTrustServiceStrip from "@/components/home/HomeTrustServiceStrip";
 
@@ -297,6 +298,7 @@ export default function HomePage() {
         <HomeRecentProjectsSection />
         <HomeNationwideCoverageSection />
         <TrustedTechnologyPartnersSection />
+        <HomeClientsProjectsSection />
         <ProjectWorkflowSection />
         <ProjectProposalCtaSection />
 
