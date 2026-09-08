@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -2341,18 +2341,88 @@ test("redirect configuration has no exact-source destination chains", () => {
   assert.deepEqual(chains, []);
 });
 
-test("Projects publish only verified case-study evidence and withhold templates", () => {
+test("Projects publish only verified completed-project evidence and withhold templates", () => {
   const source = read("app/projects/page.tsx");
   const data = read("app/projects/projectData.ts");
 
   assert.match(data, /id: "nusaifa-trading-p5-led-billboard-nasirabad"/);
   assert.match(data, /caseStudyHref: "\/blog\/p5-led-billboard-project-nasirabad-chattogram-nusaifa-trading\/"/);
-  assert.match(data, /image: "\/assets\/blog\/Chattogram-project\.webp"/);
+  assert.match(data, /image: "\/assets\/projects\/led-display\/Nusaifa Trading\/IMG_20260308_135826902_HDR\.webp"/);
   assert.match(source, /const list = projects;/);
+  assert.match(source, /Verified Completed Projects/);
   assert.match(source, /Never render these as Sasha Corporation project evidence/);
   assert.doesNotMatch(source, /const list = .*templateProjects/);
   assert.doesNotMatch(source, /Do these projects represent real work in Bangladesh/);
   assert.doesNotMatch(source, /id: "template-2"/);
+});
+
+test("Verified LED display projects use canonical factual data and uploaded images", () => {
+  const data = read("app/projects/projectData.ts");
+  const landing = read("modules/routes/catalog/products-page.tsx");
+  const records = [
+    {
+      id: "national-library-p2-5-indoor-led-display-dhaka",
+      client: "National Library",
+      completedIso: "2026-08-14",
+      image: "public/assets/projects/led-display/National Library/IMG_20260521_000347272_HDR_AE.webp",
+    },
+    {
+      id: "varendra-university-p2-5-indoor-led-display-rajshahi",
+      client: "Varendra University",
+      completedIso: "2026-05-11",
+      image: "public/assets/projects/led-display/varendra University/sasha_led_display_installation_room.webp",
+    },
+    {
+      id: "nusaifa-trading-p5-led-billboard-nasirabad",
+      client: "Nusaifa Trading",
+      completedIso: "2026-03-10",
+      image: "public/assets/projects/led-display/Nusaifa Trading/IMG_20260308_135826902_HDR.webp",
+    },
+    {
+      id: "funland-p4-leyard-outdoor-led-display-gazipur",
+      client: "Laptop Care and Technology, Funland",
+      completedIso: "2026-01-05",
+      image: "public/assets/projects/led-display/Funland/IMG_20260505_180601669_HDR.webp",
+    },
+    {
+      id: "save-the-children-p5-outdoor-led-display-dhaka",
+      client: "Save the Children",
+      completedIso: "2025-10-19",
+      image: "public/assets/projects/led-display/Save The Children/IMG_20260408_170401913_HDR.webp",
+    },
+    {
+      id: "banani-officers-quarter-p3-indoor-led-display-dhaka",
+      client: "Banani Officers’ Quarter",
+      completedIso: "2024-03-05",
+      image: "public/assets/projects/led-display/Banani Officers’ Quarter/project-indoor-wall.webp",
+    },
+  ];
+
+  assert.equal(occurrences(data, 'category: "led-display"'), records.length);
+  for (const record of records) {
+    assert.equal(occurrences(data, `id: "${record.id}"`), 1);
+    assert.match(data, new RegExp(`organization: "${record.client.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`));
+    assert.match(data, new RegExp(`completedIso: "${record.completedIso}"`));
+    assert.ok(existsSync(path.join(root, record.image)), `${record.image} must exist`);
+  }
+
+  assert.match(data, /export const ledDisplayProjects = projects\.filter/);
+  assert.match(data, /systemType: "P2\.5 Indoor Full-Color LED Display Module"/);
+  assert.match(data, /systemType: "P4 Leyard Outdoor SMD LED Display"/);
+  assert.match(data, /systemType: "P5 Outdoor LED Billboard"/);
+  assert.match(data, /systemType: "P5 Outdoor LED Display"/);
+  assert.match(data, /systemType: "P3 Indoor LED Display"/);
+  assert.match(data, /\{ k: "Brand", v: "Leyard" \}/);
+  assert.ok(occurrences(data, '{ k: "Brand", v: "Lampro" }') >= 4);
+  assert.match(landing, /import \{ ledDisplayProjects \} from "@\/app\/projects\/projectData"/);
+  assert.match(landing, /ledDisplayProjects\.map\(\(project, index\)/);
+  assert.match(landing, /lg:grid-cols-6/);
+  assert.match(landing, /lg:col-start-2/);
+  assert.match(landing, /aspect-\[16\/10\]/);
+  assert.match(landing, /style=\{project\.imagePosition \? \{ objectPosition: project\.imagePosition \} : undefined\}/);
+  assert.match(landing, /<dt[^>]*>Completed<\/dt>/);
+  assert.match(landing, /<dt[^>]*>Brand<\/dt>/);
+  assert.doesNotMatch(landing, /Indoor LED Video Wall Installation|Corporate Office, Dhaka|Rental LED for Concert Event|International Convention City, Bashundhara/);
 });
 
 test("Phase 1 keeps the Projects landing multi-solution and corrects shared entity wording", () => {
@@ -2474,7 +2544,7 @@ test("Batch 3 keeps main LED SERP intent factual and authority links focused", (
   assert.match(page, /Compare \$\{CURRENT_YEAR\} LED display prices in Bangladesh/);
   assert.match(page, /<ProductsPage currentYear=\{CURRENT_YEAR\}/);
   assert.match(hero, /in Bangladesh \{currentYear\}/);
-  assert.match(landing, /text: `\$\{currentYear\} price guidance`/);
+  assert.match(landing, /LED Display Price List in Bangladesh/);
   assert.doesNotMatch(landing, /<h3[^>]*>Filter Products<\/h3>/);
   assert.match(landing, /\/blog\/led-display-price-in-bangladesh-complete-buying-guide\//);
   assert.match(landing, /href="\/services-support\/"/);
@@ -2493,6 +2563,37 @@ test("Blog quick summaries and introductions remain reader-focused", () => {
   assert.match(source, /hasBeenUpdated \? "Updated:" : "Published:"/);
   assert.match(listing, /Published \{formatDate\(item\.publishedAt\)\}/);
   assert.doesNotMatch(listing, /Updated \{formatDate\(item\.updatedAt\)\}/);
+});
+
+test("LED hub, category pages, and buying guide use direct contextual internal links", () => {
+  const hub = read("modules/routes/catalog/products-page.tsx");
+  const indoor = read("modules/routes/catalog/indoor/page.tsx");
+  const outdoor = read("modules/routes/catalog/outdoor/page.tsx");
+  const rental = read("modules/routes/catalog/rental/page.tsx");
+  const blog = read("modules/routes/blog/post-page.tsx");
+
+  assert.match(hub, /LED Display Buying Guide/);
+  assert.doesNotMatch(hub, /LED Price Buying Guide/);
+  for (const source of [indoor, outdoor, rental]) {
+    assert.match(source, /href="\/led-display\/"/);
+  }
+  assert.match(rental, /href="\/led-display\/rent-guide\/"/);
+  assert.match(rental, /LED screen rental planning guide/);
+  assert.match(blog, /href="\/led-display\/"/);
+  assert.match(blog, /LED display models and price guidance/);
+  assert.doesNotMatch(blog, /hubPrefixes|hubSuffixes|hubQualifiers|hashString/);
+});
+
+test("LED price guidance states the verified all-inclusive commercial scope", () => {
+  const source = read("modules/routes/catalog/products-page.tsx");
+
+  assert.match(source, /const LED_PRICE_VERIFIED_DATE = "08 September 2026"/);
+  assert.match(source, /published per-square-foot price includes LED modules, cabinets, controller, power supplies/);
+  assert.match(source, /structure, installation, transportation, VAT, and a 1-year LED display warranty/);
+  assert.match(source, /Final quotation is confirmed after the site survey, actual screen size, pixel pitch, installation requirements, and final BOQ/);
+  assert.match(source, /Per Sq\.Ft\. Pricing/);
+  assert.match(source, /Installed & Delivered/);
+  assert.match(source, /VAT included • 1-year warranty/);
 });
 
 test("Batch 3 close-out renders each Projects semantic set once", () => {

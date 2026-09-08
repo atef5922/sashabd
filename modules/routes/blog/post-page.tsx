@@ -32,14 +32,6 @@ const tokenize = (value: string) =>
     .split(/\s+/)
     .filter((token) => token.length > 2);
 
-const hashString = (value: string) => {
-  let h = 0;
-  for (let i = 0; i < value.length; i += 1) {
-    h = (h * 31 + value.charCodeAt(i)) >>> 0;
-  }
-  return h;
-};
-
 const normalizeMetaDescription = (value: string) => value.replace(/\s+/g, " ").trim();
 
 const truncateMetaDescription = (value: string, max = 155) => {
@@ -191,194 +183,25 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
     return null;
   })();
 
-  const blogInternalLinkBlock = (() => {
-    const tag = post.tag ?? "";
-    const keyword = post.keywords?.[0]?.trim();
-    const keywordShort =
-      keyword && keyword.length <= 38
-        ? keyword
-        : keyword
-          ? `${keyword.slice(0, 35).trim()}...`
-          : null;
-
-    const hubPrefixes = [
-      "LED display",
-      "LED screen",
-      "LED video wall",
-      "LED display panel",
-      "LED screen display",
-      "LED display solutions",
-      "LED signage display",
-      "LED screen wall",
-      "LED display setup",
-      "LED wall display",
-      "LED display models",
-      "LED display options",
-    ];
-    const hubSuffixes = [
-      "price & models",
-      "models and pricing",
-      "options in Bangladesh",
-      "products overview",
-      "catalog and planning",
-      "buying options",
-      "selection overview",
-      "product categories",
-      "price planning hub",
-      "pricing overview",
-      "product list",
-      "models overview",
-      "solutions overview",
-      "price overview",
-      "product overview",
-      "catalog (BD)",
-      "options (BD market)",
-      "product guide",
-      "planning overview",
-      "project overview",
-    ];
-    const hubQualifiers = ["", " (2026)", " (Bangladesh)", " (BD)", " (buyer guide)", " (price planning)"];
-
-    const tagHint = (() => {
-      if (tag === "Price Guide") return "price planning";
-      if (tag === "Comparison") return "comparison";
-      if (tag === "Execution") return "installation planning";
-      if (tag === "Accessories") return "accessories & compatibility";
-      if (tag === "Maintenance") return "maintenance planning";
-      return null;
-    })();
-
-    const prefixIndex = hashString(`${post.slug}:p`) % hubPrefixes.length;
-    const suffixIndex = hashString(`${post.slug}:s`) % hubSuffixes.length;
-    const qualifierIndex = hashString(`${post.slug}:q`) % hubQualifiers.length;
-
-    const tagShift = tagHint ? hashString(tagHint) : 0;
-    const pickedPrefix = hubPrefixes[(prefixIndex + tagShift) % hubPrefixes.length];
-    const pickedSuffix = hubSuffixes[(suffixIndex + tagShift) % hubSuffixes.length];
-    const pickedQualifier = hubQualifiers[(qualifierIndex + tagShift) % hubQualifiers.length];
-
-    const hubAnchorText = `${pickedPrefix} ${pickedSuffix}${pickedQualifier}`;
-
-    const pattern = hashString(`${post.slug}:pattern`) % 14;
-
-    const primary = (
+  const isLedBuyingGuide = post.slug === "led-display-price-in-bangladesh-complete-buying-guide";
+  const blogInternalLinkBlock = (
+    <p className="mt-4 text-sm leading-8 text-slate-700 md:text-base">
+      For available models and current planning details, visit our{" "}
       <Link href="/led-display/" className="font-extrabold text-slate-900 hover:underline">
-        {hubAnchorText}
+        {isLedBuyingGuide ? "LED display models and price guidance" : "LED display product hub"}
       </Link>
-    );
-    const secondary = introSecondaryLink ? (
-      <Link href={introSecondaryLink.href} className="font-extrabold text-slate-900 hover:underline">
-        {introSecondaryLink.label}
-      </Link>
-    ) : null;
-
-    const wrap = (content: React.ReactNode) => (
-      <p className="mt-4 text-sm leading-8 text-slate-700 md:text-base">{content}</p>
-    );
-
-    switch (pattern) {
-      case 0:
-        return wrap(
-          <>
-            If you want a quick place to start, open {primary}.
-            {secondary ? <> For the next step, review {secondary}.</> : null}
-          </>,
-        );
-      case 1:
-        return wrap(
-          <>
-            Short on time? {primary}.
-            {secondary ? <> Also relevant: {secondary}.</> : null}
-          </>,
-        );
-      case 2:
-        return wrap(
-          <>
-            For a practical overview before you decide, see {primary}.
-            {secondary ? <> You can pair it with {secondary}.</> : null}
-          </>,
-        );
-      case 3:
-        return wrap(
-          <>
-            Related page: {primary}.
-            {secondary ? <> For this topic, {secondary} can help too.</> : null}
-          </>,
-        );
-      case 4:
-        return wrap(
-          <>
-            Planning an LED screen in Bangladesh? {primary} helps you compare categories and models without getting lost.
-            {secondary ? <> Then check {secondary} if it matches your scope.</> : null}
-          </>,
-        );
-      case 5:
-        return wrap(
-          <>
-            Keep this link handy: {primary}.
-            {secondary ? <> When needed, follow up with {secondary}.</> : null}
-          </>,
-        );
-      case 6:
-        return wrap(
-          <>
-            The fastest way to cross-check models is {primary}.
-            {secondary ? <> After that, {secondary} is a solid next step.</> : null}
-          </>,
-        );
-      case 7:
-        return wrap(
-          <>
-            If you are researching{" "}
-            {keywordShort ? <span className="font-semibold text-slate-900">{keywordShort}</span> : "LED display options"}, start with{" "}
-            {primary}.
-            {secondary ? <> You may also want {secondary}.</> : null}
-          </>,
-        );
-      case 8:
-        return wrap(
-          <>
-            Prefer one hub page before you go deeper? Start with {primary}.
-            {secondary ? <> Then review {secondary}.</> : null}
-          </>,
-        );
-      case 9:
-        return wrap(
-          <>
-            To turn this article into an actual purchase plan, use {primary} to confirm categories and options.
-            {secondary ? <> Next: {secondary}.</> : null}
-          </>,
-        );
-      case 10:
-        return wrap(
-          <>
-            Reference link for this article: {primary}.
-            {secondary ? <> Related: {secondary}.</> : null}
-          </>,
-        );
-      case 11:
-        return wrap(
-          <>
-            Next step: check {primary} for a complete overview.
-            {secondary ? <> For your scope, {secondary} can be helpful.</> : null}
-          </>,
-        );
-      case 12:
-        return wrap(
-          <>
-            If you want to see options in one place, open {primary}.
-            {secondary ? <> Then look at {secondary} when you are ready.</> : null}
-          </>,
-        );
-      default:
-        return wrap(
-          <>
-            Before you finalize anything, review {primary} for a quick overview.
-            {secondary ? <> Follow-up: {secondary}.</> : null}
-          </>,
-        );
-    }
-  })();
+      .
+      {introSecondaryLink && introSecondaryLink.href !== "/led-display/" ? (
+        <>
+          {" "}For topic-specific options, see our{" "}
+          <Link href={introSecondaryLink.href} className="font-extrabold text-slate-900 hover:underline">
+            {introSecondaryLink.label}
+          </Link>
+          .
+        </>
+      ) : null}
+    </p>
+  );
   const whyChooseUsByTag: Record<string, { title: string; intro: string; points: string[] }> = {
     "Price Guide": {
       title: "Why Choose Us for LED Display Price Planning",

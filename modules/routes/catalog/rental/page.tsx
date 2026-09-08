@@ -1020,7 +1020,11 @@ function RentalPlanningChecklist({ whatsappHref }: { whatsappHref: string }) {
       </div>
 
       <div className="rental-planning-actions">
-        <p>Have your event details ready? Our team can help finalize the screen size, setup method and technical scope.</p>
+        <p>
+          Have your event details ready? Our team can help finalize the screen size, setup method and technical scope. For
+          the full preparation checklist, read our{" "}
+          <Link href="/led-display/rent-guide/">LED screen rental planning guide</Link>.
+        </p>
         <div>
           <Link href="/contact/?project=rental-led-display&service=event-planning">Request Event BOQ</Link>
           <a href={whatsappHref} target="_blank" rel="noreferrer">WhatsApp Our Team</a>

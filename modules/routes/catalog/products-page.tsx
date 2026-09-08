@@ -15,6 +15,7 @@ import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCa
 import FaqAccordion from "@/components/common/FaqAccordion";
 import MobileIntroText from "@/components/common/MobileIntroText";
 import LedDisplayHero from "@/components/led-display/LedDisplayHero";
+import { ledDisplayProjects } from "@/app/projects/projectData";
 import {
   indoorCatalog,
   outdoorCatalog,
@@ -45,6 +46,8 @@ const ledFeatureSectionClass =
 
 const ledSectionTitleClass =
   "!text-xl font-extrabold leading-7 tracking-tight text-[#071936] lg:!text-[26px]";
+
+const LED_PRICE_VERIFIED_DATE = "08 September 2026";
 
 type FilterKey =
   | "all"
@@ -977,12 +980,12 @@ function ProductsPageContent({
       a: "Screen size (W x H), viewing distance, indoor/outdoor environment, content source (HDMI/live or scheduled), installation method, and power/earthing condition are key inputs for a BOQ-ready quotation.",
     },
     {
-      q: "Which brands do you use for LED modules and components?",
-      a: "We propose brands based on availability, project budget, and compatibility with the selected control system. Final brand selection depends on performance target and after-sales support planning.",
+      q: "What is included in the published LED display price?",
+      a: `The published per-square-foot price includes LED modules, cabinets, controller, power supplies, complete display components, structure, installation, transportation, VAT, and a 1-year LED display warranty. Final quotation is confirmed after the site survey, actual screen size, pixel pitch, installation requirements, and final BOQ. Prices were last verified on ${LED_PRICE_VERIFIED_DATE}.`,
     },
     {
-      q: "Do you provide BOQ-ready documentation for LED display projects?",
-      a: "Yes. We can support BOQ-ready quotation, recommended component list (modules, controller, power, accessories), and installation planning notes based on your site, screen size, and operating requirement.",
+      q: "Which brands do you use for LED modules and components?",
+      a: "We propose brands based on availability, project budget, and compatibility with the selected control system. Final brand selection depends on performance target and after-sales support planning.",
     },
   ];
 
@@ -2072,16 +2075,17 @@ function ProductsPageContent({
                   LED Display Price List in Bangladesh
                 </h2>
                 <p className="home-section-subtitle mx-auto mt-3 max-w-4xl text-center leading-6 text-slate-600">
-                  LED display prices vary based on pixel pitch, panel type, brightness, controller system, installation complexity, and project scope.
+                  Verified on {LED_PRICE_VERIFIED_DATE}, these per-square-foot prices cover a complete LED display scope with
+                  hardware, structure, installation, transportation, VAT, and a 1-year LED display warranty.
                 </p>
               </div>
 
               <div className="mx-auto mt-6 grid max-w-5xl overflow-hidden rounded-xl border border-[#cfdcf0] bg-white shadow-[0_4px_14px_rgba(15,23,42,0.035)] sm:grid-cols-2 lg:grid-cols-4">
                 {[
-                  { icon: "structure", title: "Indoor LED", text: "Fine pitch for close viewing", active: true },
-                  { icon: "cost", title: "Outdoor LED", text: "High brightness & durability" },
-                  { icon: "guide", title: "Updated Pricing", text: `${currentYear} price guidance` },
-                  { icon: "maintenance", title: "Installation Support", text: "Service across Bangladesh" },
+                  { icon: "cost", title: "Per Sq.Ft. Pricing", text: "Complete project rate", active: true },
+                  { icon: "display", title: "Complete Hardware", text: "Module, cabinet, controller & PSU" },
+                  { icon: "structure", title: "Installed & Delivered", text: "Structure, installation & transport" },
+                  { icon: "maintenance", title: "VAT & Warranty", text: "VAT included • 1-year warranty" },
                 ].map((item, index) => (
                   <div key={item.title} className={`flex min-h-[78px] items-center gap-3 px-4 py-3 ${index ? "border-t border-slate-200 sm:border-t-0 sm:[&:nth-child(2n)]:border-l lg:border-l" : ""}`}>
                     <span className={`inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${item.active ? "bg-blue-600 text-white" : "bg-[#eaf2ff] text-blue-600"}`} aria-hidden="true">
@@ -2191,7 +2195,7 @@ function ProductsPageContent({
 
               <p className="mt-4 flex items-center justify-center gap-2 !text-center text-[11px] leading-5 text-slate-500 sm:text-xs">
                 <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-slate-400 text-[9px] font-bold" aria-hidden="true">i</span>
-                Prices may vary depending on configuration, installation scope, exchange rate, and order quantity.
+                Final quotation is confirmed after the site survey, actual screen size, pixel pitch, installation requirements, and final BOQ.
               </p>
 
               <div className="relative mt-6 overflow-hidden rounded-2xl border border-blue-200 bg-[linear-gradient(105deg,#ffffff_0%,#f7fbff_58%,#eef5ff_100%)] px-4 py-5 shadow-[0_5px_16px_rgba(15,23,42,0.035)] sm:px-5 lg:grid lg:grid-cols-[220px_minmax(0,1fr)_auto] lg:items-center lg:gap-6">
@@ -2606,7 +2610,7 @@ function ProductsPageContent({
                     Request a Free Quotation -&gt;
                   </Link>
                   <Link prefetch={false} href="/blog/led-display-price-in-bangladesh-complete-buying-guide/" className="rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-800 transition hover:border-[#1458e5] hover:text-[#1458e5]">
-                    LED Price Buying Guide
+                    LED Display Buying Guide
                   </Link>
                   <Link prefetch={false} href="/services-support/" className="rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-800 transition hover:border-[#1458e5] hover:text-[#1458e5]">
                     Installation &amp; Support
@@ -2650,81 +2654,93 @@ function ProductsPageContent({
                 </Link>
               </div>
 
-              <div className="mt-5 grid items-stretch gap-4 md:grid-cols-3 lg:gap-5">
-                {[
-                  {
-                    title: "Indoor LED Video Wall Installation",
-                    image: "/assets/projects/project-indoor-wall.webp",
-                    alt: "Indoor LED video wall installation in a corporate office",
-                    icon: "display",
-                    color: "#1458e5",
-                    meta: ["Corporate Office, Dhaka", "Pixel Pitch: P1.56", "Size: 16ft × 9ft"],
-                    tags: ["NovaStar Controller", "4K Processor", "Front Access"],
-                  },
-                  {
-                    title: "Outdoor LED Billboard Project",
-                    image: "/assets/blog/Chattogram-project.webp",
-                    alt: "Outdoor LED billboard installation in Chattogram",
-                    icon: "solutions",
-                    color: "#0aa65a",
-                    meta: ["Chattogram", "Pixel Pitch: P6", "Size: 20ft × 10ft"],
-                    tags: ["IP65 Waterproof", "High Brightness", "Steel Structure"],
-                  },
-                  {
-                    title: "Rental LED for Concert Event",
-                    image: "/assets/projects/project-rental.webp",
-                    alt: "Rental LED screen setup for a concert event",
-                    icon: "module",
-                    color: "#7138e8",
-                    meta: ["International Convention City, Bashundhara", "Pixel Pitch: P3.91"],
-                    tags: ["Hanging System", "Lightweight Cabinet", "Quick Setup"],
-                  },
-                ].map((project) => (
-                  <article key={project.title} className="group flex h-full flex-col overflow-hidden rounded-xl border bg-white shadow-[0_7px_20px_rgba(15,37,70,0.065)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(15,37,70,0.1)]" style={{ borderColor: "#dbe4f0" }}>
-                    <div className="relative aspect-video w-full shrink-0 overflow-hidden bg-slate-100">
+              <div className="mt-5 grid items-stretch gap-4 md:grid-cols-2 lg:grid-cols-6 lg:gap-5">
+                {ledDisplayProjects.map((project, index) => {
+                  const isOutdoorProject = /outdoor|billboard/i.test(project.systemType ?? project.title);
+                  const projectColor = isOutdoorProject ? "#0aa65a" : "#1458e5";
+                  const projectBrand = project.meta.find((item) => item.k === "Brand")?.v;
+                  const centerFinalPair = ledDisplayProjects.length % 3 === 2 && index === ledDisplayProjects.length - 2;
+
+                  return (
+                  <article
+                    key={project.id}
+                    className={`group flex h-full min-w-0 flex-col overflow-hidden rounded-xl border bg-white shadow-[0_7px_20px_rgba(15,37,70,0.065)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(15,37,70,0.1)] md:col-span-1 lg:col-span-2 ${centerFinalPair ? "lg:col-start-2" : ""}`}
+                    style={{ borderColor: "#dbe4f0" }}
+                  >
+                    <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-slate-100">
                       <Image
                         src={project.image}
-                        alt={project.alt}
+                        alt={project.imageAlt}
                         fill
                         quality={95}
                         sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 33vw"
-                        className={`object-cover transition duration-500 group-hover:scale-[1.025] ${project.title === "Outdoor LED Billboard Project" ? "object-[center_25%]" : "object-center"}`}
+                        className={`object-cover transition duration-500 group-hover:scale-[1.015] ${project.imageClassName ?? ""}`}
+                        style={project.imagePosition ? { objectPosition: project.imagePosition } : undefined}
                       />
                     </div>
-                    <div className="relative flex flex-1 flex-col px-4 pb-5 pt-6 sm:px-5">
+                    <div className="relative flex flex-1 flex-col px-4 pb-5 pt-6 sm:px-5 sm:pb-5">
                       <div className="flex items-start gap-3">
-                        <span className="-mt-10 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-[4px] border-white text-white shadow-md" style={{ backgroundColor: project.color }}>
-                          <UiIcon name={project.icon} className="h-5 w-5" />
+                        <span className="-mt-10 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-[4px] border-white text-white shadow-md" style={{ backgroundColor: projectColor }}>
+                          <UiIcon name={isOutdoorProject ? "solutions" : "display"} className="h-5 w-5" />
                         </span>
-                        <div className="min-h-10 min-w-0 flex-1 text-base font-extrabold leading-5 text-[#071a42] sm:text-[17px] sm:leading-6">{project.title}</div>
+                        <h3 className="line-clamp-2 min-h-12 min-w-0 flex-1 text-base font-extrabold leading-6 text-[#071a42] sm:text-[17px]">
+                          {project.title}
+                        </h3>
                       </div>
-                      <div className="mt-2.5 flex flex-wrap gap-x-3 gap-y-1.5 text-[11px] leading-4 text-slate-600 sm:text-xs">
-                        {project.meta.map((item, index) => (
-                          <span key={item} className="inline-flex items-center gap-1.5">
-                            {index === 0 ? <UiIcon name="guide" className="h-3.5 w-3.5 shrink-0 text-[#1458e5]" /> : null}
-                            {index > 0 ? <span className="h-3 border-l border-slate-300" aria-hidden="true" /> : null}
-                            {item}
-                          </span>
-                        ))}
+
+                      <div className="mt-2.5 flex min-h-10 items-start gap-2 rounded-lg bg-slate-50 px-3 py-2 text-[11px] font-semibold leading-5 text-slate-700 sm:text-xs">
+                        <UiIcon name="guide" className="mt-0.5 h-4 w-4 shrink-0 text-[#1458e5]" />
+                        <span className="line-clamp-2">{project.organization}</span>
                       </div>
-                      <div className="mt-auto flex flex-wrap gap-2 pt-4">
-                        {project.tags.map((tag) => (
+
+                      <dl className="mt-3 grid grid-cols-2 divide-x divide-slate-200 border-y border-slate-200 py-2.5">
+                        <div className="min-w-0 pr-3">
+                          <dt className="text-[9px] font-extrabold uppercase tracking-[0.08em] text-slate-400">Completed</dt>
+                          <dd className="mt-0.5 truncate text-[11px] font-bold text-slate-700 sm:text-xs">{project.completed ?? project.year}</dd>
+                        </div>
+                        <div className="min-w-0 pl-3">
+                          <dt className="text-[9px] font-extrabold uppercase tracking-[0.08em] text-slate-400">Brand</dt>
+                          <dd className="mt-0.5 truncate text-[11px] font-bold text-slate-700 sm:text-xs">{projectBrand ?? "Project specified"}</dd>
+                        </div>
+                      </dl>
+
+                      <div className="flex min-h-12 flex-wrap content-start gap-2 pt-3.5">
+                        {project.tags.slice(0, 3).map((tag) => (
                           <span
                             key={tag}
                             className="rounded-full border px-2.5 py-1 text-[10px] font-bold leading-none sm:text-[11px]"
                             style={{
-                              borderColor: `${project.color}24`,
-                              backgroundColor: `${project.color}10`,
-                              color: project.color,
+                              borderColor: `${projectColor}24`,
+                              backgroundColor: `${projectColor}10`,
+                              color: projectColor,
                             }}
                           >
                             {tag}
                           </span>
                         ))}
                       </div>
+                      <Link
+                        prefetch={false}
+                        href={project.caseStudyHref ?? `/contact/?project=led-display&client=${encodeURIComponent(project.organization)}`}
+                        className="mt-auto inline-flex min-h-9 w-fit items-center pt-3 text-[11px] font-extrabold text-[#1458e5] transition hover:text-orange-600"
+                      >
+                        {project.caseStudyHref ? "View Case Study" : "Request a Similar Project"} <span aria-hidden="true">→</span>
+                      </Link>
                     </div>
                   </article>
-                ))}
+                  );
+                })}
+              </div>
+
+              <div className="mt-6 flex justify-center">
+                <Link
+                  prefetch={false}
+                  href="/projects/"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-[#1458e5] px-5 py-2.5 text-xs font-extrabold text-white shadow-[0_6px_18px_rgba(20,88,229,0.2)] transition hover:-translate-y-0.5 hover:bg-[#0f49c7] hover:shadow-[0_9px_22px_rgba(20,88,229,0.26)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1458e5]/40 focus-visible:ring-offset-2 sm:text-sm"
+                >
+                  View More Completed Projects
+                  <span aria-hidden="true">→</span>
+                </Link>
               </div>
           </section>
 
@@ -2740,7 +2756,7 @@ function ProductsPageContent({
                 desktopClassName="home-section-subtitle leading-7 md:leading-8"
                 >
                   <>
-                    Sasha Corporation supplies, installs, configures, and supports LED display solutions across Bangladesh. Project scope may include indoor LED displays, outdoor LED billboards, rental LED screens, LED video walls, controllers, receiving cards, power supplies, maintenance, and after-sales technical support. Warranty, response time, and maintenance terms are confirmed in the quotation according to the selected product and project scope.
+                    Sasha Corporation supplies, installs, configures, and supports LED display solutions across Bangladesh. Project scope may include indoor LED displays, outdoor LED billboards, rental LED screens, LED video walls, controllers, receiving cards, power supplies, maintenance, and after-sales technical support. LED displays include a 1-year warranty; response time and maintenance terms are confirmed in the quotation according to the selected product and project scope.
                   </>
                 </MobileIntroText>
               </div>

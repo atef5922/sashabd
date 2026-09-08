@@ -149,7 +149,7 @@ const templateProjects: Project[] = [
 const FAQS: { q: string; a: string }[] = [
   {
     q: "How are client project details verified before publication?",
-    a: "Project case studies are published only after business verification and client approval. Demo or unverified project records are never presented as completed client work.",
+    a: "Completed project records and case studies are published only after business verification and client approval. Demo or unverified project records are never presented as completed client work.",
   },
   {
     q: "What details should I share for a matching proposal?",
@@ -450,9 +450,9 @@ export default function ProjectsPage() {
           {list.length ? (
             <div className="mb-5 max-w-3xl">
               <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-orange-600">Completed work</p>
-              <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-950 md:text-3xl">Verified Project Case Studies</h2>
+              <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-slate-950 md:text-3xl">Verified Completed Projects</h2>
               <p className="mt-3 text-sm leading-7 text-slate-600">
-                Review completed Sasha Corporation LED display and conference system work with confirmed locations, delivery scopes and case-study details.
+                Review Sasha Corporation LED display and conference system projects with verified client, location, system and completion details.
               </p>
             </div>
           ) : null}
