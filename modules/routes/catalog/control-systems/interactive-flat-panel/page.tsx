@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: socialImageUrl("/images/Interactive%20flat%20panel/Interactive-flat-panal.webp"),
+        url: socialImageUrl("/assets/control-systems/interactive-flat-panel/products/Interactive-flat-panal.webp"),
         width: 1200,
         height: 630,
         alt: "Interactive Flat Panel in Bangladesh",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     title: "Interactive Flat Panel Price in Bangladesh",
     description:
  "Interactive flat panel (IFP) in Bangladesh-smart classroom and meeting room display with BOQ, installation and support.",
-    images: [socialImageUrl("/images/Interactive%20flat%20panel/Interactive-flat-panal.webp")],
+    images: [socialImageUrl("/assets/control-systems/interactive-flat-panel/products/Interactive-flat-panal.webp")],
   },
 };
 
@@ -72,7 +72,7 @@ export default function InteractiveFlatPanelPage() {
       <Breadcrumbs items={[homeBreadcrumb(), { label: "Interactive Flat Panel", href: "/interactive-flat-panel/", current: true }]} className="sr-only" showBackLink={false} />
       <section className={styles.hero} aria-labelledby="ifp-hero-title">
         <div className={styles.heroVisual}>
-          <Image src="/images/interactive-flat-panel/ifp-collaboration-hero.webp" alt="Illustrative collaboration room with an interactive flat panel displaying a digital whiteboard" fill priority sizes="(max-width: 699px) 100vw, 65vw" />
+          <Image src="/assets/control-systems/interactive-flat-panel/landing/ifp-collaboration-hero.webp" alt="Illustrative collaboration room with an interactive flat panel displaying a digital whiteboard" fill priority sizes="(max-width: 699px) 100vw, 65vw" />
           <span className={styles.visualCaption}>Illustrative room concept</span>
         </div>
         <div className={[styles.container, styles.heroInner].join(" ")}>

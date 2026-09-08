@@ -1,6 +1,6 @@
 import type { ConferenceProduct } from "./catalog";
 
-const SPON_IMAGE_BASE = "/images/conference_system_products/spon_products";
+const SPON_IMAGE_BASE = "/assets/conference-system/products/brands/spon";
 const requestPrice = { type: "request", currency: "BDT", displayLabel: "Request Price" } as const;
 
 export const newSponConferenceProducts: ConferenceProduct[] = [

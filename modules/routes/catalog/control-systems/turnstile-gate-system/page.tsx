@@ -12,7 +12,7 @@ import Icon, { type TurnstileIconName } from "./TurnstileIcon";
 import styles from "./turnstile-landing.module.css";
 
 const PAGE_TITLE = "Turnstile Gate Price in Bangladesh 2026";
-const HERO = "/images/turnstile-entrance-hero-v2.webp";
+const HERO = "/assets/control-systems/turnstile/turnstile-entrance-hero-v2.webp";
 
 export const metadata: Metadata = {
   title: PAGE_TITLE,
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: socialImageUrl("/images/Turnstile-gate-System.webp"),
+        url: socialImageUrl("/assets/control-systems/turnstile/turnstile-gate-system.webp"),
         width: 1200,
         height: 630,
         alt: PAGE_TITLE,
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     title: PAGE_TITLE,
     description:
       "Turnstile Gate Price in Bangladesh. Sasha Corporation supplies tripod turnstile, flap barrier, speed gate, RFID access control & face recognition systems.",
-    images: [socialImageUrl("/images/Turnstile-gate-System.webp")],
+    images: [socialImageUrl("/assets/control-systems/turnstile/turnstile-gate-system.webp")],
   },
 };
 
@@ -108,10 +108,10 @@ export default function TurnstileGateSystemPage() {
 
     <section id="gate-installation" className={styles.deliverySection}><div className={styles.container}><div className={styles.deliveryHeader}><Heading eyebrow="HOW WE DELIVER THE PROJECT" title="How We Deliver the Project" text="A structured and transparent process to ensure a successful turnstile gate installation." /><a href="#gate-installation" className={styles.deliveryLink}>See Full Delivery Process <Icon name="arrow" /></a></div><ol className={styles.processGrid}>{deliveryProcess.map((step, index) => <li key={step.step}><span className={styles.processIcon}><Icon name={processIcons[index]} /></span><h3>{index + 1}. {step.title}</h3><p>{step.desc}</p></li>)}</ol></div></section>
 
-    <section id="gate-support" className={styles.supportSection}><div className={styles.container}><Heading eyebrow="WHY SASHA CORPORATION" title="Why Choose Sasha for Turnstile Projects?" text="We deliver more than products — we provide complete entrance control solutions with expert support." /><div className={styles.supportGrid}>{whyChooseFeatures.map((item, index) => <article key={item.title}><span className={styles.supportIcon}><Icon name={supportIcons[index]} /></span><h3>{item.title}</h3><p>{item.desc}</p></article>)}</div></div></section>
+    <section id="gate-support" className={styles.supportSection}><div className={styles.container}><Heading eyebrow="WHY SASHA CORPORATION" title="Why Choose Sasha for Turnstile Projects?" text="Sasha Corporation provides complete entrance control solutions with expert support." /><div className={styles.supportGrid}>{whyChooseFeatures.map((item, index) => <article key={item.title}><span className={styles.supportIcon}><Icon name={supportIcons[index]} /></span><h3>{item.title}</h3><p>{item.desc}</p></article>)}</div></div></section>
 
     <Section id="gate-faq" tone="blue"><Heading eyebrow="BEFORE YOU CHOOSE" title="Your questions, answered." text="Practical answers about gate selection, access methods, installation and support." /><div className={styles.faqGrid}>{faqs.map((item, index) => <details key={item.q}><summary><span>{String(index + 1).padStart(2, "0")}</span><h3>{item.q}</h3><span className={styles.faqToggle} aria-hidden="true" /></summary><p>{item.a}</p></details>)}</div><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} /></Section>
 
-    <div className={`${styles.container} ${styles.ctaWrap}`}><section className={styles.finalCta}><div className={styles.finalCtaCopy}><p className={styles.eyebrow}>LET&apos;S BUILD A SAFER TOMORROW</p><h2>Planning an Entrance Control Project?</h2><p>Get expert consultation, project BOQ, model selection, access integration, and installation support from the Sasha Corporation team.</p><div className={styles.actions}><Link href="/contact/" className={styles.button}>Request Project BOQ <Icon name="arrow" /></Link><a href={whatsapp} target="_blank" rel="noreferrer" className={styles.ctaEngineer}>Talk to an Engineer <Icon name="arrow" /></a></div><div className={styles.ctaBenefits}><span><Icon name="check" /><b>Fast Response</b><small>We reply within 24 hours</small></span><span><Icon name="support" /><b>Nationwide Support</b><small>Service across Bangladesh</small></span><span><Icon name="team" /><b>Experienced Technical Team</b><small>Trained &amp; certified engineers</small></span></div></div></section><div className={styles.related}><span>Explore related solutions</span><Link href="/pa-system/">PA Systems <Icon name="arrow" /></Link><Link href="/conference-system/">Conference Systems <Icon name="arrow" /></Link><Link href="/led-display/">LED Displays <Icon name="arrow" /></Link></div></div>
+    <div className={`${styles.container} ${styles.ctaWrap}`}><section className={styles.finalCta}><div className={styles.finalCtaCopy}><p className={styles.eyebrow}>LET&apos;S BUILD A SAFER TOMORROW</p><h2>Planning an Entrance Control Project?</h2><p>Sasha Corporation helps businesses plan the right gate, access integration, project BOQ, and installation support.</p><div className={styles.actions}><Link href="/contact/" className={styles.button}>Request Project BOQ <Icon name="arrow" /></Link><a href={whatsapp} target="_blank" rel="noreferrer" className={styles.ctaEngineer}>Talk to an Engineer <Icon name="arrow" /></a></div><div className={styles.ctaBenefits}><span><Icon name="check" /><b>Fast Response</b><small>We reply within 24 hours</small></span><span><Icon name="support" /><b>Nationwide Support</b><small>Service across Bangladesh</small></span><span><Icon name="team" /><b>Experienced Technical Team</b><small>Trained &amp; certified engineers</small></span></div></div></section><div className={styles.related}><span>Explore related solutions</span><Link href="/pa-system/">PA Systems <Icon name="arrow" /></Link><Link href="/conference-system/">Conference Systems <Icon name="arrow" /></Link><Link href="/led-display/">LED Displays <Icon name="arrow" /></Link></div></div>
   </div>;
 }

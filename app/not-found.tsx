@@ -1,4 +1,4 @@
-﻿import Image from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 
 const quickLinks = [
@@ -86,7 +86,7 @@ export default function NotFound() {
                 </div>
                 <div className="relative h-14 w-28 shrink-0 overflow-hidden rounded-xl bg-white p-2">
                   <Image
-                    src="/sasha-corporation-final-l.webp"
+                    src="/assets/brand/sasha/sasha-corporation-final-l.webp"
                     alt="Sasha Corporation"
                     fill
                     sizes="112px"

@@ -12,7 +12,7 @@ const EXTRA: ProductItem = {
   slug: "p3-91-rental-led-display",
   title: "P3.91 Rental LED Display",
   subtitle: "250x250mm rental LED module with SMD1921 lamp, 64x64 resolution, 4500 cd/m2 brightness, and 7680Hz refresh support.",
-  image: "/images/rental/P3.91-Rental-LED-Display.webp",
+  image: "/assets/led-display/rental/P3.91-Rental-LED-Display.webp",
   quickFeatures: ["250x250mm universal module", "4500 cd/m2 high brightness", "7680Hz high refresh", "500x500 / 500x1000 rental cabinet ready"],
   bestFor: ["Stage backdrop", "Wedding events", "Corporate programs", "Concert visuals"],
   keySpecs: [

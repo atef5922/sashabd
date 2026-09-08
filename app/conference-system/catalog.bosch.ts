@@ -1,6 +1,6 @@
 import type { ConferenceProduct } from "./catalog";
 
-const BOSCH_IMAGE_BASE = "/images/conference_system_products/bosch_products";
+const BOSCH_IMAGE_BASE = "/assets/conference-system/products/brands/bosch";
 const BOSCH = { name: "Bosch", slug: "bosch" } as const;
 const requestPrice = { type: "request", currency: "BDT", displayLabel: "Request Price" } as const;
 

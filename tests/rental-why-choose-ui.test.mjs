@@ -29,6 +29,6 @@ test("The rental event backdrop is limited to the benefits panel and sits behind
   assert.match(section, /styles.whyChoosePanel/);
   assert.match(css, /\.whyChoosePanel \{ position: relative; isolation: isolate; \}/);
   assert.match(css, /\.whyChoosePanel::before \{[^}]*z-index: -1; pointer-events: none; background: linear-gradient/);
-  assert.match(css, /url\("\/images\/rental\/hero\/rental-led-hero-banner.webp"\)/);
-  assert.ok(existsSync(new URL("../public/images/rental/hero/rental-led-hero-banner.webp", import.meta.url)));
+  assert.match(css, /url\("\/assets\/led-display\/rental\/hero\/rental-led-hero-banner.webp"\)/);
+  assert.ok(existsSync(new URL("../public/assets/led-display/rental/hero/rental-led-hero-banner.webp", import.meta.url)));
 });

@@ -159,7 +159,7 @@
 .faqItem[open] { border-color: #b2cbed; background: #f9fbff; }
 .faqItem[open] .faqToggle::after { display: none; }
 .faqItem > p { padding: 0 1.4em 1.4em; color: var(--muted); font-size: .9em; }
-.finalCta { background: linear-gradient(90deg, #06182dfc 15%, #082447eb 65%, #071936cf), url('/images/digital%20-podium-hero.webp') center right / cover; color: white; padding-block: 2.5em; }
+.finalCta { background: linear-gradient(90deg, #06182dfc 15%, #082447eb 65%, #071936cf), url('/assets/control-systems/digital-podium/digital-podium-hero.webp') center right / cover; color: white; padding-block: 2.5em; }
 .ctaInner { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 2em; align-items: center; }
 .finalCta .eyebrow { color: #ceddef; }
 .finalCta h2 { font-size: calc(27 * var(--podium-unit)) !important; }

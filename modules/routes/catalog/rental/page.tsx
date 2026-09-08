@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: socialImageUrl("/images/rental/P3.91-Rental-LED-Display.webp"),
+        url: socialImageUrl("/assets/led-display/rental/P3.91-Rental-LED-Display.webp"),
         width: 1200,
         height: 630,
         alt: "Rental LED Display in Bangladesh | Stage & Concert LED",
@@ -89,7 +89,7 @@ function RentalLedHero() {
   return (
     <section className={`${styles.hero} relative left-1/2 right-1/2 -mx-[50vw] -mt-2 min-h-[720px] w-screen overflow-hidden bg-[#001229] text-white sm:min-h-[630px] lg:min-h-[clamp(22rem,28.5vw,27rem)]`} aria-labelledby="rental-led-hero-heading">
       <Image
-        src="/images/rental/hero/rental-led-hero-banner.webp"
+        src="/assets/led-display/rental/hero/rental-led-hero-banner.webp"
         alt="Large rental LED display at a live concert stage"
         fill
         priority
@@ -184,10 +184,10 @@ function RentalSectionHeading({
 }
 
 const rentalModelCardImages: Record<string, string> = {
-  "p2-6-rental-led-display": "/images/rental/cards/p2-6-rental-led-card.webp",
-  "p3-rental-led-display": "/images/rental/cards/p3-rental-led-card.webp",
-  "p3-91-rental-led-display": "/images/rental/cards/p3-91-rental-led-card.webp",
-  "p4-81-rental-led-display": "/images/rental/cards/p4-81-rental-led-card.webp",
+  "p2-6-rental-led-display": "/assets/led-display/rental/cards/p2-6-rental-led-card.webp",
+  "p3-rental-led-display": "/assets/led-display/rental/cards/p3-rental-led-card.webp",
+  "p3-91-rental-led-display": "/assets/led-display/rental/cards/p3-91-rental-led-card.webp",
+  "p4-81-rental-led-display": "/assets/led-display/rental/cards/p4-81-rental-led-card.webp",
 };
 
 function RentalModelShowcase({
@@ -396,14 +396,14 @@ const rentalOccasions: RentalOccasion[] = [
   {
     title: "Corporate Event",
     description: "Conferences, product launches and seminars",
-    image: "/images/project-page/project-pa-system.webp",
+    image: "/assets/projects/project-pa-system.webp",
     icon: "events",
     query: "corporate-event",
   },
   {
     title: "Concert & Live Show",
     description: "Music concerts, stage shows and festivals",
-    image: "/images/rental/hero/rental-led-hero-banner.webp",
+    image: "/assets/led-display/rental/hero/rental-led-hero-banner.webp",
     imagePosition: "62% center",
     icon: "processor",
     query: "concert-live-show",
@@ -411,14 +411,14 @@ const rentalOccasions: RentalOccasion[] = [
   {
     title: "Wedding Event",
     description: "Wedding ceremonies, receptions and special events",
-    image: "/images/rental/P2.6-Rental-LED-Display.webp",
+    image: "/assets/led-display/rental/P2.6-Rental-LED-Display.webp",
     icon: "events",
     query: "wedding-event",
   },
   {
     title: "Stage Backdrop",
     description: "Stage programs, cultural events and college fests",
-    image: "/images/rental/hero/rental-led-hero-banner.webp",
+    image: "/assets/led-display/rental/hero/rental-led-hero-banner.webp",
     imagePosition: "78% center",
     icon: "stack",
     query: "stage-backdrop",
@@ -426,14 +426,14 @@ const rentalOccasions: RentalOccasion[] = [
   {
     title: "Exhibition & Trade Show",
     description: "Exhibitions, product displays and brand promotions",
-    image: "/images/project-page/Project-indoor-showroom.webp",
+    image: "/assets/projects/Project-indoor-showroom.webp",
     icon: "setup",
     query: "exhibition-trade-show",
   },
   {
     title: "Outdoor & Festival",
     description: "Public events, outdoor festivals and large gatherings",
-    image: "/images/project-page/project-rental.webp",
+    image: "/assets/projects/project-rental.webp",
     imagePosition: "center 42%",
     icon: "location",
     query: "outdoor-festival",
@@ -517,7 +517,7 @@ const rentalPackages: RentalPackage[] = [
     title: "Small Indoor Event",
     badge: "Small Event",
     description: "A compact LED solution for meetings, seminars and small indoor gatherings.",
-    image: "/images/project-page/project-pa-system.webp",
+    image: "/assets/projects/project-pa-system.webp",
     screenSize: "Planned for compact venues",
     pixelPitch: "P2.6 - P3.91",
     duration: "Single or multi-day",
@@ -529,7 +529,7 @@ const rentalPackages: RentalPackage[] = [
     title: "Corporate Stage Package",
     badge: "Corporate Event",
     description: "Professional visuals for conferences, product launches and annual events.",
-    image: "/images/project-page/Project-indoor-showroom.webp",
+    image: "/assets/projects/Project-indoor-showroom.webp",
     screenSize: "Scaled to stage and audience",
     pixelPitch: "P2.6 - P3.91",
     duration: "Single or multi-day",
@@ -541,7 +541,7 @@ const rentalPackages: RentalPackage[] = [
     title: "Concert & Live Show",
     badge: "Most Popular",
     description: "High-impact LED visuals for concerts, live stages, cultural shows and festivals.",
-    image: "/images/rental/hero/rental-led-hero-banner.webp",
+    image: "/assets/led-display/rental/hero/rental-led-hero-banner.webp",
     imagePosition: "65% center",
     screenSize: "Configured for the production",
     pixelPitch: "P3.91 - P4.81",
@@ -555,7 +555,7 @@ const rentalPackages: RentalPackage[] = [
     title: "Wedding LED Wall",
     badge: "Wedding Event",
     description: "Vibrant stage visuals for wedding ceremonies, receptions and special moments.",
-    image: "/images/rental/P2.6-Rental-LED-Display.webp",
+    image: "/assets/led-display/rental/P2.6-Rental-LED-Display.webp",
     screenSize: "Matched to stage layout",
     pixelPitch: "P2.6 - P3.91",
     duration: "Single or multi-day",
@@ -567,7 +567,7 @@ const rentalPackages: RentalPackage[] = [
     title: "Custom Large Event",
     badge: "Large Event",
     description: "A tailored rental plan for exhibitions, festivals, outdoor stages and large venues.",
-    image: "/images/project-page/project-rental.webp",
+    image: "/assets/projects/project-rental.webp",
     imagePosition: "center 42%",
     screenSize: "Custom to venue requirements",
     pixelPitch: "P3.91 - P4.81",
@@ -670,28 +670,28 @@ const pitchGuide = [
   {
     distance: "1 - 2.5 Meter",
     pitch: "P2.6",
-    image: "/images/project-page/project-pa-system.webp",
+    image: "/assets/projects/project-pa-system.webp",
     imagePosition: "center",
     points: ["Ideal for close viewing", "High-definition clarity", "Best for indoor events"],
   },
   {
     distance: "2.5 - 4 Meter",
     pitch: "P3",
-    image: "/images/project-page/project-redirect.webp",
+    image: "/assets/projects/project-redirect.webp",
     imagePosition: "center",
     points: ["Perfect for medium distance", "Clear and vibrant visuals", "Suitable for most events"],
   },
   {
     distance: "4 - 6 Meter",
     pitch: "P3.91",
-    image: "/images/rental/hero/rental-led-hero-banner.webp",
+    image: "/assets/led-display/rental/hero/rental-led-hero-banner.webp",
     imagePosition: "65% center",
     points: ["Great for larger audiences", "Excellent stage visibility", "Ideal for indoor or outdoor use"],
   },
   {
     distance: "6 Meter+",
     pitch: "P4.81",
-    image: "/images/project-page/project-rental.webp",
+    image: "/assets/projects/project-rental.webp",
     imagePosition: "center 42%",
     points: ["Best for long-distance viewing", "Cost-effective screen coverage", "Perfect for outdoor events"],
   },
@@ -833,7 +833,7 @@ function RentalWhyChoose() {
 
           <div className="rental-trust-visual" aria-hidden="true">
             <Image
-              src="/images/rental/hero/rental-led-hero-banner.webp"
+              src="/assets/led-display/rental/hero/rental-led-hero-banner.webp"
               alt=""
               fill
               sizes="(max-width: 767px) 100vw, 28vw"
@@ -1034,21 +1034,21 @@ const rentalExploreCategories = [
   {
     title: "Indoor LED Displays",
     description: "Fine-pitch LED solutions for showrooms, conference rooms and control spaces.",
-    image: "/images/project-page/Project-indoor-wall.webp",
+    image: "/assets/projects/Project-indoor-wall.webp",
     href: "/led-display/indoor-led/",
     cta: "Explore Indoor LED",
   },
   {
     title: "Outdoor LED Displays",
     description: "High-brightness displays for billboards, facades, rooftops and public spaces.",
-    image: "/images/project-page/project-redirects.webp",
+    image: "/assets/projects/project-redirects.webp",
     href: "/led-display/outdoor/",
     cta: "Explore Outdoor LED",
   },
   {
     title: "Rental LED Displays",
     description: "Quick-lock cabinets for stages, concerts, exhibitions and event productions.",
-    image: "/images/rental/hero/rental-led-hero-banner.webp",
+    image: "/assets/led-display/rental/hero/rental-led-hero-banner.webp",
     href: "#rental-led-models",
     cta: "View Rental Models",
   },
@@ -1064,7 +1064,7 @@ function RentalExploreCategories() {
           title="Explore LED Display Categories"
           description="Compare indoor, outdoor and rental LED solutions, then choose the right category for your project."
           action={
-            <Link href="/products/" className="inline-flex items-center gap-1 text-[#e45700] transition hover:text-[#ff6a00]">
+                    <Link href="/led-display/" className="inline-flex items-center gap-1 text-[#e45700] transition hover:text-[#ff6a00]">
               View All LED Products <RentalHeroIcon name="arrow" className="h-3.5 w-3.5" />
             </Link>
           }
@@ -1110,7 +1110,7 @@ function RentalFinalCta({ whatsappHref }: { whatsappHref: string }) {
       aria-labelledby="rental-final-cta-heading"
     >
       <Image
-        src="/images/rental/hero/rental-led-hero-banner.webp"
+        src="/assets/led-display/rental/hero/rental-led-hero-banner.webp"
         alt=""
         fill
         sizes="100vw"

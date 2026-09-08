@@ -23,6 +23,57 @@ AddDefaultCharset UTF-8
   RewriteBase /
 
   # ------------------------------
+  # Legacy asset URLs
+  # ------------------------------
+  # Assets now live under topic-based /assets folders. Keep previously
+  # published image URLs working for search engines, caches and old links.
+  RewriteRule ^images/about/(.*)$ /assets/about/$1 [R=301,L,NE]
+  RewriteRule ^images/accessories/(.*)$ /assets/led-display/accessories/$1 [R=301,L,NE]
+  RewriteRule ^images/blog/(.*)$ /assets/blog/$1 [R=301,L,NE]
+  RewriteRule "^images/complete package/(.*)$" /assets/conference-system/packages/$1 [R=301,L,NE]
+  RewriteRule "^images/Conference system/(.*)$" /assets/conference-system/products/core/$1 [R=301,L,NE]
+  RewriteRule ^images/conference_landing/(.*)$ /assets/conference-system/landing/$1 [R=301,L,NE]
+  RewriteRule ^images/conference_system_products/bosch_products/(.*)$ /assets/conference-system/products/brands/bosch/$1 [R=301,L,NE]
+  RewriteRule ^images/conference_system_products/cmx_products/(.*)$ /assets/conference-system/products/brands/cmx/$1 [R=301,L,NE]
+  RewriteRule ^images/conference_system_products/honeywell_products/(.*)$ /assets/conference-system/products/brands/honeywell/$1 [R=301,L,NE]
+  RewriteRule ^images/conference_system_products/spon_products/(.*)$ /assets/conference-system/products/brands/spon/$1 [R=301,L,NE]
+  RewriteRule ^images/conference_system_products/toa_products/(.*)$ /assets/conference-system/products/brands/toa/$1 [R=301,L,NE]
+  RewriteRule ^images/conference_system_products/(.*)$ /assets/conference-system/products/brands/$1 [R=301,L,NE]
+  RewriteRule ^images/conference_system_projects/(.*)$ /assets/conference-system/projects/$1 [R=301,L,NE]
+  RewriteRule ^images/contact/(.*)$ /assets/contact/$1 [R=301,L,NE]
+  RewriteRule ^images/controller/(.*)$ /assets/led-display/controllers/$1 [R=301,L,NE]
+  RewriteRule ^images/home_hero/(.*)$ /assets/home/hero/$1 [R=301,L,NE]
+  RewriteRule ^images/indoor/(.*)$ /assets/led-display/indoor/$1 [R=301,L,NE]
+  RewriteRule "^images/Interactive flat panel/(.*)$" /assets/control-systems/interactive-flat-panel/products/$1 [R=301,L,NE]
+  RewriteRule ^images/interactive-flat-panel/(.*)$ /assets/control-systems/interactive-flat-panel/landing/$1 [R=301,L,NE]
+  RewriteRule "^images/led hero/(.*)$" /assets/led-display/heroes/$1 [R=301,L,NE]
+  RewriteRule ^images/outdoor/(.*)$ /assets/led-display/outdoor/$1 [R=301,L,NE]
+  RewriteRule ^images/PA/(.*)$ /assets/control-systems/pa-system/products/$1 [R=301,L,NE]
+  RewriteRule ^images/podium/(.*)$ /assets/control-systems/digital-podium/products/$1 [R=301,L,NE]
+  RewriteRule ^images/power-supply/(.*)$ /assets/led-display/power-supplies/$1 [R=301,L,NE]
+  RewriteRule ^images/project-page/(.*)$ /assets/projects/$1 [R=301,L,NE]
+  RewriteRule ^images/receiving-card/(.*)$ /assets/led-display/receiving-cards/$1 [R=301,L,NE]
+  RewriteRule ^images/rental/(.*)$ /assets/led-display/rental/$1 [R=301,L,NE]
+  RewriteRule ^images/Turnstile/(.*)$ /assets/control-systems/turnstile/products/$1 [R=301,L,NE]
+  RewriteRule ^images/brands/audio/(.*)$ /assets/brands/audio/$1 [R=301,L,NE]
+  RewriteRule ^images/brands/(.*)$ /assets/brands/led-display/$1 [R=301,L,NE]
+
+  RewriteRule ^images/logo/(acc\.webp|ansar\.webp|bgb\.webp|bhbfc-logo-final\.webp|bpatc\.webp|bpsc\.webp|brta\.webp|BSCIC\.webp|bsfic\.webp|caab\.webp|dncc\.webp|dscc\.webp|ecs\.webp|fire-service\.webp|Health-and-family-welfare\.webp|nbr\.webp|parjatan\.webp|passport\.webp|sonali-bank\.webp|ugc\.webp)$ /assets/clients/organizations/$1 [R=301,L,NE]
+  RewriteRule ^images/logo/(absen\.webp|aoto-electronics\.webp|colorlight\.webp|g-energy\.webp|lampro\.webp|leyard\.webp|liantronics\.png|mean-well\.webp|mugnee\.webp|novastar\.webp|unilumin\.webp)$ /assets/brands/led-display/$1 [R=301,L,NE]
+  RewriteRule ^images/logo/digital-podium\.svg$ /assets/control-systems/digital-podium/digital-podium.svg [R=301,L,NE]
+  RewriteRule ^images/logo/PA-sound\.webp$ /assets/control-systems/pa-system/pa-sound.webp [R=301,L,NE]
+  RewriteRule ^images/logo/turnstile-gate-common\.webp$ /assets/control-systems/turnstile/turnstile-gate-common.webp [R=301,L,NE]
+
+  RewriteRule ^images/hero\.webp$ /assets/shared/hero.webp [R=301,L,NE]
+  RewriteRule "^images/digital -podium-hero\.webp$" /assets/control-systems/digital-podium/digital-podium-hero.webp [R=301,L,NE]
+  RewriteRule ^images/interactive-flat-panal-hero\.webp$ /assets/control-systems/interactive-flat-panel/interactive-flat-panel-hero.webp [R=301,L,NE]
+  RewriteRule ^images/turnstile-entrance-hero-v2\.webp$ /assets/control-systems/turnstile/turnstile-entrance-hero-v2.webp [R=301,L,NE]
+  RewriteRule ^images/turnstile-gate-hero\.webp$ /assets/control-systems/turnstile/turnstile-gate-hero.webp [R=301,L,NE]
+  RewriteRule ^images/Turnstile-gate-System\.webp$ /assets/control-systems/turnstile/turnstile-gate-system.webp [R=301,L,NE]
+  RewriteRule ^sasha-corporation-final-l\.webp$ /assets/brand/sasha/sasha-corporation-final-l.webp [R=301,L,NE]
+  RewriteRule ^sasha-corporation-after-scroll\.png$ /assets/brand/sasha/sasha-corporation-after-scroll.png [R=301,L,NE]
+
+  # ------------------------------
   # Force non-www canonical
   # ------------------------------
   RewriteCond %{HTTP_HOST} ^www\.sashabd\.com$ [NC]

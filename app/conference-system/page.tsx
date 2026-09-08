@@ -58,7 +58,7 @@ const conferenceSystemChooserCards: ReadonlyArray<{
     description: "Stable, secure and interference-free discussion for professional meetings.",
     cta: "View Wired Systems",
     href: "/conference-system/wired-conference-system/",
-    image: "/images/conference_system_projects/project1.webp",
+    image: "/assets/conference-system/projects/project1.webp",
     imageAlt: "Wired conference microphones installed around a boardroom table",
     icon: "wired",
     imagePosition: "center 62%",
@@ -68,7 +68,7 @@ const conferenceSystemChooserCards: ReadonlyArray<{
     description: "Flexible setup with easy installation for rooms with changing layouts.",
     cta: "View Wireless Systems",
     href: "/conference-system/wireless-conference-system/",
-    image: "/images/PA/Conference-Discussion-System.webp",
+    image: "/assets/control-systems/pa-system/products/Conference-Discussion-System.webp",
     imageAlt: "Professional conference microphones in a modern meeting room",
     icon: "wireless",
     imagePosition: "center 58%",
@@ -78,7 +78,7 @@ const conferenceSystemChooserCards: ReadonlyArray<{
     description: "Advanced digital technology with superior audio quality and control.",
     cta: "View Digital Systems",
     href: "/conference-system/digital-conference-system/",
-    image: "/images/conference_system_projects/project2.webp",
+    image: "/assets/conference-system/projects/project2.webp",
     imageAlt: "Digital conference system with microphones and meeting displays",
     icon: "digital",
     imagePosition: "center 55%",
@@ -88,7 +88,7 @@ const conferenceSystemChooserCards: ReadonlyArray<{
     description: "Integrated audio, video and presentation support for hybrid meetings.",
     cta: "View Hybrid Solutions",
     href: "/conference-system/video-conference-system/",
-    image: "/images/podium/Auditorium-Digital-Podium.webp",
+    image: "/assets/control-systems/digital-podium/products/Auditorium-Digital-Podium.webp",
     imageAlt: "Integrated digital presentation and video conference room solution",
     icon: "hybrid",
     imagePosition: "center 48%",
@@ -98,7 +98,7 @@ const conferenceSystemChooserCards: ReadonlyArray<{
     description: "Paperless meeting systems for agenda, document and meeting-management workflows.",
     cta: "View Paperless Systems",
     href: "/conference-system/paperless-conference-system/",
-    image: "/images/conference_system_products/cmx_products/CMX-MC-5800E-Paperless-Conference-Management-Server-300x300.webp",
+    image: "/assets/conference-system/products/brands/cmx/CMX-MC-5800E-Paperless-Conference-Management-Server-300x300.webp",
     imageAlt: "CMX paperless conference management server for agenda and document workflows",
     icon: "paperless",
   },
@@ -222,7 +222,7 @@ const conferenceRoomSizeCards: ReadonlyArray<{
     room: "Small Boardroom",
     description: "Ideal for director rooms and small meetings.",
     href: "/contact/?project=conference-system&room_size=6-12",
-    image: "/images/conference_system_projects/project1.webp",
+    image: "/assets/conference-system/projects/project1.webp",
     imageAlt: "Small boardroom prepared for a conference meeting",
     icon: "small",
     imagePosition: "center 58%",
@@ -232,7 +232,7 @@ const conferenceRoomSizeCards: ReadonlyArray<{
     room: "Medium Meeting Room",
     description: "Perfect for team meetings and training rooms.",
     href: "/contact/?project=conference-system&room_size=12-30",
-    image: "/images/conference_system_projects/project2.webp",
+    image: "/assets/conference-system/projects/project2.webp",
     imageAlt: "Medium meeting and training room with conference microphones",
     icon: "medium",
     imagePosition: "center 55%",
@@ -242,7 +242,7 @@ const conferenceRoomSizeCards: ReadonlyArray<{
     room: "Large Conference Room",
     description: "Suitable for official meetings and seminars.",
     href: "/contact/?project=conference-system&room_size=30-50",
-    image: "/images/conference_landing/hero_banner.webp",
+    image: "/assets/conference-system/landing/hero_banner.webp",
     imageAlt: "Large modern conference room with tabletop microphones",
     icon: "large",
     imagePosition: "72% center",
@@ -252,7 +252,7 @@ const conferenceRoomSizeCards: ReadonlyArray<{
     room: "Conference Hall",
     description: "Designed for conferences, events and large gatherings.",
     href: "/contact/?project=conference-system&room_size=50-plus",
-    image: "/images/conference_system_projects/project3.webp",
+    image: "/assets/conference-system/projects/project3.webp",
     imageAlt: "Large conference hall with delegate microphones and seating",
     icon: "hall",
     imagePosition: "center 50%",
@@ -272,7 +272,7 @@ const popularConferencePackages = [
     priceNote: "Indicative equipment estimate",
     cta: "Get Package BOQ",
     href: "/contact/?project=conference-system&package=10-person-boardroom",
-    image: "/images/conference_system_products/bosch_products/Bosch-CCS-1000-D-Digital-Discussion-System.webp",
+    image: "/assets/conference-system/products/brands/bosch/Bosch-CCS-1000-D-Digital-Discussion-System.webp",
     imageAlt: "Ten person conference system boardroom package",
     badgeClass: "bg-[#f1530a]",
     priceClass: "text-[#f1530a]",
@@ -290,7 +290,7 @@ const popularConferencePackages = [
     priceNote: "Indicative equipment estimate",
     cta: "Get Package BOQ",
     href: "/contact/?project=conference-system&package=20-person-meeting-room",
-    image: "/images/conference_system_products/bosch_products/Bosch CCS-900 Wired Ultro Discussion Conference System.jpg",
+    image: "/assets/conference-system/products/brands/bosch/Bosch CCS-900 Wired Ultro Discussion Conference System.jpg",
     imageAlt: "Twenty person conference system meeting room package",
     badgeClass: "bg-[#075bc5]",
     priceClass: "text-[#f1530a]",
@@ -308,7 +308,7 @@ const popularConferencePackages = [
     priceNote: "Indicative equipment estimate",
     cta: "Get Package BOQ",
     href: "/contact/?project=conference-system&package=30-person-government",
-    image: "/images/conference_system_products/cmx_products/CMX-CS-700A-Conference-System-with-Discussion-Units-768x768.webp",
+    image: "/assets/conference-system/products/brands/cmx/CMX-CS-700A-Conference-System-with-Discussion-Units-768x768.webp",
     imageAlt: "Thirty person conference system government package",
     badgeClass: "bg-[#149447]",
     priceClass: "text-[#f1530a]",
@@ -326,7 +326,7 @@ const popularConferencePackages = [
     priceNote: "",
     cta: "Get Package BOQ",
     href: "/contact/?project=conference-system&package=50-plus-conference-hall",
-    image: "/images/conference_system_products/cmx_products/CMX-CS-100-S101-S102-Digital-Conference-System-300x300.webp",
+    image: "/assets/conference-system/products/brands/cmx/CMX-CS-100-S101-S102-Digital-Conference-System-300x300.webp",
     imageAlt: "Custom conference hall system package for fifty or more participants",
     badgeClass: "bg-[#7131bd]",
     priceClass: "text-[#7131bd]",
@@ -359,7 +359,7 @@ const conferencePriceGuideItems = [
   {
     title: "Chairman Unit",
     href: "/conference-system/chairman-unit/",
-    image: "/images/conference_system_products/spon_products/LCM-6013CV-L.webp",
+    image: "/assets/conference-system/products/brands/spon/LCM-6013CV-L.webp",
     imageAlt: "Conference system chairman unit",
     matchProduct: (product: ConferenceProduct) =>
       product.productTypes.includes("chairman-unit") && !product.productTypes.includes("package"),
@@ -367,7 +367,7 @@ const conferencePriceGuideItems = [
   {
     title: "Delegate Unit",
     href: "/conference-system/delegate-unit/",
-    image: "/images/Conference%20system/SPON%20LCM-6013DV-L%20Digital%20Conference%20Delegate%20Unit.webp",
+    image: "/assets/conference-system/products/core/SPON%20LCM-6013DV-L%20Digital%20Conference%20Delegate%20Unit.webp",
     imageAlt: "Conference system delegate unit",
     matchProduct: (product: ConferenceProduct) =>
       product.productTypes.includes("delegate-unit") && !product.productTypes.includes("package"),
@@ -375,7 +375,7 @@ const conferencePriceGuideItems = [
   {
     title: "Control Unit",
     href: "/conference-system/control-unit/",
-    image: "/images/Conference%20system/SPON%20LCM-6010%20Digital%20Conference%20System%20Central%20Unit%20front.png",
+    image: "/assets/conference-system/products/core/SPON%20LCM-6010%20Digital%20Conference%20System%20Central%20Unit%20front.png",
     imageAlt: "Conference system central control unit",
     matchProduct: (product: ConferenceProduct) =>
       product.productTypes.includes("control-unit") && !product.productTypes.includes("package"),
@@ -383,7 +383,7 @@ const conferencePriceGuideItems = [
   {
     title: "Wireless Unit",
     href: "/conference-system/wireless-conference-system/",
-    image: "/images/Conference%20system/SPON%20LCS-5252D%20Wireless%20Conference%20Delegate%20Unit.webp",
+    image: "/assets/conference-system/products/core/SPON%20LCS-5252D%20Wireless%20Conference%20Delegate%20Unit.webp",
     imageAlt: "Wireless conference system unit",
     matchProduct: (product: ConferenceProduct) =>
       product.connection === "wireless" && !product.productTypes.includes("package"),
@@ -391,7 +391,7 @@ const conferencePriceGuideItems = [
   {
     title: "DSP / Processor",
     href: "/conference-system/conference-dsp/",
-    image: "/images/Conference%20system/SPON%20SAP-F88E%208x8%20Digital%20Audio%20Processor%20with%20DSP.png",
+    image: "/assets/conference-system/products/core/SPON%20SAP-F88E%208x8%20Digital%20Audio%20Processor%20with%20DSP.png",
     imageAlt: "Conference system DSP audio processor",
     matchProduct: (product: ConferenceProduct) =>
       (product.productTypes.includes("dsp") || product.productTypes.includes("processor")) &&
@@ -400,7 +400,7 @@ const conferencePriceGuideItems = [
   {
     title: "Complete System",
     href: "/conference-system/complete-package/",
-    image: "/images/conference_system_products/bosch_products/Bosch-CCS-1000-D-Digital-Discussion-System.webp",
+    image: "/assets/conference-system/products/brands/bosch/Bosch-CCS-1000-D-Digital-Discussion-System.webp",
     imageAlt: "Complete conference system package",
     matchProduct: (product: ConferenceProduct) => product.productTypes.includes("package"),
   },
@@ -415,13 +415,13 @@ const hybridIntegrationSteps = [
   {
     title: "Conference Microphone",
     subtitle: "Wired / Wireless / Digital",
-    image: "/images/conference_system_products/spon_products/LCM-6013CV-L.webp",
+    image: "/assets/conference-system/products/brands/spon/LCM-6013CV-L.webp",
     imageAlt: "Digital conference microphone",
   },
   {
     title: "DSP / Audio Processor",
     subtitle: "Audio Processing & Control",
-    image: "/images/Conference%20system/SPON%20SAP-F88E%208x8%20Digital%20Audio%20Processor%20with%20DSP.png",
+    image: "/assets/conference-system/products/core/SPON%20SAP-F88E%208x8%20Digital%20Audio%20Processor%20with%20DSP.png",
     imageAlt: "Conference room DSP audio processor",
   },
   {
@@ -504,7 +504,7 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
     description:
       "Browse the Bosch conference products currently listed in our verified catalog for professional discussion and meeting-room communication projects.",
     support: "Product selection, BOQ preparation, installation planning, and warranty assistance.",
-    logoSrc: "/images/brands/audio/bosch-logo.svg",
+    logoSrc: "/assets/brands/audio/bosch-logo.svg",
     logoWidth: 102,
     logoHeight: 22,
     url: "/conference-system/brands/bosch/",
@@ -517,7 +517,7 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
     description:
       "Explore the TOA meeting-audio products available in our conference catalog, including compatible microphone, control, amplification, and speaker solutions.",
     support: "System compatibility guidance, product supply, installation support, and warranty assistance.",
-    logoSrc: "/images/brands/audio/toa-logo.png",
+    logoSrc: "/assets/brands/audio/toa-logo.png",
     logoWidth: 90,
     logoHeight: 27,
     url: "/conference-system/brands/toa/",
@@ -530,7 +530,7 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
     description:
       "View SPON digital and network conference products from our catalog, including control units, DSP processors, amplifiers, and meeting-room audio equipment.",
     support: "Room-based system design, BOQ preparation, installation, commissioning, and after-sales guidance.",
-    logoSrc: "/images/brands/audio/spon.svg",
+    logoSrc: "/assets/brands/audio/spon.svg",
     logoWidth: 163,
     logoHeight: 33,
     url: "/conference-system/brands/spon/",
@@ -543,7 +543,7 @@ const conferenceBrandCards: ConferenceBrandCard[] = [
     description:
       "Browse CMX wired, wireless, and paperless conference products listed in our catalog for boardrooms, council chambers, and flexible meeting spaces.",
     support: "Product selection, microphone quantity planning, installation support, and after-sales guidance.",
-    logoSrc: "/images/brands/audio/cmx-logo.png",
+    logoSrc: "/assets/brands/audio/cmx-logo.png",
     logoWidth: 95,
     logoHeight: 95,
     logoMaxHeightClassName: "max-h-9 md:max-h-10",
@@ -950,7 +950,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: socialImageUrl("/images/Conference%20system/NAC-720W.webp"),
+        url: socialImageUrl("/assets/conference-system/products/core/NAC-720W.webp"),
         width: 1200,
         height: 630,
         alt: "Conference System in Bangladesh",
@@ -961,7 +961,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: META_TITLE,
     description: META_DESCRIPTION,
-    images: [socialImageUrl("/images/Conference%20system/NAC-720W.webp")],
+    images: [socialImageUrl("/assets/conference-system/products/core/NAC-720W.webp")],
   },
 };
 
@@ -1036,7 +1036,7 @@ export default function ConferenceSystemPage() {
         aria-labelledby="conference-hero-heading"
       >
         <Image
-          src="/images/conference_landing/conference-system-hero-clear.webp"
+          src="/assets/conference-system/landing/conference-system-hero-clear.webp"
           alt="Modern Sasha Corporation conference room with tabletop microphone systems"
           width={1983}
           height={793}
@@ -1584,7 +1584,7 @@ export default function ConferenceSystemPage() {
 
           <div className="relative min-h-[230px] overflow-hidden lg:min-h-full">
             <Image
-              src="/images/conference_system_projects/project2.webp"
+              src="/assets/conference-system/projects/project2.webp"
               alt="Hybrid conference room with microphones, displays, and video meeting facilities"
               fill
               sizes="(max-width: 1023px) 100vw, 30vw"
@@ -1872,7 +1872,7 @@ export default function ConferenceSystemPage() {
       </section>
 
       <section className="relative mt-4 min-h-[250px] overflow-hidden rounded-2xl border border-[#172c53] bg-[#071936] shadow-[0_8px_28px_rgba(7,25,54,0.18)]" aria-labelledby="conference-final-cta">
-        <Image src="/images/conference_system_projects/project2.webp" alt="" fill sizes="100vw" className="object-cover object-center opacity-80" />
+        <Image src="/assets/conference-system/projects/project2.webp" alt="" fill sizes="100vw" className="object-cover object-center opacity-80" />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,25,54,0.99)_0%,rgba(7,25,54,0.96)_37%,rgba(7,25,54,0.68)_60%,rgba(7,25,54,0.18)_100%)]" aria-hidden="true" />
         <div className="relative z-10 flex min-h-[250px] max-w-[520px] flex-col justify-center px-5 py-6 sm:px-7 md:px-9">
           <h2 id="conference-final-cta" className="max-w-[390px] !text-[24px] font-black leading-[1.08] tracking-tight text-white sm:!text-[28px]">Ready to Build Your Perfect Conference Room?</h2>

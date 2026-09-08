@@ -14,7 +14,6 @@ export type DigitalPodiumItem = {
   faqs: { q: string; a: string }[];
 };
 
-const PLACEHOLDER_IMAGE = "/images/logo/digital-podium.svg";
 
 export const digitalPodiumCatalog: DigitalPodiumItem[] = [
   {
@@ -23,7 +22,7 @@ export const digitalPodiumCatalog: DigitalPodiumItem[] = [
     subtitle:
       "A practical all-in-one teacher/presenter station with PC space, microphone control and clean connectivity for daily classes and training sessions.",
     priceLabel: "Tk 1,80,000 (project basis)",
-    image: "/images/podium/Standard-Digital-Podium.webp",
+    image: "/assets/control-systems/digital-podium/products/Standard-Digital-Podium.webp",
     tags: ["Digital Podium", "Smart Classroom", "Teacher Desk", "PC + Sound"],
     cardHighlights: [
       "Built-in Windows mini PC option for daily teaching workflow (typical)",
@@ -65,7 +64,7 @@ export const digitalPodiumCatalog: DigitalPodiumItem[] = [
     subtitle:
       "A premium podium with touch control and a digital mixer workflow for higher-end classrooms, auditoriums and conference environments.",
     priceLabel: "Tk 2,50,000 (configuration dependent)",
-    image: "/images/podium/Premium-Digital-Podium.webp",
+    image: "/assets/control-systems/digital-podium/products/Premium-Digital-Podium.webp",
     tags: ["Digital Podium", "Touch Screen", "Auditorium", "Conference"],
     cardHighlights: [
       "21.5\"–27\" touch display option for annotation and session control",
@@ -107,7 +106,7 @@ export const digitalPodiumCatalog: DigitalPodiumItem[] = [
     subtitle:
       "A flexible and cost-conscious podium solution using an imported chassis with locally configured PC and integration options.",
     priceLabel: "≈ Tk 1,60,000 (configuration dependent)",
-    image: "/images/podium/OEM-Digital-Podium.webp",
+    image: "/assets/control-systems/digital-podium/products/OEM-Digital-Podium.webp",
     tags: ["OEM Podium", "Multimedia Desk", "Smart Classroom"],
     cardHighlights: [
       "Imported podium chassis with flexible local PC integration",
@@ -148,7 +147,7 @@ export const digitalPodiumCatalog: DigitalPodiumItem[] = [
     subtitle:
       "A higher-end auditorium podium designed for conference microphone workflows, recording/streaming interfaces and multi-output routing.",
     priceLabel: "≈ Tk 2,80,000 (configuration dependent)",
-    image: "/images/podium/Auditorium-Digital-Podium.webp",
+    image: "/assets/control-systems/digital-podium/products/Auditorium-Digital-Podium.webp",
     tags: ["Auditorium", "Conference", "Network Audio"],
     cardHighlights: [
       "Conference mic workflow support (chairman/delegate as required)",
@@ -188,7 +187,7 @@ export const digitalPodiumCatalog: DigitalPodiumItem[] = [
     subtitle:
       "Custom fabrication aligned with approved BOQ and drawings—suitable for government and large-institution procurement where compliance matters.",
     priceLabel: "On request (BOQ / tender wise)",
-    image: "/images/podium/Tender-Based-Custom.webp",
+    image: "/assets/control-systems/digital-podium/products/Tender-Based-Custom.webp",
     tags: ["BOQ", "Tender", "Custom Fabrication"],
     cardHighlights: [
       "Fabricated to match approved BOQ and drawings",
@@ -229,7 +228,7 @@ export const digitalPodiumCatalog: DigitalPodiumItem[] = [
     subtitle:
       "A smart classroom-focused podium designed for clean AV control and integration with projector or interactive flat panel setups.",
     priceLabel: "Tk 2,20,000 (project basis)",
-    image: "/images/podium/Smart-Classroom-Digital-Podium.webp",
+    image: "/assets/control-systems/digital-podium/products/Smart-Classroom-Digital-Podium.webp",
     tags: ["Smart Classroom", "Projector", "IFP", "AV Control"],
     cardHighlights: [
       "Designed for projector or interactive flat panel (IFP) integration",

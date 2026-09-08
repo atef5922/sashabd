@@ -119,8 +119,8 @@ test("Known reused model photos are disclosed rather than presented as exact pro
 test("Support and final CTA use decorative backgrounds with scoped, responsive content panels", () => {
   assert.match(source, /id=\{`\$\{category\}-applications`\} tone="dark" backgroundSrc=\{heroArt.src\}/);
   assert.match(source, /className=\{styles.sectionBackdrop\} aria-hidden="true"><Image src=\{src\} alt="" fill/);
-  assert.match(source, /SectionBackdrop src="\/images\/project-page\/Project-hero.webp"/);
-  assert.ok(existsSync(path.join(root, "public/images/project-page/Project-hero.webp")));
+  assert.match(source, /SectionBackdrop src="\/assets\/projects\/Project-hero.webp"/);
+  assert.ok(existsSync(path.join(root, "public/assets/projects/Project-hero.webp")));
   assert.match(source, /className=\{styles.ctaActionPanel\}/);
   assert.match(css, /\.imageSection \{[^}]*isolation: isolate/);
   assert.match(css, /\.contextGrid article \{[^}]*border: 1px solid[^}]*border-radius:/);

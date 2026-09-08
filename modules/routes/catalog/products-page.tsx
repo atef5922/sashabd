@@ -1007,36 +1007,36 @@ function ProductsPageContent({
   };
 
   const ledTrustedInstitutions: Array<{ name: string; logo: string; href: string }> = [
-    { name: "Ministry of Health and Family Welfare", logo: "/images/logo/Health-and-family-welfare.webp", href: "https://mohfw.gov.bd/" },
-    { name: "National Board of Revenue, Bangladesh", logo: "/images/logo/nbr.webp", href: "https://nbr.portal.gov.bd/" },
-    { name: "Bangladesh Election Commission", logo: "/images/logo/ecs.webp", href: "https://ecs.gov.bd/" },
-    { name: "Department of Immigration & Passports", logo: "/images/logo/passport.webp", href: "https://dip.gov.bd/" },
-    { name: "Bangladesh Public Service Commission", logo: "/images/logo/bpsc.webp", href: "https://bpsc.gov.bd/" },
-    { name: "Anti-Corruption Commission (ACC)", logo: "/images/logo/acc.webp", href: "https://acc.org.bd/" },
-    { name: "Dhaka North City Corporation", logo: "/images/logo/dncc.webp", href: "https://dncc.gov.bd/" },
-    { name: "Dhaka South City Corporation", logo: "/images/logo/dscc.webp", href: "https://dscc.gov.bd/" },
-    { name: "Sonali Bank PLC", logo: "/images/logo/sonali-bank.webp", href: "https://www.sonalibank.com.bd/" },
-    { name: "Bangladesh Small and Cottage Industries Corporation (BSCIC)", logo: "/images/logo/BSCIC.webp", href: "https://bscic.gov.bd/" },
-    { name: "Fire Service and Civil Defence Bangladesh", logo: "/images/logo/fire-service.webp", href: "https://fireservice.gov.bd/" },
-    { name: "University Grants Commission of Bangladesh", logo: "/images/logo/ugc.webp", href: "https://ugc.gov.bd/" },
-    { name: "Bangladesh Ansar and Village Defence Party", logo: "/images/logo/ansar.webp", href: "https://ansarvdp.gov.bd/" },
-    { name: "Bangladesh House Building Finance Corporation", logo: "/images/logo/bhbfc-logo-final.webp", href: "https://bhbfc.gov.bd/" },
-    { name: "Dhaka Electric Supply Company Limited (DESCO)", logo: "/images/logo/bpatc.webp", href: "https://bpatc.gov.bd/" },
+    { name: "Ministry of Health and Family Welfare", logo: "/assets/clients/organizations/Health-and-family-welfare.webp", href: "https://mohfw.gov.bd/" },
+    { name: "National Board of Revenue, Bangladesh", logo: "/assets/clients/organizations/nbr.webp", href: "https://nbr.portal.gov.bd/" },
+    { name: "Bangladesh Election Commission", logo: "/assets/clients/organizations/ecs.webp", href: "https://ecs.gov.bd/" },
+    { name: "Department of Immigration & Passports", logo: "/assets/clients/organizations/passport.webp", href: "https://dip.gov.bd/" },
+    { name: "Bangladesh Public Service Commission", logo: "/assets/clients/organizations/bpsc.webp", href: "https://bpsc.gov.bd/" },
+    { name: "Anti-Corruption Commission (ACC)", logo: "/assets/clients/organizations/acc.webp", href: "https://acc.org.bd/" },
+    { name: "Dhaka North City Corporation", logo: "/assets/clients/organizations/dncc.webp", href: "https://dncc.gov.bd/" },
+    { name: "Dhaka South City Corporation", logo: "/assets/clients/organizations/dscc.webp", href: "https://dscc.gov.bd/" },
+    { name: "Sonali Bank PLC", logo: "/assets/clients/organizations/sonali-bank.webp", href: "https://www.sonalibank.com.bd/" },
+    { name: "Bangladesh Small and Cottage Industries Corporation (BSCIC)", logo: "/assets/clients/organizations/BSCIC.webp", href: "https://bscic.gov.bd/" },
+    { name: "Fire Service and Civil Defence Bangladesh", logo: "/assets/clients/organizations/fire-service.webp", href: "https://fireservice.gov.bd/" },
+    { name: "University Grants Commission of Bangladesh", logo: "/assets/clients/organizations/ugc.webp", href: "https://ugc.gov.bd/" },
+    { name: "Bangladesh Ansar and Village Defence Party", logo: "/assets/clients/organizations/ansar.webp", href: "https://ansarvdp.gov.bd/" },
+    { name: "Bangladesh House Building Finance Corporation", logo: "/assets/clients/organizations/bhbfc-logo-final.webp", href: "https://bhbfc.gov.bd/" },
+    { name: "Dhaka Electric Supply Company Limited (DESCO)", logo: "/assets/clients/organizations/bpatc.webp", href: "https://bpatc.gov.bd/" },
   ];
   const trustedTechPartnerLogos: Array<{ name: string; src: string; href?: string }> = [
-    { name: "Absen", src: "/images/logo/absen.webp", href: "https://www.absen.com/" },
-    { name: "Unilumin", src: "/images/logo/unilumin.webp", href: "https://www.unilumin.com/" },
-    { name: "Leyard", src: "/images/logo/leyard.webp", href: "https://www.leyardhk.com/" },
-    { name: "LianTronics", src: "/images/logo/liantronics.png", href: "https://www.liantronics.com/" },
-    { name: "AOTO Electronics", src: "/images/logo/aoto-electronics.webp", href: "https://en.aoto.com/" },
-    { name: "G-Energy", src: "/images/logo/g-energy.webp" },
-    { name: "Lampro", src: "/images/logo/lampro.webp", href: "https://www.lampro.net/" },
-    { name: "NovaStar", src: "/images/logo/novastar.webp", href: "https://www.novastar.tech/" },
-    { name: "Huidu", src: "/images/brands/huidu.webp", href: "https://www.huidu.cn/" },
-    { name: "Colorlight", src: "/images/logo/colorlight.webp", href: "https://en.colorlightinside.com/" },
-    { name: "Mean Well", src: "/images/logo/mean-well.webp", href: "https://www.meanwell.com/" },
-    { name: "Mugnee Multiple Limited", src: "/images/logo/mugnee.webp", href: "https://www.mugnee.com/" },
-    { name: "Renex Digital", src: "/images/brands/renex-exact.webp", href: "https://renex.com.bd/" },
+    { name: "Absen", src: "/assets/brands/led-display/absen.webp", href: "https://www.absen.com/" },
+    { name: "Unilumin", src: "/assets/brands/led-display/unilumin.webp", href: "https://www.unilumin.com/" },
+    { name: "Leyard", src: "/assets/brands/led-display/leyard.webp", href: "https://www.leyardhk.com/" },
+    { name: "LianTronics", src: "/assets/brands/led-display/liantronics.png", href: "https://www.liantronics.com/" },
+    { name: "AOTO Electronics", src: "/assets/brands/led-display/aoto-electronics.webp", href: "https://en.aoto.com/" },
+    { name: "G-Energy", src: "/assets/brands/led-display/g-energy.webp" },
+    { name: "Lampro", src: "/assets/brands/led-display/lampro.webp", href: "https://www.lampro.net/" },
+    { name: "NovaStar", src: "/assets/brands/led-display/novastar.webp", href: "https://www.novastar.tech/" },
+    { name: "Huidu", src: "/assets/brands/led-display/huidu.webp", href: "https://www.huidu.cn/" },
+    { name: "Colorlight", src: "/assets/brands/led-display/colorlight.webp", href: "https://en.colorlightinside.com/" },
+    { name: "Mean Well", src: "/assets/brands/led-display/mean-well.webp", href: "https://www.meanwell.com/" },
+    { name: "Mugnee Multiple Limited", src: "/assets/brands/led-display/mugnee.webp", href: "https://www.mugnee.com/" },
+    { name: "Renex Digital", src: "/assets/brands/led-display/renex-exact.webp", href: "https://renex.com.bd/" },
   ];
   const visibleTrustedTechPartnerLogos = trustedTechPartnerLogos.filter(
     (brand) => !["Absen", "Unilumin", "Leyard"].includes(brand.name)
@@ -2461,9 +2461,9 @@ function ProductsPageContent({
                     <h3 className="text-[11px] font-extrabold sm:text-xs">Complete LED System</h3>
                     <div className="mt-3 grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-1 sm:gap-1.5">
                       {[
-                        ["/images/led hero/indoor-led-hero.webp", "Video Source"],
-                        ["/images/controller/Huidu-HD-VP820-LED-Video-Processor.webp", "Video Processor"],
-                        ["/images/controller/Huidu-HD-A5L-LED-Controller.webp", "LED Controller"],
+                        ["/assets/led-display/heroes/indoor-led-hero.webp", "Video Source"],
+                        ["/assets/led-display/controllers/Huidu-HD-VP820-LED-Video-Processor.webp", "Video Processor"],
+                        ["/assets/led-display/controllers/Huidu-HD-A5L-LED-Controller.webp", "LED Controller"],
                       ].map(([src, label], index) => (
                         <Fragment key={label}>
                           <div className="min-w-0 text-center">
@@ -2480,9 +2480,9 @@ function ProductsPageContent({
                     <div className="my-2 flex justify-center" aria-hidden="true"><span className="h-3 border-l border-dashed border-cyan-400/80" /></div>
                     <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-center gap-1 sm:gap-1.5">
                       {[
-                        ["/images/receiving-card/NovaStar-MRV336-Receiving-Card.webp", "Receiving Cards"],
-                        ["/images/indoor/P2-Indoor-LED-Display.webp", "LED Modules"],
-                        ["/images/led hero/indoor-led-hero.webp", "LED Screen"],
+                        ["/assets/led-display/receiving-cards/NovaStar-MRV336-Receiving-Card.webp", "Receiving Cards"],
+                        ["/assets/led-display/indoor/P2-Indoor-LED-Display.webp", "LED Modules"],
+                        ["/assets/led-display/heroes/indoor-led-hero.webp", "LED Screen"],
                       ].map(([src, label], index) => (
                         <Fragment key={label}>
                           <div className="min-w-0 text-center">
@@ -2500,7 +2500,7 @@ function ProductsPageContent({
                       <div className="flex items-center gap-1.5 text-[8px] font-bold text-amber-300 sm:text-[9px]"><UiIcon name="power" className="h-4 w-4" />Power Input</div>
                       <span className="text-cyan-400" aria-hidden="true">→</span>
                       <div className="flex items-center gap-2">
-                        <div className="relative h-9 w-16 overflow-hidden rounded bg-white/95"><Image src="/images/power-supply/G-Energy-5V-40A-LED-Display-Power-Supply.webp" alt="" fill sizes="64px" className="object-contain p-1" /></div>
+                        <div className="relative h-9 w-16 overflow-hidden rounded bg-white/95"><Image src="/assets/led-display/power-supplies/G-Energy-5V-40A-LED-Display-Power-Supply.webp" alt="" fill sizes="64px" className="object-contain p-1" /></div>
                         <span className="text-[8px] font-bold text-blue-50 sm:text-[9px]">Power Supply (SMPS)</span>
                       </div>
                     </div>
@@ -2605,6 +2605,12 @@ function ProductsPageContent({
                   <Link prefetch={false} href="/contact/" className="rounded-xl bg-[#071a42] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0b2c67]">
                     Request a Free Quotation -&gt;
                   </Link>
+                  <Link prefetch={false} href="/blog/led-display-price-in-bangladesh-complete-buying-guide/" className="rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-800 transition hover:border-[#1458e5] hover:text-[#1458e5]">
+                    LED Price Buying Guide
+                  </Link>
+                  <Link prefetch={false} href="/services-support/" className="rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-800 transition hover:border-[#1458e5] hover:text-[#1458e5]">
+                    Installation &amp; Support
+                  </Link>
                 </div>
               </div>
 
@@ -2648,7 +2654,7 @@ function ProductsPageContent({
                 {[
                   {
                     title: "Indoor LED Video Wall Installation",
-                    image: "/images/project-page/project-indoor-wall.webp",
+                    image: "/assets/projects/project-indoor-wall.webp",
                     alt: "Indoor LED video wall installation in a corporate office",
                     icon: "display",
                     color: "#1458e5",
@@ -2657,7 +2663,7 @@ function ProductsPageContent({
                   },
                   {
                     title: "Outdoor LED Billboard Project",
-                    image: "/images/blog/Chattogram-project.webp",
+                    image: "/assets/blog/Chattogram-project.webp",
                     alt: "Outdoor LED billboard installation in Chattogram",
                     icon: "solutions",
                     color: "#0aa65a",
@@ -2666,7 +2672,7 @@ function ProductsPageContent({
                   },
                   {
                     title: "Rental LED for Concert Event",
-                    image: "/images/project-page/project-rental.webp",
+                    image: "/assets/projects/project-rental.webp",
                     alt: "Rental LED screen setup for a concert event",
                     icon: "module",
                     color: "#7138e8",
@@ -3041,7 +3047,7 @@ function ProductsPageContent({
                 {
                   title: "SMD",
                   subtitle: "Standard LED",
-                  image: "/images/indoor/P2.5-Indoor-LED-Display.webp",
+                  image: "/assets/led-display/indoor/P2.5-Indoor-LED-Display.webp",
                   alt: "SMD indoor LED display technology",
                   icon: "module",
                   benefits: ["Cost-effective solution", "Wide viewing angle", "Indoor & outdoor use"],
@@ -3050,7 +3056,7 @@ function ProductsPageContent({
                 {
                   title: "GOB",
                   subtitle: "Glue on Board",
-                  image: "/images/outdoor/P5-Outdoor-LED-Display.webp",
+                  image: "/assets/led-display/outdoor/P5-Outdoor-LED-Display.webp",
                   alt: "GOB protected LED display technology",
                   icon: "shield",
                   benefits: ["Better surface protection", "Water & dust resistant", "High durability"],
@@ -3059,7 +3065,7 @@ function ProductsPageContent({
                 {
                   title: "COB",
                   subtitle: "Chip on Board",
-                  image: "/images/indoor/P1.53-Indoor-LED-Display.webp",
+                  image: "/assets/led-display/indoor/P1.53-Indoor-LED-Display.webp",
                   alt: "COB fine-pitch LED display technology",
                   icon: "chip",
                   benefits: ["Superior visual performance", "Better heat dissipation", "Ultra-fine pixel pitch"],
@@ -3068,7 +3074,7 @@ function ProductsPageContent({
                 {
                   title: "Micro LED",
                   subtitle: "Next Generation",
-                  image: "/images/led hero/indoor-led-hero.webp",
+                  image: "/assets/led-display/heroes/indoor-led-hero.webp",
                   alt: "Micro LED next-generation display technology",
                   icon: "module",
                   benefits: ["Ultra-high brightness", "Outstanding contrast", "Premium display solution"],
@@ -3370,7 +3376,7 @@ function ProductsPageContent({
             <div className="relative overflow-hidden bg-[#06183b]">
               <div className="absolute inset-y-0 right-0 hidden w-1/3 md:block" aria-hidden="true">
                 <Image
-                  src="/images/led hero/indoor-led-hero.webp"
+                  src="/assets/led-display/heroes/indoor-led-hero.webp"
                   alt=""
                   fill
                   sizes="32vw"

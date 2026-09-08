@@ -93,7 +93,7 @@ export default function ContactPage() {
     <main className={styles.page}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(contactStructuredData) }} />
       <section className={styles.hero}>
-        <Image src="/images/contact/contact-office-reception.png" alt="Modern corporate reception prepared for integrated technology projects" fill priority sizes="100vw" className={styles.heroImage} />
+        <Image src="/assets/contact/contact-office-reception.png" alt="Modern corporate reception prepared for integrated technology projects" fill priority sizes="100vw" className={styles.heroImage} />
         <div className={styles.heroVeil} />
         <div className={styles.shell}>
           <div className={styles.heroContent}>
@@ -102,7 +102,7 @@ export default function ContactPage() {
             <p>Tell us what you need — our team can help with product selection, BOQ, site survey, installation and technical support.</p>
             <div className={styles.heroActions}>
               <a href={whatsappHref} target="_blank" rel="noreferrer" className={styles.primaryButton}><Icon name="whatsapp" size={18} /> WhatsApp Us</a>
-              <a href={`tel:${siteConfig.phone}`} className={styles.secondaryButton}><Icon name="phone" size={18} /> Call Sales</a>
+              <a href={`tel:${siteConfig.phone}`} className={styles.secondaryButton}><Icon name="phone" size={18} /> Call Sales &amp; Support</a>
               <a href={`mailto:${emailAddress}`} className={styles.secondaryButton}><Icon name="mail" size={18} /> Email Us</a>
             </div>
             <div className={styles.heroBenefits}>
@@ -112,7 +112,7 @@ export default function ContactPage() {
             </div>
           </div>
           <div className={styles.heroBrand} aria-label="Sasha Corporation">
-            <Image src="/sasha-corporation-final-l.webp" alt="Sasha Corporation" width={240} height={110} />
+            <Image src="/assets/brand/sasha/sasha-corporation-final-l.webp" alt="Sasha Corporation" width={240} height={110} />
           </div>
         </div>
       </section>
@@ -165,7 +165,7 @@ export default function ContactPage() {
             <a href={mapOpenUrl} target="_blank" rel="noreferrer" className={styles.mapButton}><Icon name="map" size={18} /> Open in Google Maps <Icon name="arrow" size={17} /></a>
           </div>
           <div className={styles.officeImage}>
-            <Image src="/images/contact/contact-office-reception.png" alt="Sasha Corporation office reception" fill sizes="(max-width: 900px) 100vw, 300px" />
+            <Image src="/assets/contact/contact-office-reception.png" alt="Sasha Corporation office reception" fill sizes="(max-width: 900px) 100vw, 300px" />
           </div>
         </div>
       </section>

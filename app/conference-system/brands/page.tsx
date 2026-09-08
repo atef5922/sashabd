@@ -37,7 +37,7 @@ export default function ConferenceBrandsPage() {
     >
       <section className="relative left-1/2 right-1/2 isolate -mx-[50vw] min-h-[520px] w-screen overflow-hidden border-0 bg-[#f7f9fc] shadow-none sm:min-h-[460px] lg:min-h-[clamp(25rem,30vw,29rem)]" aria-labelledby="conference-brands-hero-heading">
         <Image
-          src="/images/conference_landing/hero_banner.webp"
+          src="/assets/conference-system/landing/hero_banner.webp"
           alt="Professional conference room with tabletop discussion microphones"
           fill
           priority
@@ -165,7 +165,7 @@ export default function ConferenceBrandsPage() {
       </section>
 
       <section className="relative mt-4 min-h-[250px] overflow-hidden rounded-2xl border border-[#172c53] bg-[#071936] shadow-[0_8px_28px_rgba(7,25,54,0.18)]">
-        <Image src="/images/conference_system_projects/project2.webp" alt="" fill sizes="100vw" className="object-cover object-center opacity-80" />
+        <Image src="/assets/conference-system/projects/project2.webp" alt="" fill sizes="100vw" className="object-cover object-center opacity-80" />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,25,54,0.99)_0%,rgba(7,25,54,0.96)_37%,rgba(7,25,54,0.68)_60%,rgba(7,25,54,0.18)_100%)]" aria-hidden="true" />
         <div className="relative z-10 flex min-h-[250px] max-w-[560px] flex-col justify-center px-5 py-6 sm:px-7 md:px-9">
           <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-orange-400">Project support</p>

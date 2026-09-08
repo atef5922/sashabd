@@ -129,7 +129,7 @@ test("IFP size guide groups distance, screen size and room guidance without chan
 });
 
 test("IFP generated hero is separate from catalog images and disclosed as a concept", () => {
-  assert.ok(existsSync(path.join(root, "public/images/interactive-flat-panel/ifp-collaboration-hero.webp")));
+  assert.ok(existsSync(path.join(root, "public/assets/control-systems/interactive-flat-panel/landing/ifp-collaboration-hero.webp")));
   assert.match(source, /Illustrative room concept/);
   assert.match(source, /fill priority sizes=/);
   assert.match(source, /target="_blank" rel="noopener noreferrer"/);

@@ -1,4 +1,4 @@
-export const heroImage = "/images/digital -podium-hero.webp";
+export const heroImage = "/assets/control-systems/digital-podium/digital-podium-hero.webp";
 
 export const modelLabels = ["Standard", "Interactive Touch", "OEM / Multimedia", "Auditorium", "Custom / Tender", "Smart Classroom"] as const;
 

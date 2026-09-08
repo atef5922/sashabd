@@ -106,7 +106,7 @@ export const outdoorCatalog: ProductItem[] = [
     title: "P2.5 Outdoor LED Display Module",
     subtitle:
       "High-clarity outdoor module for close-to-mid viewing - premium signage, showroom facade and roadside brand screens.",
-    image: "/images/outdoor/P2.5-Outdoor-LED-Display.webp",
+    image: "/assets/led-display/outdoor/P2.5-Outdoor-LED-Display.webp",
 
     cardPrice: getLedDisplayCardPrice("p2-5-outdoor-led-display-module"),
 
@@ -144,7 +144,7 @@ export const outdoorCatalog: ProductItem[] = [
     title: "P3 Outdoor LED Display Module",
     subtitle:
       "Balanced clarity and cost - popular for outdoor billboards, roadside advertising and large shop signage.",
-    image: "/images/outdoor/P3-Outdoor-LED-Display.webp",
+    image: "/assets/led-display/outdoor/P3-Outdoor-LED-Display.webp",
 
     cardPrice: getLedDisplayCardPrice("p3-outdoor-led-display-module"),
 
@@ -176,7 +176,7 @@ export const outdoorCatalog: ProductItem[] = [
     title: "P3.076 Outdoor LED Display Module",
     subtitle:
       "Higher resolution outdoor option - better text/logo clarity for close viewing premium signage.",
-    image: "/images/outdoor/P3-076-Outdoor-LED-Display.webp",
+    image: "/assets/led-display/outdoor/P3-076-Outdoor-LED-Display.webp",
 
     cardPrice: getLedDisplayCardPrice("p3-076-outdoor-led-display-module"),
 
@@ -207,7 +207,7 @@ export const outdoorCatalog: ProductItem[] = [
     slug: "p4-outdoor-led-display",
     title: "P4 Outdoor LED Display Module",
     subtitle: "High brightness outdoor signage & billboard solution.",
-    image: "/images/outdoor/P4-Outdoor-LED-Display.webp",
+    image: "/assets/led-display/outdoor/P4-Outdoor-LED-Display.webp",
 
     cardPrice: getLedDisplayCardPrice("p4-outdoor-led-display"),
 
@@ -241,7 +241,7 @@ export const outdoorCatalog: ProductItem[] = [
     slug: "p5-outdoor-led-display",
     title: "P5 Outdoor LED Display Module",
     subtitle: "Budget-friendly outdoor LED for signage & medium-distance viewing.",
-    image: "/images/outdoor/P5-Outdoor-LED-Display.webp",
+    image: "/assets/led-display/outdoor/P5-Outdoor-LED-Display.webp",
 
     cardPrice: getLedDisplayCardPrice("p5-outdoor-led-display"),
 
@@ -276,7 +276,7 @@ export const outdoorCatalog: ProductItem[] = [
     slug: "p6-outdoor-led-display",
     title: "P6 Outdoor LED Display Module",
     subtitle: "Best value for large outdoor billboards with long-distance visibility.",
-    image: "/images/outdoor/P6-Outdoor-LED-Display.webp",
+    image: "/assets/led-display/outdoor/P6-Outdoor-LED-Display.webp",
 
     cardPrice: getLedDisplayCardPrice("p6-outdoor-led-display"),
 
@@ -312,7 +312,7 @@ export const outdoorCatalog: ProductItem[] = [
     cardShort:
       "Professional outdoor LED display solution for commercial branding, roadside visibility, showroom facades, and high-impact digital advertising across Bangladesh.",
     pitchLabel: "P6",
-    image: "/images/outdoor/Premium Quality Outdoor LED Display.webp",
+    image: "/assets/led-display/outdoor/Premium Quality Outdoor LED Display.webp",
 
     cardPrice: getLedDisplayCardPrice("premium-quality-outdoor-led-display"),
 
@@ -373,7 +373,7 @@ export const outdoorCatalog: ProductItem[] = [
     title: "P6.67 Outdoor LED Display Module",
     subtitle:
       "Standard 320x160mm module size for large outdoor displays - ideal for billboards and far viewing installations.",
-    image: "/images/outdoor/P6.67-Outdoor-LED-Display.webp",
+    image: "/assets/led-display/outdoor/P6.67-Outdoor-LED-Display.webp",
 
     cardPrice: getLedDisplayCardPrice("p6-67-outdoor-led-display-module-320x160mm"),
 
@@ -406,7 +406,7 @@ export const outdoorCatalog: ProductItem[] = [
     title: "P8 Outdoor LED Display Module",
     subtitle:
       "Best for far viewing - ideal for big billboards and large public screens where content is bold and readable.",
-    image: "/images/outdoor/P8-Outdoor-LED-Display.webp",
+    image: "/assets/led-display/outdoor/P8-Outdoor-LED-Display.webp",
 
     cardPrice: getLedDisplayCardPrice("p8-outdoor-led-display-module"),
 
@@ -439,7 +439,7 @@ export const outdoorCatalog: ProductItem[] = [
     title: "P10 Outdoor LED Display Module",
     subtitle:
       "Classic pitch for very far viewing - budget-friendly large outdoor screens and big billboards.",
-    image: "/images/outdoor/P10-Outdoor-LED-Display.webp",
+    image: "/assets/led-display/outdoor/P10-Outdoor-LED-Display.webp",
 
     cardPrice: getLedDisplayCardPrice("p10-outdoor-led-display-module"),
 
@@ -482,7 +482,7 @@ export const rentalCatalog: ProductItem[] = [
     slug: "p2-6-rental-led-display",
     title: "P2.6 Rental LED Display",
     subtitle: "Sharp visuals for stage & event rental with faster setup cabinets.",
-    image: "/images/rental/P2.6-Rental-LED-Display.webp",
+    image: "/assets/led-display/rental/P2.6-Rental-LED-Display.webp",
     cardPrice: getLedDisplayCardPrice("p2-6-rental-led-display"),
 
     quickFeatures: [
@@ -508,7 +508,7 @@ export const rentalCatalog: ProductItem[] = [
     slug: "p3-rental-led-display",
     title: "P3 Rental LED Display",
     subtitle: "Fast setup LED display for stage & event rental.",
-    image: "/images/rental/P3-Rental-LED-Display.webp",
+    image: "/assets/led-display/rental/P3-Rental-LED-Display.webp",
     cardPrice: getLedDisplayCardPrice("p3-rental-led-display"),
 
     quickFeatures: [
@@ -534,7 +534,7 @@ export const rentalCatalog: ProductItem[] = [
     slug: "p3-91-rental-led-display",
     title: "P3.91 Rental LED Display",
     subtitle: "250x250mm rental LED module with SMD1921 lamp, 64x64 resolution, 4500 cd/m2 brightness, and 7680Hz refresh support.",
-    image: "/images/rental/P3.91-Rental-LED-Display.webp",
+    image: "/assets/led-display/rental/P3.91-Rental-LED-Display.webp",
 
     cardPrice: getLedDisplayCardPrice("p3-91-rental-led-display"),
 
@@ -564,7 +564,7 @@ export const rentalCatalog: ProductItem[] = [
     slug: "p4-81-rental-led-display",
     title: "P4.81 Rental LED Display",
     subtitle: "Cost-effective for large event LED walls - best for medium-to-far viewing.",
-    image: "/images/rental/P4.81-Rental-LED-Display.webp",
+    image: "/assets/led-display/rental/P4.81-Rental-LED-Display.webp",
 
     cardPrice: getLedDisplayCardPrice("p4-81-rental-led-display"),
 
@@ -614,7 +614,7 @@ export const indoorCatalog: ProductItem[] = [
     pitchLabel: "P1.25",
     cardPrice: getLedDisplayCardPrice("p1-25-indoor-led-display"),
     useCaseTag: "Control Room",
-    image: "/images/indoor/P1.25-Indoor-LED-Display.webp",
+    image: "/assets/led-display/indoor/P1.25-Indoor-LED-Display.webp",
 
     quickFeatures: [
       "320x160mm universal module size",
@@ -669,7 +669,7 @@ export const indoorCatalog: ProductItem[] = [
     pitchLabel: "P1.53",
     cardPrice: getLedDisplayCardPrice("p1-53-indoor-led-display"),
     useCaseTag: "Studio",
-    image: "/images/indoor/P1.53-Indoor-LED-Display.webp",
+    image: "/assets/led-display/indoor/P1.53-Indoor-LED-Display.webp",
 
     quickFeatures: [
       "320x160mm universal module size",
@@ -740,7 +740,7 @@ export const indoorCatalog: ProductItem[] = [
     pitchLabel: "P1.667",
     cardPrice: getLedDisplayCardPrice("p1-667-indoor-led-display"),
     useCaseTag: "Showroom",
-    image: "/images/indoor/P1.667mm-Indoor-LED-Display.webp",
+    image: "/assets/led-display/indoor/P1.667mm-Indoor-LED-Display.webp",
 
     quickFeatures: ["Premium clarity", "Strong grayscale", "Camera-friendly refresh option", "Balanced fine pitch"],
     bestFor: ["Boardroom", "Showroom", "Control room", "TV studio"],
@@ -768,7 +768,7 @@ export const indoorCatalog: ProductItem[] = [
     pitchLabel: "P1.86",
     cardPrice: getLedDisplayCardPrice("p1-86-indoor-led-display"),
     useCaseTag: "Conference",
-    image: "/images/indoor/P1.86-Indoor-LED-Display.webp",
+    image: "/assets/led-display/indoor/P1.86-Indoor-LED-Display.webp",
 
     quickFeatures: [
       "320x160mm universal module size",
@@ -841,7 +841,7 @@ export const indoorCatalog: ProductItem[] = [
     pitchLabel: "P2.0",
     cardPrice: getLedDisplayCardPrice("p2-indoor-led-display"),
     useCaseTag: "Showroom",
-    image: "/images/indoor/P2-Indoor-LED-Display.webp",
+    image: "/assets/led-display/indoor/P2-Indoor-LED-Display.webp",
 
     quickFeatures: [
       "320x160mm universal module size",
@@ -914,7 +914,7 @@ export const indoorCatalog: ProductItem[] = [
     pitchLabel: "P2.5",
     cardPrice: getLedDisplayCardPrice("p2-5-indoor-led-display"),
     useCaseTag: "Showroom",
-    image: "/images/indoor/P2.5-Indoor-LED-Display.webp",
+    image: "/assets/led-display/indoor/P2.5-Indoor-LED-Display.webp",
 
     quickFeatures: [
       "320x160mm universal module size",
@@ -987,7 +987,7 @@ export const indoorCatalog: ProductItem[] = [
     pitchLabel: "P3.0",
     cardPrice: getLedDisplayCardPrice("p3-indoor-led-display"),
     useCaseTag: "Retail",
-    image: "/images/indoor/P3-Indoor-LED-Display.webp",
+    image: "/assets/led-display/indoor/P3-Indoor-LED-Display.webp",
 
     quickFeatures: [
       "Bottom case texture design for stronger assembly",
@@ -1059,7 +1059,7 @@ export const indoorCatalog: ProductItem[] = [
     pitchLabel: "P3.076",
     cardPrice: getLedDisplayCardPrice("p3-076-indoor-led-display"),
     useCaseTag: "Conference",
-    image: "/images/indoor/P3.076-Indoor-LED-Display.webp",
+    image: "/assets/led-display/indoor/P3.076-Indoor-LED-Display.webp",
 
     quickFeatures: [
       "320x160mm universal module size",
@@ -1132,7 +1132,7 @@ export const indoorCatalog: ProductItem[] = [
     pitchLabel: "P4",
     cardPrice: getLedDisplayCardPrice("p4-indoor-led-display-module"),
     useCaseTag: "Retail",
-    image: "/images/indoor/P4 Indoor LED Display.webp",
+    image: "/assets/led-display/indoor/P4 Indoor LED Display.webp",
 
     quickFeatures: [
       "Balanced indoor clarity for medium viewing distance",
@@ -1303,7 +1303,7 @@ export const receivingCardCatalog: readonly ReceivingCardProduct[] = [
     title: "R-712 Receiving Card",
     subtitle:
       "High-performance receiving card for synchronous & asynchronous LED control systems. Built-in HUB75E ports for faster installation.",
-    image: "/images/receiving-card/R-712-Receiving-Card.webp",
+    image: "/assets/led-display/receiving-cards/R-712-Receiving-Card.webp",
     cardPrice: "Tk 2,350.00 (per card, offer & project size)",
     badge: "HUB75E - 12 Ports",
     quickFeatures: [
@@ -1366,7 +1366,7 @@ export const receivingCardCatalog: readonly ReceivingCardProduct[] = [
     title: "R-732 Receiving Card",
     subtitle:
       "Advanced receiving card for fine-pitch & large LED video walls. Reliable transmission with flexible pixel mapping and cascade support.",
-    image: "/images/receiving-card/R-732-Receiving-Card.webp",
+    image: "/assets/led-display/receiving-cards/R-732-Receiving-Card.webp",
     cardPrice: "Tk 3,000.00 (per card, offer & project size)",
     badge: "Advanced Pixel Control",
     quickFeatures: [
@@ -1424,7 +1424,7 @@ export const receivingCardCatalog: readonly ReceivingCardProduct[] = [
     title: "Huidu HD-R716 Receiving Card",
     subtitle:
       "High-end receiving card for ultra-fine pixel pitch LED displays with 16 HUB75E ports, smart diagnostics, and dual Gigabit Ethernet for stable data transmission.",
-    image: "/images/receiving-card/Huidu-HD-R716-Receiving-Card.webp",
+    image: "/assets/led-display/receiving-cards/Huidu-HD-R716-Receiving-Card.webp",
     cardPrice: "Tk 4,500.00 (per card, offer & project size)",
     badge: "16 HUB75E - High Pixel",
     quickFeatures: [
@@ -1487,7 +1487,7 @@ export const receivingCardCatalog: readonly ReceivingCardProduct[] = [
     title: "Huidu HD-R516 Receiving Card",
     subtitle:
       "Smart receiving card for full-color LED video screens with 16 HUB75E ports and dual Gigabit Ethernet for stable transmission. Supports smart settings and built-in screen test.",
-    image: "/images/receiving-card/Huidu-HD-R516-Receiving-Card.webp",
+    image: "/assets/led-display/receiving-cards/Huidu-HD-R516-Receiving-Card.webp",
     badge: "16 HUB75E - Smart Setup",
     quickFeatures: [
       "16 HUB75E ports for cabinet module connectivity",
@@ -1548,7 +1548,7 @@ export const receivingCardCatalog: readonly ReceivingCardProduct[] = [
     title: "NovaStar MRV336 Receiving Card",
     subtitle:
       "Professional receiving card for indoor, outdoor, and rental LED cabinets with practical HUB mapping support, stable data distribution, and cleaner commissioning workflow.",
-    image: "/images/receiving-card/R-732-Receiving-Card.webp",
+    image: "/assets/led-display/receiving-cards/R-732-Receiving-Card.webp",
     cardPrice: "Tk 3,200.00 (per card, offer & project size)",
     badge: "NovaStar - Cabinet Mapping",
     quickFeatures: [
@@ -1607,7 +1607,7 @@ export const receivingCardCatalog: readonly ReceivingCardProduct[] = [
     title: "Colorlight 5A-75E Receiving Card",
     subtitle:
       "Reliable full-color LED receiving card with HUB75E-focused cabinet connectivity, practical mapping support, and stable day-to-day performance for signage, video wall, and event screens.",
-    image: "/images/receiving-card/R-712-Receiving-Card.webp",
+    image: "/assets/led-display/receiving-cards/R-712-Receiving-Card.webp",
     cardPrice: "Tk 2,950.00 (per card, offer & project size)",
     badge: "Colorlight - HUB75E",
     quickFeatures: [
@@ -1688,7 +1688,6 @@ export type LedAccessoryProduct = {
   tags: readonly string[];
 };
 
-const LED_ACCESSORY_PLACEHOLDER_IMAGE = "/images/placeholders/led-accessory.svg";
 
 export const ledAccessoriesCatalog: readonly LedAccessoryProduct[] = [
   {
@@ -1696,7 +1695,7 @@ export const ledAccessoriesCatalog: readonly LedAccessoryProduct[] = [
     title: "Magnet for LED Module Fixing",
     subtitle:
       "Magnetic stud set used for front-service LED module fixing - selected for faster servicing and cleaner cabinet installation.",
-    image: "/images/accessories/Magnet-for-LED-Module-Fixing.webp",
+    image: "/assets/led-display/accessories/Magnet-for-LED-Module-Fixing.webp",
     cardPrice: "On request (per set / project quantity)",
     badge: "LED Accessories",
     quickFeatures: [
@@ -1737,7 +1736,7 @@ export const ledAccessoriesCatalog: readonly LedAccessoryProduct[] = [
     title: "LED Display Power Connector Cable",
     subtitle:
       "Red-black DC harness cable for LED module and cabinet power wiring - prepared per length, connector, and quantity.",
-    image: "/images/accessories/LED-Display-Power-Connector-Cable.webp",
+    image: "/assets/led-display/accessories/LED-Display-Power-Connector-Cable.webp",
     cardPrice: "On request (length, quantity & connector type wise)",
     badge: "LED Accessories",
     quickFeatures: [
@@ -1778,7 +1777,7 @@ export const ledAccessoriesCatalog: readonly LedAccessoryProduct[] = [
     title: "26 Pin FRC Flat Ribbon Cable with IDC Connector",
     subtitle:
       "26-pin flat ribbon cable for receiving card and HUB connectivity - common for cabinet internal data distribution.",
-    image: "/images/accessories/26-Pin-FRC-Flat-Ribbon.webp",
+    image: "/assets/led-display/accessories/26-Pin-FRC-Flat-Ribbon.webp",
     cardPrice: "On request (per piece / project quantity)",
     badge: "LED Accessories",
     quickFeatures: [
@@ -1819,7 +1818,7 @@ export const ledAccessoriesCatalog: readonly LedAccessoryProduct[] = [
     title: "16 Pin FRC Flat Ribbon Cable with IDC Connector",
     subtitle:
       "16-pin flat ribbon cable for selected signal/control wiring - useful for cabinet service and internal connections.",
-    image: "/images/accessories/16-Pin-FRC-Flat-Ribbon.webp",
+    image: "/assets/led-display/accessories/16-Pin-FRC-Flat-Ribbon.webp",
     cardPrice: "On request (per piece / project quantity)",
     badge: "LED Accessories",
     quickFeatures: [
@@ -1860,7 +1859,7 @@ export const ledAccessoriesCatalog: readonly LedAccessoryProduct[] = [
     title: "26 Pin IDC Female Connector",
     subtitle:
       "26-pin IDC female connector for ribbon termination - used for LED cabinet data and HUB board connection work.",
-    image: "/images/accessories/26-Pin-IDC-Female-Connector.webp",
+    image: "/assets/led-display/accessories/26-Pin-IDC-Female-Connector.webp",
     cardPrice: "On request (per piece / project quantity)",
     badge: "LED Accessories",
     quickFeatures: [
@@ -1901,7 +1900,7 @@ export const ledAccessoriesCatalog: readonly LedAccessoryProduct[] = [
     title: "16 Pin IDC Female Connector",
     subtitle:
       "16-pin IDC female connector for selected signal/control connections - used for cabinet wiring and service work.",
-    image: "/images/accessories/16-Pin-IDC-Female-Connector.webp",
+    image: "/assets/led-display/accessories/16-Pin-IDC-Female-Connector.webp",
     cardPrice: "On request (per piece / project quantity)",
     badge: "LED Accessories",
     quickFeatures: [
@@ -1942,7 +1941,7 @@ export const ledAccessoriesCatalog: readonly LedAccessoryProduct[] = [
     title: "Structure & Mounting Accessories",
     subtitle:
       "Clamps, brackets, and mounting hardware for LED wall installation - wall-mount, hanging, and gantry structures (project-designed).",
-    image: "/images/accessories/Structure-&-Mounting-Accessories.webp",
+    image: "/assets/led-display/accessories/Structure-&-Mounting-Accessories.webp",
     cardPrice: "Tk 5,000 - 50,000",
     badge: "LED Accessories",
     quickFeatures: [
@@ -1983,7 +1982,7 @@ export const ledAccessoriesCatalog: readonly LedAccessoryProduct[] = [
     title: "Heavy-duty Flight Case (LED / Sound Equipment)",
     subtitle:
       "Road-ready flight case for rental transport - protects equipment, speeds up load-in/out, and supports stacking for logistics.",
-    image: "/images/accessories/Heavy-duty-Flight-Case.webp",
+    image: "/assets/led-display/accessories/Heavy-duty-Flight-Case.webp",
     cardPrice: "Tk 15,000 - 25,000",
     badge: "LED Accessories",
     quickFeatures: [
@@ -2024,7 +2023,7 @@ export const ledAccessoriesCatalog: readonly LedAccessoryProduct[] = [
     title: "63A Power Distribution Box (Event LED / Sound / Light)",
     subtitle:
       "Event-ready power distribution box for temporary setups - helps safer cable management and cleaner electrical organization on site.",
-    image: "/images/accessories/63A-Power-Distribution-Box.webp",
+    image: "/assets/led-display/accessories/63A-Power-Distribution-Box.webp",
     cardPrice: "On request",
     badge: "LED Accessories",
     quickFeatures: [
@@ -2220,7 +2219,7 @@ export const powerSupplyCatalog: readonly PowerSupplyProduct[] = [
     title: "5V 20A DC Switch Mode Power Supply (SMPS)",
     subtitle:
       "Common cabinet PSU for LED modules and controller accessories. Stable 5V output with protection features for safer operation.",
-    image: "/images/power-supply/5V-20A-DC-Switch-Mode-Power-Supply-(SMPS).webp",
+    image: "/assets/led-display/power-supplies/5V-20A-DC-Switch-Mode-Power-Supply-(SMPS).webp",
     cardPrice: "Tk 1,500.00 (per unit, project offer dependent)",
     badge: "5V | 20A",
     quickFeatures: [
@@ -2265,7 +2264,7 @@ export const powerSupplyCatalog: readonly PowerSupplyProduct[] = [
     title: "G-Energy 5V 30A Power Supply",
     subtitle:
       "Higher-current 5V PSU for LED cabinets. Good balance for medium cabinet loads with standard protection features.",
-    image: "/images/power-supply/G-Energy-5V-30A-Power-Supply.webp",
+    image: "/assets/led-display/power-supplies/G-Energy-5V-30A-Power-Supply.webp",
     cardPrice: "Tk 1,600.00 (per unit, project offer dependent)",
     badge: "5V | 30A",
     quickFeatures: [
@@ -2301,7 +2300,7 @@ export const powerSupplyCatalog: readonly PowerSupplyProduct[] = [
     title: "G-Energy 5V 40A LED Display Power Supply",
     subtitle:
       "200W-class LED cabinet power supply. Suitable for higher load planning with stable operation and wide input range.",
-    image: "/images/power-supply/G-Energy-5V-40A-LED-Display-Power-Supply.webp",
+    image: "/assets/led-display/power-supplies/G-Energy-5V-40A-LED-Display-Power-Supply.webp",
     cardPrice: "Tk 1,799.00 (per unit, project offer dependent)",
     badge: "5V | 40A | 200W",
     quickFeatures: [
@@ -2368,7 +2367,7 @@ export const controllerCatalog: ControllerProduct[] = [
     title: "Huidu HD A3L LED Controller",
     subtitle:
       "Entry-level asynchronous LED controller for small to medium signage. Wi-Fi/USB/LAN supported with built-in storage for offline playback.",
-    image: "/images/controller/Huidu-HD-A3L-LED-Controller.webp",
+    image: "/assets/led-display/controllers/Huidu-HD-A3L-LED-Controller.webp",
     cardPrice: "Tk 12,000.00 (per unit, configuration & project)",
 
     badge: "Asynchronous LED Controller",
@@ -2422,7 +2421,7 @@ export const controllerCatalog: ControllerProduct[] = [
     title: "Huidu HD A5L LED Controller",
     subtitle:
       "Advanced asynchronous controller with higher loading and smoother playback. Suitable for medium signage and larger program areas.",
-    image: "/images/controller/Huidu-HD-A5L-LED-Controller.webp",
+    image: "/assets/led-display/controllers/Huidu-HD-A5L-LED-Controller.webp",
     cardPrice: "Tk 20,000.00 (per unit, configuration & project)",
 
     badge: "Asynchronous Full-Color Controller",
@@ -2468,7 +2467,7 @@ export const controllerCatalog: ControllerProduct[] = [
     title: "Huidu HD A6L LED Controller",
     subtitle:
       "High-capacity asynchronous controller for larger content & bigger screens. Stable 24/7 operation with multi-window programming.",
-    image: "/images/controller/Huidu-HD-A6L-LED-Controller.webp",
+    image: "/assets/led-display/controllers/Huidu-HD-A6L-LED-Controller.webp",
 
     badge: "High Capacity Asynchronous Controller",
     quickFeatures: [
@@ -2511,7 +2510,7 @@ export const controllerCatalog: ControllerProduct[] = [
     title: "Huidu HD VP-410 LED Video Processor",
     subtitle:
       "3-in-1 video processor for medium LED screens. Multiple inputs with scaling and stable output over Ethernet ports.",
-    image: "/images/controller/Huidu-HD-VP-410-LED-Video-Processor.webp",
+    image: "/assets/led-display/controllers/Huidu-HD-VP-410-LED-Video-Processor.webp",
     cardPrice: "Tk 31,500.00 (per unit, configuration & project)",
 
     badge: "LED Video Processor (Scaler/Switcher)",
@@ -2556,7 +2555,7 @@ export const controllerCatalog: ControllerProduct[] = [
     title: "Huidu HD VP620 LED Video Processor",
     subtitle:
       "Professional processor for indoor/outdoor video walls with multiple inputs and auto-resolution scaling for clean output.",
-    image: "/images/controller/Huidu-HD-VP620-LED-Video-Processor.webp",
+    image: "/assets/led-display/controllers/Huidu-HD-VP620-LED-Video-Processor.webp",
     cardPrice: "Tk 38,000.00 (per unit, configuration & project)",
 
     badge: "Video Processor (Multi-input)",
@@ -2599,7 +2598,7 @@ export const controllerCatalog: ControllerProduct[] = [
     title: "Huidu HD VP820 LED Video Processor",
     subtitle:
       "High-end processor for very large LED walls. More Ethernet outputs and professional scaling with PIP/POP.",
-    image: "/images/controller/Huidu-HD-VP820-LED-Video-Processor.webp",
+    image: "/assets/led-display/controllers/Huidu-HD-VP820-LED-Video-Processor.webp",
     cardPrice: "Tk 31,500",
 
     badge: "High-End Video Processor",
@@ -2642,7 +2641,7 @@ export const controllerCatalog: ControllerProduct[] = [
     title: "Huidu HD-VP210H 3-in-1 LED Video Processor",
     subtitle:
       "3-in-1 solution: sender + scaler + multi-input switcher. Great for indoor/outdoor control, events and studio setups.",
-    image: "/images/controller/Huidu-HD-VP820-LED-Video-Processor.webp",
+    image: "/assets/led-display/controllers/Huidu-HD-VP820-LED-Video-Processor.webp",
     cardPrice: "Tk 18,000.00 (per unit, configuration & project)",
 
     badge: "3-in-1 Sender + Scaler + Switcher",
@@ -2682,7 +2681,7 @@ export const controllerCatalog: ControllerProduct[] = [
     title: "Huidu HD-VP1220 LED Video Processor",
     subtitle:
       "High-capacity LED video processor for large indoor video walls, outdoor branding screens, and stage productions where cleaner scaling, stable signal switching, and practical pixel loading matter.",
-    image: "/images/controller/Huidu-HD-VP620-LED-Video-Processor.webp",
+    image: "/assets/led-display/controllers/Huidu-HD-VP620-LED-Video-Processor.webp",
     cardPrice: "Tk 48,000.00 (per unit, configuration & project)",
 
     badge: "Large Screen Video Processor",
@@ -2744,7 +2743,7 @@ export const controllerCatalog: ControllerProduct[] = [
     title: "Huidu HD-VP1620 LED Video Processor",
     subtitle:
       "Professional high-load LED video processor for concert walls, large stage setups, and premium commercial displays where stronger output capacity, flexible input handling, and cleaner visual control are required.",
-    image: "/images/controller/Huidu-HD-VP820-LED-Video-Processor.webp",
+    image: "/assets/led-display/controllers/Huidu-HD-VP820-LED-Video-Processor.webp",
     cardPrice: "Tk 62,000.00 (per unit, configuration & project)",
 
     badge: "High Load Video Processor",

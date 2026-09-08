@@ -58,75 +58,75 @@ const conferenceHubSectionClass =
 
 const CONFERENCE_HUB_CATEGORY_HERO_IMAGES: Readonly<Record<string, CollectionHeroImage>> = {
   "audio-conference-system": {
-    src: "/images/conference_landing/audio-conference-system-hero.webp",
+    src: "/assets/conference-system/landing/audio-conference-system-hero.webp",
     alt: "Modern audio conference system with tabletop discussion microphones in a professional meeting room",
   },
   "digital-conference-system": {
-    src: "/images/conference_landing/digital-conference-system-hero.webp",
+    src: "/assets/conference-system/landing/digital-conference-system-hero.webp",
     alt: "Modern digital conference system with touchscreen discussion microphones in a professional meeting room",
   },
   "video-conference-system": {
-    src: "/images/conference_landing/video-hybrid-conference-system-hero.webp",
+    src: "/assets/conference-system/landing/video-hybrid-conference-system-hero.webp",
     alt: "Modern video and hybrid conference room with remote participants, display, camera, and tabletop microphones",
   },
   "paperless-conference-system": {
-    src: "/images/conference_landing/paperless-conference-system-hero.webp",
+    src: "/assets/conference-system/landing/paperless-conference-system-hero.webp",
     alt: "Modern paperless conference room with participant touchscreens and digital meeting display",
   },
   "wired-conference-system": {
-    src: "/images/conference_landing/wired-conference-system-hero.webp",
+    src: "/assets/conference-system/landing/wired-conference-system-hero.webp",
     alt: "Modern wired conference system with cabled tabletop microphones in a professional meeting room",
   },
   "wireless-conference-system": {
-    src: "/images/conference_landing/wireless-conference-system-hero.webp",
+    src: "/assets/conference-system/landing/wireless-conference-system-hero.webp",
     alt: "Modern wireless conference system with tabletop microphones in a professional meeting room",
   },
   "chairman-unit": {
-    src: "/images/conference_landing/chairman-unit-hero-compact.webp",
+    src: "/assets/conference-system/landing/chairman-unit-hero-compact.webp",
     alt: "Conference chairman unit with meeting controls in a professional boardroom",
   },
   "delegate-unit": {
-    src: "/images/conference_landing/delegate-unit-hero.webp",
+    src: "/assets/conference-system/landing/delegate-unit-hero.webp",
     alt: "Conference delegate unit with tabletop microphone in a professional meeting room",
   },
   "control-unit": {
-    src: "/images/conference_landing/control-unit-hero.webp",
+    src: "/assets/conference-system/landing/control-unit-hero.webp",
     alt: "Conference control unit for centralized meeting management in a professional boardroom",
   },
   "conference-dsp": {
-    src: "/images/conference_landing/conference-dsp-hero.webp",
+    src: "/assets/conference-system/landing/conference-dsp-hero.webp",
     alt: "Conference DSP processor for professional meeting room audio routing and processing",
   },
   "conference-amplifier": {
-    src: "/images/conference_landing/conference-amplifier-hero.webp",
+    src: "/assets/conference-system/landing/conference-amplifier-hero.webp",
     alt: "Conference amplifier for professional meeting room speaker systems and clear audio reinforcement",
   },
   "complete-package": {
-    src: "/images/conference_landing/hero_banner.webp",
+    src: "/assets/conference-system/landing/hero_banner.webp",
     alt: "Complete conference system package installed in a professional meeting room",
   },
 };
 
 const DEFAULT_CONFERENCE_BRAND_HERO_IMAGE: CollectionHeroImage = {
-  src: "/images/conference_landing/hero_banner.webp",
+  src: "/assets/conference-system/landing/hero_banner.webp",
   alt: "Professional conference room with tabletop discussion microphones",
 };
 
 const CONFERENCE_HUB_BRAND_HERO_IMAGES: Readonly<Record<string, CollectionHeroImage>> = {
   bosch: {
-    src: "/images/conference_landing/bosch-conference-brand-hero.webp",
+    src: "/assets/conference-system/landing/bosch-conference-brand-hero.webp",
     alt: "Bosch conference system installed in a professional meeting room",
   },
   toa: {
-    src: "/images/conference_landing/toa-brand-hero-clean.webp",
+    src: "/assets/conference-system/landing/toa-brand-hero-clean.webp",
     alt: "TOA conference system installed in a professional meeting room",
   },
   spon: {
-    src: "/images/conference_landing/spon-brand-hero.webp",
+    src: "/assets/conference-system/landing/spon-brand-hero.webp",
     alt: "SPON conference system installed in a professional meeting room",
   },
   cmx: {
-    src: "/images/conference_landing/cmx-brand-hero.webp",
+    src: "/assets/conference-system/landing/cmx-brand-hero.webp",
     alt: "CMX conference system installed in a professional meeting room",
   },
 };
@@ -373,7 +373,7 @@ function FinalCta({ title, description, presentation = "default" }: { title: str
   if (presentation === "conference-hub") {
     return (
       <section className="relative mt-4 min-h-[250px] overflow-hidden rounded-2xl border border-[#172c53] bg-[#071936] shadow-[0_8px_28px_rgba(7,25,54,0.18)]">
-        <Image src="/images/conference_system_projects/project2.webp" alt="" fill sizes="100vw" className="object-cover object-center opacity-80" />
+        <Image src="/assets/conference-system/projects/project2.webp" alt="" fill sizes="100vw" className="object-cover object-center opacity-80" />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,25,54,0.99)_0%,rgba(7,25,54,0.96)_37%,rgba(7,25,54,0.68)_60%,rgba(7,25,54,0.18)_100%)]" aria-hidden="true" />
         <div className="relative z-10 flex min-h-[250px] max-w-[560px] flex-col justify-center px-5 py-6 sm:px-7 md:px-9">
           <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-orange-400">Project consultation</p>

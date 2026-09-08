@@ -8,12 +8,12 @@ const HERO_SLIDE_INTERVAL_MS = 5000;
 
 const heroSlides = [
   {
-    image: "/images/led hero/indoor-led-hero.webp",
+    image: "/assets/led-display/heroes/indoor-led-hero.webp",
     alt: "Indoor LED video wall, LED display modules and controller in a modern commercial interior",
     label: "Indoor LED display solution",
   },
   {
-    image: "/images/led hero/outdoor-led-hero.webp",
+    image: "/assets/led-display/heroes/outdoor-led-hero.webp",
     alt: "Outdoor LED billboard, weatherproof LED cabinets and display modules",
     label: "Outdoor LED display solution",
   },

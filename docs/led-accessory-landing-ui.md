@@ -20,7 +20,7 @@ Five existing catalog records reuse another model's image: NovaStar MRV336, Colo
 
 Some original product photos are only 259–300px wide; responsive fitting cannot restore missing detail. Their pixels were not replaced with invented product photography.
 
-Four new hero illustrations are saved in `public/images/accessories/heroes/`, approximately 78–141 KiB each. They are visibly marked “Illustrative setup”. The imagegen skill was used via the built-in tool; the exact prompt set and saved filenames are in [led-accessory-hero-prompts.md](led-accessory-hero-prompts.md).
+Four new hero illustrations are saved in `public/assets/led-display/accessories/heroes/`, approximately 78–141 KiB each. They are visibly marked “Illustrative setup”. The imagegen skill was used via the built-in tool; the exact prompt set and saved filenames are in [led-accessory-hero-prompts.md](led-accessory-hero-prompts.md).
 
 ## Verification
 

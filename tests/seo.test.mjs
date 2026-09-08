@@ -5,7 +5,8 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 const root = process.cwd();
-const read = (file) => readFileSync(path.join(root, file), "utf8");
+// Keep the source-oriented assertions stable across Windows and POSIX checkouts.
+const read = (file) => readFileSync(path.join(root, file), "utf8").replaceAll("\r\n", "\n");
 const htaccess = read("public/.htaccess");
 const redirects = read("public/_redirects");
 const occurrences = (source, text) => source.split(text).length - 1;
@@ -267,15 +268,15 @@ test("LED display, About, and Conference submenus share one card design system",
   assert.match(header, /const MENU_CARD_CURRENT_CLASS = "bg-orange-50 text-\[#C2410C\] before:opacity-100"/);
 
   // Every desktop submenu renders through them.
-  assert.equal(occurrences(header, "className={menuCardClass("), 2);
-  assert.equal(occurrences(header, "<MenuCardChevron isCurrent="), 2);
-  assert.equal(occurrences(header, "MENU_PANEL_CLASS,"), 2);
+  assert.equal(occurrences(header, "className={menuCardClass("), 3);
+  assert.equal(occurrences(header, "<MenuCardChevron isCurrent="), 3);
+  assert.equal(occurrences(header, "MENU_PANEL_CLASS,"), 3);
   assert.equal(occurrences(header, "className={MENU_SECTION_HEADING_CLASS}"), 1);
   assert.ok(megaMenu.includes("menuCardClass("), "Conference cards use the shared card");
   assert.ok(ledAbout.includes("menuCardClass("), "LED/About cards use the shared card");
 
   // Current page is marked and announced in every menu (3 desktop + 3 mobile lists).
-  assert.equal(occurrences(header, "aria-current={"), 7);
+  assert.equal(occurrences(header, "aria-current={"), 8);
 
   // The off-brand cyan accent, the lift, and the hover-delaying stagger are gone.
   for (const removed of [
@@ -324,13 +325,16 @@ test("static export RSC txt rewrites resolve dotted payload requests", () => {
 
 test("LED display products use one responsive card render path", () => {
   const source = read("modules/routes/catalog/products-page.tsx");
-  const productGrid = source.match(/\{\/\* PRODUCTS GRID \*\/\}([\s\S]*?)\{showMobilePagination/)?.[1];
+  const productGrid = sectionBetween(
+    source,
+    "{/* PRODUCTS GRID */}",
+    '<section className={ledInformationSectionClass} aria-labelledby="led-full-product-list-heading">',
+  );
 
-  assert.ok(productGrid, "LED product grid source must be present");
-  assert.equal((productGrid.match(/section\.products\.map\(\(product\)/g) ?? []).length, 1);
+  assert.equal((productGrid.match(/desktopPagedProducts\.map\(\(product, index\)/g) ?? []).length, 1);
   assert.equal((productGrid.match(/desktopPagedProducts\.map\(renderCatalogCard\)/g) ?? []).length, 1);
-  assert.match(productGrid, /data-led-product-id=\{product\.id\}/);
-  assert.match(productGrid, /desktopPagedProductIds\.has\(product\.id\)/);
+  assert.match(productGrid, /<LedExplorerProductCard key=\{product\.id\} product=\{product\}/);
+  assert.match(source, /data-product-id=\{product\.id\}/);
 });
 
 test("Conference System renders one responsive semantic content set", () => {
@@ -521,9 +525,9 @@ test("Conference compact solution, case-study, and service sections use canonica
     whyIndex > projectsIndex &&
     definitionIndex > whyIndex,
   );
-  assert.equal(occurrences(projectData, "/images/conference_system_projects/conference_p1.webp"), 1);
-  assert.equal(occurrences(projectData, "/images/conference_system_projects/coference_p2.webp"), 1);
-  assert.equal(occurrences(projectData, "/images/conference_system_projects/conference_p3.webp"), 1);
+  assert.equal(occurrences(projectData, "/assets/conference-system/projects/conference_p1.webp"), 1);
+  assert.equal(occurrences(projectData, "/assets/conference-system/projects/coference_p2.webp"), 1);
+  assert.equal(occurrences(projectData, "/assets/conference-system/projects/conference_p3.webp"), 1);
   assert.equal(occurrences(pageSource, 'id="hybrid-conference-integration"'), 1);
   assert.equal(occurrences(pageSource, "Recent Conference System Projects in Bangladesh"), 1);
   assert.equal(occurrences(pageSource, "Conference System Engineering & Project Support"), 1);
@@ -759,7 +763,7 @@ test("Conference catalog is normalized, complete, and route-stable", () => {
   assert.match(route, /conferenceSystemCatalog\.map\(\(product\) => \(\{ slug: product\.slug \}\)\)/);
   assert.match(route, /path: `\/conference-system\/\$\{slug\}`/);
   const explorer = read("app/conference-system/ConferenceProductExplorer.tsx");
-  assert.match(explorer, /<ConferenceProductCard[\s\S]*?product=\{product\}/);
+  assert.match(explorer, /<ConferenceProductCard[\s\S]*?product=\{getContextualCardProduct\(product\)\}/);
   const explorerData = read("app/conference-system/conferenceExplorerData.ts");
   assert.match(explorerData, /price: getConferenceProductCardPrice\(product\)/);
   assert.match(explorerData, /availabilityLabel: product\.availability[\s\S]*?getConferenceProductAvailabilityLabel\(product\)[\s\S]*?: undefined/);
@@ -1171,7 +1175,7 @@ test("Conference brand catalogs are unique, conference-only, and image-backed", 
     "bosch-ccse-cura-control-unit-with-recorder-and-amplifier.webp",
     "Bosch DCNM-WLIION Battery Pack for DCNM-WD.webp",
   ]) {
-    const relative = path.join("public/images/conference_system_products/bosch_products", file);
+    const relative = path.join("public/assets/conference-system/products/brands/bosch", file);
     assert.ok(statSync(path.join(root, relative)).isFile(), `${relative} must exist`);
   }
 
@@ -1194,7 +1198,7 @@ test("Conference brand catalogs are unique, conference-only, and image-backed", 
     assert.ok(core.includes(`name: "${title}"`), `${title} needs a brand-qualified canonical title`);
   }
   for (const file of ["LCS-800XHTP.webp", "LCS-2883A.webp", "LCS-2870D.webp", "LCS-2871D.webp", "2af217e477.webp", "LCS-5203L.webp", "LCM-6013DVW-L.webp", "LCM-6013CV-L.webp"]) {
-    const relative = path.join("public/images/conference_system_products/spon_products", file);
+    const relative = path.join("public/assets/conference-system/products/brands/spon", file);
     assert.ok(statSync(path.join(root, relative)).isFile(), `${relative} must exist`);
   }
 
@@ -1206,11 +1210,11 @@ test("Conference brand catalogs are unique, conference-only, and image-backed", 
   assert.ok(!all.includes("honeywell"), "Honeywell has no verified conference products");
 
   // Every brand image reference resolves to a file that is actually on disk.
-  const dirMap = { bosch: "bosch_products", cmx: "cmx_products", toa: "toa_products" };
+  const dirMap = { bosch: "bosch", cmx: "cmx", toa: "toa" };
   const refs = [...`${bosch}\n${toa}`.matchAll(/(bosch|cmx|toa)Image\("([^"]+)"\)/g)];
   assert.equal(refs.length, 45, "every brand image reference must resolve");
   for (const [, brand, file] of refs) {
-    const relative = path.join("public/images/conference_system_products", dirMap[brand], file);
+    const relative = path.join("public/assets/conference-system/products/brands", dirMap[brand], file);
     assert.ok(statSync(path.join(root, relative)).isFile(), `${relative} must exist`);
   }
 });
@@ -1734,8 +1738,8 @@ test("Conference quotation links preserve validated product context", () => {
   assert.match(inquiry, /\.map\(\(slug\) => productBySlug\.get\(slug\)\)/);
   assert.match(contactForm, /<option>Conference System<\/option>/);
   assert.match(contactForm, /<option>Hybrid \/ Video Meeting Room<\/option>/);
-  assert.match(contactForm, /<option value="">Select project type<\/option>/);
-  assert.match(contactForm, /const DEFAULT_PROJECT_TYPE = ""/);
+  assert.match(contactForm, /<option value="">Select a solution<\/option>/);
+  assert.match(contactForm, /const \[projectType, setProjectType\] = useState\(""\)/);
   assert.match(contactForm, /name="conference_product_slugs"/);
   assert.match(contactForm, /name="conference_package_key"/);
   assert.match(contactForm, /name="conference_room_size"/);
@@ -1848,7 +1852,7 @@ test("Conference collection templates stay normalized, adaptive, and single-DOM"
   assert.match(collectionGrid, /const COLLECTION_PAGE_SIZE = 12/);
   assert.match(collectionGrid, /paginateConferenceProducts\(products, requestedPage, COLLECTION_PAGE_SIZE\)/);
   assert.match(collectionGrid, /totalPages > 1/);
-  assert.match(collectionGrid, /shownProducts\.map\(\(product, index\)/);
+  assert.match(collectionGrid, /shownProducts\.map\(\(product\)/);
   assert.match(productGrid, /slug: product\.slug/);
   assert.match(priceTable, /getConferenceProductPricePresentation\(product\)/);
   assert.match(priceTable, /getConferenceProductAvailabilityLabel\(product\)/);
@@ -2184,7 +2188,7 @@ test("LED display main components render one canonical card list", () => {
 test("LED display Why Choose benefits render one canonical card list", () => {
   const source = read("modules/routes/catalog/products-page.tsx");
   const dataSource = source.match(/const sashaWhyChooseCards = \[([\s\S]*?)\];/)?.[1];
-  const section = source.match(/Why Choose Sasha Corporation for LED Display Solutions\?([\s\S]*?)LED Display Installation Process in Bangladesh/)?.[1];
+  const section = source.match(/Why Choose Sasha Corporation for LED Display Solutions\?([\s\S]*?)Our LED Display Project Process/)?.[1];
 
   assert.ok(dataSource, "Sasha Why Choose benefit data must be present");
   assert.ok(section, "Why Choose Sasha section source must be present");
@@ -2310,8 +2314,8 @@ test("P2.6 and P3 rental LED card features stay rental-specific", () => {
 test("LED display internal product links use only LED-relevant product families", () => {
   const source = read("modules/routes/catalog/products-page.tsx");
   const allowlist = source.match(/const LED_DISPLAY_INTERNAL_LINK_KINDS:[\s\S]*?= \[([\s\S]*?)\];/)?.[1];
-  const linkBuilder = source.match(/const fullListGroups = useMemo\(\(\) => \{([\s\S]*?)const ledFullListLinks = useMemo/)?.[1];
-  const section = source.match(/Internal Product Links([\s\S]*?)<\/details>/)?.[1];
+  const linkBuilder = source.match(/const fullListGroups = useMemo\(\(\) => \{([\s\S]*?)const waPhone/)?.[1];
+  const section = source.match(/Browse All LED Display Products([\s\S]*?)<\/details>/)?.[1];
 
   assert.ok(allowlist, "LED internal-link allowlist must be present");
   assert.ok(linkBuilder, "Internal-link group builder must be present");
@@ -2324,7 +2328,8 @@ test("LED display internal product links use only LED-relevant product families"
   assert.doesNotMatch(allowlist, /"interactive-flat-panel"/);
   assert.doesNotMatch(allowlist, /"digital-podium"/);
   assert.match(linkBuilder, /const kinds = LED_DISPLAY_INTERNAL_LINK_KINDS/);
-  assert.match(section, /ledFullListLinks\.map\(\(item\)/);
+  assert.match(section, /fullListGroups\.map\(\(group\)/);
+  assert.match(section, /group\.items\.map\(\(item\)/);
 });
 
 test("redirect configuration has no exact-source destination chains", () => {
@@ -2341,7 +2346,7 @@ test("Projects publish only verified case-study evidence and withhold templates"
 
   assert.match(data, /id: "nusaifa-trading-p5-led-billboard-nasirabad"/);
   assert.match(data, /caseStudyHref: "\/blog\/p5-led-billboard-project-nasirabad-chattogram-nusaifa-trading\/"/);
-  assert.match(data, /image: "\/images\/blog\/Chattogram-project\.webp"/);
+  assert.match(data, /image: "\/assets\/blog\/Chattogram-project\.webp"/);
   assert.match(source, /const list = projects;/);
   assert.match(source, /Never render these as Sasha Corporation project evidence/);
   assert.doesNotMatch(source, /const list = .*templateProjects/);
@@ -2417,7 +2422,7 @@ test("Conference project case studies use canonical data, SEO, schema, breadcrum
   assert.match(data, /completedIso: "2026-02-25"/);
   assert.match(data, /organization: "Department of Environment \(DoE\), Bangladesh"/);
   assert.match(data, /completedIso: "2026-05-15"/);
-  assert.match(data, /image: "\/images\/conference_system_projects\/conference_p3\.webp"/);
+  assert.match(data, /image: "\/assets\/conference-system\/projects\/conference_p3\.webp"/);
   assert.match(data, /Large conference room digital conference system installation in Dhaka by Sasha Corporation/);
   assert.match(detail, /export const dynamicParams = false/);
   assert.match(detail, /conferenceProjects\.map\(\(project\) => \(\{ slug: project\.slug \}\)\)/);

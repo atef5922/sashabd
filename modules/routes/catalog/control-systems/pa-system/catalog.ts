@@ -58,7 +58,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     subtitle: "Project-based building PA solution for announcements and background music with proper cabling and zoning support.",
     priceLabel: "50,000 - 100,000 BDT",
     tags: ["Analog PA", "100V Line", "School", "Office"],
-    image: "/images/PA/Analog-100V-Line-PA-System.webp",
+    image: "/assets/control-systems/pa-system/products/Analog-100V-Line-PA-System.webp",
     kind: "analog_100v_line_system",
   },
   {
@@ -67,7 +67,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     subtitle: "Portable PA with wireless mics and rechargeable battery for coaching, training and small events.",
     priceLabel: "8,500 - 26,000 BDT",
     tags: ["Compact PA", "Portable", "Battery"],
-    image: "/images/PA/Compact-Portable-PA-System.webp",
+    image: "/assets/control-systems/pa-system/products/Compact-Portable-PA-System.webp",
     kind: "portable_pa",
   },
   {
@@ -77,7 +77,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     priceLabel: "179,999 BDT",
     metaDescription: "TOA WA-Z110SD 70W portable speaker amplifier with battery, Bluetooth, USB/SD playback and mic support for PA use.",
     tags: ["TOA", "Portable PA", "Speaker Amplifier", "Bluetooth"],
-    image: "/images/PA/TOA-WA-Z110SD-70W-Portable-Speaker-Amplifier.webp",
+    image: "/assets/control-systems/pa-system/products/TOA-WA-Z110SD-70W-Portable-Speaker-Amplifier.webp",
     quickFeatures: [
       "70W portable speaker amplifier for PA and event sound systems",
       "USB, SD, MMC and Bluetooth playback support",
@@ -93,7 +93,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     subtitle: "Small classroom package for clear teacher voice coverage with amplifier + speakers + mic (typical).",
     priceLabel: "7,500 - 22,000 BDT",
     tags: ["Compact PA", "Classroom", "Teacher Voice"],
-    image: "/images/PA/Compact-Classroom-PA-System.webp",
+    image: "/assets/control-systems/pa-system/products/Compact-Classroom-PA-System.webp",
     kind: "classroom_pa",
   },
   {
@@ -103,7 +103,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     priceLabel: "16,500 BDT",
     metaDescription: "Ahuja CMD-7200 delegate unit microphone with LCD display, RJ45 CAT5e/CAT6 connection and voting support for boardroom PA systems.",
     tags: ["Ahuja", "Delegate Unit", "Conference Microphone", "Voting"],
-    image: "/images/PA/Ahuja-CMD-7200-Delegate-Unit-Microphone-600x600.webp",
+    image: "/assets/control-systems/pa-system/products/Ahuja-CMD-7200-Delegate-Unit-Microphone-600x600.webp",
     quickFeatures: [
       "Delegate unit microphone for digital conference systems",
       "LCD display for mic ID, status, contrast and voting results",
@@ -120,7 +120,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     priceLabel: "40,000 - 50,000 BDT",
     metaDescription: "Ahuja CMA-5400 50W central mixer amplifier with mic/AUX inputs, chairman priority and PA speaker support.",
     tags: ["Ahuja", "Mixer Amplifier", "Conference", "50W"],
-    image: "/images/PA/Ahuja-CMA-5400-50W-Central-Mixer-Amplifier-600x600.webp",
+    image: "/assets/control-systems/pa-system/products/Ahuja-CMA-5400-50W-Central-Mixer-Amplifier-600x600.webp",
     quickFeatures: [
       "50W central mixer amplifier for conference and PA systems",
       "Supports chairman and delegate units for organized meetings",
@@ -137,7 +137,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     priceLabel: "56,000 BDT",
     metaDescription: "Ahuja CMA-7400 50W digital conference amplifier with touch display, USB recording and RJ45 delegate support.",
     tags: ["Ahuja", "Digital Conference", "Amplifier", "50W"],
-    image: "/images/PA/Ahuja-CMA-7400-50W-Digital-Conference-Amplifier-600x600.webp",
+    image: "/assets/control-systems/pa-system/products/Ahuja-CMA-7400-50W-Digital-Conference-Amplifier-600x600.webp",
     quickFeatures: [
       "50W digital central conference amplifier for meeting systems",
       "4.3-inch IPS touch display for easy system control",
@@ -153,7 +153,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     subtitle: "Audio over IP core + I/O interface for routing audio between rooms and racks.",
     priceLabel: "12,500 - 21,000 BDT",
     tags: ["Dante", "Network Audio", "Digital"],
-    image: "/images/PA/Dante-Network-Audio-System.webp",
+    image: "/assets/control-systems/pa-system/products/Dante-Network-Audio-System.webp",
     kind: "dante_core_io",
   },
   {
@@ -162,7 +162,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     subtitle: "Network-connected amplifier endpoint for distributed zone audio over LAN.",
     priceLabel: "35,500 - 49,000 BDT",
     tags: ["Dante", "Amplifier", "Endpoint"],
-    image: "/images/PA/Dante-Network-Audio-Power.webp",
+    image: "/assets/control-systems/pa-system/products/Dante-Network-Audio-Power.webp",
     kind: "dante_amp_endpoint",
   },
   {
@@ -171,7 +171,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     subtitle: "Project-based digital PA with matrix routing, DSP tuning and multi-zone control.",
     priceLabel: "52,500 - 81,000 BDT",
     tags: ["Digital PA", "Audio Matrix", "DSP"],
-    image: "/images/PA/Digital-Control-PA-System.webp",
+    image: "/assets/control-systems/pa-system/products/Digital-Control-PA-System.webp",
     kind: "digital_matrix_dsp",
   },
   {
@@ -180,7 +180,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     subtitle: "IP-based paging system with server/software, IP speakers and centralized control.",
     priceLabel: "50,000 - 120,000 BDT",
     tags: ["IP Audio", "Network", "PA", "Paging"],
-    image: "/images/PA/IP-Network-Audio-&-Paging-System.webp",
+    image: "/assets/control-systems/pa-system/products/IP-Network-Audio-&-Paging-System.webp",
     kind: "ip_paging_system",
   },
   {
@@ -189,7 +189,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     subtitle: "IP wall speaker endpoint with built-in amplification for LAN/PoE installation.",
     priceLabel: "6,500 - 13,500 BDT",
     tags: ["IP Speaker", "Wall", "PoE"],
-    image: "/images/PA/IP-Network-Wall-Speaker.webp",
+    image: "/assets/control-systems/pa-system/products/IP-Network-Wall-Speaker.webp",
     kind: "ip_wall_speaker",
   },
   {
@@ -198,7 +198,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     subtitle: "Desktop paging microphone for reception and control rooms with push-to-talk workflow.",
     priceLabel: "7,500 - 15,000 BDT",
     tags: ["Microphone", "Paging", "Gooseneck"],
-    image: "/images/PA/Wired-Gooseneck-Paging-Microphone.webp",
+    image: "/assets/control-systems/pa-system/products/Wired-Gooseneck-Paging-Microphone.webp",
     kind: "paging_gooseneck_mic",
   },
   {
@@ -207,7 +207,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     subtitle: "Dual-channel UHF handheld set for halls, programs and events with stable RF setup.",
     priceLabel: "21,000 - 30,000 BDT",
     tags: ["Wireless Mic", "UHF", "Handheld"],
-    image: "/images/PA/UHF-Wireless-Handheld-Microphone.webp",
+    image: "/assets/control-systems/pa-system/products/UHF-Wireless-Handheld-Microphone.webp",
     kind: "wireless_handheld_uhf",
   },
   {
@@ -217,7 +217,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     priceLabel: "41,000 BDT",
     metaDescription: "TOA WT-5810 WM-5225 UHF wireless microphone with 100 channels, PLL receiver, handheld mic and PA system support in Bangladesh.",
     tags: ["TOA", "Wireless Mic", "UHF", "Handheld"],
-    image: "/images/PA/toa-wt-5810-bangladesh-trimatrik-600x600.webp",
+    image: "/assets/control-systems/pa-system/products/toa-wt-5810-bangladesh-trimatrik-600x600.webp",
     quickFeatures: [
       "UHF wireless microphone system for speech and vocal use",
       "Includes WT-5810 receiver and WM-5225 handheld microphone",
@@ -233,7 +233,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     subtitle: "Hands-free mic set for teachers and presenters with bodypack transmitter.",
     priceLabel: "4,000 - 8,500 BDT",
     tags: ["Wireless Mic", "Headset", "Lapel"],
-    image: "/images/PA/Wireless-Lapel-&-Headset-Microphone-Set.webp",
+    image: "/assets/control-systems/pa-system/products/Wireless-Lapel-&-Headset-Microphone-Set.webp",
     kind: "wireless_lapel_headset",
   },
   {
@@ -242,7 +242,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     subtitle: "100V line wall speaker for corridor/classroom announcements with practical installation.",
     priceLabel: "30,000 - 35,000 BDT",
     tags: ["Speaker", "Wall", "100V"],
-    image: "/images/PA/30W-Wall-Mount-Speaker.webp",
+    image: "/assets/control-systems/pa-system/products/30W-Wall-Mount-Speaker.webp",
     kind: "wall_speaker_100v",
   },
   {
@@ -252,7 +252,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     priceLabel: "13,000 BDT",
     metaDescription: "Bosch LB2-UC30 30W cabinet loudspeaker with 70V/100V support, IP65 rating, wall bracket and clear PA sound in Bangladesh.",
     tags: ["Bosch", "Cabinet Speaker", "30W", "100V"],
-    image: "/images/PA/Bosch-LB2-UC30-30W-Cabinet-Loudspeaker-600x600.webp",
+    image: "/assets/control-systems/pa-system/products/Bosch-LB2-UC30-30W-Cabinet-Loudspeaker-600x600.webp",
     quickFeatures: [
       "30W cabinet loudspeaker for PA and music systems",
       "Clear speech and music reproduction for commercial sound use",
@@ -268,7 +268,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     subtitle: "Flush-mount ceiling speaker for background music and paging in offices and retail interiors.",
     priceLabel: "3,000 - 5,200 BDT",
     tags: ["Speaker", "Ceiling", "BGM"],
-    image: "/images/PA/6W-Ceiling-Speaker.webp",
+    image: "/assets/control-systems/pa-system/products/6W-Ceiling-Speaker.webp",
     kind: "ceiling_speaker_100v",
   },
   {
@@ -278,7 +278,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     priceLabel: "3,900 BDT",
     metaDescription: "Bosch LC9-UC06 6W ceiling speaker with metal grill, 100V transformer taps and clear PA/BGM sound.",
     tags: ["Bosch", "Ceiling Speaker", "6W", "100V"],
-    image: "/images/PA/Bosch-LC9-UC06-6W-Ceiling-Speaker-with-Metal-Grill-600x600.webp",
+    image: "/assets/control-systems/pa-system/products/Bosch-LC9-UC06-6W-Ceiling-Speaker-with-Metal-Grill-600x600.webp",
     quickFeatures: [
       "6W ceiling speaker for PA and background music systems",
       "Compact general-purpose design for commercial indoor use",
@@ -295,7 +295,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     priceLabel: "47,000 BDT",
     metaDescription: "Bosch LC2-PC30G6-8 30W ceiling loudspeaker with 8-inch coaxial design, 70V/100V support and PA sound clarity.",
     tags: ["Bosch", "Ceiling Speaker", "30W", "100V"],
-    image: "/images/PA/Bosch-LC2-PC30G6-8-30W-Ceiling-Loudspeaker-600x600.webp",
+    image: "/assets/control-systems/pa-system/products/Bosch-LC2-PC30G6-8-30W-Ceiling-Loudspeaker-600x600.webp",
     quickFeatures: [
       "30W ceiling loudspeaker for professional PA and background music systems",
       "8-inch coaxial two-way speaker for clear and balanced sound",
@@ -311,7 +311,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     subtitle: "Column speaker for voice clarity and controlled coverage in mosque and hall applications.",
     priceLabel: "20,000 - 25,000 BDT",
     tags: ["Column Speaker", "Mosque", "Hall"],
-    image: "/images/PA/60W-Column-Speaker.webp",
+    image: "/assets/control-systems/pa-system/products/60W-Column-Speaker.webp",
     kind: "column_speaker",
   },
   {
@@ -321,7 +321,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     priceLabel: "8,400 BDT",
     metaDescription: "TOA TZ-105 10W column speaker with 100V line support, slim metal body and clear voice reproduction for PA systems.",
     tags: ["TOA", "Column Speaker", "10W", "100V"],
-    image: "/images/PA/TOA-TZ-105-10W-Column-Speaker-600x600.webp",
+    image: "/assets/control-systems/pa-system/products/TOA-TZ-105-10W-Column-Speaker-600x600.webp",
     quickFeatures: [
       "10W column speaker for PA and background music systems",
       "Clear speech reproduction for paging and announcements",
@@ -337,7 +337,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     subtitle: "Outdoor horn speaker option for loud announcements and emergency alerts in factory yards and open areas.",
     priceLabel: "9,200 - 17,500 BDT",
     tags: ["Horn Speaker", "Outdoor", "Factory"],
-    image: "/images/PA/50W-Outdoor-Horn-Speaker.webp",
+    image: "/assets/control-systems/pa-system/products/50W-Outdoor-Horn-Speaker.webp",
     kind: "horn_speaker_outdoor",
   },
   {
@@ -346,7 +346,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     subtitle: "Higher-power 100V line mixer amplifier for mid-size building paging and BGM.",
     priceLabel: "120,000 - 150,000 BDT",
     tags: ["Mixer Amplifier", "100V Line", "PA"],
-    image: "/images/PA/240W-Mixer-Amplifier.webp",
+    image: "/assets/control-systems/pa-system/products/240W-Mixer-Amplifier.webp",
     kind: "mixer_amp_100v",
   },
   {
@@ -356,7 +356,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     priceLabel: "215,500 BDT",
     metaDescription: "Bosch PLE-4MA240 240W 4-zone mixer amplifier with Class-D output, paging inputs and PA zone control.",
     tags: ["Bosch", "Mixer Amplifier", "240W", "4 Zone"],
-    image: "/images/PA/Bosch-PLE-4MA240-240W-4-Zone-Mixer-Amplifier-600x600.webp",
+    image: "/assets/control-systems/pa-system/products/Bosch-PLE-4MA240-240W-4-Zone-Mixer-Amplifier-600x600.webp",
     quickFeatures: [
       "240W powerful output for professional PA and background music systems",
       "4-zone audio control for separate area-wise sound distribution",
@@ -373,7 +373,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     priceLabel: "64,500 BDT",
     metaDescription: "Ahuja PROMIX-1442R 14-channel stereo mixer with 12 mic inputs, Bluetooth, MP3 recording, effects and PA sound support.",
     tags: ["Ahuja", "Audio Mixer", "14 Channel", "Bluetooth"],
-    image: "/images/PA/Ahuja-PROMIX-1442R-14-Channel-Stereo-Mixer-600x600.webp",
+    image: "/assets/control-systems/pa-system/products/Ahuja-PROMIX-1442R-14-Channel-Stereo-Mixer-600x600.webp",
     quickFeatures: [
       "14-channel stereo audio mixer for PA and live sound systems",
       "12 microphone inputs for vocals, speech and instruments",
@@ -389,7 +389,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     subtitle: "Professional 2-channel power amplifier for high headroom installations with system integration.",
     priceLabel: "115,000 - 140,000 BDT",
     tags: ["Power Amplifier", "2-Channel"],
-    image: "/images/PA/2-Channel-Power-Amplifier.webp",
+    image: "/assets/control-systems/pa-system/products/2-Channel-Power-Amplifier.webp",
     kind: "power_amp_2ch",
   },
   {
@@ -398,7 +398,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     subtitle: "Multi-zone amplifier for targeted announcements and BGM across separate areas or departments.",
     priceLabel: "65,000 - 69,000 BDT",
     tags: ["Mixer Amplifier", "Zoning", "PA"],
-    image: "/images/PA/Multi-Zone-Mixer-Amplifier-with-Paging.webp",
+    image: "/assets/control-systems/pa-system/products/Multi-Zone-Mixer-Amplifier-with-Paging.webp",
     kind: "mixer_amp_multi_zone",
   },
   {
@@ -407,7 +407,7 @@ export const paSystemCatalog: PaSystemItem[] = [
     subtitle: "Practical rack package for announcements and paging with a 100V mixer amplifier and desk paging mic (typical).",
     priceLabel: "48,000 - 69,000 BDT",
     tags: ["Rack Package", "Mixer Amp", "Paging Mic"],
-    image: "/images/PA/School-&-Mosque-PA-Rack-Package.webp",
+    image: "/assets/control-systems/pa-system/products/School-&-Mosque-PA-Rack-Package.webp",
     quickFeatures: [
       "Rack-friendly wiring and service access",
       "100V line mixer amplifier for multi-speaker sites",

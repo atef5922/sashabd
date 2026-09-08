@@ -1,6 +1,6 @@
 # Turnstile landing hero
 
-- Asset: `public/images/turnstile-entrance-hero-v2.webp`
+- Asset: `public/assets/control-systems/turnstile/turnstile-entrance-hero-v2.webp`
 - Created with the built-in image generation tool.
 - Original: 2032 × 774 PNG; converted to WebP at quality 88 without resizing or cropping.
 - Illustrative entrance scene, not a photograph of a completed customer installation.

@@ -18,7 +18,7 @@ const templateProjects: Project[] = [
     id: "template-5",
     title: "Turnstile Gate System (Access Control)",
     badge: "Template example",
-    image: "/images/project-page/project-turnstile-gate.webp",
+    image: "/assets/projects/project-turnstile-gate.webp",
     imageClassName: "object-cover object-center",
     organization: "Office access control",
     location: "Dhaka, Bangladesh",
@@ -44,7 +44,7 @@ const templateProjects: Project[] = [
     id: "template-1",
     title: "Indoor LED Video Wall Delivery",
     badge: "Template example",
-    image: "/images/project-page/project-indoor-wall.webp",
+    image: "/assets/projects/project-indoor-wall.webp",
     imageClassName: "object-cover object-center",
     organization: "Corporate office (confidential)",
     location: "Dhaka, Bangladesh",
@@ -70,7 +70,7 @@ const templateProjects: Project[] = [
     id: "template-4",
     title: "Rental LED Screen (Event Setup)",
     badge: "Template example",
-    image: "/images/project-page/project-rental.webp",
+    image: "/assets/projects/project-rental.webp",
     imageClassName: "object-cover object-center",
     organization: "Event stage / conference",
     location: "Dhaka, Bangladesh",
@@ -96,7 +96,7 @@ const templateProjects: Project[] = [
     id: "template-3",
     title: "PA Sound System Setup (Paging + Zoning)",
     badge: "Template example",
-    image: "/images/project-page/project-pa-system.webp",
+    image: "/assets/projects/project-pa-system.webp",
     imageClassName: "object-cover object-center",
     organization: "Office building",
     location: "Dhaka, Bangladesh",
@@ -122,7 +122,7 @@ const templateProjects: Project[] = [
     id: "template-6",
     title: "Indoor LED Display for Retail / Showroom",
     badge: "Template example",
-    image: "/images/project-page/Project-indoor-showroom.webp",
+    image: "/assets/projects/Project-indoor-showroom.webp",
     imageClassName: "object-cover object-center",
     organization: "Showroom / retail branding",
     location: "Chattogram, Bangladesh",
@@ -287,7 +287,7 @@ export default function ProjectsPage() {
         >
           <div className="pointer-events-none absolute inset-0">
             <Image
-              src="/Project-hero.webp"
+              src="/assets/projects/Project-hero.webp"
               alt="Projects hero background"
               fill
               priority

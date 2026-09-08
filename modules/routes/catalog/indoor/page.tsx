@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: socialImageUrl("/images/indoor/P2.5-Indoor-LED-Display.webp"),
+        url: socialImageUrl("/assets/led-display/indoor/P2.5-Indoor-LED-Display.webp"),
         width: 1200,
         height: 630,
         alt: "Indoor LED Display Prices in Bangladesh | Sasha Corporation",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     title: "Indoor LED Display Prices in Bangladesh | Sasha Corporation",
     description:
       "Indoor LED display models for showroom, office and control room. View features and request a recommendation.",
-    images: [socialImageUrl("/images/indoor/P2.5-Indoor-LED-Display.webp")],
+    images: [socialImageUrl("/assets/led-display/indoor/P2.5-Indoor-LED-Display.webp")],
   },
 };
 
@@ -301,7 +301,7 @@ function IndoorLedHero() {
       aria-labelledby="indoor-led-hero-heading"
     >
       <Image
-        src="/images/led hero/indoor-led-hero.webp"
+        src="/assets/led-display/heroes/indoor-led-hero.webp"
         alt="Fine-pitch indoor LED video wall with LED cabinets and video processor"
         fill
         priority
@@ -891,9 +891,9 @@ export default function IndoorProductsPage() {
         </div>
         <div className="mt-4 grid gap-3 md:grid-cols-3">
           {[
-            { title: "Corporate Indoor LED Video Wall", image: "/images/project-page/project-indoor-wall.webp", tag: "Fine-Pitch Display" },
-            { title: "Retail Showroom LED Display", image: "/images/project-page/Project-indoor-showroom.webp", tag: "Custom Structure" },
-            { title: "Technology Showroom LED Wall", image: "/images/project-page/project-redirect.webp", tag: "Calibrated Output" },
+            { title: "Corporate Indoor LED Video Wall", image: "/assets/projects/project-indoor-wall.webp", tag: "Fine-Pitch Display" },
+            { title: "Retail Showroom LED Display", image: "/assets/projects/Project-indoor-showroom.webp", tag: "Custom Structure" },
+            { title: "Technology Showroom LED Wall", image: "/assets/projects/project-redirect.webp", tag: "Calibrated Output" },
           ].map((project) => (
             <article key={project.title} className="group overflow-hidden rounded-xl border border-[#dbe5f2] bg-white shadow-[0_4px_16px_rgba(15,23,42,0.045)]">
               <div className="relative aspect-[16/9] overflow-hidden bg-slate-100"><Image src={project.image} alt={project.title} fill sizes="(max-width: 767px) 92vw, 30vw" className="object-cover transition duration-300 group-hover:scale-[1.025]" /></div>
@@ -1071,7 +1071,7 @@ export default function IndoorProductsPage() {
       >
         <div className="relative overflow-hidden bg-[#06183b]">
           <div className="absolute inset-y-0 right-0 hidden w-1/3 md:block" aria-hidden="true">
-            <Image src="/images/led hero/indoor-led-hero.webp" alt="" fill sizes="32vw" className="object-cover object-center" />
+            <Image src="/assets/led-display/heroes/indoor-led-hero.webp" alt="" fill sizes="32vw" className="object-cover object-center" />
             <div className="absolute inset-0 bg-[linear-gradient(90deg,#06183b_0%,rgba(6,24,59,0.45)_28%,rgba(6,24,59,0.05)_72%,transparent_100%)]" />
           </div>
           <div className="relative z-10 grid gap-5 px-5 py-5 sm:px-7 md:grid-cols-12 md:items-center md:gap-6 lg:px-8">

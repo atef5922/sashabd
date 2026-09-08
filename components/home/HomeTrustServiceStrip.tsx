@@ -2,22 +2,22 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const homeBrandLogos = [
-  { name: "LianTronics", src: "/images/logo/liantronics.png", href: "/led-display/", className: "h-6 sm:h-7" },
-  { name: "Leyard", src: "/images/logo/leyard.webp", href: "/led-display/", className: "h-6 sm:h-7" },
-  { name: "NovaStar", src: "/images/logo/novastar.webp", href: "/led-display/accessories/controller/", className: "h-7 sm:h-8" },
-  { name: "AOTO Electronics", src: "/images/logo/aoto-electronics.webp", href: "/led-display/", className: "h-6 sm:h-7" },
-  { name: "G-Energy", src: "/images/logo/g-energy.webp", href: "/led-display/", className: "h-7 sm:h-8" },
-  { name: "Lampro", src: "/images/logo/lampro.webp", href: "/led-display/", className: "h-6 sm:h-7" },
-  { name: "Huidu", src: "/images/brands/huidu.webp", href: "/led-display/accessories/controller/", className: "h-7 sm:h-8" },
-  { name: "Colorlight", src: "/images/logo/colorlight.webp", href: "/led-display/accessories/controller/", className: "h-7 sm:h-8" },
-  { name: "Mean Well", src: "/images/logo/mean-well.webp", href: "/led-display/", className: "h-7 sm:h-8" },
-  { name: "Mugnee", src: "/images/logo/mugnee.webp", href: "/led-display/", className: "h-7 sm:h-8" },
-  { name: "Renex Digital", src: "/images/brands/renex-exact.webp", href: "/led-display/", className: "h-7 translate-y-[4px] scale-[4] sm:h-8" },
-  { name: "Synoveta", src: "/images/brands/synoveta-logo.jpeg", href: "/led-display/", className: "h-7 sm:h-8" },
-  { name: "Bosch", src: "/images/brands/audio/bosch-logo.svg", href: "/conference-system/brands/bosch/", className: "h-7 sm:h-8" },
-  { name: "TOA", src: "/images/brands/audio/toa-logo.png", href: "/conference-system/brands/toa/", className: "h-7 sm:h-8" },
-  { name: "SPON", src: "/images/brands/audio/spon.svg", href: "/conference-system/brands/spon/", className: "h-6 sm:h-7" },
-  { name: "CMX", src: "/images/brands/audio/cmx-logo.png", href: "/conference-system/brands/cmx/", className: "h-8 sm:h-9" },
+  { name: "LianTronics", src: "/assets/brands/led-display/liantronics.png", href: "/led-display/", className: "h-6 sm:h-7" },
+  { name: "Leyard", src: "/assets/brands/led-display/leyard.webp", href: "/led-display/", className: "h-6 sm:h-7" },
+  { name: "NovaStar", src: "/assets/brands/led-display/novastar.webp", href: "/led-display/accessories/controller/", className: "h-7 sm:h-8" },
+  { name: "AOTO Electronics", src: "/assets/brands/led-display/aoto-electronics.webp", href: "/led-display/", className: "h-6 sm:h-7" },
+  { name: "G-Energy", src: "/assets/brands/led-display/g-energy.webp", href: "/led-display/", className: "h-7 sm:h-8" },
+  { name: "Lampro", src: "/assets/brands/led-display/lampro.webp", href: "/led-display/", className: "h-6 sm:h-7" },
+  { name: "Huidu", src: "/assets/brands/led-display/huidu.webp", href: "/led-display/accessories/controller/", className: "h-7 sm:h-8" },
+  { name: "Colorlight", src: "/assets/brands/led-display/colorlight.webp", href: "/led-display/accessories/controller/", className: "h-7 sm:h-8" },
+  { name: "Mean Well", src: "/assets/brands/led-display/mean-well.webp", href: "/led-display/", className: "h-7 sm:h-8" },
+  { name: "Mugnee", src: "/assets/brands/led-display/mugnee.webp", href: "/led-display/", className: "h-7 sm:h-8" },
+  { name: "Renex Digital", src: "/assets/brands/led-display/renex-exact.webp", href: "/led-display/", className: "h-7 translate-y-[4px] scale-[4] sm:h-8" },
+  { name: "Synoveta", src: "/assets/brands/led-display/synoveta-logo.jpeg", href: "/led-display/", className: "h-7 sm:h-8" },
+  { name: "Bosch", src: "/assets/brands/audio/bosch-logo.svg", href: "/conference-system/brands/bosch/", className: "h-7 sm:h-8" },
+  { name: "TOA", src: "/assets/brands/audio/toa-logo.png", href: "/conference-system/brands/toa/", className: "h-7 sm:h-8" },
+  { name: "SPON", src: "/assets/brands/audio/spon.svg", href: "/conference-system/brands/spon/", className: "h-6 sm:h-7" },
+  { name: "CMX", src: "/assets/brands/audio/cmx-logo.png", href: "/conference-system/brands/cmx/", className: "h-8 sm:h-9" },
 ] as const;
 
 const serviceHighlights = [

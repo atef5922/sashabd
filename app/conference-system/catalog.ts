@@ -15,7 +15,7 @@ export {
   type ConferenceProductType,
 } from "./conferenceProductDisplayType";
 
-const CONFERENCE_IMAGE_BASE = "/images/Conference%20system";
+const CONFERENCE_IMAGE_BASE = "/assets/conference-system/products/core";
 
 export const CONFERENCE_SYSTEM_CATEGORIES = ["audio", "video", "hybrid"] as const;
 export const CONFERENCE_SYSTEM_TYPES = ["audio", "digital", "video-hybrid", "paperless"] as const;
@@ -231,7 +231,7 @@ const coreConferenceProducts: ConferenceProduct[] = [
     availability: "project-order",
     shortDescription: "Conference microphone chairman unit with tri-band Wi-Fi 6, video tracking, chairman control, and a touch screen.",
     images: [
-      { src: "/images/conference_system_products/spon_products/LCM-6013CV-L.webp", alt: "SPON LCM-6013CV-L conference microphone chairman unit", primary: true },
+      { src: "/assets/conference-system/products/brands/spon/LCM-6013CV-L.webp", alt: "SPON LCM-6013CV-L conference microphone chairman unit", primary: true },
       { src: lcm6013cvMain, alt: "SPON LCM-6013CV-L Digital Conference Chairman Unit" },
       { src: lcm6013cvSide, alt: "SPON LCM-6013CV-L Digital Conference Chairman Unit side view" },
     ],

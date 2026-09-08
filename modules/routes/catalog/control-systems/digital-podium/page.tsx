@@ -19,9 +19,9 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Digital Podium in Bangladesh | Sasha Corporation", description,
     url: "/digital-podium/", type: "website",
-    images: [{ url: socialImageUrl("/images/digital%20-podium-hero.webp"), width: 1983, height: 793, alt: "Digital podium presentation setup" }],
+    images: [{ url: socialImageUrl("/assets/control-systems/digital-podium/digital-podium-hero.webp"), width: 1983, height: 793, alt: "Digital podium presentation setup" }],
   },
-  twitter: { card: "summary_large_image", title: "Digital Podium Price in Bangladesh", description, images: [socialImageUrl("/images/digital%20-podium-hero.webp")] },
+  twitter: { card: "summary_large_image", title: "Digital Podium Price in Bangladesh", description, images: [socialImageUrl("/assets/control-systems/digital-podium/digital-podium-hero.webp")] },
 };
 
 function Badge({ name }: { name: IconName }) {
@@ -99,7 +99,7 @@ export default function DigitalPodiumPage() {
     <Section id="podium-integration" tone="blue">
       <Heading eyebrow="CONNECT THE WHOLE ROOM" title="More Than a Podium. A Connected Workspace." text="A digital podium brings presentation control and room connections into one organized workstation. The right integration plan matters as much as the cabinet." />
       <div className={styles.integrationLayout}>
-        <figure className={styles.integrationVisual}><Image src="/images/podium/podium-hero.webp" alt="Illustrative touch podium connected to a meeting-room display" fill sizes="(max-width: 999px) 94vw, 44vw" /><figcaption>Podium + display + audio · Illustrative room concept</figcaption></figure>
+        <figure className={styles.integrationVisual}><Image src="/assets/control-systems/digital-podium/products/podium-hero.webp" alt="Illustrative touch podium connected to a meeting-room display" fill sizes="(max-width: 999px) 94vw, 44vw" /><figcaption>Podium + display + audio · Illustrative room concept</figcaption></figure>
         <div className={styles.connectionList}>{connections.map(item => <article key={item.title}><Badge name={item.icon} /><div><h3>{item.title}</h3><p>{item.desc}</p><Link className={styles.textLink} href={item.href}>{item.link}<Icon name="arrow" /></Link></div></article>)}</div>
       </div>
     </Section>

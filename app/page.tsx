@@ -65,26 +65,26 @@ const trustedInstitutions: Array<{
   logo: string;
   href: string;
 }> = [
-  { name: "Ministry of Health and Family Welfare", logo: "/images/logo/Health-and-family-welfare.webp", href: "https://mohfw.gov.bd/" },
-  { name: "National Board of Revenue, Bangladesh", logo: "/images/logo/nbr.webp", href: "https://nbr.portal.gov.bd/" },
-  { name: "Bangladesh Election Commission", logo: "/images/logo/ecs.webp", href: "https://ecs.gov.bd/" },
-  { name: "Department of Immigration & Passports", logo: "/images/logo/passport.webp", href: "https://dip.gov.bd/" },
-  { name: "Bangladesh Public Service Commission", logo: "/images/logo/bpsc.webp", href: "https://bpsc.gov.bd/" },
-  { name: "Anti-Corruption Commission (ACC)", logo: "/images/logo/acc.webp", href: "https://acc.org.bd/" },
-  { name: "Dhaka North City Corporation", logo: "/images/logo/dncc.webp", href: "https://dncc.gov.bd/" },
-  { name: "Dhaka South City Corporation", logo: "/images/logo/dscc.webp", href: "https://dscc.gov.bd/" },
-  { name: "Sonali Bank PLC", logo: "/images/logo/sonali-bank.webp", href: "https://www.sonalibank.com.bd/" },
-  { name: "Bangladesh Small and Cottage Industries Corporation (BSCIC)", logo: "/images/logo/BSCIC.webp", href: "https://bscic.gov.bd/" },
-  { name: "Bangladesh Sugar and Food Industries Corporation (BSFIC)", logo: "/images/logo/bsfic.webp", href: "https://bsfic.gov.bd/" },
-  { name: "Bangladesh Parjatan Corporation", logo: "/images/logo/parjatan.webp", href: "https://parjatan.gov.bd/" },
-  { name: "Border Guard Bangladesh (BGB)", logo: "/images/logo/bgb.webp", href: "https://bgb.gov.bd/" },
-  { name: "Civil Aviation Authority Of Bangladesh", logo: "/images/logo/caab.webp", href: "https://caab.portal.gov.bd/" },
-  { name: "Bangladesh Road Transport Authority (BRTA)", logo: "/images/logo/brta.webp", href: "https://brta.gov.bd/" },
-  { name: "Fire Service and Civil Defence Bangladesh", logo: "/images/logo/fire-service.webp", href: "https://fireservice.gov.bd/" },
-  { name: "University Grants Commission of Bangladesh", logo: "/images/logo/ugc.webp", href: "https://ugc.gov.bd/" },
-  { name: "Bangladesh Ansar and Village Defence Party", logo: "/images/logo/ansar.webp", href: "https://ansarvdp.gov.bd/" },
-  { name: "Bangladesh House Building Finance Corporation", logo: "/images/logo/bhbfc-logo-final.webp", href: "https://bhbfc.gov.bd/" },
-  { name: "Dhaka Electric Supply Company Limited (DESCO)", logo: "/images/logo/bpatc.webp", href: "https://bpatc.gov.bd/" },
+  { name: "Ministry of Health and Family Welfare", logo: "/assets/clients/organizations/Health-and-family-welfare.webp", href: "https://mohfw.gov.bd/" },
+  { name: "National Board of Revenue, Bangladesh", logo: "/assets/clients/organizations/nbr.webp", href: "https://nbr.portal.gov.bd/" },
+  { name: "Bangladesh Election Commission", logo: "/assets/clients/organizations/ecs.webp", href: "https://ecs.gov.bd/" },
+  { name: "Department of Immigration & Passports", logo: "/assets/clients/organizations/passport.webp", href: "https://dip.gov.bd/" },
+  { name: "Bangladesh Public Service Commission", logo: "/assets/clients/organizations/bpsc.webp", href: "https://bpsc.gov.bd/" },
+  { name: "Anti-Corruption Commission (ACC)", logo: "/assets/clients/organizations/acc.webp", href: "https://acc.org.bd/" },
+  { name: "Dhaka North City Corporation", logo: "/assets/clients/organizations/dncc.webp", href: "https://dncc.gov.bd/" },
+  { name: "Dhaka South City Corporation", logo: "/assets/clients/organizations/dscc.webp", href: "https://dscc.gov.bd/" },
+  { name: "Sonali Bank PLC", logo: "/assets/clients/organizations/sonali-bank.webp", href: "https://www.sonalibank.com.bd/" },
+  { name: "Bangladesh Small and Cottage Industries Corporation (BSCIC)", logo: "/assets/clients/organizations/BSCIC.webp", href: "https://bscic.gov.bd/" },
+  { name: "Bangladesh Sugar and Food Industries Corporation (BSFIC)", logo: "/assets/clients/organizations/bsfic.webp", href: "https://bsfic.gov.bd/" },
+  { name: "Bangladesh Parjatan Corporation", logo: "/assets/clients/organizations/parjatan.webp", href: "https://parjatan.gov.bd/" },
+  { name: "Border Guard Bangladesh (BGB)", logo: "/assets/clients/organizations/bgb.webp", href: "https://bgb.gov.bd/" },
+  { name: "Civil Aviation Authority Of Bangladesh", logo: "/assets/clients/organizations/caab.webp", href: "https://caab.portal.gov.bd/" },
+  { name: "Bangladesh Road Transport Authority (BRTA)", logo: "/assets/clients/organizations/brta.webp", href: "https://brta.gov.bd/" },
+  { name: "Fire Service and Civil Defence Bangladesh", logo: "/assets/clients/organizations/fire-service.webp", href: "https://fireservice.gov.bd/" },
+  { name: "University Grants Commission of Bangladesh", logo: "/assets/clients/organizations/ugc.webp", href: "https://ugc.gov.bd/" },
+  { name: "Bangladesh Ansar and Village Defence Party", logo: "/assets/clients/organizations/ansar.webp", href: "https://ansarvdp.gov.bd/" },
+  { name: "Bangladesh House Building Finance Corporation", logo: "/assets/clients/organizations/bhbfc-logo-final.webp", href: "https://bhbfc.gov.bd/" },
+  { name: "Dhaka Electric Supply Company Limited (DESCO)", logo: "/assets/clients/organizations/bpatc.webp", href: "https://bpatc.gov.bd/" },
 ];
 
 function cx(...classes: Array<string | false | undefined>) {
@@ -465,45 +465,45 @@ export default function HomePage() {
                   width={240}
                   height={96}
                   className={
-                    ins.logo === "/images/logo/nbr.webp"
+                    ins.logo === "/assets/clients/organizations/nbr.webp"
                       ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                      : ins.logo === "/images/logo/Health-and-family-welfare.webp"
+                      : ins.logo === "/assets/clients/organizations/Health-and-family-welfare.webp"
                         ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                        : ins.logo === "/images/logo/ecs.webp"
+                        : ins.logo === "/assets/clients/organizations/ecs.webp"
                           ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/images/logo/passport.webp"
+                            : ins.logo === "/assets/clients/organizations/passport.webp"
                               ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/images/logo/bpsc.webp"
+                            : ins.logo === "/assets/clients/organizations/bpsc.webp"
                               ? "h-20 w-auto max-w-full object-contain sm:h-24"
-                            : ins.logo === "/images/logo/acc.webp"
+                            : ins.logo === "/assets/clients/organizations/acc.webp"
                               ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/images/logo/dncc.webp"
+                            : ins.logo === "/assets/clients/organizations/dncc.webp"
                               ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/images/logo/dscc.webp"
+                            : ins.logo === "/assets/clients/organizations/dscc.webp"
                               ? "h-20 w-auto max-w-full object-contain sm:h-24"
-                            : ins.logo === "/images/logo/sonali-bank.webp"
+                            : ins.logo === "/assets/clients/organizations/sonali-bank.webp"
                               ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/images/logo/BSCIC.webp"
+                            : ins.logo === "/assets/clients/organizations/BSCIC.webp"
                               ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/images/logo/bsfic.webp"
+                            : ins.logo === "/assets/clients/organizations/bsfic.webp"
                               ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/images/logo/parjatan.webp"
+                            : ins.logo === "/assets/clients/organizations/parjatan.webp"
                               ? "h-14 w-auto max-w-full object-contain sm:h-16"
-                            : ins.logo === "/images/logo/bgb.webp"
+                            : ins.logo === "/assets/clients/organizations/bgb.webp"
                               ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/images/logo/caab.webp"
+                            : ins.logo === "/assets/clients/organizations/caab.webp"
                               ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/images/logo/brta.webp"
+                            : ins.logo === "/assets/clients/organizations/brta.webp"
                               ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/images/logo/fire-service.webp"
+                            : ins.logo === "/assets/clients/organizations/fire-service.webp"
                               ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/images/logo/ugc.webp"
+                            : ins.logo === "/assets/clients/organizations/ugc.webp"
                               ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/images/logo/ansar.webp"
+                            : ins.logo === "/assets/clients/organizations/ansar.webp"
                               ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/images/logo/bhbfc-logo-final.webp"
+                            : ins.logo === "/assets/clients/organizations/bhbfc-logo-final.webp"
                               ? "h-20 w-auto max-w-full object-contain sm:h-24"
-                            : ins.logo === "/images/logo/bpatc.webp"
+                            : ins.logo === "/assets/clients/organizations/bpatc.webp"
                               ? "h-20 w-auto max-w-full object-contain sm:h-24"
                             : "h-10 w-auto max-w-full object-contain sm:h-11"
                   }
@@ -512,7 +512,7 @@ export default function HomePage() {
                 />
                 <p
                   className={
-                    ins.logo === "/images/logo/dscc.webp"
+                    ins.logo === "/assets/clients/organizations/dscc.webp"
                       ? "mt-3 text-sm font-medium leading-snug text-slate-800 whitespace-nowrap"
                       : "mt-3 text-sm font-medium leading-snug text-slate-800"
                   }

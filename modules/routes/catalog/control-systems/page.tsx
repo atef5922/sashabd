@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: socialImageUrl("/images/accessories/controller-video.webp"),
+        url: socialImageUrl("/assets/led-display/accessories/controller-video.webp"),
         width: 1200,
         height: 630,
         alt: "Control Systems in Bangladesh",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Control Systems in Bangladesh",
     description: "PA system, turnstile gate system and digital podium in Bangladesh.",
-    images: [socialImageUrl("/images/accessories/controller-video.webp")],
+    images: [socialImageUrl("/assets/led-display/accessories/controller-video.webp")],
   },
 };
 
@@ -38,7 +38,7 @@ const categories = [
     title: "Interactive Flat Panel",
     subtitle: "4K touch display for smart classrooms, training and meeting room collaboration.",
     href: "/interactive-flat-panel/",
-    image: "/images/Interactive flat panel/interactive-card.webp",
+    image: "/assets/control-systems/interactive-flat-panel/products/interactive-card.webp",
     tags: ["4K Touch", "Smart classroom", "Meeting room"],
   },
   {
@@ -46,7 +46,7 @@ const categories = [
     title: "PA Sound System",
     subtitle: "Public address system for announcements in office, factory, mosque, school and events.",
     href: "/pa-system/",
-    image: "/images/logo/PA-sound.webp",
+    image: "/assets/control-systems/pa-system/pa-sound.webp",
     tags: ["Amplifier", "Speaker", "Microphone"],
   },
   {
@@ -54,7 +54,7 @@ const categories = [
     title: "Turnstile Gate System",
     subtitle: "Access control and entry management for office, factory and public venues.",
     href: "/turnstile-gate/",
-    image: "/images/logo/turnstile-gate-common.webp",
+    image: "/assets/control-systems/turnstile/turnstile-gate-common.webp",
     tags: ["RFID", "Fingerprint", "Access control"],
   },
   {
@@ -62,7 +62,7 @@ const categories = [
     title: "Digital Podium",
     subtitle: "Smart podium/lectern for presentations in classrooms, lecture halls and conference venues.",
     href: "/digital-podium/",
-    image: "/images/podium/Podium-common.webp",
+    image: "/assets/control-systems/digital-podium/products/Podium-common.webp",
     tags: ["Smart podium", "Lectern", "Presentation"],
   },
 ];

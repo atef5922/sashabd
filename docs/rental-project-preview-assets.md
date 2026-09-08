@@ -4,9 +4,9 @@ These are fictional AI-generated sample setups, not photographs of completed Sas
 
 ## Saved website assets
 
-- `public/images/rental/projects/sample-corporate-led.webp`
-- `public/images/rental/projects/sample-concert-led.webp`
-- `public/images/rental/projects/sample-wedding-led.webp`
+- `public/assets/led-display/rental/projects/sample-corporate-led.webp`
+- `public/assets/led-display/rental/projects/sample-concert-led.webp`
+- `public/assets/led-display/rental/projects/sample-wedding-led.webp`
 
 The PNG originals were retained in the image-generation output directory. Website copies are optimized 1280px-wide WebP images.
 

@@ -43,7 +43,7 @@ test("PA landing has complete SEO structure without fabricated live offers", asy
   assert.doesNotMatch(page, /"@type": "(?:Offer|Product|FAQPage)"|AggregateRating/);
   assert.doesNotMatch(page, /Prices are indicative catalog figures, not live offers/);
   assert.match(page, /<Breadcrumbs/);
-  const hero = await sharp(path.join(root, "public/images/home_hero/pa-system-home-hero.webp")).metadata();
+  const hero = await sharp(path.join(root, "public/assets/home/hero/pa-system-home-hero.webp")).metadata();
   assert.deepEqual([hero.width, hero.height], [2290, 687]);
 });
 

@@ -85,7 +85,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "Educational buying guide for LED display price planning in Bangladesh, including indoor, outdoor, and rental LED screen cost factors.",
     tag: "Price Guide",
-    coverImage: "/images/blog/blog1.webp",
+    coverImage: "/assets/blog/blog1.webp",
     coverImagePosition: {
       card: "62% 44%",
       hero: "60% 42%",
@@ -206,7 +206,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "Complete comparison guide for indoor vs outdoor LED display: technical differences, use-case mapping, cost logic, and final buying decision checklist.",
     tag: "Comparison",
-    coverImage: "/images/blog/blog2.webp",
+    coverImage: "/assets/blog/blog2.webp",
     coverImagePosition: {
       card: "28% 42%",
       hero: "36% 42%",
@@ -329,7 +329,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "Step-by-step LED screen installation guide covering planning, power, mounting, control setup, and maintenance best practices.",
     tag: "Execution",
-    coverImage: "/images/blog/blog3.webp",
+    coverImage: "/assets/blog/blog3.webp",
     coverImagePosition: {
       card: "72% 40%",
       hero: "74% 38%",
@@ -433,7 +433,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "Practical guide to LED display lifespan, maintenance routine, common failure points, and proven ways to extend screen life.",
     tag: "Maintenance",
-    coverImage: "/images/blog/blog4.webp",
+    coverImage: "/assets/blog/blog4.webp",
     coverImagePosition: {
       card: "68% 42%",
       hero: "66% 40%",
@@ -541,7 +541,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "How to build a reliable accessory stack across controller, receiving card, PSU, and module layers without integration surprises.",
     tag: "Accessories",
-    coverImage: "/images/blog/blog5.webp",
+    coverImage: "/assets/blog/blog5.webp",
     coverImagePosition: {
       card: "50% 56%",
       hero: "52% 54%",
@@ -609,7 +609,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "Simple guide to understand LED pixel pitch, including P2 P3 P4 LED display difference and how pitch impacts resolution.",
     tag: "Comparison",
-    coverImage: "/images/blog/blog6.webp",
+    coverImage: "/assets/blog/blog6.webp",
     coverImagePosition: {
       card: "42% 52%",
       hero: "44% 50%",
@@ -708,7 +708,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "Clear comparison between LED video wall vs LCD video wall, including technology, image quality, cost, and practical selection guidance.",
     tag: "Comparison",
-    coverImage: "/images/blog/blog7.webp",
+    coverImage: "/assets/blog/blog7.webp",
     coverImagePosition: {
       card: "40% 44%",
       hero: "42% 42%",
@@ -799,7 +799,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "Critical safety practices for outdoor LED projects: structure, wind exposure, drainage, grounding, surge control, and panel discipline.",
     tag: "Safety",
-    coverImage: "/images/blog/blog8.webp",
+    coverImage: "/assets/blog/blog8.webp",
     coverImagePosition: {
       card: "54% 46%",
       hero: "58% 44%",
@@ -867,7 +867,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "The most expensive LED mistakes in planning, procurement, installation, and operations, plus the prevention checklist we use.",
     tag: "Best Practices",
-    coverImage: "/images/blog/blog9.webp",
+    coverImage: "/assets/blog/blog9.webp",
     coverImagePosition: {
       card: "58% 42%",
       hero: "60% 40%",
@@ -936,7 +936,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "Explore how Micro LED, COB LED, transparent LED, and flexible LED displays are shaping the next generation of visual communication.",
     tag: "Innovation",
-    coverImage: "/images/blog/blog10.webp",
+    coverImage: "/assets/blog/blog10.webp",
     coverImagePosition: {
       card: "44% 42%",
       hero: "48% 40%",
@@ -1027,7 +1027,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "Practical corporate guide for selecting LED video wall for office spaces, conference rooms, and executive communication environments.",
     tag: "Corporate",
-    coverImage: "/images/blog/blog11.webp",
+    coverImage: "/assets/blog/blog11.webp",
     coverImagePosition: {
       card: "62% 38%",
       hero: "66% 36%",
@@ -1131,7 +1131,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "Practical outdoor LED billboard guide covering benefits, location strategy, and cost factors for effective advertising.",
     tag: "Advertising",
-    coverImage: "/images/blog/blog12.webp",
+    coverImage: "/assets/blog/blog12.webp",
     coverImagePosition: {
       card: "58% 36%",
       hero: "60% 34%",
@@ -1222,7 +1222,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       "Outdoor P5 LED billboard project in Nasirabad, Chattogram—scope, pixel pitch choice, installation workflow, and planning notes for advertisers.",
     tag: "Advertising",
-    coverImage: "/images/blog/Chattogram-project.webp",
+    coverImage: "/assets/blog/Chattogram-project.webp",
     coverImagePosition: {
       card: "50% 38%",
       hero: "50% 34%",

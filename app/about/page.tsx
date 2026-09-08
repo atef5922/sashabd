@@ -56,18 +56,18 @@ export default function AboutPage() {
   ];
 
   const journey = [
-    { year: "2012", image: "/images/project-page/project-chattogram-card.webp", title: "Started with Display Solutions", text: "Began our journey with LED display solutions, serving businesses across Bangladesh." },
-    { year: "2014", image: "/images/conference_landing/conference-system-hero-clear.webp", title: "Expanded to Conference & AV", text: "Introduced conference and collaboration solutions for modern workplaces." },
-    { year: "2016", image: "/images/turnstile-entrance-hero-v2.webp", title: "Added PA & Access Control", text: "Extended our portfolio with professional audio systems and security access solutions." },
-    { year: "2019", image: "/images/about/about-who-we-are-building.webp", title: "Delivered Integrated Projects", text: "Started handling large-scale integrated projects for corporate, government and commercial spaces." },
-    { year: "Today", image: "/images/hero.webp", title: "A Broader Technology Partner", text: "Now a trusted provider of end-to-end technology solutions for smarter, safer and more connected spaces." },
+    { year: "2012", image: "/assets/projects/project-chattogram-card.webp", title: "Started with Display Solutions", text: "Began our journey with LED display solutions, serving businesses across Bangladesh." },
+    { year: "2014", image: "/assets/conference-system/landing/conference-system-hero-clear.webp", title: "Expanded to Conference & AV", text: "Introduced conference and collaboration solutions for modern workplaces." },
+    { year: "2016", image: "/assets/control-systems/turnstile/turnstile-entrance-hero-v2.webp", title: "Added PA & Access Control", text: "Extended our portfolio with professional audio systems and security access solutions." },
+    { year: "2019", image: "/assets/about/about-who-we-are-building.webp", title: "Delivered Integrated Projects", text: "Started handling large-scale integrated projects for corporate, government and commercial spaces." },
+    { year: "Today", image: "/assets/shared/hero.webp", title: "A Broader Technology Partner", text: "Now a trusted provider of end-to-end technology solutions for smarter, safer and more connected spaces." },
   ];
 
   return (
     <main className={`${responsiveStyles.page} w-full bg-transparent`}>
       <div className="mx-auto w-full pb-8 pt-0">
         <section id="about-hero" className="relative isolate overflow-hidden bg-white">
-          <Image src="/images/about/about-hero-banner.webp" alt="Modern Sasha Corporation AV and conference showroom" fill priority sizes="100vw" className="object-cover object-center" />
+          <Image src="/assets/about/about-hero-banner.webp" alt="Modern Sasha Corporation AV and conference showroom" fill priority sizes="100vw" className="object-cover object-center" />
           <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(248,252,255,.88)_0%,rgba(248,252,255,.72)_27%,rgba(248,252,255,.36)_43%,rgba(248,252,255,.06)_60%,transparent_72%)]" />
           <div className="relative mx-auto min-h-[clamp(260px,27vw,420px)] max-w-[1440px] px-6 py-7 md:flex md:items-center md:px-8 lg:px-0">
             <div className="max-w-[680px]">
@@ -84,7 +84,7 @@ export default function AboutPage() {
 
         <section id="about-who" className="overflow-hidden bg-[#f3f8ff]">
           <div className="mx-auto grid w-full max-w-[1440px] lg:grid-cols-[minmax(0,.9fr)_minmax(0,1.35fr)]">
-          <div className="about-who-image relative min-h-[220px] self-stretch overflow-hidden sm:min-h-[300px] lg:my-[clamp(18px,2.2vw,34px)] lg:min-h-0"><Image src="/images/about/about-who-we-are-building.webp" alt="Sasha Corporation office building" fill sizes="(max-width: 1023px) 100vw, 42vw" className="object-cover object-center" /></div>
+          <div className="about-who-image relative min-h-[220px] self-stretch overflow-hidden sm:min-h-[300px] lg:my-[clamp(18px,2.2vw,34px)] lg:min-h-0"><Image src="/assets/about/about-who-we-are-building.webp" alt="Sasha Corporation office building" fill sizes="(max-width: 1023px) 100vw, 42vw" className="object-cover object-center" /></div>
           <div className="relative px-[clamp(22px,4vw,58px)] py-[clamp(18px,2.2vw,34px)]"><p className="flex items-center gap-3 text-[clamp(9px,.8vw,12px)] font-extrabold uppercase tracking-[.14em] text-[#52658f] before:h-[2px] before:w-8 before:bg-[#ff6a00]">Who we are</p><h2 className="!mt-3 max-w-[78%] !text-[clamp(25px,2.4vw,36px)] font-black leading-tight tracking-[-.04em] text-[#10275a]">A Trusted Partner for Modern Spaces</h2><p className="mt-3 max-w-[78%] text-[clamp(10px,1vw,14px)] !text-left leading-[1.5] text-[#52658f]">Sasha Corporation is a technology-focused company providing professional display, conference, audio and access-control solutions across Bangladesh. We work with businesses, educational institutions, government organizations and commercial spaces to create smarter, safer and more connected environments.</p><p className="mt-2 max-w-[78%] text-[clamp(10px,1vw,14px)] !text-left leading-[1.5] text-[#52658f]">With a strong focus on engineering, reliable products and dedicated support, we help our clients turn ideas into real-world solutions.</p><p className="pointer-events-none absolute right-[3%] top-[11%] hidden w-[17%] -rotate-6 text-right font-serif text-[clamp(16px,2vw,28px)] font-semibold italic leading-[1.05] !text-[#b8c8e3] sm:block">Building<br />Better Spaces<br />Together<span className="mx-auto mt-2 block h-px w-24 -rotate-6 bg-[#b8c8e3]" /></p><div className="mt-4 grid grid-cols-2 items-stretch gap-2 sm:grid-cols-4">{[['⚙', 'Engineering-Led', 'Solution design based on real project needs.'], ['◇', 'Multi-Brand Solutions', 'The right technology from trusted global brands.'], ['♧', 'Nationwide Support', 'Project delivery and technical support across Bangladesh.'], ['◉', 'After-Sales Service', 'Long-term technical support and maintenance for peace of mind.']].map(([icon, title, text]) => <article key={title} className="min-h-[92px] rounded-xl border border-[#dce9fb] bg-white/75 p-[clamp(9px,1vw,16px)] shadow-[0_8px_20px_rgba(16,39,90,.04)]"><span className="grid h-8 w-8 place-items-center rounded-full bg-[#e5f0ff] text-base text-[#1465ef]">{icon}</span><h3 className="mt-2 text-[clamp(10px,.9vw,13px)] !text-left font-extrabold leading-5 text-[#10275a]">{title}</h3><p className="mt-1 text-[clamp(8px,.75vw,11px)] !text-left leading-[1.4] text-[#52658f]">{text}</p></article>)}</div></div>
           </div>
         </section>
@@ -119,7 +119,7 @@ export default function AboutPage() {
               <h2 id="what-we-do-heading" className="mt-3 !text-[clamp(32px,3vw,48px)] font-black leading-[.95] tracking-[-.05em] text-[#10275a]">What We Do</h2>
               <p className="mt-2 max-w-[260px] !text-left text-[clamp(16px,1.35vw,20px)] font-medium leading-[1.3] tracking-[-.015em] text-[#304b81]">Complete Technology Solutions for Modern Spaces</p>
               <p className="mt-4 max-w-[270px] text-[12px] leading-[1.55] text-[#52658f]">We provide end-to-end display, conference, audio, security and integration solutions, backed by expert engineering and dedicated support. Our goal is to help you create smarter, more connected environments that work today and tomorrow.</p>
-              <Link href="/products/" className="mt-5 inline-flex w-fit items-center justify-center rounded-lg bg-[#ff6a00] px-5 py-3 text-[12px] font-extrabold text-white shadow-[0_10px_22px_rgba(255,106,0,.2)] transition hover:bg-[#e85f00]">Explore All Solutions <span aria-hidden="true" className="ml-4 text-base">→</span></Link>
+              <Link href="/led-display/" className="mt-5 inline-flex w-fit items-center justify-center rounded-lg bg-[#ff6a00] px-5 py-3 text-[12px] font-extrabold text-white shadow-[0_10px_22px_rgba(255,106,0,.2)] transition hover:bg-[#e85f00]">Explore All Solutions <span aria-hidden="true" className="ml-4 text-base">→</span></Link>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -142,7 +142,7 @@ export default function AboutPage() {
         {/* MISSION, VISION & VALUES */}
         <section id="about-purpose" aria-labelledby="purpose-heading" className="relative overflow-hidden border-t border-[#dce9fb] bg-[linear-gradient(105deg,#f9fcff_0%,#f4f9ff_62%,#eaf4ff_100%)] px-6 py-6 md:px-10 lg:px-12">
           <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[38%] overflow-hidden lg:block">
-            <Image src="/images/about/bangladesh-memorial-skyline.png" alt="" fill sizes="38vw" className="object-cover object-right-bottom contrast-[1.06] saturate-[1.08]" />
+            <Image src="/assets/about/bangladesh-memorial-skyline.png" alt="" fill sizes="38vw" className="object-cover object-right-bottom contrast-[1.06] saturate-[1.08]" />
             <div className="absolute inset-0 bg-[linear-gradient(90deg,#f7fbff_0%,rgba(247,251,255,.35)_14%,transparent_30%)]" />
             <p className="absolute right-[3.5%] top-[13%] -rotate-6 text-right font-serif text-[clamp(16px,1.65vw,24px)] font-semibold italic leading-[1.05] text-[#91a7ca]">Technology<br />for a Brighter<br />Bangladesh<span className="mx-auto mt-2 block h-px w-20 -rotate-6 bg-[#91a7ca]" /></p>
           </div>
@@ -184,7 +184,7 @@ export default function AboutPage() {
                 <h2 id="brands-heading" className="mt-2 !text-[clamp(27px,2.5vw,38px)] font-black leading-none tracking-[-.045em] text-[#10275a]">Global Brands We Work With</h2>
                 <p className="mt-2 text-[11px] leading-5 text-[#52658f]">We partner with world-renowned technology brands to ensure reliable performance and long-term value for our clients.</p>
               </div>
-              <Link href="/products/" className="inline-flex h-9 shrink-0 items-center justify-center rounded-md border border-[#1465ef] bg-white px-5 text-[10px] font-extrabold text-[#1465ef] transition hover:bg-[#1465ef] hover:text-white">View All Brands <span aria-hidden="true" className="ml-4 text-sm">→</span></Link>
+                <Link href="/led-display/" className="inline-flex h-9 shrink-0 items-center justify-center rounded-md border border-[#1465ef] bg-white px-5 text-[10px] font-extrabold text-[#1465ef] transition hover:bg-[#1465ef] hover:text-white">View All Brands <span aria-hidden="true" className="ml-4 text-sm">→</span></Link>
             </div>
 
             <div className="mt-4 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -236,7 +236,7 @@ export default function AboutPage() {
 
         {/* PROJECT CTA */}
         <section id="about-project-cta" aria-labelledby="project-cta-heading" className="relative isolate overflow-hidden bg-[#052b56] px-6 py-7 text-white md:px-10 lg:px-12">
-          <Image src="/images/about/technology-project-cta.png" alt="Modern glass technology office building illuminated at dusk" fill sizes="100vw" className="-z-10 object-cover object-center" />
+          <Image src="/assets/about/technology-project-cta.png" alt="Modern glass technology office building illuminated at dusk" fill sizes="100vw" className="-z-10 object-cover object-center" />
           <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(2,35,68,.99)_0%,rgba(2,35,68,.96)_37%,rgba(2,35,68,.34)_69%,rgba(2,35,68,.28)_100%)]" />
           <div className="relative mx-auto grid max-w-[1440px] gap-6 lg:grid-cols-[minmax(0,520px)_minmax(260px,1fr)] lg:items-center">
             <div>

@@ -114,7 +114,7 @@ export default function RootLayout({
                   "@type": "Organization",
                   name: BRAND_NAME,
                   url: absoluteUrl("/"),
-                  logo: `${siteUrl}/sasha-corporation-final-l.webp`,
+                  logo: `${siteUrl}/assets/brand/sasha/sasha-corporation-final-l.webp`,
                   contactPoint: [
                     {
                       "@type": "ContactPoint",

@@ -28,7 +28,7 @@ Compared actual Home and IFP computed styles in Chrome: image height/fit, radius
 ## Hero asset
 
 - Mode: built-in image generation.
-- Asset: `public/images/interactive-flat-panel/ifp-collaboration-hero.webp`, 1672 × 941, optimized WebP (89 KB).
+- Asset: `public/assets/control-systems/interactive-flat-panel/landing/ifp-collaboration-hero.webp`, 1672 × 941, optimized WebP (89 KB).
 - Purpose: illustrative room concept only; not a real installation or a representation of a particular catalog model.
 - All catalog and OPS photos are the existing assets, unchanged.
 

@@ -4,7 +4,7 @@ Generated with the built-in imagegen tool (imagegen skill), then encoded as WebP
 
 ## receiving-card
 
-Saved asset: `public/images/accessories/heroes/receiving-card-hero.webp`
+Saved asset: `public/assets/led-display/accessories/heroes/receiving-card-hero.webp`
 
 Final prompt:
 
@@ -12,7 +12,7 @@ Use case: product-mockup. Create a photorealistic premium commercial LED technol
 
 ## controller
 
-Saved asset: `public/images/accessories/heroes/controller-hero.webp`
+Saved asset: `public/assets/led-display/accessories/heroes/controller-hero.webp`
 
 Final prompt:
 
@@ -20,7 +20,7 @@ Use case: product-mockup. Create a photorealistic premium commercial LED technol
 
 ## power-supply
 
-Saved asset: `public/images/accessories/heroes/power-supply-hero.webp`
+Saved asset: `public/assets/led-display/accessories/heroes/power-supply-hero.webp`
 
 Final prompt:
 
@@ -28,7 +28,7 @@ Use case: product-mockup. Create a photorealistic premium commercial LED technol
 
 ## led-accessories
 
-Saved asset: `public/images/accessories/heroes/led-accessories-hero.webp`
+Saved asset: `public/assets/led-display/accessories/heroes/led-accessories-hero.webp`
 
 Final prompt:
 

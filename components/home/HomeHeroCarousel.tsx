@@ -26,7 +26,7 @@ const heroSlides: readonly HeroSlide[] = [
     title: "LED Display Solutions in Bangladesh",
     description:
       "Indoor, outdoor and rental LED displays with controllers, accessories, installation and dependable project support.",
-    image: "/images/home_hero/led-display-hero.webp",
+    image: "/assets/led-display/heroes/outdoor-led-hero.webp",
     imageAlt: "LED display showroom with indoor and outdoor screens, controllers and display accessories",
     primaryLabel: "Explore LED Displays",
     primaryHref: "/led-display/",
@@ -41,7 +41,7 @@ const heroSlides: readonly HeroSlide[] = [
     title: "Professional Conference System Solutions",
     description:
       "Wired, wireless, digital and hybrid meeting-room systems with microphones, control units, DSP and complete BOQ support.",
-    image: "/images/home_hero/conference-system-home-hero.webp",
+    image: "/assets/conference-system/landing/conference-system-hero-clear.webp",
     imageAlt: "Professional conference room with chairman and delegate microphones and system control equipment",
     primaryLabel: "Explore Conference Systems",
     primaryHref: "/conference-system/",
@@ -56,7 +56,7 @@ const heroSlides: readonly HeroSlide[] = [
     title: "Complete PA Sound System Solutions",
     description:
       "Amplifiers, mixers, microphones and speaker systems for offices, institutions, auditoriums and public venues.",
-    image: "/images/home_hero/pa-system-home-hero.webp",
+    image: "/assets/home/hero/pa-system-home-hero.webp",
     imageAlt: "Professional PA sound system with amplifiers, digital mixer, equipment rack and speakers",
     primaryLabel: "Explore PA Systems",
     primaryHref: "/pa-system/",
@@ -71,7 +71,7 @@ const heroSlides: readonly HeroSlide[] = [
     title: "Turnstile Gate & Smart Entrance Systems",
     description:
       "Flap barriers, swing gates and access-control integration for secure corporate, institutional and industrial entrances.",
-    image: "/images/home_hero/Turnstile-gate-System-home-hero.webp",
+    image: "/assets/home/hero/Turnstile-gate-System-home-hero.webp",
     imageAlt: "Modern corporate entrance with turnstile gates and face recognition access control terminals",
     primaryLabel: "Explore Turnstile Gates",
     primaryHref: "/turnstile-gate/",

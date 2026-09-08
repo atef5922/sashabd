@@ -52,9 +52,9 @@ const imageFitFixIds = new Set<string>([
 
 const defaultHeroImageDimensions = { width: 1536, height: 1024 };
 const heroImageDimensionOverrides: Record<string, { width: number; height: number }> = {
-  "/images/outdoor/Premium Quality Outdoor LED Display.webp": { width: 1448, height: 1086 },
-  "/images/rental/P2.6-Rental-LED-Display.webp": { width: 1024, height: 1024 },
-  "/images/indoor/P4 Indoor LED Display.webp": { width: 1824, height: 862 },
+  "/assets/led-display/outdoor/Premium Quality Outdoor LED Display.webp": { width: 1448, height: 1086 },
+  "/assets/led-display/rental/P2.6-Rental-LED-Display.webp": { width: 1024, height: 1024 },
+  "/assets/led-display/indoor/P4 Indoor LED Display.webp": { width: 1824, height: 862 },
 };
 
 function getHeroImageDimensions(image: string) {

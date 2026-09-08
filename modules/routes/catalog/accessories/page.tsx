@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: socialImageUrl("/images/accessories/controller-video.webp"),
+        url: socialImageUrl("/assets/led-display/accessories/controller-video.webp"),
         width: 1200,
         height: 630,
         alt: "LED Display Accessories Bangladesh | Controller & PSU",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     title: "LED Display Accessories Bangladesh | Controller & PSU",
     description:
       "Browse LED display accessories in Bangladesh including controllers, receiving cards and power supplies with quotation support.",
-    images: [socialImageUrl("/images/accessories/controller-video.webp")],
+    images: [socialImageUrl("/assets/led-display/accessories/controller-video.webp")],
   },
 };
 
@@ -47,7 +47,7 @@ const accessories = [
     title: "Receiving Card",
     subtitle: "Novastar / Colorlight compatible receiving cards (HUB mapping & scan support).",
     href: "/led-display/accessories/receiving-card/",
-    image: "/images/accessories/receiving-card-user.webp",
+    image: "/assets/led-display/accessories/receiving-card-user.webp",
     tags: ["HUB75/HUB75E", "Scan support", "Stable mapping"],
   },
   {
@@ -55,7 +55,7 @@ const accessories = [
     title: "Controller / Video Processor",
     subtitle: "Huidu / Novastar / Colorlight - scaling, switching, mapping & smooth playback.",
     href: "/led-display/accessories/controller/",
-    image: "/images/accessories/controller-video.webp", // you can change
+    image: "/assets/led-display/accessories/controller-video.webp", // you can change
     tags: ["HDMI/DVI input", "Scaling", "Seamless switching"],
   },
   {
@@ -63,7 +63,7 @@ const accessories = [
     title: "Power Supply (PSU)",
     subtitle: "Stable 5V power for LED modules - selection & safety notes.",
     href: "/led-display/accessories/power-supply/",
-    image: "/images/accessories/power-supply-psu.webp", // you can change
+    image: "/assets/led-display/accessories/power-supply-psu.webp", // you can change
     tags: ["5V DC", "Protection", "Low ripple"],
   },
   {
@@ -71,7 +71,7 @@ const accessories = [
     title: "LED Accessories (Cables & Parts)",
     subtitle: "Cables, IDC/FRC connectors, fixing items, mounting parts, and event distribution accessories.",
     href: "/led-display/accessories/led-accessories/",
-    image: "/images/accessories/led-accessories-common.webp",
+    image: "/assets/led-display/accessories/led-accessories-common.webp",
     tags: ["Cables & connectors", "Mounting & fixing", "Event power & logistics"],
   },
 ];

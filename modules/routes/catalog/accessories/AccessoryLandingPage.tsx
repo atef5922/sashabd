@@ -103,7 +103,7 @@ export default function AccessoryLandingPage({ category }: { category: Accessory
 
     <section className={styles.ctaSection} aria-labelledby={`${category}-cta-title`}>
       <div className={styles.container}><div className={styles.finalCta}>
-        <SectionBackdrop src="/images/project-page/Project-hero.webp" />
+        <SectionBackdrop src="/assets/projects/Project-hero.webp" />
         <div className={styles.ctaInner}>
           <div><p className={styles.eyebrow}>LET’S MATCH YOUR REQUIREMENTS</p><h2 id={`${category}-cta-title`}>{page.cta}</h2><p>Share your equipment details for a clear, project-specific recommendation.</p></div>
           <div className={styles.ctaActionPanel}>

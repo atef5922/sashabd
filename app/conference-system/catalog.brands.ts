@@ -3,7 +3,7 @@ import type { ConferenceProduct } from "./catalog";
 /**
  * Brand conference products photographed for the Sasha catalog.
  *
- * Images live in /public/images/conference_system_products/<brand>_products/.
+ * Images live in /public/assets/conference-system/products/brands/<brand>_products/.
  * Only genuine conference/discussion equipment belongs here — PA amplifiers and
  * loudspeakers stay on the PA System routes so the Conference category keeps its
  * search relevance.
@@ -12,14 +12,14 @@ import type { ConferenceProduct } from "./catalog";
  * figures depend on unit count, cabling, and installation scope.
  */
 
-const CONFERENCE_BRAND_IMAGE_BASE = "/images/conference_system_products";
+const CONFERENCE_BRAND_IMAGE_BASE = "/assets/conference-system/products/brands";
 
 export function brandImage(folder: string, fileName: string): string {
   return `${CONFERENCE_BRAND_IMAGE_BASE}/${folder}/${encodeURIComponent(fileName)}`;
 }
 
-const boschImage = (fileName: string) => brandImage("bosch_products", fileName);
-const cmxImage = (fileName: string) => brandImage("cmx_products", fileName);
+const boschImage = (fileName: string) => brandImage("bosch", fileName);
+const cmxImage = (fileName: string) => brandImage("cmx", fileName);
 
 export const BOSCH = { name: "Bosch", slug: "bosch" } as const;
 export const CMX = { name: "CMX", slug: "cmx" } as const;

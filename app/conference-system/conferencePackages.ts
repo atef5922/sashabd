@@ -19,7 +19,7 @@ export const conferencePackages: readonly ConferencePackage[] = [
     name: "8 Person Conference System Package",
     subtitle: "Small Meeting Room",
     image: {
-      src: "/images/complete package/package1.jpg",
+      src: "/assets/conference-system/packages/package1.jpg",
       alt: "8 person complete conference system package for small meeting room",
     },
     price: "৳199,000 – ৳229,000",
@@ -42,7 +42,7 @@ export const conferencePackages: readonly ConferencePackage[] = [
     name: "12 Person Conference System Package",
     subtitle: "Corporate Boardroom",
     image: {
-      src: "/images/complete package/package2.png",
+      src: "/assets/conference-system/packages/package2.png",
       alt: "12 person complete conference system package for corporate boardroom",
     },
     price: "৳449,000 – ৳499,000",
@@ -68,7 +68,7 @@ export const conferencePackages: readonly ConferencePackage[] = [
     name: "20 Person Conference System Package",
     subtitle: "Large Boardroom / Conference Hall",
     image: {
-      src: "/images/complete package/package3.jpg",
+      src: "/assets/conference-system/packages/package3.jpg",
       alt: "20 person complete conference system package for large conference hall",
     },
     price: "৳649,000 – ৳749,000",

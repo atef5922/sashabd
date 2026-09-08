@@ -286,7 +286,7 @@ export default function Footer() {
               >
                 <div className="relative h-14 w-36 shrink-0 sm:h-16 sm:w-40">
                   <Image
-                    src="/sasha-corporation-after-scroll.png"
+                    src="/assets/brand/sasha/sasha-corporation-after-scroll.png"
                     alt={`${BRAND_NAME} logo`}
                     fill
                     className="object-contain"

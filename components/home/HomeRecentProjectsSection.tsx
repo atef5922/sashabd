@@ -20,7 +20,7 @@ const projects: Project[] = [
   {
     badge: "LED Display",
     title: "Indoor LED Display Installation",
-    image: "/images/indoor/P2.5-Indoor-LED-Display.webp",
+    image: "/assets/led-display/indoor/P2.5-Indoor-LED-Display.webp",
     location: "Bangabandhu International Conference Center, Dhaka",
     specification: "P2.5 LED Display   |   Size: 28ft x 12ft",
     description: "High resolution LED display for conference and event management.",
@@ -29,7 +29,7 @@ const projects: Project[] = [
   {
     badge: "Conference System",
     title: "Boardroom Conference Solution",
-    image: "/images/conference_landing/video-hybrid-conference-system-hero.webp",
+    image: "/assets/conference-system/landing/video-hybrid-conference-system-hero.webp",
     imagePosition: "right center",
     location: "Corporate Office, Gulshan, Dhaka",
     specification: "Digital Conference System   |   20 Seats",
@@ -39,7 +39,7 @@ const projects: Project[] = [
   {
     badge: "Turnstile Gate",
     title: "Access Control System Installation",
-    image: "/images/home_hero/Turnstile-gate-System-home-hero.webp",
+    image: "/assets/home/hero/Turnstile-gate-System-home-hero.webp",
     imagePosition: "right center",
     location: "Factory and Industrial Facility, Gazipur",
     specification: "Tripod Turnstile + Access Control",
@@ -49,7 +49,7 @@ const projects: Project[] = [
   {
     badge: "Smart Meeting Room",
     title: "Hybrid Meeting Room Integration",
-    image: "/images/conference_system_projects/coference_p2.webp",
+    image: "/assets/conference-system/projects/coference_p2.webp",
     location: "SREDA, Dhaka",
     specification: "Hybrid conference system · 10–12 seats",
     description: "Integrated audio, video and collaboration tools for effortless hybrid meetings.",

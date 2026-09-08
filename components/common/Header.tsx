@@ -272,7 +272,7 @@ function ConferenceDesktopNavItem({
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeTimeoutRef = useRef<number | null>(null);
   const panelId = "conference-desktop-mega-menu";
 
   const groupsById = useMemo(() => {
@@ -485,7 +485,7 @@ function ConferenceDesktopNavItem({
                     className="relative block aspect-[4/3] w-full overflow-hidden rounded-lg bg-white shadow-[0_2px_8px_rgba(15,23,42,0.08)] ring-1 ring-slate-200/80 transition-colors duration-200 group-hover/package:ring-[#FD6900]/30"
                   >
                     <Image
-                      src="/images/conference_landing/complete-conference-package-thumbnail.webp"
+                      src="/assets/conference-system/landing/complete-conference-package-thumbnail.webp"
                       alt=""
                       fill
                       sizes="220px"
@@ -500,6 +500,9 @@ function ConferenceDesktopNavItem({
                     >
                       {"\u2192"}
                     </span>
+                  </span>
+                  <span className="mt-1 text-[11px] leading-4 text-slate-600">
+                    Plan a complete room-based conference system.
                   </span>
                 </Link>
               </section>
@@ -854,7 +857,7 @@ export default function Header({
         <Link prefetch={false} href="/" onClick={handleNavClick("/")} className="flex shrink-0 items-center gap-2">
           <div className="site-header-logo relative h-11 w-[88px] shrink-0 overflow-visible rounded-md sm:h-[46px] sm:w-[92px] md:h-20 md:w-36">
             <Image
-              src={isScrolled ? "/sasha-corporation-after-scroll.png" : "/sasha-corporation-final-l.webp"}
+              src={isScrolled ? "/assets/brand/sasha/sasha-corporation-after-scroll.png" : "/assets/brand/sasha/sasha-corporation-final-l.webp"}
               alt={`${BRAND_NAME} logo`}
               fill
               className="object-contain object-left scale-100 md:scale-100"

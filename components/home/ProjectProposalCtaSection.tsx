@@ -37,7 +37,7 @@ export default function ProjectProposalCtaSection() {
   return (
     <section id="home-project-proposal" className="relative scroll-mt-24 overflow-hidden rounded-2xl border border-[#172c53] bg-[#071936] px-4 py-6 shadow-[0_8px_28px_rgba(7,25,54,0.18)] sm:px-6 md:py-8">
       <Image
-        src="/images/project-page/Project-hero.webp"
+        src="/assets/projects/Project-hero.webp"
         alt=""
         fill
         sizes="(max-width: 1023px) 100vw, 90vw"

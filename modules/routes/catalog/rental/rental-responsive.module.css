@@ -16,7 +16,7 @@
 
 /* Quiet, consistent feature cards; the adjacent trust strip is unchanged. */
 .whyChoosePanel { position: relative; isolation: isolate; }
-.whyChoosePanel::before { content: ""; position: absolute; inset-block: 0; left: 50%; width: 100vw; transform: translateX(-50%); z-index: -1; pointer-events: none; background: linear-gradient(90deg,#02142df2 0%,#031a38d9 48%,#031a38b3 100%),url("/images/rental/hero/rental-led-hero-banner.webp") center 48% / cover no-repeat; }
+.whyChoosePanel::before { content: ""; position: absolute; inset-block: 0; left: 50%; width: 100vw; transform: translateX(-50%); z-index: -1; pointer-events: none; background: linear-gradient(90deg,#02142df2 0%,#031a38d9 48%,#031a38b3 100%),url("/assets/led-display/rental/hero/rental-led-hero-banner.webp") center 48% / cover no-repeat; }
 .whyChooseGrid { align-items: stretch; }
 .whyChooseCard { min-width: 0; padding: calc(16 * var(--rental-unit)); border: 1px solid #adc6e326; border-radius: calc(10 * var(--rental-unit)); background: #ffffff05; }
 .whyChooseCardTop { display: flex; flex-direction: column; align-items: flex-start; gap: calc(12 * var(--rental-unit)); }

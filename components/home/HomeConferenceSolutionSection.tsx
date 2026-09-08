@@ -49,18 +49,18 @@ const features: Array<{ title: string; text: string; icon: LineIconKind }> = [
 const equipment = [
   {
     name: "Conference Microphone",
-    image: "/images/conference_system_products/bosch_products/Bosch CCSD-CL Discussion Chairman Unit.webp",
+    image: "/assets/conference-system/products/brands/bosch/Bosch CCSD-CL Discussion Chairman Unit.webp",
   },
   { name: "PTZ Camera", custom: true },
   {
     name: "DSP Processor",
-    image: "/images/Conference system/SPON SAP-F88E 8x8 Digital Audio Processor with DSP.png",
+    image: "/assets/conference-system/products/core/SPON SAP-F88E 8x8 Digital Audio Processor with DSP.png",
   },
   {
     name: "Amplifier",
-    image: "/images/Conference system/SPON GEN-5301P26 Network Integrated Amplifier.webp",
+    image: "/assets/conference-system/products/core/SPON GEN-5301P26 Network Integrated Amplifier.webp",
   },
-  { name: "Ceiling Speaker", image: "/images/conference_system_products/honeywell_products/Honeywell-HN-CL06-E-6W-Ceiling-Loudspeaker-300x300.webp" },
+  { name: "Ceiling Speaker", image: "/assets/conference-system/products/brands/honeywell/Honeywell-HN-CL06-E-6W-Ceiling-Loudspeaker-300x300.webp" },
 ];
 
 const benefits: Array<{ title: string; text: string; icon: LineIconKind }> = [
@@ -136,7 +136,7 @@ export default function HomeConferenceSolutionSection() {
           <div className="home-conference-panel overflow-hidden rounded-xl bg-white shadow-[0_10px_28px_rgba(15,23,42,0.10)]">
             <div className="home-conference-visual relative overflow-hidden">
               <Image
-                src="/images/home_hero/conference-system-home-hero1.webp"
+                src="/assets/home/hero/conference-system-home-hero1.webp"
                 alt="Modern conference room solution with microphones, display and control system"
                 fill
                 sizes="(max-width: 1023px) 100vw, 62vw"

@@ -2,6 +2,7 @@
     "name": "sashabd",
     "version": "0.1.0",
     "private": true,
+    "type": "module",
     "description": "Sashabd - LED display sales, installation, and support in Bangladesh",
     "scripts": {
         "dev": "next dev",
@@ -11,7 +12,7 @@
         "serve:static": "node scripts/serve-static.mjs --port=4173",
         "lint": "eslint",
         "typecheck": "tsc --noEmit",
-        "test": "node --test tests/seo.test.mjs",
+        "test": "node --test tests/*.test.mjs",
         "seo:audit": "node scripts/seo-audit.mjs",
         "seo:audit:local": "node scripts/seo-audit.mjs --base=http://127.0.0.1:4173 --expected-origin=https://sashabd.com --output=reports/seo-audit.json",
         "seo:audit:production": "node scripts/seo-audit.mjs --base=https://sashabd.com --expected-origin=https://sashabd.com --output=reports/production-seo-audit.json",

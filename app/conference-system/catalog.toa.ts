@@ -8,7 +8,7 @@ import { TOA, brandImage, indicativeRange } from "./catalog.brands";
  * loudspeakers stay on the PA System routes.
  */
 
-const toaImage = (fileName: string) => brandImage("toa_products", fileName);
+const toaImage = (fileName: string) => brandImage("toa", fileName);
 
 export const toaConferenceProducts: ConferenceProduct[] = [
   {

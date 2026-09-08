@@ -3,7 +3,7 @@ import { siteConfig } from "./site";
 import { BRAND_NAME } from "./brand";
 import { isVercelStagingBuild } from "./deployment";
 
-const DEFAULT_SOCIAL_IMAGE = "/images/hero.webp";
+const DEFAULT_SOCIAL_IMAGE = "/assets/shared/hero.webp";
 const FILE_PATH_PATTERN = /\/[a-z0-9][a-z0-9._-]*\.[a-z0-9]{1,8}$/i;
 
 export function getSiteBaseUrl(): string {

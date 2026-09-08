@@ -1,7 +1,7 @@
 import { getPaSystemBySlug, paSystemCatalog, type PaSystemItem } from "./catalog";
 import type { PaIconName } from "./PaIcon";
 
-export const PA_HERO = "/images/home_hero/pa-system-home-hero.webp";
+export const PA_HERO = "/assets/home/hero/pa-system-home-hero.webp";
 // Preserve the existing landing-page assortment; the excluded model still has its detail route and price-table row.
 export const paPageItems = paSystemCatalog.filter(item => item.slug !== "bosch-lc9-uc06-6w-ceiling-speaker-metal-grill");
 export const paCategories = ["All products", "PA packages", "Amplifiers & mixers", "Microphones", "Speakers", "Network & DSP"] as const;

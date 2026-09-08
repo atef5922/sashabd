@@ -56,7 +56,7 @@ export const opsCards = [
     title: "OPS PC - Core i5 (Everyday)",
     subtitle: "For standard classrooms and training rooms with common Office + browser usage.",
     recommended: 'Recommended panel size: 65" - 75"',
-    image: "/images/Interactive%20flat%20panel/OPS-PC-basic.webp",
+    image: "/assets/control-systems/interactive-flat-panel/products/OPS-PC-basic.webp",
     specs: ["Intel Core i5", "8GB RAM", "256GB SSD", "Windows 11 Pro"],
   },
   {
@@ -64,7 +64,7 @@ export const opsCards = [
     title: "OPS PC - Core i5 (Smooth Multitask)",
     subtitle: "For smart classrooms and training setups that multitask apps and content during sessions.",
     recommended: 'Recommended panel size: 75" - 86"',
-    image: "/images/Interactive%20flat%20panel/OPS-PC-standard.webp",
+    image: "/assets/control-systems/interactive-flat-panel/products/OPS-PC-standard.webp",
     specs: ["Intel Core i5", "16GB RAM", "512GB SSD", "Windows 11 Pro"],
   },
   {
@@ -72,7 +72,7 @@ export const opsCards = [
     title: "OPS PC - Core i7 (Power User)",
     subtitle: "For university labs, corporate boardrooms and heavier workloads with multiple windows and meetings.",
     recommended: 'Recommended panel size: 86" - 110"',
-    image: "/images/Interactive%20flat%20panel/OPS-PC-pro.webp",
+    image: "/assets/control-systems/interactive-flat-panel/products/OPS-PC-pro.webp",
     specs: ["Intel Core i7", "16GB - 32GB RAM", "512GB - 1TB SSD", "Windows 11 Pro"],
   },
 ];

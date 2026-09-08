@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     type: "article",
     images: [
       {
-        url: socialImageUrl("/images/about/founder-mun-islam.webp"),
+        url: socialImageUrl("/assets/about/founder-mun-islam.webp"),
         width: 1200,
         height: 630,
         alt: "Message from Founder",
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     title: "Message from Founder",
     description:
       "Founder message from Sasha Corporation on growth, innovation and customer commitment.",
-    images: [socialImageUrl("/images/about/founder-mun-islam.webp")],
+    images: [socialImageUrl("/assets/about/founder-mun-islam.webp")],
   },
 };
 
@@ -57,7 +57,7 @@ export default function MessageFromChairmanPage() {
               <div className="min-w-0 max-w-full overflow-hidden rounded-none bg-transparent p-0 md:rounded-2xl md:border md:border-slate-200 md:bg-white md:p-3 md:overflow-visible">
                 <div className="relative h-[330px] overflow-hidden rounded-[12px] border border-slate-200 bg-white md:h-[420px] md:rounded-xl">
                   <Image
-                    src="/images/about/founder-mun-islam.webp"
+                    src="/assets/about/founder-mun-islam.webp"
                     alt="Mun Islam"
                     fill
                     className="object-cover object-top"

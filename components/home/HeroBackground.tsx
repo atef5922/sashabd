@@ -7,9 +7,9 @@ function cn(...classes: Array<string | false | undefined>) {
 }
 
 const images = [
-  "/images/interactive-flat-panal-hero.webp",
-  "/images/digital -podium-hero.webp",
-  "/images/turnstile-gate-hero.webp",
+  "/assets/control-systems/interactive-flat-panel/interactive-flat-panel-hero.webp",
+  "/assets/control-systems/digital-podium/digital-podium-hero.webp",
+  "/assets/control-systems/turnstile/turnstile-gate-hero.webp",
 ];
 
 const mobileImagePositions = ["center 22%", "center 20%", "center 24%"];
