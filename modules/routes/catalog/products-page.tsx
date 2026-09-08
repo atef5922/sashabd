@@ -1039,7 +1039,7 @@ function ProductsPageContent({
     { name: "Renex Digital", src: "/assets/brands/led-display/renex-exact.webp", href: "https://renex.com.bd/" },
   ];
   const visibleTrustedTechPartnerLogos = trustedTechPartnerLogos.filter(
-    (brand) => !["Absen", "Unilumin", "Leyard"].includes(brand.name)
+    (brand) => !["Absen", "Unilumin"].includes(brand.name)
   );
 
   const ledEndToEndBullets = [
@@ -3187,25 +3187,30 @@ function ProductsPageContent({
           </section>
 
           <section className={ledInformationSectionClass} aria-labelledby="led-technology-brands-heading">
-            <LedSectionHeading id="led-technology-brands-heading" icon="solutions">LED Technology &amp; Component Brands</LedSectionHeading>
+            <LedSectionHeading id="led-technology-brands-heading" icon="solutions">
+              Authorized LED Display Distributor &amp; Technology Brands in Bangladesh
+            </LedSectionHeading>
             <MobileIntroText
-              teaser="We use globally trusted LED display components in Bangladesh projects to ensure stable performance, reliable power, and long-term support."
+              teaser="Sasha Corporation is an authorized LED display distributor in Bangladesh, working with globally trusted LED display and component brands."
               className="mt-2"
               teaserClassName="w-full"
               expandedClassName="text-sm leading-7 text-slate-600"
               desktopClassName="text-sm leading-7 text-slate-600"
             >
               <>
-                We use globally trusted LED display components in Bangladesh projects with{" "}
-                {visibleTrustedTechPartnerLogos.map((b, idx) => (
-                  <span key={b.name}>
-                    <span className="font-bold text-slate-900" title={b.name} aria-label={b.name}>
-                      {b.name}
-                    </span>
-                    {idx < visibleTrustedTechPartnerLogos.length - 2 ? ", " : idx === visibleTrustedTechPartnerLogos.length - 2 ? ", and " : ""}
-                  </span>
-                ))}{" "}
-                to ensure stable performance, reliable power, and long-term support.
+                Sasha Corporation is an authorized LED display distributor in Bangladesh, working with globally trusted
+                LED display and component brands for indoor and outdoor LED display projects. We provide professional LED
+                display solutions using reliable control systems, power supplies and related technologies from brands such
+                as <strong className="font-bold text-slate-900">Leyard</strong>,{" "}
+                <strong className="font-bold text-slate-900">LianTronics</strong>,{" "}
+                <strong className="font-bold text-slate-900">AOTO Electronics</strong>,{" "}
+                <strong className="font-bold text-slate-900">G-Energy</strong>,{" "}
+                <strong className="font-bold text-slate-900">Lampro</strong>,{" "}
+                <strong className="font-bold text-slate-900">NovaStar</strong>,{" "}
+                <strong className="font-bold text-slate-900">Huidu</strong>,{" "}
+                <strong className="font-bold text-slate-900">Colorlight</strong> and{" "}
+                <strong className="font-bold text-slate-900">Mean Well</strong>, supported by professional installation,
+                system integration and after-sales technical service.
               </>
             </MobileIntroText>
 
@@ -3268,10 +3273,9 @@ function ProductsPageContent({
 
               <div className="mt-4 flex flex-nowrap items-center gap-2 overflow-x-auto pb-1 text-xs font-semibold text-slate-700 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:flex-wrap md:justify-center md:overflow-visible md:pb-0">
                 {[
-                  "Quality-focused workflow",
-                  "Project-specific technical planning",
-                  "Industry-grade components",
-                  "Project-based support & service",
+                  "LED Display Installation",
+                  "LED System Integration",
+                  "After-Sales Technical Support",
                 ].map((t) => (
                   <span
                     key={t}
@@ -3290,12 +3294,14 @@ function ProductsPageContent({
 
           <section className={ledInformationSectionClass} aria-labelledby="valuable-led-clients-heading">
             <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#1458e5]">
-              Reliability, Compliance, Long-Term Support
+              LED Display Clients &amp; Projects
             </div>
 
             <div className="mt-3 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
               <div className="w-full">
-                <LedSectionHeading id="valuable-led-clients-heading" icon="support">Our Valuable Clients</LedSectionHeading>
+                <LedSectionHeading id="valuable-led-clients-heading" icon="support">
+                  Trusted by Government, Corporate &amp; Institutional LED Display Clients in Bangladesh
+                </LedSectionHeading>
                 <MobileIntroText
                   teaser="We provide professional LED display and LED screen solutions designed for institutional requirements with clear visibility, stable performance, and dependable after-sales support."
                   className="mt-2 w-full"

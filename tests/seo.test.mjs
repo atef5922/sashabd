@@ -2205,14 +2205,14 @@ test("LED display Why Choose benefits render one canonical card list", () => {
 test("LED display technology partner marquee exposes one semantic logo set", () => {
   const source = read("modules/routes/catalog/products-page.tsx");
   const dataSource = source.match(/const trustedTechPartnerLogos:[\s\S]*?= \[([\s\S]*?)\];/)?.[1];
-  const section = source.match(/LED Technology &amp; Component Brands([\s\S]*?)Our Valuable Clients/)?.[1];
+  const section = source.match(/Authorized LED Display Distributor &amp; Technology Brands in Bangladesh([\s\S]*?)Trusted by Government, Corporate &amp; Institutional LED Display Clients in Bangladesh/)?.[1];
 
   assert.ok(dataSource, "Technology partner logo data must be present");
   assert.ok(section, "Technology Partners section source must be present");
 
   const sourceBrands = [...dataSource.matchAll(/name: "([^"]+)"/g)].map((match) => match[1]);
-  const visibleBrands = sourceBrands.filter((brand) => !["Absen", "Unilumin", "Leyard"].includes(brand));
-  assert.equal(visibleBrands.length, 10);
+  const visibleBrands = sourceBrands.filter((brand) => !["Absen", "Unilumin"].includes(brand));
+  assert.equal(visibleBrands.length, 11);
   assert.equal(new Set(visibleBrands).size, visibleBrands.length);
   assert.match(section, /\[false, true\]\.map\(\(isClone\)/);
   assert.match(section, /key=\{isClone \? "visual-clone-track" : "canonical-track"\}/);
@@ -2226,10 +2226,11 @@ test("LED display technology partner marquee exposes one semantic logo set", () 
 test("LED display client marquee exposes one semantic client set", () => {
   const source = read("modules/routes/catalog/products-page.tsx");
   const dataSource = source.match(/const ledTrustedInstitutions:[\s\S]*?= \[([\s\S]*?)\];/)?.[1];
-  const section = source.match(/Our Valuable Clients([\s\S]*?)Frequently Asked Questions About LED Display/)?.[1];
+  const section = source.match(/Trusted by Government, Corporate &amp; Institutional LED Display Clients in Bangladesh([\s\S]*?)Frequently Asked Questions About LED Display/)?.[1];
 
   assert.ok(dataSource, "Client logo data must be present");
-  assert.ok(section, "Our Valuable Clients section source must be present");
+  assert.ok(section, "LED Display Clients & Projects section source must be present");
+  assert.match(source, /LED Display Clients &amp; Projects/);
 
   const sourceClients = [...dataSource.matchAll(/name: "([^"]+)"/g)].map((match) => match[1]);
   assert.equal(sourceClients.length, 15);
@@ -2459,8 +2460,8 @@ test("Batch 3 removes unverified social profiles and scopes current partnership 
   assert.match(homePartners, /Authorized Distributor &amp;/);
   assert.match(homePartners, /Technology Partner in Bangladesh/);
   assert.match(homePartners, /LED Display[\s\S]*Conference System/);
-  assert.doesNotMatch(ledLanding, /Authorized Brands|Authorized brand ecosystem|Authorized Distributor/);
-  assert.match(ledLanding, /LED Technology &amp; Component Brands/);
+  assert.doesNotMatch(ledLanding, /Authorized Brands|Authorized brand ecosystem/);
+  assert.match(ledLanding, /Authorized LED Display Distributor &amp; Technology Brands in Bangladesh/);
 });
 
 test("Batch 3 keeps main LED SERP intent factual and authority links focused", () => {
