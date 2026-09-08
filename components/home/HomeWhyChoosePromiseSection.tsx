@@ -24,8 +24,8 @@ const promiseItems = [
 ] as const;
 
 const companyStats = [
-  { value: "10+", label: "Years of Experience", icon: "shield" },
-  { value: "500+", label: "Projects Completed", icon: "briefcase" },
+  { value: "8+", label: "Years of Experience", icon: "shield" },
+  { value: "100+", label: "Projects Completed", icon: "briefcase" },
   { value: "20+", label: "Global Brands", icon: "globe" },
   { value: "64", label: "Districts Covered", icon: "location" },
 ] as const;

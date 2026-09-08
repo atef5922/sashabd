@@ -91,7 +91,7 @@ export default function AboutPage() {
 
         <section id="about-stats" className="border-y border-[#dce9fb] bg-[linear-gradient(110deg,#f8fbff,#eef6ff)] px-4 py-4 sm:px-6 md:px-10">
           <div className="mx-auto grid max-w-[1440px] grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3">
-            {[['▥', '100+', 'Projects Delivered'], ['♧', '80+', 'Happy Clients'], ['✥', '5+', 'Years of Experience'], ['⌾', 'Nationwide', 'Service Coverage']].map(([icon, value, label]) => (
+            {[['▥', '100+', 'Projects Delivered'], ['♧', '80+', 'Happy Clients'], ['✥', '8+', 'Years of Experience'], ['⌾', 'Nationwide', 'Service Coverage']].map(([icon, value, label]) => (
               <article key={label} className="group flex min-w-0 items-center gap-3 rounded-xl border border-[#dce9fb] bg-white/90 px-3 py-3 shadow-[0_5px_14px_rgba(16,39,90,.05)] transition hover:-translate-y-0.5 hover:border-[#b9d3fb] hover:shadow-[0_8px_20px_rgba(16,39,90,.09)] sm:px-4">
                 <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-[#e8f2ff] text-xl font-bold text-[#1465ef] ring-1 ring-inset ring-[#d3e5ff] transition group-hover:bg-[#1465ef] group-hover:text-white">{icon}</span>
                 <span className="min-w-0">
