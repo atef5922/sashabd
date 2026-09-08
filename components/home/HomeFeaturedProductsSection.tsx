@@ -113,7 +113,7 @@ export default function HomeFeaturedProductsSection() {
       <style>{`
         #home-featured-products .home-section-eyebrow,
         #home-featured-products .home-featured-view-all {
-          color: #1d4ed8 !important;
+          color: #1456d9 !important;
         }
         #home-featured-products .home-featured-view-all {
           border-color: #1d4ed8 !important;
@@ -161,13 +161,13 @@ export default function HomeFeaturedProductsSection() {
       `}</style>
       <div className="flex items-end justify-between gap-4">
         <div>
-          <p className="home-section-eyebrow inline-flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.13em] sm:text-[10px]">
+          <p className="home-section-badge home-section-eyebrow">
             <HomeSectionHeadingIcon kind="products" size="badge" />
             <span>Featured Products</span>
           </p>
           <h2 id="home-featured-products-heading" className="mt-2 flex items-center gap-2 !pb-0 text-[22px] font-black tracking-[-0.025em] text-[#071936] after:!hidden sm:text-2xl">
             <HomeSectionHeadingIcon kind="products" />
-            <span>Explore Our Best Products</span>
+            <span>Explore Our <span className="text-[#1660e8]">Best Products</span></span>
           </h2>
         </div>
         <Link

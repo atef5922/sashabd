@@ -18,3 +18,9 @@ Keep `favicon.ico`, `favicon.png`, `.htaccess`, `_headers`, and `_redirects` at 
 Directory names use lowercase kebab-case. Product filenames retain their established names so catalog identity and image metadata remain stable.
 
 Legacy `/images/...` and root brand-image URLs are redirected in both `public/.htaccess` and `public/_redirects`. New code must reference `/assets/...` directly.
+
+## Map source
+
+`home/nationwide/bangladesh-eight-divisions-map.svg` is adapted from
+[`Bangladesh divisions english.svg`](https://commons.wikimedia.org/wiki/File:Bangladesh_divisions_english.svg),
+created by Wikimedia Commons contributor Nafsadh and released under CC0/public domain.

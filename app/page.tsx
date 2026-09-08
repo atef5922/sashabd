@@ -1,6 +1,5 @@
 // src/app/page.tsx
 import type { Metadata } from "next";
-import { siteConfig } from "../lib/site";
 import { absoluteUrl, socialImageUrl } from "../lib/seo";
 import { BRAND_NAME } from "@/lib/brand";
 import HomeAllProductsGrid from "@/components/home/HomeAllProductsGrid";
@@ -10,6 +9,7 @@ import CoreSolutionsSection from "@/components/home/CoreSolutionsSection";
 import HomeFeaturedProductsSection from "@/components/home/HomeFeaturedProductsSection";
 import HomeConferenceSolutionSection from "@/components/home/HomeConferenceSolutionSection";
 import HomeRecentProjectsSection from "@/components/home/HomeRecentProjectsSection";
+import HomeNationwideCoverageSection from "@/components/home/HomeNationwideCoverageSection";
 import HomeWhyChoosePromiseSection from "@/components/home/HomeWhyChoosePromiseSection";
 import ProjectProposalCtaSection from "@/components/home/ProjectProposalCtaSection";
 import ProjectWorkflowSection from "@/components/home/ProjectWorkflowSection";
@@ -45,59 +45,13 @@ export const metadata: Metadata = {
     images: [socialImageUrl()],
   },
 };
-const BRAND = {
-  maroon: "#FF6A00",
-  maroonDark: "#E45700",
-  maroonText: "#C84B00",
-  maroonSoft: "#F7EEF1",
-  ink: "#0F172A",
-};
-
-const trustedBadges = [
-  "Clear BOQ + scope documentation",
-  "Clean installation planning",
-  "Safety-first wiring & protection",
-  "Support and maintenance guidance",
-];
-
-const trustedInstitutions: Array<{
-  name: string;
-  logo: string;
-  href: string;
-}> = [
-  { name: "Ministry of Health and Family Welfare", logo: "/assets/clients/organizations/Health-and-family-welfare.webp", href: "https://mohfw.gov.bd/" },
-  { name: "National Board of Revenue, Bangladesh", logo: "/assets/clients/organizations/nbr.webp", href: "https://nbr.portal.gov.bd/" },
-  { name: "Bangladesh Election Commission", logo: "/assets/clients/organizations/ecs.webp", href: "https://ecs.gov.bd/" },
-  { name: "Department of Immigration & Passports", logo: "/assets/clients/organizations/passport.webp", href: "https://dip.gov.bd/" },
-  { name: "Bangladesh Public Service Commission", logo: "/assets/clients/organizations/bpsc.webp", href: "https://bpsc.gov.bd/" },
-  { name: "Anti-Corruption Commission (ACC)", logo: "/assets/clients/organizations/acc.webp", href: "https://acc.org.bd/" },
-  { name: "Dhaka North City Corporation", logo: "/assets/clients/organizations/dncc.webp", href: "https://dncc.gov.bd/" },
-  { name: "Dhaka South City Corporation", logo: "/assets/clients/organizations/dscc.webp", href: "https://dscc.gov.bd/" },
-  { name: "Sonali Bank PLC", logo: "/assets/clients/organizations/sonali-bank.webp", href: "https://www.sonalibank.com.bd/" },
-  { name: "Bangladesh Small and Cottage Industries Corporation (BSCIC)", logo: "/assets/clients/organizations/BSCIC.webp", href: "https://bscic.gov.bd/" },
-  { name: "Bangladesh Sugar and Food Industries Corporation (BSFIC)", logo: "/assets/clients/organizations/bsfic.webp", href: "https://bsfic.gov.bd/" },
-  { name: "Bangladesh Parjatan Corporation", logo: "/assets/clients/organizations/parjatan.webp", href: "https://parjatan.gov.bd/" },
-  { name: "Border Guard Bangladesh (BGB)", logo: "/assets/clients/organizations/bgb.webp", href: "https://bgb.gov.bd/" },
-  { name: "Civil Aviation Authority Of Bangladesh", logo: "/assets/clients/organizations/caab.webp", href: "https://caab.portal.gov.bd/" },
-  { name: "Bangladesh Road Transport Authority (BRTA)", logo: "/assets/clients/organizations/brta.webp", href: "https://brta.gov.bd/" },
-  { name: "Fire Service and Civil Defence Bangladesh", logo: "/assets/clients/organizations/fire-service.webp", href: "https://fireservice.gov.bd/" },
-  { name: "University Grants Commission of Bangladesh", logo: "/assets/clients/organizations/ugc.webp", href: "https://ugc.gov.bd/" },
-  { name: "Bangladesh Ansar and Village Defence Party", logo: "/assets/clients/organizations/ansar.webp", href: "https://ansarvdp.gov.bd/" },
-  { name: "Bangladesh House Building Finance Corporation", logo: "/assets/clients/organizations/bhbfc-logo-final.webp", href: "https://bhbfc.gov.bd/" },
-  { name: "Dhaka Electric Supply Company Limited (DESCO)", logo: "/assets/clients/organizations/bpatc.webp", href: "https://bpatc.gov.bd/" },
-];
-
-function cx(...classes: Array<string | false | undefined>) {
-  return classes.filter(Boolean).join(" ");
-}
-
 function SectionHeader({
   title,
   desc,
   right,
   icon,
 }: {
-  title: string;
+  title: React.ReactNode;
   desc?: string;
   right?: React.ReactNode;
   icon?: React.ReactNode;
@@ -109,99 +63,29 @@ function SectionHeader({
           {icon ? <span className="inline-flex">{icon}</span> : null}
           <span>{title}</span>
         </h2>
-        {desc ? <p className="mt-1 text-xs font-medium leading-5 text-slate-600 sm:text-[13px]">{desc}</p> : null}
+        {desc ? <p className="home-section-subtitle mt-1 font-medium leading-5 text-slate-600">{desc}</p> : null}
       </div>
       {right ? <div className="shrink-0">{right}</div> : null}
     </div>
   );
 }
 
-function TitleIcon({ kind }: { kind: "price" | "trust" | "area" | "faq" | "cta" | "location" }) {
+function TitleIcon() {
   const wrap =
     "inline-flex h-8 w-8 items-center justify-center rounded-full border bg-slate-50 text-slate-700";
   const stroke = { stroke: "currentColor", strokeWidth: 1.8, fill: "none" } as const;
 
-  if (kind === "price") {
-    return (
-      <span className={wrap} style={{ borderColor: `${BRAND.maroon}33` }} aria-hidden="true">
-        <svg viewBox="0 0 24 24" className="h-4.5 w-4.5">
-          <path {...stroke} d="M4 7h16v10H4z" />
-          <path {...stroke} d="M8 10h8M8 14h5" strokeLinecap="round" />
-        </svg>
-      </span>
-    );
-  }
-  if (kind === "trust") {
-    return (
-      <span className={wrap} style={{ borderColor: `${BRAND.maroon}33` }} aria-hidden="true">
-        <svg viewBox="0 0 24 24" className="h-4.5 w-4.5">
-          <path {...stroke} d="M12 3 5 6v6c0 4.2 2.7 7.2 7 9 4.3-1.8 7-4.8 7-9V6l-7-3Z" />
-          <path {...stroke} d="m9 12 2 2 4-4" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </span>
-    );
-  }
-  if (kind === "area") {
-    return (
-      <span className={wrap} style={{ borderColor: `${BRAND.maroon}33` }} aria-hidden="true">
-        <svg viewBox="0 0 24 24" className="h-4.5 w-4.5">
-          <path {...stroke} d="M12 21s6-4.7 6-10a6 6 0 1 0-12 0c0 5.3 6 10 6 10Z" />
-          <circle cx="12" cy="11" r="2.3" {...stroke} />
-        </svg>
-      </span>
-    );
-  }
-  if (kind === "faq") {
-    return (
-      <span className={wrap} style={{ borderColor: `${BRAND.maroon}33` }} aria-hidden="true">
-        <svg viewBox="0 0 24 24" className="h-4.5 w-4.5">
-          <circle cx="12" cy="12" r="9" {...stroke} />
-          <path {...stroke} d="M9.8 9.5a2.4 2.4 0 1 1 3.9 1.8c-.8.7-1.5 1.1-1.5 2" strokeLinecap="round" />
-          <circle cx="12" cy="16.6" r="1" fill="currentColor" />
-        </svg>
-      </span>
-    );
-  }
-  if (kind === "cta") {
-    return (
-      <span className={wrap} style={{ borderColor: `${BRAND.maroon}33` }} aria-hidden="true">
-        <svg viewBox="0 0 24 24" className="h-4.5 w-4.5">
-          <path {...stroke} d="M4 12h12" strokeLinecap="round" />
-          <path {...stroke} d="m12 6 6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </span>
-    );
-  }
   return (
-    <span className={wrap} style={{ borderColor: `${BRAND.maroon}33` }} aria-hidden="true">
+    <span className={wrap} style={{ borderColor: "#ff6a0033" }} aria-hidden="true">
       <svg viewBox="0 0 24 24" className="h-4.5 w-4.5">
-        <path {...stroke} d="M12 21s6-4.7 6-10a6 6 0 1 0-12 0c0 5.3 6 10 6 10Z" />
-        <circle cx="12" cy="11" r="2.3" {...stroke} />
+        <path {...stroke} d="M4 7h16v10H4z" />
+        <path {...stroke} d="M8 10h8M8 14h5" strokeLinecap="round" />
       </svg>
     </span>
   );
 }
 
-function Section({
-  children,
-  tone = "white",
-}: {
-  children: React.ReactNode;
-  tone?: "white" | "soft";
-}) {
-  return (
-    <section
-      className={cx("rounded-3xl border", tone === "soft" ? "bg-slate-50" : "bg-white")}
-      style={{ borderColor: `${BRAND.maroon}18` }}
-    >
-      <div className="mx-auto w-full max-w-7xl px-5 py-6 md:px-10 md:py-7">{children}</div>
-    </section>
-  );
-}
-
 export default function HomePage() {
-  const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
-
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -211,6 +95,10 @@ export default function HomePage() {
       "@type": "ContactPoint",
       contactType: "sales",
       availableLanguage: ["bn", "en"],
+    },
+    areaServed: {
+      "@type": "Country",
+      name: "Bangladesh",
     },
     sameAs: [],
   };
@@ -368,12 +256,12 @@ export default function HomePage() {
             <details className="group">
               <summary className="flex list-none items-center justify-between gap-3 cursor-pointer">
                 <div className="flex items-center gap-2 text-xl font-extrabold text-[#071936]">
-                  <TitleIcon kind="price" />
-                  <span>Browse Products</span>
+                  <TitleIcon />
+                  <span>Browse <span className="text-[#1660e8]">Products</span></span>
                 </div>
                 <span
                   className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border bg-white text-slate-700 shadow-sm transition group-open:rotate-180"
-                  style={{ borderColor: `${BRAND.maroon}22` }}
+                  style={{ borderColor: "#ff6a0022" }}
                   aria-hidden="true"
                 >
                   <svg viewBox="0 0 24 24" className="h-4 w-4 fill-none">
@@ -381,7 +269,7 @@ export default function HomePage() {
                   </svg>
                 </span>
               </summary>
-              <p className="mt-3 text-slate-600 leading-7">
+              <p className="home-section-subtitle mt-3 leading-7 text-slate-600">
                 Explore LED displays, conference systems, PA sound systems, turnstile gates, and related accessories in one product explorer.
               </p>
             </details>
@@ -389,8 +277,8 @@ export default function HomePage() {
 
           <div className="hidden md:block">
             <SectionHeader
-              icon={<TitleIcon kind="price" />}
-              title="Browse Products"
+              icon={<TitleIcon />}
+              title={<>Browse <span className="text-[#1660e8]">Products</span></>}
               desc="Explore LED displays, conference systems, PA sound systems, turnstile gates, and related accessories in one product explorer."
             />
           </div>
@@ -407,210 +295,10 @@ export default function HomePage() {
         </div>
         <HomeConferenceSolutionSection />
         <HomeRecentProjectsSection />
+        <HomeNationwideCoverageSection />
         <TrustedTechnologyPartnersSection />
         <ProjectWorkflowSection />
         <ProjectProposalCtaSection />
-
-        {/* 6) TRUST */}
-        {false && (
-        <Section tone="white">
-          <div className="text-sm font-semibold" style={{ color: BRAND.maroonText }}>
-            Reliability | Compliance | Long-Term Support
-          </div>
-
-          <SectionHeader
-            icon={<TitleIcon kind="trust" />}
-            title="Our Valuable Clients"
-            desc="We provide professional visual solutions designed for institutional requirements - clear visibility, stable performance, safe installation, and dependable after-sales support."
-            right={
-              <a
-                href={wa}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-                style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-              >
-                Request a Free Consultation ?
-              </a>
-            }
-          />
-
-          <div className="mt-6 grid gap-3 md:grid-cols-4">
-            {trustedBadges.map((x) => (
-              <div
-                key={x}
-                className="rounded-2xl border bg-slate-50 p-4 text-sm font-semibold text-slate-800"
-                style={{ borderColor: `${BRAND.maroon}12` }}
-              >
-                {x}
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-            {trustedInstitutions.map((ins) => (
-              <a
-                key={ins.name}
-                href={ins.href}
-                target="_blank"
-                rel="noreferrer"
-                className="group flex min-h-[120px] flex-col items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-center transition hover:bg-slate-100"
-                aria-label={ins.name}
-                title={ins.name}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={ins.logo}
-                  alt={ins.name}
-                  width={240}
-                  height={96}
-                  className={
-                    ins.logo === "/assets/clients/organizations/nbr.webp"
-                      ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                      : ins.logo === "/assets/clients/organizations/Health-and-family-welfare.webp"
-                        ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                        : ins.logo === "/assets/clients/organizations/ecs.webp"
-                          ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/assets/clients/organizations/passport.webp"
-                              ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/assets/clients/organizations/bpsc.webp"
-                              ? "h-20 w-auto max-w-full object-contain sm:h-24"
-                            : ins.logo === "/assets/clients/organizations/acc.webp"
-                              ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/assets/clients/organizations/dncc.webp"
-                              ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/assets/clients/organizations/dscc.webp"
-                              ? "h-20 w-auto max-w-full object-contain sm:h-24"
-                            : ins.logo === "/assets/clients/organizations/sonali-bank.webp"
-                              ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/assets/clients/organizations/BSCIC.webp"
-                              ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/assets/clients/organizations/bsfic.webp"
-                              ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/assets/clients/organizations/parjatan.webp"
-                              ? "h-14 w-auto max-w-full object-contain sm:h-16"
-                            : ins.logo === "/assets/clients/organizations/bgb.webp"
-                              ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/assets/clients/organizations/caab.webp"
-                              ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/assets/clients/organizations/brta.webp"
-                              ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/assets/clients/organizations/fire-service.webp"
-                              ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/assets/clients/organizations/ugc.webp"
-                              ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/assets/clients/organizations/ansar.webp"
-                              ? "h-16 w-auto max-w-full object-contain sm:h-20"
-                            : ins.logo === "/assets/clients/organizations/bhbfc-logo-final.webp"
-                              ? "h-20 w-auto max-w-full object-contain sm:h-24"
-                            : ins.logo === "/assets/clients/organizations/bpatc.webp"
-                              ? "h-20 w-auto max-w-full object-contain sm:h-24"
-                            : "h-10 w-auto max-w-full object-contain sm:h-11"
-                  }
-                  loading="lazy"
-                  decoding="async"
-                />
-                <p
-                  className={
-                    ins.logo === "/assets/clients/organizations/dscc.webp"
-                      ? "mt-3 text-sm font-medium leading-snug text-slate-800 whitespace-nowrap"
-                      : "mt-3 text-sm font-medium leading-snug text-slate-800"
-                  }
-                >
-                  {ins.name}
-                </p>
-              </a>
-            ))}
-          </div>
-
-        </Section>
-        )}
-
-        {/* 7) SERVICE AREAS (FIXED + NO styled-jsx) */}
-        {false && (
-        <Section tone="soft">
-          <SectionHeader
-            icon={<TitleIcon kind="area" />}
-            title="Our Service Areas in Bangladesh"
-            desc="We provide installation, delivery, calibration and maintenance across major cities nationwide."
-            right={
-              <a
-                href={wa}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-xl px-5 py-3 text-sm font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-                style={{ background: `linear-gradient(135deg, ${BRAND.maroonDark}, ${BRAND.maroon})` }}
-              >
-                WhatsApp for Support ?
-              </a>
-            }
-          />
-
-          {/* ? English line (replaces Bengali) */}
-          <p className="mt-8 text-center text-sm font-semibold text-slate-700">
-            We serve all 64 districts and 8 divisions of Bangladesh.
-          </p>
-
-          {/* ? 7 Division Cards with Server-safe animation */}
-          {(() => {
-            const divisions = [
-              { name: "Dhaka", bn: "Dhaka Division", icon: "???" },
-              { name: "Chattogram", bn: "Chattogram Division", icon: "??" },
-              { name: "Rajshahi", bn: "Rajshahi Division", icon: "??" },
-              { name: "Khulna", bn: "Khulna Division", icon: "??" },
-              { name: "Barishal", bn: "Barishal Division", icon: "??" },
-              { name: "Sylhet", bn: "Sylhet Division", icon: "??" },
-              { name: "Rangpur", bn: "Rangpur Division", icon: "???" },
-              { name: "Mymensingh", bn: "Mymensingh Division", icon: "??" },
-            ];
-
-            return (
-              <div className="mt-6">
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                  {divisions.map((d, idx) => (
-                    <div
-                      key={d.name}
-                      className="group rounded-2xl border bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md opacity-0 translate-y-2"
-                      style={{
-                        borderColor: "rgba(56,189,248,0.55)",
-                        background: "linear-gradient(135deg, rgba(14,165,233,0.08), rgba(59,130,246,0.02))",
-                        animation: "fadeUp 0.6s ease-out forwards",
-                        animationDelay: `${idx * 80}ms`,
-                      }}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div
-                          className="flex h-10 w-10 items-center justify-center rounded-2xl border bg-white/75 text-lg transition group-hover:scale-105"
-                          style={{ borderColor: "rgba(125,211,252,0.7)" }}
-                        >
-                          {d.icon}
-                        </div>
-
-                        <div className="min-w-0">
-                          <div className="text-sm font-extrabold text-slate-900">{d.bn}</div>
-                          <div className="mt-0.5 text-xs font-semibold text-slate-600">{d.name}</div>
-                        </div>
-                      </div>
-
-                      <div className="mt-3 text-xs font-semibold text-slate-600 leading-6">Installation | Calibration | Support</div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* ? Server-safe style tag (NOT styled-jsx) */}
-                <style>{`
-                  @keyframes fadeUp {
-                    to {
-                      opacity: 1;
-                      transform: translateY(0);
-                    }
-                  }
-                `}</style>
-              </div>
-            );
-          })()}
-        </Section>
-        )}
 
       </div>
     </div>

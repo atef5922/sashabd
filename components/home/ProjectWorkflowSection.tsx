@@ -86,15 +86,15 @@ export default function ProjectWorkflowSection() {
   return (
     <section id="home-project-workflow" className="home-process-section scroll-mt-24" aria-labelledby="home-process-title">
       <div className="home-process-heading">
-        <p className="home-process-eyebrow inline-flex items-center gap-2">
+        <p className="home-process-eyebrow home-section-badge">
           <HomeSectionHeadingIcon kind="process" size="badge" />
           <span>Our Process</span>
         </p>
         <h2 id="home-process-title" className="home-process-title flex items-center gap-2 !pb-0 after:!hidden">
           <HomeSectionHeadingIcon kind="process" />
-          <span>How We Work</span>
+          <span>How <span className="text-[#1660e8]">We Work</span></span>
         </h2>
-        <p className="home-process-intro">A simple, transparent process that ensures the best results for your project.</p>
+        <p className="home-process-intro home-section-subtitle">A simple, transparent process that ensures the best results for your project.</p>
       </div>
 
       <div className="home-process-grid">
@@ -124,16 +124,16 @@ export default function ProjectWorkflowSection() {
         .home-process-section, .home-process-section * { text-align: left; }
         .home-process-eyebrow {
           color: #1456d9 !important;
-          font-size: 9px !important;
+          font-size: var(--site-section-badge-size) !important;
           font-weight: 800;
-          line-height: 12px !important;
-          letter-spacing: .02em;
+          line-height: var(--site-section-badge-line-height) !important;
+          letter-spacing: .1em;
           text-transform: uppercase;
         }
         .home-process-title {
           margin-top: 10px;
           color: #071936 !important;
-          font-size: 21px !important;
+          font-size: var(--site-h2-size) !important;
           font-weight: 800;
           line-height: 25px !important;
           letter-spacing: -.025em;
@@ -141,7 +141,7 @@ export default function ProjectWorkflowSection() {
         .home-process-intro {
           margin-top: 10px;
           color: #43516a !important;
-          font-size: 10px !important;
+          font-size: var(--site-section-subtitle-size) !important;
           font-weight: 500;
           line-height: 16px !important;
         }

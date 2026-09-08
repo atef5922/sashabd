@@ -15,6 +15,9 @@
   --site-h1-size: 22px;
   --site-h2-size: 20px;
   --site-h3-size: 18px;
+  --site-section-badge-size: 9px;
+  --site-section-badge-line-height: 12px;
+  --site-section-subtitle-size: 12px;
 }
 
 theme inline {
@@ -336,6 +339,30 @@ label {
 
 :where(.font-semibold, .font-bold, .font-extrabold, .font-black) {
   font-weight: var(--site-font-weight-strong) !important;
+}
+
+.home-section-subtitle {
+  font-size: var(--site-section-subtitle-size) !important;
+}
+
+.home-section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px !important;
+  color: #1456d9 !important;
+  font-size: var(--site-section-badge-size) !important;
+  font-weight: 800 !important;
+  line-height: var(--site-section-badge-line-height) !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --site-section-badge-size: 10px;
+    --site-section-badge-line-height: 14px;
+    --site-section-subtitle-size: 13px;
+  }
 }
 
 @media (min-width: 1024px) {

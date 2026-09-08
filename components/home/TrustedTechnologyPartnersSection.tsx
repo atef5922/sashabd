@@ -76,24 +76,26 @@ export default function TrustedTechnologyPartnersSection() {
     <section id="home-technology-partners" className="scroll-mt-24 rounded-2xl border border-slate-200/90 bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6">
       <div className="w-full">
         <div className="text-left">
-          <span className="technology-partners-eyebrow inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#ef4a00]">
+          <span className="home-section-badge technology-partners-eyebrow">
             <TechnologyBrandsBadgeIcon />
             <span>Technology Partners</span>
           </span>
         </div>
         <h2 className="mt-2 flex items-center gap-2 !pb-0 text-xl font-extrabold leading-7 tracking-tight text-[#071936] after:!hidden lg:text-[22px]">
           <TechnologyBrandsTitleIcon />
-          <span className="min-w-0 text-balance">LED Technology &amp; Component Brands</span>
+          <span className="min-w-0 text-balance">
+            LED Technology &amp; <span className="text-[#1660e8]">Component Brands</span>
+          </span>
         </h2>
 
         <div className="mt-1 max-w-5xl text-left text-[12.5px] font-medium leading-5 text-slate-600 md:text-[13px]">
-          <p className="hidden md:block">{trustedPartnersSubtitleContent}</p>
+          <p className="home-section-subtitle hidden md:block">{trustedPartnersSubtitleContent}</p>
 
           <div className="md:hidden">
             {mobileExpanded ? (
-              <p className="mx-auto text-[13px] leading-5 text-slate-600">{trustedPartnersSubtitleContent}</p>
+              <p className="home-section-subtitle mx-auto leading-5 text-slate-600">{trustedPartnersSubtitleContent}</p>
             ) : (
-              <p className="mx-auto max-w-full truncate text-[13px] leading-5">
+              <p className="home-section-subtitle mx-auto max-w-full truncate leading-5">
                 We use globally trusted LED display components in Bangladesh projects with Synoveta, Leyard, LianTronics...
               </p>
             )}

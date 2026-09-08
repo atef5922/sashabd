@@ -214,7 +214,7 @@ export default function HomeHeroCarousel() {
                     {activeSlide.title}
                   </h2>
                 )}
-                <p className="home-hero-description mt-3 max-w-[38rem] text-[13px] font-medium leading-5 text-slate-700 sm:text-sm sm:leading-6 lg:text-[clamp(0.78rem,0.9vw,0.95rem)]">
+                <p className="home-hero-description mt-3 max-w-[38rem] text-[13px] font-medium leading-5 text-slate-700 sm:text-sm sm:leading-6 lg:text-sm">
                   {activeSlide.description}
                 </p>
 

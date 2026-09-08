@@ -100,12 +100,12 @@ export default function CoreSolutionsSection() {
       <div className="flex items-center justify-center gap-3 sm:gap-4">
         <TitleRule />
         <h2 id="core-solutions-heading" className="!pb-0 text-center text-xl font-black tracking-[-0.025em] text-[#071936] after:!hidden sm:text-2xl">
-          Core Solutions
+          Core <span className="text-[#1660e8]">Solutions</span>
         </h2>
         <TitleRule reverse />
       </div>
 
-      <p className="mx-auto mt-1 max-w-3xl text-center text-[10px] font-medium leading-4 text-slate-500 sm:text-[11px]">
+      <p className="home-section-subtitle mx-auto mt-1 max-w-3xl text-center font-medium leading-4 text-slate-500">
         Commercial LED display, conference, PA, interactive and access-control solutions for projects across Bangladesh.
       </p>
 

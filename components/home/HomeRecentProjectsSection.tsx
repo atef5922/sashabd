@@ -114,13 +114,13 @@ export default function HomeRecentProjectsSection() {
     <section id="recent-project-installations" className="home-recent-projects scroll-mt-24 bg-[#f8faff] px-5 py-7" aria-labelledby="recent-projects-title">
       <div className="flex items-end justify-between gap-4">
         <div>
-          <p className="home-projects-eyebrow inline-flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[#1456d9]">
+          <p className="home-projects-eyebrow home-section-badge">
             <HomeSectionHeadingIcon kind="projects" size="badge" />
             <span>Recent Projects</span>
           </p>
           <h2 id="recent-projects-title" className="home-projects-title mt-2 flex items-center gap-2 !pb-0 font-extrabold leading-tight tracking-[-0.02em] text-[#071936] after:!hidden">
             <HomeSectionHeadingIcon kind="projects" />
-            <span>Our Successful Installations</span>
+            <span>Our <span className="text-[#1660e8]">Successful Installations</span></span>
           </h2>
         </div>
         <Link href="/projects/" className="home-projects-view-all hidden min-h-[31px] shrink-0 items-center justify-center gap-2 rounded-md border border-[#1456d9] bg-white px-3 text-[9px] font-extrabold text-[#1456d9] transition hover:bg-blue-50 sm:inline-flex">
@@ -190,7 +190,7 @@ export default function HomeRecentProjectsSection() {
         .home-recent-projects, .home-recent-projects * { text-align: left; }
         .home-recent-projects { padding: 24px 42px 20px !important; background: radial-gradient(circle at 8% 0%, #f4f8ff 0, #fbfdff 35%, #f7faff 100%) !important; }
         .home-projects-eyebrow, .home-project-meta-icon, .home-project-link { color: #1456d9 !important; }
-        .home-projects-title { font-size: 20px !important; line-height: 25px !important; }
+        .home-projects-title { font-size: var(--site-h2-size) !important; line-height: 1.2 !important; }
         .home-projects-carousel { column-gap: 16px !important; scrollbar-width: none; }
         .home-projects-carousel::-webkit-scrollbar { display: none; }
         .home-project-card { width: 84%; box-shadow: 0 5px 16px rgba(15, 23, 42, 0.09) !important; border-radius: 8px !important; }

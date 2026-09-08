@@ -2457,7 +2457,7 @@ test("Batch 3 removes unverified social profiles and relationship claims", () =>
   assert.match(floatingActions, /aria-label="Chat on WhatsApp"/);
   for (const source of [homePartners, ledLanding]) {
     assert.doesNotMatch(source, /Authorized Brands|Authorized brand ecosystem/);
-    assert.match(source, /LED Technology &amp; Component Brands/);
+    assert.match(source, /LED Technology &amp;\s*(?:<span[^>]*>)?Component Brands/);
   }
 });
 

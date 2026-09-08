@@ -94,15 +94,17 @@ export default function HomeConferenceSolutionSection() {
     <section id="conference-room-solutions" className="home-conference-solution scroll-mt-24 overflow-hidden" aria-labelledby="conference-solution-title">
       <div className="home-conference-solution-grid">
         <div className="home-conference-copy flex flex-col justify-center px-5 py-7 sm:px-7">
-          <p className="home-conference-eyebrow inline-flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[#1456d9]">
+          <p className="home-conference-eyebrow home-section-badge">
             <HomeSectionHeadingIcon kind="conference" size="badge" />
             <span>Featured Solution</span>
           </p>
           <h2 id="conference-solution-title" className="home-conference-title mt-2 flex items-start gap-2 !pb-0 font-extrabold tracking-[-0.025em] text-[#071936] after:!hidden">
             <HomeSectionHeadingIcon kind="conference" />
-            <span>Complete Conference<br className="hidden sm:block" /> Room Solutions</span>
+            <span>
+              Complete <span className="text-[#1660e8]">Conference<br className="hidden sm:block" /> Room Solutions</span>
+            </span>
           </h2>
-          <p className="home-conference-description mt-3 max-w-[390px] font-medium text-slate-600">
+          <p className="home-conference-description home-section-subtitle mt-3 max-w-[390px] font-medium text-slate-600">
             Integrated audio, video and control solutions for modern meeting rooms with Zoom / Microsoft Teams compatibility.
           </p>
 
@@ -194,8 +196,8 @@ export default function HomeConferenceSolutionSection() {
         .home-conference-equipment-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
         .home-conference-equipment-image { height: 64px !important; }
         .home-conference-visual { height: 245px !important; }
-        .home-conference-title { font-size: 27px !important; line-height: 1.08 !important; }
-        .home-conference-description { font-size: 12px !important; line-height: 20px !important; }
+        .home-conference-title { font-size: var(--site-h2-size) !important; line-height: 1.08 !important; }
+        .home-conference-description { font-size: var(--site-section-subtitle-size) !important; line-height: 20px !important; }
         .home-conference-feature-title { font-size: 11px !important; line-height: 15px !important; }
         .home-conference-feature-copy { font-size: 10.5px !important; line-height: 16px !important; }
         .home-conference-system-title { font-size: 12px !important; line-height: 17px !important; text-align: center !important; }
@@ -221,7 +223,7 @@ export default function HomeConferenceSolutionSection() {
           .home-conference-equipment-image { height: 70px !important; }
           .home-conference-equipment-item + .home-conference-equipment-item { border-left: 1px solid #e8edf5 !important; }
           .home-conference-benefits { min-height: 66px; align-items: center; }
-          .home-conference-title { font-size: 32px !important; line-height: 1.12 !important; }
+          .home-conference-title { font-size: var(--site-h2-size) !important; line-height: 1.12 !important; }
         }
       `}</style>
     </section>

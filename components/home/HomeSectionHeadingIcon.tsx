@@ -3,7 +3,8 @@ export type HomeSectionHeadingIconKind =
   | "products"
   | "conference"
   | "projects"
-  | "process";
+  | "process"
+  | "location";
 
 export default function HomeSectionHeadingIcon({
   kind,
@@ -59,6 +60,11 @@ export default function HomeSectionHeadingIcon({
             <rect x="3" y="6" width="18" height="13" rx="2" />
             <path d="M8 6V4h8v2M3 11h18M10 11v2h4v-2" />
             <path d="m16.2 16 1.2 1.2 2.1-2.4" />
+          </>
+        ) : kind === "location" ? (
+          <>
+            <path d="M12 21s6-4.8 6-10a6 6 0 1 0-12 0c0 5.2 6 10 6 10Z" />
+            <circle cx="12" cy="11" r="2.3" />
           </>
         ) : (
           <>

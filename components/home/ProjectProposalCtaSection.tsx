@@ -58,21 +58,23 @@ export default function ProjectProposalCtaSection() {
         <div className="mx-auto text-center">
           <h2 className="!pb-0 text-[22px] font-extrabold leading-tight tracking-tight text-white after:!hidden md:text-[30px]">
             <ProposalTitleIcon />
-            <span>Planning a new LED screen, audio or access project?</span>
+            <span>
+              Planning a new <span className="text-[#7dd3fc]">LED screen, audio or access project?</span>
+            </span>
           </h2>
-          <div className="mt-2 text-[13px] leading-7 text-slate-200 md:text-[15px]">
+          <div className="home-section-subtitle mt-2 leading-7 text-slate-200">
             <p className="hidden md:block text-slate-200">
               Share your BOQ, screen size target or project concept and we will recommend a practical solution path covering
               display type, pixel pitch, controller, power and installation direction.
             </p>
             <div className="md:hidden">
               {mobileExpanded ? (
-                <p className="text-[13px] leading-5 text-slate-200">
+                <p className="leading-5 text-slate-200">
                   Share your BOQ, screen size target or project concept and we will recommend a practical solution path
                   covering display type, pixel pitch, controller, power and installation direction.
                 </p>
               ) : (
-                <p className="mx-auto max-w-full truncate text-[13px] leading-5 text-slate-200">
+                <p className="mx-auto max-w-full truncate leading-5 text-slate-200">
                   Share your BOQ, screen size target or project concept and we will recommend a practical solution path...
                 </p>
               )}
