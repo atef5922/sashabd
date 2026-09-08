@@ -19,7 +19,7 @@ test("homepage places one nationwide section after project evidence", () => {
 test("nationwide coverage copy is factual, semantic and connected to solution routes", () => {
   assert.match(section, /<section[\s\S]*?aria-labelledby="nationwide-coverage-title"/);
   assert.match(section, /<h2 id="nationwide-coverage-title"/);
-  assert.match(section, /supplies, installs and supports LED displays/);
+  assert.match(section, /supplies, installs and supports\s*<strong>LED displays<\/strong>/);
   assert.doesNotMatch(section, /all 64 districts/i);
 
   for (const division of ["Dhaka", "Chattogram", "Rajshahi", "Khulna", "Barishal", "Sylhet", "Rangpur", "Mymensingh"]) {

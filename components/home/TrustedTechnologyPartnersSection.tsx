@@ -6,11 +6,30 @@ import { useState } from "react";
 import { homeBrandLogos } from "@/components/home/HomeTrustServiceStrip";
 
 const featureTags = [
-  "Quality-focused workflow",
-  "Project-specific component planning",
-  "Industry-grade components",
-  "Project-based support & service",
+  "LED Display Solutions",
+  "Conference System Solutions",
+  "PA System Integration",
+  "Turnstile & Access Solutions",
 ] as const;
+
+const brandAltText: Record<(typeof homeBrandLogos)[number]["name"], string> = {
+  LianTronics: "LianTronics LED display technology",
+  Leyard: "Leyard LED display technology",
+  NovaStar: "NovaStar LED display control system",
+  "AOTO Electronics": "AOTO Electronics LED display technology",
+  "G-Energy": "G-Energy LED display power supply",
+  Lampro: "Lampro LED display technology",
+  Huidu: "Huidu LED display controller",
+  Colorlight: "Colorlight LED display controller",
+  "Mean Well": "Mean Well display power supply",
+  Mugnee: "Mugnee LED display components",
+  "Renex Digital": "Renex Digital LED display technology",
+  Synoveta: "Synoveta LED display technology",
+  Bosch: "Bosch conference and PA system technology",
+  TOA: "TOA conference and PA system technology",
+  SPON: "SPON conference and PA system technology",
+  CMX: "CMX conference and PA system technology",
+};
 
 function TechnologyBrandsTitleIcon() {
   return (
@@ -55,25 +74,27 @@ export default function TrustedTechnologyPartnersSection() {
   const [mobileExpanded, setMobileExpanded] = useState(false);
   const trustedPartnersSubtitleContent = (
     <>
-      We use globally trusted LED display components in Bangladesh projects with{" "}
-      <span className="font-bold text-slate-900">Synoveta</span>,{" "}
-      <span className="font-bold text-slate-900">Leyard</span>,{" "}
-      <span className="font-bold text-slate-900">LianTronics</span>,{" "}
-      <span className="font-bold text-slate-900">AOTO Electronics</span>,{" "}
-      <span className="font-bold text-slate-900">G-Energy</span>,{" "}
-      <span className="font-bold text-slate-900">Lampro</span>,{" "}
-      <span className="font-bold text-slate-900">NovaStar</span>,{" "}
-      <span className="font-bold text-slate-900">Huidu</span>,{" "}
-      <span className="font-bold text-slate-900">Colorlight</span>,{" "}
-      <span className="font-bold text-slate-900">Mean Well</span>,{" "}
-      <span className="font-bold text-slate-900">Mugnee Multiple Limited</span>, and{" "}
-      <span className="font-bold text-slate-900">Renex Digital</span> to ensure stable performance, reliable power, and
-      long-term support.
+      Sasha Corporation is an authorized distributor and technology solutions provider in Bangladesh, specializing in{" "}
+      <strong className="font-bold text-slate-900">LED Display</strong> and{" "}
+      <strong className="font-bold text-slate-900">Conference System</strong> solutions. We work with globally recognized{" "}
+      <strong className="font-bold text-slate-900">LED display</strong> and technology brands including{" "}
+      <strong className="font-bold text-slate-900">Leyard</strong>,{" "}
+      <strong className="font-bold text-slate-900">LianTronics</strong>,{" "}
+      <strong className="font-bold text-slate-900">AOTO</strong>,{" "}
+      <strong className="font-bold text-slate-900">Lampro</strong> and{" "}
+      <strong className="font-bold text-slate-900">NovaStar</strong>, alongside professional{" "}
+      <strong className="font-bold text-slate-900">conference</strong> and{" "}
+      <strong className="font-bold text-slate-900">PA system</strong> brands such as{" "}
+      <strong className="font-bold text-slate-900">Bosch</strong>,{" "}
+      <strong className="font-bold text-slate-900">TOA</strong> and{" "}
+      <strong className="font-bold text-slate-900">SPON</strong>. We deliver complete solutions for corporate, government,
+      commercial and institutional projects, including professional installation, system integration and after-sales
+      technical support across Bangladesh.
     </>
   );
 
   return (
-    <section id="home-technology-partners" className="scroll-mt-24 rounded-2xl border border-slate-200/90 bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6">
+    <section id="home-technology-partners" aria-labelledby="home-technology-partners-title" className="scroll-mt-24 rounded-2xl border border-slate-200/90 bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6">
       <div className="w-full">
         <div className="text-left">
           <span className="home-section-badge technology-partners-eyebrow">
@@ -81,14 +102,14 @@ export default function TrustedTechnologyPartnersSection() {
             <span>Technology Partners</span>
           </span>
         </div>
-        <h2 className="mt-2 flex items-center gap-2 !pb-0 text-xl font-extrabold leading-7 tracking-tight text-[#071936] after:!hidden lg:text-[22px]">
+        <h2 id="home-technology-partners-title" className="mt-2 flex max-w-4xl items-center gap-2 !pb-0 text-xl font-extrabold leading-7 tracking-tight text-[#071936] after:!hidden lg:text-[22px]">
           <TechnologyBrandsTitleIcon />
           <span className="min-w-0 text-balance">
-            LED Technology &amp; <span className="text-[#1660e8]">Component Brands</span>
+            Authorized Distributor &amp; <span className="text-[#1660e8]">Technology Partner in Bangladesh</span>
           </span>
         </h2>
 
-        <div className="mt-1 max-w-5xl text-left text-[12.5px] font-medium leading-5 text-slate-600 md:text-[13px]">
+        <div className="mt-1 w-full text-left text-[12.5px] font-medium leading-5 text-slate-600 md:text-[13px]">
           <p className="home-section-subtitle hidden md:block">{trustedPartnersSubtitleContent}</p>
 
           <div className="md:hidden">
@@ -96,7 +117,7 @@ export default function TrustedTechnologyPartnersSection() {
               <p className="home-section-subtitle mx-auto leading-5 text-slate-600">{trustedPartnersSubtitleContent}</p>
             ) : (
               <p className="home-section-subtitle mx-auto max-w-full truncate leading-5">
-                We use globally trusted LED display components in Bangladesh projects with Synoveta, Leyard, LianTronics...
+                Sasha Corporation is an authorized distributor and technology solutions provider in Bangladesh...
               </p>
             )}
             <button
@@ -118,7 +139,7 @@ export default function TrustedTechnologyPartnersSection() {
                 <div key={groupIndex} aria-hidden={groupIndex === 1 ? "true" : undefined} className="flex shrink-0 items-center">
                   {homeBrandLogos.map((brand) => (
                     <Link key={`${groupIndex}-${brand.name}`} href={brand.href} prefetch={false} aria-label={groupIndex === 0 ? `Browse ${brand.name} solutions` : undefined} tabIndex={groupIndex === 1 ? -1 : undefined} className="relative flex h-10 w-[128px] shrink-0 items-center justify-center overflow-hidden border-r border-[#dce9fb] px-4 transition hover:opacity-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#1465ef]">
-                      <Image src={brand.src} alt={groupIndex === 0 ? `${brand.name} logo` : ""} width={128} height={40} className={`${brand.className} w-auto max-w-[108px] object-contain`} />
+                      <Image src={brand.src} alt={groupIndex === 0 ? brandAltText[brand.name] : ""} width={128} height={40} className={`${brand.className} w-auto max-w-[108px] object-contain`} />
                     </Link>
                   ))}
                 </div>
@@ -126,8 +147,8 @@ export default function TrustedTechnologyPartnersSection() {
             </div>
           </div>
 
-          <div className="mt-3 overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-            <div className="flex w-max min-w-full flex-nowrap items-center justify-center gap-1.5 text-[11px] font-semibold text-slate-700 md:w-auto md:min-w-0 md:flex-wrap md:gap-2 md:text-xs">
+          <div className="mt-3 pb-1">
+            <div className="flex flex-wrap items-center justify-center gap-1.5 text-[11px] font-semibold text-slate-700 md:gap-2 md:text-xs">
               {featureTags.map((item) => (
                 <span key={item} className="whitespace-nowrap rounded-full border bg-slate-50 px-3 py-1.5 md:px-4 md:py-2" style={{ borderColor: "rgba(255,106,0,0.14)" }}>
                   {item}

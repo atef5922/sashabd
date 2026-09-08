@@ -2443,7 +2443,7 @@ test("Conference project case studies use canonical data, SEO, schema, breadcrum
   assert.match(sitemap, /url: abs\(`\/projects\/\$\{project\.slug\}\/`\)/);
 });
 
-test("Batch 3 removes unverified social profiles and relationship claims", () => {
+test("Batch 3 removes unverified social profiles and scopes current partnership claims", () => {
   const site = read("lib/site.ts");
   const footer = read("components/common/Footer.tsx");
   const floatingActions = read("components/common/FloatingActions.tsx");
@@ -2455,10 +2455,12 @@ test("Batch 3 removes unverified social profiles and relationship claims", () =>
   }
   assert.doesNotMatch(floatingActions, /Messenger|showMessenger|siteConfig\.socials/);
   assert.match(floatingActions, /aria-label="Chat on WhatsApp"/);
-  for (const source of [homePartners, ledLanding]) {
-    assert.doesNotMatch(source, /Authorized Brands|Authorized brand ecosystem/);
-    assert.match(source, /LED Technology &amp;\s*(?:<span[^>]*>)?Component Brands/);
-  }
+  assert.doesNotMatch(homePartners, /Authorized Brands|Authorized brand ecosystem/);
+  assert.match(homePartners, /Authorized Distributor &amp;/);
+  assert.match(homePartners, /Technology Partner in Bangladesh/);
+  assert.match(homePartners, /LED Display[\s\S]*Conference System/);
+  assert.doesNotMatch(ledLanding, /Authorized Brands|Authorized brand ecosystem|Authorized Distributor/);
+  assert.match(ledLanding, /LED Technology &amp; Component Brands/);
 });
 
 test("Batch 3 keeps main LED SERP intent factual and authority links focused", () => {
