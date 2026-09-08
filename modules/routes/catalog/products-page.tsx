@@ -44,7 +44,7 @@ const ledFeatureSectionClass =
   "mt-4 rounded-2xl border border-[#dce7f6] bg-[linear-gradient(110deg,#f5f8fd_0%,#fbfcfe_52%,#f1f6fd_100%)] px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6";
 
 const ledSectionTitleClass =
-  "!text-xl font-extrabold leading-7 tracking-tight text-[#071936] lg:!text-[22px]";
+  "!text-xl font-extrabold leading-7 tracking-tight text-[#071936] lg:!text-[26px]";
 
 type FilterKey =
   | "all"
@@ -1889,7 +1889,7 @@ function ProductsPageContent({
               <div data-led-product-listing className="min-w-0 rounded-xl border border-slate-200 bg-white p-4 shadow-[0_2px_12px_rgba(15,23,42,0.04)] sm:p-5">
                 <div className="flex flex-col gap-3 border-b border-slate-100 pb-4 xl:flex-row xl:items-end xl:justify-between">
                   <div className="min-w-0">
-                    <h2 className="!text-xl font-extrabold leading-7 tracking-tight text-[#071936] lg:!text-[22px]">Featured LED Display Products</h2>
+                    <h2 className={ledSectionTitleClass}>Featured LED Display Products</h2>
                     <div className="mt-1 flex flex-wrap items-center gap-3">
                       <p className="text-left text-xs font-semibold leading-4 text-slate-600" aria-live="polite">
                         {filtered.length ? `Showing ${desktopStartIndex + 1}–${desktopEndIndex} of ${filtered.length}` : "0"} LED {filtered.length === 1 ? "Product" : "Products"}
@@ -1989,7 +1989,7 @@ function ProductsPageContent({
               <LedSectionHeading id="led-full-product-list-heading" icon="display">
                 Browse All LED Display Products
               </LedSectionHeading>
-              <p className="mt-2 max-w-3xl text-left text-sm leading-6 text-slate-600">
+                <p className="home-section-subtitle mt-2 max-w-3xl text-left leading-6 text-slate-600">
                 Explore the complete LED display directory by category and open any model page directly.
               </p>
             </div>
@@ -2062,16 +2062,16 @@ function ProductsPageContent({
               aria-labelledby="led-price-list-heading"
             >
               <div className="mx-auto max-w-5xl text-center">
-                <span className="inline-flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.1em] text-blue-700">
+                <span className="home-section-badge text-blue-700">
                   <span aria-hidden="true" className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/90 text-[#1458e5] shadow-sm ring-1 ring-[#cfe0ff]">
                     <UiIcon name="cost" className="h-3.5 w-3.5" />
                   </span>
                   Pricing Guide
                 </span>
-                <h2 id="led-price-list-heading" className="mt-3 text-balance !text-[27px] font-black leading-[1.1] tracking-[-0.025em] text-[#071936] md:!text-[36px]">
+                <h2 id="led-price-list-heading" className={`mt-3 text-balance ${ledSectionTitleClass}`}>
                   LED Display Price List in Bangladesh
                 </h2>
-                <p className="mx-auto mt-3 max-w-4xl text-center text-[13px] leading-6 text-slate-600 md:text-[15px]">
+                <p className="home-section-subtitle mx-auto mt-3 max-w-4xl text-center leading-6 text-slate-600">
                   LED display prices vary based on pixel pitch, panel type, brightness, controller system, installation complexity, and project scope.
                 </p>
               </div>
@@ -2220,16 +2220,16 @@ function ProductsPageContent({
             <span className="pointer-events-none absolute right-6 top-5 h-14 w-24 opacity-55 [background-image:radial-gradient(#bfdbfe_1.5px,transparent_1.5px)] [background-size:10px_10px]" aria-hidden="true" />
 
             <div className="relative mx-auto max-w-5xl text-center">
-              <span className="inline-flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-[0.1em] text-blue-700">
+              <span className="home-section-badge text-blue-700">
                 <span aria-hidden="true" className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/90 text-[#1458e5] shadow-sm ring-1 ring-[#cfe0ff]">
                   <UiIcon name="guide" className="h-3.5 w-3.5" />
                 </span>
                 LED Buying Guide
               </span>
-              <h2 id="led-display-buying-guide-heading" className="mt-3 text-balance !text-[26px] font-black leading-[1.12] tracking-[-0.025em] text-[#071936] md:!text-[34px]">
+              <h2 id="led-display-buying-guide-heading" className={`mt-3 text-balance ${ledSectionTitleClass}`}>
                 How to Choose the Right LED Display Screen in Bangladesh
               </h2>
-              <p className="mx-auto mt-2 max-w-4xl text-center text-[13px] leading-6 text-slate-600 md:text-[15px]">
+              <p className="home-section-subtitle mx-auto mt-2 max-w-4xl text-center leading-6 text-slate-600">
                 Choose the right pixel pitch, brightness, size, and controller based on your viewing distance, environment, and application.
               </p>
             </div>
@@ -2394,10 +2394,10 @@ function ProductsPageContent({
           >
             <div className="grid gap-6 xl:grid-cols-[0.83fr_1.17fr] xl:gap-7">
               <div className="min-w-0">
-                <h2 id="indoor-outdoor-led-comparison-heading" className="text-xl font-extrabold tracking-tight text-[#071a42] sm:text-2xl">
+              <h2 id="indoor-outdoor-led-comparison-heading" className={ledSectionTitleClass}>
                   Indoor vs Outdoor LED Display
                 </h2>
-                <p className="mt-1 text-[11px] leading-5 text-slate-600 sm:text-xs">Choose the right LED display for your environment</p>
+              <p className="home-section-subtitle mt-1 leading-5 text-slate-600">Choose the right LED display for your environment</p>
 
                 <div className="mt-4 overflow-x-auto rounded-xl border border-[#d9e4f2]">
                   <table className="w-full min-w-0 table-fixed text-left text-[7px] leading-3 text-slate-700 min-[430px]:text-[8px] sm:text-[10px] sm:leading-4">
@@ -2448,8 +2448,8 @@ function ProductsPageContent({
               <div className="min-w-0">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div>
-                    <h2 className="text-xl font-extrabold tracking-tight text-[#071a42] sm:text-2xl">Complete LED Display Solution</h2>
-                    <p className="mt-1 text-[11px] leading-5 text-slate-600 sm:text-xs">From planning to installation & after-sales support</p>
+                    <h2 className={ledSectionTitleClass}>Complete LED Display Solution</h2>
+                    <p className="home-section-subtitle mt-1 leading-5 text-slate-600">From planning to installation & after-sales support</p>
                   </div>
                   <Link prefetch={false} href="/contact/?project=led-display" className="inline-flex min-h-8 w-fit shrink-0 items-center justify-center gap-2 rounded-md bg-[#071a42] px-3.5 text-[10px] font-extrabold text-white shadow-sm transition hover:bg-[#12326b]">
                     <UiIcon name="guide" className="h-3.5 w-3.5" />Design My LED Display
@@ -2535,9 +2535,9 @@ function ProductsPageContent({
             <MobileIntroText
               teaser="Compare LED display vs projector vs LCD video wall in Bangladesh to choose the right display solution for your business or project."
               className="mt-2"
-              teaserClassName="w-full"
-              expandedClassName="text-sm leading-7 text-slate-600"
-              desktopClassName="text-sm leading-7 text-slate-600"
+              teaserClassName="home-section-subtitle w-full"
+              expandedClassName="home-section-subtitle leading-7 text-slate-600"
+              desktopClassName="home-section-subtitle leading-7 text-slate-600"
             >
               <>
                 Compare LED display vs projector vs LCD video wall in Bangladesh to choose the right display solution
@@ -2570,9 +2570,9 @@ function ProductsPageContent({
             <MobileIntroText
               teaser="Sasha corporation provides complete LED Screen solutions in Bangladesh covering planning, product selection, installation, configuration, and ongoing support."
               className="mt-2"
-              teaserClassName="w-full"
-              expandedClassName="text-sm leading-7 text-slate-600"
-              desktopClassName="text-sm leading-7 text-slate-600"
+              teaserClassName="home-section-subtitle w-full"
+              expandedClassName="home-section-subtitle leading-7 text-slate-600"
+              desktopClassName="home-section-subtitle leading-7 text-slate-600"
             >
               <>
                 Sasha corporation provides complete LED Screen solutions in Bangladesh covering planning, product selection, installation,
@@ -2639,11 +2639,11 @@ function ProductsPageContent({
           >
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h2 id="recent-led-projects-heading" className="flex items-center gap-2.5 text-xl font-extrabold tracking-tight text-[#071a42] sm:text-2xl">
+                  <h2 id="recent-led-projects-heading" className={`${ledSectionTitleClass} flex items-center gap-2.5`}>
                     <LedPremiumTitleIcon icon="display" />
                     <span className="min-w-0 text-balance">Our Recent LED Display Projects</span>
                   </h2>
-                  <p className="mt-1 text-[11px] leading-5 text-slate-600 sm:text-xs">Delivering high-performance LED screens across Bangladesh.</p>
+                  <p className="home-section-subtitle mt-1 leading-5 text-slate-600">Delivering high-performance LED screens across Bangladesh.</p>
                 </div>
                 <Link prefetch={false} href="/projects/" className="inline-flex min-h-8 w-fit items-center justify-center gap-2 rounded-md border border-[#2d6af1] bg-white px-3.5 text-[10px] font-extrabold text-[#1458e5] transition hover:bg-[#1458e5] hover:text-white">
                   View All Projects <span aria-hidden="true">→</span>
@@ -2733,11 +2733,11 @@ function ProductsPageContent({
               <div>
                 <LedSectionHeading id="why-choose-sasha-led-heading" icon="support">Why Choose Sasha Corporation for LED Display Solutions?</LedSectionHeading>
                 <MobileIntroText
-                  teaser="Sasha Corporation supplies, installs, configures, and supports LED display solutions across Bangladesh."
-                  className="mt-3 text-slate-600"
-                  teaserClassName="w-full"
-                  expandedClassName="text-sm leading-7 md:text-base md:leading-8"
-                  desktopClassName="text-sm leading-7 md:text-base md:leading-8"
+                teaser="Sasha Corporation supplies, installs, configures, and supports LED display solutions across Bangladesh."
+                className="mt-3 text-slate-600"
+                teaserClassName="home-section-subtitle w-full"
+                expandedClassName="home-section-subtitle leading-7 md:leading-8"
+                desktopClassName="home-section-subtitle leading-7 md:leading-8"
                 >
                   <>
                     Sasha Corporation supplies, installs, configures, and supports LED display solutions across Bangladesh. Project scope may include indoor LED displays, outdoor LED billboards, rental LED screens, LED video walls, controllers, receiving cards, power supplies, maintenance, and after-sales technical support. Warranty, response time, and maintenance terms are confirmed in the quotation according to the selected product and project scope.
@@ -2793,12 +2793,12 @@ function ProductsPageContent({
             aria-labelledby="led-how-we-work-heading"
           >
               <div>
-                <div className="text-[9px] font-extrabold uppercase tracking-[0.12em] text-[#1458e5]">Our Process</div>
-                <h2 id="led-how-we-work-heading" className="mt-1 flex items-center gap-2.5 text-xl font-extrabold tracking-tight text-[#071a42] sm:text-2xl">
+                <div className="home-section-badge">Our Process</div>
+                <h2 id="led-how-we-work-heading" className={`${ledSectionTitleClass} mt-1 flex items-center gap-2.5`}>
                   <LedPremiumTitleIcon icon="process" />
                   <span className="min-w-0 text-balance">Our LED Display Project Process</span>
                 </h2>
-                <p className="mt-1 text-[11px] leading-5 text-slate-600 sm:text-xs">A clear, structured workflow from consultation to project handover.</p>
+                <p className="home-section-subtitle mt-1 leading-5 text-slate-600">A clear, structured workflow from consultation to project handover.</p>
               </div>
 
               <div className="mt-6 grid gap-4 lg:grid-cols-6 lg:items-stretch">
@@ -2863,11 +2863,11 @@ function ProductsPageContent({
 	                <LedSectionHeading icon="display">What Is an LED Display?</LedSectionHeading>
                 <MobileIntroText
                   teaser="An LED Display is a modular digital screen built from many light-emitting diode pixels that create images, videos, text, and live visual content."
-                  teaserLines={2}
-                  className="mt-4"
-                  teaserClassName="w-full leading-6"
-                  expandedClassName="space-y-4 text-sm leading-7 text-slate-600"
-                  desktopClassName="mt-4 space-y-4 text-sm leading-7 text-slate-600 md:text-[15px] md:leading-8"
+                teaserLines={2}
+                className="mt-4"
+                teaserClassName="home-section-subtitle w-full leading-6"
+                expandedClassName="home-section-subtitle space-y-4 leading-7 text-slate-600"
+                desktopClassName="home-section-subtitle mt-4 space-y-4 leading-7 text-slate-600 md:leading-8"
                 >
                   <>
                     <p>
@@ -2908,11 +2908,11 @@ function ProductsPageContent({
 	              <div ref={componentSectionRef}>
 	                <LedSectionHeading icon="module">Main Components of an LED Display System</LedSectionHeading>
                   <MobileIntroText
-                    teaser="Every professional LED display system is built using several essential hardware components."
-                    className="mt-3 max-w-5xl"
-                    teaserClassName="w-full"
-                    expandedClassName="text-sm leading-7 text-slate-600"
-                    desktopClassName="text-sm leading-7 text-slate-600 md:text-[15px] md:leading-8"
+                  teaser="Every professional LED display system is built using several essential hardware components."
+                  className="mt-3 max-w-5xl"
+                  teaserClassName="home-section-subtitle w-full"
+                  expandedClassName="home-section-subtitle leading-7 text-slate-600"
+                  desktopClassName="home-section-subtitle leading-7 text-slate-600 md:leading-8"
                   >
                     <>Every professional LED display system is built using several essential hardware components. Each component performs a specific function to ensure stable operation, high image quality, and reliable long-term performance.</>
                   </MobileIntroText>
@@ -2960,11 +2960,11 @@ function ProductsPageContent({
 	              <div>
 	                <LedSectionHeading icon="process">How an LED Display System Works</LedSectionHeading>
 	                <MobileIntroText
-                    teaser="A professional LED display operates through the seamless communication of multiple hardware components."
-                    className="mt-3 max-w-5xl"
-                    teaserClassName="w-full"
-                    expandedClassName="text-sm leading-7 text-slate-600"
-                    desktopClassName="text-sm leading-7 text-slate-600 md:text-[15px] md:leading-8"
+	                teaser="A professional LED display operates through the seamless communication of multiple hardware components."
+	                className="mt-3 max-w-5xl"
+	                teaserClassName="home-section-subtitle w-full"
+	                expandedClassName="home-section-subtitle leading-7 text-slate-600"
+	                desktopClassName="home-section-subtitle leading-7 text-slate-600 md:leading-8"
                   >
                     <>
                       A professional LED display operates through the seamless communication of multiple hardware
@@ -3035,11 +3035,11 @@ function ProductsPageContent({
             aria-labelledby="led-display-technology-types-heading"
           >
             <div>
-              <h2 id="led-display-technology-types-heading" className="flex items-center gap-2.5 text-xl font-extrabold tracking-tight text-[#071a42] sm:text-2xl">
+              <h2 id="led-display-technology-types-heading" className={`${ledSectionTitleClass} flex items-center gap-2.5`}>
                 <LedPremiumTitleIcon icon="chip" />
                 <span className="min-w-0 text-balance">LED Technology Guide</span>
               </h2>
-              <p className="mt-1 text-[12px] font-semibold leading-5 text-slate-600 sm:text-sm">Different LED technologies for different needs</p>
+              <p className="home-section-subtitle mt-1 font-semibold leading-5 text-slate-600">Different LED technologies for different needs</p>
             </div>
 
             <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -3144,9 +3144,9 @@ function ProductsPageContent({
             <MobileIntroText
               teaser="Digital LED signage for outdoor advertising improves visibility, message control, and campaign performance for brands in Bangladesh."
               className="mt-3"
-              teaserClassName="w-full"
-              expandedClassName="text-sm leading-7 text-slate-600"
-              desktopClassName="text-sm leading-7 text-slate-600"
+              teaserClassName="home-section-subtitle w-full"
+              expandedClassName="home-section-subtitle leading-7 text-slate-600"
+              desktopClassName="home-section-subtitle leading-7 text-slate-600"
             >
               <>
                 Digital LED signage for outdoor advertising improves visibility, message control, and campaign performance
@@ -3193,9 +3193,9 @@ function ProductsPageContent({
             <MobileIntroText
               teaser="Sasha Corporation is an authorized LED display distributor in Bangladesh, working with globally trusted LED display and component brands."
               className="mt-2"
-              teaserClassName="w-full"
-              expandedClassName="text-sm leading-7 text-slate-600"
-              desktopClassName="text-sm leading-7 text-slate-600"
+              teaserClassName="home-section-subtitle w-full"
+              expandedClassName="home-section-subtitle leading-7 text-slate-600"
+              desktopClassName="home-section-subtitle leading-7 text-slate-600"
             >
               <>
                 Sasha Corporation is an authorized LED display distributor in Bangladesh, working with globally trusted
@@ -3293,7 +3293,7 @@ function ProductsPageContent({
           </section>
 
           <section className={ledInformationSectionClass} aria-labelledby="valuable-led-clients-heading">
-            <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#1458e5]">
+            <div className="home-section-badge">
               LED Display Clients &amp; Projects
             </div>
 
@@ -3305,9 +3305,9 @@ function ProductsPageContent({
                 <MobileIntroText
                   teaser="We provide professional LED display and LED screen solutions designed for institutional requirements with clear visibility, stable performance, and dependable after-sales support."
                   className="mt-2 w-full"
-                  teaserClassName="w-full"
-                  expandedClassName="text-justify text-slate-600 leading-7"
-                  desktopClassName="w-full text-justify text-slate-600 leading-7"
+                  teaserClassName="home-section-subtitle w-full"
+                  expandedClassName="home-section-subtitle text-justify text-slate-600 leading-7"
+                  desktopClassName="home-section-subtitle w-full text-justify text-slate-600 leading-7"
                 >
                   <>
                     We provide professional LED display and LED screen solutions designed for institutional requirements - clear visibility, stable performance, safe installation, and dependable after-sales support. We are honored to have worked with clients such as <span className="font-bold text-slate-900">Ministry of Health and Family Welfare</span>, <span className="font-bold text-slate-900">National Board of Revenue (Bangladesh)</span>, <span className="font-bold text-slate-900">Bangladesh Election Commission</span>, <span className="font-bold text-slate-900">Department of Immigration &amp; Passports</span>, <span className="font-bold text-slate-900">Bangladesh Public Service Commission</span>, <span className="font-bold text-slate-900">Anti-Corruption Commission (ACC)</span>, <span className="font-bold text-slate-900">Dhaka North City Corporation</span>, <span className="font-bold text-slate-900">Dhaka South City Corporation</span>, <span className="font-bold text-slate-900">Sonali Bank PLC</span>, and <span className="font-bold text-slate-900">Bangladesh Road Transport Authority (BRTA)</span>.
@@ -3401,10 +3401,10 @@ function ProductsPageContent({
                       <UiIcon name="support" className="h-7 w-7" />
                     </span>
                     <div className="min-w-0">
-                      <h2 id="led-final-cta" className="!text-[21px] font-black leading-tight tracking-tight text-white sm:!text-[24px]">
+                      <h2 id="led-final-cta" className="!text-xl font-black leading-tight tracking-tight text-white lg:!text-[26px]">
                         Planning an LED Display Project?
                       </h2>
-                      <p className="mt-1 !text-left text-[10px] font-medium leading-4 text-blue-100 sm:text-[11px]">
+                      <p className="home-section-subtitle mt-1 !text-left font-medium leading-4 text-blue-100">
                         Get clear recommendations, accurate pricing and professional support from our experts.
                       </p>
                     </div>
