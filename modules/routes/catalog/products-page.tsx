@@ -11,6 +11,11 @@ import { siteConfig } from "@/lib/site";
 import { normalizeDisplayedPriceText } from "@/lib/price";
 import { buildLedProductCardHighlights } from "@/lib/productCardHighlights";
 import ProductGridCard from "@/components/products/ProductGridCard";
+import {
+  LedProductCompareTray,
+  LedProductQuickView,
+  type LedProductToolData,
+} from "@/components/products/LedProductCardTools";
 import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCarousel";
 import FaqAccordion from "@/components/common/FaqAccordion";
 import MobileIntroText from "@/components/common/MobileIntroText";
@@ -135,14 +140,15 @@ function isLedExplorerProduct(product: UnifiedProduct): boolean {
   return LED_DISPLAY_INTERNAL_LINK_KINDS.includes(kind);
 }
 
-function LedExplorerProductCard({ product, priority = false }: { product: UnifiedProduct; priority?: boolean }) {
+function LedExplorerProductCard({ product, priority = false, compareSelected = false, onCompareToggle }: {
+  product: UnifiedProduct;
+  priority?: boolean;
+  compareSelected?: boolean;
+  onCompareToggle?: (id: string) => void;
+}) {
   const isLedDisplay = product.id.startsWith("indoor:") || product.id.startsWith("outdoor:") || product.id.startsWith("rental:");
-  const features = (isLedDisplay
-    ? getLedCardBullets(product)
-    : product.quickFeatures?.length
-      ? product.quickFeatures
-      : subtitleToBullets(product.subtitle)
-  ).slice(0, 3);
+  const toolProduct = toLedProductToolData(product);
+  const features = toolProduct.features;
   const priceText = normalizeDisplayedPriceText(product.priceLine ?? product.priceLabel ?? "Request Price");
   const isRequestPrice = /request|contact|call/i.test(priceText);
   const productKey = product.id.split(":").slice(1).join(":");
@@ -215,6 +221,19 @@ function LedExplorerProductCard({ product, priority = false }: { product: Unifie
             {isRequestPrice ? "Contact for project pricing" : "Indicative product price"}
           </p>
           <div className="mt-3 grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              aria-pressed={compareSelected}
+              aria-label={`${compareSelected ? "Remove" : "Add"} ${product.title} ${compareSelected ? "from" : "to"} comparison`}
+              onClick={() => onCompareToggle?.(product.id)}
+              className={`inline-flex min-h-9 min-w-0 cursor-pointer items-center justify-center gap-1.5 rounded-md border px-2 text-[11px] font-extrabold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45 ${compareSelected ? "border-orange-300 bg-orange-50 text-orange-800" : "border-slate-200 bg-slate-50 text-slate-700 hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700"}`}
+            >
+              <span aria-hidden="true">{compareSelected ? "✓" : "+"}</span>
+              {compareSelected ? "Added" : "Compare"}
+            </button>
+            <LedProductQuickView product={toolProduct} />
+          </div>
+          <div className="mt-2.5 grid grid-cols-2 gap-2">
             <Link
               prefetch={false}
               href={product.href}
@@ -247,6 +266,35 @@ function getLedCardBullets(product: UnifiedProduct): string[] {
     subtitle: product.subtitle,
     category: product.badge.toLowerCase(),
   });
+}
+
+function toLedProductToolData(product: UnifiedProduct): LedProductToolData {
+  const isLedDisplay = product.id.startsWith("indoor:") || product.id.startsWith("outdoor:") || product.id.startsWith("rental:");
+  const price = normalizeDisplayedPriceText(product.priceLine ?? product.priceLabel ?? "Request Price");
+  const isRequestPrice = /request|contact|call/i.test(price);
+  const productKey = product.id.split(":").slice(1).join(":");
+  const features = (isLedDisplay
+    ? getLedCardBullets(product)
+    : product.quickFeatures?.length
+      ? product.quickFeatures
+      : subtitleToBullets(product.subtitle)
+  ).slice(0, 3);
+
+  return {
+    id: product.id,
+    title: product.title,
+    subtitle: product.subtitle,
+    image: product.image,
+    href: product.href,
+    quoteHref: `/contact/?project=led-display&product=${encodeURIComponent(productKey)}`,
+    category: product.badge,
+    pitch: product.pitch ? formatPitchDisplay(product.pitch) : undefined,
+    price,
+    priceNote: isRequestPrice ? "Contact for project pricing" : "Indicative product price",
+    features,
+    chips: product.bestFor?.length ? product.bestFor.slice(0, 3) : (product.tags ?? []).slice(0, 3),
+    imageFit: isLedDisplay ? "cover" : "contain",
+  };
 }
 
 function UiIcon({ name, className = "h-5 w-5" }: { name: string; className?: string }) {
@@ -758,6 +806,8 @@ function ProductsPageContent({
   const [openLedFilterGroups, setOpenLedFilterGroups] = useState<Array<"category" | "price">>(["category", "price"]);
   const [activeComponentSlide, setActiveComponentSlide] = useState(0);
   const [activeWhyChooseSlide, setActiveWhyChooseSlide] = useState(0);
+  const [ledCompareIds, setLedCompareIds] = useState<string[]>([]);
+  const [ledCompareFeedback, setLedCompareFeedback] = useState("");
   const desktopPageSize = ledOnly ? ledPageSize : 20;
   const productImageSizes = "(max-width: 1024px) 100vw, 25vw";
   const componentMobileCardStyles = [
@@ -874,6 +924,25 @@ function ProductsPageContent({
     setLedMaxPrice(null);
     setQuery("");
     resetResultsToFirstPage();
+  };
+
+  const selectedLedCompareProducts = useMemo(
+    () => ledCompareIds
+      .map((id) => allProducts.find((product) => product.id === id))
+      .filter((product): product is UnifiedProduct => Boolean(product))
+      .map(toLedProductToolData),
+    [allProducts, ledCompareIds],
+  );
+  const toggleLedCompare = (id: string) => {
+    setLedCompareFeedback("");
+    setLedCompareIds((current) => {
+      if (current.includes(id)) return current.filter((selectedId) => selectedId !== id);
+      if (current.length >= 3) {
+        setLedCompareFeedback("You can compare up to 3 products.");
+        return current;
+      }
+      return [...current, id];
+    });
   };
 
   const ledDisplayComponentCards = [
@@ -1943,7 +2012,15 @@ function ProductsPageContent({
 
                 {desktopPagedProducts.length ? (
                   <div className="mt-4 grid grid-cols-1 items-stretch gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                    {desktopPagedProducts.map((product, index) => <LedExplorerProductCard key={product.id} product={product} priority={index === 0} />)}
+                    {desktopPagedProducts.map((product, index) => (
+                      <LedExplorerProductCard
+                        key={product.id}
+                        product={product}
+                        priority={index === 0}
+                        compareSelected={ledCompareIds.includes(product.id)}
+                        onCompareToggle={toggleLedCompare}
+                      />
+                    ))}
                   </div>
                 ) : (
                   <div className="rounded-2xl border border-slate-200 bg-white px-5 py-10 text-center">
@@ -1984,6 +2061,15 @@ function ProductsPageContent({
           </ResponsiveProductCarousel>
         )}
       </section>
+
+      {ledOnly ? (
+        <LedProductCompareTray
+          products={selectedLedCompareProducts}
+          feedback={ledCompareFeedback}
+          onRemove={toggleLedCompare}
+          onClear={() => { setLedCompareIds([]); setLedCompareFeedback(""); }}
+        />
+      ) : null}
 
       {ledOnly ? (
         <section className={ledInformationSectionClass} aria-labelledby="led-full-product-list-heading">

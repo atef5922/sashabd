@@ -333,8 +333,29 @@ test("LED display products use one responsive card render path", () => {
 
   assert.equal((productGrid.match(/desktopPagedProducts\.map\(\(product, index\)/g) ?? []).length, 1);
   assert.equal((productGrid.match(/desktopPagedProducts\.map\(renderCatalogCard\)/g) ?? []).length, 1);
-  assert.match(productGrid, /<LedExplorerProductCard key=\{product\.id\} product=\{product\}/);
+  assert.match(productGrid, /<LedExplorerProductCard[\s\S]*?key=\{product\.id\}[\s\S]*?product=\{product\}/);
   assert.match(source, /data-product-id=\{product\.id\}/);
+});
+
+test("LED explorer cards provide accessible Quick View and three-product Compare tools", () => {
+  const source = read("modules/routes/catalog/products-page.tsx");
+  const tools = read("components/products/LedProductCardTools.tsx");
+  const sharedCard = read("components/products/ProductGridCard.tsx");
+
+  assert.match(source, /LedProductQuickView product=\{toolProduct\}/);
+  assert.match(source, /aria-pressed=\{compareSelected\}/);
+  assert.match(source, /compareSelected=\{ledCompareIds\.includes\(product\.id\)\}/);
+  assert.match(source, /You can compare up to 3 products\./);
+  assert.match(source, /<LedProductCompareTray/);
+  assert.match(tools, /aria-haspopup="dialog"/);
+  assert.match(tools, /role="dialog"/);
+  assert.match(tools, /aria-modal="true"/);
+  assert.match(tools, /event\.key === "Escape"/);
+  assert.match(tools, /FOCUSABLE_SELECTOR/);
+  assert.match(tools, /Quick View/);
+  assert.match(tools, /Compare Selected Products/);
+  assert.match(tools, /Array\.from\(\{ length: 3 - products\.length \}/);
+  assert.doesNotMatch(sharedCard, /LedProductQuickView|LedProductCompareTray/);
 });
 
 test("Conference System renders one responsive semantic content set", () => {
