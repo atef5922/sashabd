@@ -52,6 +52,7 @@ function ProductDialog({
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
     const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const returnFocusElement = returnFocusRef.current;
     document.body.style.overflow = "hidden";
     const focusFrame = window.requestAnimationFrame(() => closeRef.current?.focus());
 
@@ -82,7 +83,7 @@ function ProductDialog({
       window.cancelAnimationFrame(focusFrame);
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = previousOverflow;
-      (returnFocusRef.current ?? previouslyFocused)?.focus();
+      (returnFocusElement ?? previouslyFocused)?.focus();
     };
   }, [onClose, returnFocusRef]);
 
@@ -230,7 +231,7 @@ export function LedProductCompareTray({
 
   return (
     <>
-      <aside aria-label="Selected LED products for comparison" className="fixed inset-x-3 bottom-20 z-40 mx-auto max-w-5xl rounded-xl border border-slate-200 bg-white/95 p-3 shadow-xl backdrop-blur md:bottom-4 md:p-4">
+      <aside aria-label="Selected LED products for comparison" className="fixed bottom-20 left-3 right-20 z-40 mx-auto max-w-5xl rounded-xl border border-slate-200 bg-white/95 p-3 shadow-xl backdrop-blur md:bottom-4 md:left-4 md:right-24 md:p-4 xl:inset-x-3">
         <div className="flex flex-col gap-3 md:flex-row md:items-center">
           <div className="min-w-0 flex-1">
             <div className="flex items-center justify-between gap-3">

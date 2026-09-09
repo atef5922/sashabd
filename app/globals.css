@@ -296,6 +296,85 @@ main :where(p, li, dd, blockquote).text-right {
   color: #1458e5;
 }
 
+@supports (content-visibility: auto) {
+  .led-display-page > section:not(:first-of-type) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 36rem;
+  }
+}
+
+.led-product-directory-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.led-product-directory-group {
+  min-width: 0;
+  border: 1px solid #dce7f6;
+  border-radius: 0.75rem;
+  background: linear-gradient(145deg, #ffffff 0%, #f7faff 100%);
+  padding: 0.875rem;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.035);
+}
+
+.led-product-directory-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 0.625rem;
+  border-bottom: 1px solid #e5edf8;
+}
+
+.led-product-directory-link {
+  display: flex;
+  min-width: 0;
+  min-height: 2rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-inline: 0.5rem;
+  border-radius: 0.5rem;
+  color: #334155;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  transition: color 150ms ease, background-color 150ms ease;
+}
+
+.led-product-directory-link:hover {
+  background-color: #edf4ff;
+  color: #1458e5;
+}
+
+.led-product-directory-link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(20, 88, 229, 0.35);
+}
+
+.led-product-directory-link-arrow {
+  flex-shrink: 0;
+  color: #1458e5;
+  opacity: 0;
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.led-product-directory-link:hover .led-product-directory-link-arrow {
+  opacity: 1;
+  transform: translateX(0.125rem);
+}
+
+@media (min-width: 640px) {
+  .led-product-directory-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .led-product-directory-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
 @media (hover: hover) and (pointer: fine) {
   .led-display-page .led-component-card:hover .led-component-icon {
     border-color: #1458e5 !important;

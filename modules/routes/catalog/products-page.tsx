@@ -768,6 +768,8 @@ function ProductsPageContent({
   const componentSectionRef = useRef<HTMLDivElement | null>(null);
   const whyChooseCarouselRef = useRef<HTMLDivElement | null>(null);
   const whyChooseSectionRef = useRef<HTMLDivElement | null>(null);
+  const trustedTechMarqueeRef = useRef<HTMLDivElement | null>(null);
+  const trustedClientMarqueeRef = useRef<HTMLDivElement | null>(null);
   const allProducts = useMemo(() => buildProducts(basePath), [basePath]);
   const fullListGroups = useMemo(() => {
     const kinds = LED_DISPLAY_INTERNAL_LINK_KINDS;
@@ -806,6 +808,8 @@ function ProductsPageContent({
   const [openLedFilterGroups, setOpenLedFilterGroups] = useState<Array<"category" | "price">>(["category", "price"]);
   const [activeComponentSlide, setActiveComponentSlide] = useState(0);
   const [activeWhyChooseSlide, setActiveWhyChooseSlide] = useState(0);
+  const [trustedTechCloneReady, setTrustedTechCloneReady] = useState(false);
+  const [trustedClientCloneReady, setTrustedClientCloneReady] = useState(false);
   const [ledCompareIds, setLedCompareIds] = useState<string[]>([]);
   const [ledCompareFeedback, setLedCompareFeedback] = useState("");
   const desktopPageSize = ledOnly ? ledPageSize : 20;
@@ -1490,6 +1494,39 @@ function ProductsPageContent({
 
   useEffect(() => {
     if (!ledOnly) return;
+
+    const techTrack = trustedTechMarqueeRef.current;
+    const clientTrack = trustedClientMarqueeRef.current;
+    if (!techTrack && !clientTrack) return;
+
+    const BrowserIntersectionObserver = (
+      window as unknown as { IntersectionObserver?: typeof IntersectionObserver }
+    ).IntersectionObserver;
+
+    if (!BrowserIntersectionObserver) {
+      const frame = window.requestAnimationFrame(() => {
+        setTrustedTechCloneReady(true);
+        setTrustedClientCloneReady(true);
+      });
+      return () => window.cancelAnimationFrame(frame);
+    }
+
+    const observer = new BrowserIntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        if (entry.target === techTrack) setTrustedTechCloneReady(true);
+        if (entry.target === clientTrack) setTrustedClientCloneReady(true);
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: "600px 0px" });
+
+    if (techTrack) observer.observe(techTrack);
+    if (clientTrack) observer.observe(clientTrack);
+    return () => observer.disconnect();
+  }, [ledOnly]);
+
+  useEffect(() => {
+    if (!ledOnly) return;
     const container = componentCarouselRef.current;
     if (!container) return;
     if (ledDisplayComponentCards.length <= 1) return;
@@ -2106,10 +2143,10 @@ function ProductsPageContent({
             </summary>
 
             <nav aria-label="Full LED display product list" className="border-t border-[#dbe5f2] bg-white p-3 sm:p-4 md:p-5">
-              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              <div className="led-product-directory-grid">
                 {fullListGroups.map((group) => (
-                  <div key={group.kind} className="min-w-0 rounded-xl border border-[#dce7f6] bg-[linear-gradient(145deg,#ffffff_0%,#f7faff_100%)] p-3.5 shadow-[0_3px_12px_rgba(15,23,42,0.035)]">
-                    <div className="flex items-center justify-between gap-3 border-b border-[#e5edf8] pb-2.5">
+                  <div key={group.kind} className="led-product-directory-group">
+                    <div className="led-product-directory-group-header">
                       <h3 className="!text-[15px] font-extrabold leading-5 text-[#071936]">{group.label}</h3>
                       <span className="inline-flex min-w-6 items-center justify-center rounded-full bg-[#eaf2ff] px-2 py-1 text-[10px] font-extrabold tabular-nums text-[#1458e5]">{group.items.length}</span>
                     </div>
@@ -2119,10 +2156,10 @@ function ProductsPageContent({
                           <Link
                             prefetch={false}
                             href={item.href}
-                            className="group/link flex min-h-8 min-w-0 items-center justify-between gap-2 rounded-lg px-2 text-[12px] font-semibold leading-5 text-slate-700 transition hover:bg-[#edf4ff] hover:text-[#1458e5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1458e5]/35"
+                            className="led-product-directory-link"
                           >
                             <span className="min-w-0 truncate">{item.title}</span>
-                            <span className="shrink-0 text-[#1458e5] opacity-0 transition group-hover/link:translate-x-0.5 group-hover/link:opacity-100" aria-hidden="true">→</span>
+                            <span className="led-product-directory-link-arrow" aria-hidden="true">→</span>
                           </Link>
                         </li>
                       ))}
@@ -3321,9 +3358,9 @@ function ProductsPageContent({
                 <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-14" style={{ background: "linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
                 <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-14" style={{ background: "linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
 
-                <div className="group">
+                <div ref={trustedTechMarqueeRef} className="group">
                   <div className="flex w-max animate-[renexMarquee_42s_linear_infinite] group-hover:[animation-play-state:paused] motion-reduce:animate-none">
-                    {[false, true].map((isClone) => (
+                    {[false, ...(trustedTechCloneReady ? [true] : [])].map((isClone) => (
                       <div
                         key={isClone ? "visual-clone-track" : "canonical-track"}
                         className="flex gap-3 pr-3"
@@ -3435,9 +3472,9 @@ function ProductsPageContent({
                 <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-10 md:w-14" style={{ background: "linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
                 <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-10 md:w-14" style={{ background: "linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
 
-                <div className="group">
+                <div ref={trustedClientMarqueeRef} className="group">
                   <div className="flex w-max animate-[renexMarquee_48s_linear_infinite] group-hover:[animation-play-state:paused] motion-reduce:animate-none">
-                    {[false, true].map((isClone) => (
+                    {[false, ...(trustedClientCloneReady ? [true] : [])].map((isClone) => (
                       <div
                         key={isClone ? "visual-clone-client-track" : "canonical-client-track"}
                         className="flex gap-3 pr-3"

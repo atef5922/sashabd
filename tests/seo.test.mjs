@@ -2230,12 +2230,15 @@ test("LED display technology partner marquee exposes one semantic logo set", () 
 
   assert.ok(dataSource, "Technology partner logo data must be present");
   assert.ok(section, "Technology Partners section source must be present");
+  assert.match(source, /new BrowserIntersectionObserver/);
+  assert.match(source, /rootMargin: "600px 0px"/);
 
   const sourceBrands = [...dataSource.matchAll(/name: "([^"]+)"/g)].map((match) => match[1]);
   const visibleBrands = sourceBrands.filter((brand) => !["Absen", "Unilumin"].includes(brand));
   assert.equal(visibleBrands.length, 11);
   assert.equal(new Set(visibleBrands).size, visibleBrands.length);
-  assert.match(section, /\[false, true\]\.map\(\(isClone\)/);
+  assert.match(section, /ref=\{trustedTechMarqueeRef\}/);
+  assert.match(section, /trustedTechCloneReady \? \[true\] : \[\]/);
   assert.match(section, /key=\{isClone \? "visual-clone-track" : "canonical-track"\}/);
   assert.match(section, /aria-hidden=\{isClone \? "true" : undefined\}/);
   assert.match(section, /inert=\{isClone \? true : undefined\}/);
@@ -2256,7 +2259,8 @@ test("LED display client marquee exposes one semantic client set", () => {
   const sourceClients = [...dataSource.matchAll(/name: "([^"]+)"/g)].map((match) => match[1]);
   assert.equal(sourceClients.length, 15);
   assert.equal(new Set(sourceClients).size, sourceClients.length);
-  assert.match(section, /\[false, true\]\.map\(\(isClone\)/);
+  assert.match(section, /ref=\{trustedClientMarqueeRef\}/);
+  assert.match(section, /trustedClientCloneReady \? \[true\] : \[\]/);
   assert.match(section, /key=\{isClone \? "visual-clone-client-track" : "canonical-client-track"\}/);
   assert.match(section, /aria-hidden=\{isClone \? "true" : undefined\}/);
   assert.match(section, /inert=\{isClone \? true : undefined\}/);
@@ -2368,7 +2372,7 @@ test("Projects publish only verified completed-project evidence and withhold tem
 
   assert.match(data, /id: "nusaifa-trading-p5-led-billboard-nasirabad"/);
   assert.match(data, /caseStudyHref: "\/blog\/p5-led-billboard-project-nasirabad-chattogram-nusaifa-trading\/"/);
-  assert.match(data, /image: "\/assets\/projects\/led-display\/Nusaifa Trading\/IMG_20260308_135826902_HDR\.webp"/);
+  assert.match(data, /image: "\/assets\/projects\/led-display\/nusaifa-trading\/IMG_20260308_135826902_HDR\.webp"/);
   assert.match(source, /const list = projects;/);
   assert.match(source, /Verified Completed Projects/);
   assert.match(source, /Never render these as Sasha Corporation project evidence/);
@@ -2385,37 +2389,37 @@ test("Verified LED display projects use canonical factual data and uploaded imag
       id: "national-library-p2-5-indoor-led-display-dhaka",
       client: "National Library",
       completedIso: "2026-08-14",
-      image: "public/assets/projects/led-display/National Library/IMG_20260521_000347272_HDR_AE.webp",
+      image: "public/assets/projects/led-display/national-library/IMG_20260521_000347272_HDR_AE.webp",
     },
     {
       id: "varendra-university-p2-5-indoor-led-display-rajshahi",
       client: "Varendra University",
       completedIso: "2026-05-11",
-      image: "public/assets/projects/led-display/varendra University/sasha_led_display_installation_room.webp",
+      image: "public/assets/projects/led-display/varendra-university/sasha_led_display_installation_room.webp",
     },
     {
       id: "nusaifa-trading-p5-led-billboard-nasirabad",
       client: "Nusaifa Trading",
       completedIso: "2026-03-10",
-      image: "public/assets/projects/led-display/Nusaifa Trading/IMG_20260308_135826902_HDR.webp",
+      image: "public/assets/projects/led-display/nusaifa-trading/IMG_20260308_135826902_HDR.webp",
     },
     {
       id: "funland-p4-leyard-outdoor-led-display-gazipur",
       client: "Laptop Care and Technology, Funland",
       completedIso: "2026-01-05",
-      image: "public/assets/projects/led-display/Funland/IMG_20260505_180601669_HDR.webp",
+      image: "public/assets/projects/led-display/funland/IMG_20260505_180601669_HDR.webp",
     },
     {
       id: "save-the-children-p5-outdoor-led-display-dhaka",
       client: "Save the Children",
       completedIso: "2025-10-19",
-      image: "public/assets/projects/led-display/Save The Children/IMG_20260408_170401913_HDR.webp",
+      image: "public/assets/projects/led-display/save-the-children/IMG_20260408_170401913_HDR.webp",
     },
     {
       id: "banani-officers-quarter-p3-indoor-led-display-dhaka",
       client: "Banani Officers’ Quarter",
       completedIso: "2024-03-05",
-      image: "public/assets/projects/led-display/Banani Officers’ Quarter/project-indoor-wall.webp",
+      image: "public/assets/projects/led-display/banani-officers-quarter/project-indoor-wall.webp",
     },
   ];
 
