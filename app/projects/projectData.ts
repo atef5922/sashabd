@@ -23,10 +23,13 @@ export type Project = {
   badge: string;
   image?: string;
   imageAlt?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   imageFit?: "cover" | "contain";
   imageClassName?: string;
   imagePosition?: string;
   organization: string;
+  organizationUrl?: string;
   location: string;
   year: string;
   completed?: string;
@@ -57,15 +60,19 @@ export type Project = {
 export const projects: readonly Project[] = [
   {
     id: "national-library-p2-5-indoor-led-display-dhaka",
+    slug: "national-library-p2-5-indoor-led-display-dhaka",
     category: "led-display",
     categoryLabel: "LED Display",
     title: "P2.5 Indoor LED Display — National Library, Dhaka",
     badge: "Completed project",
     image: "/assets/projects/led-display/national-library/IMG_20260521_000347272_HDR_AE.webp",
     imageAlt: "P2.5 Lampro indoor LED display project at the National Library in Dhaka",
+    imageWidth: 3072,
+    imageHeight: 4096,
     imageClassName: "object-cover",
     imagePosition: "center 62%",
     organization: "National Library",
+    organizationUrl: "https://nanl.gov.bd/",
     location: "Agargaon, Sher-e-Bangla Nagar, Dhaka-1207, Bangladesh",
     year: "2026",
     completed: "14 August 2026",
@@ -87,9 +94,52 @@ export const projects: readonly Project[] = [
       { k: "Location", v: "Agargaon, Dhaka" },
     ],
     tags: ["P2.5 Indoor LED", "Lampro", "Dhaka"],
+    caseStudyHref: "/projects/national-library-p2-5-indoor-led-display-dhaka/",
+    seo: {
+      title: "National Library P2.5 LED Display Project Dhaka | Sasha",
+      description: "View Sasha Corporation's P2.5 Lampro indoor LED display project for the National Library in Agargaon, Dhaka, completed on 14 August 2026.",
+    },
+    detail: {
+      projectName: "P2.5 Lampro Indoor Full-Color LED Display",
+      h1: "National Library P2.5 Indoor LED Display Project in Dhaka",
+      projectType: "Indoor Full-Color LED Display Project",
+      overview: [
+        "Sasha Corporation completed a P2.5 indoor full-color LED display project for the National Library in Agargaon, Sher-e-Bangla Nagar, Dhaka.",
+        "The verified project record identifies Lampro as the display brand and records the completion date as 14 August 2026.",
+      ],
+      requirement: [
+        "The confirmed project requirement was a P2.5 indoor full-color LED display for the National Library. Screen dimensions and other project-specific specifications are not included in the public record.",
+      ],
+      solution: [
+        "The recorded solution uses P2.5 Lampro indoor full-color LED display technology at the National Library site in Agargaon, Dhaka.",
+      ],
+      systemDetails: [
+        { label: "Client", value: "National Library" },
+        { label: "Display type", value: "P2.5 Indoor Full-Color LED Display Module" },
+        { label: "Brand", value: "Lampro" },
+        { label: "Location", value: "Agargaon, Sher-e-Bangla Nagar, Dhaka-1207" },
+        { label: "Completed", value: "14 August 2026" },
+      ],
+      systemComponents: [
+        "P2.5 indoor full-color LED display module",
+        "Lampro LED display technology",
+      ],
+      scopeOfWork: [
+        "Indoor LED display project for the National Library",
+        "P2.5 full-color LED display configuration",
+        "Project completion recorded at the Agargaon site",
+      ],
+      results: [
+        "Completed P2.5 indoor LED display project",
+        "Verified National Library project record for Dhaka",
+        "Completion recorded on 14 August 2026",
+      ],
+      ctaHeading: "Planning an Indoor LED Display Project?",
+    },
   },
   {
     id: "varendra-university-p2-5-indoor-led-display-rajshahi",
+    slug: "varendra-university-p2-5-indoor-led-display-rajshahi",
     category: "led-display",
     categoryLabel: "LED Display",
     title: "P2.5 Indoor LED Display — Varendra University, Rajshahi",
@@ -99,6 +149,7 @@ export const projects: readonly Project[] = [
     imageClassName: "object-cover",
     imagePosition: "center 50%",
     organization: "Varendra University",
+    organizationUrl: "https://vu.edu.bd/",
     location: "Rajshahi Bypass Road, Chandrima, Paba, Rajshahi-6204",
     year: "2026",
     completed: "11 May 2026",
@@ -120,6 +171,48 @@ export const projects: readonly Project[] = [
       { k: "Location", v: "Paba, Rajshahi" },
     ],
     tags: ["P2.5 Indoor LED", "Lampro", "Rajshahi"],
+    caseStudyHref: "/projects/varendra-university-p2-5-indoor-led-display-rajshahi/",
+    seo: {
+      title: "Varendra University P2.5 LED Display Project | Sasha",
+      description: "View Sasha Corporation's P2.5 Lampro indoor LED display project at Varendra University in Paba, Rajshahi, completed on 11 May 2026.",
+    },
+    detail: {
+      projectName: "P2.5 Lampro Indoor Full-Color LED Display",
+      h1: "Varendra University P2.5 Indoor LED Display Project in Rajshahi",
+      projectType: "University Indoor LED Display Project",
+      overview: [
+        "Sasha Corporation completed a P2.5 indoor full-color LED display project for Varendra University at Rajshahi Bypass Road, Chandrima, Paba, Rajshahi.",
+        "The verified project record identifies Lampro as the display brand and records the completion date as 11 May 2026.",
+      ],
+      requirement: [
+        "The confirmed requirement was a P2.5 indoor full-color LED display for the Varendra University site. Screen dimensions and other project-specific specifications are not included in the public record.",
+      ],
+      solution: [
+        "The recorded solution uses P2.5 Lampro indoor full-color LED display technology at the university's Paba, Rajshahi campus.",
+      ],
+      systemDetails: [
+        { label: "Client", value: "Varendra University" },
+        { label: "Display type", value: "P2.5 Indoor Full-Color LED Display Module" },
+        { label: "Brand", value: "Lampro" },
+        { label: "Location", value: "Chandrima, Paba, Rajshahi-6204" },
+        { label: "Completed", value: "11 May 2026" },
+      ],
+      systemComponents: [
+        "P2.5 indoor full-color LED display module",
+        "Lampro LED display technology",
+      ],
+      scopeOfWork: [
+        "Indoor LED display project for Varendra University",
+        "P2.5 full-color LED display configuration",
+        "Project completion recorded at the Rajshahi campus",
+      ],
+      results: [
+        "Completed P2.5 indoor LED display project",
+        "Verified Varendra University project record for Rajshahi",
+        "Completion recorded on 11 May 2026",
+      ],
+      ctaHeading: "Planning an Indoor LED Display Project?",
+    },
   },
   {
     id: "nusaifa-trading-p5-led-billboard-nasirabad",
@@ -158,12 +251,15 @@ export const projects: readonly Project[] = [
   },
   {
     id: "funland-p4-leyard-outdoor-led-display-gazipur",
+    slug: "funland-p4-leyard-outdoor-led-display-gazipur",
     category: "led-display",
     categoryLabel: "LED Display",
     title: "P4 Leyard Outdoor LED Display — Funland, Gazipur",
     badge: "Completed project",
     image: "/assets/projects/led-display/funland/IMG_20260505_180601669_HDR.webp",
     imageAlt: "P4 Leyard outdoor SMD LED display project at Funland in Gazipur",
+    imageWidth: 4096,
+    imageHeight: 3072,
     imageClassName: "object-cover",
     imagePosition: "center 52%",
     organization: "Laptop Care and Technology, Funland",
@@ -188,18 +284,61 @@ export const projects: readonly Project[] = [
       { k: "Location", v: "Joydebpur Road, Gazipur" },
     ],
     tags: ["P4 Outdoor LED", "Leyard", "Gazipur"],
+    caseStudyHref: "/projects/funland-p4-leyard-outdoor-led-display-gazipur/",
+    seo: {
+      title: "Funland P4 Outdoor LED Display Project Gazipur | Sasha",
+      description: "View Sasha Corporation's P4 Leyard outdoor SMD LED display project for Laptop Care and Technology at Funland, Gazipur, completed 5 January 2026.",
+    },
+    detail: {
+      projectName: "P4 Leyard Outdoor SMD LED Display",
+      h1: "Funland P4 Outdoor LED Display Project in Gazipur",
+      projectType: "Outdoor SMD LED Display Project",
+      overview: [
+        "Sasha Corporation completed a P4 outdoor SMD LED display project for Laptop Care and Technology at Funland on Joydebpur Road, Gazipur.",
+        "The verified project record identifies Leyard as the display brand and records the completion date as 5 January 2026.",
+      ],
+      requirement: [
+        "The confirmed requirement was a P4 outdoor SMD LED display for the Funland location in Gazipur. Screen dimensions and other project-specific specifications are not included in the public record.",
+      ],
+      solution: [
+        "The recorded solution uses P4 Leyard outdoor SMD LED display technology at the Laptop Care and Technology, Funland site.",
+      ],
+      systemDetails: [
+        { label: "Client", value: "Laptop Care and Technology, Funland" },
+        { label: "Display type", value: "P4 Outdoor SMD LED Display" },
+        { label: "Brand", value: "Leyard" },
+        { label: "Location", value: "Joydebpur Road, Gazipur" },
+        { label: "Completed", value: "5 January 2026" },
+      ],
+      systemComponents: ["P4 outdoor SMD LED display", "Leyard LED display technology"],
+      scopeOfWork: [
+        "Outdoor LED display project for the Funland location",
+        "P4 SMD LED display configuration",
+        "Project completion recorded at the Gazipur site",
+      ],
+      results: [
+        "Completed P4 outdoor LED display project",
+        "Verified Laptop Care and Technology, Funland project record",
+        "Completion recorded on 5 January 2026",
+      ],
+      ctaHeading: "Planning an Outdoor LED Display Project?",
+    },
   },
   {
     id: "save-the-children-p5-outdoor-led-display-dhaka",
+    slug: "save-the-children-p5-outdoor-led-display-dhaka",
     category: "led-display",
     categoryLabel: "LED Display",
     title: "P5 Outdoor LED Display — Save the Children, Dhaka",
     badge: "Completed project",
     image: "/assets/projects/led-display/save-the-children/IMG_20260408_170401913_HDR.webp",
     imageAlt: "P5 Lampro outdoor LED display project for Save the Children in Dhaka",
+    imageWidth: 4096,
+    imageHeight: 3072,
     imageClassName: "object-cover",
     imagePosition: "center 50%",
     organization: "Save the Children",
+    organizationUrl: "https://www.savethechildren.net/bangladesh",
     location: "Gulshan-2, Dhaka-1212, Bangladesh",
     year: "2025",
     completed: "19 October 2025",
@@ -221,6 +360,45 @@ export const projects: readonly Project[] = [
       { k: "Location", v: "Gulshan-2, Dhaka" },
     ],
     tags: ["P5 Outdoor LED", "Lampro", "Dhaka"],
+    caseStudyHref: "/projects/save-the-children-p5-outdoor-led-display-dhaka/",
+    seo: {
+      title: "Save the Children P5 LED Display Project Dhaka | Sasha",
+      description: "View Sasha Corporation's P5 Lampro outdoor LED display project for Save the Children in Gulshan-2, Dhaka, completed on 19 October 2025.",
+    },
+    detail: {
+      projectName: "P5 Lampro Outdoor LED Display",
+      h1: "Save the Children P5 Outdoor LED Display Project in Dhaka",
+      projectType: "Outdoor LED Display Project",
+      overview: [
+        "Sasha Corporation completed a P5 outdoor LED display project for Save the Children in Gulshan-2, Dhaka.",
+        "The verified project record identifies Lampro as the display brand and records the completion date as 19 October 2025.",
+      ],
+      requirement: [
+        "The confirmed requirement was a P5 outdoor LED display for the Save the Children location in Gulshan-2. Screen dimensions and other project-specific specifications are not included in the public record.",
+      ],
+      solution: [
+        "The recorded solution uses P5 Lampro outdoor LED display technology at the Gulshan-2, Dhaka site.",
+      ],
+      systemDetails: [
+        { label: "Client", value: "Save the Children" },
+        { label: "Display type", value: "P5 Outdoor LED Display" },
+        { label: "Brand", value: "Lampro" },
+        { label: "Location", value: "Gulshan-2, Dhaka-1212" },
+        { label: "Completed", value: "19 October 2025" },
+      ],
+      systemComponents: ["P5 outdoor LED display", "Lampro LED display technology"],
+      scopeOfWork: [
+        "Outdoor LED display project for Save the Children",
+        "P5 LED display configuration",
+        "Project completion recorded at the Gulshan-2 site",
+      ],
+      results: [
+        "Completed P5 outdoor LED display project",
+        "Verified Save the Children project record for Dhaka",
+        "Completion recorded on 19 October 2025",
+      ],
+      ctaHeading: "Planning an Outdoor LED Display Project?",
+    },
   },
   {
     id: "banani-officers-quarter-p3-indoor-led-display-dhaka",
@@ -618,11 +796,31 @@ export const conferenceProjects = projects.filter(
   ),
 );
 
+export const projectCaseStudies = projects.filter(
+  (project): project is Project & {
+    slug: string;
+    image: string;
+    imageAlt: string;
+    completed: string;
+    completedIso: string;
+    detail: ProjectDetail;
+    seo: NonNullable<Project["seo"]>;
+  } => Boolean(
+    project.slug
+    && project.image
+    && project.imageAlt
+    && project.completed
+    && project.completedIso
+    && project.detail
+    && project.seo,
+  ),
+);
+
 export const ledDisplayProjects = projects.filter(
   (project): project is Project & { image: string; imageAlt: string } =>
     project.category === "led-display" && Boolean(project.image && project.imageAlt),
 );
 
-export function getProjectBySlug(slug: string): (typeof conferenceProjects)[number] | undefined {
-  return conferenceProjects.find((project) => project.slug === slug);
+export function getProjectBySlug(slug: string): (typeof projectCaseStudies)[number] | undefined {
+  return projectCaseStudies.find((project) => project.slug === slug);
 }

@@ -9,10 +9,11 @@ const page = read("app/page.tsx");
 const section = read("components/home/HomeNationwideCoverageSection.tsx");
 const styles = read("components/home/home-nationwide-coverage.module.css");
 
-test("homepage places one nationwide section after project evidence", () => {
+test("homepage places one nationwide section after project and trust evidence", () => {
   assert.equal((page.match(/<HomeNationwideCoverageSection \/>/g) ?? []).length, 1);
   assert.ok(page.indexOf("<HomeRecentProjectsSection />") < page.indexOf("<HomeNationwideCoverageSection />"));
-  assert.ok(page.indexOf("<HomeNationwideCoverageSection />") < page.indexOf("<TrustedTechnologyPartnersSection />"));
+  assert.ok(page.indexOf("<TrustedTechnologyPartnersSection />") < page.indexOf("<HomeNationwideCoverageSection />"));
+  assert.ok(page.indexOf("<HomeNationwideCoverageSection />") < page.indexOf("<ProjectWorkflowSection />"));
   assert.doesNotMatch(page, /\{false && \(/);
 });
 

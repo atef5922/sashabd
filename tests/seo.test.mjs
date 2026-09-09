@@ -2192,7 +2192,7 @@ test("indoor LED page duplicate-prone groups render from one semantic source", (
 test("LED display main components render one canonical card list", () => {
   const source = read("modules/routes/catalog/products-page.tsx");
   const dataSource = source.match(/const ledDisplayComponentCards = \[([\s\S]*?)\];/)?.[1];
-  const section = source.match(/Main Components of an LED Display System([\s\S]*?)How an LED Display System Works/)?.[1];
+  const section = source.match(/Main Components of an LED Display System([\s\S]*?)How the Display System Works/)?.[1];
 
   assert.ok(dataSource, "LED display component card data must be present");
   assert.ok(section, "Main Components section source must be present");
@@ -2209,7 +2209,7 @@ test("LED display main components render one canonical card list", () => {
 test("LED display Why Choose benefits render one canonical card list", () => {
   const source = read("modules/routes/catalog/products-page.tsx");
   const dataSource = source.match(/const sashaWhyChooseCards = \[([\s\S]*?)\];/)?.[1];
-  const section = source.match(/Why Choose Sasha Corporation for LED Display Solutions\?([\s\S]*?)Our LED Display Project Process/)?.[1];
+  const section = source.match(/Why Choose Sasha Corporation for LED Display Solutions\?([\s\S]*?)Our Project Delivery Process/)?.[1];
 
   assert.ok(dataSource, "Sasha Why Choose benefit data must be present");
   assert.ok(section, "Why Choose Sasha section source must be present");
@@ -2521,7 +2521,7 @@ test("Conference project case studies use canonical data, SEO, schema, breadcrum
   assert.match(data, /image: "\/assets\/conference-system\/projects\/conference_p3\.webp"/);
   assert.match(data, /Large conference room digital conference system installation in Dhaka by Sasha Corporation/);
   assert.match(detail, /export const dynamicParams = false/);
-  assert.match(detail, /conferenceProjects\.map\(\(project\) => \(\{ slug: project\.slug \}\)\)/);
+  assert.match(detail, /projectCaseStudies\.map\(\(project\) => \(\{ slug: project\.slug \}\)\)/);
   assert.match(detail, /alternates: \{ canonical \}/);
   assert.match(detail, /type: "article"/);
   assert.match(detail, /"@type": "WebPage"/);
@@ -2530,13 +2530,42 @@ test("Conference project case studies use canonical data, SEO, schema, breadcrum
   assert.match(detail, /\{ href: "\/projects\/", label: "Projects" \}/);
   assert.match(detail, /Request a Conference System BOQ/);
   assert.match(detail, /detail\.ctaHeading \?\? "Planning a Conference Room Project\?"/);
-  assert.match(detail, /href="\/contact\/\?project=conference-system"/);
-  assert.match(detail, /width=\{1448\}/);
-  assert.match(detail, /height=\{1086\}/);
-  assert.match(detail, /className="h-auto w-full object-contain"/);
+  assert.match(detail, /href: "\/contact\/\?project=conference-system"/);
+  assert.match(detail, /const imageWidth = project\.imageWidth \?\? 1448/);
+  assert.match(detail, /const imageHeight = project\.imageHeight \?\? 1086/);
+  assert.match(detail, /width=\{imageWidth\}/);
+  assert.match(detail, /height=\{imageHeight\}/);
+  assert.match(detail, /className="h-auto max-h-\[720px\] w-auto max-w-full object-contain"/);
   assert.match(listing, /<ProjectCard key=\{project\.id\} project=\{project\}/);
-  assert.match(sitemap, /conferenceProjects\.map/);
+  assert.match(sitemap, /projectCaseStudies\.map/);
   assert.match(sitemap, /url: abs\(`\/projects\/\$\{project\.slug\}\/`\)/);
+});
+
+test("LED display project case studies have dedicated routes, factual SEO data, schema and internal links", () => {
+  const data = read("app/projects/projectData.ts");
+  const detail = read("app/projects/[slug]/page.tsx");
+  const sitemap = read("app/sitemap.ts");
+
+  for (const slug of [
+    "national-library-p2-5-indoor-led-display-dhaka",
+    "varendra-university-p2-5-indoor-led-display-rajshahi",
+    "funland-p4-leyard-outdoor-led-display-gazipur",
+    "save-the-children-p5-outdoor-led-display-dhaka",
+  ]) {
+    assert.equal(occurrences(data, `slug: "${slug}"`), 1);
+    assert.match(data, new RegExp(`caseStudyHref: "\\/projects\\/${slug}\\/"`));
+  }
+
+  assert.match(data, /export const projectCaseStudies = projects\.filter/);
+  assert.match(data, /organizationUrl: "https:\/\/nanl\.gov\.bd\/"/);
+  assert.match(data, /organizationUrl: "https:\/\/vu\.edu\.bd\/"/);
+  assert.match(data, /organizationUrl: "https:\/\/www\.savethechildren\.net\/bangladesh"/);
+  assert.match(detail, /"@type": "Article"/);
+  assert.match(detail, /isLedProject \? "Related LED Display Pages"/);
+  assert.match(detail, /href: "\/contact\/\?project=led-display"/);
+  assert.match(detail, /\["Explore LED Display Solutions", "\/led-display\/"\]/);
+  assert.match(detail, /\["View All Completed Projects", "\/projects\/"\]/);
+  assert.match(sitemap, /projectCaseStudies\.map/);
 });
 
 test("Batch 3 removes unverified social profiles and scopes current partnership claims", () => {
@@ -2605,7 +2634,7 @@ test("LED hub, category pages, and buying guide use direct contextual internal l
   assert.match(rental, /href="\/led-display\/rent-guide\/"/);
   assert.match(rental, /LED screen rental planning guide/);
   assert.match(blog, /href="\/led-display\/"/);
-  assert.match(blog, /LED display models and price guidance/);
+  assert.match(blog, /current LED display products and project pricing/);
   assert.doesNotMatch(blog, /hubPrefixes|hubSuffixes|hubQualifiers|hashString/);
 });
 

@@ -2879,7 +2879,7 @@ function ProductsPageContent({
                 desktopClassName="home-section-subtitle leading-7 md:leading-8"
                 >
                   <>
-                    Sasha Corporation supplies, installs, configures, and supports LED display solutions across Bangladesh. Project scope may include indoor LED displays, outdoor LED billboards, rental LED screens, LED video walls, controllers, receiving cards, power supplies, maintenance, and after-sales technical support. LED displays include a 1-year warranty; response time and maintenance terms are confirmed in the quotation according to the selected product and project scope.
+                    As an LED display supplier in Bangladesh, Sasha Corporation provides screen supply, configuration, installation and after-sales support nationwide. Project scope may include indoor LED displays, outdoor LED billboards, rental LED screens, LED video walls, controllers, receiving cards, power supplies, maintenance, and after-sales technical support. LED displays include a 1-year warranty; response time and maintenance terms are confirmed in the quotation according to the selected product and project scope.
                   </>
                 </MobileIntroText>
               </div>
@@ -2935,7 +2935,7 @@ function ProductsPageContent({
                 <div className="home-section-badge">Our Process</div>
                 <h2 id="led-how-we-work-heading" className={`${ledSectionTitleClass} mt-1 flex items-center gap-2.5`}>
                   <LedPremiumTitleIcon icon="process" />
-                  <span className="min-w-0 text-balance">Our LED Display Project Process</span>
+                  <span className="min-w-0 text-balance">Our Project Delivery Process</span>
                 </h2>
                 <p className="home-section-subtitle mt-1 leading-5 text-slate-600">A clear, structured workflow from consultation to project handover.</p>
               </div>
@@ -3097,7 +3097,7 @@ function ProductsPageContent({
 	              </div>
 
 	              <div>
-	                <LedSectionHeading icon="process">How an LED Display System Works</LedSectionHeading>
+	                <LedSectionHeading icon="process">How the Display System Works</LedSectionHeading>
 	                <MobileIntroText
 	                teaser="A professional LED display operates through the seamless communication of multiple hardware components."
 	                className="mt-3 max-w-5xl"
@@ -3330,7 +3330,7 @@ function ProductsPageContent({
               Authorized LED Display Distributor &amp; Technology Brands in Bangladesh
             </LedSectionHeading>
             <MobileIntroText
-              teaser="Sasha Corporation is an authorized LED display distributor in Bangladesh, working with globally trusted LED display and component brands."
+              teaser="Sasha Corporation works with globally trusted display and component brands for professional indoor and outdoor projects."
               className="mt-2"
               teaserClassName="home-section-subtitle w-full"
               expandedClassName="home-section-subtitle leading-7 text-slate-600"
@@ -3348,7 +3348,7 @@ function ProductsPageContent({
                 <strong className="font-bold text-slate-900">NovaStar</strong>,{" "}
                 <strong className="font-bold text-slate-900">Huidu</strong>,{" "}
                 <strong className="font-bold text-slate-900">Colorlight</strong> and{" "}
-                <strong className="font-bold text-slate-900">Mean Well</strong>, supported by professional installation,
+                <strong className="font-bold text-slate-900">Mean Well</strong>, supported by professional LED display installation in Bangladesh,
                 system integration and after-sales technical service.
               </>
             </MobileIntroText>
@@ -3541,7 +3541,7 @@ function ProductsPageContent({
                     </span>
                     <div className="min-w-0">
                       <h2 id="led-final-cta" className="!text-xl font-black leading-tight tracking-tight text-white lg:!text-[26px]">
-                        Planning an LED Display Project?
+                        Planning a Display Project?
                       </h2>
                       <p className="home-section-subtitle mt-1 !text-left font-medium leading-4 text-blue-100">
                         Get clear recommendations, accurate pricing and professional support from our experts.

@@ -172,7 +172,7 @@ export default function LedDisplayHero({ currentYear }: { currentYear: number })
             <span className="block">in Bangladesh {currentYear}</span>
           </h1>
           <p className="led-display-hero-description mt-3 max-w-[38rem] text-[13px] font-medium leading-5 text-slate-700 sm:text-sm sm:leading-6 lg:text-[clamp(0.78rem,0.9vw,0.95rem)]">
-            Compare indoor, outdoor and rental LED displays with expert guidance on pixel pitch, controllers, installation and project-based pricing.
+            Review LED screen price in Bangladesh for indoor, outdoor and rental models, with expert guidance on pixel pitch, controllers, installation and project-based pricing.
           </p>
 
           <div className="led-display-hero-actions mt-4 flex flex-col gap-2.5 min-[430px]:flex-row sm:mt-5 lg:grid lg:max-w-[23rem] lg:grid-cols-2 xl:flex xl:max-w-none">

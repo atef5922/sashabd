@@ -188,7 +188,7 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
     <p className="mt-4 text-sm leading-8 text-slate-700 md:text-base">
       For available models and current planning details, visit our{" "}
       <Link href="/led-display/" className="font-extrabold text-slate-900 hover:underline">
-        {isLedBuyingGuide ? "LED display models and price guidance" : "LED display product hub"}
+        {isLedBuyingGuide ? "current LED display products and project pricing" : "LED display product hub"}
       </Link>
       .
       {introSecondaryLink && introSecondaryLink.href !== "/led-display/" ? (

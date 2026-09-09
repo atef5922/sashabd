@@ -250,6 +250,7 @@ export default function HomePage() {
         {/* 1) HERO */}
         <HomeHeroCarousel />
         <HomeTrustServiceStrip />
+        <CoreSolutionsSection />
 
         {/* 2.5) BROWSE PRODUCTS (PAGINATED) */}
         <section id="browse-products" className={`${productResponsiveStyles.section} mobile-browse-products w-full scroll-mt-24 rounded-2xl border border-slate-200/90 bg-white px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.035)] sm:px-5 md:px-6`}>
@@ -289,16 +290,15 @@ export default function HomePage() {
           </div>
         </section>
 
-        <CoreSolutionsSection />
         <div className="overflow-hidden rounded-2xl border border-slate-200/90 shadow-[0_5px_20px_rgba(15,23,42,0.035)]">
           <HomeWhyChoosePromiseSection />
           <HomeFeaturedProductsSection />
         </div>
         <HomeConferenceSolutionSection />
         <HomeRecentProjectsSection />
-        <HomeNationwideCoverageSection />
-        <TrustedTechnologyPartnersSection />
         <HomeClientsProjectsSection />
+        <TrustedTechnologyPartnersSection />
+        <HomeNationwideCoverageSection />
         <ProjectWorkflowSection />
         <ProjectProposalCtaSection />
 

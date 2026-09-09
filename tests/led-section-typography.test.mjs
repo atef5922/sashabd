@@ -8,7 +8,7 @@ const source = readFileSync(
   "utf8",
 );
 const start = source.indexOf("Featured LED Display Products");
-const end = source.indexOf("Planning an LED Display Project?");
+const end = source.indexOf("Planning a Display Project?");
 const ledMainSections = source.slice(start, end);
 
 test("LED Display section titles use one responsive size standard", () => {

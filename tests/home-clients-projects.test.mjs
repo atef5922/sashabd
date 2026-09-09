@@ -7,10 +7,35 @@ const read = (file) => readFileSync(path.join(process.cwd(), file), "utf8");
 const page = read("app/page.tsx");
 const section = read("components/home/HomeClientsProjectsSection.tsx");
 
-test("Home adds one Clients & Projects section after Technology Partners", () => {
+test("Home adds one Clients & Projects section directly after successful installations", () => {
   assert.equal((page.match(/<HomeClientsProjectsSection \/>/g) ?? []).length, 1);
-  assert.ok(page.indexOf("<TrustedTechnologyPartnersSection />") < page.indexOf("<HomeClientsProjectsSection />"));
+  assert.ok(page.indexOf("<HomeRecentProjectsSection />") < page.indexOf("<HomeClientsProjectsSection />"));
+  assert.ok(page.indexOf("<HomeClientsProjectsSection />") < page.indexOf("<TrustedTechnologyPartnersSection />"));
   assert.ok(page.indexOf("<HomeClientsProjectsSection />") < page.indexOf("<ProjectWorkflowSection />"));
+});
+
+test("Home sections follow the intended discovery, proof and conversion order", () => {
+  const orderedMarkers = [
+    "<HomeHeroCarousel />",
+    "<HomeTrustServiceStrip />",
+    "<CoreSolutionsSection />",
+    'id="browse-products"',
+    "<HomeWhyChoosePromiseSection />",
+    "<HomeFeaturedProductsSection />",
+    "<HomeConferenceSolutionSection />",
+    "<HomeRecentProjectsSection />",
+    "<HomeClientsProjectsSection />",
+    "<TrustedTechnologyPartnersSection />",
+    "<HomeNationwideCoverageSection />",
+    "<ProjectWorkflowSection />",
+    "<ProjectProposalCtaSection />",
+  ];
+
+  orderedMarkers.reduce((previousIndex, marker) => {
+    const currentIndex = page.indexOf(marker);
+    assert.ok(currentIndex > previousIndex, `${marker} must appear in the intended Home order`);
+    return currentIndex;
+  }, -1);
 });
 
 test("Home Clients & Projects copy covers all four solution topics naturally", () => {
