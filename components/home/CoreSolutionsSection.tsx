@@ -56,11 +56,10 @@ const additionalSolutionLinks = [
   { label: "Indoor LED Display", href: "/led-display/indoor-led/" },
   { label: "Outdoor LED Display", href: "/led-display/outdoor/" },
   { label: "Rental LED Display", href: "/led-display/rental-display/" },
-  { label: "Receiving Card", href: "/led-display/accessories/receiving-card/" },
-  { label: "LED Controller", href: "/led-display/accessories/controller/" },
-  { label: "Conference System", href: "/conference-system/" },
-  { label: "PA System", href: "/pa-system/" },
-  { label: "Turnstile Gate", href: "/turnstile-gate/" },
+  { label: "Audio Conference System", href: "/conference-system/audio-conference-system/" },
+  { label: "Video Conference System", href: "/conference-system/video-conference-system/" },
+  { label: "Wired Conference System", href: "/conference-system/wired-conference-system/" },
+  { label: "Wireless Conference System", href: "/conference-system/wireless-conference-system/" },
 ] as const;
 
 function ExploreArrow() {
@@ -126,7 +125,7 @@ export default function CoreSolutionsSection() {
               />
             </div>
 
-            <h3 className="mt-2 text-[12px] font-extrabold leading-4 text-[#071936] sm:text-[13px]">
+            <h3 className="core-solution-title mt-2 font-extrabold text-[#071936]">
               {solution.title}
             </h3>
             <p className="mt-1 flex-1 text-[9.5px] font-medium leading-[1.45] text-slate-600 sm:text-[10px]">
@@ -162,6 +161,24 @@ export default function CoreSolutionsSection() {
         </div>
       </nav>
       <style>{`
+        .core-solution-title {
+          white-space: nowrap;
+          font-size: 9px !important;
+          line-height: 1.2 !important;
+          letter-spacing: -0.025em;
+        }
+        @media (min-width: 640px) {
+          .core-solution-title { font-size: 11px !important; }
+        }
+        @media (min-width: 1024px) {
+          .core-solution-title { font-size: clamp(10px, 0.88vw, 12px) !important; }
+        }
+        @media (min-width: 1280px) {
+          .core-solution-title { font-size: 13px !important; }
+        }
+        @media (min-width: 1440px) {
+          .core-solution-title { font-size: calc(13 * var(--home-unit)) !important; }
+        }
         .core-solution-explore-link { color: #1456d9 !important; }
         .core-solution-explore-link:hover { color: #0f3f9f !important; }
         .core-solution-explore-link svg { color: inherit !important; }

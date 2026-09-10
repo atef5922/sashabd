@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { absoluteUrl, socialImageUrl } from "../lib/seo";
 import { BRAND_NAME } from "@/lib/brand";
+import { siteConfig } from "@/lib/site";
 import HomeAllProductsGrid from "@/components/home/HomeAllProductsGrid";
 import productResponsiveStyles from "@/components/home/home-products-responsive.module.css";
 import homeResponsiveStyles from "@/components/home/home-responsive.module.css";
@@ -29,6 +30,7 @@ export const metadata: Metadata = {
       "Sasha Corporation supplies and installs LED displays and conference systems in Bangladesh, plus PA systems and turnstile gates with dependable support.",
     url: absoluteUrl("/"),
     type: "website",
+    siteName: BRAND_NAME,
     images: [
       {
         url: socialImageUrl(),
@@ -46,6 +48,53 @@ export const metadata: Metadata = {
     images: [socialImageUrl()],
   },
 };
+
+const homeUrl = absoluteUrl("/");
+const organizationId = `${homeUrl}#organization`;
+
+const organizationJsonLd = {
+  "@type": "Organization",
+  "@id": organizationId,
+  name: BRAND_NAME,
+  alternateName: "Sasha",
+  url: homeUrl,
+  logo: absoluteUrl("/assets/brand/sasha/sasha-corporation-final-l.webp"),
+  sameAs: ["https://www.facebook.com/profile.php?id=100068947942148"],
+  telephone: siteConfig.phone,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "1st Floor, 36-37 Umesh Datta Road, Bakshibazar",
+    addressLocality: "Dhaka",
+    postalCode: "1211",
+    addressCountry: "BD",
+  },
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: siteConfig.phone,
+    contactType: "customer support",
+    areaServed: "BD",
+    availableLanguage: ["en", "bn"],
+  },
+  areaServed: {
+    "@type": "Country",
+    name: "Bangladesh",
+  },
+};
+
+const websiteJsonLd = {
+  "@type": "WebSite",
+  "@id": `${homeUrl}#website`,
+  name: BRAND_NAME,
+  alternateName: "Sasha",
+  url: homeUrl,
+  publisher: { "@id": organizationId },
+};
+
+const homepageJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [organizationJsonLd, websiteJsonLd],
+};
+
 function SectionHeader({
   title,
   desc,
@@ -87,23 +136,6 @@ function TitleIcon() {
 }
 
 export default function HomePage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: BRAND_NAME,
-    url: "https://sashabd.com/",
-    contactPoint: {
-      "@type": "ContactPoint",
-      contactType: "sales",
-      availableLanguage: ["bn", "en"],
-    },
-    areaServed: {
-      "@type": "Country",
-      name: "Bangladesh",
-    },
-    sameAs: [],
-  };
-
   return (
     <div
       className="home-underlined mx-auto w-full max-w-[clamp(80rem,90vw,108rem)] px-4 pb-10 pt-0 [box-shadow:0_0_0_100vmax_#f4f7fb] [clip-path:inset(0_-100vmax)] md:px-6"
@@ -244,7 +276,10 @@ export default function HomePage() {
           }
         }
       `}</style>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageJsonLd) }}
+      />
 
       <div className={`${homeResponsiveStyles.page} home-page-stack space-y-4`}>
         {/* 1) HERO */}

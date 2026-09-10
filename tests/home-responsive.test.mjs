@@ -27,3 +27,23 @@ test("Bespoke Home layouts scale their graphics, gutters and type together", () 
   assert.match(css, /height: calc\(322 \* var\(--home-unit\)\)/);
   assert.match(css, /left: calc\(50% \+ 45 \* var\(--home-unit\)\)/);
 });
+
+test("Core Solutions card titles override the global H3 size and stay on one line", () => {
+  const source = read("components/home/CoreSolutionsSection.tsx");
+  assert.match(source, /className="core-solution-title/);
+  assert.match(source, /\.core-solution-title \{[\s\S]*?white-space: nowrap;[\s\S]*?font-size: 9px !important;/);
+  assert.match(source, /font-size: clamp\(10px, 0\.88vw, 12px\) !important;/);
+  assert.match(source, /@media \(min-width: 1280px\)[\s\S]*?font-size: 13px !important;/);
+  assert.match(source, /font-size: calc\(13 \* var\(--home-unit\)\) !important;/);
+});
+
+test("Core Solutions shortcut badges link to LED and conference-system categories", () => {
+  const source = read("components/home/CoreSolutionsSection.tsx");
+  const shortcuts = source.slice(source.indexOf("const additionalSolutionLinks"), source.indexOf("function ExploreArrow"));
+  for (const slug of ["audio", "video", "wired", "wireless"]) {
+    assert.ok(shortcuts.includes(`/conference-system/${slug}-conference-system/`), slug);
+  }
+  for (const removed of ["Receiving Card", "LED Controller", "PA System", "Turnstile Gate"]) {
+    assert.ok(!shortcuts.includes(`label: "${removed}"`), removed);
+  }
+});

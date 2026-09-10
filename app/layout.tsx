@@ -5,8 +5,7 @@ import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import FloatingActions from "../components/common/FloatingActions";
 import MobileBottomNav from "../components/common/MobileBottomNav";
-import { siteConfig } from "../lib/site";
-import { absoluteUrl, getSiteBaseUrl, socialImageUrl, withTrailingSlash } from "../lib/seo";
+import { getSiteBaseUrl, socialImageUrl, withTrailingSlash } from "../lib/seo";
 import Script from "next/script";
 import { GA_ID } from "@/lib/gtag";
 import GaPageview from "@/components/analytics/GaPageview";
@@ -37,6 +36,7 @@ const allowIndexing = !isVercelStagingBuild();
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+  applicationName: BRAND_NAME,
   title: BRAND_NAME,
   description:
     "Sasha Corporation provides indoor, outdoor, rental and accessory solutions with planning, installation and long-term support.",
@@ -104,49 +104,6 @@ export default function RootLayout({
             </Script>
           </>
         ) : null}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@graph": [
-                {
-                  "@type": "Organization",
-                  name: BRAND_NAME,
-                  url: absoluteUrl("/"),
-                  logo: `${siteUrl}/assets/brand/sasha/sasha-corporation-final-l.webp`,
-                  contactPoint: [
-                    {
-                      "@type": "ContactPoint",
-                      telephone: siteConfig.phone,
-                      contactType: "customer support",
-                      areaServed: "BD",
-                      availableLanguage: ["en", "bn"],
-                    },
-                  ],
-                },
-                {
-                  "@type": "LocalBusiness",
-                  name: BRAND_NAME,
-                  url: absoluteUrl("/"),
-                  telephone: siteConfig.phone,
-                  address: {
-                    "@type": "PostalAddress",
-                    streetAddress: "1st Floor, 36-37 Umesh Datta Road, Bakshibazar",
-                    addressLocality: "Dhaka",
-                    postalCode: "1211",
-                    addressCountry: "BD",
-                  },
-                },
-                {
-                  "@type": "WebSite",
-                  name: BRAND_NAME,
-                  url: absoluteUrl("/"),
-                },
-              ],
-            }),
-          }}
-        />
       </head>
       <body suppressHydrationWarning className={`${roboto.variable} ${notoSansBengali.variable}`}>
         {GA_ID ? <GaPageview /> : null}

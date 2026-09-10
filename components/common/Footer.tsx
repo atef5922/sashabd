@@ -269,6 +269,17 @@ export default function Footer() {
         </svg>
       ),
     },
+    {
+      href: "https://www.facebook.com/profile.php?id=100068947942148",
+      label: "Sasha Corporation on Facebook",
+      className:
+        "border-[#1877F2]/40 bg-[#1877F2]/12 text-[#4B9BFF] hover:border-[#1877F2]/60 hover:bg-[#1877F2]/20 hover:text-white",
+      icon: (
+        <svg viewBox="0 0 24 24" className="h-4.5 w-4.5 fill-current" aria-hidden="true">
+          <path d="M14 8h3V4h-3c-3.3 0-5 2-5 5v2H6v4h3v9h4v-9h3.2l.8-4h-4V9c0-.7.3-1 1-1Z" />
+        </svg>
+      ),
+    },
   ];
 
   return (

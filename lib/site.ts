@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: "Sashabd",
+  name: "Sasha Corporation",
   domain: "sashabd.com",
   canonicalOrigin: "https://sashabd.com",
   phone: "+880160-8843419",
