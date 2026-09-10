@@ -210,7 +210,7 @@ export default function HomeFeaturedProductsSection() {
                     src={product.image}
                     alt={product.title}
                     fill
-                    loading="eager"
+                    loading="lazy"
                     sizes="(max-width: 639px) 78vw, (max-width: 1023px) 46vw, 24vw"
                     className="object-contain p-1 transition duration-300 group-hover:scale-[1.025] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                   />

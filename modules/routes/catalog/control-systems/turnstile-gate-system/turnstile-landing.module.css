@@ -357,7 +357,7 @@
 .faqGrid details p { color: var(--muted); font-size: 13px; padding: 0 1.4em 1.4em; }
 .page #gate-faq { padding-bottom: 0; }
 .ctaWrap { max-width: none; padding: 0 0 25px; }
-.finalCta { position: relative; overflow: hidden; min-height: 216px; width: 100%; border-radius: 0; padding: 18px max(24px,calc((100vw - 1280px) / 2 + 24px)); background: #edf6ff url('/assets/control-systems/turnstile/turnstile-entrance-hero-v2.webp') right center/auto 100% no-repeat; color: #071936; }
+.finalCta { position: relative; overflow: hidden; min-height: 216px; width: 100%; border-radius: 0; padding: 18px max(24px,calc((100vw - 1280px) / 2 + 24px)); background: #edf6ff var(--optimized-background-1, url('/assets/control-systems/turnstile/turnstile-entrance-hero-v2.webp')) right center/auto 100% no-repeat; color: #071936; }
 .finalCta::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg,#edf6ff 0%,#edf6ff 48%,rgba(237,246,255,.99) 62%,rgba(237,246,255,.86) 70%,rgba(237,246,255,.32) 87%,rgba(237,246,255,.05)); }
 .finalCtaCopy { position: relative; z-index: 1; max-width: 670px; }
 .finalCta h2 { color: #071936; }

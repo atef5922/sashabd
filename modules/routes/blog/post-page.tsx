@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { responsiveImageProps } from "@/lib/responsive-image";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -389,8 +390,8 @@ export default async function BlogDetailsPage({ params }: { params: Promise<Para
       <article>
         <div className="overflow-hidden rounded-[22px] border border-slate-200 bg-slate-100 md:rounded-3xl">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={post.coverImage}
+<img loading="eager" fetchPriority="high" decoding="async"
+            {...responsiveImageProps(post.coverImage)}
             alt={post.title}
             className="h-auto w-full object-contain"
             style={{ objectPosition: post.coverImagePosition?.hero ?? "center" }}

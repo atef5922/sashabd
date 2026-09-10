@@ -138,7 +138,9 @@ export default function HomeConferenceSolutionSection() {
           <div className="home-conference-panel overflow-hidden rounded-xl bg-white shadow-[0_10px_28px_rgba(15,23,42,0.10)]">
             <div className="home-conference-visual relative overflow-hidden">
               <Image
-                src="/assets/home/hero/conference-system-home-hero1.webp"
+                src="/assets/home/hero/conference-room-clean.webp"
+                unoptimized
+                data-image-quality="original"
                 alt="Modern conference room solution with microphones, display and control system"
                 fill
                 sizes="(max-width: 1023px) 100vw, 62vw"
@@ -201,7 +203,7 @@ export default function HomeConferenceSolutionSection() {
         .home-conference-feature-title { font-size: 11px !important; line-height: 15px !important; }
         .home-conference-feature-copy { font-size: 10.5px !important; line-height: 16px !important; }
         .home-conference-system-title { font-size: 12px !important; line-height: 17px !important; text-align: center !important; }
-        .home-conference-room-image { transform: scale(1.7); transform-origin: right center; }
+        .home-conference-room-image { transform: scale(1.33); transform-origin: right center; }
         .home-conference-cta { padding-left: 10px !important; padding-right: 10px !important; white-space: nowrap !important; }
         .home-conference-primary { background: #071936 !important; box-shadow: 0 7px 16px rgba(7,25,54,.15); }
         .home-conference-secondary { color: #1456d9 !important; background: #fff !important; }

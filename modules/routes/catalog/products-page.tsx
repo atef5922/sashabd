@@ -3,6 +3,7 @@
 "use client";
 
 import Link from "next/link";
+import { responsiveImageProps } from "@/lib/responsive-image";
 import Image from "next/image";
 import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
@@ -3230,8 +3231,7 @@ function ProductsPageContent({
                       src={technology.image}
                       alt={technology.alt}
                       fill
-                      loading="eager"
-                      unoptimized
+                      loading="lazy"
                       sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 25vw"
                       className="object-cover transition duration-500 group-hover:scale-[1.035]"
                     />
@@ -3377,8 +3377,8 @@ function ProductsPageContent({
                             aria-label={isClone ? undefined : b.name}
                           >
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              src={b.src}
+<img
+                              {...responsiveImageProps(b.src, "160px")}
                               alt={isClone ? "" : b.name}
                               aria-hidden={isClone ? "true" : undefined}
                               className={
@@ -3491,8 +3491,8 @@ function ProductsPageContent({
                             aria-label={isClone ? undefined : ins.name}
                           >
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              src={ins.logo}
+<img
+                              {...responsiveImageProps(ins.logo, "160px")}
                               alt={isClone ? "" : ins.name}
                               aria-hidden={isClone ? "true" : undefined}
                               className="h-12 w-full object-contain md:h-14"

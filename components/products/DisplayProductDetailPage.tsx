@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { responsiveImageProps } from "@/lib/responsive-image";
 import { useRouter } from "next/navigation";
 import MobilePostFeaturedCta from "@/components/products/MobilePostFeaturedCta";
 import { normalizeDisplayedPriceText } from "@/lib/price";
@@ -340,7 +341,7 @@ export default function DisplayProductDetailPage({
         <div className="overflow-hidden rounded-xl bg-slate-100">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={product.image}
+                    {...responsiveImageProps(product.image)}
             alt={product.title}
             width={heroImageDimensions.width}
             height={heroImageDimensions.height}
@@ -555,7 +556,7 @@ export default function DisplayProductDetailPage({
                       <div className="product-card-image-frame relative aspect-[4/3] w-full bg-white md:aspect-square">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
-                          src={item.image}
+                    {...responsiveImageProps(item.image)}
                           alt={item.title}
                           className={
                             `${item.category}:${item.slug}` === "indoor:p3-076-indoor-led-display"

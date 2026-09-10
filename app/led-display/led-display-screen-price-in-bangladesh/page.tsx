@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { responsiveImageProps } from "@/lib/responsive-image";
 import { permanentRedirect } from "next/navigation";
 import { indoorCatalog, outdoorCatalog, type ProductItem } from "../../../lib/productsCatalog";
 import { BRAND_NAME } from "@/lib/brand";
@@ -498,7 +499,7 @@ export function PriceGuideBangladeshContent() {
                 image={
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={p.image}
+                    {...responsiveImageProps(p.image)}
                     alt={p.title}
                     className="h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
                     loading="lazy"
@@ -533,7 +534,7 @@ export function PriceGuideBangladeshContent() {
                 image={
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={p.image}
+                    {...responsiveImageProps(p.image)}
                     alt={p.title}
                     className="h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
                     style={{ objectPosition }}

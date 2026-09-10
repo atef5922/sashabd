@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { responsiveImageProps } from "@/lib/responsive-image";
 import { permanentRedirect } from "next/navigation";
 import { rentalCatalog, type ProductItem } from "../../../lib/productsCatalog";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
@@ -487,7 +488,7 @@ export function RentGuideContent() {
                 image={
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={p.image}
+                    {...responsiveImageProps(p.image)}
                     alt={p.title}
                     className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
                     loading="lazy"

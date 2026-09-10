@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { responsiveImageProps } from "@/lib/responsive-image";
 
 function cn(...classes: Array<string | false | undefined>) {
   return classes.filter(Boolean).join(" ");
@@ -188,7 +189,7 @@ export default function HeroBackground({
             key={src}
             className={`absolute inset-0 bg-center transition-transform duration-1000 ease-in-out`}
             style={{
-              backgroundImage: `url('${src}')`,
+              backgroundImage: `url('${responsiveImageProps(src).src}')`,
               backgroundSize: imageSize,
               backgroundRepeat: "no-repeat",
               backgroundPosition: imagePositions?.[i] ?? "center",

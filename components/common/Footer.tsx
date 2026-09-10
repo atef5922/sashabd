@@ -297,7 +297,7 @@ export default function Footer() {
               >
                 <div className="relative h-14 w-36 shrink-0 sm:h-16 sm:w-40">
                   <Image
-                    src="/assets/brand/sasha/sasha-corporation-after-scroll.png"
+                    src="/assets/brand/sasha/sasha-corporation-header-scrolled.webp"
                     alt={`${BRAND_NAME} logo`}
                     fill
                     className="object-contain"

@@ -857,7 +857,7 @@ export default function Header({
         <Link prefetch={false} href="/" onClick={handleNavClick("/")} className="flex shrink-0 items-center gap-2">
           <div className="site-header-logo relative h-11 w-[88px] shrink-0 overflow-visible rounded-md sm:h-[46px] sm:w-[92px] md:h-20 md:w-36">
             <Image
-              src={isScrolled ? "/assets/brand/sasha/sasha-corporation-after-scroll.png" : "/assets/brand/sasha/sasha-corporation-final-l.webp"}
+              src={isScrolled ? "/assets/brand/sasha/sasha-corporation-header-scrolled.webp" : "/assets/brand/sasha/sasha-corporation-header.webp"}
               alt={`${BRAND_NAME} logo`}
               fill
               className="object-contain object-left scale-100 md:scale-100"

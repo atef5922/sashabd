@@ -16,6 +16,9 @@
 # next.js
 /.next/
 /out/
+/public/optimized/
+/lib/generated/image-variants.json
+/lib/generated/image-backgrounds.css
 
 # production
 /build

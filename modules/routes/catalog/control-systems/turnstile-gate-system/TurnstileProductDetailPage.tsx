@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { responsiveImageProps } from "@/lib/responsive-image";
 import { useMemo, useState } from "react";
 import type { TurnstileItem, TurnstileKind } from "./catalog";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
@@ -101,7 +102,7 @@ export default function TurnstileProductDetailPage({
       >
         <div className="overflow-hidden rounded-xl bg-slate-100">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={product.image} alt={product.title} className="h-full w-full object-cover bg-white" loading="lazy" />
+<img loading="eager" fetchPriority="high" decoding="async" {...responsiveImageProps(product.image)} alt={product.title} className="h-full w-full object-cover bg-white" />
         </div>
 
         <div>
@@ -297,8 +298,8 @@ export default function TurnstileProductDetailPage({
                     title={item.title}
                     image={
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={item.image}
+<img
+                        {...responsiveImageProps(item.image)}
                         alt={item.title}
                         className="h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
                         loading="lazy"

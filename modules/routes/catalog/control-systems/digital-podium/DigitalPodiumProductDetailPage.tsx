@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { responsiveImageProps } from "@/lib/responsive-image";
 import { useMemo, useState } from "react";
 import type { DigitalPodiumItem, DigitalPodiumSpecRow } from "./catalog";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
@@ -58,11 +59,11 @@ export default function DigitalPodiumProductDetailPage({
       >
         <div className="overflow-hidden rounded-2xl bg-slate-100">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={product.image}
+<img loading="eager" fetchPriority="high" decoding="async"
+            {...responsiveImageProps(product.image)}
             alt={product.title}
             className="h-full w-full object-cover bg-white"
-            loading="lazy"
+
           />
         </div>
 
@@ -275,8 +276,8 @@ export default function DigitalPodiumProductDetailPage({
                     title={item.title}
                     image={
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={item.image}
+<img
+                        {...responsiveImageProps(item.image)}
                         alt={item.title}
                         className="h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
                         loading="lazy"

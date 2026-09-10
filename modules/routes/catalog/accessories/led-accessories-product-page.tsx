@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { responsiveImageProps } from "@/lib/responsive-image";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site";
@@ -95,7 +96,7 @@ export default async function LedAccessoriesDetailsPage(
       >
         <div className="relative aspect-[16/10] overflow-hidden rounded-3xl bg-slate-50">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={product.image} alt={product.title} className="h-full w-full object-contain" loading="lazy" />
+<img loading="eager" fetchPriority="high" decoding="async" {...responsiveImageProps(product.image)} alt={product.title} className="h-full w-full object-contain" />
         </div>
 
         <div>
@@ -207,8 +208,8 @@ export default async function LedAccessoriesDetailsPage(
                   title={fp.title}
                   image={
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={fp.image}
+<img
+                      {...responsiveImageProps(fp.image)}
                       alt={fp.title}
                       className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
                       loading="lazy"

@@ -4,7 +4,10 @@ const nextConfig: NextConfig = {
   output: "export",
   trailingSlash: true,
   images: {
-    unoptimized: true,
+    loader: "custom",
+    loaderFile: "./lib/static-image-loader.ts",
+    deviceSizes: [640, 960, 1280, 1920],
+    imageSizes: [64, 128, 256, 384],
   },
 };
 

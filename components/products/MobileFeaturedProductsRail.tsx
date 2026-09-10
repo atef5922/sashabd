@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { responsiveImageProps } from "@/lib/responsive-image";
 import { useRef } from "react";
 import HomeStyleFeatureProductCard from "@/components/products/HomeStyleFeatureProductCard";
 
@@ -78,7 +79,7 @@ export default function MobileFeaturedProductsRail({
                   image={
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={item.imageSrc}
+                    {...responsiveImageProps(item.imageSrc)}
                       alt={item.imageAlt ?? item.title}
                       className={item.imageClassName}
                       loading="lazy"

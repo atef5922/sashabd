@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { responsiveImageProps } from "@/lib/responsive-image";
 import Breadcrumbs from "@/components/common/Breadcrumbs";
 import { outdoorCatalog, type ProductItem } from "../../../lib/productsCatalog";
 import FaqAccordion from "@/components/common/FaqAccordion";
@@ -509,7 +510,7 @@ export default function WaterproofOutdoorLedDisplayPage() {
                 image={
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={p.image}
+                    {...responsiveImageProps(p.image)}
                     alt={p.title}
                     className="h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
                     style={{ objectPosition }}

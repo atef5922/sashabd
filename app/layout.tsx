@@ -1,4 +1,5 @@
 import "./globals.css";
+import "@/lib/generated/image-backgrounds.css";
 import type { Metadata } from "next";
 import { Noto_Sans_Bengali, Roboto } from "next/font/google";
 import Header from "../components/common/Header";

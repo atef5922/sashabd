@@ -147,6 +147,7 @@ export default function LedDisplayHero({ currentYear }: { currentYear: number })
             alt={index === activeIndex ? slide.alt : ""}
             fill
             priority={index === 0}
+            loading={index === 0 ? "eager" : "lazy"}
             quality={95}
             sizes="100vw"
             className="object-cover object-[70%_center] md:object-center"

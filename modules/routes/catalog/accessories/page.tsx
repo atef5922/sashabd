@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { responsiveImageProps } from "@/lib/responsive-image";
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site";
 import { socialImageUrl } from "@/lib/seo";
@@ -167,8 +168,8 @@ export default function AccessoriesPage() {
               title={p.title}
               image={
                 // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={p.image}
+<img
+                  {...responsiveImageProps(p.image)}
                   alt={p.title}
                   className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
                   loading="lazy"

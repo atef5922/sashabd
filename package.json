@@ -5,7 +5,9 @@
     "type": "module",
     "description": "Sashabd - LED display sales, installation, and support in Bangladesh",
     "scripts": {
+        "predev": "node scripts/generate-image-variants.mjs",
         "dev": "next dev",
+        "prebuild": "node scripts/generate-image-variants.mjs",
         "build": "next build",
         "build:package": "powershell -ExecutionPolicy Bypass -File scripts/build-static-package.ps1",
         "start": "next start",

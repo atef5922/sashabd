@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { responsiveImageProps } from "@/lib/responsive-image";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site";
@@ -113,11 +114,11 @@ export default async function PowerSupplyDetailsPage(
       >
         <div className="overflow-hidden rounded-3xl bg-slate-100">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={product.image}
+<img loading="eager" fetchPriority="high" decoding="async"
+            {...responsiveImageProps(product.image)}
             alt={product.title}
             className="h-full w-full object-cover"
-            loading="lazy"
+
           />
         </div>
 
@@ -330,8 +331,8 @@ export default async function PowerSupplyDetailsPage(
               title={fp.title}
               image={
                 // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={fp.image}
+<img
+                  {...responsiveImageProps(fp.image)}
                   alt={fp.title}
                   className="h-full w-full object-contain transition duration-300 group-hover:scale-[1.04]"
                   loading="lazy"
