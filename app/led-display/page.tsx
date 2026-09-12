@@ -7,6 +7,7 @@ const CURRENT_YEAR = new Date().getFullYear();
 const PAGE_TITLE = `LED Display Price in Bangladesh ${CURRENT_YEAR} | Sasha Corporation`;
 const PAGE_DESCRIPTION =
   `Compare ${CURRENT_YEAR} LED display prices in Bangladesh for indoor, outdoor, and rental screens. Review specifications, installation guidance, and request a quotation.`;
+const SOCIAL_IMAGE = "/assets/led-display/led-display-social-preview.webp";
 
 export const metadata: Metadata = {
   title: { absolute: PAGE_TITLE },
@@ -17,9 +18,10 @@ export const metadata: Metadata = {
     description: PAGE_DESCRIPTION,
     url: "/led-display/",
     type: "website",
+    siteName: BRAND_NAME,
     images: [
       {
-        url: socialImageUrl(),
+        url: socialImageUrl(SOCIAL_IMAGE),
         width: 1200,
         height: 630,
         alt: PAGE_TITLE,
@@ -30,7 +32,7 @@ export const metadata: Metadata = {
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
     card: "summary_large_image",
-    images: [socialImageUrl()],
+    images: [socialImageUrl(SOCIAL_IMAGE)],
   },
 };
 
