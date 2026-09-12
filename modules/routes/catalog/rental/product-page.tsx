@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import DisplayProductDetailPage from "@/components/products/DisplayProductDetailPage";
-import ProductStructuredData from "@/components/products/ProductStructuredData";
 import { siteConfig } from "@/lib/site";
 import { getRelatedProducts, rentalCatalog, type ProductItem } from "@/lib/productsCatalog";
 import { buildProductMetadata, ensureMetaDescription } from "@/lib/seo";
@@ -78,11 +77,6 @@ export default async function RentalProductDetailsPage(
 
   return (
     <>
-      <ProductStructuredData
-        product={product}
-        categoryLabel="Rental"
-        path={`/led-display/rental-display/${product.slug}/`}
-      />
       <DisplayProductDetailPage
       product={product}
       categoryLabel="Rental"

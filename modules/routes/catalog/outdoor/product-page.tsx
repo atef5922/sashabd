@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import DisplayProductDetailPage from "@/components/products/DisplayProductDetailPage";
-import ProductStructuredData from "@/components/products/ProductStructuredData";
 import { siteConfig } from "@/lib/site";
 import { getRelatedProducts, outdoorCatalog } from "@/lib/productsCatalog";
 import { buildProductMetadata, compactProductTitle, ensureMetaDescription } from "@/lib/seo";
@@ -42,11 +41,6 @@ export default async function OutdoorProductDetailsPage(
 
   return (
     <>
-      <ProductStructuredData
-        product={product}
-        categoryLabel="Outdoor"
-        path={`/led-display/outdoor/${product.slug}/`}
-      />
       <DisplayProductDetailPage
       product={product}
       categoryLabel="Outdoor"

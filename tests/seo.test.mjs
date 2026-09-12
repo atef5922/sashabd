@@ -1560,28 +1560,19 @@ test("Conference discovery helpers implement deterministic search, filter, price
   assert.match(read("app/conference-system/ConferenceProductExplorer.tsx"), /updateState\(\{ \.\.\.state, \.\.\.patch, page: 1 \}/, "search, filter and sort changes reset pagination");
 });
 
-test("Conference product pages emit Product schema and relevance-ranked internal links", () => {
+test("Conference product pages avoid ineligible Product markup and keep relevance-ranked internal links", () => {
   const route = read("app/conference-system/[slug]/page.tsx");
-  const schemaHelper = read("app/conference-system/conferenceProductSchema.ts");
   const detail = read("app/conference-system/ConferenceProductDetailPage.tsx");
   const gallery = read("app/conference-system/ConferenceProductGallery.tsx");
   const catalog = read("app/conference-system/catalog.ts");
   const relations = read("app/conference-system/conferenceProductRelations.ts");
 
-  // Product / Offer / Brand structured data stays factual.
-  assert.match(route, /function buildProductJsonLd\(/);
-  assert.match(route, /"@type": "Product"/);
-  assert.match(route, /"@type": "Brand", name: product\.brand\.name/);
-  assert.match(route, /buildConferenceProductOfferJsonLd\(product\.price, product\.availability, url, BRAND_NAME\)/);
-  assert.match(route, /\.\.\.\(offer \? \{ offers: offer \} : \{\}\)/);
-  assert.match(schemaHelper, /price\.type !== "fixed"/);
-  assert.doesNotMatch(schemaHelper, /AggregateOffer|PreOrder|lowPrice|highPrice/);
-  assert.match(route, /additionalProperty: getConferenceProductSpecifications\(product\)\.map/);
-  assert.match(route, /type="application\/ld\+json"/);
-  // No invented review signals.
-  assert.ok(!route.includes("AggregateRating"), "ratings must not be fabricated");
-  assert.ok(!route.includes("reviewCount"), "review counts must not be fabricated");
-
+  // Quotation ranges and project-order/contact availability are not asserted as
+  // Google-eligible offers, and product-specific reviews are not fabricated.
+  assert.doesNotMatch(route, /"@type": "Product"/);
+  assert.doesNotMatch(route, /type="application\/ld\+json"/);
+  assert.doesNotMatch(route, /buildProductJsonLd|buildConferenceProductOfferJsonLd/);
+  assert.doesNotMatch(route, /AggregateRating|reviewCount/);
   // Related products use explicit compatibility first, then verified family and
   // contextual role/taxonomy signals. Self-links and duplicate slugs are excluded.
   assert.match(route, /getConferenceRelatedProducts\(product, conferenceSystemCatalog\)/);
@@ -1633,8 +1624,8 @@ test("Conference product pages emit Product schema and relevance-ranked internal
   assert.match(detail, /productFacts\.map/);
   assert.match(detail, /Official Product Documents/);
 
-  // Schema identifiers stay honest: owned listing slug only, no inferred manufacturer identifier.
-  assert.match(route, /sku: product\.slug/);
+  // No unverified commerce or manufacturer identifiers are emitted.
+  assert.doesNotMatch(route, /\bsku\s*:/);
   assert.doesNotMatch(route, /\bmpn\s*:/);
   assert.doesNotMatch(route, /\bgtin\w*\s*:/);
   assert.ok(!route.includes("offerCount"), "a single listing must not claim an offer count");
@@ -1940,13 +1931,16 @@ test("LED product details render one Featured Products dataset", () => {
 
   assert.ok(featuredSection, "Featured Products section source must be present");
   assert.equal((featuredSection.match(/featuredProducts\.map\(\(item\)/g) ?? []).length, 1);
+  assert.match(featuredSection, /<ProductGridCard/);
+  assert.match(featuredSection, /bullets=\{item\.quickFeatures\}/);
+  assert.match(featuredSection, /chips=\{item\.bestFor\}/);
+  assert.match(featuredSection, /compactMobile/);
   assert.doesNotMatch(featuredSection, /MobileFeaturedProductsRail/);
+  assert.doesNotMatch(featuredSection, /role="link"|router\.push/);
 });
 
-test("LED product detail hero is LCP-ready and Product schema stays factual", () => {
+test("LED product detail hero is LCP-ready and omits ineligible Product rich-result markup", () => {
   const source = read("components/products/DisplayProductDetailPage.tsx");
-  const schemaComponent = read("components/products/ProductStructuredData.tsx");
-  const schema = read("lib/productStructuredData.ts");
   const hero = source.match(/<section className="grid gap-4[\s\S]*?<div>\s*<h1/)?.[0];
 
   assert.ok(hero, "Product hero source must be present");
@@ -1956,23 +1950,18 @@ test("LED product detail hero is LCP-ready and Product schema stays factual", ()
   assert.match(hero, /width=\{heroImageDimensions\.width\}/);
   assert.match(hero, /height=\{heroImageDimensions\.height\}/);
   assert.doesNotMatch(hero, /loading="lazy"/);
-  assert.match(schemaComponent, /type="application\/ld\+json"/);
-  assert.match(schemaComponent, /buildProductStructuredData/);
-  assert.doesNotMatch(source, /buildProductStructuredData/);
+  assert.doesNotMatch(source, /ProductStructuredData|buildProductStructuredData/);
+
   for (const file of [
     "modules/routes/catalog/indoor/product-page.tsx",
     "modules/routes/catalog/outdoor/product-page.tsx",
     "modules/routes/catalog/rental/product-page.tsx",
   ]) {
-    assert.match(read(file), /<ProductStructuredData/);
+    const route = read(file);
+    assert.doesNotMatch(route, /ProductStructuredData|buildProductStructuredData/);
+    assert.doesNotMatch(route, /type="application\/ld\+json"/);
   }
-  assert.match(schema, /"@type": "Product"/);
-  assert.match(schema, /name: product\.title/);
-  assert.match(schema, /url: absoluteUrl\(path\)/);
-  assert.match(schema, /description: product\.subtitle/);
-  assert.doesNotMatch(schema, /AggregateOffer|\boffers?\s*:|\bbrand\s*:|\bsku\s*:|\bmodel\s*:|\bgtin\w*\s*:|\bmpn\s*:/i);
 });
-
 test("outdoor LED price and category sections use one responsive semantic source", () => {
   const source = read("modules/routes/catalog/outdoor/page.tsx");
   const categoryData = sectionBetween(source, "const categoryLinks", "const pitchCards");

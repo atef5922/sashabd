@@ -1,19 +1,16 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { buildWhatsAppHref } from "@/lib/contact";
-import { absoluteUrl, buildProductMetadata, socialImageUrl } from "@/lib/seo";
-import { BRAND_NAME } from "@/lib/brand";
+import { buildProductMetadata } from "@/lib/seo";
 import { homeBreadcrumb } from "@/lib/breadcrumbs";
 import ConferenceCollectionPage from "../ConferenceCollectionPage";
 import ConferenceProductDetailPage from "../ConferenceProductDetailPage";
 import { getConferenceCompatibleProducts, getConferenceRelatedProducts } from "../conferenceProductRelations";
-import { buildConferenceProductOfferJsonLd } from "../conferenceProductSchema";
 import {
   conferenceSystemCatalog,
   CONFERENCE_PRODUCT_TYPE_LABELS,
   getConferenceProductBySlug,
   getConferenceProductPrimaryImage,
-  getConferenceProductSpecifications,
 } from "../catalog";
 import {
   conferenceCategoryConfigs,
@@ -105,37 +102,6 @@ export async function generateStaticParams() {
   ];
 }
 
-/**
- * Product schema remains factual: only a positive fixed catalog price becomes
- * an Offer. Indicative project ranges and request-price records stay visible in
- * the page UI but are not misrepresented as sellable offers.
- */
-function buildProductJsonLd(product: (typeof conferenceSystemCatalog)[number]) {
-  const url = absoluteUrl(`/conference-system/${product.slug}/`);
-  const images = product.images.map((image) => socialImageUrl(image.src));
-  const offer = buildConferenceProductOfferJsonLd(product.price, product.availability, url, BRAND_NAME);
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: product.name,
-    description: product.shortDescription,
-    image: images,
-    url,
-    // The slug is Sasha's stable listing identifier. Manufacturer models remain
-    // visible as typed Product properties; no unverified MPN/GTIN is invented.
-    sku: product.slug,
-    ...(product.brand ? { brand: { "@type": "Brand", name: product.brand.name } } : {}),
-    category: "Conference System",
-    additionalProperty: getConferenceProductSpecifications(product).map((spec) => ({
-      "@type": "PropertyValue",
-      name: spec.key,
-      value: spec.value,
-    })),
-    ...(offer ? { offers: offer } : {}),
-  };
-}
-
 export default async function ConferenceProductPage(
   { params }: { params: Promise<{ slug: string }> }
 ) {
@@ -147,10 +113,6 @@ export default async function ConferenceProductPage(
 
     return (
       <>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(buildProductJsonLd(product)) }}
-        />
         <ConferenceProductDetailPage
           product={product}
           relatedProducts={getConferenceRelatedProducts(product, conferenceSystemCatalog)}

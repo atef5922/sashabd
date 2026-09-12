@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { responsiveImageProps } from "@/lib/responsive-image";
-import { useRouter } from "next/navigation";
 import MobilePostFeaturedCta from "@/components/products/MobilePostFeaturedCta";
+import ProductGridCard from "@/components/products/ProductGridCard";
 import { normalizeDisplayedPriceText } from "@/lib/price";
 import type { ProductItem } from "../../lib/productsCatalog";
 import { useRef, useState } from "react";
@@ -305,7 +305,6 @@ export default function DisplayProductDetailPage({
   relatedLinks,
   overview,
 }: DisplayProductDetailPageProps) {
-  const router = useRouter();
   const featuredRailRef = useRef<HTMLDivElement | null>(null);
   const [activeTab, setActiveTab] = useState<"spec" | "description">("spec");
   const pitch = getSpecValue(product, "Pixel Pitch");
@@ -536,82 +535,52 @@ export default function DisplayProductDetailPage({
             >
               {featuredProducts.map((item) => {
                 const detailHref = `${featuredHrefPrefix.replace(/\/+$/, "")}/${item.slug}`;
+                const imageId = `${item.category}:${item.slug}`;
+                const imageClassName =
+                  imageId === "indoor:p3-076-indoor-led-display"
+                    ? "h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
+                    : imageFitFixIds.has(imageId)
+                      ? imageId === "indoor:p2-5-indoor-led-display"
+                        ? "h-full w-full object-cover object-[58%_center] transition duration-300 group-hover:scale-[1.03]"
+                        : "h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
+                      : "h-full w-full object-contain transition duration-300 group-hover:scale-[1.04]";
 
                 return (
-                  <article
+                  <div
                     key={item.slug}
-                    role="link"
-                    tabIndex={0}
-                    onClick={() => router.push(detailHref)}
-                    onKeyDown={(event) => {
-                      if (event.key === "Enter" || event.key === " ") {
-                        event.preventDefault();
-                        router.push(detailHref);
-                      }
-                    }}
-                    className="group flex h-full min-w-[calc((100%-0.75rem)/2)] shrink-0 basis-[calc((100%-0.75rem)/2)] snap-start cursor-pointer flex-col overflow-hidden rounded-md border bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg md:min-w-0 md:basis-auto md:rounded-3xl"
-                    style={{ borderColor: "rgba(15,23,42,0.10)" }}
+                    className="min-w-[calc((100%-0.75rem)/2)] shrink-0 basis-[calc((100%-0.75rem)/2)] snap-start md:min-w-0 md:basis-auto"
                   >
-                    <Link href={detailHref} className="group block">
-                      <div className="product-card-image-frame relative aspect-[4/3] w-full bg-white md:aspect-square">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                    {...responsiveImageProps(item.image)}
-                          alt={item.title}
-                          className={
-                            `${item.category}:${item.slug}` === "indoor:p3-076-indoor-led-display"
-                              ? "h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
-                              : imageFitFixIds.has(`${item.category}:${item.slug}`)
-                              ? `${item.category}:${item.slug}` === "indoor:p2-5-indoor-led-display"
-                                ? "h-full w-full object-cover object-[58%_center] transition duration-300 group-hover:scale-[1.03]"
-                                : "h-full w-full object-cover object-center transition duration-300 group-hover:scale-[1.03]"
-                              : "h-full w-full object-contain transition duration-300 group-hover:scale-[1.04]"
-                          }
-                          loading="lazy"
-                        />
-                        <span className="absolute left-3 top-3 hidden rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-800 shadow md:block">
-                          {item.category === "outdoor" ? "Outdoor" : item.category === "rental" ? "Rental" : "Indoor"}
-                        </span>
-                        {item.pitchLabel ? (
-                          <span className="absolute right-3 top-3 hidden rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white shadow md:block">
-                            {item.pitchLabel}
-                          </span>
-                        ) : null}
-                      </div>
-                    </Link>
-
-                    <div className="flex flex-1 flex-col p-3 md:block md:p-5">
-                      <Link href={detailHref} className="block">
-                        <div className="min-h-[2.55rem] line-clamp-2 text-[13px] font-bold leading-snug text-slate-900 md:min-h-0 md:text-lg md:font-semibold">
-                          {item.title}
-                        </div>
-                      </Link>
-                      {item.cardPrice ? (
-                        <p className="mt-1 hidden text-sm font-semibold text-sky-700 md:block">{normalizeDisplayedPriceText(item.cardPrice)}</p>
-                      ) : null}
-                      <div className="mt-auto pt-3 md:mt-3 md:flex md:items-center md:justify-between md:gap-3 md:pt-0">
-                        <Link
-                          href="/contact/"
-                          onClick={(event) => event.stopPropagation()}
-                          className="relative z-20 hidden items-center rounded-full bg-sky-500 px-4 py-2 text-xs font-extrabold text-white whitespace-nowrap md:inline-flex"
-                        >
-                          Request quotation
-                        </Link>
-                        <Link
-                          href={detailHref}
-                          onClick={(event) => event.stopPropagation()}
-                          className="inline-flex min-h-8 w-full items-center justify-between rounded-md border border-[#F56605]/20 bg-[#FFF7F1] py-1 pl-3 pr-1 text-[10px] font-bold leading-tight text-[#C84B00] shadow-sm transition hover:border-[#F56605]/35 hover:bg-[#FFF1E8] md:min-h-0 md:w-auto md:border-0 md:bg-transparent md:p-0 md:text-sm md:shadow-none md:hover:bg-transparent md:hover:underline md:group-hover:underline"
-                        >
-                          <span>View details -&gt;</span>
-                          <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#F56605] text-white shadow-[0_5px_12px_rgba(245,102,5,0.22)] md:hidden">
-                            <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" aria-hidden="true">
-                              <path d="m10 7 5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                          </span>
-                        </Link>
-                      </div>
-                    </div>
-                  </article>
+                    <ProductGridCard
+                      href={detailHref}
+                      title={item.title}
+                      image={
+                        <>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            {...responsiveImageProps(item.image)}
+                            alt={item.title}
+                            className={imageClassName}
+                            loading="lazy"
+                          />
+                        </>
+                      }
+                      imageContainerClassName="bg-white"
+                      borderColor="rgba(15,23,42,0.10)"
+                      topLeftBadge={{
+                        text: item.category === "outdoor" ? "Outdoor" : item.category === "rental" ? "Rental" : "Indoor",
+                        tone: "light",
+                      }}
+                      topRightBadge={item.pitchLabel ? { text: item.pitchLabel, tone: "dark" } : undefined}
+                      metaLines={[
+                        ...(item.cardPrice ? [{ text: item.cardPrice }] : []),
+                        { text: item.subtitle },
+                      ]}
+                      bullets={item.quickFeatures}
+                      chips={item.bestFor}
+                      contactHref="/contact/"
+                      compactMobile
+                    />
+                  </div>
                 );
               })}
             </div>

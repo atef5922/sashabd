@@ -78,7 +78,7 @@ export default function LedNationwideCoverageSection() {
         <p className={styles.intro + " home-section-subtitle"}>
           Sasha Corporation coordinates LED display supply, site surveys, installation and after-sales
           technical support across Bangladesh. Explore{" "}
-          <Link href="/led-display/indoor/" className="font-bold text-[#1458e5] underline decoration-[#1458e5]/30 underline-offset-4 hover:decoration-[#1458e5]">
+          <Link href="/led-display/indoor-led/" className="font-bold text-[#1458e5] underline decoration-[#1458e5]/30 underline-offset-4 hover:decoration-[#1458e5]">
             indoor LED displays
           </Link>
           ,{" "}
@@ -86,7 +86,7 @@ export default function LedNationwideCoverageSection() {
             outdoor LED displays
           </Link>{" "}
           and{" "}
-          <Link href="/led-display/rental/" className="font-bold text-[#1458e5] underline decoration-[#1458e5]/30 underline-offset-4 hover:decoration-[#1458e5]">
+          <Link href="/led-display/rental-display/" className="font-bold text-[#1458e5] underline decoration-[#1458e5]/30 underline-offset-4 hover:decoration-[#1458e5]">
             rental LED screens
           </Link>{" "}
           for locations in all 64 districts across the country&apos;s 8 divisions, subject to site

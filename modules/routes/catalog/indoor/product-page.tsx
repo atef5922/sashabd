@@ -1,7 +1,6 @@
 import { notFound, permanentRedirect } from "next/navigation";
 import type { Metadata } from "next";
 import DisplayProductDetailPage from "@/components/products/DisplayProductDetailPage";
-import ProductStructuredData from "@/components/products/ProductStructuredData";
 import { siteConfig } from "@/lib/site";
 import { getProductsByCategory, getRelatedProducts } from "@/lib/productsCatalog";
 import { buildProductMetadata, ensureMetaDescription } from "@/lib/seo";
@@ -93,11 +92,6 @@ export default async function IndoorProductDetailsPage(
 
   return (
     <>
-      <ProductStructuredData
-        product={product}
-        categoryLabel="Indoor"
-        path={`/led-display/indoor-led/${product.slug}/`}
-      />
       <DisplayProductDetailPage
       product={product}
       categoryLabel="Indoor"

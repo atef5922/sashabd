@@ -22,7 +22,7 @@ test("LED coverage copy is qualified and connects to canonical category routes",
   assert.match(section, /subject to site\s*requirements and the agreed project scope/);
   assert.doesNotMatch(section, /completed projects? in (?:all|every) (?:district|division)/i);
 
-  for (const href of ["/led-display/indoor/", "/led-display/outdoor/", "/led-display/rental/"]) {
+  for (const href of ["/led-display/indoor-led/", "/led-display/outdoor/", "/led-display/rental-display/"]) {
     assert.match(section, new RegExp('href="' + href.replaceAll("/", "\\/") + '"'));
   }
 });
