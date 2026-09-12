@@ -21,6 +21,7 @@ import ResponsiveProductCarousel from "@/components/products/ResponsiveProductCa
 import FaqAccordion from "@/components/common/FaqAccordion";
 import MobileIntroText from "@/components/common/MobileIntroText";
 import LedDisplayHero from "@/components/led-display/LedDisplayHero";
+import LedNationwideCoverageSection from "@/components/led-display/LedNationwideCoverageSection";
 import { ledDisplayProjects } from "@/app/projects/projectData";
 import {
   indoorCatalog,
@@ -3509,6 +3510,8 @@ function ProductsPageContent({
             </div>
           </section>
 
+          <LedNationwideCoverageSection />
+
           <section id="led-faq" className={`${ledInformationSectionClass} scroll-mt-24`} aria-labelledby="led-display-faq-heading">
             <LedSectionHeading id="led-display-faq-heading" icon="faq">Frequently Asked Questions About LED Display</LedSectionHeading>
             <div className="mt-5">
@@ -3554,7 +3557,7 @@ function ProductsPageContent({
                       ["guide", "Site Survey", "On-site assessment"],
                       ["controller", "Custom BOQ", "Detailed cost estimation"],
                       ["install", "Professional Installation", "By experienced engineers"],
-                      ["maintenance", "After-Sales Support", "Nationwide assistance"],
+                      ["maintenance", "After-Sales Support", "Technical assistance"],
                     ].map(([icon, title, detail], index) => (
                       <div key={title} className={`flex min-w-0 items-start gap-2 ${index ? "sm:border-l sm:border-blue-300/35 sm:pl-4" : ""}`}>
                         <span className="mt-0.5 shrink-0 text-blue-300" aria-hidden="true"><UiIcon name={icon} className="h-4 w-4" /></span>
@@ -3585,7 +3588,7 @@ function ProductsPageContent({
                 ["solutions", "500+", "Projects Completed"],
                 ["guide", "10+ Years", "Industry Experience"],
                 ["shield", "20+", "Global Brands"],
-                ["delivery", "64", "Districts Covered"],
+                ["check", "1-Year", "LED Display Warranty"],
                 ["install", "Expert Team", "Design & Installation"],
                 ["support", "After-Sales", "Technical Support"],
               ].map(([icon, value, label], index) => (

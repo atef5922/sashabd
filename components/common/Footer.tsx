@@ -253,7 +253,7 @@ export default function Footer() {
     contact: false,
   });
   const whatsappUrl = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
-  const mapQuery = "1st Floor, 36-37 Umesh Datta Road, Bakshibazar, Dhaka 1211, Bangladesh";
+  const mapQuery = "102/1 West Agargaon, Dhaka 1207";
   const mapOpenUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
   const supportEmail = `${siteConfig.emailUser}@${siteConfig.emailDomain}`;
 

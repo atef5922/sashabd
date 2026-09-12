@@ -63,9 +63,9 @@ const organizationJsonLd = {
   telephone: siteConfig.phone,
   address: {
     "@type": "PostalAddress",
-    streetAddress: "1st Floor, 36-37 Umesh Datta Road, Bakshibazar",
+    streetAddress: "102/1 West Agargaon",
     addressLocality: "Dhaka",
-    postalCode: "1211",
+    postalCode: "1207",
     addressCountry: "BD",
   },
   contactPoint: {

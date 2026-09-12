@@ -1,36 +1,21 @@
 import Image from "next/image";
+import Link from "next/link";
 
-import HomeSectionHeadingIcon from "./HomeSectionHeadingIcon";
-import styles from "./home-nationwide-coverage.module.css";
+import HomeSectionHeadingIcon from "@/components/home/HomeSectionHeadingIcon";
+import styles from "@/components/home/home-nationwide-coverage.module.css";
 
 const coverageHighlights = [
-  { title: "64 Districts", detail: "All 8 divisions covered", icon: "map" },
-  { title: "Site Survey", detail: "Requirements & BOQ", icon: "survey" },
-  { title: "Installation", detail: "Setup & commissioning", icon: "tools" },
-  { title: "After-Sales", detail: "Technical assistance", icon: "support" },
+  { title: "64 Districts", detail: "Nationwide planning", icon: "map" },
+  { title: "8 Divisions", detail: "Countrywide coverage", icon: "survey" },
+  { title: "Site Survey", detail: "Requirements & BOQ", icon: "tools" },
+  { title: "Install & Support", detail: "Setup & service", icon: "support" },
 ] as const;
 
 const coverageRegions = [
-  {
-    name: "Northern Bangladesh",
-    detail: "Rangpur & Rajshahi projects",
-    position: "northWest",
-  },
-  {
-    name: "Eastern Bangladesh",
-    detail: "Sylhet & Chattogram projects",
-    position: "northEast",
-  },
-  {
-    name: "Central Bangladesh",
-    detail: "Dhaka & Mymensingh projects",
-    position: "centralEast",
-  },
-  {
-    name: "Southern Bangladesh",
-    detail: "Khulna & Barishal projects",
-    position: "southWest",
-  },
+  { name: "Northern Bangladesh", detail: "Rangpur · Rajshahi", position: "northWest" },
+  { name: "Eastern Bangladesh", detail: "Sylhet · Chattogram", position: "northEast" },
+  { name: "Central Bangladesh", detail: "Dhaka · Mymensingh", position: "centralEast" },
+  { name: "Southern Bangladesh", detail: "Khulna · Barishal", position: "southWest" },
 ] as const;
 
 type HighlightIcon = (typeof coverageHighlights)[number]["icon"];
@@ -72,29 +57,40 @@ function CoverageIcon({ icon }: { icon: HighlightIcon }) {
   );
 }
 
-export default function HomeNationwideCoverageSection() {
+export default function LedNationwideCoverageSection() {
   return (
     <section
-      id="nationwide-project-support"
-      className={styles.section}
-      aria-labelledby="nationwide-coverage-title"
+      id="led-display-nationwide-coverage"
+      className={styles.section + " mt-4"}
+      aria-labelledby="led-display-nationwide-coverage-title"
     >
       <div className={styles.copy}>
-        <p className={`${styles.eyebrow} home-section-badge`}>
+        <p className={styles.eyebrow + " home-section-badge"}>
           <HomeSectionHeadingIcon kind="location" size="badge" />
-          <span>Nationwide Technology Support</span>
+          <span>Nationwide LED Display Support</span>
         </p>
 
-        <h2 id="nationwide-coverage-title" className={styles.title}>
-          Technology Solutions
+        <h2 id="led-display-nationwide-coverage-title" className={styles.title}>
+          LED Display Coverage
           <span> Across Bangladesh</span>
         </h2>
 
-        <p className={`${styles.intro} home-section-subtitle`}>
-          Sasha Corporation supplies, installs and supports <strong>LED displays</strong>,{" "}
-          <strong>conference systems</strong>, <strong>PA systems</strong> and{" "}
-          <strong>turnstile gate solutions</strong> for commercial and institutional projects
-          across Bangladesh.
+        <p className={styles.intro + " home-section-subtitle"}>
+          Sasha Corporation coordinates LED display supply, site surveys, installation and after-sales
+          technical support across Bangladesh. Explore{" "}
+          <Link href="/led-display/indoor/" className="font-bold text-[#1458e5] underline decoration-[#1458e5]/30 underline-offset-4 hover:decoration-[#1458e5]">
+            indoor LED displays
+          </Link>
+          ,{" "}
+          <Link href="/led-display/outdoor/" className="font-bold text-[#1458e5] underline decoration-[#1458e5]/30 underline-offset-4 hover:decoration-[#1458e5]">
+            outdoor LED displays
+          </Link>{" "}
+          and{" "}
+          <Link href="/led-display/rental/" className="font-bold text-[#1458e5] underline decoration-[#1458e5]/30 underline-offset-4 hover:decoration-[#1458e5]">
+            rental LED screens
+          </Link>{" "}
+          for locations in all 64 districts across the country&apos;s 8 divisions, subject to site
+          requirements and the agreed project scope.
         </p>
 
         <div className={styles.highlights}>
@@ -128,9 +124,9 @@ export default function HomeNationwideCoverageSection() {
           </div>
         </figure>
 
-        <div className={styles.regionCards} aria-label="Nationwide service regions">
+        <div className={styles.regionCards} aria-label="LED display service regions in Bangladesh">
           {coverageRegions.map((region) => (
-            <article key={region.name} className={`${styles.regionCard} ${styles[region.position]}`}>
+            <article key={region.name} className={styles.regionCard + " " + styles[region.position]}>
               <span className={styles.pulse} aria-hidden="true">
                 <i />
               </span>
@@ -142,10 +138,10 @@ export default function HomeNationwideCoverageSection() {
           ))}
         </div>
 
-        <div className={styles.brandBadge} aria-label="Sasha Corporation nationwide support">
+        <div className={styles.brandBadge} aria-label="Sasha Corporation nationwide LED display support">
           <i aria-hidden="true" />
           <strong>Sasha</strong>
-          <span>Nationwide Support</span>
+          <span>LED Display Support</span>
         </div>
       </div>
     </section>

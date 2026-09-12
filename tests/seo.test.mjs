@@ -714,7 +714,7 @@ test("Conference commercial trust uses factual NAP, conditional warranty, and ne
   assert.match(landing, /"@type": "Service"/);
   assert.match(landing, /serviceType: "Conference system consultation, supply, installation and after-sales support"/);
   assert.match(landing, /areaServed: \{/);
-  assert.match(site, /address: "1st Floor, 36-37 Umesh Datta Road, Bakshibazar, Dhaka 1211, Bangladesh"/);
+  assert.match(site, /address: "102\/1 West Agargaon, Dhaka 1207"/);
   assert.doesNotMatch(landing, /customer rating|five-star|award-winning|best seller|limited stock/i);
 });
 
