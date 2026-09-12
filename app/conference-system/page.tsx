@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import FaqAccordion from "@/components/common/FaqAccordion";
+import ConferenceNationwideCoverageSection from "@/components/conference-system/ConferenceNationwideCoverageSection";
 import { buildWhatsAppHref } from "@/lib/contact";
 import { formatBdtAmount } from "@/lib/price";
 import { absoluteUrl, socialImageUrl } from "@/lib/seo";
@@ -1620,6 +1621,8 @@ export default function ConferenceSystemPage() {
           ))}
         </div>
       </section>
+
+      <ConferenceNationwideCoverageSection />
 
       <section
         className="mt-4 rounded-2xl border border-[#dbe5f2] bg-[linear-gradient(110deg,#ffffff_0%,#fbfdff_70%,#f2f7ff_100%)] px-4 py-5 shadow-[0_5px_20px_rgba(15,23,42,0.04)] sm:px-5 md:px-6"
