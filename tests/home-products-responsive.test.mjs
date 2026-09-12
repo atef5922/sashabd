@@ -30,3 +30,15 @@ test("Only Browse Products opts into the responsive module", () => {
   assert.match(grid, /data-home-product-layout/);
   assert.match(grid, /data-home-product-card/);
 });
+
+test("Home product pagination exposes pointer cursors for clickable controls", () => {
+  const grid = read("components/home/HomeAllProductsGrid.tsx");
+  const pagination = grid.slice(
+    grid.indexOf('aria-label="Products pagination"'),
+    grid.indexOf("Page {currentPage} of {totalPages}"),
+  );
+
+  assert.ok(pagination.includes("cursor-pointer"));
+  assert.ok(pagination.includes("disabled:cursor-not-allowed"));
+  assert.ok(pagination.includes("cursor-default border-[#071936]"));
+});

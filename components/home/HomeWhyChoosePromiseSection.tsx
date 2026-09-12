@@ -115,10 +115,24 @@ export default function HomeWhyChoosePromiseSection() {
         #why-choose-sasha .home-promise-card {
           border-color: #dfe6f0 !important;
           border-radius: 10px !important;
+          transition: transform 220ms ease, border-color 220ms ease, background-color 220ms ease, box-shadow 220ms ease;
+        }
+        #why-choose-sasha .home-promise-card:hover {
+          transform: translateY(-4px);
+          border-color: #bfdbfe !important;
+          background: #fbfdff !important;
+          box-shadow: 0 14px 30px rgba(29, 78, 216, 0.12) !important;
         }
         #why-choose-sasha .home-promise-icon {
           background: #eef4ff !important;
           color: #1d4ed8 !important;
+          transition: transform 220ms ease, background-color 220ms ease, color 220ms ease, box-shadow 220ms ease;
+        }
+        #why-choose-sasha .home-promise-card:hover .home-promise-icon {
+          transform: scale(1.08);
+          background: #dbeafe !important;
+          color: #1456d9 !important;
+          box-shadow: 0 5px 14px rgba(29, 78, 216, 0.16);
         }
         #why-choose-sasha .home-promise-stats {
           background: #f8fafc !important;
@@ -126,6 +140,21 @@ export default function HomeWhyChoosePromiseSection() {
         #why-choose-sasha .home-stat-icon {
           background: #ffffff !important;
           color: #1d4ed8 !important;
+          transition: transform 220ms ease, background-color 220ms ease, box-shadow 220ms ease;
+        }
+        #why-choose-sasha .home-promise-stat {
+          border-radius: 9px;
+          transition: transform 220ms ease, background-color 220ms ease, box-shadow 220ms ease;
+        }
+        #why-choose-sasha .home-promise-stat:hover {
+          transform: translateY(-2px);
+          background: #ffffff;
+          box-shadow: 0 8px 20px rgba(29, 78, 216, 0.09);
+        }
+        #why-choose-sasha .home-promise-stat:hover .home-stat-icon {
+          transform: scale(1.08);
+          background: #eef4ff !important;
+          box-shadow: 0 5px 14px rgba(29, 78, 216, 0.14);
         }
         #why-choose-sasha p {
           text-align: left !important;
@@ -142,6 +171,23 @@ export default function HomeWhyChoosePromiseSection() {
           }
           #why-choose-sasha .home-promise-stat + .home-promise-stat {
             border-top: 1px solid rgba(226, 232, 240, 0.9);
+          }
+          #why-choose-sasha .home-promise-stat:hover {
+            transform: translateX(4px);
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          #why-choose-sasha .home-promise-card,
+          #why-choose-sasha .home-promise-icon,
+          #why-choose-sasha .home-promise-stat,
+          #why-choose-sasha .home-stat-icon {
+            transition: none;
+          }
+          #why-choose-sasha .home-promise-card:hover,
+          #why-choose-sasha .home-promise-card:hover .home-promise-icon,
+          #why-choose-sasha .home-promise-stat:hover,
+          #why-choose-sasha .home-promise-stat:hover .home-stat-icon {
+            transform: none;
           }
         }
       `}</style>

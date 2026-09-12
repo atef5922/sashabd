@@ -150,7 +150,12 @@ export default function ProjectWorkflowSection() {
           grid-template-columns: repeat(5, minmax(0, 1fr));
           margin-top: 27px;
         }
-        .home-process-step { position: relative; min-width: 0; }
+        .home-process-step {
+          position: relative;
+          min-width: 0;
+          transition: transform 220ms ease;
+        }
+        .home-process-step:hover { transform: translateY(-3px); }
         .home-process-node-row { position: relative; height: 76px; }
         .home-process-number {
           position: absolute;
@@ -161,6 +166,10 @@ export default function ProjectWorkflowSection() {
           font-size: 23px !important;
           font-weight: 800;
           line-height: 28px !important;
+          transition: color 220ms ease;
+        }
+        .home-process-step:hover .home-process-number {
+          color: #93baf3 !important;
         }
         .home-process-icon {
           position: absolute;
@@ -178,6 +187,14 @@ export default function ProjectWorkflowSection() {
           background: rgba(255,255,255,.98) !important;
           color: #0b56d9 !important;
           box-shadow: 0 9px 21px rgba(31, 65, 114, .12), inset 0 1px 0 rgba(255,255,255,.9);
+          transition: transform 220ms ease, border-color 220ms ease, background 220ms ease, color 220ms ease, box-shadow 220ms ease;
+        }
+        .home-process-step:hover .home-process-icon {
+          transform: translateX(-50%) scale(1.07);
+          border-color: #0b56d9;
+          background: linear-gradient(135deg, #0b56d9 0%, #2563eb 100%) !important;
+          color: #ffffff !important;
+          box-shadow: 0 14px 28px rgba(11, 86, 217, .25), inset 0 1px 0 rgba(255,255,255,.24);
         }
         .home-process-connector {
           position: absolute;
@@ -185,6 +202,11 @@ export default function ProjectWorkflowSection() {
           right: -4px;
           top: 35px;
           border-top: 1px dashed #9fbbe9;
+          transition: border-color 220ms ease, opacity 220ms ease;
+        }
+        .home-process-step:hover .home-process-connector {
+          border-color: #2563eb;
+          opacity: 1;
         }
         .home-process-step-title {
           margin-top: 9px;
@@ -193,6 +215,10 @@ export default function ProjectWorkflowSection() {
           font-weight: 800;
           line-height: 17px !important;
           text-align: center !important;
+          transition: color 220ms ease;
+        }
+        .home-process-step:hover .home-process-step-title {
+          color: #1456d9 !important;
         }
         .home-process-description {
           margin: 9px auto 0;
@@ -219,6 +245,17 @@ export default function ProjectWorkflowSection() {
           .home-process-section { padding-left: 42px; padding-right: 42px; }
           .home-process-step-title { font-size: 14px !important; }
           .home-process-description { max-width: 150px; font-size: 10px !important; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .home-process-step,
+          .home-process-icon,
+          .home-process-connector,
+          .home-process-step-title,
+          .home-process-number {
+            transition: none;
+          }
+          .home-process-step:hover { transform: none; }
+          .home-process-step:hover .home-process-icon { transform: translateX(-50%); }
         }
       `}</style>
     </section>

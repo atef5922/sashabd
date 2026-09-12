@@ -1285,7 +1285,7 @@ export default function HomeAllProductsGrid() {
                       setPage((current) => Math.max(1, current - 1));
                     }}
                     disabled={currentPage === 1}
-                    className="inline-flex min-h-10 items-center justify-center rounded-md border border-slate-300 bg-white px-3 text-xs font-bold text-slate-800 transition enabled:hover:border-orange-300 enabled:hover:bg-orange-50 enabled:hover:text-orange-700 disabled:cursor-not-allowed disabled:opacity-40"
+                    className="inline-flex min-h-10 cursor-pointer items-center justify-center rounded-md border border-slate-300 bg-white px-3 text-xs font-bold text-slate-800 transition enabled:hover:border-orange-300 enabled:hover:bg-orange-50 enabled:hover:text-orange-700 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     Previous
                   </button>
@@ -1301,7 +1301,7 @@ export default function HomeAllProductsGrid() {
                           scrollToGridOnNextPageChangeRef.current = true;
                           setPage(item);
                         }}
-                        className={`inline-flex min-h-10 min-w-10 items-center justify-center rounded-md border px-2 text-xs font-extrabold transition ${item === currentPage ? "border-[#071936] bg-[#071936] text-white" : "border-slate-300 bg-white text-slate-700 hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700"}`}
+                        className={`inline-flex min-h-10 min-w-10 cursor-pointer items-center justify-center rounded-md border px-2 text-xs font-extrabold transition ${item === currentPage ? "cursor-default border-[#071936] bg-[#071936] text-white" : "border-slate-300 bg-white text-slate-700 hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700"}`}
                         aria-current={item === currentPage ? "page" : undefined}
                       >
                         {item}
@@ -1316,7 +1316,7 @@ export default function HomeAllProductsGrid() {
                       setPage((current) => Math.min(totalPages, current + 1));
                     }}
                     disabled={currentPage === totalPages}
-                    className="inline-flex min-h-10 items-center justify-center rounded-md border border-slate-300 bg-white px-3 text-xs font-bold text-slate-800 transition enabled:hover:border-orange-300 enabled:hover:bg-orange-50 enabled:hover:text-orange-700 disabled:cursor-not-allowed disabled:opacity-40"
+                    className="inline-flex min-h-10 cursor-pointer items-center justify-center rounded-md border border-slate-300 bg-white px-3 text-xs font-bold text-slate-800 transition enabled:hover:border-orange-300 enabled:hover:bg-orange-50 enabled:hover:text-orange-700 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     Next
                   </button>
