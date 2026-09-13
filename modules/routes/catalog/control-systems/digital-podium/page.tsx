@@ -59,7 +59,7 @@ export default function DigitalPodiumPage() {
           <p className={styles.heroDescription}>A smarter starting point for every lecture and presentation. Explore digital podiums in Bangladesh with PC, touch and AV options matched to your venue.</p>
           <div className={styles.heroFeatures}><span><Icon name="pen" />Touch options</span><span><Icon name="cpu" />PC integration</span><span><Icon name="cast" />Display & audio</span></div>
           <div className={styles.actions}><a href="#podium-products" className={styles.primaryButton}>Explore Digital Podiums<Icon name="arrow" /></a><Link href="/contact/" className={styles.navyButton}>Get a Project Quote</Link></div>
-          <a className={styles.heroHelp} href={`tel:${siteConfig.phone}`}><Icon name="phone" />Need configuration advice? {siteConfig.phone}</a>
+          <a className={styles.heroHelp} href={`tel:${siteConfig.phone}`}><Icon name="phone" />Need configuration advice? {siteConfig.phoneDisplay}</a>
         </div>
       </div>
     </section>

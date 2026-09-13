@@ -199,8 +199,8 @@ export function LedProductQuickView({ product }: { product: LedProductToolData }
               ) : null}
 
               <div className="mt-5 grid grid-cols-2 gap-2.5">
-                <Link href={product.href} className="inline-flex min-h-10 items-center justify-center rounded-lg border border-[#071936] px-3 text-center text-xs font-extrabold text-[#071936] transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/35">View Full Details</Link>
-                <Link href={product.quoteHref} className="inline-flex min-h-10 items-center justify-center rounded-lg bg-[#071936] px-3 text-center text-xs font-extrabold text-white transition hover:bg-[#102b52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/45 focus-visible:ring-offset-2">Get a Quote</Link>
+                <Link href={product.href} className="inline-flex min-h-10 items-center justify-center rounded-lg border border-[#071936] px-3 text-center text-xs font-extrabold text-[#071936] transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/35">View Full Details<span className="sr-only"> for {product.title}</span></Link>
+                <Link href={product.quoteHref} className="inline-flex min-h-10 items-center justify-center rounded-lg bg-[#071936] px-3 text-center text-xs font-extrabold text-white transition hover:bg-[#102b52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/45 focus-visible:ring-offset-2">Get a Quote<span className="sr-only"> for {product.title}</span></Link>
               </div>
             </div>
           </div>
@@ -306,7 +306,7 @@ export function LedProductCompareTray({
                   ))}
                   <tr>
                     <th scope="row" className="border-r border-slate-200 bg-slate-50 p-3 font-extrabold text-slate-600">Action</th>
-                    {products.map((product) => <td key={product.id} className="border-r border-slate-200 p-3 last:border-r-0"><Link href={product.href} className="inline-flex min-h-9 items-center justify-center rounded-md bg-[#071936] px-3 text-xs font-extrabold text-white hover:bg-[#102b52]">View Details</Link></td>)}
+                    {products.map((product) => <td key={product.id} className="border-r border-slate-200 p-3 last:border-r-0"><Link href={product.href} className="inline-flex min-h-9 items-center justify-center rounded-md bg-[#071936] px-3 text-xs font-extrabold text-white hover:bg-[#102b52]">View Details<span className="sr-only"> for {product.title}</span></Link></td>)}
                   </tr>
                 </tbody>
               </table>

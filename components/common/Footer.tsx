@@ -313,7 +313,7 @@ export default function Footer() {
                   href={`tel:${siteConfig.phone}`}
                   className="glow-pill inline-flex min-w-0 items-center justify-center rounded-full border border-[#FF7A1A]/40 bg-slate-900/40 px-2 py-1.5 text-[10px] font-semibold leading-none tracking-tight text-white transition duration-200 hover:bg-slate-900/60 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111f] motion-reduce:transition-none md:px-3 md:text-xs"
                 >
-                  <span className="whitespace-nowrap">{`Phone: ${siteConfig.phone}`}</span>
+                  <span className="whitespace-nowrap">{`Phone: ${siteConfig.phoneDisplay}`}</span>
                 </a>
                 <EmailReveal
                   user={siteConfig.emailUser}
@@ -457,7 +457,7 @@ export default function Footer() {
                         <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.6 19.6 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 1.9.7 2.8a2 2 0 0 1-.4 2.1L8.1 9.9a16 16 0 0 0 6 6l2.3-2.3a2 2 0 0 1 2.1-.4c.9.4 1.8.6 2.8.7A2 2 0 0 1 22 16.9Z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </span>
-                    <span>{siteConfig.phone}</span>
+                    <span>{siteConfig.phoneDisplay}</span>
                   </a>
 
                   <a

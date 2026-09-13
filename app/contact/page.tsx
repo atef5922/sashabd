@@ -123,7 +123,7 @@ export default function ContactPage() {
             <h2>Contact Our Team</h2>
             <p className={styles.cardIntro}>We&apos;re here to help. Reach out to us through any of the following channels.</p>
             <div className={styles.contactList}>
-              <div className={styles.contactItem}><span><Icon name="phone" /></span><div><b>Phone</b><a href={`tel:${siteConfig.phone}`}>{siteConfig.phone}</a></div></div>
+              <div className={styles.contactItem}><span><Icon name="phone" /></span><div><b>Phone</b><a href={`tel:${siteConfig.phone}`}>{siteConfig.phoneDisplay}</a></div></div>
               <div className={styles.contactItem}><span><Icon name="mail" /></span><div><b>Email</b><EmailReveal user={siteConfig.emailUser} domain={siteConfig.emailDomain} title="Email Sasha Corporation" /></div></div>
               <div className={styles.contactItem}><span><Icon name="pin" /></span><div><b>Office Address</b><p>{siteConfig.address}</p></div></div>
               <div className={styles.contactItem}><span><Icon name="clock" /></span><div><b>Business Hours</b><p>Sat – Thu, 10:00 AM – 7:00 PM</p></div></div>
@@ -161,7 +161,7 @@ export default function ContactPage() {
             <h2>Visit Our Office</h2><p className={styles.cardIntro}>You are always welcome to visit our office for a better discussion.</p>
             <div><Icon name="pin" /><span>{siteConfig.address}</span></div>
             <div><Icon name="clock" /><span>Sat – Thu, 10:00 AM – 7:00 PM</span></div>
-            <div><Icon name="phone" /><a href={`tel:${siteConfig.phone}`}>{siteConfig.phone}</a></div>
+            <div><Icon name="phone" /><a href={`tel:${siteConfig.phone}`}>{siteConfig.phoneDisplay}</a></div>
             <a href={mapOpenUrl} target="_blank" rel="noreferrer" className={styles.mapButton}><Icon name="map" size={18} /> Open in Google Maps <Icon name="arrow" size={17} /></a>
           </div>
           <div className={styles.officeImage}>

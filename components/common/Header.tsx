@@ -486,7 +486,7 @@ function ConferenceDesktopNavItem({
                   >
                     <Image
                       src="/assets/conference-system/landing/complete-conference-package-thumbnail.webp"
-                      alt=""
+                      alt="Complete conference system package"
                       fill
                       sizes="220px"
                       className="object-contain"
@@ -1025,7 +1025,7 @@ export default function Header({
             aria-label="Call now"
             className="shine-button ml-1.5 inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-lg bg-gradient-to-r from-[#f58529] via-[#dd2a7b] to-[#8134af] px-3 py-2 xl:ml-2 xl:min-w-[150px] xl:px-4 text-sm font-semibold text-white transition hover:brightness-110"
           >
-            {siteConfig.phone}
+            {siteConfig.phoneDisplay}
           </a>
         </nav>
 

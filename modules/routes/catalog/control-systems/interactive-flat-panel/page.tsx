@@ -86,7 +86,7 @@ export default function InteractiveFlatPanelPage() {
               <span><IfpIcon name="cpu" />Optional OPS PC</span>
             </div>
             <div className={styles.actions}><a className={styles.primaryButton} href="#ifp-products">Explore Panels<IfpIcon name="arrow" /></a><Link className={styles.outlineButton} href="/contact/">Get a Project Quote</Link></div>
-            <a className={styles.heroHelp} href={"tel:" + siteConfig.phone}><IfpIcon name="phone" />Need help choosing? {siteConfig.phone}</a>
+            <a className={styles.heroHelp} href={"tel:" + siteConfig.phone}><IfpIcon name="phone" />Need help choosing? {siteConfig.phoneDisplay}</a>
           </div>
         </div>
       </section>

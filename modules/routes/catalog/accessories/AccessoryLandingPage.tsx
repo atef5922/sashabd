@@ -53,7 +53,7 @@ export default function AccessoryLandingPage({ category }: { category: Accessory
         <div className={styles.heroCopy}><p className={styles.eyebrow}>{page.eyebrow}</p><h1 id={`${category}-title`}>{page.title}</h1><p className={styles.heroAccent}>{page.accent}</p><p className={styles.heroDescription}>{page.description}</p>
           <div className={styles.heroTags}>{page.heroTags.map(tag => <span key={tag}><Icon name="check" />{tag}</span>)}</div>
           <div className={styles.actions}><a className={styles.primaryButton} href={`#${productId}`}>Explore {page.label === "Controller" ? "Controllers" : page.label === "Power Supply" ? "Power Supplies" : page.label === "Receiving Card" ? "Receiving Cards" : "Accessories"}<Icon name="arrow" /></a><Link href="/contact/" className={styles.navyButton}>Get a Project Quote</Link></div>
-          <a className={styles.heroHelp} href={`tel:${siteConfig.phone}`}><Icon name="phone" />Need help matching a part? {siteConfig.phone}</a>
+          <a className={styles.heroHelp} href={`tel:${siteConfig.phone}`}><Icon name="phone" />Need help matching a part? {siteConfig.phoneDisplay}</a>
         </div>
       </div>
       <span className={styles.heroArtNote}>Illustrative setup</span>

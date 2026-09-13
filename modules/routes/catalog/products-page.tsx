@@ -55,6 +55,22 @@ const ledSectionTitleClass =
   "!text-xl font-extrabold leading-7 tracking-tight text-[#071936] lg:!text-[26px]";
 
 const LED_PRICE_VERIFIED_DATE = "08 September 2026";
+const LED_QUOTE_HREF = "/contact/#quotation";
+const LED_PAGE_URL = "https://sashabd.com/led-display/";
+const LED_SHARE_LINKS = [
+  {
+    label: "Facebook",
+    href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(LED_PAGE_URL)}`,
+  },
+  {
+    label: "LinkedIn",
+    href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(LED_PAGE_URL)}`,
+  },
+  {
+    label: "WhatsApp",
+    href: `https://api.whatsapp.com/send/?text=${encodeURIComponent(`LED Display Price in Bangladesh | Sasha Corporation ${LED_PAGE_URL}`)}`,
+  },
+] as const;
 
 type FilterKey =
   | "all"
@@ -153,8 +169,6 @@ function LedExplorerProductCard({ product, priority = false, compareSelected = f
   const features = toolProduct.features;
   const priceText = normalizeDisplayedPriceText(product.priceLine ?? product.priceLabel ?? "Request Price");
   const isRequestPrice = /request|contact|call/i.test(priceText);
-  const productKey = product.id.split(":").slice(1).join(":");
-  const quoteHref = `/contact/?project=led-display&product=${encodeURIComponent(productKey)}`;
 
   const imageClassName = isLedDisplay
     ? product.id === "indoor:p2-5-indoor-led-display"
@@ -242,15 +256,15 @@ function LedExplorerProductCard({ product, priority = false, compareSelected = f
               aria-label={`View details for ${product.title}`}
               className="inline-flex min-h-10 min-w-0 items-center justify-center rounded-md border border-[#102542] bg-white px-2 py-2 text-center text-xs font-bold text-[#071936] transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/35"
             >
-              View Details
+              View Details<span className="sr-only"> for {product.title}</span>
             </Link>
             <Link
               prefetch={false}
-              href={quoteHref}
+              href={LED_QUOTE_HREF}
               aria-label={`Get a quote for ${product.title}`}
               className="inline-flex min-h-10 min-w-0 items-center justify-center rounded-md border border-[#071936] bg-[#071936] px-2 py-2 text-center text-xs font-bold text-white transition-colors hover:border-[#102b52] hover:bg-[#102b52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/45 focus-visible:ring-offset-2"
             >
-              Get a Quote
+              Get a Quote<span className="sr-only"> for {product.title}</span>
             </Link>
           </div>
         </div>
@@ -274,7 +288,6 @@ function toLedProductToolData(product: UnifiedProduct): LedProductToolData {
   const isLedDisplay = product.id.startsWith("indoor:") || product.id.startsWith("outdoor:") || product.id.startsWith("rental:");
   const price = normalizeDisplayedPriceText(product.priceLine ?? product.priceLabel ?? "Request Price");
   const isRequestPrice = /request|contact|call/i.test(price);
-  const productKey = product.id.split(":").slice(1).join(":");
   const features = (isLedDisplay
     ? getLedCardBullets(product)
     : product.quickFeatures?.length
@@ -288,7 +301,7 @@ function toLedProductToolData(product: UnifiedProduct): LedProductToolData {
     subtitle: product.subtitle,
     image: product.image,
     href: product.href,
-    quoteHref: `/contact/?project=led-display&product=${encodeURIComponent(productKey)}`,
+    quoteHref: LED_QUOTE_HREF,
     category: product.badge,
     pitch: product.pitch ? formatPitchDisplay(product.pitch) : undefined,
     price,
@@ -2238,11 +2251,11 @@ function ProductsPageContent({
                       {indoorPriceRows.map((row) => (
                         <article key={row.href} className="rounded-lg border border-slate-200 bg-white p-3">
                           <div className="flex items-start justify-between gap-3">
-                            <Link prefetch={false} href={row.href} className="font-extrabold text-blue-700 hover:underline">{formatPriceTablePitch(row.pitch)}</Link>
+                            <Link prefetch={false} href={row.href} className="font-extrabold text-blue-700 hover:underline">{formatPriceTablePitch(row.pitch)}<span className="sr-only"> — {row.title}</span></Link>
                             <span className="text-right text-[11px] font-extrabold text-slate-800">{row.price}</span>
                           </div>
                           <p className="mt-1 !text-left text-[11px] leading-4 text-slate-600">{row.bestUse}</p>
-                          <Link href={`/contact/?project=led-display&product=${encodeURIComponent(row.title)}`} className="mt-2 inline-flex min-h-8 items-center justify-center rounded-md border border-blue-400 px-3 text-[10px] font-extrabold text-blue-700">Get Quote</Link>
+                          <Link href={LED_QUOTE_HREF} className="mt-2 inline-flex min-h-8 items-center justify-center rounded-md border border-blue-400 px-3 text-[10px] font-extrabold text-blue-700">Get Quote<span className="sr-only"> for {row.title}</span></Link>
                         </article>
                       ))}
                     </div>
@@ -2260,10 +2273,10 @@ function ProductsPageContent({
                       <tbody className="text-slate-700">
                         {indoorPriceRows.map((row) => (
                           <tr key={row.href} className="transition hover:bg-blue-50/40">
-                            <td className="border-b border-r border-slate-200 px-3 py-2.5"><Link prefetch={false} href={row.href} title={row.title} className="font-extrabold text-blue-700 hover:underline">{formatPriceTablePitch(row.pitch)}</Link></td>
+                            <td className="border-b border-r border-slate-200 px-3 py-2.5"><Link prefetch={false} href={row.href} title={row.title} className="font-extrabold text-blue-700 hover:underline">{formatPriceTablePitch(row.pitch)}<span className="sr-only"> — {row.title}</span></Link></td>
                             <td className="border-b border-r border-slate-200 px-3 py-2.5">{row.bestUse}</td>
                             <td className="whitespace-nowrap border-b border-r border-slate-200 px-3 py-2.5 font-semibold">{row.price}</td>
-                            <td className="border-b border-slate-200 px-2 py-2 text-center"><Link href={`/contact/?project=led-display&product=${encodeURIComponent(row.title)}`} className="inline-flex min-h-8 items-center justify-center rounded-md border border-blue-400 px-3 text-[10px] font-extrabold text-blue-700 transition hover:bg-blue-600 hover:text-white">Get Quote</Link></td>
+                            <td className="border-b border-slate-200 px-2 py-2 text-center"><Link href={LED_QUOTE_HREF} className="inline-flex min-h-8 items-center justify-center rounded-md border border-blue-400 px-3 text-[10px] font-extrabold text-blue-700 transition hover:bg-blue-600 hover:text-white">Get Quote<span className="sr-only"> for {row.title}</span></Link></td>
                           </tr>
                         ))}
                       </tbody>
@@ -2284,11 +2297,11 @@ function ProductsPageContent({
                       {outdoorPriceRows.map((row) => (
                         <article key={row.href} className="rounded-lg border border-slate-200 bg-white p-3">
                           <div className="flex items-start justify-between gap-3">
-                            <Link prefetch={false} href={row.href} className="font-extrabold text-blue-700 hover:underline">{formatPriceTablePitch(row.pitch)}</Link>
+                            <Link prefetch={false} href={row.href} className="font-extrabold text-blue-700 hover:underline">{formatPriceTablePitch(row.pitch)}<span className="sr-only"> — {row.title}</span></Link>
                             <span className="text-right text-[11px] font-extrabold text-slate-800">{row.price}</span>
                           </div>
                           <p className="mt-1 !text-left text-[11px] leading-4 text-slate-600">{row.bestUse}</p>
-                          <Link href={`/contact/?project=led-display&product=${encodeURIComponent(row.title)}`} className="mt-2 inline-flex min-h-8 items-center justify-center rounded-md border border-blue-400 px-3 text-[10px] font-extrabold text-blue-700">Get Quote</Link>
+                          <Link href={LED_QUOTE_HREF} className="mt-2 inline-flex min-h-8 items-center justify-center rounded-md border border-blue-400 px-3 text-[10px] font-extrabold text-blue-700">Get Quote<span className="sr-only"> for {row.title}</span></Link>
                         </article>
                       ))}
                     </div>
@@ -2306,10 +2319,10 @@ function ProductsPageContent({
                       <tbody className="text-slate-700">
                         {outdoorPriceRows.map((row) => (
                           <tr key={row.href} className="transition hover:bg-blue-50/40">
-                            <td className="border-b border-r border-slate-200 px-3 py-2.5"><Link prefetch={false} href={row.href} title={row.title} className="font-extrabold text-blue-700 hover:underline">{formatPriceTablePitch(row.pitch)}</Link></td>
+                            <td className="border-b border-r border-slate-200 px-3 py-2.5"><Link prefetch={false} href={row.href} title={row.title} className="font-extrabold text-blue-700 hover:underline">{formatPriceTablePitch(row.pitch)}<span className="sr-only"> — {row.title}</span></Link></td>
                             <td className="border-b border-r border-slate-200 px-3 py-2.5">{row.bestUse}</td>
                             <td className="whitespace-nowrap border-b border-r border-slate-200 px-3 py-2.5 font-semibold">{row.price}</td>
-                            <td className="border-b border-slate-200 px-2 py-2 text-center"><Link href={`/contact/?project=led-display&product=${encodeURIComponent(row.title)}`} className="inline-flex min-h-8 items-center justify-center rounded-md border border-blue-400 px-3 text-[10px] font-extrabold text-blue-700 transition hover:bg-blue-600 hover:text-white">Get Quote</Link></td>
+                            <td className="border-b border-slate-200 px-2 py-2 text-center"><Link href={LED_QUOTE_HREF} className="inline-flex min-h-8 items-center justify-center rounded-md border border-blue-400 px-3 text-[10px] font-extrabold text-blue-700 transition hover:bg-blue-600 hover:text-white">Get Quote<span className="sr-only"> for {row.title}</span></Link></td>
                           </tr>
                         ))}
                       </tbody>
@@ -2335,7 +2348,7 @@ function ProductsPageContent({
                   <p className="mt-2 !text-center text-[12px] leading-5 text-slate-600 lg:!text-left sm:text-[13px]">Share your requirement. We provide BOQ, size calculation, and installation planning with practical pricing for Bangladesh.</p>
                 </div>
                 <div className="mt-4 flex flex-col gap-2.5 sm:flex-row sm:justify-center lg:mt-0">
-                  <Link href="/contact/?project=led-display" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-blue-700 px-5 text-[12px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-blue-800"><UiIcon name="guide" className="h-4 w-4" />Request Free BOQ</Link>
+                  <Link href={LED_QUOTE_HREF} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-blue-700 px-5 text-[12px] font-extrabold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-blue-800"><UiIcon name="guide" className="h-4 w-4" />Request Free BOQ</Link>
                   <a href={wa} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-5 text-[12px] font-extrabold text-[#071936] shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-300 hover:text-emerald-700"><svg viewBox="0 0 24 24" className="h-5 w-5 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 9.4 9.4 0 0 1-3.8-.9L3 21l1.8-5a8.5 8.5 0 1 1 16.2-4.5Z" /><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" /></svg>WhatsApp</a>
                 </div>
               </div>
@@ -2580,7 +2593,7 @@ function ProductsPageContent({
                     <h2 className={ledSectionTitleClass}>Complete LED Display Solution</h2>
                     <p className="home-section-subtitle mt-1 leading-5 text-slate-600">From planning to installation & after-sales support</p>
                   </div>
-                  <Link prefetch={false} href="/contact/?project=led-display" className="inline-flex min-h-8 w-fit shrink-0 items-center justify-center gap-2 rounded-md bg-[#071a42] px-3.5 text-[10px] font-extrabold text-white shadow-sm transition hover:bg-[#12326b]">
+                  <Link prefetch={false} href={LED_QUOTE_HREF} className="inline-flex min-h-8 w-fit shrink-0 items-center justify-center gap-2 rounded-md bg-[#071a42] px-3.5 text-[10px] font-extrabold text-white shadow-sm transition hover:bg-[#12326b]">
                     <UiIcon name="guide" className="h-3.5 w-3.5" />Design My LED Display
                   </Link>
                 </div>
@@ -2597,7 +2610,7 @@ function ProductsPageContent({
                         <Fragment key={label}>
                           <div className="min-w-0 text-center">
                             <div className="relative mx-auto h-9 w-full max-w-[56px] overflow-hidden rounded-md border border-blue-300/25 bg-white/95 min-[430px]:max-w-[64px] sm:h-14 sm:max-w-[92px]">
-                              <Image src={src} alt="" fill sizes="92px" className="object-contain p-1" />
+                              <Image src={src} alt={`${label} in an LED display system`} fill sizes="92px" className="object-contain p-1" />
                             </div>
                             <div className="mt-1 text-[8px] font-bold leading-3 text-blue-50 sm:text-[9px]">{label}</div>
                           </div>
@@ -2616,7 +2629,7 @@ function ProductsPageContent({
                         <Fragment key={label}>
                           <div className="min-w-0 text-center">
                             <div className="relative mx-auto h-9 w-full max-w-[56px] overflow-hidden rounded-md border border-blue-300/25 bg-white/95 min-[430px]:max-w-[64px] sm:h-14 sm:max-w-[92px]">
-                              <Image src={src} alt="" fill sizes="92px" className="object-contain p-1" />
+                              <Image src={src} alt={`${label} in an LED display system`} fill sizes="92px" className="object-contain p-1" />
                             </div>
                             <div className="mt-1 text-[8px] font-bold leading-3 text-blue-50 sm:text-[9px]">{label}</div>
                           </div>
@@ -2629,7 +2642,7 @@ function ProductsPageContent({
                       <div className="flex items-center gap-1.5 text-[8px] font-bold text-amber-300 sm:text-[9px]"><UiIcon name="power" className="h-4 w-4" />Power Input</div>
                       <span className="text-cyan-400" aria-hidden="true">→</span>
                       <div className="flex items-center gap-2">
-                        <div className="relative h-9 w-16 overflow-hidden rounded bg-white/95"><Image src="/assets/led-display/power-supplies/G-Energy-5V-40A-LED-Display-Power-Supply.webp" alt="" fill sizes="64px" className="object-contain p-1" /></div>
+                        <div className="relative h-9 w-16 overflow-hidden rounded bg-white/95"><Image src="/assets/led-display/power-supplies/G-Energy-5V-40A-LED-Display-Power-Supply.webp" alt="LED display power supply (SMPS)" fill sizes="64px" className="object-contain p-1" /></div>
                         <span className="text-[8px] font-bold text-blue-50 sm:text-[9px]">Power Supply (SMPS)</span>
                       </div>
                     </div>
@@ -2846,10 +2859,10 @@ function ProductsPageContent({
                       </div>
                       <Link
                         prefetch={false}
-                        href={project.caseStudyHref ?? `/contact/?project=led-display&client=${encodeURIComponent(project.organization)}`}
+                        href={project.caseStudyHref ?? LED_QUOTE_HREF}
                         className="mt-auto inline-flex min-h-9 w-fit items-center pt-3 text-[11px] font-extrabold text-[#1458e5] transition hover:text-orange-600"
                       >
-                        {project.caseStudyHref ? "View Case Study" : "Request a Similar Project"} <span aria-hidden="true">→</span>
+                        {project.caseStudyHref ? "View Case Study" : "Request a Similar Project"}<span className="sr-only"> for {project.title}</span> <span aria-hidden="true">→</span>
                       </Link>
                     </div>
                   </article>
@@ -3192,7 +3205,7 @@ function ProductsPageContent({
                   alt: "SMD indoor LED display technology",
                   icon: "module",
                   benefits: ["Cost-effective solution", "Wide viewing angle", "Indoor & outdoor use"],
-                  href: "/contact/?project=led-display&technology=smd",
+                  href: LED_QUOTE_HREF,
                 },
                 {
                   title: "GOB",
@@ -3201,7 +3214,7 @@ function ProductsPageContent({
                   alt: "GOB protected LED display technology",
                   icon: "shield",
                   benefits: ["Better surface protection", "Water & dust resistant", "High durability"],
-                  href: "/contact/?project=led-display&technology=gob",
+                  href: LED_QUOTE_HREF,
                 },
                 {
                   title: "COB",
@@ -3210,7 +3223,7 @@ function ProductsPageContent({
                   alt: "COB fine-pitch LED display technology",
                   icon: "chip",
                   benefits: ["Superior visual performance", "Better heat dissipation", "Ultra-fine pixel pitch"],
-                  href: "/contact/?project=led-display&technology=cob",
+                  href: LED_QUOTE_HREF,
                 },
                 {
                   title: "Micro LED",
@@ -3219,7 +3232,7 @@ function ProductsPageContent({
                   alt: "Micro LED next-generation display technology",
                   icon: "module",
                   benefits: ["Ultra-high brightness", "Outstanding contrast", "Premium display solution"],
-                  href: "/contact/?project=led-display&technology=micro-led",
+                  href: LED_QUOTE_HREF,
                 },
               ].map((technology) => (
                 <article
@@ -3260,7 +3273,7 @@ function ProductsPageContent({
                       href={technology.href}
                       className="mt-4 inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg border border-[#2d6af1] bg-white px-3 text-[12px] font-extrabold text-[#1458e5] transition hover:bg-[#1458e5] hover:text-white"
                     >
-                      Learn More <span className="text-base leading-none" aria-hidden="true">→</span>
+                      Discuss {technology.title} <span className="text-base leading-none" aria-hidden="true">→</span>
                     </Link>
                   </div>
                 </article>
@@ -3270,7 +3283,7 @@ function ProductsPageContent({
             <div className="mt-5 flex justify-center">
               <Link
                 prefetch={false}
-                href="/contact/?project=led-display&request=technology-comparison"
+                href={LED_QUOTE_HREF}
                 className="inline-flex min-h-11 w-full max-w-[300px] items-center justify-center gap-3 rounded-lg border border-[#2d6af1] bg-white px-5 text-[12px] font-extrabold text-[#1458e5] shadow-sm transition hover:bg-[#1458e5] hover:text-white"
                 style={{ maxWidth: "300px" }}
               >
@@ -3512,6 +3525,25 @@ function ProductsPageContent({
 
           <LedNationwideCoverageSection />
 
+          <div className="mt-4 flex flex-col items-start justify-between gap-3 rounded-2xl border border-[#dbe5f2] bg-white px-4 py-3 shadow-[0_5px_20px_rgba(15,23,42,0.04)] sm:flex-row sm:items-center sm:px-5" role="group" aria-label="Share the LED display guide">
+            <p className="text-left text-[12px] font-bold leading-5 text-[#071936]">Share this LED display guide</p>
+            <div className="flex flex-wrap gap-2">
+              {LED_SHARE_LINKS.map((share) => (
+                <a
+                  key={share.label}
+                  data-led-social-share={share.label.toLowerCase()}
+                  href={share.href}
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                  className="inline-flex min-h-9 items-center justify-center rounded-lg border border-[#cfe0ff] bg-[#f4f8ff] px-3 text-[11px] font-extrabold text-[#1458e5] transition hover:border-[#8eb5f7] hover:bg-[#edf4ff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+                  aria-label={`Share this LED display guide on ${share.label}`}
+                >
+                  {share.label}
+                </a>
+              ))}
+            </div>
+          </div>
+
           <section id="led-faq" className={`${ledInformationSectionClass} scroll-mt-24`} aria-labelledby="led-display-faq-heading">
             <LedSectionHeading id="led-display-faq-heading" icon="faq">Frequently Asked Questions About LED Display</LedSectionHeading>
             <div className="mt-5">
@@ -3525,7 +3557,7 @@ function ProductsPageContent({
               <div className="absolute inset-y-0 right-0 hidden w-1/3 md:block" aria-hidden="true">
                 <Image
                   src="/assets/led-display/heroes/indoor-led-hero.webp"
-                  alt=""
+                  alt="Indoor LED display installation"
                   fill
                   sizes="32vw"
                   className="object-cover object-center"
@@ -3571,7 +3603,7 @@ function ProductsPageContent({
                 </div>
 
                 <div className="grid gap-2.5 md:col-span-2">
-                  <Link href="/contact/?project=led-display" className="inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-[#1458e5] px-4 text-[11px] font-extrabold text-white shadow-md transition hover:bg-[#0f49c6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300">
+                  <Link href={LED_QUOTE_HREF} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-[#1458e5] px-4 text-[11px] font-extrabold text-white shadow-md transition hover:bg-[#0f49c6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300">
                     <UiIcon name="guide" className="h-4 w-4" /> Request Free BOQ
                   </Link>
                   <a href={`tel:${siteConfig.phone}`} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-md border border-slate-200 bg-white px-4 text-[11px] font-extrabold text-[#071a42] shadow-sm transition hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300">

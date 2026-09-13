@@ -144,7 +144,7 @@ export default function LedDisplayHero({ currentYear }: { currentYear: number })
         >
           <Image
             src={slide.image}
-            alt={index === activeIndex ? slide.alt : ""}
+            alt={slide.alt}
             fill
             priority={index === 0}
             loading={index === 0 ? "eager" : "lazy"}
@@ -178,7 +178,7 @@ export default function LedDisplayHero({ currentYear }: { currentYear: number })
 
           <div className="led-display-hero-actions mt-4 flex flex-col gap-2.5 min-[430px]:flex-row sm:mt-5 lg:grid lg:max-w-[23rem] lg:grid-cols-2 xl:flex xl:max-w-none">
             <Link
-              href="/contact/?project=led-display"
+              href="/contact/#quotation"
               className="inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-gradient-to-r from-[#ef4a00] to-[#ff6a00] px-5 text-[12px] font-extrabold text-white shadow-[0_8px_22px_rgba(255,94,0,0.22)] transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 sm:text-[13px] lg:px-2.5 lg:text-[10px] xl:px-5 xl:text-[13px]"
             >
               <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

@@ -1798,7 +1798,7 @@ export default function ConferenceSystemPage() {
               {item.icon === "verified" ? (
                 <div className="mt-1.5 text-[10px] font-semibold leading-4 text-slate-500">
                   <address className="not-italic">{siteConfig.address}</address>
-                  <a href={`tel:${siteConfig.phone}`} className="mt-1 inline-flex font-extrabold text-[#1744a1] hover:underline">{siteConfig.phone}</a>
+                  <a href={`tel:${siteConfig.phone}`} className="mt-1 inline-flex font-extrabold text-[#1744a1] hover:underline">{siteConfig.phoneDisplay}</a>
                 </div>
               ) : null}
               {item.icon === "privacy" ? (
