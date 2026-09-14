@@ -253,8 +253,7 @@ export default function Footer() {
     contact: false,
   });
   const whatsappUrl = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
-  const mapQuery = "102/1 West Agargaon, Dhaka 1207";
-  const mapOpenUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
+  const mapOpenUrl = siteConfig.mapsUrl;
   const supportEmail = `${siteConfig.emailUser}@${siteConfig.emailDomain}`;
 
   const socialLinks: FooterSocialItem[] = [
@@ -262,7 +261,7 @@ export default function Footer() {
       href: whatsappUrl,
       label: "Sasha Corporation WhatsApp support",
       className:
-        "border-[#25D366]/40 bg-[#25D366]/12 text-[#38D674] hover:border-[#25D366]/60 hover:bg-[#25D366]/20 hover:text-white",
+        "border-[#25D366] bg-[#25D366] text-white shadow-[0_6px_18px_rgba(37,211,102,0.28)] hover:border-[#20BA5A] hover:bg-[#20BA5A] hover:shadow-[0_8px_22px_rgba(37,211,102,0.4)]",
       icon: (
         <svg viewBox="0 0 24 24" className="h-4.5 w-4.5 fill-current" aria-hidden="true">
           <path d="M20.5 3.5A11.8 11.8 0 0 0 12 0C5.4 0 .1 5.3.1 11.9c0 2.1.6 4.2 1.7 6L0 24l6.4-1.7c1.7.9 3.6 1.4 5.6 1.4h.1c6.6 0 11.9-5.3 11.9-11.9 0-3.2-1.2-6.1-3.5-8.3zM12.1 21.6c-1.7 0-3.3-.4-4.8-1.3l-.3-.2-3.8 1 1-3.7-.2-.3a9.8 9.8 0 0 1-1.5-5.2c0-5.3 4.3-9.6 9.6-9.6 2.6 0 5 1 6.8 2.8a9.5 9.5 0 0 1 2.8 6.8c0 5.3-4.3 9.6-9.6 9.6zm5.3-7.2c-.3-.1-1.8-.9-2-1s-.4-.1-.6.1-.7 1-.9 1.1-.3.2-.6.1c-1.5-.7-2.5-1.3-3.5-2.9-.3-.4.3-.4.8-1.3.1-.2.1-.4 0-.5l-.9-2.2c-.2-.5-.5-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.8.9-1.2 2-1.2 3.2 0 1.2.9 2.4 1 2.6.1.2 1.8 2.8 4.4 3.9.6.3 1.1.5 1.5.6.6.2 1.1.2 1.5.1.5-.1 1.7-.7 1.9-1.5.2-.8.2-1.4.2-1.5 0-.1-.2-.2-.5-.3z" />
@@ -273,10 +272,21 @@ export default function Footer() {
       href: "https://www.facebook.com/profile.php?id=100068947942148",
       label: "Sasha Corporation on Facebook",
       className:
-        "border-[#1877F2]/40 bg-[#1877F2]/12 text-[#4B9BFF] hover:border-[#1877F2]/60 hover:bg-[#1877F2]/20 hover:text-white",
+        "border-[#1877F2] bg-[#1877F2] text-white shadow-[0_6px_18px_rgba(24,119,242,0.28)] hover:border-[#1164D3] hover:bg-[#1164D3] hover:shadow-[0_8px_22px_rgba(24,119,242,0.4)]",
       icon: (
         <svg viewBox="0 0 24 24" className="h-4.5 w-4.5 fill-current" aria-hidden="true">
           <path d="M14 8h3V4h-3c-3.3 0-5 2-5 5v2H6v4h3v9h4v-9h3.2l.8-4h-4V9c0-.7.3-1 1-1Z" />
+        </svg>
+      ),
+    },
+    {
+      href: "https://www.youtube.com/@SashaCorporation",
+      label: "Sasha Corporation on YouTube",
+      className:
+        "border-[#FF0000] bg-[#FF0000] text-white shadow-[0_6px_18px_rgba(255,0,0,0.28)] hover:border-[#D90000] hover:bg-[#D90000] hover:shadow-[0_8px_22px_rgba(255,0,0,0.4)]",
+      icon: (
+        <svg viewBox="0 0 24 24" className="h-4.5 w-4.5 fill-current" aria-hidden="true">
+          <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4L15.8 12l-6.2 3.6Z" />
         </svg>
       ),
     },
@@ -522,19 +532,6 @@ export default function Footer() {
               <span>{`© ${copyrightYear} ${BRAND_NAME}. All rights reserved.`}</span>
             </div>
 
-            <div className="h-px w-12 bg-white/10 md:h-4 md:w-px" aria-hidden="true" />
-
-            <div className="text-[13px] text-slate-300 sm:text-sm">
-              Developed by{" "}
-              <a
-                href="https://mugneeit.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-semibold text-[#FF7A1A] transition hover:text-[#FF9A52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF7A1A] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b1324] motion-reduce:transition-none"
-              >
-                Mugnee IT Solutions.
-              </a>
-            </div>
           </div>
         </div>
       </div>

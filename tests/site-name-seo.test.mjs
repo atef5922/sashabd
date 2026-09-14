@@ -16,7 +16,8 @@ test("homepage exposes one consistent WebSite and Organization identity", () => 
   assert.equal(occurrences(homepageIdentityMarkup, '"@type": "Organization"'), 1);
   assert.equal(occurrences(homepage, 'alternateName: "Sasha"'), 2);
   assert.ok(homepage.includes('logo: absoluteUrl("/assets/brand/sasha/sasha-corporation-final-l.webp")'));
-  assert.ok(homepage.includes('sameAs: ["https://www.facebook.com/profile.php?id=100068947942148"]'));
+  assert.ok(homepage.includes('"https://www.facebook.com/profile.php?id=100068947942148"'));
+  assert.ok(homepage.includes('"https://www.youtube.com/@SashaCorporation"'));
 });
 
 test("homepage metadata sends consistent site-name and canonical signals", () => {

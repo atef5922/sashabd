@@ -6,9 +6,9 @@ const BRAND = { maroon: "#FF6A00", maroonDark: "#E45700" };
 
 export default function LocationSection() {
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
-  const mapQuery = "102/1 West Agargaon, Dhaka 1207";
+  const mapQuery = siteConfig.address;
   const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&t=&z=19&ie=UTF8&iwloc=B&output=embed`;
-  const mapOpenUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`;
+  const mapOpenUrl = siteConfig.mapsUrl;
 
   return (
     <section

@@ -83,7 +83,7 @@ export default function ContactPage() {
   const whatsappHref = buildWhatsAppHref();
   const emailAddress = `${siteConfig.emailUser}@${siteConfig.emailDomain}`;
   const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(siteConfig.address)}&t=&z=18&ie=UTF8&iwloc=B&output=embed`;
-  const mapOpenUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(siteConfig.address)}`;
+  const mapOpenUrl = siteConfig.mapsUrl;
   const contactStructuredData = {
     "@context": "https://schema.org", "@type": "ContactPage", name: "Contact Sasha Corporation", url: `${siteConfig.canonicalOrigin}/contact/`,
     mainEntity: { "@type": "Organization", name: BRAND_NAME, telephone: siteConfig.phone, email: emailAddress, address: { "@type": "PostalAddress", streetAddress: siteConfig.address, addressCountry: "BD" } },

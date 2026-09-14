@@ -59,11 +59,14 @@ const organizationJsonLd = {
   alternateName: "Sasha",
   url: homeUrl,
   logo: absoluteUrl("/assets/brand/sasha/sasha-corporation-final-l.webp"),
-  sameAs: ["https://www.facebook.com/profile.php?id=100068947942148"],
+  sameAs: [
+    "https://www.facebook.com/profile.php?id=100068947942148",
+    "https://www.youtube.com/@SashaCorporation",
+  ],
   telephone: siteConfig.phone,
   address: {
     "@type": "PostalAddress",
-    streetAddress: "102/1 West Agargaon",
+    streetAddress: "102, 1 W Agargaon",
     addressLocality: "Dhaka",
     postalCode: "1207",
     addressCountry: "BD",
