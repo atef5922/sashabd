@@ -207,7 +207,7 @@ function LedExplorerProductCard({ product, priority = false, compareSelected = f
       </Link>
 
       <div className="flex flex-1 flex-col px-3.5 pb-3.5 pt-3">
-        <h3 className="mt-1 line-clamp-2 min-h-10 text-left text-[15px] font-extrabold leading-5 text-[#071936]">
+        <h3 className="mt-1 line-clamp-2 min-h-10 text-left !text-[16px] font-extrabold leading-5 text-[#071936]">
           <Link
             prefetch={false}
             href={product.href}
@@ -219,7 +219,7 @@ function LedExplorerProductCard({ product, priority = false, compareSelected = f
 
         <ul className="mt-3 min-h-[4rem] space-y-1.5" aria-label={`Key features of ${product.title}`}>
           {features.map((feature) => (
-            <li key={feature} className="flex min-w-0 items-center gap-2 !text-left text-[12px] font-medium leading-4 text-slate-700">
+            <li key={feature} className="flex min-w-0 items-center gap-2 !text-left !text-[13px] font-medium leading-[18px] text-slate-700">
               <svg viewBox="0 0 16 16" aria-hidden="true" className="h-4 w-4 shrink-0 fill-none text-slate-700">
                 <circle cx="8" cy="8" r="5.75" stroke="currentColor" strokeWidth="1.4" />
                 <path d="m5.3 8.1 1.7 1.7 3.7-3.9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -230,10 +230,10 @@ function LedExplorerProductCard({ product, priority = false, compareSelected = f
         </ul>
 
         <div className="mt-auto pt-3">
-          <p className="min-w-0 break-words text-left text-lg font-extrabold leading-6 tracking-tight text-[#f05a19] [font-variant-numeric:tabular-nums]">
+          <p className="min-w-0 break-words text-left !text-[16px] font-extrabold leading-[22px] tracking-tight text-[#f05a19] [font-variant-numeric:tabular-nums]">
             {priceText}
           </p>
-          <p className="mt-0.5 text-left text-[11px] font-normal leading-4 text-slate-500">
+          <p className="mt-0.5 text-left !text-[11px] font-normal leading-4 text-slate-500">
             {isRequestPrice ? "Contact for project pricing" : "Indicative product price"}
           </p>
           <div className="mt-3 grid grid-cols-2 gap-2">
@@ -242,7 +242,7 @@ function LedExplorerProductCard({ product, priority = false, compareSelected = f
               aria-pressed={compareSelected}
               aria-label={`${compareSelected ? "Remove" : "Add"} ${product.title} ${compareSelected ? "from" : "to"} comparison`}
               onClick={() => onCompareToggle?.(product.id)}
-              className={`inline-flex min-h-9 min-w-0 cursor-pointer items-center justify-center gap-1.5 rounded-md border px-2 text-[11px] font-extrabold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45 ${compareSelected ? "border-orange-300 bg-orange-50 text-orange-800" : "border-slate-200 bg-slate-50 text-slate-700 hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700"}`}
+              className={`inline-flex min-h-10 min-w-0 cursor-pointer items-center justify-center gap-1.5 rounded-md border px-2 !text-[12px] font-extrabold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45 ${compareSelected ? "border-orange-300 bg-orange-50 text-orange-800" : "border-slate-200 bg-slate-50 text-slate-700 hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700"}`}
             >
               <span aria-hidden="true">{compareSelected ? "✓" : "+"}</span>
               {compareSelected ? "Added" : "Compare"}
@@ -254,7 +254,7 @@ function LedExplorerProductCard({ product, priority = false, compareSelected = f
               prefetch={false}
               href={product.href}
               aria-label={`View details for ${product.title}`}
-              className="inline-flex min-h-10 min-w-0 items-center justify-center rounded-md border border-[#102542] bg-white px-2 py-2 text-center text-xs font-bold text-[#071936] transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/35"
+              className="inline-flex min-h-[42px] min-w-0 items-center justify-center rounded-md border border-[#102542] bg-white px-2 py-2 text-center !text-[13px] font-bold text-[#071936] transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/35"
             >
               View Details<span className="sr-only"> for {product.title}</span>
             </Link>
@@ -262,7 +262,7 @@ function LedExplorerProductCard({ product, priority = false, compareSelected = f
               prefetch={false}
               href={LED_QUOTE_HREF}
               aria-label={`Get a quote for ${product.title}`}
-              className="inline-flex min-h-10 min-w-0 items-center justify-center rounded-md border border-[#071936] bg-[#071936] px-2 py-2 text-center text-xs font-bold text-white transition-colors hover:border-[#102b52] hover:bg-[#102b52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/45 focus-visible:ring-offset-2"
+              className="inline-flex min-h-[42px] min-w-0 items-center justify-center rounded-md border border-[#071936] bg-[#071936] px-2 py-2 text-center !text-[13px] font-bold text-white transition-colors hover:border-[#102b52] hover:bg-[#102b52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/45 focus-visible:ring-offset-2"
             >
               Get a Quote<span className="sr-only"> for {product.title}</span>
             </Link>

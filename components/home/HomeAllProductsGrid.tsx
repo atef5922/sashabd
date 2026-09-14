@@ -804,7 +804,7 @@ export default function HomeAllProductsGrid() {
         </Link>
 
         <div className="flex flex-1 flex-col px-3.5 pb-3.5 pt-3">
-          <h3 className="mt-1 line-clamp-2 min-h-10 text-left text-[15px] font-extrabold leading-5 text-[#071936]">
+          <h3 className="mt-1 line-clamp-2 min-h-10 text-left !text-[16px] font-extrabold leading-5 text-[#071936]">
             <Link
               prefetch={false}
               href={p.href}
@@ -816,7 +816,7 @@ export default function HomeAllProductsGrid() {
 
           <ul className="mt-3 min-h-[4rem] space-y-1.5" aria-label={`Key features of ${displayTitle}`}>
             {bullets.slice(0, 3).map((feature) => (
-              <li key={feature} className="flex min-w-0 items-center gap-2 text-left text-[11.5px] font-medium leading-4 text-slate-700">
+              <li key={feature} className="flex min-w-0 items-center gap-2 text-left !text-[13px] font-medium leading-[18px] text-slate-700">
                 <svg viewBox="0 0 16 16" aria-hidden="true" className="h-4 w-4 shrink-0 fill-none text-slate-700">
                   <circle cx="8" cy="8" r="6.25" stroke="currentColor" strokeWidth="1.5" />
                   <path d="m5.2 8 1.7 1.7 3.9-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -827,24 +827,24 @@ export default function HomeAllProductsGrid() {
           </ul>
 
           <div className="mt-auto pt-3">
-            <p className="min-h-6 break-words text-left text-base font-extrabold leading-6 tracking-tight text-[#ef4a00] [font-variant-numeric:tabular-nums]">
+            <p className="min-h-6 break-words text-left !text-[16px] font-extrabold leading-[22px] tracking-tight text-[#ef4a00] [font-variant-numeric:tabular-nums]">
               {priceLabel}
             </p>
-            <p className="mt-0.5 text-left text-[10px] font-medium leading-4 text-slate-500">
+            <p className="mt-0.5 text-left !text-[11px] font-medium leading-4 text-slate-500">
               {priceLabel === "Request quotation" ? "Project-based configuration" : "Indicative product price"}
             </p>
             <div className="mt-3 grid grid-cols-2 gap-2">
               <Link
                 prefetch={false}
                 href={p.href}
-                className="inline-flex min-h-10 min-w-0 items-center justify-center rounded-md border border-[#102542] bg-white px-2 py-2 text-center text-xs font-bold text-[#071936] transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/35"
+                className="inline-flex min-h-[42px] min-w-0 items-center justify-center rounded-md border border-[#102542] bg-white px-2 py-2 text-center !text-[13px] font-bold text-[#071936] transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/35"
               >
                 View Details
               </Link>
               <Link
                 prefetch={false}
                 href={p.kind === "conference" ? `/contact/?project=conference-system&product=${p.id.replace("conference:", "")}` : "/contact/"}
-                className="inline-flex min-h-10 min-w-0 items-center justify-center rounded-md border border-[#071936] bg-[#071936] px-2 py-2 text-center text-xs font-bold text-white transition-colors hover:border-[#102b52] hover:bg-[#102b52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/45 focus-visible:ring-offset-2"
+                className="inline-flex min-h-[42px] min-w-0 items-center justify-center rounded-md border border-[#071936] bg-[#071936] px-2 py-2 text-center !text-[13px] font-bold text-white transition-colors hover:border-[#102b52] hover:bg-[#102b52] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/45 focus-visible:ring-offset-2"
               >
                 Get a Quote<span className="sr-only"> for {displayTitle}</span>
               </Link>

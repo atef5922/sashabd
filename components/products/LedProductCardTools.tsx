@@ -139,7 +139,7 @@ export function LedProductQuickView({ product }: { product: LedProductToolData }
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
         aria-label={`Quick view ${product.title}`}
-        className="inline-flex min-h-9 min-w-0 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-slate-200 bg-slate-50 px-2 text-[11px] font-extrabold text-slate-700 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45"
+        className="inline-flex min-h-10 min-w-0 cursor-pointer items-center justify-center gap-1.5 rounded-md border border-slate-200 bg-slate-50 px-2 !text-[12px] font-extrabold text-slate-700 transition hover:border-orange-300 hover:bg-orange-50 hover:text-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/45"
       >
         <svg viewBox="0 0 20 20" aria-hidden="true" className="h-4 w-4 shrink-0 fill-none">
           <path d="M2.2 10s2.8-4.6 7.8-4.6 7.8 4.6 7.8 4.6-2.8 4.6-7.8 4.6S2.2 10 2.2 10Z" stroke="currentColor" strokeWidth="1.5" />
