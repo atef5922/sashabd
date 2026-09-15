@@ -18,12 +18,20 @@ const customerFacingSources = [
 
 test("site-wide phone and WhatsApp configuration uses the new number", () => {
   assert.match(site, /phone: "\+8801717443355"/);
-  assert.match(site, /phoneDisplay: "01717443355"/);
+  assert.match(site, /phoneDisplay: "\+880 1717-443355"/);
   assert.match(site, /whatsapp: "\+8801717443355"/);
   assert.doesNotMatch(site, /079855|8801717079855/);
 });
 
-test("customer-facing number labels use the local display value", () => {
-  assert.equal((customerFacingSources.match(/siteConfig\.phoneDisplay/g) ?? []).length, 9);
+test("customer-facing number labels use the international display value", () => {
+  assert.equal((customerFacingSources.match(/siteConfig\.phoneDisplay/g) ?? []).length, 10);
   assert.doesNotMatch(customerFacingSources, />\{siteConfig\.phone\}</);
+  assert.doesNotMatch(customerFacingSources, /01717443355/);
+});
+
+test("header phone controls include a compact reusable phone icon", () => {
+  const header = read("components/common/Header.tsx");
+  assert.equal((header.match(/<HeaderPhoneIcon/g) ?? []).length, 2);
+  assert.match(header, /aria-label=\{`Call \$\{siteConfig\.phoneDisplay\}`\}/);
+  assert.match(header, /min-w-\[158px\]/);
 });

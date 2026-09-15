@@ -258,7 +258,7 @@ test("desktop About dropdown uses its canonical compact variant", () => {
 test("LED display, About, and Conference submenus share one card design system", () => {
   const header = read("components/common/Header.tsx");
   const megaMenu = sectionBetween(header, "function ConferenceDesktopNavItem", "export default function Header");
-  const ledAbout = sectionBetween(header, "// hover dropdown", 'aria-label="Call now"');
+  const ledAbout = sectionBetween(header, "// hover dropdown", "{/* MOBILE MENU BUTTON */}");
 
   // One card, one panel shell, one section heading - defined once.
   assert.match(header, /function menuCardClass\(isCurrent: boolean\)/);

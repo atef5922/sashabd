@@ -121,6 +121,20 @@ function cn(...classes: Array<string | false | undefined>) {
   return classes.filter(Boolean).join(" ");
 }
 
+function HeaderPhoneIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
+      <path
+        d="M5.5 6.5c0 6.1 5.9 12 12 12h1.5a1.5 1.5 0 0 0 1.5-1.5v-2.1a1.5 1.5 0 0 0-1.2-1.47l-2.29-.46a1.5 1.5 0 0 0-1.43.45l-.5.5a12.7 12.7 0 0 1-4.97-4.97l.5-.5a1.5 1.5 0 0 0 .45-1.43l-.46-2.29A1.5 1.5 0 0 0 9.1 4H7a1.5 1.5 0 0 0-1.5 1.5v1Z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 const HeaderSearch = dynamic(() => import("./HeaderSearch"), {
   ssr: false,
   loading: () => (
@@ -854,15 +868,7 @@ export default function Header({
               : "border-cyan-300/80 bg-white text-slate-900"
           )}
         >
-          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
-            <path
-              d="M5.5 6.5c0 6.1 5.9 12 12 12h1.5a1.5 1.5 0 0 0 1.5-1.5v-2.1a1.5 1.5 0 0 0-1.2-1.47l-2.29-.46a1.5 1.5 0 0 0-1.43.45l-.5.5a12.7 12.7 0 0 1-4.97-4.97l.5-.5a1.5 1.5 0 0 0 .45-1.43l-.46-2.29A1.5 1.5 0 0 0 9.1 4H7a1.5 1.5 0 0 0-1.5 1.5v1Z"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <HeaderPhoneIcon />
         </a>
 
         {/* DESKTOP NAV */}
@@ -991,9 +997,10 @@ export default function Header({
 
           <a
             href={`tel:${siteConfig.phone}`}
-            aria-label="Call now"
-            className="shine-button ml-1.5 inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-lg bg-gradient-to-r from-[#f58529] via-[#dd2a7b] to-[#8134af] px-3 py-2 xl:ml-2 xl:min-w-[150px] xl:px-4 text-sm font-semibold text-white transition hover:brightness-110"
+            aria-label={`Call ${siteConfig.phoneDisplay}`}
+            className="shine-button ml-1.5 inline-flex h-9 min-w-[158px] shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg bg-gradient-to-r from-[#f58529] via-[#dd2a7b] to-[#8134af] px-3 text-[12px] font-semibold text-white transition hover:brightness-110 xl:ml-2 xl:min-w-[166px] xl:text-[13px]"
           >
+            <HeaderPhoneIcon className="h-3.5 w-3.5 shrink-0" />
             {siteConfig.phoneDisplay}
           </a>
         </nav>

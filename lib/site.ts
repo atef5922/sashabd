@@ -3,7 +3,7 @@ export const siteConfig = {
   domain: "sashabd.com",
   canonicalOrigin: "https://sashabd.com",
   phone: "+8801717443355",
-  phoneDisplay: "01717443355",
+  phoneDisplay: "+880 1717-443355",
   whatsapp: "+8801717443355",
   emailUser: "info",
   emailDomain: "sashabd.com",
