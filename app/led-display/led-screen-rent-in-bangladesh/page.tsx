@@ -44,15 +44,16 @@ const rentalAdvantages = [
   "No long-term ownership burden for short-term events",
   "Fast setup and dismantling for temporary venues",
   "Flexible screen size based on stage and audience layout",
-  "Operational support available during event hours",
+  "Event-day operator and technical support can be included in the selected package",
 ];
 
 const rentalFlow = [
-  "Share event type, venue details, and screen goal",
-  "Confirm preferred size, pitch, and content source",
-  "Finalize rigging, power, and playback responsibilities",
-  "Install, map, and test before event opening",
-  "Live monitoring and post-event dismantling",
+  "Share the event date, venue, audience, and display requirements",
+  "Review venue access, viewing distance, rigging, power, and setup windows",
+  "Receive a project-based quotation with a clear Bill of Quantity (BOQ)",
+  "Finalize screen size, pixel pitch, structure, and content workflow",
+  "Complete installation, mapping, rehearsal, and pre-event testing",
+  "Provide event-day support when included, then safely dismantle the system",
 ];
 
 const compareCards = [
@@ -148,22 +149,28 @@ const rentalPriceGuideRows = [
 
 const pitchDistanceGuideRows = [
   {
-    zone: "Front audience zone",
-    distance: "6-15 ft",
-    recommendedPitch: "P2.6 / P2.9",
-    reason: "Better detail for close-view text and presenter visuals.",
+    zone: "Close-view audience zone",
+    distance: "1-2.5 m (3-8 ft)",
+    recommendedPitch: "P2.6",
+    reason: "Fine detail for close-view presentations, branding, and camera-led events.",
   },
   {
-    zone: "Mid venue zone",
-    distance: "15-35 ft",
-    recommendedPitch: "P3 / P3.9",
-    reason: "Balanced clarity and event-budget control.",
+    zone: "General event viewing zone",
+    distance: "2.5-4 m (8-13 ft)",
+    recommendedPitch: "P3",
+    reason: "Balanced clarity and budget control for most indoor event layouts.",
   },
   {
-    zone: "Large hall / open venue rear",
-    distance: "35 ft+",
-    recommendedPitch: "P3.9+ based on venue format",
-    reason: "Focuses on broad readability and scale efficiency.",
+    zone: "Larger audience zone",
+    distance: "4-6 m (13-20 ft)",
+    recommendedPitch: "P3.91",
+    reason: "Strong stage visibility for larger audiences and indoor or outdoor event setups.",
+  },
+  {
+    zone: "Long-distance / outdoor zone",
+    distance: "6 m+ (20 ft+)",
+    recommendedPitch: "P4.81",
+    reason: "Cost-effective coverage for large stages, festivals, and long-distance viewing.",
   },
 ];
 
@@ -248,9 +255,9 @@ const whatIsRentalLedRows = [
       "The screen can be configured by venue width, audience distance, and content type, which makes it practical for concerts, conferences, and ceremonies.",
   },
   {
-    title: "Includes technical setup and live operation support",
+    title: "Technical setup and live operation support options",
     detail:
-      "A standard rental workflow usually covers installation, controller setup, testing, and on-site monitoring for smooth event-day playback.",
+      "Depending on the selected package, the rental scope can include installation, controller setup, testing, an event-day operator, and on-site technical support.",
   },
 ];
 
@@ -500,7 +507,7 @@ export function RentGuideContent() {
                 topRightBadge={{ text: category, tone: "dark" }}
                 metaLines={[
                   { text: `Pixel pitch: ${pitchDisplay}` },
-                  ...(p.cardPrice ? [{ text: p.cardPrice, className: "mt-1 text-sm font-semibold text-sky-700" }] : []),
+                  { text: "Price: Based on requirements", className: "mt-1 text-sm font-semibold text-sky-700" },
                 ]}
                 bullets={p.quickFeatures.slice(0, 4)}
                 chips={p.bestFor.slice(0, 3)}
@@ -627,11 +634,12 @@ export function RentGuideContent() {
       <section className="mt-8 rounded-3xl border border-slate-200 bg-white p-6 md:p-8">
         <h2 className="flex items-center gap-2 text-2xl font-bold text-slate-900">
           <HeadingIcon kind="price" className="h-6 w-6 text-slate-800" />
-          <span>Rental LED Price Guide by Event Type and Setup Scale</span>
+          <span>Rental LED Budget Guide by Event Type and Setup Scale</span>
         </h2>
         <p className="mt-2 text-sm leading-7 text-slate-600">
-          Use this as a directional reference for <strong>LED screen rent price in Bangladesh</strong>. Final package
-          depends on show duration, screen dimension, and support scope.
+          Rental packages are quoted per project rather than as a fixed per-square-foot rental rate. Use this as a
+          directional reference for <strong>LED screen rent price in Bangladesh</strong>; the final quotation depends on
+          screen size, pixel pitch, event duration, venue access, rigging, power distribution, and support scope.
         </p>
         <div className="mt-4 overflow-hidden rounded-2xl border border-slate-200">
           <table className="w-full border-collapse text-left text-sm text-slate-700">

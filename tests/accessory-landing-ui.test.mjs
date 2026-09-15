@@ -160,10 +160,10 @@ test("SEO preserves canonical paths, uses a catalog ItemList and avoids fabricat
   assert.match(source, /aria-current=\{key === category \? "page"/);
 });
 
-test("Responsive behavior is scoped to the landing pages and keeps card actions aligned", () => {
+test("Responsive behavior uses the site-wide home header and keeps card actions aligned", () => {
   const header = read("components/common/Header.tsx");
-  assert.match(header, /normalizedPathname === `\/led-display\/accessories\/\$\{category\}`/);
-  assert.match(header, /\|\| isLedAccessoryLanding/);
+  assert.match(header, /data-home-header="true"/);
+  assert.doesNotMatch(header, /isLedAccessoryLanding/);
   assert.match(css, /--accessory-unit: calc\(var\(--accessory-width\) \/ 1280\)/);
   assert.match(css, /\.productFooter \{ margin-top: auto;/);
   for (const width of [599, 799, 999, 1199, 1440, 2200]) assert.ok(css.includes(`${width}px`));

@@ -1379,7 +1379,7 @@ test("Conference landing sends the compact full-catalog projection and defers be
   assert.match(source, /contentVisibility: "auto" as const/);
   assert.match(source, /containIntrinsicSize: "auto 520px"/);
   assert.match(source, /max-w-\[clamp\(80rem,90vw,108rem\)\]/);
-  assert.match(header, /useConferenceTabletHeader \? "w-full max-w-\[clamp\(80rem,90vw,108rem\)\]" : "max-w-7xl"/);
+  assert.match(header, /"w-full max-w-\[clamp\(80rem,90vw,108rem\)\]"/);
 });
 
 test("Conference comparison engine keeps selection accessible, bounded, persistent, and independent", () => {

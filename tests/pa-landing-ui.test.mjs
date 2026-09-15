@@ -112,6 +112,7 @@ test("PA full-page sections and interactive controls remain available at every b
   assert.match(products, /No matching products/);
   assert.match(products, /Show all products/);
   assert.match(page, /<details key=\{item\.q\}>/);
-  assert.match(header, /\|\| isPaSystemLanding/);
+  assert.match(header, /data-home-header="true"/);
+  assert.doesNotMatch(header, /isPaSystemLanding/);
   for (const width of [359, 599, 699, 899, 1199, 1440, 2200]) assert.ok(css.includes(`${width}px`));
 });

@@ -654,38 +654,9 @@ export default function Header({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const normalizedPathname = pathname.replace(/\/+$/, "");
-  const isLedDisplayLanding = normalizedPathname === "/led-display";
-  const isRentalDisplayLanding = normalizedPathname === "/led-display/rental-display";
-  const isIndoorOutdoorLanding = normalizedPathname === "/led-display/indoor-led" || normalizedPathname === "/led-display/outdoor";
-  const isInteractiveFlatPanelLanding = normalizedPathname === "/interactive-flat-panel";
-  const isDigitalPodiumLanding = normalizedPathname === "/digital-podium";
-  const isPaSystemLanding = normalizedPathname === "/pa-system";
-  const isContactPage = normalizedPathname === "/contact";
-  const isLedAccessoryLanding = ["receiving-card", "controller", "power-supply", "led-accessories"].some(
-    (category) => normalizedPathname === `/led-display/accessories/${category}`,
-  );
-  const useHomeResponsiveHeader = pathname === "/" || isLedDisplayLanding || isRentalDisplayLanding || isIndoorOutdoorLanding || isInteractiveFlatPanelLanding || isDigitalPodiumLanding || isLedAccessoryLanding || isPaSystemLanding || isContactPage;
-  const useConferenceTabletHeader =
-    useHomeResponsiveHeader || pathname.startsWith("/conference-system");
-  const hasFlushConferenceHero = [
-    "/conference-system/audio-conference-system",
-    "/conference-system/digital-conference-system",
-    "/conference-system/video-conference-system",
-    "/conference-system/paperless-conference-system",
-    "/conference-system/wired-conference-system",
-    "/conference-system/wireless-conference-system",
-    "/conference-system/chairman-unit",
-    "/conference-system/delegate-unit",
-    "/conference-system/control-unit",
-    "/conference-system/conference-dsp",
-    "/conference-system/conference-amplifier",
-    "/conference-system/brands/bosch",
-    "/conference-system/brands/toa",
-    "/conference-system/brands/spon",
-    "/conference-system/brands/cmx",
-    "/conference-system/brands",
-  ].includes(normalizedPathname);
+  // The home header is the site-wide header contract. Keeping these dimensions
+  // route-independent prevents individual page layouts from changing the logo,
+  // search, navigation spacing, or container alignment.
   const wa = `https://api.whatsapp.com/send/?phone=${siteConfig.whatsapp.replace(/\D/g, "")}&text&type=phone_number&app_absent=0`;
   const [open, setOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -840,18 +811,16 @@ export default function Header({
 
   return (
     <header
-      data-home-header={useHomeResponsiveHeader ? "true" : undefined}
+      data-home-header="true"
       className={cn(
         "site-header sticky inset-x-0 top-0 z-[80] w-full transition-colors duration-300",
-        isScrolled
-          ? hasFlushConferenceHero ? "bg-[#091931] shadow-none" : "bg-[#091931] shadow-md"
-          : hasFlushConferenceHero ? "bg-white shadow-none" : "bg-white"
+        isScrolled ? "bg-[#091931] shadow-md" : "bg-white"
       )}
     >
       <div
         className={cn(
           "site-header-inner mx-auto flex h-[var(--site-header-height)] items-center gap-1.5 px-3 py-0 md:gap-0 md:pl-3 md:pr-4",
-          useConferenceTabletHeader ? "w-full max-w-[clamp(80rem,90vw,108rem)]" : "max-w-7xl",
+          "w-full max-w-[clamp(80rem,90vw,108rem)]",
         )}
       >
         <Link prefetch={false} href="/" onClick={handleNavClick("/")} className="flex shrink-0 items-center gap-2">
@@ -861,7 +830,7 @@ export default function Header({
               alt={`${BRAND_NAME} logo`}
               fill
               className="object-contain object-left scale-100 md:scale-100"
-              sizes="(min-width: 1440px) 180px, (min-width: 768px) 144px, 92px"
+              sizes="(min-width: 1440px) 140px, (min-width: 1200px) 120px, (min-width: 768px) 144px, 92px"
             />
           </div>
         </Link>

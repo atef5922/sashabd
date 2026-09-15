@@ -91,9 +91,9 @@ body {
   .site-header { --site-header-height: 64px; }
 }
 
-@media (min-width: 1440px) {
+@media (min-width: 1200px) {
   [data-home-header="true"] {
-    --site-header-height: clamp(64px, 4.69vw, 80px);
+    --site-header-height: clamp(58px, 3.8vw, 64px);
   }
 
   [data-home-header="true"] .site-header-inner {
@@ -103,9 +103,9 @@ body {
 
   /* Keep search bounded and let navigation use the remaining row evenly. */
   [data-home-header="true"] .site-header-search {
-    flex: 0 0 clamp(180px, 12.5vw, 240px);
+    flex: 0 0 clamp(230px, 17.5vw, 290px);
     padding-inline: 0;
-    margin-inline: clamp(16px, 1vw, 20px);
+    margin-inline: clamp(10px, 0.8vw, 16px);
   }
 
   [data-home-header="true"] .site-header-nav {
@@ -116,29 +116,53 @@ body {
   }
 
   [data-home-header="true"] .site-header-logo {
-    width: clamp(144px, 10.54vw, 180px) !important;
-    height: clamp(80px, 5.86vw, 100px) !important;
+    width: clamp(120px, 8.25vw, 140px) !important;
+    height: clamp(50px, 3.5vw, 56px) !important;
   }
 
   [data-home-header="true"] .site-header-search .premium-search-inner > div {
-    min-height: clamp(40px, 2.93vw, 48px);
-    padding-left: clamp(16px, 1.17vw, 20px);
-    padding-right: clamp(16px, 1.17vw, 20px);
+    min-height: 34px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: clamp(14px, 1vw, 18px);
+    padding-right: clamp(14px, 1vw, 18px);
   }
 
-  [data-home-header="true"] .site-header-search input,
-  [data-home-header="true"] .site-header-nav > a,
-  [data-home-header="true"] .site-header-nav > .group > a,
-  [data-home-header="true"] [data-conference-desktop-nav] > div > a {
+  [data-home-header="true"] .site-header-search input {
     font-size: clamp(14px, 1vw, 20px) !important;
   }
 
   [data-home-header="true"] .site-header-nav > a,
-  [data-home-header="true"] .site-header-nav > .group > a {
-    padding-left: clamp(8px, 0.6vw, 12px) !important;
-    padding-right: clamp(8px, 0.6vw, 12px) !important;
+  [data-home-header="true"] .site-header-nav > .group > a,
+  [data-home-header="true"] [data-conference-desktop-nav] > div > a {
+    font-size: clamp(13px, 0.88vw, 15px) !important;
+    line-height: 18px !important;
   }
 
+  [data-home-header="true"] .site-header-nav > a,
+  [data-home-header="true"] .site-header-nav > .group > a {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    padding-left: clamp(13px, 0.9vw, 16px) !important;
+    padding-right: clamp(13px, 0.9vw, 16px) !important;
+  }
+
+  [data-home-header="true"] [data-conference-desktop-nav] > div > a {
+    min-height: 30px !important;
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    padding-left: clamp(13px, 0.9vw, 16px) !important;
+  }
+
+  [data-home-header="true"] [data-conference-desktop-nav] > div > button {
+    min-height: 30px !important;
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    padding-right: clamp(13px, 0.9vw, 16px) !important;
+  }
+}
+
+@media (min-width: 1440px) {
   .home-hero-frame,
   .led-display-hero-frame {
     padding-left: clamp(40px, 3vw, 60px) !important;
