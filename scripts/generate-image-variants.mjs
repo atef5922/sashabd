@@ -1,4 +1,4 @@
-import { readdir, readFile, mkdir, writeFile, stat } from "node:fs/promises";
+import { readdir, readFile, mkdir, writeFile, stat, unlink } from "node:fs/promises";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import sharp from "sharp";
@@ -7,6 +7,9 @@ const root = process.cwd();
 const publicDir = path.join(root, "public");
 const outputDir = path.join(publicDir, "optimized");
 const widths = [64, 128, 256, 384, 640, 960, 1280, 1920];
+const imageQuality = 78;
+const encoderVersion = "webp-q78-effort5-v2";
+const expectedVariantFiles = new Set();
 const manifest = {};
 let originalBytes = 0;
 let largestBytes = 0;
@@ -33,16 +36,17 @@ await Promise.all(Array.from({ length: 3 }, async () => {
     const meta = await sharp(input).metadata();
     if (!meta.width || !meta.height || (meta.pages ?? 1) > 1) continue;
     const source = "/" + path.relative(publicDir, file).split(path.sep).join("/");
-    const hash = createHash("sha256").update(input).update("webp-q82-v1").digest("hex").slice(0, 20);
+    const hash = createHash("sha256").update(input).update(encoderVersion).digest("hex").slice(0, 20);
     const maxWidth = Math.min(meta.autoOrient?.width ?? meta.width, 1920);
     const sizes = [...new Set([...widths.filter(w => w < maxWidth), maxWidth])];
     const variants = [];
     for (const width of sizes) {
       const name = hash + "-" + width + ".webp";
+      expectedVariantFiles.add(name);
       const destination = path.join(outputDir, name);
       try { await stat(destination); } catch {
         await sharp(input).rotate().resize({ width, withoutEnlargement: true })
-          .webp({ quality: 82, effort: 4 }).toFile(destination);
+          .webp({ quality: imageQuality, effort: 5, smartSubsample: true }).toFile(destination);
       }
       variants.push([width, "/optimized/" + name]);
     }
@@ -53,6 +57,12 @@ await Promise.all(Array.from({ length: 3 }, async () => {
     count++;
   }
 }));
+let staleVariantCount = 0;
+for (const entry of await readdir(outputDir, { withFileTypes: true })) {
+  if (!entry.isFile() || !/^[a-f0-9]{20}-\d+\.webp$/i.test(entry.name) || expectedVariantFiles.has(entry.name)) continue;
+  await unlink(path.join(outputDir, entry.name));
+  staleVariantCount++;
+}
 await mkdir(path.join(root, "lib/generated"), { recursive: true });
 await writeFile(path.join(root, "lib/generated/image-variants.json"),
   JSON.stringify(Object.fromEntries(Object.entries(manifest).sort(([a], [b]) => a.localeCompare(b)))));
@@ -69,4 +79,5 @@ const rules = width => backgrounds.map((src, index) => {
 await writeFile(path.join(root, "lib/generated/image-backgrounds.css"),
   ":root{" + rules(1920) + "}\n@media(max-width:640px){:root{" + rules(960) + "}}\n");
 console.log("Images: " + count + "; originals: " + (originalBytes / 1048576).toFixed(1) +
-  " MB; largest optimized variants: " + (largestBytes / 1048576).toFixed(1) + " MB");
+  " MB; largest optimized variants: " + (largestBytes / 1048576).toFixed(1) +
+  " MB; stale variants removed: " + staleVariantCount);

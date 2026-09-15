@@ -9,10 +9,34 @@ let images = 0;
 let responsive = 0;
 let pages = 0;
 let originals = 0;
+let deployedOriginals = 0;
 let largest = 0;
 let cards = 0;
 for (const [src, variants] of Object.entries(manifest)) {
-  originals += statSync(path.join(root, "public", src)).size;
+  const sourceFile = path.join(root, "public", src);
+  const deployedOriginalFile = path.join(root, "out", src);
+  originals += statSync(sourceFile).size;
+  if (!existsSync(deployedOriginalFile)) {
+    errors.push("Missing deployed original URL: " + src);
+  } else {
+    const [sourceMeta, deployedMeta] = await Promise.all([
+      sharp(sourceFile).metadata(),
+      sharp(deployedOriginalFile).metadata(),
+    ]);
+    const expectedFormat = /\.jpe?g$/i.test(src) ? "jpeg" : src.split(".").at(-1).toLowerCase();
+    const sourceWidth = sourceMeta.autoOrient?.width ?? sourceMeta.width;
+    const sourceHeight = sourceMeta.autoOrient?.height ?? sourceMeta.height;
+    if (deployedMeta.format !== expectedFormat) errors.push("Deployed original format mismatch: " + src);
+    if (!sourceWidth || !sourceHeight || !deployedMeta.width || !deployedMeta.height) {
+      errors.push("Missing deployed original dimensions: " + src);
+    } else {
+      const sourceRatio = sourceWidth / sourceHeight;
+      const deployedRatio = deployedMeta.width / deployedMeta.height;
+      if (Math.abs(sourceRatio - deployedRatio) > 0.01) errors.push("Deployed original aspect ratio mismatch: " + src);
+      if (deployedMeta.width < Math.min(sourceWidth, 1200)) errors.push("Deployed original resolution too small: " + src);
+    }
+    deployedOriginals++;
+  }
   largest += statSync(path.join(root, "public", variants.at(-1)[1])).size;
   cards += statSync(path.join(root, "public", (variants.find(([w]) => w >= 384) ?? variants.at(-1))[1])).size;
   for (const [width, url] of variants) {
@@ -33,6 +57,10 @@ function walk(dir) {
       images++;
       const src = tag.match(/\ssrc="([^"]+)"/)?.[1];
       if (!src) continue;
+      const localUrl = decodeURIComponent(src.split(/[?#]/, 1)[0]);
+      if (localUrl.startsWith("/") && !hasExactPathCase(path.join(root, "out"), localUrl)) {
+        errors.push("Missing or case-mismatched image URL: " + file + " " + localUrl);
+      }
       if (src.startsWith("/optimized/")) {
         responsive++;
         if (!/srcSet=/i.test(tag)) errors.push("Missing srcset: " + file);
@@ -49,8 +77,21 @@ function walk(dir) {
     }
   }
 }
+
+function hasExactPathCase(baseDir, urlPath) {
+  const segments = urlPath.replace(/^\/+/, "").split("/").filter(Boolean);
+  let current = baseDir;
+  for (const segment of segments) {
+    if (!existsSync(current) || !statSync(current).isDirectory()) return false;
+    const exactEntry = readdirSync(current, { withFileTypes: true }).find((entry) => entry.name === segment);
+    if (!exactEntry) return false;
+    current = path.join(current, exactEntry.name);
+  }
+  return existsSync(current);
+}
 walk(path.join(root, "out"));
 console.log(JSON.stringify({ pages, images, responsive, sourceImages: Object.keys(manifest).length,
+  deployedOriginals,
   originalMB: +(originals / 1048576).toFixed(2), largestVariantMB: +(largest / 1048576).toFixed(2),
   cardVariantMB: +(cards / 1048576).toFixed(2), errors: [...new Set(errors)] }, null, 2));
 if (errors.length) process.exitCode = 1;

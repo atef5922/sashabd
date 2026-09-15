@@ -7,7 +7,7 @@
     "scripts": {
         "predev": "node scripts/generate-image-variants.mjs",
         "dev": "next dev",
-        "prebuild": "node scripts/generate-image-variants.mjs",
+        "prebuild": "node scripts/clean-static-output.mjs && node scripts/generate-image-variants.mjs",
         "build": "next build",
         "build:package": "powershell -ExecutionPolicy Bypass -File scripts/build-static-package.ps1",
         "start": "next start",

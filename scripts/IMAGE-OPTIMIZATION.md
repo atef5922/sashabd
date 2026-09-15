@@ -13,9 +13,21 @@ Next Image uses the shared custom loader. Native image elements use
 `responsiveImageProps`. Both preserve caller dimensions, fitting and layout.
 CSS backgrounds use generated responsive custom properties.
 
-Variants retain aspect ratio and transparency, never upscale, and use quality 82.
+Variants retain aspect ratio and transparency, never upscale, and use a conservative
+WebP quality setting. Generated variants that no longer belong to the current
+manifest are removed automatically, while original `/assets/` URLs stay unchanged
+for metadata, structured data, downloads, and existing external links.
 Their content-hashed filenames allow the existing one-year static asset cache
 policy without serving an older image after the original changes.
+
+Production builds clean the previous `out` directory before export. Static package
+creation rejects nested ZIP archives and runs the exported-image audit before the
+deploy archive is created.
+
+Packaging also replaces deploy-only `.webp` originals with their validated largest
+responsive master when that copy is smaller, preserving the public URL, format,
+aspect ratio, source file, and a maximum width of 1920px. The one intentionally
+direct-served hero remains untouched. PNG deploy copies are recompressed losslessly.
 
 After adding/replacing an image during development, restart `npm run dev` to
 regenerate the variants. Run `node scripts/audit-exported-images.mjs` after a build

@@ -39,6 +39,23 @@ foreach ($file in $requiredFiles) {
 
 Write-Host "Validating exported HTML asset references..."
 $outDir = Join-Path $root "out"
+$nestedArchives = @(Get-ChildItem $outDir -Recurse -File -Filter "*.zip")
+if ($nestedArchives.Count -gt 0) {
+  throw ("Unexpected ZIP archive(s) inside static output:`n" + (($nestedArchives | Select-Object -ExpandProperty FullName) -join "`n"))
+}
+
+Write-Host "Optimizing deploy-only image copies..."
+node scripts/optimize-deploy-assets.mjs
+if ($LASTEXITCODE -ne 0) {
+  throw "Deploy image optimization failed."
+}
+
+Write-Host "Auditing exported responsive images..."
+node scripts/audit-exported-images.mjs
+if ($LASTEXITCODE -ne 0) {
+  throw "Exported image audit failed."
+}
+
 $htmlFiles = Get-ChildItem $outDir -Recurse -Filter "*.html"
 $assetRegex = '/_next/static/[A-Za-z0-9._/\-]+'
 $missingAssets = New-Object System.Collections.Generic.List[string]

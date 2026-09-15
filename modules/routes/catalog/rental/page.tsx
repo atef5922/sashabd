@@ -1038,7 +1038,7 @@ const rentalExploreCategories = [
   {
     title: "Indoor LED Displays",
     description: "Fine-pitch LED solutions for showrooms, conference rooms and control spaces.",
-    image: "/assets/projects/Project-indoor-wall.webp",
+    image: "/assets/projects/project-indoor-wall.webp",
     href: "/led-display/indoor-led/",
     cta: "Explore Indoor LED",
   },
