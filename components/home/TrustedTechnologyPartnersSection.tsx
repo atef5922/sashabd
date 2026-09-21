@@ -22,8 +22,6 @@ const brandAltText: Record<(typeof homeBrandLogos)[number]["name"], string> = {
   Huidu: "Huidu LED display controller",
   Colorlight: "Colorlight LED display controller",
   "Mean Well": "Mean Well display power supply",
-  Mugnee: "Mugnee LED display components",
-  "Renex Digital": "Renex Digital LED display technology",
   Synoveta: "Synoveta LED display technology",
   Bosch: "Bosch conference and PA system technology",
   TOA: "TOA conference and PA system technology",

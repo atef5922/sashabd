@@ -598,7 +598,7 @@ label {
   opacity: 0.75;
 }
 
-@keyframes renexMarquee {
+@keyframes brandMarquee {
   from {
     transform: translateX(0);
   }
@@ -608,7 +608,7 @@ label {
 }
 
 .home-brand-marquee-track {
-  animation: renexMarquee 42s linear infinite;
+  animation: brandMarquee 42s linear infinite;
 }
 
 @keyframes fadeUp {

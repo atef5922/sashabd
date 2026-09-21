@@ -2224,7 +2224,7 @@ test("LED display technology partner marquee exposes one semantic logo set", () 
 
   const sourceBrands = [...dataSource.matchAll(/name: "([^"]+)"/g)].map((match) => match[1]);
   const visibleBrands = sourceBrands.filter((brand) => !["Absen", "Unilumin"].includes(brand));
-  assert.equal(visibleBrands.length, 11);
+  assert.equal(visibleBrands.length, 9);
   assert.equal(new Set(visibleBrands).size, visibleBrands.length);
   assert.match(section, /ref=\{trustedTechMarqueeRef\}/);
   assert.match(section, /trustedTechCloneReady \? \[true\] : \[\]/);

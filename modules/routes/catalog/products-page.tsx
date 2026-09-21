@@ -1126,8 +1126,6 @@ function ProductsPageContent({
     { name: "Huidu", src: "/assets/brands/led-display/huidu.webp", href: "https://www.huidu.cn/" },
     { name: "Colorlight", src: "/assets/brands/led-display/colorlight.webp", href: "https://en.colorlightinside.com/" },
     { name: "Mean Well", src: "/assets/brands/led-display/mean-well.webp", href: "https://www.meanwell.com/" },
-    { name: "Mugnee Multiple Limited", src: "/assets/brands/led-display/mugnee.webp", href: "https://www.mugnee.com/" },
-    { name: "Renex Digital", src: "/assets/brands/led-display/renex-exact.webp", href: "https://renex.com.bd/" },
   ];
   const visibleTrustedTechPartnerLogos = trustedTechPartnerLogos.filter(
     (brand) => !["Absen", "Unilumin"].includes(brand.name)
@@ -3373,7 +3371,7 @@ function ProductsPageContent({
                 <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-14" style={{ background: "linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
 
                 <div ref={trustedTechMarqueeRef} className="group">
-                  <div className="flex w-max animate-[renexMarquee_42s_linear_infinite] group-hover:[animation-play-state:paused] motion-reduce:animate-none">
+                  <div className="flex w-max animate-[brandMarquee_42s_linear_infinite] group-hover:[animation-play-state:paused] motion-reduce:animate-none">
                     {[false, ...(trustedTechCloneReady ? [true] : [])].map((isClone) => (
                       <div
                         key={isClone ? "visual-clone-track" : "canonical-track"}
@@ -3408,10 +3406,6 @@ function ProductsPageContent({
                                       ? "h-10 w-auto max-w-[145px] object-contain"
                                       : b.name === "NovaStar"
                                         ? "h-10 w-auto max-w-[150px] object-contain"
-                                        : b.name === "Mugnee Multiple Limited"
-                                          ? "h-10 w-auto max-w-[156px] object-contain"
-                                          : b.name === "Renex Digital"
-                                            ? "h-12 w-full max-w-none object-cover object-center"
                                         : "h-10 w-auto max-w-[146px] object-contain"
                               }
                               loading="lazy"
@@ -3487,7 +3481,7 @@ function ProductsPageContent({
                 <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-10 md:w-14" style={{ background: "linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0))" }} />
 
                 <div ref={trustedClientMarqueeRef} className="group">
-                  <div className="flex w-max animate-[renexMarquee_48s_linear_infinite] group-hover:[animation-play-state:paused] motion-reduce:animate-none">
+                  <div className="flex w-max animate-[brandMarquee_48s_linear_infinite] group-hover:[animation-play-state:paused] motion-reduce:animate-none">
                     {[false, ...(trustedClientCloneReady ? [true] : [])].map((isClone) => (
                       <div
                         key={isClone ? "visual-clone-client-track" : "canonical-client-track"}

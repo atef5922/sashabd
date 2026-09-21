@@ -11,8 +11,6 @@ export const homeBrandLogos = [
   { name: "Huidu", src: "/assets/brands/led-display/huidu.webp", href: "/led-display/accessories/controller/", className: "h-7 sm:h-8" },
   { name: "Colorlight", src: "/assets/brands/led-display/colorlight.webp", href: "/led-display/accessories/controller/", className: "h-7 sm:h-8" },
   { name: "Mean Well", src: "/assets/brands/led-display/mean-well.webp", href: "/led-display/", className: "h-7 sm:h-8" },
-  { name: "Mugnee", src: "/assets/brands/led-display/mugnee.webp", href: "/led-display/", className: "h-7 sm:h-8" },
-  { name: "Renex Digital", src: "/assets/brands/led-display/renex-exact.webp", href: "/led-display/", className: "h-7 translate-y-[4px] scale-[4] sm:h-8" },
   { name: "Synoveta", src: "/assets/brands/led-display/synoveta-logo.jpeg", href: "/led-display/", className: "h-7 sm:h-8" },
   { name: "Bosch", src: "/assets/brands/audio/bosch-logo.svg", href: "/conference-system/brands/bosch/", className: "h-7 sm:h-8" },
   { name: "TOA", src: "/assets/brands/audio/toa-logo.png", href: "/conference-system/brands/toa/", className: "h-7 sm:h-8" },
@@ -28,7 +26,6 @@ const serviceHighlights = [
 ] as const;
 
 function compactBrandLogoClass(name: string) {
-  if (name === "Renex Digital") return "h-7 w-auto max-w-[76px] translate-y-px scale-[2.1] object-contain";
   if (name === "CMX") return "h-7 w-7 object-contain";
   if (name === "AOTO Electronics") return "h-6 w-auto max-w-[72px] object-contain";
   if (name === "Synoveta") return "h-6 w-auto max-w-[78px] object-contain";

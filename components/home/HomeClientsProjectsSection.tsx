@@ -106,7 +106,7 @@ export default function HomeClientsProjectsSection() {
           <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-white via-white/90 to-transparent" />
           <div aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-white via-white/90 to-transparent" />
 
-          <div className="flex w-max animate-[renexMarquee_48s_linear_infinite] items-center py-2 group-hover:[animation-play-state:paused] motion-reduce:transform-none motion-reduce:animate-none">
+          <div className="flex w-max animate-[brandMarquee_48s_linear_infinite] items-center py-2 group-hover:[animation-play-state:paused] motion-reduce:transform-none motion-reduce:animate-none">
             {[false, true].map((isClone) => (
               <div
                 key={isClone ? "home-client-visual-clone" : "home-client-canonical-track"}
