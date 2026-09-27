@@ -44,11 +44,11 @@ export default function FloatingActions() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat on WhatsApp"
-        className="grid h-14 w-14 place-items-center rounded-2xl bg-emerald-600 text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-emerald-700"
+        className="grid h-12 w-12 place-items-center rounded-xl bg-emerald-600 text-white shadow-md transition hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-lg"
         title="WhatsApp"
       >
         <span className="sr-only">Chat on WhatsApp support</span>
-        <svg viewBox="0 0 32 32" width="26" height="26" fill="currentColor" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="22" height="22" fill="currentColor" aria-hidden="true">
           <path d="M19.11 17.53c-.27-.14-1.63-.8-1.88-.9-.25-.09-.43-.14-.61.14-.18.27-.7.9-.86 1.09-.16.18-.32.2-.59.07-.27-.14-1.16-.43-2.21-1.37-.82-.73-1.37-1.63-1.53-1.9-.16-.27-.02-.41.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.61-1.47-.84-2.01-.22-.53-.45-.46-.61-.47h-.52c-.18 0-.48.07-.73.34-.25.27-.95.93-.95 2.27s.98 2.63 1.12 2.81c.14.18 1.93 2.95 4.68 4.13.66.28 1.17.45 1.57.57.66.21 1.26.18 1.73.11.53-.08 1.63-.66 1.86-1.3.23-.64.23-1.18.16-1.3-.07-.12-.25-.2-.52-.34z" />
           <path d="M26.67 5.33C23.83 2.49 20.06.93 16 .93 7.89.93 1.33 7.49 1.33 15.6c0 2.6.68 5.14 1.97 7.39L1.33 31.07l8.27-1.97c2.17 1.18 4.62 1.8 7.13 1.8h.01c8.11 0 14.67-6.56 14.67-14.67 0-4.06-1.56-7.83-4.4-10.9zm-10.94 23.1h-.01c-2.2 0-4.36-.59-6.24-1.71l-.45-.27-4.91 1.17 1.17-4.79-.29-.49c-1.23-1.95-1.88-4.21-1.88-6.52C3.13 8.53 8.93 2.73 16 2.73c3.5 0 6.78 1.36 9.26 3.83 2.47 2.47 3.83 5.76 3.83 9.26 0 7.07-5.8 12.67-12.67 12.61z" />
         </svg>
