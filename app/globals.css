@@ -1721,6 +1721,29 @@ label {
   }
 }
 
+@keyframes conference-brand-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.conference-brand-marquee-track {
+  animation: conference-brand-marquee 18s linear infinite;
+  will-change: transform;
+}
+
+.conference-brand-marquee:hover .conference-brand-marquee-track,
+.conference-brand-marquee:focus-within .conference-brand-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .conference-brand-marquee-track {
+    animation: none;
+    transform: none;
+  }
+}
+
 @layer utilities {
   .max-w-7xl {
     max-width: min(120rem, calc(100vw - 2.5rem));

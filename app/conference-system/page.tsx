@@ -1033,7 +1033,7 @@ export default function ConferenceSystemPage() {
   return (
     <div className="mx-auto w-full max-w-[clamp(80rem,90vw,108rem)] px-4 pb-10 pt-0 md:px-6" data-conference-route-kind="hub">
       <section
-        className="relative left-1/2 right-1/2 isolate -mx-[50vw] -mt-2 min-h-[446px] w-screen overflow-hidden bg-[#f7f9fc] sm:min-h-[406px] lg:min-h-[clamp(18.5rem,25vw,21.5rem)]"
+        className="relative left-1/2 right-1/2 isolate -mx-[50vw] -mt-2 min-h-[446px] w-screen overflow-hidden bg-[#f7f9fc] sm:min-h-[406px] lg:min-h-[clamp(20rem,27vw,23rem)]"
         aria-labelledby="conference-hero-heading"
       >
         <Image
@@ -1047,7 +1047,7 @@ export default function ConferenceSystemPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-white/10 sm:via-white/75 lg:hidden" aria-hidden="true" />
 
-        <div className="relative mx-auto flex min-h-[446px] w-full max-w-[clamp(80rem,90vw,108rem)] flex-col px-5 py-6 sm:min-h-[406px] sm:px-8 sm:py-7 lg:min-h-[clamp(18.5rem,25vw,21.5rem)] lg:px-10 lg:py-[clamp(1.5rem,2vw,2rem)]">
+        <div className="relative mx-auto flex min-h-[446px] w-full max-w-[clamp(80rem,90vw,108rem)] flex-col px-5 py-6 sm:min-h-[406px] sm:px-8 sm:py-7 lg:min-h-[clamp(20rem,27vw,23rem)] lg:px-10 lg:py-[clamp(1.5rem,2vw,2rem)]">
           <div className="max-w-[42rem] sm:translate-y-2 lg:max-w-[38%] lg:translate-y-3">
             <h1 id="conference-hero-heading" className="text-[1.75rem] font-black leading-[1.08] tracking-[-0.03em] text-[#071936] sm:text-[2rem] lg:text-[2.125rem] xl:text-4xl">
               Conference System
@@ -1112,37 +1112,48 @@ export default function ConferenceSystemPage() {
 
             <div className="hidden h-12 w-px bg-slate-200 xl:block" aria-hidden="true" />
 
-            <div className="grid min-w-0 grid-cols-2 items-center gap-x-3 gap-y-4 border-t border-slate-100 pt-4 lg:flex lg:justify-center lg:gap-x-7 lg:border-t-0 lg:pt-0 xl:px-8 2xl:gap-x-10">
-              {verifiedConferenceBrandCards.map((brand) => {
-                const logoHeightClass = {
-                  bosch: "h-7 sm:h-8 lg:h-[34px]",
-                  toa: "h-7 sm:h-8 lg:h-[34px]",
-                  spon: "h-6 sm:h-7 lg:h-8",
-                  cmx: "h-8 sm:h-9 lg:h-9",
-                }[brand.slug] ?? "h-8";
-
-                return (
-                  <Link
-                    key={brand.slug}
-                    prefetch={false}
-                    href={brand.url}
-                    aria-label={`Browse ${brand.title} conference systems`}
-                    className="flex min-w-0 shrink-0 items-center justify-center transition duration-200 hover:scale-[1.03] hover:opacity-80 focus-visible:rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50"
+            <div className="conference-brand-marquee min-w-0 overflow-hidden border-t border-slate-100 pt-4 lg:border-t-0 lg:pt-0 xl:mx-8">
+              <div className="conference-brand-marquee-track flex w-max items-center">
+                {[0, 1].map((groupIndex) => (
+                  <div
+                    key={groupIndex}
+                    className="flex shrink-0 items-center gap-x-5 pr-5 lg:gap-x-6 lg:pr-6 2xl:gap-x-7 2xl:pr-7"
+                    aria-hidden={groupIndex === 1 ? true : undefined}
                   >
-                    {brand.logoSrc ? (
-                      <Image
-                        src={brand.logoSrc}
-                        alt={`${brand.title} logo`}
-                        width={brand.logoWidth ?? 100}
-                        height={brand.logoHeight ?? 24}
-                        className={`${logoHeightClass} max-w-full w-auto object-contain ${brand.slug === "spon" ? "lg:-mr-5" : ""}`}
-                      />
-                    ) : (
-                      <span className="text-lg font-extrabold tracking-tight text-slate-950">{brand.title}</span>
-                    )}
-                  </Link>
-                );
-              })}
+                    {verifiedConferenceBrandCards.map((brand) => {
+                      const logoHeightClass = {
+                        bosch: "h-7 sm:h-8 lg:h-[34px]",
+                        toa: "h-7 sm:h-8 lg:h-[34px]",
+                        spon: "h-6 sm:h-7 lg:h-8",
+                        cmx: "h-8 sm:h-9 lg:h-9",
+                      }[brand.slug] ?? "h-8";
+
+                      return (
+                        <Link
+                          key={`${groupIndex}-${brand.slug}`}
+                          prefetch={false}
+                          href={brand.url}
+                          tabIndex={groupIndex === 1 ? -1 : undefined}
+                          aria-label={`Browse ${brand.title} conference systems`}
+                          className="flex shrink-0 items-center justify-center transition duration-200 hover:scale-[1.03] hover:opacity-80 focus-visible:rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50"
+                        >
+                          {brand.logoSrc ? (
+                            <Image
+                              src={brand.logoSrc}
+                              alt={`${brand.title} logo`}
+                              width={brand.logoWidth ?? 100}
+                              height={brand.logoHeight ?? 24}
+                              className={`${logoHeightClass} max-w-full w-auto object-contain`}
+                            />
+                          ) : (
+                            <span className="text-lg font-extrabold tracking-tight text-slate-950">{brand.title}</span>
+                          )}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div className="hidden h-12 w-px bg-slate-200 xl:block" aria-hidden="true" />
