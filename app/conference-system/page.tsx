@@ -26,9 +26,9 @@ import ProjectCard from "../projects/ProjectCard";
 import { conferenceProjects } from "../projects/projectData";
 
 const PAGE_TITLE = "Conference System Price in Bangladesh 2026";
-const META_TITLE = `${PAGE_TITLE} | Sasha`;
+const META_TITLE = "Conference System Price in Bangladesh";
 const META_DESCRIPTION =
-  "Conference system price in Bangladesh for Bosch, TOA, SPON & CMX. Compare wired, wireless, digital and hybrid systems with BOQ, installation and support.";
+  "Compare wired, wireless and digital conference system prices in Bangladesh. Get Bosch, TOA, SPON or CMX solutions with BOQ, installation and support.";
 const conferenceEngineerWhatsAppHref = buildWhatsAppHref(CONFERENCE_ENGINEER_WHATSAPP_MESSAGE);
 
 const compactInformationSectionClass =
